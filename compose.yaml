@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: useraid
+      POSTGRES_PASSWORD: useraid
+      POSTGRES_DB: useraid
+    ports: ['127.0.0.1:5432:5432']
+    volumes: ['postgres:/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U useraid']
+      interval: 5s
+      retries: 10
+volumes:
+  postgres:

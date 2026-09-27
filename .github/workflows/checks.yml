@@ -1,0 +1,30 @@
+name: Checks
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: useraid
+          POSTGRES_PASSWORD: useraid
+          POSTGRES_DB: useraid_test
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U useraid" --health-interval 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://useraid:useraid@localhost:5432/useraid_test
+      RUN_DB_TESTS: 'true'
+      DEMO_MODE: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run db:migrate
+      - run: npm test
+      - run: npm run build
+      - run: npm audit --audit-level=moderate

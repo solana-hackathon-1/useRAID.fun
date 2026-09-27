@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+model User {
+  id String @id @default(cuid())
+  xId String @unique
+  handle String
+  role String @default("CREATOR")
+  approved Boolean @default(false)
+  suspended Boolean @default(false)
+  affiliation String @default("")
+  createdAt DateTime @default(now())
+  sessions Session[]
+  raids Raid[]
+}
+model Session {
+  tokenHash String @id
+  userId String
+  expiresAt DateTime
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([expiresAt])
+}
+model OAuthAttempt {
+  stateHash String @id
+  verifier String
+  expiresAt DateTime
+}
+model Token {
+  mint String @id
+  symbol String
+  name String
+  raids Raid[]
+  market Json?
+  marketAt DateTime?
+  marketError String?
+}
+model Raid {
+  id String @id @default(cuid())
+  tag String @unique
+  title String
+  description String
+  mint String
+  creatorId String
+  status String @default("DRAFT")
+  startsAt DateTime
+  endsAt DateTime
+  hidden Boolean @default(false)
+  createdAt DateTime @default(now())
+  observedAt DateTime?
+  coverage String @default("unavailable")
+  collectionError String?
+  sinceId String?
+  nextToken String?
+  searchEndAt DateTime?
+  pendingNewestId String?
+  finalRefreshed Boolean @default(false)
+  token Token @relation(fields: [mint], references: [mint])
+  creator User @relation(fields: [creatorId], references: [id])
+  posts Post[]
+  snapshots Snapshot[]
+  @@index([status, startsAt, endsAt])
+}
+model Post {
+  id String @id
+  raidId String
+  authorId String
+  text String
+  normalized String
+  createdAt DateTime
+  observedAt DateTime
+  likes Int @default(0)
+  replies Int @default(0)
+  reposts Int @default(0)
+  quotes Int @default(0)
+  hidden Boolean @default(false)
+  deleted Boolean @default(false)
+  raid Raid @relation(fields: [raidId], references: [id])
+  @@index([raidId, createdAt])
+  @@index([authorId])
+}
+model Snapshot {
+  id String @id @default(cuid())
+  raidId String
+  at DateTime
+  score Int
+  raiders Int
+  posts Int
+  interactions Int
+  complete Boolean
+  scoreVersion Int @default(1)
+  raid Raid @relation(fields: [raidId], references: [id])
+  @@unique([raidId, at])
+  @@index([raidId, at])
+}
+model Job {
+  id String @id @default(cuid())
+  key String @unique
+  kind String
+  payload Json
+  runAt DateTime @default(now())
+  lockedAt DateTime?
+  lease String?
+  attempts Int @default(0)
+  error String?
+  doneAt DateTime?
+  @@index([doneAt, runAt, lockedAt])
+}
+model Settings {
+  id String @id @default("global")
+  collectionEnabled Boolean @default(false)
+  maxActiveRaids Int @default(10)
+  maxCreators Int @default(5)
+  monthlyBudgetCents Int @default(20000)
+  cutoffCents Int @default(18000)
+  dailyRequestLimit Int @default(5000)
+}
+model ProviderUsage {
+  id String @id @default(cuid())
+  at DateTime @default(now())
+  provider String
+  raidId String?
+  units Int
+  reservedCents Int
+  reason String
+  @@index([provider, at])
+}
+model RateLimit {
+  key String @id
+  count Int @default(0)
+  expiresAt DateTime
+}
+model ModerationEvent {
+  id String @id @default(cuid())
+  actorId String
+  action String
+  targetId String
+  reason String
+  createdAt DateTime @default(now())
+}
+model Event {
+  id String @id @default(cuid())
+  type String
+  raidId String?
+  visitor String?
+  at DateTime @default(now())
+  @@index([type, at])
+}

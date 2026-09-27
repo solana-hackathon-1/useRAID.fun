@@ -1,0 +1,57 @@
+# Pilot operations
+
+## Railway deployment
+
+Create a PostgreSQL service, a web service using `railway.toml`, and a worker service using `railway.worker.toml`. Use the same database and environment values for web and worker. Start with one replica each. The web deployment runs committed migrations; deploy it before starting a new worker version. Use an HTTPS `APP_URL` and register the exact OAuth callback.
+
+Set `DEMO_MODE=false`, `LIVE_COLLECTION_APPROVED=false`, and the real official account handle. Populate X credentials through Railway secrets, never repository files. Seed settings with `npm run db:seed`. Sign in using an ID listed in `ADMIN_X_IDS`, then approve invited creators based on submitted affiliation evidence.
+
+Set the X developer-console budget independently of the application budget. Disable unlimited auto-recharge. Configure Railway spend notifications within the $100 hosting allocation. Configure your monitoring service to check `/api/health`; it checks database availability, not X availability. Inspect collection errors and stale observation times in Operations. Worker errors are structured logs containing job identity and a sanitized error, never tokens or provider response bodies.
+
+## Feasibility gate — must pass before live collection
+
+- Confirm control of the configured X account and verify OAuth identity/callback behavior.
+- Verify official search with `@officialhandle #raid_unique` finds original posts, replies, and quotes during the test window; verify repost wrappers are excluded.
+- Check negative cases: wrong mention, wrong tag, multiple registered tags, pre-start/post-end timestamps.
+- Check lookup counters, pagination, cursor resumes, rate-limit reset, invalid credentials, and explicit deletion responses using the actual API account.
+- Confirm storage, redisplay, attribution, deletion, and retention requirements for the chosen X agreement. Set `X_RETENTION_DAYS` accordingly and update the public privacy page; add the operator's contact and deletion-request process.
+- Run a controlled campaign. Compare observed provider billing with `ProviderUsage`; decide whether the $200 budget supports the expected pilot volume. Reservations do not rely on X's soft daily deduplication guarantee.
+- Verify that a Jupiter link opens the intended output mint on the current Jupiter UI. Test at least two real pilot token mints. Do not execute a trade as part of verification.
+- Confirm market cap is not substituted with FDV, that pair choice is correct, and no-pair results display unavailable.
+- Only then set `LIVE_COLLECTION_APPROVED=true` and enable collection in Operations.
+
+## Controlled pilot acceptance
+
+Invite five approved projects and reserve at most ten scheduled/active campaign slots. Publish a controlled post with the exact mention/tag; verify appearance within ten minutes under healthy provider conditions. Repeat with a submitted post URL. Confirm observed timestamps and partial/stale behavior during a deliberate provider interruption. Uncollected campaigns must display missing values, not fabricated metrics.
+
+Exercise the kill switch while a campaign is active. New provider reservations must stop; an already-authorized in-flight request may finish. Turn collection back on only after confirming the cause of a pause. At 70% budget, review usage. At 90%, pause or reduce scope; never raise the $200 ceiling automatically.
+
+Measure campaign completion and second campaigns by creator, attributable authors, returning discovery visitors, click-throughs, freshness, and cost per campaign. Clicks are not executed trades. Browser-local visitor identifiers are approximate and reset when storage is cleared.
+
+## Failure and recovery
+
+- **429:** Jobs respect the provider reset time, with a minimum backoff. Do not replay jobs to bypass provider limits.
+- **401/403:** Correct credentials/access before retrying failed jobs. Cached metrics remain labeled partial/stale.
+- **Budget exhausted:** Review the provider console and usage ledger. The worker must not bypass the cutoff to restore freshness.
+- **Search cursor invalid:** Pause the affected campaign collection, record the incident, clear `nextToken`, `pendingNewestId`, and `searchEndAt` while retaining `sinceId`, and retry. Post IDs prevent duplicates.
+- **Worker crash:** Expired job leases can be reclaimed after ten minutes. A stale lease cannot acknowledge another worker's job. Jobs for a raid are serialized; retries are idempotent.
+- **Eight failed attempts:** Inspect the error in Operations, fix its cause, then retry with an audit reason.
+- **Moderation:** Hide the post/campaign and record why. Post moderation invalidates historical baselines to avoid presenting an unqualified comparison.
+- **Retention:** The worker clears expired post content and reconciles ended-campaign posts daily within retention. Metrics spanning retained content are not a permanent archive. Confirm provider rules before launch.
+
+## Backup and restore
+
+Enable managed daily backups. Before the pilot, restore into a new isolated database and verify counts and representative campaigns. Never practice a restore against production.
+
+```sh
+pg_dump "$DATABASE_URL" --format=custom --no-owner --file=raid-backup.dump
+# RESTORE_DATABASE_URL must point to an empty isolated database.
+pg_restore --dbname="$RESTORE_DATABASE_URL" --no-owner --no-privileges raid-backup.dump
+psql "$RESTORE_DATABASE_URL" -c 'SELECT count(*) FROM "Raid"; SELECT count(*) FROM "Post";'
+```
+
+Encrypt backup storage and restrict access because it includes sessions and creator identities. Delete the temporary dump according to your retention policy. Do not log database URLs.
+
+## Release gates
+
+`npm run typecheck`, `npm test` against isolated PostgreSQL, `npm run build`, `npm run test:browser`, and dependency audit must pass. Repeat database restoration and collection-kill-switch exercises before the live pilot. Provider-backed acceptance remains separate from tests using mocked X responses.
