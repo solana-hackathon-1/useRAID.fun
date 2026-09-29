@@ -39,49 +39,62 @@ export function CreatorForm() {
         }
       }}
     >
-      <div className="form-grid">
-        <label className="field full">
-          Campaign title
-          <input
-            name="title"
-            required
-            minLength={5}
-            maxLength={120}
-            placeholder="What’s your community talking about?"
-          />
-        </label>
-        <label className="field full">
-          Description
-          <textarea
-            name="description"
-            required
-            minLength={20}
-            maxLength={2000}
-            placeholder="Give people context and a reason to participate."
-          />
-        </label>
-        <label className="field full">
-          Solana token mint
-          <input name="mint" required placeholder="Exact base58 mint address" />
-        </label>
-        <label className="field">
-          Token symbol
-          <input name="symbol" required maxLength={15} placeholder="BONK" />
-        </label>
-        <label className="field">
-          Token name
-          <input name="name" required maxLength={80} placeholder="Bonk" />
-        </label>
-        <label className="field">
-          Start time (optional)
-          <input name="startsAt" type="datetime-local" />
-          <small>Your local timezone. Leave blank to launch immediately.</small>
-        </label>
-        <label className="field">
-          Duration (hours)
-          <input name="duration" type="number" min={1} max={72} defaultValue={24} required />
-        </label>
-      </div>
+      <fieldset className="form-section">
+        <legend>Campaign information</legend>
+        <div className="form-grid">
+          <label className="field full">
+            Campaign title
+            <input
+              name="title"
+              required
+              minLength={5}
+              maxLength={120}
+              placeholder="What’s your community talking about?"
+            />
+          </label>
+          <label className="field full">
+            Description
+            <textarea
+              name="description"
+              required
+              minLength={20}
+              maxLength={2000}
+              placeholder="Give people context and a reason to participate."
+            />
+          </label>
+        </div>
+      </fieldset>
+      <fieldset className="form-section">
+        <legend>Token identity</legend>
+        <div className="form-grid">
+          <label className="field full">
+            Solana token mint
+            <input name="mint" required placeholder="Exact base58 mint address" />
+          </label>
+          <label className="field">
+            Token symbol
+            <input name="symbol" required maxLength={15} placeholder="BONK" />
+          </label>
+          <label className="field">
+            Token name
+            <input name="name" required maxLength={80} placeholder="Bonk" />
+          </label>
+        </div>
+      </fieldset>
+      <fieldset className="form-section">
+        <legend>Scheduling</legend>
+        <div className="form-grid">
+          <label className="field">
+            Start time (optional)
+            <input name="startsAt" type="datetime-local" />
+            <small>Your local timezone. Leave blank to launch immediately.</small>
+          </label>
+          <label className="field">
+            Duration (hours)
+            <input name="duration" type="number" min={1} max={72} defaultValue={24} required />
+          </label>
+        </div>
+      </fieldset>
       <div className="form-actions">
         <button className="button" disabled={busy}>
           {busy ? 'Saving…' : 'Save draft'}

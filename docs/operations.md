@@ -2,7 +2,7 @@
 
 ## Railway deployment
 
-Create a PostgreSQL service, a web service using `railway.toml`, and a worker service using `railway.worker.toml`. Use the same database and environment values for web and worker. Start with one replica each. The web deployment runs committed migrations; deploy it before starting a new worker version. Use an HTTPS `APP_URL` and register the exact OAuth callback.
+Create a PostgreSQL service, a web service using `railway.toml`, and a worker service using `railway.worker.toml`. Share database and public configuration between web and worker; keep `OPERATOR_SECRET_KEY` only on worker. Start with one replica each. The web deployment runs committed migrations; deploy it before starting a new worker version. Use an HTTPS `APP_URL` and register the exact OAuth callback.
 
 Set `DEMO_MODE=false`, `LIVE_COLLECTION_APPROVED=false`, and the real official account handle. Populate X credentials through Railway secrets, never repository files. Seed settings with `npm run db:seed`. Sign in using an ID listed in `ADMIN_X_IDS`, then approve invited creators based on submitted affiliation evidence.
 
@@ -22,6 +22,10 @@ Set the X developer-console budget independently of the application budget. Disa
 
 ## Controlled pilot acceptance
 
+Keep `LAUNCH_ENABLED` and `PAYOUT_ENABLED` off until a dedicated mainnet RPC, Pinata, encrypted key backups, a distinct treasury, and a worker signer with at least 0.05 SOL are configured. Verify operator public/private key match and the mainnet genesis hash. Check worker readiness in Operations before launching. Never expose the worker's operator key through the web service. Both web and worker need the active `LAUNCH_KEY_N`; preserve previous versions through rotation. Backups include encrypted per-token fee keys and must be restored with their matching environment keys.
+
+Run one small authorized mainnet launch through wallet signing. Compare on-chain `create_v2` payer, mint, fee recipient, SOL pair, and metadata against review. Observe bonding-curve and post-graduation claims, hourly X coverage, each payout, treasury share, network reimbursement, and pending balances below 0.001 SOL. Compare the fee ledger with Solana transaction metadata. Pause payouts immediately if a fee recipient, network cost, or balance differs from the ledger.
+
 Invite five approved projects and reserve at most ten scheduled/active campaign slots. Publish a controlled post with the exact mention/tag; verify appearance within ten minutes under healthy provider conditions. Repeat with a submitted post URL. Confirm observed timestamps and partial/stale behavior during a deliberate provider interruption. Uncollected campaigns must display missing values, not fabricated metrics.
 
 Exercise the kill switch while a campaign is active. New provider reservations must stop; an already-authorized in-flight request may finish. Turn collection back on only after confirming the cause of a pause. At 70% budget, review usage. At 90%, pause or reduce scope; never raise the $200 ceiling automatically.
@@ -35,6 +39,7 @@ Measure campaign completion and second campaigns by creator, attributable author
 - **Budget exhausted:** Review the provider console and usage ledger. The worker must not bypass the cutoff to restore freshness.
 - **Search cursor invalid:** Pause the affected campaign collection, record the incident, clear `nextToken`, `pendingNewestId`, and `searchEndAt` while retaining `sinceId`, and retry. Post IDs prevent duplicates.
 - **Worker crash:** Expired job leases can be reclaimed after ten minutes. A stale lease cannot acknowledge another worker's job. Jobs for a raid are serialized; retries are idempotent.
+- **Ambiguous financial transaction:** If a signed claim or transfer expires without a definitive chain receipt, the token pauses. Inspect its recorded signature and raw transaction against an archival mainnet RPC. Resume only when the receipt becomes definitive; an unknown receipt pauses again and never triggers a replacement transfer. A confirmed failed transaction records its network fee and pauses until the cause is resolved.
 - **Eight failed attempts:** Inspect the error in Operations, fix its cause, then retry with an audit reason.
 - **Moderation:** Hide the post/campaign and record why. Post moderation invalidates historical baselines to avoid presenting an unqualified comparison.
 - **Retention:** The worker clears expired post content and reconciles ended-campaign posts daily within retention. Metrics spanning retained content are not a permanent archive. Confirm provider rules before launch.

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { XDiagnostics } from '@/components/x-diagnostics';
 import { currentUser } from '@/lib/auth';
 import { config } from '@/lib/config';
 import { db } from '@/lib/db';
@@ -17,7 +18,7 @@ export default async function AdminPage() {
         {config.demo ? (
           <div className="notice info">Admin controls are disabled in the read-only preview.</div>
         ) : (
-          <Link className="button" href="/api/auth/login">
+          <Link className="button" href="/api/auth/x">
             Sign in with X
           </Link>
         )}
@@ -60,6 +61,11 @@ export default async function AdminPage() {
       _sum: { reservedCents: true },
     }),
   ]);
+  const pausedLaunches = await db.tokenLaunch.findMany({
+    where: { status: 'PAUSED' },
+    select: { id: true, mint: true, name: true, error: true },
+    take: 20,
+  });
   const spend = usage._sum.reservedCents || 0,
     ratio = spend / settings.monthlyBudgetCents;
   return (
@@ -68,6 +74,7 @@ export default async function AdminPage() {
         <h1>Operations</h1>
         <p>Keep the pilot useful, attributable, and within budget.</p>
       </div>
+      <XDiagnostics userId={user.id} />
       {!config.liveApproved && (
         <div className="notice">
           Deployment feasibility gate is closed. Live X collection stays disabled regardless of the
@@ -100,12 +107,67 @@ export default async function AdminPage() {
           <strong>{jobs.length}</strong>
         </div>
       </div>
+      <nav className="section-nav" aria-label="Operations sections">
+        <a href="#limits">Operating limits</a>
+        <a href="#finance">Launch & payouts</a>
+        <a href="#creators">Creators</a>
+        <a href="#campaigns">Campaigns</a>
+        <a href="#posts">Posts</a>
+        <a href="#failures">Failures</a>
+        <a href="#activity">Activity & audit</a>
+      </nav>
       <div className="admin-grid">
-        <section className="panel">
+        <section className="panel" id="limits">
           <h2>Operating limits</h2>
           <SettingsForm settings={settings} />
         </section>
-        <section className="panel">
+        <section className="panel" id="finance">
+          <h2>Launch & payouts</h2>
+          <p>
+            Deployment switches: launches{' '}
+            {Reflect.get(process.env, 'LAUNCH_ENABLED') === 'true' ? 'enabled' : 'off'} · payouts{' '}
+            {Reflect.get(process.env, 'PAYOUT_ENABLED') === 'true' ? 'enabled' : 'off'}.
+          </p>
+          <p>
+            Admin controls: launches {settings.launchPaused ? 'paused' : 'allowed'} · payouts{' '}
+            {settings.payoutPaused ? 'paused' : 'allowed'}.
+          </p>
+          <p>
+            Payout worker:{' '}
+            {settings.payoutWorkerAt && Date.now() - +settings.payoutWorkerAt < 120000
+              ? 'ready'
+              : 'unavailable'}
+          </p>
+          <div className="form-actions">
+            <AdminAction
+              action="finance"
+              id="global"
+              label={settings.launchPaused ? 'Resume launches' : 'Pause launches'}
+              values={{ launchPaused: !settings.launchPaused, payoutPaused: settings.payoutPaused }}
+            />
+            <AdminAction
+              action="finance"
+              id="global"
+              label={settings.payoutPaused ? 'Resume payouts' : 'Pause payouts'}
+              values={{ launchPaused: settings.launchPaused, payoutPaused: !settings.payoutPaused }}
+            />
+          </div>
+          {pausedLaunches.map((launch) => (
+            <div className="admin-row" key={launch.id}>
+              <strong>
+                {launch.name} · {launch.mint}
+              </strong>
+              <p>{launch.error}</p>
+              <AdminAction
+                action="launch-resume"
+                id={launch.id}
+                label="Resume after correction"
+                values={{}}
+              />
+            </div>
+          ))}
+        </section>
+        <section className="panel" id="creators">
           <h2>Creator approvals</h2>
           {users
             .filter((u) => u.role !== 'ADMIN')
@@ -130,7 +192,7 @@ export default async function AdminPage() {
               </div>
             ))}
         </section>
-        <section className="panel">
+        <section className="panel" id="campaigns">
           <h2>Campaign moderation</h2>
           {raids.map((r) => (
             <div className="admin-row" key={r.id}>
@@ -148,7 +210,7 @@ export default async function AdminPage() {
             </div>
           ))}
         </section>
-        <section className="panel">
+        <section className="panel" id="posts">
           <h2>Post moderation</h2>
           {posts.map((p) => (
             <div className="admin-row" key={p.id}>
@@ -163,7 +225,7 @@ export default async function AdminPage() {
             </div>
           ))}
         </section>
-        <section className="panel">
+        <section className="panel" id="failures">
           <h2>Collection failures</h2>
           {!jobs.length && <p>No failed jobs.</p>}
           {jobs.map((j) => (
@@ -176,7 +238,7 @@ export default async function AdminPage() {
             </div>
           ))}
         </section>
-        <section className="panel">
+        <section className="panel" id="activity">
           <h2>Pilot activity this month</h2>
           <div className="admin-row">
             <p>Completed campaigns (all time): {completed}</p>

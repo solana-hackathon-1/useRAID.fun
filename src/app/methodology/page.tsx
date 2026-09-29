@@ -45,6 +45,19 @@ export default function Methodology() {
         This is an experimental measure with limited resistance to manipulation. We do not claim to
         verify that every account represents a unique human or that engagement is organic.
       </p>
+      <h2>pump.fun launch rewards</h2>
+      <p>
+        New tokens launched through useRAID are ordinary SOL-paired pump.fun tokens. Creator fees
+        arrive at a unique fee wallet managed by useRAID. A launching wallet starts a 24-hour raid;
+        token owners can start later raids after the current one ends.
+      </p>
+      <p>
+        To earn, a participant verifies an X account and Solana wallet, joins that token’s rewards,
+        and posts after joining. Each completed hour uses the same duplicate filter, top-three-post
+        rule, and 20-point author cap shown above. We wait until X search covers the full hour.
+        After recorded network costs, 90% of claimed fees are allocated by score and 10% goes to
+        useRAID. Balances under 0.001 SOL carry forward. Missing collection delays payout.
+      </p>
       <h2>Discovery and momentum</h2>
       <p>
         Trending orders active campaigns by score. Rising requires at least five participating

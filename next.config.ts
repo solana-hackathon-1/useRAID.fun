@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next';
 const config: NextConfig = {
   devIndicators: false,
+  // OAuth callback URLs contain short-lived authorization codes and must not be logged.
+  logging: { incomingRequests: { ignore: [/\/api\/auth(?:\/|\?|$)/] } },
   poweredByHeader: false,
   async headers() {
     return [

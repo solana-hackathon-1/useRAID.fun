@@ -1,0 +1,49 @@
+import { NextResponse } from 'next/server';
+import { checkOrigin, requireUser, rateLimit, HttpError } from '@/lib/auth';
+import { pinFile, signAsset, validateImage } from '@/lib/launch-ipfs';
+import { launchEnabled } from '@/lib/pump-launch';
+import { failure } from '@/lib/http';
+export async function POST(request: Request) {
+  try {
+    checkOrigin(request);
+    const user = await requireUser();
+    if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
+    await rateLimit(`launch-upload:${user.id}`, 20, 3600);
+    if (Number(request.headers.get('content-length') || 0) > 6 * 1024 * 1024)
+      throw new HttpError(413, 'Image too large.');
+    if (!request.body) throw new HttpError(400, 'Image required.');
+    const reader = request.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let total = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > 6 * 1024 * 1024) {
+        await reader.cancel();
+        throw new HttpError(413, 'Image too large.');
+      }
+      chunks.push(value);
+    }
+    const body = new Uint8Array(total);
+    let offset = 0;
+    for (const chunk of chunks) {
+      body.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    const form = await new Request('http://localhost/upload', {
+      method: 'POST',
+      headers: { 'content-type': request.headers.get('content-type') || '' },
+      body: body.buffer,
+    }).formData();
+    const kind = form.get('kind');
+    const file = form.get('file');
+    if ((kind !== 'logo' && kind !== 'banner') || !(file instanceof File))
+      throw new HttpError(400, 'Image and kind required.');
+    await validateImage(file, kind);
+    const uri = await pinFile(file);
+    return NextResponse.json({ uri, proof: signAsset(uri, kind, user.id) });
+  } catch (error) {
+    return failure(error);
+  }
+}

@@ -13,8 +13,10 @@ import {
   Users,
 } from 'lucide-react';
 import type { RaidView } from '@/lib/types';
-import { RaidCard, TokenIcon, Sparkline, Freshness, compact, AboutAside, Empty } from './ui';
+import { RaidCard, TokenIcon, Sparkline, Freshness, compact, Empty } from './ui';
 import { AutoRefresh, track } from './refresh';
+import { RaidArtwork } from './brand';
+import styles from './discovery.module.css';
 const tabs = [
   { name: 'Trending', icon: Flame },
   { name: 'Live', icon: Radio },
@@ -50,36 +52,27 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
   return (
     <>
       <AutoRefresh />
-      <section className="intro">
-        <div>
-          <div className="network-label">
-            <span className="solana-symbol">≋</span> The attention layer of Solana
-          </div>
+      <section className={styles.hero}>
+        <div className={styles.heroCopy}>
           <h1>
-            See where the
+            Make your
             <br />
-            community shows up.
+            community heard.
           </h1>
           <p>
-            Discover the campaigns starting conversations.
-            <br className="desktop-break" /> Follow the attention. Understand the momentum.
+            Discover Solana raids, join the conversation on X, and follow measured community
+            attention.
           </p>
-        </div>
-        <div className="intro-art" aria-hidden="true">
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <div className="orbit orbit-three" />
-          <div className="signal-core">
-            <Radio size={50} />
+          <div className="form-actions">
+            <a className="button" href="#discovery">
+              Explore raids <ArrowDown size={16} />
+            </a>
+            <Link className="button secondary" href="/creator">
+              Create a raid
+            </Link>
           </div>
-          <span className="art-node node-a">B</span>
-          <span className="art-node node-b">◎</span>
-          <span className="art-node node-c">W</span>
-          <span className="art-node node-d">J</span>
-          <span className="signal-label">
-            <i /> Community signal
-          </span>
         </div>
+        <RaidArtwork />
       </section>
       <section className="overview-strip" aria-label="Campaign overview">
         <div>
@@ -87,7 +80,7 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
         </div>
         <div>
           <strong>{active.length}</strong>
-          <span>live raids</span>
+          <span>{demo ? 'example raids' : 'active raids'}</span>
         </div>
         <div>
           <strong>{compact(active.reduce((a, r) => a + r.posts, 0))}</strong>
@@ -120,9 +113,9 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
         </div>
       </section>
       <div className="discovery-layout">
-        <section className="discovery-main">
+        <section className="discovery-main" id="discovery" aria-labelledby="discovery-heading">
           <div className="section-heading">
-            <h2>Solana, in conversation</h2>
+            <h2 id="discovery-heading">Find your next raid</h2>
             <span className="count-label">{active.length} active campaigns</span>
           </div>
           <div className="table-toolbar">
@@ -131,6 +124,29 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
                 <button
                   key={t.name}
                   role="tab"
+                  id={`tab-${t.name.replaceAll(' ', '-')}`}
+                  aria-controls="campaign-results"
+                  tabIndex={tab === t.name ? 0 : -1}
+                  onKeyDown={(event) => {
+                    const index = tabs.findIndex((item) => item.name === t.name);
+                    const next =
+                      event.key === 'ArrowRight'
+                        ? (index + 1) % tabs.length
+                        : event.key === 'ArrowLeft'
+                          ? (index + tabs.length - 1) % tabs.length
+                          : event.key === 'Home'
+                            ? 0
+                            : event.key === 'End'
+                              ? tabs.length - 1
+                              : null;
+                    if (next !== null) {
+                      event.preventDefault();
+                      setTab(tabs[next].name);
+                      document
+                        .getElementById(`tab-${tabs[next].name.replaceAll(' ', '-')}`)
+                        ?.focus();
+                    }
+                  }}
                   aria-selected={tab === t.name}
                   className={tab === t.name ? 'active' : ''}
                   onClick={() => setTab(t.name)}
@@ -141,13 +157,13 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
               ))}
             </div>
             <button
-              className={`icon-button ${onlyFresh ? 'on' : ''}`}
+              className={`filter-button ${onlyFresh ? 'on' : ''}`}
               title="Show current data only"
               aria-label="Show current data only"
               aria-pressed={onlyFresh}
               onClick={() => setOnlyFresh(!onlyFresh)}
             >
-              <SlidersHorizontal size={17} />
+              <SlidersHorizontal size={16} /> Current data only
             </button>
           </div>
           <label className="search-box">
@@ -159,8 +175,13 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
               aria-label="Search campaigns"
             />
           </label>
-          <div className="table-scroll">
-            <table className="raid-table">
+          <div
+            className="table-scroll"
+            id="campaign-results"
+            role="tabpanel"
+            aria-labelledby={`tab-${tab.replaceAll(' ', '-')}`}
+          >
+            <table className="raid-table" role="table" aria-label="Campaign rankings">
               <thead>
                 <tr>
                   <th>#</th>
@@ -178,9 +199,11 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
               </thead>
               <tbody>
                 {sorted.map((r, i) => (
-                  <tr key={r.id}>
-                    <td className="rank">{String(i + 1).padStart(2, '0')}</td>
-                    <td>
+                  <tr key={r.id} role="row">
+                    <td className="rank" role="cell" data-label="Rank">
+                      {String(i + 1).padStart(2, '0')}
+                    </td>
+                    <td role="cell" className="identity-cell">
                       <Link className="token-cell" href={`/raids/${r.id}`}>
                         <TokenIcon symbol={r.symbol} />
                         <span>
@@ -189,30 +212,38 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
                             <small>{r.name}</small>
                           </strong>
                           <span className="campaign-title">{r.title}</span>
-                          {r.freshness !== 'fresh' && r.freshness !== 'demo' && (
-                            <Freshness raid={r} />
-                          )}
+                          <Freshness raid={r} />
                         </span>
                       </Link>
                     </td>
-                    <td>{r.freshness === 'unavailable' ? '—' : compact(r.raiders)}</td>
-                    <td>{r.freshness === 'unavailable' ? '—' : compact(r.interactions)}</td>
-                    <td className="score-cell">
+                    <td role="cell" data-label="Raiders">
+                      {r.freshness === 'unavailable' ? '—' : compact(r.raiders)}
+                    </td>
+                    <td role="cell" data-label="Interactions">
+                      {r.freshness === 'unavailable' ? '—' : compact(r.interactions)}
+                    </td>
+                    <td role="cell" data-label="Score" className="score-cell">
                       {r.freshness === 'unavailable' ? '—' : r.score.toLocaleString()}
                     </td>
-                    <td>
+                    <td role="cell" data-label="Momentum">
                       <div className="momentum-cell">
                         <span
-                          className={r.momentum !== null && r.momentum >= 0 ? 'positive' : 'muted'}
+                          className={
+                            r.momentum !== null && r.momentum >= 0 ? 'positive' : 'negative'
+                          }
                         >
-                          {r.momentum === null
-                            ? 'Building baseline'
-                            : `${r.momentum > 0 ? '+' : ''}${r.momentum}%`}
+                          {r.freshness === 'unavailable'
+                            ? '—'
+                            : r.momentum === null
+                              ? 'Building baseline'
+                              : `${r.momentum > 0 ? '+' : ''}${r.momentum}%`}
                         </span>
-                        <Sparkline points={r.history.map((p) => p.score)} />
+                        {r.freshness !== 'unavailable' && (
+                          <Sparkline points={r.history.map((p) => p.score)} />
+                        )}
                       </div>
                     </td>
-                    <td>
+                    <td role="cell" className="open-cell">
                       <Link
                         href={`/raids/${r.id}`}
                         className="row-arrow"
@@ -234,31 +265,44 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
             </Empty>
           )}
           <div className="table-footer">
-            <span>Showing {sorted.length} campaigns</span>
+            <span role="status">Showing {sorted.length} campaigns</span>
             {sorted[0] && <Freshness raid={sorted[0]} />}
           </div>
         </section>
-        <div className="discovery-aside">
-          <AboutAside />
-          <div className="participate-box">
-            <span className="line-icon">
-              <Radio size={22} />
-            </span>
-            <h3>
-              Your community.
-              <br />
-              Your next raid.
-            </h3>
-            <p>Give your next announcement a place to gather momentum.</p>
-            <Link href="/creator">
-              Start a campaign <ArrowUpRight size={15} />
-            </Link>
-          </div>
-          <p className="small-print">
-            Attention is measured activity, not investment merit. Always do your own research.
-          </p>
-        </div>
       </div>
+      <section className={styles.participation} aria-labelledby="participation-heading">
+        <div>
+          <span className={styles.signal}>
+            <Radio size={24} />
+          </span>
+          <h2 id="participation-heading">
+            A community is more
+            <br />
+            than a number.
+          </h2>
+          <p>Find a campaign. Add your voice. See the attention take shape.</p>
+          <Link className="inline-link" href="/methodology">
+            How attention is measured <ArrowUpRight size={16} />
+          </Link>
+        </div>
+        <ol>
+          <li>
+            <strong>Find your community</strong>
+            <p>Explore active raids and the ideas behind them.</p>
+          </li>
+          <li>
+            <strong>Make it your own</strong>
+            <p>Post on X with the campaign’s mention and raid tag.</p>
+          </li>
+          <li>
+            <strong>Follow the conversation</strong>
+            <p>See qualifying posts and measured participation, with context.</p>
+          </li>
+        </ol>
+      </section>
+      <p className="small-print">
+        Attention is measured activity, not investment merit. Always do your own research.
+      </p>
     </>
   );
 }

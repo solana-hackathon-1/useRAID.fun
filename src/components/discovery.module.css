@@ -1,0 +1,112 @@
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  min-height: 380px;
+  gap: 32px;
+  padding: 32px 0;
+}
+.heroCopy h1 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 72px;
+  line-height: 0.98;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.heroCopy p {
+  max-width: 440px;
+  font-size: 16px;
+  margin-top: 24px;
+  line-height: 1.75;
+}
+.heroCopy :global(.form-actions) {
+  margin-top: 28px;
+}
+.participation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+  padding: 48px 0 16px;
+}
+.participation h2 {
+  font-family: var(--font-display), sans-serif;
+  font-size: 40px;
+  line-height: 1.1;
+  margin: 16px 0;
+}
+.participation p {
+  font-size: 14px;
+  max-width: 420px;
+}
+.participation a {
+  margin-top: 16px;
+}
+.signal {
+  color: var(--accent-text);
+}
+.participation ol {
+  list-style: none;
+  counter-reset: steps;
+  margin: 0;
+  padding: 0;
+}
+.participation li {
+  position: relative;
+  padding: 20px 0 20px 48px;
+  border-bottom: 1px solid var(--border);
+  counter-increment: steps;
+}
+.participation li:first-child {
+  padding-top: 0;
+}
+.participation li::before {
+  content: counter(steps);
+  position: absolute;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 12px;
+}
+.participation li p {
+  margin-top: 8px;
+}
+@media (max-width: 1024px) {
+  .heroCopy h1 {
+    font-size: 64px;
+  }
+  .hero {
+    gap: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 32px 0 24px;
+  }
+  .heroCopy h1 {
+    font-size: 42px;
+  }
+  .heroCopy p {
+    margin-top: 16px;
+  }
+  .heroCopy :global(.form-actions) {
+    margin-top: 20px;
+  }
+  .participation {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-top: 40px;
+    padding-top: 32px;
+  }
+  .participation h2 {
+    font-size: 32px;
+  }
+}

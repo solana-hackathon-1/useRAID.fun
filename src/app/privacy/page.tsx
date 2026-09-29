@@ -7,6 +7,13 @@ export default function Privacy() {
         affiliation, campaign information, and a server-side login session. Sign-in requests read
         access only. Access tokens are used for identity lookup and are not retained.
       </p>
+      <p>
+        Wallet sign-in stores a verified Solana address and a short-lived, single-use signing
+        challenge. Token launches store public mint and fee-wallet addresses, transaction records,
+        reward enrollments, and payout history. useRAID encrypts the fee-wallet key used to claim
+        and distribute creator fees; the collection worker signs those transactions. On-chain
+        transfers and addresses are public.
+      </p>
       <h2>Public campaign data</h2>
       <p>
         We collect attributed public X posts, author IDs, timestamps, and public engagement counts.
@@ -17,8 +24,9 @@ export default function Privacy() {
       <h2>Product measurement</h2>
       <p>
         In live mode, this browser stores a random identifier to measure returning discovery visits
-        and campaign and trading-link clicks. It is not connected to a wallet. Clearing site storage
-        resets the identifier. Demo mode sends no product analytics.
+        and campaign and trading-link clicks. The visit identifier is separate from wallet and X
+        sign-in records. Clearing site storage resets the identifier. Demo mode sends no product
+        analytics.
       </p>
       <h2>Before the public pilot</h2>
       <p>

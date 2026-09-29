@@ -7,15 +7,142 @@ datasource db {
 }
 model User {
   id String @id @default(cuid())
-  xId String @unique
+  xId String? @unique
   handle String
   role String @default("CREATOR")
   approved Boolean @default(false)
   suspended Boolean @default(false)
   affiliation String @default("")
   createdAt DateTime @default(now())
+  xAccount XAccount?
   sessions Session[]
   raids Raid[]
+  wallet WalletIdentity?
+  launches TokenLaunch[]
+  enrollments RewardEnrollment[]
+}
+model WalletIdentity {
+  address String @id
+  userId String @unique
+  verifiedAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+model WalletChallenge {
+  digest String @id
+  address String
+  message String
+  expiresAt DateTime
+  consumedAt DateTime?
+  @@index([address, expiresAt])
+}
+model TokenLaunch {
+  id String @id @default(cuid())
+  userId String
+  mint String @unique
+  name String
+  symbol String
+  description String
+  metadataUri String
+  imageUri String
+  bannerUri String?
+  feeAddress String @unique
+  feeSecret String
+  mintSecret String
+  preparedTx String?
+  signedTx String?
+  preparedHash String?
+  blockhash String?
+  lastValidBlockHeight Int?
+  signature String? @unique
+  status String @default("PREPARED")
+  reservationExpiresAt DateTime?
+  error String?
+  raidId String? @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id])
+  raid Raid? @relation("CurrentLaunchRaid", fields: [raidId], references: [id])
+  raids Raid[] @relation("LaunchRaids")
+  claims FeeClaim[]
+  rounds RewardRound[]
+  enrollments RewardEnrollment[]
+  payouts RewardPayout[]
+  @@index([status, createdAt])
+}
+model FeeClaim {
+  id String @id @default(cuid())
+  launchId String
+  roundId String?
+  signature String @unique
+  source String
+  grossLamports BigInt
+  costLamports BigInt @default(0)
+  claimedAt DateTime @default(now())
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  @@index([launchId, roundId, claimedAt])
+}
+model RewardEnrollment {
+  id String @id @default(cuid())
+  launchId String
+  userId String
+  xId String
+  walletAddress String
+  joinedAt DateTime @default(now())
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  @@unique([launchId, xId])
+  @@index([launchId, userId])
+}
+model RewardRound {
+  id String @id @default(cuid())
+  launchId String
+  raidId String
+  startsAt DateTime
+  endsAt DateTime
+  status String @default("PENDING")
+  grossLamports BigInt @default(0)
+  costLamports BigInt @default(0)
+  platformLamports BigInt @default(0)
+  raiderLamports BigInt @default(0)
+  settledAt DateTime?
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  @@unique([raidId, startsAt])
+  @@index([launchId, endsAt])
+}
+model RewardPayout {
+  id String @id @default(cuid())
+  launchId String
+  roundId String
+  payoutBatchRoundId String?
+  walletAddress String
+  xId String
+  score Int
+  lamports BigInt
+  status String @default("PENDING")
+  signature String?
+  createdAt DateTime @default(now())
+  paidAt DateTime?
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  @@unique([roundId, xId])
+  @@index([walletAddress, status])
+  @@index([payoutBatchRoundId, status])
+  @@index([signature])
+}
+model FinancialTx {
+  id String @id @default(cuid())
+  key String @unique
+  launchId String
+  roundId String?
+  kind String
+  raw String
+  signature String @unique
+  blockhash String
+  lastValidBlockHeight Int
+  status String @default("SIGNED")
+  costLamports BigInt?
+  createdAt DateTime @default(now())
+  confirmedAt DateTime?
+  @@index([launchId, status])
 }
 model Session {
   tokenHash String @id
@@ -28,6 +155,22 @@ model OAuthAttempt {
   stateHash String @id
   verifier String
   expiresAt DateTime
+  userId String?
+  sessionHash String?
+  consumedAt DateTime?
+  @@index([expiresAt])
+  @@index([userId])
+}
+model XAccount {
+  id String @id @default(cuid())
+  userId String @unique
+  xUserId String @unique
+  username String
+  displayName String
+  profileImage String?
+  connectedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 model Token {
   mint String @id
@@ -45,12 +188,14 @@ model Raid {
   description String
   mint String
   creatorId String
+  tokenLaunchId String?
   status String @default("DRAFT")
   startsAt DateTime
   endsAt DateTime
   hidden Boolean @default(false)
   createdAt DateTime @default(now())
   observedAt DateTime?
+  coveredUntil DateTime?
   coverage String @default("unavailable")
   collectionError String?
   sinceId String?
@@ -62,6 +207,9 @@ model Raid {
   creator User @relation(fields: [creatorId], references: [id])
   posts Post[]
   snapshots Snapshot[]
+  tokenLaunch TokenLaunch? @relation("CurrentLaunchRaid")
+  launch TokenLaunch? @relation("LaunchRaids", fields: [tokenLaunchId], references: [id])
+  @@index([tokenLaunchId, startsAt])
   @@index([status, startsAt, endsAt])
 }
 model Post {
@@ -117,6 +265,10 @@ model Settings {
   monthlyBudgetCents Int @default(20000)
   cutoffCents Int @default(18000)
   dailyRequestLimit Int @default(5000)
+  launchPaused Boolean @default(false)
+  payoutPaused Boolean @default(false)
+  payoutWorkerAt DateTime?
+  operatorAddress String?
 }
 model ProviderUsage {
   id String @id @default(cuid())

@@ -1,4 +1,7 @@
 import Link from 'next/link';
+import { CampaignStatus } from '@/components/ui';
+import { XConnection } from '@/components/x-connection';
+import { XDiagnostics } from '@/components/x-diagnostics';
 import { currentUser } from '@/lib/auth';
 import { config } from '@/lib/config';
 import { db } from '@/lib/db';
@@ -24,31 +27,20 @@ export default async function CreatorPage({
           Launch a campaign, invite original posts on X, and follow the attention as it develops.
           The pilot is open to approved project creators.
         </p>
-        {config.demo ? (
-          <div className="notice info">
-            Creator actions are unavailable in this read-only preview. Live mode requires a database
-            and configured X sign-in.
-          </div>
-        ) : (
-          <Link className="button" href="/api/auth/login">
-            Sign in with X
-          </Link>
-        )}
-        {auth && (
-          <div className="notice">
-            {auth === 'failed'
-              ? 'Sign-in failed or expired. Try again.'
-              : 'X sign-in has not been configured yet.'}
-          </div>
-        )}
+        <XConnection status={auth} demo={config.demo} />
+        {process.env.NODE_ENV === 'development' && <XDiagnostics />}
         <p className="small-print">
           We request read-only identity access. useRAID does not publish posts on your behalf.
         </p>
         <Link href="/" className="inline-link">
           Explore campaigns
         </Link>
+        <Link href="/launch" className="inline-link" style={{ marginLeft: 16 }}>
+          Launch a token
+        </Link>
       </section>
     );
+  const account = await db.xAccount.findUnique({ where: { userId: user.id } });
   const raids = await db.raid.findMany({
     where: { creatorId: user.id },
     orderBy: { createdAt: 'desc' },
@@ -63,6 +55,13 @@ export default async function CreatorPage({
           {user.approved ? 'Your next conversation starts here.' : 'Creator approval is pending.'}
         </p>
       </div>
+      <div className="form-actions">
+        <Link className="button secondary" href="/launch">
+          Launch token on pump.fun
+        </Link>
+      </div>
+      <XConnection account={account} status={auth} />
+      {process.env.NODE_ENV === 'development' && <XDiagnostics userId={user.id} />}
       {!user.approved ? (
         <section className="panel">
           <h2>Tell us about your project</h2>
@@ -81,7 +80,7 @@ export default async function CreatorPage({
               <article className="campaign-manage" key={r.id}>
                 <strong>{r.title}</strong>
                 <p>
-                  {r.token.symbol} · {r.status.toLowerCase()}{' '}
+                  {r.token.symbol} · <CampaignStatus status={r.status} />{' '}
                   {r.hidden ? '· hidden by moderation' : ''}
                 </p>
                 <div className="form-actions">

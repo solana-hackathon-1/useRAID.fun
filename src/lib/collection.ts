@@ -98,11 +98,17 @@ export async function collect(raidId: string) {
       raidId,
       after: '',
       final: !!raid.searchEndAt && +raid.searchEndAt >= +raid.endsAt,
+      coveredUntil: raid.searchEndAt?.toISOString(),
     });
   }
   await snapshot(raidId, false);
 }
-export async function refresh(raidId: string, after: string, final: boolean) {
+export async function refresh(
+  raidId: string,
+  after: string,
+  final: boolean,
+  coveredUntil?: string,
+) {
   const raid = await db.raid.findUniqueOrThrow({
     where: { id: raidId },
     include: { creator: true },
@@ -137,6 +143,7 @@ export async function refresh(raidId: string, after: string, final: boolean) {
       raidId,
       after: posts.at(-1)!.id,
       final,
+      coveredUntil,
     });
   } else {
     if (raid.nextToken || raid.searchEndAt) return;
@@ -144,6 +151,7 @@ export async function refresh(raidId: string, after: string, final: boolean) {
       where: { id: raidId },
       data: {
         observedAt: new Date(),
+        ...(coveredUntil ? { coveredUntil: new Date(coveredUntil) } : {}),
         coverage: 'complete',
         collectionError: null,
         finalRefreshed: final,

@@ -6,6 +6,8 @@ import { claimJob, enqueue, finishJob } from './lib/queue';
 import { collect, ingest, refresh, snapshot } from './lib/collection';
 import { fetchMarket } from './lib/providers/market';
 import { lookupPosts, ProviderError } from './lib/providers/x';
+import { financeLaunch, updateFinanceReadiness } from './lib/rewards';
+import { reconcileLaunch } from './lib/pump-launch';
 let stopping = false;
 process.on('SIGTERM', () => {
   stopping = true;
@@ -15,6 +17,7 @@ process.on('SIGINT', () => {
 });
 async function schedule() {
   const now = new Date();
+  await updateFinanceReadiness();
   await db.raid.updateMany({
     where: { status: 'SCHEDULED', startsAt: { lte: now } },
     data: { status: 'ACTIVE' },
@@ -51,7 +54,27 @@ async function schedule() {
       );
     }
   }
+  const pendingLaunches = await db.tokenLaunch.findMany({
+    where: { status: 'SUBMITTED' },
+    select: { id: true },
+  });
+  for (const launch of pendingLaunches)
+    await enqueue(
+      'launch-reconcile',
+      `launch-reconcile:${launch.id}:${Math.floor(Date.now() / 60000)}`,
+      { launchId: launch.id },
+    );
+  const liveLaunches = await db.tokenLaunch.findMany({
+    where: { status: 'LIVE' },
+    select: { id: true },
+  });
+  for (const launch of liveLaunches)
+    await enqueue('finance', `finance:${launch.id}:${Math.floor(Date.now() / 60000)}`, {
+      launchId: launch.id,
+      raidId: launch.id,
+    });
   await db.session.deleteMany({ where: { expiresAt: { lt: now } } });
+  await db.walletChallenge.deleteMany({ where: { expiresAt: { lt: now } } });
   await db.oAuthAttempt.deleteMany({ where: { expiresAt: { lt: now } } });
   await db.rateLimit.deleteMany({ where: { expiresAt: { lt: now } } });
   await db.post.updateMany({
@@ -93,15 +116,19 @@ async function main() {
         continue;
       }
       const p = job.payload as {
+        launchId: string;
         raidId: string;
         mint: string;
         after: string;
+        coveredUntil?: string;
         final: boolean;
         postId: string;
       };
       try {
-        if (job.kind === 'collect') await collect(p.raidId);
-        else if (job.kind === 'refresh') await refresh(p.raidId, p.after, p.final);
+        if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
+        else if (job.kind === 'finance') await financeLaunch(p.launchId);
+        else if (job.kind === 'collect') await collect(p.raidId);
+        else if (job.kind === 'refresh') await refresh(p.raidId, p.after, p.final, p.coveredUntil);
         else if (job.kind === 'submission') {
           const raid = await db.raid.findUniqueOrThrow({
             where: { id: p.raidId },

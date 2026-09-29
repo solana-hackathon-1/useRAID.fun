@@ -19,7 +19,20 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
           create: settingsInput.parse(b),
           update: settingsInput.parse(b),
         });
-      else if (action === 'creator') {
+      else if (action === 'finance') {
+        if (typeof b.launchPaused !== 'boolean' || typeof b.payoutPaused !== 'boolean')
+          throw new HttpError(400, 'Invalid finance switches.');
+        await tx.settings.upsert({
+          where: { id: 'global' },
+          create: { launchPaused: b.launchPaused, payoutPaused: b.payoutPaused },
+          update: { launchPaused: b.launchPaused, payoutPaused: b.payoutPaused },
+        });
+      } else if (action === 'launch-resume') {
+        const launch = await tx.tokenLaunch.findUnique({ where: { id: b.id } });
+        if (!launch || launch.status !== 'PAUSED')
+          throw new HttpError(409, 'Launch is not paused.');
+        await tx.tokenLaunch.update({ where: { id: b.id }, data: { status: 'LIVE', error: null } });
+      } else if (action === 'creator') {
         if (typeof b.approved !== 'boolean' || typeof b.suspended !== 'boolean')
           throw new HttpError(400, 'Invalid creator status.');
         const target = await tx.user.findUniqueOrThrow({ where: { id: b.id } });

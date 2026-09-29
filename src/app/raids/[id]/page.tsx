@@ -4,7 +4,14 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { getRaid } from '@/lib/data';
 import { config } from '@/lib/config';
 import { composeUrl, tradeUrl } from '@/lib/domain';
-import { TokenIcon, Freshness, Sparkline, compact, Empty } from '@/components/ui';
+import {
+  TokenIcon,
+  Freshness,
+  AttentionChart,
+  CampaignStatus,
+  compact,
+  Empty,
+} from '@/components/ui';
 import { AutoRefresh } from '@/components/refresh';
 import { ExternalActions, SubmitPost } from '@/components/actions';
 import { MarketPanel } from '@/components/market';
@@ -55,12 +62,10 @@ export default async function RaidPage({ params }: { params: Promise<{ id: strin
         <div>
           <section className="panel">
             <div className="status-row">
-              <span className="status-pill">
-                {raid.status === 'ACTIVE' ? 'Live campaign' : 'Campaign ended'}
-              </span>
+              <CampaignStatus status={raid.status} demo={config.demo} />
               <Freshness raid={raid} />
             </div>
-            <h2 style={{ fontSize: 26, marginTop: 23 }}>{raid.title}</h2>
+            <h2 className="campaign-heading">{raid.title}</h2>
             <p className="campaign-copy">{raid.description}</p>
             <p className="small-print">
               {raid.status === 'ACTIVE' ? 'Ends' : 'Ended'}{' '}
@@ -89,7 +94,7 @@ export default async function RaidPage({ params }: { params: Promise<{ id: strin
               </div>
             </div>
             <div className="chart-panel">
-              <Sparkline points={raid.history.map((h) => h.score)} />
+              <AttentionChart history={raid.history} />
             </div>
             <div className="chart-note">
               <span>Recent attention score</span>

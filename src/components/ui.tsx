@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowUpRight, Radio, Flame, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, Radio } from 'lucide-react';
 import type { RaidView } from '@/lib/types';
 export const compact = (n: number | null | undefined) =>
   n == null
@@ -62,6 +62,94 @@ export function Sparkline({ points, muted = false }: { points: number[]; muted?:
     </svg>
   );
 }
+export function CampaignStatus({ status, demo = false }: { status: string; demo?: boolean }) {
+  const active = status === 'ACTIVE';
+  const label = demo
+    ? 'Example'
+    : active
+      ? 'Active'
+      : status === 'SCHEDULED'
+        ? 'Scheduled'
+        : status === 'DRAFT'
+          ? 'Draft'
+          : 'Ended';
+  return (
+    <span className={`status-pill ${demo || !active ? 'neutral' : ''}`}>
+      {active && !demo && <Radio size={12} />}
+      {label}
+    </span>
+  );
+}
+export function AttentionChart({ history }: { history: RaidView['history'] }) {
+  if (history.length < 2)
+    return (
+      <div className="chart-empty">
+        <p>Building history</p>
+        <p className="small-print">Attention measurements will appear as they are collected.</p>
+      </div>
+    );
+  const start = +new Date(history[0].at),
+    end = +new Date(history[history.length - 1].at);
+  const max = Math.max(1, ...history.map((point) => point.score));
+  const path = history
+    .map(
+      (point) =>
+        `${48 + ((+new Date(point.at) - start) / (end - start || 1)) * 580},${192 - (point.score / max) * 164}`,
+    )
+    .join(' ');
+  const formatTime = (at: string) =>
+    new Date(at).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+  return (
+    <svg
+      className="attention-chart"
+      viewBox="0 0 660 236"
+      role="img"
+      aria-label={`Attention score from ${formatTime(history[0].at)} to ${formatTime(history[history.length - 1].at)} UTC. Latest score ${history[history.length - 1].score.toLocaleString()}.`}
+    >
+      {[0, 0.5, 1].map((fraction) => (
+        <g key={fraction}>
+          <line
+            className="chart-grid"
+            x1="48"
+            x2="628"
+            y1={192 - fraction * 164}
+            y2={192 - fraction * 164}
+          />
+          <text className="chart-axis" x="36" y={196 - fraction * 164} textAnchor="end">
+            {compact(Math.round(max * fraction))}
+          </text>
+        </g>
+      ))}
+      <polyline
+        points={path}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      {history.map((point, index) => (
+        <circle
+          key={`${point.at}-${index}`}
+          cx={48 + ((+new Date(point.at) - start) / (end - start || 1)) * 580}
+          cy={192 - (point.score / max) * 164}
+          r="3"
+          fill="currentColor"
+        >
+          <title>
+            {formatTime(point.at)} UTC: {point.score.toLocaleString()}
+          </title>
+        </circle>
+      ))}
+      <text className="chart-axis" x="48" y="224">
+        {formatTime(history[0].at)} UTC
+      </text>
+      <text className="chart-axis" x="628" y="224" textAnchor="end">
+        {formatTime(history[history.length - 1].at)} UTC
+      </text>
+    </svg>
+  );
+}
 export function RaidCard({ raid }: { raid: RaidView }) {
   return (
     <Link href={`/raids/${raid.id}`} className="raid-card">
@@ -71,8 +159,8 @@ export function RaidCard({ raid }: { raid: RaidView }) {
           <strong>{raid.symbol}</strong>
           <span className="muted">{raid.name}</span>
         </div>
-        <span className="live-chip">
-          <Radio size={12} /> Live
+        <span className="live-chip neutral">
+          <CampaignStatus status={raid.status} demo={raid.freshness === 'demo'} />
         </span>
       </div>
       <h3>{raid.title}</h3>
@@ -81,9 +169,17 @@ export function RaidCard({ raid }: { raid: RaidView }) {
           <span className="muted">Attention score</span>
           <strong>{raid.freshness === 'unavailable' ? '—' : raid.score.toLocaleString()}</strong>
         </div>
-        <div className="card-growth">
-          {raid.momentum == null ? 'New baseline' : `+${raid.momentum}%`}
-          <Sparkline points={raid.history.map((x) => x.score)} />
+        <div
+          className={`card-growth ${raid.momentum !== null && raid.momentum < 0 ? 'negative' : ''}`}
+        >
+          {raid.freshness === 'unavailable'
+            ? '—'
+            : raid.momentum == null
+              ? 'Building baseline'
+              : `${raid.momentum > 0 ? '+' : ''}${raid.momentum}%`}
+          {raid.freshness !== 'unavailable' && (
+            <Sparkline points={raid.history.map((x) => x.score)} />
+          )}
         </div>
       </div>
       <div className="card-foot">
@@ -93,6 +189,9 @@ export function RaidCard({ raid }: { raid: RaidView }) {
             : `${compact(raid.raiders)} raiders participating`}
         </span>
         <ArrowUpRight size={16} />
+      </div>
+      <div className="card-freshness">
+        <Freshness raid={raid} />
       </div>
     </Link>
   );
@@ -104,25 +203,5 @@ export function Empty({ title, children }: { title: string; children: React.Reac
       <h3>{title}</h3>
       <p>{children}</p>
     </div>
-  );
-}
-export function AboutAside() {
-  return (
-    <aside className="about-box">
-      <span className="mini-mark">
-        <Flame size={21} />
-      </span>
-      <h3>Attention has a story.</h3>
-      <p>
-        Find the communities showing up, the ideas catching on, and the people behind the momentum.
-      </p>
-      <Link href="/methodology">
-        How attention is measured <ArrowUpRight size={14} />
-      </Link>
-      <div className="aside-note">
-        <ShieldCheck size={16} />
-        <span>Measured activity. Never an endorsement.</span>
-      </div>
-    </aside>
   );
 }

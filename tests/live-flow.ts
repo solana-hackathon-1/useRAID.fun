@@ -12,6 +12,7 @@ const server = spawn('node', ['node_modules/next/dist/bin/next', 'start', '--por
     ...process.env,
     DEMO_MODE: 'false',
     APP_URL: 'http://localhost:3001',
+    NEXT_PUBLIC_APP_URL: 'http://localhost:3001',
     LIVE_COLLECTION_APPROVED: 'false',
   },
   stdio: 'ignore',
@@ -43,6 +44,14 @@ try {
     },
   });
   cleanupUserIds.push(creator.id);
+  await db.xAccount.create({
+    data: {
+      userId: creator.id,
+      xUserId: creator.xId!,
+      username: creator.handle,
+      displayName: 'Browser fixture',
+    },
+  });
   async function session(userId: string) {
     const token = randomBytes(32).toString('hex');
     await db.session.create({
@@ -127,10 +136,45 @@ try {
   expect(crossOrigin.status()).toBe(403);
   await page.screenshot({ path: 'artifacts/raid-live-fixture.png', fullPage: true });
   await page.goto('http://localhost:3001/creator');
+  await expect(page.getByRole('heading', { name: 'X Connected' })).toBeVisible();
+  await page.route('**/api/auth/x/disconnect', (route) =>
+    route.fulfill({ status: 500, json: { error: 'Fixture error' } }),
+  );
+  await page.getByRole('button', { name: 'Disconnect', exact: true }).click();
+  await expect(
+    page.getByRole('region', { name: 'X account connection' }).getByRole('alert'),
+  ).toContainText('Could not disconnect X');
+  await page.unroute('**/api/auth/x/disconnect');
+  let releaseDisconnect!: () => void;
+  const pendingDisconnect = new Promise<void>((resolve) => {
+    releaseDisconnect = resolve;
+  });
+  await page.route('**/api/auth/x/disconnect', async (route) => {
+    await pendingDisconnect;
+    await route.continue();
+  });
+  await page.getByRole('button', { name: 'Disconnect', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Disconnecting…' })).toBeDisabled();
+  releaseDisconnect();
+  await expect(page.getByRole('button', { name: 'Connect X', exact: true })).toBeVisible();
+  expect(await db.xAccount.count({ where: { userId: creator.id } })).toBe(0);
+  expect(await db.raid.findUnique({ where: { id: raid.id } })).not.toBeNull();
+  await page.goto('http://localhost:3001/creator?auth=cancelled');
+  await expect(
+    page.getByRole('region', { name: 'X account connection' }).getByRole('alert'),
+  ).toContainText('X authorization was cancelled');
+  await page.route('**/api/auth/x', async (route) => {
+    await route.fulfill({ status: 303, headers: { location: '/creator?auth=state' } });
+  });
+  await page.getByRole('button', { name: 'Connect X', exact: true }).click();
+  await expect(
+    page.getByRole('region', { name: 'X account connection' }).getByRole('alert'),
+  ).toContainText('Authorization expired or was invalid');
+  await page.unroute('**/api/auth/x');
   await page.getByRole('button', { name: 'End campaign' }).click();
   await expect(page.getByRole('button', { name: 'End campaign' })).toHaveCount(0);
   console.log(
-    'PASS: admin approval → creator draft → launch → fixture ingestion → public raid → exact-mint trade link → end; admin and cross-origin authorization enforced.',
+    'PASS: admin approval → creator draft → launch → fixture ingestion → public raid → exact-mint trade link → end; X connection UI, disconnect, errors, and history preservation verified; admin and cross-origin authorization enforced.',
   );
 } finally {
   await browser.close();

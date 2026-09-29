@@ -1,60 +1,116 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Radio, Compass, Plus, ArrowUpRight, Flame, Shield, BookOpen } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Plus, ArrowUpRight, Shield, Menu, X } from 'lucide-react';
+import { BrandMark } from './brand';
+
+const links = [
+  { href: '/', label: 'Discover' },
+  { href: '/creator', label: 'Creator studio' },
+  { href: '/launch', label: 'Launch token' },
+  { href: '/methodology', label: 'How it works' },
+];
 export function Shell({ children, demo }: { children: React.ReactNode; demo: boolean }) {
   const path = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
   return (
     <>
-      <header className="site-header">
-        <Link href="/" className="logo">
-          <span className="logo-mark">
-            <Radio size={24} />
-          </span>
-          useRAID<span className="logo-suffix">.fun</span>
-        </Link>
-        <nav aria-label="Main navigation">
-          <Link href="/" className={path === '/' ? 'selected' : ''}>
-            <Compass size={16} />
-            Discover
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <header
+        className="site-header"
+        onKeyDown={(event) => {
+          if (event.key === 'Escape' && menuOpen) {
+            setMenuOpen(false);
+            menuButton.current?.focus();
+          }
+        }}
+      >
+        <div className="header-inner">
+          <Link
+            href="/"
+            className="logo"
+            aria-label="useRAID.fun home"
+            onClick={() => setMenuOpen(false)}
+          >
+            <span className="logo-mark">
+              <BrandMark />
+            </span>
+            <span>
+              use<span className="logo-raid">RAID</span>
+              <span className="logo-suffix">.fun</span>
+            </span>
           </Link>
-          <Link href="/creator" className={path.startsWith('/creator') ? 'selected' : ''}>
-            <Flame size={16} />
-            Creator studio
+          <nav className="desktop-nav" aria-label="Main navigation">
+            {links.map(({ href, label }) => (
+              <Link key={href} href={href} aria-current={path === href ? 'page' : undefined}>
+                {label}
+              </Link>
+            ))}
+          </nav>
+          <Link
+            className="button small header-cta"
+            href="/creator"
+            onClick={() => setMenuOpen(false)}
+          >
+            <Plus size={16} /> Create a raid
           </Link>
-          <Link href="/methodology" className={path === '/methodology' ? 'selected' : ''}>
-            <BookOpen size={16} />
-            How it works
-          </Link>
+          <button
+            ref={menuButton}
+            className="icon-button menu-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+        <nav
+          id="mobile-navigation"
+          className="mobile-nav"
+          aria-label="Mobile navigation"
+          hidden={!menuOpen}
+        >
+          {links.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              aria-current={path === href ? 'page' : undefined}
+              onClick={() => setMenuOpen(false)}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
-        <Link className="button small" href="/creator">
-          <Plus size={16} />
-          Create a raid
-        </Link>
       </header>
       {demo && (
         <div className="demo-banner">
-          <span className="demo-dot" />
-          Product preview{' '}
-          <span className="banner-detail">
-            You’re exploring example campaigns. Metrics are illustrative.
-          </span>
+          <span className="demo-dot" /> Product preview{' '}
+          <span className="banner-detail">Example campaigns. Illustrative metrics.</span>
           <Link href="/methodology">
-            About the data <ArrowUpRight size={12} />
+            About the data <ArrowUpRight size={14} />
           </Link>
         </div>
       )}
-      <main>{children}</main>
+      <main id="main" tabIndex={-1}>
+        {children}
+      </main>
       <footer>
-        <Link href="/" className="footer-logo">
-          useRAID.fun
-        </Link>
-        <span>Community attention, in context.</span>
-        <div>
+        <div className="footer-brand">
+          <Link href="/" className="footer-logo">
+            <BrandMark /> useRAID.fun
+          </Link>
+          <span>Community attention, in context.</span>
+        </div>
+        <div className="footer-links">
           <Link href="/methodology">Methodology</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/admin">
-            <Shield size={13} /> Admin
+            <Shield size={14} /> Admin
           </Link>
         </div>
       </footer>

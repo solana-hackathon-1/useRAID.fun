@@ -2,15 +2,27 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getToken } from '@/lib/data';
 import { config } from '@/lib/config';
-import { TokenIcon, RaidCard, compact, Freshness } from '@/components/ui';
+import { TokenIcon, RaidCard, compact, Freshness, CampaignStatus, Empty } from '@/components/ui';
 import { MarketPanel } from '@/components/market';
 import { AutoRefresh } from '@/components/refresh';
 import { ExternalActions } from '@/components/actions';
 import { composeUrl, tradeUrl } from '@/lib/domain';
+import { publicRewardView } from '@/lib/reward-view';
+import { RewardPanel } from '@/components/reward-panel';
+import { currentUser } from '@/lib/auth';
+import { db } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 export default async function TokenPage({ params }: { params: Promise<{ mint: string }> }) {
   const token = await getToken((await params).mint);
   if (!token) notFound();
+  const user = await currentUser();
+  const rewards = await publicRewardView(token.mint, user?.id);
+  const [wallet, xAccount] = user
+    ? await Promise.all([
+        db.walletIdentity.findUnique({ where: { userId: user.id } }),
+        db.xAccount.findUnique({ where: { userId: user.id } }),
+      ])
+    : [null, null];
   const active = token.raids.filter((r) => r.status === 'ACTIVE');
   return (
     <>
@@ -22,7 +34,15 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
       </div>
       <div className="detail-header">
         <div className="detail-title">
-          <TokenIcon symbol={token.symbol} large />
+          {rewards?.imageUri ? (
+            <img
+              className="token-launch-logo"
+              src={`https://gateway.pinata.cloud/ipfs/${rewards.imageUri.slice(7)}`}
+              alt={`${token.name} logo`}
+            />
+          ) : (
+            <TokenIcon symbol={token.symbol} large />
+          )}
           <div>
             <h1>{token.name}</h1>
             <p>${token.symbol} · Solana</p>
@@ -85,6 +105,11 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
             {active.map((r) => (
               <RaidCard key={r.id} raid={r} />
             ))}
+            {!active.length && (
+              <Empty title="No active campaigns">
+                This token’s past campaigns remain available below.
+              </Empty>
+            )}
           </div>
           <section className="panel" style={{ marginTop: 25 }}>
             <h2>Campaign history</h2>
@@ -94,13 +119,20 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
                   <strong>{r.title}</strong>
                 </Link>
                 <p>
-                  {r.status.toLowerCase()} ·{' '}
+                  <CampaignStatus status={r.status} demo={config.demo} /> ·{' '}
                   {new Date(r.startsAt).toLocaleDateString('en', { timeZone: 'UTC' })} ·{' '}
                   {compact(r.raiders)} raiders
                 </p>
               </div>
             ))}
           </section>
+          {rewards && (
+            <RewardPanel
+              view={rewards}
+              walletAddress={wallet?.address || null}
+              xConnected={!!xAccount}
+            />
+          )}
         </div>
         <aside>
           <MarketPanel

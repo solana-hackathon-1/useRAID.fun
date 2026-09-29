@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test';
 test('search and ranking tabs expose the matching campaigns', async ({ page }) => {
   await page.goto('/');
-  await expect(
-    page.getByRole('heading', { name: 'See where the community shows up.' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Make your community heard.' })).toBeVisible();
   await page.getByRole('textbox', { name: 'Search campaigns' }).fill('POPCAT');
   await expect(page.locator('.raid-table tbody tr')).toHaveCount(1);
   await expect(page.locator('.raid-table tbody')).toContainText('POPCAT');
@@ -46,7 +44,7 @@ test('page has no document overflow and no runtime errors', async ({ page }) => 
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
-  await page.getByRole('heading', { name: 'See where the community shows up.' }).waitFor();
+  await page.getByRole('heading', { name: 'Make your community heard.' }).waitFor();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

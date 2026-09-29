@@ -1,0 +1,97 @@
+.artwork {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 330px;
+  overflow: hidden;
+  animation: arrive 650ms ease-out both;
+}
+.word {
+  position: relative;
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(150px, 17vw, 244px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: #4165ff;
+  transform: skewY(-8deg);
+  text-shadow:
+    1px 2px #2e4ecc,
+    2px 4px #2b49c3,
+    3px 6px #2845b9,
+    4px 8px #2540af,
+    5px 10px #223ca5,
+    6px 12px #20389b,
+    7px 14px #1d3491,
+    8px 16px #1a3087,
+    9px 18px #172c7d,
+    10px 20px #142873,
+    14px 30px 36px #000;
+}
+.bands {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: skewY(-8deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 25px;
+  mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+}
+.bands i {
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, #4165ff10, #4165ff90, #4165ff10);
+}
+.bands i:nth-child(2),
+.bands i:nth-child(4) {
+  height: 12px;
+  background: linear-gradient(90deg, #4165ff00, #4165ff18, #4165ff00);
+}
+.caption {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+.caption span {
+  width: 32px;
+  height: 1px;
+  background: var(--border);
+}
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 640px) {
+  .artwork {
+    height: 205px;
+  }
+  .word {
+    font-size: 160px;
+  }
+  .caption {
+    font-size: 11px;
+    bottom: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .artwork {
+    animation: none;
+  }
+}

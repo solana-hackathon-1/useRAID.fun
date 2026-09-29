@@ -7,7 +7,7 @@ export const random = () => randomBytes(32).toString('base64url');
 export const cookieOptions = {
   httpOnly: true,
   sameSite: 'lax' as const,
-  secure: config.appUrl.startsWith('https:'),
+  secure: process.env.NODE_ENV === 'production' || config.appUrl.startsWith('https:'),
   path: '/',
 };
 export async function currentUser() {
