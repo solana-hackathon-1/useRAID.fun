@@ -1,4 +1,5 @@
 'use client';
+import { launchpadsAvailable } from '@/lib/release';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -48,10 +49,15 @@ export function RewardPanel({
       {view.globalPauseReason && <p className="notice">{view.globalPauseReason}</p>}
       {view.settlementDelayed && (
         <p className="notice">
-          Hourly settlement delayed while X collection or refresh is incomplete.
+          {view.trackingVersion === 2
+            ? 'Payout waits for complete collection and review.'
+            : 'Hourly settlement delayed while X collection or refresh is incomplete.'}
         </p>
       )}
-      <p className="small-print">Hourly rounds · balances under 0.001 SOL carry forward.</p>
+      <p className="small-print">
+        {view.trackingVersion === 2 ? 'Payout after Raid review' : 'Hourly rounds'} · balances under
+        0.001 SOL carry forward.
+      </p>
       <WalletLogin currentAddress={walletAddress} />
       {!xConnected && (
         <p>

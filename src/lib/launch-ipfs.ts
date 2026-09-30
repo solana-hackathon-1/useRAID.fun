@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
-import { HttpError } from './auth';
+import { HttpError } from './auth-primitives';
 
 const cid = z.string().regex(/^(?:bafy[a-z2-7]{20,}|Qm[1-9A-HJ-NP-Za-km-z]{44})$/);
 export function ipfsUri(value: string) {

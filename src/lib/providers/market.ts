@@ -1,4 +1,5 @@
 export interface Market {
+  imageUri?: string;
   price: number | null;
   marketCap: number | null;
   fdv: number | null;
@@ -12,6 +13,7 @@ export interface Market {
   name: string;
 }
 type Pair = {
+  info?: { imageUrl?: string };
   chainId: string;
   baseToken: { address: string; symbol: string; name: string };
   pairAddress: string;
@@ -30,6 +32,7 @@ export function selectMarket(pairs: Pair[], mint: string): Market | null {
     .sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0))[0];
   if (!pair) return null;
   return {
+    ...(pair.info?.imageUrl?.startsWith('https://') ? { imageUri: pair.info.imageUrl } : {}),
     price: pair.priceUsd ? Number(pair.priceUsd) : null,
     marketCap: pair.marketCap ?? null,
     fdv: pair.fdv ?? null,

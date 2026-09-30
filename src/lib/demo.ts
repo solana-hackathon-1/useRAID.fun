@@ -99,7 +99,7 @@ const campaigns = [
   ],
 ] as const;
 export function demoRaids(): RaidView[] {
-  const now = Date.now();
+  const now = Math.floor(Date.now() / 300000) * 300000;
   return campaigns.map((c, i) => ({
     id: `demo-${c[0].toLowerCase()}`,
     tag: `raid_demo${i + 1}`,

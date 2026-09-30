@@ -20,6 +20,9 @@ model User {
   wallet WalletIdentity?
   launches TokenLaunch[]
   enrollments RewardEnrollment[]
+  raidEnrollments RaidEnrollment[]
+  ledger BalanceEntry[]
+  transfers UsdcTransfer[]
 }
 model WalletIdentity {
   address String @id
@@ -73,6 +76,7 @@ model FeeClaim {
   id String @id @default(cuid())
   launchId String
   roundId String?
+  raidId String?
   signature String @unique
   source String
   grossLamports BigInt
@@ -105,6 +109,9 @@ model RewardRound {
   platformLamports BigInt @default(0)
   raiderLamports BigInt @default(0)
   settledAt DateTime?
+  resultSnapshotId String? @unique
+  resultSnapshot CampaignResult? @relation(fields: [resultSnapshotId], references: [id])
+  settlementRaidId String? @unique
   launch TokenLaunch @relation(fields: [launchId], references: [id])
   @@unique([raidId, startsAt])
   @@index([launchId, endsAt])
@@ -134,6 +141,7 @@ model FinancialTx {
   launchId String
   roundId String?
   kind String
+  raidId String?
   raw String
   signature String @unique
   blockhash String
@@ -176,6 +184,7 @@ model Token {
   mint String @id
   symbol String
   name String
+  imageUri String?
   raids Raid[]
   market Json?
   marketAt DateTime?
@@ -186,7 +195,27 @@ model Raid {
   tag String @unique
   title String
   description String
-  mint String
+  studioVersion Int @default(0)
+  fundingAsset String @default("SOL")
+  fundingNetwork String @default("mainnet")
+  poolUnits BigInt?
+  quoteRate BigInt?
+  imageUri String?
+  usdcAllocations UsdcAllocation[]
+  mint String?
+  projectName String @default("")
+  projectSymbol String @default("")
+  fundingStatus String @default("NOT_REQUIRED")
+  fundingRequest String @default("")
+  impressionTarget Int?
+  fundingLamports String?
+  fundingRecipient String?
+  fundingSignature String? @unique
+  fundedAt DateTime?
+  fundingWallet String?
+  allocations RaidAllocation[]
+  targetReachedAt DateTime?
+  briefPosts RaidBriefPost[]
   creatorId String
   tokenLaunchId String?
   status String @default("DRAFT")
@@ -203,7 +232,20 @@ model Raid {
   searchEndAt DateTime?
   pendingNewestId String?
   finalRefreshed Boolean @default(false)
-  token Token @relation(fields: [mint], references: [mint])
+  trackingVersion Int @default(1)
+  ruleVersion Int @default(1)
+  scoringVersion Int @default(1)
+  officialHandle String @default("useRAID")
+  trackingPhase String @default("COLLECTING")
+  reviewEndsAt DateTime?
+  activeResultId String?
+  finalFeeSweepAt DateTime?
+  holdReason String?
+  enrollments RaidEnrollment[]
+  submissions PostSubmission[]
+  results CampaignResult[]
+  disputes RaidDispute[]
+  token Token? @relation(fields: [mint], references: [mint])
   creator User @relation(fields: [creatorId], references: [id])
   posts Post[]
   snapshots Snapshot[]
@@ -218,17 +260,102 @@ model Post {
   authorId String
   text String
   normalized String
+  contentHash String?
   createdAt DateTime
   observedAt DateTime
   likes Int @default(0)
   replies Int @default(0)
   reposts Int @default(0)
   quotes Int @default(0)
+  views Int?
   hidden Boolean @default(false)
   deleted Boolean @default(false)
+  enrollmentId String?
+  targetPostId String?
+  enrollment RaidEnrollment? @relation(fields: [enrollmentId], references: [id])
+  source String @default("SEARCH")
+  postType String @default("ORIGINAL")
+  qualification String @default("LEGACY")
+  reasonCode String?
+  ruleVersion Int @default(1)
+  availability String @default("AVAILABLE")
+  reviewStatus String @default("CLEAR")
+  reviewFingerprint String?
+  adminExcluded Boolean @default(false)
+  contentExpiredAt DateTime?
+  lastObservationId String?
+  observations MetricObservation[]
+  decisions ContributionDecision[]
   raid Raid @relation(fields: [raidId], references: [id])
   @@index([raidId, createdAt])
   @@index([authorId])
+}
+model RaidBriefPost {
+  id String @id @default(cuid())
+  raidId String
+  postId String
+  createdAt DateTime @default(now())
+  preview Json?
+  validatedAt DateTime?
+  raid Raid @relation(fields: [raidId], references: [id])
+  @@unique([raidId, postId])
+}
+model RaidAllocation {
+  id String @id @default(cuid())
+  raidId String
+  resultId String
+  kind String
+  xId String?
+  walletAddress String
+  lamports String
+  signature String? @unique
+  paidAt DateTime?
+  raid Raid @relation(fields: [raidId], references: [id])
+  @@unique([raidId, kind, walletAddress])
+}
+model BalanceEntry {
+  network       String @default("mainnet")
+  id String @id @default(cuid())
+  key String @unique
+  userId String
+  kind String
+  availableDelta BigInt
+  reservedDelta BigInt
+  raidId String?
+  transferId String?
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  @@index([userId, createdAt])
+}
+model UsdcTransfer {
+  id String @id @default(cuid())
+  userId String
+  kind String
+  amount BigInt
+  walletAddress String
+  recipient String
+  network String
+  mint String
+  status String @default("REQUESTED")
+  signature String? @unique
+  allocationId String? @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+  paidAt DateTime?
+  user User @relation(fields: [userId], references: [id])
+  @@index([userId, createdAt])
+  @@index([status, kind])
+}
+model UsdcAllocation {
+  id String @id @default(cuid())
+  raidId String
+  resultId String
+  userId String
+  xId String
+  walletAddress String
+  amount BigInt
+  raid Raid @relation(fields: [raidId], references: [id])
+  @@unique([raidId, xId])
 }
 model Snapshot {
   id String @id @default(cuid())
@@ -248,6 +375,7 @@ model Job {
   id String @id @default(cuid())
   key String @unique
   kind String
+  priority Int @default(0)
   payload Json
   runAt DateTime @default(now())
   lockedAt DateTime?
@@ -300,4 +428,96 @@ model Event {
   visitor String?
   at DateTime @default(now())
   @@index([type, at])
+}
+
+model RaidEnrollment {
+  id String @id @default(cuid())
+  raidId String
+  userId String
+  xId String
+  walletAddress String
+  joinedAt DateTime @default(now())
+  raid Raid @relation(fields: [raidId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  posts Post[]
+  submissions PostSubmission[]
+  disputes RaidDispute[]
+  @@unique([raidId, xId])
+  @@unique([raidId, userId])
+  @@unique([raidId, walletAddress])
+}
+model PostSubmission {
+  id String @id @default(cuid())
+  raidId String
+  enrollmentId String
+  postId String
+  status String @default("QUEUED")
+  reasonCode String?
+  createdAt DateTime @default(now())
+  raid Raid @relation(fields: [raidId], references: [id])
+  enrollment RaidEnrollment @relation(fields: [enrollmentId], references: [id])
+  @@unique([raidId, enrollmentId, postId])
+  @@index([raidId, status])
+}
+model MetricObservation {
+  id String @id @default(cuid())
+  postId String
+  sampleKey String
+  observedAt DateTime @default(now())
+  likes Int
+  replies Int
+  reposts Int
+  quotes Int
+  views Int?
+  post Post @relation(fields: [postId], references: [id])
+  @@unique([postId, sampleKey])
+  @@index([postId, observedAt])
+}
+model ContributionDecision {
+  id String @id @default(cuid())
+  postId String
+  actorId String?
+  qualification String
+  reasonCode String?
+  ruleVersion Int
+  evidence Json
+  at DateTime @default(now())
+  post Post @relation(fields: [postId], references: [id])
+  @@index([postId, at])
+}
+model CampaignResult {
+  id String @id @default(cuid())
+  raidId String
+  version Int
+  fingerprint String
+  settlement RewardRound?
+  payload Json
+  createdAt DateTime @default(now())
+  raid Raid @relation(fields: [raidId], references: [id])
+  @@unique([raidId, version])
+}
+model RaidDispute {
+  id String @id @default(cuid())
+  raidId String
+  enrollmentId String
+  resultId String
+  postId String?
+  category String
+  reason String
+  status String @default("OPEN")
+  resolution String?
+  actorId String?
+  createdAt DateTime @default(now())
+  resolvedAt DateTime?
+  raid Raid @relation(fields: [raidId], references: [id])
+  enrollment RaidEnrollment @relation(fields: [enrollmentId], references: [id])
+  @@index([raidId, status])
+}
+model XEndpointState {
+  key String @id
+  remaining Int?
+  resetAt DateTime?
+  blockedUntil DateTime?
+  lastSuccessAt DateTime?
+  lastError String?
 }

@@ -4,13 +4,18 @@ export interface XPost {
   author_id: string;
   text: string;
   created_at: string;
-  entities?: { mentions?: { username: string }[]; hashtags?: { tag: string }[] };
+  entities?: {
+    mentions?: { username: string }[];
+    hashtags?: { tag: string }[];
+    urls?: { expanded_url?: string; unwound_url?: string; url?: string }[];
+  };
   referenced_tweets?: { type: string; id: string }[];
   public_metrics?: {
     like_count: number;
     reply_count: number;
     retweet_count: number;
     quote_count: number;
+    impression_count?: number;
   };
 }
 export interface ScoringPost {
@@ -121,8 +126,15 @@ export function tradeUrl(mint: string) {
   const input = mint === 'So11111111111111111111111111111111111111112' ? 'USDC' : 'SOL';
   return `https://jup.ag/swap/${input}-${encodeURIComponent(mint)}`;
 }
-export function composeUrl(handle: string, tag: string) {
+export function composeUrl(handle: string, tag: string, ruleVersion = 1, targetPostId?: string) {
   const u = new URL('https://x.com/intent/post');
-  u.searchParams.set('text', `@${handle} #${tag}\n\n`);
+  u.searchParams.set(
+    'text',
+    ruleVersion >= 4 && targetPostId
+      ? `@${handle}\n\nhttps://x.com/i/web/status/${targetPostId}`
+      : ruleVersion >= 3
+        ? `@${handle}\n\n`
+        : `@${handle} #${tag}\n\n`,
+  );
   return u.toString();
 }

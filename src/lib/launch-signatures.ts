@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
 import { PublicKey, Transaction } from '@solana/web3.js';
-import { HttpError } from './auth';
+import { HttpError } from './auth-primitives';
 import { walletAddress } from './wallet-auth';
 
 export function verifySignedLaunch(

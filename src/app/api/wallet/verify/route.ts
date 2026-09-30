@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { checkOrigin, clientKey, rateLimit, currentUser, cookieOptions } from '@/lib/auth';
 import { verifyWalletChallenge } from '@/lib/wallet-auth';
 import { failure } from '@/lib/http';
+import { sessionCookie } from '@/lib/studio-mode';
 export async function POST(request: Request) {
   try {
     checkOrigin(request);
@@ -10,7 +11,7 @@ export async function POST(request: Request) {
     const user = await currentUser();
     const token = await verifyWalletChallenge(digest, signature, address, user?.id);
     const response = NextResponse.json({ address }, { headers: { 'Cache-Control': 'no-store' } });
-    response.cookies.set('raid_session', token, { ...cookieOptions, maxAge: 7 * 86400 });
+    response.cookies.set(sessionCookie(), token, { ...cookieOptions, maxAge: 7 * 86400 });
     return response;
   } catch (error) {
     return failure(error);

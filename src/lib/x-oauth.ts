@@ -3,7 +3,7 @@ import { z } from 'zod';
 import type { OAuthAttempt, Prisma } from '@prisma/client';
 import { db } from './db';
 import { config } from './config';
-import { hash, random } from './auth';
+import { hash, random } from './auth-primitives';
 import { reserveUsage } from './providers/x';
 
 export class OAuthError extends Error {
@@ -110,12 +110,16 @@ export async function startAttempt(sessionHash: string | null) {
   oauthConfig();
   const state = random(),
     verifier = random();
+  let clearSession = false;
   await db.$transaction(async (tx) => {
-    const session = sessionHash
+    let session = sessionHash
       ? await tx.session.findUnique({ where: { tokenHash: sessionHash }, include: { user: true } })
       : null;
-    if (sessionHash && (!session || session.expiresAt <= new Date() || session.user.suspended))
-      throw new OAuthError('session');
+    if (sessionHash && (!session || session.expiresAt <= new Date() || session.user.suspended)) {
+      session = null;
+      sessionHash = null;
+      clearSession = true;
+    }
     if (session?.user.xId) await lockIdentity(tx, session.user.xId);
     await tx.oAuthAttempt.deleteMany({ where: { expiresAt: { lte: new Date() } } });
     await tx.oAuthAttempt.create({
@@ -128,7 +132,7 @@ export async function startAttempt(sessionHash: string | null) {
       },
     });
   });
-  return { state, url: authorizationUrl(state, verifier) };
+  return { state, url: authorizationUrl(state, verifier), clearSession };
 }
 export async function claimAttempt(state: string, sessionHash: string | null) {
   // Keep the claimed row until completion so disconnect can cancel an in-flight callback.
@@ -179,13 +183,19 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
       .map((s) => s.trim())
       .filter(Boolean);
     const admin = admins.includes(profile.id);
+    const localAutoApprove =
+      process.env.NODE_ENV !== 'production' && process.env.LOCAL_AUTO_APPROVE_CREATORS === 'true';
     user = owner
       ? await tx.user.update({
           where: { id: owner.id },
           data: {
             xId: profile.id,
             handle: profile.username,
-            ...(admin ? { role: 'ADMIN', approved: true } : {}),
+            ...(admin
+              ? { role: 'ADMIN', approved: true }
+              : localAutoApprove
+                ? { approved: true }
+                : {}),
           },
         })
       : await tx.user.upsert({
@@ -194,9 +204,12 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
             xId: profile.id,
             handle: profile.username,
             role: admin ? 'ADMIN' : 'CREATOR',
-            approved: admin,
+            approved: admin || localAutoApprove,
           },
-          update: { handle: profile.username, ...(admin ? { role: 'ADMIN' } : {}) },
+          update: {
+            handle: profile.username,
+            ...(admin ? { role: 'ADMIN', approved: true } : localAutoApprove ? { approved: true } : {}),
+          },
         });
     const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
     if (existing && existing.userId !== user.id) throw new OAuthError('identity');

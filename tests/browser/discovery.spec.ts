@@ -28,7 +28,7 @@ test('raid detail leads to the exact token and preview actions are disabled', as
 test('preview mutations and admin access remain blocked', async ({ page, request }) => {
   await page.goto('/creator');
   await expect(
-    page.getByRole('heading', { name: 'Give your community a place to show up.' }),
+    page.getByRole('heading', { name: 'Bring your community to a post.' }),
   ).toBeVisible();
   await page.goto('/admin');
   await expect(

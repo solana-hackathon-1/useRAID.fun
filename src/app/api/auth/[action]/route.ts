@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { db } from '@/lib/db';
 import { hash, checkOrigin } from '@/lib/auth';
+import { sessionCookie } from '@/lib/studio-mode';
 export async function GET(_request: Request, { params }: { params: Promise<{ action: string }> }) {
   const { action } = await params;
   if (action === 'login' || action === 'callback')
@@ -21,9 +22,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
     if ((await params).action !== 'logout')
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     const jar = await cookies(),
-      token = jar.get('raid_session')?.value;
+      token = jar.get(sessionCookie())?.value;
     if (token) await db.session.deleteMany({ where: { tokenHash: hash(token) } });
-    jar.delete('raid_session');
+    jar.delete(sessionCookie());
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: 'Request rejected' }, { status: 403 });

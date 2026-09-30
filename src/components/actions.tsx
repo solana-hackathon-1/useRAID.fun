@@ -11,7 +11,7 @@ export function ExternalActions({
   active = true,
 }: {
   compose: string;
-  trade: string;
+  trade: string | null;
   raidId: string;
   demo: boolean;
   active?: boolean;
@@ -42,21 +42,23 @@ export function ExternalActions({
               Raid on X
             </a>
           )}
-          <a
-            className="button secondary"
-            href={trade}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => track('trade_click', raidId)}
-          >
-            Trade on Jupiter <ArrowUpRight size={16} />
-          </a>
+          <button className="button secondary" disabled>Trading · Coming soon</button>
         </>
       )}
     </div>
   );
 }
-export function SubmitPost({ id, demo }: { id: string; demo: boolean }) {
+export function SubmitPost({
+  id,
+  demo,
+  ruleVersion = 1,
+  officialHandle = 'useRAID',
+}: {
+  id: string;
+  demo: boolean;
+  ruleVersion?: number;
+  officialHandle?: string;
+}) {
   const [url, setUrl] = useState(''),
     [message, setMessage] = useState(''),
     [pending, setPending] = useState(false),
@@ -94,7 +96,11 @@ export function SubmitPost({ id, demo }: { id: string; demo: boolean }) {
           required
           disabled={demo}
         />
-        <small>We’ll check its mention, raid tag, and posting time.</small>
+        <small>
+          {ruleVersion >= 3
+            ? `We’ll check its author, @${officialHandle} mention, and posting time.`
+            : 'We’ll check its mention, raid tag, and posting time.'}
+        </small>
       </label>
       <div className="form-actions">
         <button className="button secondary" disabled={demo || pending}>

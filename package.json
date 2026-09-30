@@ -16,9 +16,13 @@
     "db:seed": "tsx prisma/seed.ts",
     "test:browser": "playwright test",
     "test:browser:live": "playwright test --config=playwright.live.config.ts",
+    "test:browser:studio": "playwright test --config=playwright.studio.config.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test:live": "tsx tests/live-flow.ts"
+    "test:live": "tsx tests/live-flow.ts",
+    "tracking:audit": "tsx scripts/tracking-audit.ts",
+    "tracking:preview": "tsx scripts/tracking-preview.ts",
+    "studio:preview": "tsx scripts/studio-preview.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",

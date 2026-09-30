@@ -9,17 +9,20 @@ export default function Privacy() {
       </p>
       <p>
         Wallet sign-in stores a verified Solana address and a short-lived, single-use signing
-        challenge. Token launches store public mint and fee-wallet addresses, transaction records,
-        reward enrollments, and payout history. useRAID encrypts the fee-wallet key used to claim
-        and distribute creator fees; the collection worker signs those transactions. On-chain
-        transfers and addresses are public.
+        challenge. Creator Studio stores an append-only USDC balance ledger, deposit/withdrawal
+        intents, target post previews, and reviewed allocations. Funded Raids store payment
+        signatures, funding amount, verified recipient and refund wallets, result allocations, and
+        payout receipts. On-chain transfers and addresses are public. Token launch and creator-fee
+        flows are coming soon.
       </p>
       <h2>Public campaign data</h2>
       <p>
-        We collect attributed public X posts, author IDs, timestamps, and public engagement counts.
-        A scheduled reconciliation checks retained posts for explicit deletion responses. Post text
-        is removed after the configured retention period, initially 30 days. Provider outages can
-        delay reconciliation.
+        We collect attributed public X posts, author IDs, timestamps, public engagement counts, and
+        views when X provides them. Collection checks posts for explicit unavailable responses.
+        Review snapshots freeze observed scores; they do not assert that posts remain available
+        forever. Post text is removed after the configured retention period, initially 30 days.
+        Enrollment identities, metric observations, audit decisions, disputes, and result versions
+        are retained separately for reward accounting. Provider outages can delay reconciliation.
       </p>
       <h2>Product measurement</h2>
       <p>

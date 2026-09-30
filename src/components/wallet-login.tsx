@@ -79,7 +79,7 @@ export function WalletLogin({ currentAddress }: { currentAddress: string | null 
       <p>
         {currentAddress
           ? `Verified wallet: ${currentAddress}`
-          : 'Verify Solana wallet to join rewards.'}
+          : 'Verify your Solana wallet to join Raids.'}
       </p>
       {!currentAddress && (
         <select
@@ -97,6 +97,7 @@ export function WalletLogin({ currentAddress }: { currentAddress: string | null 
           ))}
         </select>
       )}
+      {!currentAddress && !wallets.length && <p className="small-print">Open this page in a browser with a Solana wallet extension. Wallet extensions require HTTPS or localhost.</p>}
       {error && (
         <p role="alert" className="form-error">
           {error}

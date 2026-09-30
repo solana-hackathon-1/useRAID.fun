@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
-import { HttpError } from './auth';
+import { HttpError } from './auth-primitives';
 
 function activeKey() {
   const version = process.env.LAUNCH_KEY_VERSION || '1';

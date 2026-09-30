@@ -1,3 +1,5 @@
+import { newTrackingRules } from '@/lib/config';
+import { launchpadsAvailable } from '@/lib/release';
 import { randomBytes } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
@@ -6,6 +8,7 @@ import { failure } from '@/lib/http';
 import { config } from '@/lib/config';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    if (!launchpadsAvailable) throw new HttpError(503, 'Launchpads are coming soon.');
     checkOrigin(request);
     const user = await requireUser();
     const id = (await params).id;
@@ -22,6 +25,21 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         },
       });
       if (existing) throw new HttpError(409, 'Reward raid already active.');
+      const unfinished = await tx.raid.findFirst({
+        where: {
+          tokenLaunchId: id,
+          trackingVersion: 2,
+          OR: [
+            { trackingPhase: { notIn: ['ALLOCATED', 'HELD', 'HELD_RESOLVED'] } },
+            { finalFeeSweepAt: null },
+          ],
+        },
+      });
+      if (unfinished)
+        throw new HttpError(
+          409,
+          'Previous Raid must finish review and fee collection before renewal.',
+        );
       const settings = await tx.settings.findUnique({ where: { id: 'global' } });
       if (
         !config.liveApproved ||
@@ -45,6 +63,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       const now = new Date();
       const raid = await tx.raid.create({
         data: {
+          ...newTrackingRules(),
           tag: `raid_${randomBytes(5).toString('hex')}`,
           title: `${launch.name} reward raid`,
           description:

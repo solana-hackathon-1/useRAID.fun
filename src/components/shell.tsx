@@ -4,14 +4,25 @@ import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { Plus, ArrowUpRight, Shield, Menu, X } from 'lucide-react';
 import { BrandMark } from './brand';
+import { StudioAccountMenu, type StudioAccount } from './studio-account-menu';
 
 const links = [
   { href: '/', label: 'Discover' },
   { href: '/creator', label: 'Creator studio' },
-  { href: '/launch', label: 'Launch token' },
+  { href: '/launch', label: 'Launchpads · Coming soon' },
   { href: '/methodology', label: 'How it works' },
 ];
-export function Shell({ children, demo }: { children: React.ReactNode; demo: boolean }) {
+export function Shell({
+  children,
+  demo,
+  account,
+  sandbox = false,
+}: {
+  children: React.ReactNode;
+  demo: boolean;
+  account?: StudioAccount | null;
+  sandbox?: boolean;
+}) {
   const path = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -53,11 +64,12 @@ export function Shell({ children, demo }: { children: React.ReactNode; demo: boo
           </nav>
           <Link
             className="button small header-cta"
-            href="/creator"
+            href={account ? '/creator/new' : '/creator'}
             onClick={() => setMenuOpen(false)}
           >
             <Plus size={16} /> Create a raid
           </Link>
+          {account && <StudioAccountMenu account={account} />}
           <button
             ref={menuButton}
             className="icon-button menu-toggle"
@@ -94,6 +106,12 @@ export function Shell({ children, demo }: { children: React.ReactNode; demo: boo
           <Link href="/methodology">
             About the data <ArrowUpRight size={14} />
           </Link>
+        </div>
+      )}
+      {sandbox && (
+        <div className="demo-banner">
+          Local test Studio · Fixture X posts and test USDC · No real funds{' '}
+          <Link href="/creator">Creator Studio</Link>
         </div>
       )}
       <main id="main" tabIndex={-1}>

@@ -1,13 +1,31 @@
 import Link from 'next/link';
 import { ArrowUpRight, Radio } from 'lucide-react';
 import type { RaidView } from '@/lib/types';
+import { formatUsdc } from '@/lib/usdc-amount';
 export const compact = (n: number | null | undefined) =>
   n == null
     ? '—'
     : new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(n);
 export const money = (n: number | null | undefined) =>
   n == null ? 'Unavailable' : `$${compact(n)}`;
-export function TokenIcon({ symbol, large = false }: { symbol: string; large?: boolean }) {
+export function TokenIcon({
+  symbol,
+  large = false,
+  imageUri,
+}: {
+  symbol: string;
+  large?: boolean;
+  imageUri?: string | null;
+}) {
+  if (imageUri)
+    return (
+      <img
+        src={imageUri}
+        alt=""
+        className={`token-icon ${large ? 'large' : ''}`}
+        style={{ objectFit: 'cover' }}
+      />
+    );
   const index = [...symbol].reduce((a, c) => a + c.charCodeAt(0), 0) % 6;
   return (
     <span className={`token-icon token-${index} ${large ? 'large' : ''}`} aria-hidden="true">
@@ -98,7 +116,12 @@ export function AttentionChart({ history }: { history: RaidView['history'] }) {
     )
     .join(' ');
   const formatTime = (at: string) =>
-    new Date(at).toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
+    new Date(at).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+      timeZone: 'UTC',
+    });
   return (
     <svg
       className="attention-chart"
@@ -136,9 +159,7 @@ export function AttentionChart({ history }: { history: RaidView['history'] }) {
           r="3"
           fill="currentColor"
         >
-          <title>
-            {formatTime(point.at)} UTC: {point.score.toLocaleString()}
-          </title>
+          <title>{`${formatTime(point.at)} UTC: ${point.score.toLocaleString('en-US')}`}</title>
         </circle>
       ))}
       <text className="chart-axis" x="48" y="224">
@@ -154,9 +175,9 @@ export function RaidCard({ raid }: { raid: RaidView }) {
   return (
     <Link href={`/raids/${raid.id}`} className="raid-card">
       <div className="card-top">
-        <TokenIcon symbol={raid.symbol} />
+        <TokenIcon symbol={raid.symbol} imageUri={raid.imageUri} />
         <div>
-          <strong>{raid.symbol}</strong>
+          <strong>{raid.mint ? raid.symbol : 'X Campaign'}</strong>
           <span className="muted">{raid.name}</span>
         </div>
         <span className="live-chip neutral">
@@ -164,6 +185,9 @@ export function RaidCard({ raid }: { raid: RaidView }) {
         </span>
       </div>
       <h3>{raid.title}</h3>
+      {raid.fundingAsset === 'USDC' && raid.poolUnits && (
+        <p>{formatUsdc(raid.poolUnits)} USDC rewards</p>
+      )}
       <div className="card-bottom">
         <div>
           <span className="muted">Attention score</span>

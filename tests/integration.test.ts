@@ -17,12 +17,14 @@ integration('PostgreSQL integration', () => {
     name: 'Solana',
   };
   beforeAll(async () => {
+    vi.stubEnv('X_TRACKING_V2_ENABLED', 'false');
     if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
       throw Error('Use a dedicated useraid_test database.');
     await db.$executeRawUnsafe(
-      'TRUNCATE "Event","ModerationEvent","ProviderUsage","Job","RateLimit","Snapshot","Post","Raid","Token","Session","OAuthAttempt","User","Settings" CASCADE',
+      'TRUNCATE "Event","ModerationEvent","ProviderUsage","XEndpointState","Job","RateLimit","Snapshot","Post","Raid","Token","Session","OAuthAttempt","User","Settings" CASCADE',
     );
     user = await db.user.create({ data: { xId: 'test-owner', handle: 'test', approved: true } });
+    await db.xAccount.create({ data: { userId: user.id, xUserId: 'test-owner', username: 'test', displayName: 'Test' } });
     const raid = await createRaid(user, input);
     raidId = raid.id;
     config.demo = false;
@@ -31,6 +33,7 @@ integration('PostgreSQL integration', () => {
   });
   afterAll(async () => {
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
     await db.$disconnect();
   });
   it('rejects unapproved creation and cross-owner mutation', async () => {
@@ -117,10 +120,14 @@ integration('PostgreSQL integration', () => {
     await expect(lookupPosts(['12345'], raidId)).rejects.toMatchObject({
       retryAfter: expect.any(Number),
     });
-    await expect(refresh(raidId, '', false)).rejects.toThrow('429');
+    await expect(refresh(raidId, '', false)).rejects.toThrow('rate-limit reset');
+    expect(fetch).toHaveBeenCalledTimes(1);
     expect((await db.post.findUniqueOrThrow({ where: { id: '12345' } })).deleted).toBe(false);
   });
   it('removes content for an explicit provider deletion', async () => {
+    await db.xEndpointState.updateMany({
+      data: { blockedUntil: new Date(0), resetAt: new Date(0) },
+    });
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue(

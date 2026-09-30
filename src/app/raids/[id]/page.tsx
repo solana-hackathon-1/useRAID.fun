@@ -1,3 +1,7 @@
+import { trackingView } from '@/lib/tracking-view';
+import { currentUser } from '@/lib/auth';
+import { db } from '@/lib/db';
+import { TrackingPanel } from '@/components/tracking-panel';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
@@ -15,41 +19,64 @@ import {
 import { AutoRefresh } from '@/components/refresh';
 import { ExternalActions, SubmitPost } from '@/components/actions';
 import { MarketPanel } from '@/components/market';
+import { RaidShare } from '@/components/raid-tools';
+import { TargetPosts } from '@/components/target-posts';
+import { formatUsdc } from '@/lib/usdc-amount';
 export const dynamic = 'force-dynamic';
 export default async function RaidPage({ params }: { params: Promise<{ id: string }> }) {
   const raid = await getRaid((await params).id);
   if (!raid) notFound();
+  const user = raid.trackingVersion === 2 ? await currentUser() : null;
+  const tracking = raid.trackingVersion === 2 ? await trackingView(raid.id, user?.id) : null;
+  const wallet = user ? await db.walletIdentity.findUnique({ where: { userId: user.id } }) : null;
+  const account = user ? await db.xAccount.findUnique({ where: { userId: user.id } }) : null;
+  const briefPosts = config.demo
+    ? []
+    : await db.raidBriefPost.findMany({
+        where: { raidId: raid.id },
+        orderBy: { createdAt: 'asc' },
+      });
   return (
     <>
       <AutoRefresh />
+      <RaidShare id={raid.id} demo={config.demo} />
       <div className="breadcrumb">
         <Link href="/">
           <ArrowLeft size={13} style={{ display: 'inline' }} /> Discovery
         </Link>
         <span>/</span>
-        <span>{raid.symbol} raid</span>
+        <span>{raid.title}</span>
       </div>
       <div className="detail-header">
         <div className="detail-title">
-          <TokenIcon symbol={raid.symbol} large />
+          <TokenIcon symbol={raid.symbol} imageUri={raid.imageUri} large />
           <div>
             <h1>
-              {raid.symbol}
+              {raid.mint ? raid.symbol : raid.title}
               <span className="muted"> / raid</span>
             </h1>
             <p>
               {raid.name} ·{' '}
-              <Link className="inline-link" href={`/tokens/${raid.mint}`}>
-                View token profile
-              </Link>
+              {raid.mint ? (
+                <Link className="inline-link" href={`/tokens/${raid.mint}`}>
+                  View token profile
+                </Link>
+              ) : (
+                <span>Independent project</span>
+              )}
             </p>
           </div>
         </div>
         <ExternalActions
           demo={config.demo}
           raidId={raid.id}
-          compose={composeUrl(config.handle, raid.tag)}
-          trade={tradeUrl(raid.mint)}
+          compose={composeUrl(
+            tracking?.officialHandle || config.handle,
+            raid.tag,
+            tracking?.ruleVersion,
+            briefPosts[0]?.postId,
+          )}
+          trade={raid.mint ? tradeUrl(raid.mint) : null}
           active={raid.status === 'ACTIVE'}
         />
       </div>
@@ -67,6 +94,37 @@ export default async function RaidPage({ params }: { params: Promise<{ id: strin
             </div>
             <h2 className="campaign-heading">{raid.title}</h2>
             <p className="campaign-copy">{raid.description}</p>
+            {tracking?.currency === 'USDC' && (
+              <>
+                <p>
+                  {tracking.poolUnits ? formatUsdc(tracking.poolUnits) : '—'} USDC reward pool ·
+                  Ends at target or duration
+                </p>
+                <TargetPosts
+                  posts={briefPosts.map((p) => ({ id: p.postId, preview: p.preview }))}
+                  handle={tracking.officialHandle}
+                  active={raid.status === 'ACTIVE'}
+                />
+              </>
+            )}
+            {tracking?.currency !== 'USDC' && briefPosts.length > 0 && (
+              <div>
+                <h3>Campaign posts</h3>
+                <p>Use these posts as context for your original contributions.</p>
+                {briefPosts.map((post) => (
+                  <p key={post.id}>
+                    <a
+                      className="inline-link"
+                      href={`https://x.com/i/web/status/${post.postId}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      View campaign post
+                    </a>
+                  </p>
+                ))}
+              </div>
+            )}
             <p className="small-print">
               {raid.status === 'ACTIVE' ? 'Ends' : 'Ended'}{' '}
               {new Date(raid.endsAt).toLocaleString('en', { timeZone: 'UTC' })} UTC
@@ -105,20 +163,40 @@ export default async function RaidPage({ params }: { params: Promise<{ id: strin
               </span>
             </div>
             <p className="small-print">
-              Experimental score v1 measures attributed activity. It does not assess project quality
-              or predict price.{' '}
+              Experimental score v{raid.trackingVersion === 2 ? '2' : '1'} measures attributed
+              activity. It does not assess project quality or predict price.{' '}
               <Link className="inline-link" href="/methodology">
                 See the formula.
               </Link>
             </p>
           </section>
+          {tracking && (
+            <TrackingPanel
+              raidId={raid.id}
+              view={tracking}
+              walletAddress={wallet?.address || null}
+              xConnected={!!account}
+            />
+          )}
           <section className="panel">
             <h2>Join the conversation</h2>
             <div className="instruction">
               <p>
-                Write an original post on X. Include <code>@{config.handle}</code> and{' '}
-                <code>#{raid.tag}</code> during the campaign. Posts with multiple raid tags won’t
-                count.
+                Write an original post on X. Include{' '}
+                <code>@{tracking?.officialHandle || config.handle}</code>
+                {tracking?.ruleVersion && tracking.ruleVersion >= 3 ? (
+                  <>
+                    {' '}
+                    after joining. If you joined overlapping Raids, submit your post URL here to
+                    choose one.
+                  </>
+                ) : (
+                  <>
+                    {' '}
+                    and <code>#{raid.tag}</code> during the campaign. Posts with multiple raid tags
+                    won’t count.
+                  </>
+                )}
               </p>
             </div>
             {raid.activity.map((p) => (
@@ -160,21 +238,23 @@ export default async function RaidPage({ params }: { params: Promise<{ id: strin
           </section>
         </div>
         <aside>
-          <MarketPanel
-            market={raid.market}
-            at={raid.marketAt}
-            error={raid.marketError}
-            demo={config.demo}
-          />
+          {raid.mint && (
+            <MarketPanel
+              market={raid.market}
+              at={raid.marketAt}
+              error={raid.marketError}
+              demo={config.demo}
+            />
+          )}
           <div className="panel">
             <h2>Campaign details</h2>
-            <p className="small-print">Token mint</p>
-            <p className="mint">{raid.mint}</p>
+            <p className="small-print">{raid.mint ? 'Token mint' : 'Project'}</p>
+            <p className="mint">{raid.mint || raid.name}</p>
             <p className="small-print">
               Creator access is approved for this pilot. Approval is not a token endorsement.
             </p>
           </div>
-          {raid.status === 'ACTIVE' && (
+          {raid.status === 'ACTIVE' && !tracking && (
             <div className="panel">
               <SubmitPost id={raid.id} demo={config.demo} />
             </div>

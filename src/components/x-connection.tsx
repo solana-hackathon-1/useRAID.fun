@@ -74,16 +74,15 @@ export function XConnection({
           </p>
         </>
       ) : (
-        <button
-          className="button"
-          disabled={demo || busy}
-          onClick={() => {
-            setBusy(true);
-            window.location.assign('/api/auth/x');
-          }}
-        >
-          {busy ? 'Connecting…' : 'Connect X'}
-        </button>
+        demo ? (
+          <button className="button" disabled>
+            Connect X
+          </button>
+        ) : (
+          <a className="button" href="/api/auth/x">
+            Connect X
+          </a>
+        )
       )}
       {demo && <p className="notice info">X connection is disabled in this read-only preview.</p>}
       {(error || statusMessage) && (

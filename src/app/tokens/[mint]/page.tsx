@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { launchpadsAvailable } from '@/lib/release';
 import { notFound } from 'next/navigation';
 import { getToken } from '@/lib/data';
 import { config } from '@/lib/config';
@@ -16,7 +17,7 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
   const token = await getToken((await params).mint);
   if (!token) notFound();
   const user = await currentUser();
-  const rewards = await publicRewardView(token.mint, user?.id);
+  const rewards = launchpadsAvailable ? await publicRewardView(token.mint, user?.id) : null;
   const [wallet, xAccount] = user
     ? await Promise.all([
         db.walletIdentity.findUnique({ where: { userId: user.id } }),

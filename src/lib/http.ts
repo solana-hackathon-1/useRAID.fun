@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
-import { HttpError } from './auth';
+import { HttpError } from './auth-primitives';
 export function failure(error: unknown) {
   if (error instanceof HttpError)
     return NextResponse.json({ error: error.message }, { status: error.status });

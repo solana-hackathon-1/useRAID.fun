@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers';
-import { createHash, randomBytes } from 'node:crypto';
+import { hash, HttpError } from './auth-primitives';
+export { hash, random, HttpError } from './auth-primitives';
 import { db } from './db';
 import { config } from './config';
-export const hash = (value: string) => createHash('sha256').update(value).digest('hex');
-export const random = () => randomBytes(32).toString('base64url');
+import { sessionCookie } from './studio-mode';
 export const cookieOptions = {
   httpOnly: true,
   sameSite: 'lax' as const,
@@ -12,7 +12,7 @@ export const cookieOptions = {
 };
 export async function currentUser() {
   if (config.demo) return null;
-  const value = (await cookies()).get('raid_session')?.value;
+  const value = (await cookies()).get(sessionCookie())?.value;
   if (!value) return null;
   const session = await db.session.findUnique({
     where: { tokenHash: hash(value) },
@@ -25,14 +25,6 @@ export async function requireUser(admin = false) {
   if (!user) throw new HttpError(401, 'Sign in to continue.');
   if (admin && user.role !== 'ADMIN') throw new HttpError(403, 'Administrator access required.');
   return user;
-}
-export class HttpError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-  ) {
-    super(message);
-  }
 }
 export function checkOrigin(request: Request) {
   if (request.headers.get('origin') !== new URL(config.appUrl).origin)

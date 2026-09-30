@@ -7,7 +7,25 @@ export async function enqueue(
   payload: Prisma.InputJsonValue,
   runAt = new Date(),
 ) {
-  return db.job.upsert({ where: { key }, create: { kind, key, payload, runAt }, update: {} });
+  return db.job.upsert({
+    where: { key },
+    create: {
+      kind,
+      key,
+      payload,
+      runAt,
+      priority: (payload as { final?: boolean }).final
+        ? 30
+        : kind === 'submission'
+          ? 20
+          : kind === 'finance' || kind === 'launch-reconcile'
+            ? 15
+            : kind === 'collect' || kind === 'refresh'
+              ? 10
+              : 0,
+    },
+    update: {},
+  });
 }
 export async function claimJob() {
   const lease = randomUUID();
@@ -15,7 +33,7 @@ export async function claimJob() {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(729104)`;
     return tx.$queryRaw<
       Job[]
-    >`UPDATE "Job" SET "lockedAt"=NOW(), "lease"=${lease}, "attempts"="attempts"+1 WHERE id=(SELECT candidate.id FROM "Job" candidate WHERE candidate."doneAt" IS NULL AND candidate."attempts"<8 AND candidate."runAt"<=NOW() AND (candidate."lockedAt" IS NULL OR candidate."lockedAt"<NOW()-INTERVAL '10 minutes') AND NOT EXISTS (SELECT 1 FROM "Job" running WHERE running.id<>candidate.id AND running."doneAt" IS NULL AND running."lockedAt">NOW()-INTERVAL '10 minutes' AND running.payload->>'raidId'=candidate.payload->>'raidId') ORDER BY candidate."runAt" FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`;
+    >`UPDATE "Job" SET "lockedAt"=NOW(), "lease"=${lease}, "attempts"="attempts"+1 WHERE id=(SELECT candidate.id FROM "Job" candidate WHERE candidate."doneAt" IS NULL AND candidate."attempts"<8 AND candidate."runAt"<=NOW() AND (candidate."lockedAt" IS NULL OR candidate."lockedAt"<NOW()-INTERVAL '10 minutes') AND NOT EXISTS (SELECT 1 FROM "Job" running WHERE running.id<>candidate.id AND running."doneAt" IS NULL AND running."lockedAt">NOW()-INTERVAL '10 minutes' AND running.payload->>'raidId'=candidate.payload->>'raidId') ORDER BY candidate."priority" DESC, candidate."runAt" FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`;
   });
   return rows[0] || null;
 }

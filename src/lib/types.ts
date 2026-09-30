@@ -1,10 +1,14 @@
 import type { Market } from './providers/market';
 export interface RaidView {
   id: string;
+  trackingVersion?: number;
+  fundingAsset?: string;
+  poolUnits?: string | null;
+  imageUri?: string | null;
   tag: string;
   title: string;
   description: string;
-  mint: string;
+  mint: string | null;
   symbol: string;
   name: string;
   status: string;

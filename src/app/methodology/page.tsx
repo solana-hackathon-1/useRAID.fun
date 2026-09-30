@@ -4,10 +4,53 @@ export default function Methodology() {
     <article className="prose">
       <h1>Attention, with the context.</h1>
       <p>
-        useRAID measures public participation in specific Solana community campaigns. It does not
-        measure all conversation about a token, assess project quality, or predict future prices.
+        useRAID measures public participation in project Raids, with or without Solana tokens. It
+        does not measure all conversation, assess project quality, or predict future prices.
       </p>
-      <h2>What counts as a raid post?</h2>
+      <h2>Tracking v2 Raids</h2>
+      <p>
+        Raids marked v2 require a verified X account, verified wallet, and explicit enrollment
+        before posting. Each Raid locks its reward wallet separately. New Raids require the app
+        mention in the author’s own text, without a hashtag. If an author joined overlapping Raids,
+        they must submit the post URL to choose one. Earlier v2 Raids retain their frozen mention
+        and unique hashtag rule. Only original posts and quotes qualify; replies and plain reposts
+        do not.
+      </p>
+      <div className="formula">
+        Post points = 100 × (1 + log₂(1 + likes + replies + reposts + quotes))
+        <br />
+        Participant score = sum of best 10 posts across the Raid, rounded once
+      </div>
+      <p>
+        Later normalized duplicates from the same author are excluded. Cross-author copies and
+        near-duplicates require review. Followers do not affect score. Metrics show when they were
+        observed, which may be after the Raid ended.
+      </p>
+      <p>
+        Complete results open a two-hour dispute window. Unresolved disputes block final
+        allocations; result-changing corrections create a new result version and restart review.
+        Existing v1 Raids retain the rules below.
+      </p>
+      <h2>Creator Studio USDC funding</h2>
+      <p>
+        X Campaigns and Existing Token Raids use a shared creator USDC balance. Creators select
+        target posts and see a quote based on an operator-set rate per 1,000 observed contributor
+        impressions. Contributions must quote or link a selected target post and mention the
+        official account. Target-post views never count. Funded USDC stays with the platform until
+        final review. A Raid ends when qualifying participant posts reach its target, or when its
+        duration expires. Verified views earn a proportional share for raiders up to the target;
+        unused funds return to the creator. Missing X view counts delay allocation. Impressions are
+        not unique people and delivery is not guaranteed. Payouts require reviewed results and
+        manually signed transfers.
+      </p>
+      <p>
+        Content CPA means reviewed earned USDC divided by qualifying original or quote posts. CPM is
+        earned USDC per 1,000 reviewed contributor impressions. Unavailable views suppress these
+        metrics. Best-ten-post Attention score is separate from all qualifying impressions used for
+        rewards. CPA does not mean customer acquisition, sales, or X Ads conversions. Existing SOL
+        Raids retain their original funding and qualification rules.
+      </p>
+      <h2>Legacy v1: what counts as a raid post?</h2>
       <p>
         A post must mention the official useRAID account, include exactly one registered raid
         hashtag, and be published within the campaign window. Original posts, replies, and quote
@@ -45,11 +88,11 @@ export default function Methodology() {
         This is an experimental measure with limited resistance to manipulation. We do not claim to
         verify that every account represents a unique human or that engagement is organic.
       </p>
-      <h2>pump.fun launch rewards</h2>
+      <h2>Launchpad rewards · Coming soon</h2>
       <p>
-        New tokens launched through useRAID are ordinary SOL-paired pump.fun tokens. Creator fees
-        arrive at a unique fee wallet managed by useRAID. A launching wallet starts a 24-hour raid;
-        token owners can start later raids after the current one ends.
+        Planned tokens launched through useRAID are ordinary SOL-paired pump.fun tokens. Creator
+        fees arrive at a unique fee wallet managed by useRAID. A launching wallet starts a 24-hour
+        raid; token owners can start later raids after the current one ends.
       </p>
       <p>
         To earn, a participant verifies an X account and Solana wallet, joins that token’s rewards,
@@ -60,10 +103,10 @@ export default function Methodology() {
       </p>
       <h2>Discovery and momentum</h2>
       <p>
-        Trending orders active campaigns by score. Rising requires at least five participating
-        authors, a complete comparison baseline, and a positive score increase over one hour.
-        Momentum compares the current score with one hour earlier. Missing or zero baselines display
-        “Building baseline.”
+        Token projects appear before independent projects. Trending orders active campaigns by score
+        within each group. Rising requires at least five participating authors, a complete
+        comparison baseline, and a positive score increase over one hour. Momentum compares the
+        current score with one hour earlier. Missing or zero baselines display “Building baseline.”
       </p>
       <h2>Freshness and coverage</h2>
       <p>
@@ -76,7 +119,7 @@ export default function Methodology() {
       <p>
         Market data comes from DEX Screener’s most liquid eligible Solana pair. Market cap and fully
         diluted valuation (FDV) are distinct. Creator approval grants pilot access; it is not an
-        endorsement. Trading opens Jupiter using the exact token mint.
+        endorsement. Trading is coming soon.
       </p>
       <h2>Preview data</h2>
       <p>

@@ -1,5 +1,6 @@
+import { submitTrackingPost } from '@/lib/tracking';
 import { NextResponse } from 'next/server';
-import { checkOrigin, clientKey, rateLimit, HttpError } from '@/lib/auth';
+import { checkOrigin, requireUser, clientKey, rateLimit, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { postId } from '@/lib/domain';
 import { enqueue } from '@/lib/queue';
@@ -14,6 +15,22 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       where: { id: (await params).id },
       include: { creator: true },
     });
+    if (raid?.trackingVersion === 2) {
+      const user = await requireUser();
+      await rateLimit(`submissions:user:${user.id}`, 20, 3600);
+      await rateLimit(`submissions:raid:${raid.id}`, 50, 3600);
+      const submission = await submitTrackingPost(raid.id, user.id, id);
+      return NextResponse.json(
+        {
+          id: submission.id,
+          postId: submission.postId,
+          status: submission.status,
+          reasonCode: submission.reasonCode,
+          message: 'Post queued for identity and qualification checks.',
+        },
+        { status: submission.status === 'QUEUED' ? 202 : 200 },
+      );
+    }
     if (
       !raid ||
       raid.hidden ||

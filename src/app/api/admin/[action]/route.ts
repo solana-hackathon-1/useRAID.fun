@@ -3,6 +3,7 @@ import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { settingsInput } from '@/lib/validation';
 import { failure } from '@/lib/http';
+import { fundingPricing, fundingQuote } from '@/lib/raid-funding';
 export async function POST(request: Request, { params }: { params: Promise<{ action: string }> }) {
   try {
     checkOrigin(request);
@@ -32,6 +33,26 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
         if (!launch || launch.status !== 'PAUSED')
           throw new HttpError(409, 'Launch is not paused.');
         await tx.tokenLaunch.update({ where: { id: b.id }, data: { status: 'LIVE', error: null } });
+      } else if (action === 'funding-quote') {
+        const raid = await tx.raid.findUnique({ where: { id: b.id } });
+        const pricing = fundingPricing();
+        if (
+          !raid ||
+          raid.studioVersion === 1 ||
+          raid.mint ||
+          raid.status !== 'DRAFT' ||
+          raid.fundingSignature ||
+          !raid.impressionTarget ||
+          !pricing
+        )
+          throw new HttpError(409, 'Funding quote unavailable for this draft.');
+        await tx.raid.update({
+          where: { id: raid.id },
+          data: {
+            fundingLamports: fundingQuote(raid.impressionTarget, pricing.lamportsPerThousand),
+            fundingRecipient: pricing.recipient,
+          },
+        });
       } else if (action === 'creator') {
         if (typeof b.approved !== 'boolean' || typeof b.suspended !== 'boolean')
           throw new HttpError(400, 'Invalid creator status.');
@@ -60,6 +81,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
         if (action === 'raid')
           await tx.raid.update({ where: { id: b.id }, data: { hidden: b.hidden } });
         else {
+          const current = await tx.post.findUniqueOrThrow({
+            where: { id: b.id },
+            include: { raid: true },
+          });
+          if (current.raid.trackingVersion === 2)
+            throw new HttpError(409, 'Use the contribution review controls for this post.');
           const post = await tx.post.update({ where: { id: b.id }, data: { hidden: b.hidden } });
           // Historical comparisons are invalid after a moderation decision.
           await tx.snapshot.updateMany({

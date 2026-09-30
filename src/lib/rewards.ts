@@ -1,3 +1,7 @@
+import { trackingEnabled, trackingSettlementEnabled } from './config';
+import { launchpadsAvailable } from './release';
+import { lockTracking } from './tracking';
+import { trackingBlockers, type ResultPayload } from './tracking-review';
 import bs58 from 'bs58';
 import { randomUUID } from 'node:crypto';
 import {
@@ -26,7 +30,7 @@ import {
   canonicalPumpPoolPda,
   creatorVaultPda,
   getPumpAmmProgram,
-} from '@pump-fun/pump-sdk';
+} from './pump-sdk';
 import type { TokenLaunch, Prisma } from '@prisma/client';
 import { db } from './db';
 import { config } from './config';
@@ -50,6 +54,7 @@ function feeKey(launch: TokenLaunch) {
 }
 export function payoutsEnabled() {
   return (
+    launchpadsAvailable &&
     !config.demo &&
     config.liveApproved &&
     process.env.PAYOUT_ENABLED === 'true' &&
@@ -130,6 +135,9 @@ async function recordAndBroadcast(
         key,
         launchId: launch.id,
         roundId,
+        raidId: roundId
+          ? (await t.rewardRound.findUniqueOrThrow({ where: { id: roundId } })).raidId
+          : null,
         kind,
         raw: raw.toString('base64'),
         signature,
@@ -206,6 +214,7 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
           where: { signature: open.signature },
           create: {
             launchId: launch.id,
+            raidId: open.raidId,
             signature: open.signature,
             source: 'bonding-curve-and-amm',
             grossLamports: gross,
@@ -213,6 +222,16 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
           },
           update: {},
         });
+        if (open.raidId)
+          await t.raid.updateMany({
+            where: {
+              id: open.raidId,
+              trackingVersion: 2,
+              endsAt: { lte: open.createdAt },
+              finalFeeSweepAt: null,
+            },
+            data: { finalFeeSweepAt: new Date() },
+          });
       } else if (open.kind === 'PAYOUT') {
         await t.rewardPayout.updateMany({
           where: { signature: open.signature },
@@ -243,6 +262,7 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
         create: {
           launchId: launch.id,
           signature: open.signature,
+          raidId: open.raidId,
           source: 'failed-network-cost',
           grossLamports: 0n,
           costLamports: BigInt(failed.meta!.fee),
@@ -282,7 +302,7 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
   await rpc.sendRawTransaction(Buffer.from(open.raw, 'base64'), { maxRetries: 2 }).catch(() => {});
   return true;
 }
-async function claimFees(rpc: Connection, launch: TokenLaunch) {
+async function claimFees(rpc: Connection, launch: TokenLaunch, raidId?: string) {
   const fee = new PublicKey(launch.feeAddress),
     gas = operator();
   const curveVault = creatorVaultPda(fee);
@@ -333,16 +353,35 @@ async function claimFees(rpc: Connection, launch: TokenLaunch) {
     instructions,
     null,
     `claim:${launch.id}:${randomUUID()}`,
+    raidId
+      ? async (tx, signature) => {
+          await tx.financialTx.update({ where: { signature }, data: { raidId } });
+        }
+      : undefined,
   );
   return true;
 }
-async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
+export async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
   const raids = await db.raid.findMany({
     where: { tokenLaunchId: launch.id, status: { in: ['ACTIVE', 'ENDED'] } },
     orderBy: { startsAt: 'asc' },
   });
   for (const raid of raids) {
     if (raid.hidden) continue;
+    const reviewed = raid.trackingVersion === 2;
+    if (
+      reviewed &&
+      (!trackingSettlementEnabled() ||
+        raid.trackingPhase !== 'APPROVED' ||
+        !raid.activeResultId ||
+        !raid.finalFeeSweepAt)
+    )
+      continue;
+    const result = reviewed
+      ? await db.campaignResult.findUnique({ where: { id: raid.activeResultId! } })
+      : null;
+    const resultData = result?.payload as unknown as ResultPayload | undefined;
+    if (reviewed && (!resultData || result?.raidId !== raid.id)) continue;
     const previous = await db.rewardRound.findMany({
       where: { raidId: raid.id },
       select: { startsAt: true },
@@ -350,7 +389,7 @@ async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
     const done = new Set(previous.map((r) => +r.startsAt));
     let starts = +raid.startsAt;
     while (starts < Math.min(+raid.endsAt, Date.now())) {
-      const ends = Math.min(starts + 3600000, +raid.endsAt);
+      const ends = reviewed ? +raid.endsAt : Math.min(starts + 3600000, +raid.endsAt);
       if (!done.has(starts) && ends <= Date.now() - 60000) {
         if (
           raid.coverage !== 'complete' ||
@@ -361,24 +400,37 @@ async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
         )
           return false;
         const claims = await db.feeClaim.findMany({
-          where: { launchId: launch.id, roundId: null },
+          where: { launchId: launch.id, roundId: null, raidId: reviewed ? raid.id : null },
           orderBy: { claimedAt: 'asc' },
         });
-        if (!claims.length) return false;
+        if (!claims.length) {
+          if (reviewed)
+            await db.raid.updateMany({
+              where: { id: raid.id, trackingPhase: 'APPROVED' },
+              data: { trackingPhase: 'HELD', holdReason: 'NO_COLLECTED_FEES' },
+            });
+          return false;
+        }
         const gross = claims.reduce((a, c) => a + c.grossLamports, 0n),
           claimCost = claims.reduce((a, c) => a + c.costLamports, 0n);
-        const members = await db.rewardEnrollment.findMany({
-          where: { launchId: launch.id, joinedAt: { lt: new Date(ends) } },
-        });
+        const members = reviewed
+          ? resultData!.participants
+          : await db.rewardEnrollment.findMany({
+              where: { launchId: launch.id, joinedAt: { lt: new Date(ends) } },
+            });
         const posts = await db.post.findMany({
           where: { raidId: raid.id, createdAt: { lt: new Date(ends) } },
         });
-        const scores = authorScores(
-          posts,
-          new Date(starts),
-          new Date(ends),
-          new Map(members.map((m) => [m.xId, m.joinedAt])),
-        );
+        const scores = reviewed
+          ? new Map(
+              resultData!.participants.filter((m) => m.score > 0).map((m) => [m.xId, m.score]),
+            )
+          : authorScores(
+              posts,
+              new Date(starts),
+              new Date(ends),
+              new Map(members.map((m) => [m.xId, new Date(m.joinedAt)])),
+            );
         if (!scores.size) {
           starts = ends;
           continue;
@@ -394,7 +446,14 @@ async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
           where: { launchId: launch.id, status: 'PENDING' },
         });
         let split = splitRewards(gross, claimCost, 0n, scores);
-        if (!split) return false;
+        if (!split) {
+          if (reviewed)
+            await db.raid.updateMany({
+              where: { id: raid.id, trackingPhase: 'APPROVED' },
+              data: { trackingPhase: 'HELD', holdReason: 'INSUFFICIENT_FUNDS' },
+            });
+          return false;
+        }
         const payableWith = (amounts: Map<string, bigint>) => {
           const sums = new Map<string, bigint>();
           for (const p of prior)
@@ -418,7 +477,14 @@ async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
             fee * BigInt(payables.length + 1),
             scores,
           );
-          if (!candidate) return false;
+          if (!candidate) {
+            if (reviewed)
+              await db.raid.updateMany({
+                where: { id: raid.id, trackingPhase: 'APPROVED' },
+                data: { trackingPhase: 'HELD', holdReason: 'INSUFFICIENT_FUNDS' },
+              });
+            return false;
+          }
           split = candidate;
           const valid = new Set(payableWith(split.amounts));
           const reduced = payables.filter((wallet) => valid.has(wallet));
@@ -429,6 +495,24 @@ async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
         if (gross <= plannedCost) return false;
         await db.$transaction(async (t) => {
           await t.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`reward:${launch.id}`}, 0))`;
+          if (reviewed) {
+            await lockTracking(t, raid.id);
+            const current = await t.raid.findUniqueOrThrow({
+              where: { id: raid.id },
+              include: { creator: true },
+            });
+            if (
+              !trackingSettlementEnabled() ||
+              current.hidden ||
+              current.creator.suspended ||
+              current.trackingPhase !== 'APPROVED' ||
+              current.activeResultId !== result!.id ||
+              !current.reviewEndsAt ||
+              current.reviewEndsAt > new Date() ||
+              (await trackingBlockers(t, raid.id))
+            )
+              throw new Error('Reviewed result is not eligible for settlement.');
+          }
           const claimed = await t.feeClaim.updateMany({
             where: { id: { in: claims.map((c) => c.id) }, roundId: null },
             data: { roundId: `pending:${raid.id}:${starts}` },
@@ -442,12 +526,15 @@ async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
               startsAt: new Date(starts),
               endsAt: new Date(ends),
               status: 'READY',
+              ...(reviewed ? { resultSnapshotId: result!.id, settlementRaidId: raid.id } : {}),
               grossLamports: gross,
               costLamports: plannedCost,
               platformLamports: split.platform,
               raiderLamports: split.raiders,
             },
           });
+          if (reviewed)
+            await t.raid.update({ where: { id: raid.id }, data: { trackingPhase: 'ALLOCATED' } });
           await t.feeClaim.updateMany({
             where: { roundId: `pending:${raid.id}:${starts}` },
             data: { roundId: round.id },
@@ -489,6 +576,7 @@ async function payRound(rpc: Connection, launch: TokenLaunch) {
     orderBy: { startsAt: 'asc' },
   });
   if (!round) return false;
+  if (round.resultSnapshotId && !trackingSettlementEnabled()) return false;
   const gas = operator(),
     fee = feeKey(launch);
   const ready = await db.rewardPayout.findMany({
@@ -566,20 +654,42 @@ async function payRound(rpc: Connection, launch: TokenLaunch) {
   return true;
 }
 export async function financeLaunch(launchId: string) {
-  if (!payoutsEnabled()) return;
+  if (config.demo || !process.env.OPERATOR_SECRET_KEY || !process.env.SOLANA_RPC_URL) return;
   const settings = await db.settings.findUnique({ where: { id: 'global' } });
-  if (!settings?.collectionEnabled || settings.payoutPaused) return;
   const launch = await db.tokenLaunch.findUnique({ where: { id: launchId } });
-  if (!launch || launch.status !== 'LIVE') return;
+  if (!launch || !['LIVE', 'PAUSED'].includes(launch.status)) return;
   const rpc = connection();
   try {
     await assertMainnet(rpc);
     await verifyFeeRecipient(rpc, launch);
     if (await reconcileFinancial(rpc, launch)) return;
     if (await db.financialTx.count({ where: { launchId, status: 'SIGNED' } })) return;
+    if (
+      !payoutsEnabled() ||
+      !settings?.collectionEnabled ||
+      settings.payoutPaused ||
+      launch.status !== 'LIVE'
+    )
+      return;
     if (await payRound(rpc, launch)) return;
-    if (await settleNextRound(rpc, launch)) return;
-    await claimFees(rpc, launch);
+    const currentRaid = launch.raidId
+      ? await db.raid.findUnique({ where: { id: launch.raidId } })
+      : null;
+    if (currentRaid?.trackingVersion === 2) {
+      if (!trackingEnabled()) return;
+      if (!currentRaid.finalFeeSweepAt && currentRaid.trackingPhase !== 'ALLOCATED') {
+        if (await claimFees(rpc, launch, currentRaid.id)) return;
+        if (currentRaid.endsAt <= new Date())
+          await db.raid.update({
+            where: { id: currentRaid.id },
+            data: { finalFeeSweepAt: new Date() },
+          });
+      }
+      await settleNextRound(rpc, launch);
+    } else {
+      if (await settleNextRound(rpc, launch)) return;
+      await claimFees(rpc, launch);
+    }
   } catch (error) {
     const reason = error instanceof Error ? error.message.slice(0, 200) : 'Finance failed';
     if (

@@ -4,7 +4,7 @@ import nacl from 'tweetnacl';
 import { PublicKey } from '@solana/web3.js';
 import { db } from './db';
 import { config } from './config';
-import { hash, random, HttpError } from './auth';
+import { hash, random, HttpError } from './auth-primitives';
 
 export function walletAddress(value: string) {
   try {

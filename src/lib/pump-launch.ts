@@ -1,11 +1,13 @@
+import { newTrackingRules } from './config';
+import { launchpadsAvailable } from './release';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js';
-import { PUMP_SDK, PUMP_PROGRAM_ID, bondingCurvePda } from '@pump-fun/pump-sdk';
+import { PUMP_SDK, PUMP_PROGRAM_ID, bondingCurvePda } from './pump-sdk';
 import { TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
 import { db } from './db';
 import { config } from './config';
-import { HttpError } from './auth';
+import { HttpError } from './auth-primitives';
 import { encryptSecret, decryptSecret } from './launch-crypto';
 import { pinMetadata, ipfsUri, verifyAsset } from './launch-ipfs';
 import { walletAddress } from './wallet-auth';
@@ -35,6 +37,7 @@ export const launchInput = z.object({
 });
 export function launchEnabled() {
   return (
+    launchpadsAvailable &&
     !config.demo &&
     Reflect.get(process.env, 'LAUNCH_ENABLED') === 'true' &&
     config.liveApproved &&
@@ -145,6 +148,7 @@ export async function prepareLaunch(userId: string, input: unknown) {
   return buildLaunchTransaction(launch.id, userId);
 }
 export async function buildLaunchTransaction(id: string, userId: string) {
+  if (!launchpadsAvailable) throw new HttpError(503, 'Launchpads are coming soon.');
   const launch = await db.tokenLaunch.findUnique({ where: { id } });
   if (!launch || launch.userId !== userId) throw new HttpError(404, 'Launch not found.');
   if (launch.status === 'LIVE') return publicLaunch(launch);
@@ -387,6 +391,7 @@ export async function reconcileLaunch(id: string) {
     });
     const raid = await txDb.raid.create({
       data: {
+        ...newTrackingRules(),
         tag: `raid_${launch.mint.slice(0, 10).toLowerCase()}`,
         title: `${launch.name} launch raid`,
         description:

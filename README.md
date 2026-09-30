@@ -1,5 +1,9 @@
 # useRAID.fun
 
+## Current release
+
+Creator Studio supports X Campaigns and Existing Token Raids through one USDC-funded engine: target post previews, shared creator balance, impression calculator, duration, qualified contributors, review/disputes, manual payouts, and reports. Token Raids rank first. Legacy SOL Raids retain original rules. Run `npm run studio:preview` for isolated local testing at http://localhost:3007/studio-test. See [Studio setup, funding, CPA, and rollback](docs/creator-studio.md). Launchpads, trading, creator-fee payouts, and token creation are coming soon. Legacy launchpad implementation below remains disabled by release gate.
+
 An attention MVP for Solana campaigns. Next.js + TypeScript + Tailwind, PostgreSQL + Prisma, and a separate PostgreSQL-backed collection worker.
 
 ## Preview locally
@@ -59,6 +63,10 @@ Wallet login signs a five-minute challenge bound to the configured origin. Launc
 Participants link both an X account and Solana wallet, then enroll from the token page. The worker claims curve and graduated-pool fees, waits for X collection coverage through each hour, scores qualifying posts, and pays eligible balances. Fee claims, network costs, platform allocations, signed payout transactions, and pending balances are recorded in PostgreSQL. Admin controls can pause new launches or payouts separately; a fee-recipient or accounting mismatch pauses the affected token.
 
 Production validation must include a funded mainnet smoke test, chain fee verification across graduation, and restore testing for encrypted fee keys. The included tests mock providers or use a dedicated database and do not move SOL.
+
+## X tracking v2
+
+Optional Raid-specific enrollment, verified contribution history, top-ten scoring, immutable review results, disputes, and post-review rewards are available behind `X_TRACKING_V2_ENABLED` and `X_TRACKING_V2_SETTLEMENT_ENABLED` (both default off). Existing Raids retain legacy behavior. See [rollout, APIs, accounting, and validation](docs/x-tracking.md). Run `npm run tracking:audit` against the intended deployment before enabling.
 
 ## Included
 

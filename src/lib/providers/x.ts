@@ -43,12 +43,76 @@ export async function reserveUsage(units: number, raidId?: string, identity = fa
     });
   });
 }
-async function xRead(path: string, params: URLSearchParams, units: number, raidId: string) {
+async function xRead(path: string, params: URLSearchParams, units: number, raidId?: string) {
+  await db.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`x-endpoint:${path}`}, 0))`;
+    const state = await tx.xEndpointState.findUnique({ where: { key: path } });
+    if (state?.blockedUntil && state.blockedUntil > new Date())
+      throw new ProviderError(
+        'X endpoint is waiting for its rate-limit reset.',
+        Math.max(1, Math.ceil((+state.blockedUntil - Date.now()) / 1000)),
+      );
+    if (state?.remaining != null && state.resetAt && state.resetAt > new Date()) {
+      if (state.remaining <= 0)
+        throw new ProviderError(
+          'X endpoint quota exhausted.',
+          Math.max(1, Math.ceil((+state.resetAt - Date.now()) / 1000)),
+        );
+      await tx.xEndpointState.update({
+        where: { key: path },
+        data: { remaining: { decrement: 1 } },
+      });
+    }
+  });
   const reservation = await reserveUsage(units, raidId);
   const response = await fetch(`https://api.x.com/2/${path}?${params}`, {
     headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` },
     signal: AbortSignal.timeout(20000),
     cache: 'no-store',
+  });
+  const remainingHeader = response.headers.get('x-rate-limit-remaining');
+  const resetHeader = response.headers.get('x-rate-limit-reset');
+  const resetSeconds = resetHeader ? Number(resetHeader) : NaN;
+  const remaining = remainingHeader ? Number(remainingHeader) : NaN;
+  const resetAt = Number.isFinite(resetSeconds) ? new Date(resetSeconds * 1000) : null;
+  const blockedUntil =
+    response.status === 429
+      ? resetAt && resetAt > new Date()
+        ? resetAt
+        : new Date(Date.now() + 900000)
+      : remaining === 0
+        ? resetAt
+        : null;
+  const state = {
+    ...(Number.isSafeInteger(remaining) ? { remaining } : {}),
+    ...(resetAt ? { resetAt } : {}),
+    blockedUntil,
+    lastError: response.ok ? null : `X returned ${response.status}`,
+    ...(response.ok ? { lastSuccessAt: new Date() } : {}),
+  };
+  await db.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`x-endpoint:${path}`}, 0))`;
+    const current = await tx.xEndpointState.findUnique({ where: { key: path } });
+    // Concurrent responses must not replenish quota or undo another request's 429.
+    if (
+      current?.resetAt &&
+      resetAt &&
+      +current.resetAt === +resetAt &&
+      current.remaining !== null &&
+      state.remaining !== undefined
+    )
+      state.remaining = Math.min(current.remaining, state.remaining);
+    if (
+      current?.blockedUntil &&
+      current.blockedUntil > new Date() &&
+      (!state.blockedUntil || current.blockedUntil > state.blockedUntil)
+    )
+      state.blockedUntil = current.blockedUntil;
+    await tx.xEndpointState.upsert({
+      where: { key: path },
+      create: { key: path, ...state },
+      update: state,
+    });
   });
   if (!response.ok) {
     const reset = Number(response.headers.get('x-rate-limit-reset')) * 1000;
@@ -70,6 +134,7 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     data?: XPost[];
     meta?: { next_token?: string; newest_id?: string };
     errors?: { resource_id?: string; type?: string }[];
+    includes?: { users?: { id: string; username: string; name: string }[] };
   };
 }
 const fields = 'author_id,created_at,entities,public_metrics,referenced_tweets';
@@ -81,26 +146,35 @@ export async function searchPosts(raid: {
   sinceId: string | null;
   nextToken: string | null;
   searchEndAt: Date | null;
+  officialHandle?: string;
+  trackingVersion?: number;
+  ruleVersion?: number;
+  coveredUntil?: Date | null;
 }) {
   const end = new Date(
     Math.min(+raid.endsAt, raid.searchEndAt ? +raid.searchEndAt : Date.now() - 10000),
   );
-  if (+end <= +raid.startsAt) return { data: [] as XPost[] };
+  const start = new Date(raid.ruleVersion && raid.ruleVersion >= 4 && raid.coveredUntil
+    ? Math.max(+raid.startsAt, +raid.coveredUntil - 1000) : +raid.startsAt);
+  if (+end <= +start) return { data: [] as XPost[] };
   const p = new URLSearchParams({
-    query: `@${config.handle} #${raid.tag} -is:retweet`,
+    query:
+      raid.trackingVersion === 2 && (raid.ruleVersion || 1) >= 3
+        ? `@${raid.officialHandle} -is:retweet -is:reply`
+        : `@${raid.trackingVersion === 2 ? raid.officialHandle : config.handle} #${raid.tag} -is:retweet`,
     'tweet.fields': fields,
     max_results: '100',
-    start_time: raid.startsAt.toISOString(),
+    start_time: start.toISOString(),
     end_time: end.toISOString(),
   });
   if (raid.sinceId) p.set('since_id', raid.sinceId);
   if (raid.nextToken) p.set('next_token', raid.nextToken);
   return xRead('tweets/search/recent', p, 100, raid.id);
 }
-export async function lookupPosts(ids: string[], raidId: string) {
+export async function lookupPosts(ids: string[], raidId?: string) {
   return xRead(
     'tweets',
-    new URLSearchParams({ ids: ids.join(','), 'tweet.fields': fields }),
+    new URLSearchParams({ ids: ids.join(','), 'tweet.fields': fields, expansions: 'author_id', 'user.fields': 'username,name' }),
     ids.length,
     raidId,
   );

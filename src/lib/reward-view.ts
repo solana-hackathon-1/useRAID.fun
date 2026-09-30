@@ -16,6 +16,8 @@ export async function publicRewardView(mint: string, userId?: string) {
       raid: {
         select: {
           status: true,
+          trackingVersion: true,
+          trackingPhase: true,
           startsAt: true,
           endsAt: true,
           hidden: true,
@@ -37,7 +39,11 @@ export async function publicRewardView(mint: string, userId?: string) {
     : 0;
   const xId = userId ? (await db.user.findUnique({ where: { id: userId } }))?.xId : null;
   const [enrollment, payouts, totals, personalTotals, paidHistory, settings] = await Promise.all([
-    userId ? db.rewardEnrollment.findFirst({ where: { launchId: launch.id, userId } }) : null,
+    userId
+      ? raid?.trackingVersion === 2
+        ? db.raidEnrollment.findFirst({ where: { raidId: launch.raidId!, userId } })
+        : db.rewardEnrollment.findFirst({ where: { launchId: launch.id, userId } })
+      : null,
     xId
       ? db.rewardPayout.findMany({
           where: {
@@ -70,6 +76,7 @@ export async function publicRewardView(mint: string, userId?: string) {
   ]);
   return {
     id: launch.id,
+    trackingVersion: raid?.trackingVersion || 1,
     mint,
     feeAddress: launch.feeAddress,
     status: launch.status,

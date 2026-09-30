@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { createHash, randomBytes } from 'node:crypto';
 import { db } from '../../src/lib/db';
+test.describe.skip('deferred launchpad and creator-fee rewards', () => {
 const hash = (value: string) => createHash('sha256').update(value).digest('hex');
 
 let mint = '';
@@ -165,4 +166,5 @@ test('token shows settled split and completed payout link', async ({ page }) => 
     /solscan\.io\/tx\//,
   );
   await expect(page.getByText(/0\.00179 SOL raiders/)).toBeVisible();
+});
 });

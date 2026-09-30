@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-export function CreatorForm() {
+export function CreatorForm({ rate = null }: { rate?: number | null }) {
   const router = useRouter();
+  const [projectType, setProjectType] = useState('');
+  const [target, setTarget] = useState(10000);
+  const [expectedPosts, setExpectedPosts] = useState(20);
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState(''),
     [error, setError] = useState(false);
@@ -20,6 +23,9 @@ export function CreatorForm() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               ...fields,
+              projectType,
+              fundingTermsAccepted:
+                projectType === 'PROJECT' ? fields.fundingTermsAccepted === 'on' : undefined,
               startsAt: fields.startsAt
                 ? new Date(String(fields.startsAt)).toISOString()
                 : undefined,
@@ -30,6 +36,7 @@ export function CreatorForm() {
           setError(false);
           setMessage('Draft saved. Launch it from your campaigns when you’re ready.');
           form.reset();
+          setProjectType('');
           router.refresh();
         } catch (e) {
           setError(true);
@@ -39,6 +46,21 @@ export function CreatorForm() {
         }
       }}
     >
+      <fieldset className="form-section">
+        <legend>Does your project have a token?</legend>
+        <label className="field">
+          Project type
+          <select required value={projectType} onChange={(e) => setProjectType(e.target.value)}>
+            <option value="">Choose your project type</option>
+            <option value="TOKEN">Yes — existing Solana token</option>
+            <option value="PROJECT">No — project without a token</option>
+          </select>
+          <small>
+            Token projects receive discovery priority. Non-token projects must fund their Raid
+            before launch.
+          </small>
+        </label>
+      </fieldset>
       <fieldset className="form-section">
         <legend>Campaign information</legend>
         <div className="form-grid">
@@ -65,18 +87,23 @@ export function CreatorForm() {
         </div>
       </fieldset>
       <fieldset className="form-section">
-        <legend>Token identity</legend>
+        <legend>Project identity</legend>
         <div className="form-grid">
           <label className="field full">
-            Solana token mint
-            <input name="mint" required placeholder="Exact base58 mint address" />
+            {projectType === 'TOKEN' ? 'Solana token mint' : 'Token mint (not needed)'}
+            <input
+              name="mint"
+              required={projectType === 'TOKEN'}
+              disabled={projectType !== 'TOKEN'}
+              placeholder="Exact base58 mint address"
+            />
           </label>
           <label className="field">
-            Token symbol
+            Project symbol
             <input name="symbol" required maxLength={15} placeholder="BONK" />
           </label>
           <label className="field">
-            Token name
+            Project name
             <input name="name" required maxLength={80} placeholder="Bonk" />
           </label>
         </div>
@@ -95,8 +122,74 @@ export function CreatorForm() {
           </label>
         </div>
       </fieldset>
+      {projectType === 'PROJECT' && (
+        <fieldset className="form-section">
+          <legend>Fund your Raid</legend>
+          <label className="field">
+            Impression target
+            <input
+              type="number"
+              name="impressionTarget"
+              min={1000}
+              max={1000000000}
+              step={1000}
+              required
+              value={target}
+              onChange={(e) => setTarget(Number(e.target.value))}
+            />
+          </label>
+          <p>
+            {rate
+              ? `Estimated funding: ${Math.ceil((target * rate) / 1000) / 1e9} SOL at ${rate / 1e9} SOL per 1,000 impressions.`
+              : 'Funding calculator awaits campaign pricing. You can save your target now.'}
+          </p>
+          <label className="field">
+            Expected qualifying posts (planning only)
+            <input
+              type="number"
+              min={1}
+              max={10000}
+              value={expectedPosts}
+              onChange={(e) => setExpectedPosts(Number(e.target.value))}
+            />
+          </label>
+          {rate && expectedPosts > 0 && (
+            <p>
+              Estimated content CPA:{' '}
+              {(Math.ceil((target * rate) / 1000) / 1e9 / expectedPosts).toFixed(5)} SOL per
+              qualifying original post. Actual CPA depends on reviewed results.
+            </p>
+          )}
+          <p className="small-print">
+            Ends when qualifying posts reach the target or campaign duration expires. Views are
+            observed impressions, not unique people. Delivery is not guaranteed.
+          </p>
+          <label className="field">
+            <input name="fundingTermsAccepted" type="checkbox" required /> I accept that verified
+            creator funding is held by the platform. After final results and review, verified
+            participant views earn a proportional share up to the target; any unearned balance
+            returns to my verified funding wallet. No delivery guarantee or platform fee in this
+            pilot.
+          </label>
+          <p>
+            Tell us your funding budget and purpose. Save your draft to request funding
+            arrangements. Launch stays locked until funding is verified; no payment is collected
+            here.
+          </p>
+          <label className="field">
+            Funding request
+            <textarea
+              name="fundingRequest"
+              required
+              minLength={20}
+              maxLength={2000}
+              placeholder="Budget, currency, and what the funding should cover"
+            />
+          </label>
+        </fieldset>
+      )}
       <div className="form-actions">
-        <button className="button" disabled={busy}>
+        <button className="button" disabled={busy || !projectType}>
           {busy ? 'Saving…' : 'Save draft'}
         </button>
         <span className="muted" style={{ fontSize: 11 }}>

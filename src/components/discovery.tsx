@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
+import { formatUsdc } from '@/lib/usdc-amount';
 import Link from 'next/link';
 import {
   Search,
@@ -39,16 +40,20 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
         )
         .filter((r) => !onlyFresh || r.freshness === 'fresh' || r.freshness === 'demo')
         .filter((r) => tab !== 'Rising' || (r.raiders >= 5 && r.delta !== null && r.delta > 0))
-        .sort((a, b) =>
-          tab === 'New raids'
-            ? +new Date(b.createdAt) - +new Date(a.createdAt)
-            : tab === 'Rising'
-              ? (b.delta || 0) - (a.delta || 0)
-              : b.score - a.score,
+        .sort(
+          (a, b) =>
+            Number(!!b.mint) - Number(!!a.mint) ||
+            (tab === 'New raids'
+              ? +new Date(b.createdAt) - +new Date(a.createdAt)
+              : tab === 'Rising'
+                ? (b.delta || 0) - (a.delta || 0)
+                : b.score - a.score),
         ),
     [raids, search, tab, onlyFresh],
   );
-  const featured = [...active].sort((a, b) => b.score - a.score).slice(0, 3);
+  const featured = [...active]
+    .sort((a, b) => Number(!!b.mint) - Number(!!a.mint) || b.score - a.score)
+    .slice(0, 3);
   return (
     <>
       <AutoRefresh />
@@ -60,7 +65,7 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
             community heard.
           </h1>
           <p>
-            Discover Solana raids, join the conversation on X, and follow measured community
+            Discover project raids, join the conversation on X, and follow measured community
             attention.
           </p>
           <div className="form-actions">
@@ -107,7 +112,7 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
           ))}
           {!featured.length && (
             <Empty title="The next conversation starts here">
-              Approved projects can launch a campaign from the creator studio.
+              Connect X and fund a campaign from Creator Studio.
             </Empty>
           )}
         </div>
@@ -171,7 +176,7 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search tokens, campaigns, or mint address"
+              placeholder="Search projects, campaigns, or mint address"
               aria-label="Search campaigns"
             />
           </label>
@@ -205,13 +210,18 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
                     </td>
                     <td role="cell" className="identity-cell">
                       <Link className="token-cell" href={`/raids/${r.id}`}>
-                        <TokenIcon symbol={r.symbol} />
+                        <TokenIcon symbol={r.symbol} imageUri={r.imageUri} />
                         <span>
                           <strong>
-                            {r.symbol}
+                            {r.mint ? r.symbol : 'X Campaign'}
                             <small>{r.name}</small>
                           </strong>
                           <span className="campaign-title">{r.title}</span>
+                          {r.fundingAsset === 'USDC' && r.poolUnits && (
+                            <span className="campaign-title">
+                              {formatUsdc(r.poolUnits)} USDC rewards
+                            </span>
+                          )}
                           <Freshness raid={r} />
                         </span>
                       </Link>
@@ -292,7 +302,7 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
           </li>
           <li>
             <strong>Make it your own</strong>
-            <p>Post on X with the campaign’s mention and raid tag.</p>
+            <p>Join a Raid, then post on X with @useRAID in your own text.</p>
           </li>
           <li>
             <strong>Follow the conversation</strong>

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { db } from './db';
+import { studioSandbox } from './studio-mode';
 import {
   hash,
   cookieOptions,
@@ -33,6 +34,7 @@ function result(status: string) {
   });
 }
 export async function startX(request: Request) {
+  if (studioSandbox()) return NextResponse.redirect(new URL('/studio-test', request.url));
   try {
     oauthConfig();
     await rateLimit(`oauth:${clientKey(request)}`, 30, 600);
@@ -43,6 +45,8 @@ export async function startX(request: Request) {
     response.headers.set('Cache-Control', 'no-store');
     response.headers.set('Referrer-Policy', 'no-referrer');
     response.cookies.set('raid_oauth', attempt.state, { ...cookieOptions, maxAge: 600 });
+    if (attempt.clearSession)
+      response.cookies.set('raid_session', '', { ...cookieOptions, maxAge: 0 });
     return response;
   } catch (error) {
     const response = result(error instanceof OAuthError ? error.code : 'failed');
@@ -52,6 +56,7 @@ export async function startX(request: Request) {
   }
 }
 export async function callbackX(request: Request) {
+  if (studioSandbox()) return NextResponse.redirect(new URL('/studio-test', request.url));
   const jar = await cookies();
   const url = new URL(request.url);
   const state = url.searchParams.get('state');

@@ -1,5 +1,7 @@
 # Pilot operations
 
+Current Creator Studio release and USDC funding/payment procedure: [creator-studio.md](creator-studio.md). [standalone-raids.md](standalone-raids.md) describes legacy SOL campaigns. Launchpad sections below describe deferred infrastructure. Configure X callback, collection access, approved USDC pricing, and custody wallet before accepting deposits.
+
 ## Railway deployment
 
 Create a PostgreSQL service, a web service using `railway.toml`, and a worker service using `railway.worker.toml`. Share database and public configuration between web and worker; keep `OPERATOR_SECRET_KEY` only on worker. Start with one replica each. The web deployment runs committed migrations; deploy it before starting a new worker version. Use an HTTPS `APP_URL` and register the exact OAuth callback.
@@ -11,8 +13,8 @@ Set the X developer-console budget independently of the application budget. Disa
 ## Feasibility gate — must pass before live collection
 
 - Confirm control of the configured X account and verify OAuth identity/callback behavior.
-- Verify official search with `@officialhandle #raid_unique` finds original posts, replies, and quotes during the test window; verify repost wrappers are excluded.
-- Check negative cases: wrong mention, wrong tag, multiple registered tags, pre-start/post-end timestamps.
+- Verify rule version 3 search with `@officialhandle -is:retweet -is:reply` finds original posts and quotes without a hashtag; verify repost wrappers and replies are excluded. Verify earlier rule versions still use `@officialhandle #raid_unique`.
+- Check negative cases: wrong mention, pre-start/post-end timestamps, overlapping Raid enrollments, and rule version 2 wrong or multiple registered tags.
 - Check lookup counters, pagination, cursor resumes, rate-limit reset, invalid credentials, and explicit deletion responses using the actual API account.
 - Confirm storage, redisplay, attribution, deletion, and retention requirements for the chosen X agreement. Set `X_RETENTION_DAYS` accordingly and update the public privacy page; add the operator's contact and deletion-request process.
 - Run a controlled campaign. Compare observed provider billing with `ProviderUsage`; decide whether the $200 budget supports the expected pilot volume. Reservations do not rely on X's soft daily deduplication guarantee.

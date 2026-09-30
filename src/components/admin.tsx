@@ -6,7 +6,9 @@ export function AdminAction({
   id,
   label,
   values,
+  url,
 }: {
+  url?: string;
   action: string;
   id: string;
   label: string;
@@ -22,7 +24,7 @@ export function AdminAction({
         e.preventDefault();
         setBusy(true);
         try {
-          const r = await fetch(`/api/admin/${action}`, {
+          const r = await fetch(url || `/api/admin/${action}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, ...values, reason }),

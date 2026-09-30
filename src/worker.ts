@@ -1,4 +1,10 @@
 import 'dotenv/config';
+import { trackingEnabled } from './lib/config';
+import { allocateRaidFunding } from './lib/raid-allocation';
+import { allocateUsdcRaid } from './lib/studio-finance';
+import { launchpadsAvailable } from './lib/release';
+import { finalizeTracking } from './lib/tracking-review';
+import { processTrackingLookup } from './lib/tracking-worker';
 import { Prisma } from '@prisma/client';
 import { db } from './lib/db';
 import { config } from './lib/config';
@@ -23,6 +29,17 @@ async function schedule() {
     data: { status: 'ACTIVE' },
   });
   await db.raid.updateMany({
+    where: { status: 'ACTIVE', trackingVersion: 2, endsAt: { lte: now } },
+    data: {
+      trackingPhase: 'FINALIZING',
+      sinceId: null,
+      nextToken: null,
+      searchEndAt: null,
+      pendingNewestId: null,
+      finalRefreshed: false,
+    },
+  });
+  await db.raid.updateMany({
     where: { status: 'ACTIVE', endsAt: { lte: now } },
     data: { status: 'ENDED' },
   });
@@ -41,34 +58,51 @@ async function schedule() {
     },
   });
   for (const raid of raids) {
+    if (raid.trackingVersion === 2 && (!trackingEnabled() || raid.activeResultId)) continue;
     await enqueue('collect', `collect:${raid.id}:${Math.floor(Date.now() / 300000)}`, {
       raidId: raid.id,
+      final: raid.endsAt <= now,
     });
     if (raid.status === 'ACTIVE') {
-      await enqueue('market', `market:${raid.mint}:${Math.floor(Date.now() / 60000)}`, {
-        mint: raid.mint,
-      });
+      if (raid.mint)
+        await enqueue('market', `market:${raid.mint}:${Math.floor(Date.now() / 60000)}`, {
+          mint: raid.mint,
+        });
       await snapshot(
         raid.id,
         raid.coverage === 'complete' && !!raid.observedAt && Date.now() - +raid.observedAt < 600000,
       );
     }
   }
+  if (trackingEnabled()) {
+    const closing = await db.raid.findMany({
+      where: {
+        trackingVersion: 2,
+        status: 'ENDED',
+        trackingPhase: { notIn: ['ALLOCATED', 'HELD', 'HELD_RESOLVED'] },
+      },
+    });
+    for (const raid of closing) {
+      await finalizeTracking(raid.id);
+      if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
+      else await allocateRaidFunding(raid.id);
+    }
+  }
   const pendingLaunches = await db.tokenLaunch.findMany({
     where: { status: 'SUBMITTED' },
     select: { id: true },
   });
-  for (const launch of pendingLaunches)
+  for (const launch of launchpadsAvailable ? pendingLaunches : [])
     await enqueue(
       'launch-reconcile',
       `launch-reconcile:${launch.id}:${Math.floor(Date.now() / 60000)}`,
       { launchId: launch.id },
     );
   const liveLaunches = await db.tokenLaunch.findMany({
-    where: { status: 'LIVE' },
+    where: { status: { in: ['LIVE', 'PAUSED'] } },
     select: { id: true },
   });
-  for (const launch of liveLaunches)
+  for (const launch of launchpadsAvailable ? liveLaunches : [])
     await enqueue('finance', `finance:${launch.id}:${Math.floor(Date.now() / 60000)}`, {
       launchId: launch.id,
       raidId: launch.id,
@@ -80,9 +114,13 @@ async function schedule() {
   await db.post.updateMany({
     where: {
       createdAt: { lt: new Date(Date.now() - config.retentionDays * 86400000) },
-      deleted: false,
+      contentExpiredAt: null,
     },
-    data: { text: '', normalized: '', deleted: true },
+    data: { text: '', normalized: '', contentExpiredAt: now },
+  });
+  await db.raidBriefPost.updateMany({
+    where: { validatedAt: { lt: new Date(Date.now() - config.retentionDays * 86400000) } },
+    data: { preview: Prisma.JsonNull },
   });
   await db.job.deleteMany({ where: { doneAt: { lt: new Date(Date.now() - 7 * 86400000) } } });
   // Daily reconciliation for ended campaigns within the configured retention period.
@@ -91,6 +129,7 @@ async function schedule() {
       status: 'ENDED',
       hidden: false,
       finalRefreshed: true,
+      trackingVersion: 1,
       endsAt: { gte: new Date(Date.now() - config.retentionDays * 86400000) },
     },
   });
@@ -123,22 +162,30 @@ async function main() {
         coveredUntil?: string;
         final: boolean;
         postId: string;
+        submissionId?: string;
       };
       try {
         if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
         else if (job.kind === 'finance') await financeLaunch(p.launchId);
-        else if (job.kind === 'collect') await collect(p.raidId);
-        else if (job.kind === 'refresh') await refresh(p.raidId, p.after, p.final, p.coveredUntil);
+        else if (job.kind === 'collect') await collect(p.raidId, job.id);
+        else if (job.kind === 'refresh')
+          await refresh(p.raidId, p.after, p.final, p.coveredUntil, job.id);
+        else if (job.kind === 'tracking-correction')
+          await processTrackingLookup(p.raidId, p.postId, job.id, undefined, true);
         else if (job.kind === 'submission') {
           const raid = await db.raid.findUniqueOrThrow({
             where: { id: p.raidId },
             include: { creator: true },
           });
-          if (raid.hidden || raid.creator.suspended || raid.status !== 'ACTIVE')
-            throw new Error('Raid is not accepting submissions.');
-          const result = await lookupPosts([p.postId], p.raidId);
-          await ingest(p.raidId, result.data || []);
-          await snapshot(p.raidId, false);
+          if (raid.trackingVersion === 2) {
+            await processTrackingLookup(p.raidId, p.postId, job.id, p.submissionId);
+          } else {
+            if (raid.hidden || raid.creator.suspended || raid.status !== 'ACTIVE')
+              throw new Error('Raid is not accepting submissions.');
+            const result = await lookupPosts([p.postId], p.raidId);
+            await ingest(p.raidId, result.data || []);
+            await snapshot(p.raidId, false);
+          }
         } else if (job.kind === 'market') {
           const market = await fetchMarket(p.mint);
           await db.token.update({
@@ -151,12 +198,29 @@ async function main() {
           });
         }
         await finishJob(job);
+        if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind)) {
+          const remaining = await db.job.count({
+            where: {
+              doneAt: null,
+              error: { not: null },
+              payload: { path: ['raidId'], equals: p.raidId },
+            },
+          });
+          if (!remaining)
+            await db.raid.updateMany({
+              where: { id: p.raidId, trackingVersion: 2 },
+              data: { collectionError: null },
+            });
+        }
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Collection failed';
         if (p.raidId)
           await db.raid.updateMany({
             where: { id: p.raidId },
-            data: { coverage: 'partial', collectionError: message },
+            data: {
+              ...(['collect', 'refresh'].includes(job.kind) ? { coverage: 'partial' } : {}),
+              collectionError: message,
+            },
           });
         if (p.mint)
           await db.token.updateMany({ where: { mint: p.mint }, data: { marketError: message } });
