@@ -131,6 +131,11 @@ describe('identity and external URLs', () => {
     expect(postId('https://x.com.evil.test/alice/status/123')).toBeNull();
     expect(postId('http://x.com/alice/status/123')).toBeNull();
     expect(postId('https://x.com/alice/status/123/evil')).toBeNull();
+    expect(postId('https://x.com/alice/status/0')).toBeNull();
+    expect(postId('https://x.com/alice/status/99999999999999999999')).toBeNull();
+    expect(postId('https://x.com/alice/status/9223372036854775808')).toBeNull();
+    expect(postId('https://x.com/alice/status/9223372036854775807')).toBe('9223372036854775807');
+    expect(postId('https://x.com/alice/status/1850000000000000000')).toBe('1850000000000000000');
   });
   it('selects highest liquidity correct-chain base mint without inventing market cap', () => {
     const base = {

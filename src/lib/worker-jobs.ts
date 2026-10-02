@@ -6,6 +6,7 @@ import { allocateRaidFunding } from './raid-allocation';
 import { allocateUsdcRaid } from './studio-finance';
 import { launchpadsAvailable } from './release';
 import { finalizeTracking } from './tracking-review';
+import { LOCKED_PHASES } from './tracking-domain';
 import { processTrackingLookup } from './tracking-worker';
 import { db } from './db';
 import { enqueue, finishJob } from './queue';
@@ -37,121 +38,184 @@ export async function assertSchemaCurrent(
   if (!applied.length) throw new Error(`Database schema is behind migration ${latest}.`);
 }
 export async function schedule(now = new Date()) {
-  await updateFinanceReadiness();
-  await db.raid.updateMany({
-    where: { status: 'SCHEDULED', startsAt: { lte: now } },
-    data: { status: 'ACTIVE' },
-  });
-  await db.raid.updateMany({
-    where: { status: 'ACTIVE', trackingVersion: 2, endsAt: { lte: now } },
-    data: {
-      trackingPhase: 'FINALIZING',
-      sinceId: null,
-      nextToken: null,
-      searchEndAt: null,
-      pendingNewestId: null,
-      finalRefreshed: false,
-    },
-  });
-  await db.raid.updateMany({
-    where: { status: 'ACTIVE', endsAt: { lte: now } },
-    data: { status: 'ENDED' },
-  });
-  const raids = await db.raid.findMany({
-    where: {
-      hidden: false,
-      creator: { suspended: false },
-      OR: [
-        { status: 'ACTIVE' },
-        {
-          status: 'ENDED',
-          finalRefreshed: false,
-          endsAt: { gte: new Date(Date.now() - 7 * 86400000) },
-        },
-      ],
-    },
-  });
-  for (const raid of raids) {
-    if (raid.trackingVersion === 2 && (!trackingEnabled() || raid.activeResultId)) continue;
-    await enqueue('collect', `collect:${raid.id}:${Math.floor(Date.now() / 300000)}`, {
-      raidId: raid.id,
-      final: raid.endsAt <= now,
+  await step('finance-readiness', () => updateFinanceReadiness());
+  await step('status-transitions', async () => {
+    await db.raid.updateMany({
+      where: { status: 'SCHEDULED', startsAt: { lte: now } },
+      data: { status: 'ACTIVE' },
     });
-    if (raid.status === 'ACTIVE') {
-      if (raid.mint)
-        await enqueue('market', `market:${raid.mint}:${Math.floor(Date.now() / 60000)}`, {
-          mint: raid.mint,
-        });
-      await snapshot(
-        raid.id,
-        raid.coverage === 'complete' && !!raid.observedAt && Date.now() - +raid.observedAt < 600000,
-      );
-    }
-  }
-  if (trackingEnabled()) {
-    const closing = await db.raid.findMany({
-      where: {
-        trackingVersion: 2,
-        status: 'ENDED',
-        trackingPhase: { notIn: ['ALLOCATED', 'HELD', 'HELD_RESOLVED'] },
+    await db.raid.updateMany({
+      where: { status: 'ACTIVE', trackingVersion: 2, endsAt: { lte: now } },
+      data: {
+        trackingPhase: 'FINALIZING',
+        sinceId: null,
+        nextToken: null,
+        searchEndAt: null,
+        pendingNewestId: null,
+        finalRefreshed: false,
       },
     });
-    for (const raid of closing) {
-      await finalizeTracking(raid.id);
-      if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
-      else await allocateRaidFunding(raid.id);
-    }
-  }
-  const pendingLaunches = await db.tokenLaunch.findMany({
-    where: { status: 'SUBMITTED' },
-    select: { id: true },
-  });
-  for (const launch of launchpadsAvailable ? pendingLaunches : [])
-    await enqueue(
-      'launch-reconcile',
-      `launch-reconcile:${launch.id}:${Math.floor(Date.now() / 60000)}`,
-      { launchId: launch.id },
-    );
-  const liveLaunches = await db.tokenLaunch.findMany({
-    where: { status: { in: ['LIVE', 'PAUSED'] } },
-    select: { id: true },
-  });
-  for (const launch of launchpadsAvailable ? liveLaunches : [])
-    await enqueue('finance', `finance:${launch.id}:${Math.floor(Date.now() / 60000)}`, {
-      launchId: launch.id,
-      raidId: launch.id,
+    await db.raid.updateMany({
+      where: { status: 'ACTIVE', endsAt: { lte: now } },
+      data: { status: 'ENDED' },
     });
-  await db.session.deleteMany({ where: { expiresAt: { lt: now } } });
-  await db.walletChallenge.deleteMany({ where: { expiresAt: { lt: now } } });
-  await db.oAuthAttempt.deleteMany({ where: { expiresAt: { lt: now } } });
-  await db.rateLimit.deleteMany({ where: { expiresAt: { lt: now } } });
-  await db.post.updateMany({
+  });
+  await step('collect', async () => {
+    const settings = await db.settings.upsert({
+      where: { id: 'global' },
+      create: {},
+      update: {},
+    });
+    const raids = await db.raid.findMany({
+      where: {
+        hidden: false,
+        creator: { suspended: false },
+        OR: [
+          { status: 'ACTIVE' },
+          {
+            status: 'ENDED',
+            finalRefreshed: false,
+            endsAt: { gte: new Date(Date.now() - 7 * 86400000) },
+          },
+        ],
+      },
+    });
+    for (const raid of raids)
+      await step(`collect:${raid.id}`, async () => {
+        if (raid.trackingVersion === 2 && (!trackingEnabled() || raid.activeResultId)) return;
+        if (settings.collectionEnabled)
+          await enqueue('collect', `collect:${raid.id}:${Math.floor(Date.now() / 300000)}`, {
+            raidId: raid.id,
+            final: raid.endsAt <= now,
+          });
+        if (raid.status === 'ACTIVE') {
+          if (raid.mint)
+            await enqueue('market', `market:${raid.mint}:${Math.floor(Date.now() / 60000)}`, {
+              mint: raid.mint,
+            });
+          await snapshot(
+            raid.id,
+            raid.coverage === 'complete' &&
+              !!raid.observedAt &&
+              Date.now() - +raid.observedAt < 600000,
+          );
+        }
+      });
+  });
+  if (trackingEnabled()) {
+    await step('finalize', async () => {
+      const closing = await db.raid.findMany({
+        where: {
+          trackingVersion: 2,
+          status: 'ENDED',
+          trackingPhase: { notIn: ['APPROVED', ...LOCKED_PHASES] },
+        },
+        select: { id: true, studioVersion: true },
+      });
+      for (const raid of closing)
+        await step(`settle:${raid.id}`, async () => {
+          await finalizeTracking(raid.id);
+          if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
+          else await allocateRaidFunding(raid.id);
+        });
+    });
+    await step('allocate-retry', async () => {
+      const approved = await db.raid.findMany({
+        where: {
+          trackingVersion: 2,
+          status: 'ENDED',
+          trackingPhase: 'APPROVED',
+          fundingStatus: 'VERIFIED',
+          OR: [{ studioVersion: 1 }, { mint: null, fundingLamports: { not: null } }],
+        },
+        select: { id: true, studioVersion: true },
+      });
+      for (const raid of approved)
+        await step(`allocate:${raid.id}`, () =>
+          raid.studioVersion === 1 ? allocateUsdcRaid(raid.id) : allocateRaidFunding(raid.id),
+        );
+    });
+  }
+  await step('launch-jobs', async () => {
+    const pendingLaunches = await db.tokenLaunch.findMany({
+      where: { status: 'SUBMITTED' },
+      select: { id: true },
+    });
+    for (const launch of launchpadsAvailable ? pendingLaunches : [])
+      await enqueue(
+        'launch-reconcile',
+        `launch-reconcile:${launch.id}:${Math.floor(Date.now() / 60000)}`,
+        { launchId: launch.id },
+      );
+    const liveLaunches = await db.tokenLaunch.findMany({
+      where: { status: { in: ['LIVE', 'PAUSED'] } },
+      select: { id: true },
+    });
+    for (const launch of launchpadsAvailable ? liveLaunches : [])
+      await enqueue('finance', `finance:${launch.id}:${Math.floor(Date.now() / 60000)}`, {
+        launchId: launch.id,
+        raidId: launch.id,
+      });
+  });
+  await step('cleanup', async () => {
+    await db.session.deleteMany({ where: { expiresAt: { lt: now } } });
+    await db.walletChallenge.deleteMany({ where: { expiresAt: { lt: now } } });
+    await db.oAuthAttempt.deleteMany({ where: { expiresAt: { lt: now } } });
+    await db.rateLimit.deleteMany({ where: { expiresAt: { lt: now } } });
+  });
+  await step('retention', async () => {
+    await db.post.updateMany({
+      where: {
+        createdAt: { lt: new Date(Date.now() - config.retentionDays * 86400000) },
+        contentExpiredAt: null,
+      },
+      data: { text: '', normalized: '', contentExpiredAt: now },
+    });
+    await db.raidBriefPost.updateMany({
+      where: { validatedAt: { lt: new Date(Date.now() - config.retentionDays * 86400000) } },
+      data: { preview: Prisma.JsonNull },
+    });
+    await db.job.deleteMany({
+      where: {
+        OR: [
+          { doneAt: { lt: new Date(Date.now() - 7 * 86400000) } },
+          { failedAt: { lt: new Date(Date.now() - 30 * 86400000) } },
+        ],
+      },
+    });
+  });
+  await step('reconcile', async () => {
+    // Daily reconciliation for ended campaigns within the configured retention period.
+    const ended = await db.raid.findMany({
+      where: {
+        status: 'ENDED',
+        hidden: false,
+        finalRefreshed: true,
+        trackingVersion: 1,
+        endsAt: { gte: new Date(Date.now() - config.retentionDays * 86400000) },
+      },
+    });
+    for (const raid of ended)
+      await enqueue('refresh', `reconcile:${raid.id}:${now.toISOString().slice(0, 10)}`, {
+        raidId: raid.id,
+        after: '',
+        final: true,
+      });
+  });
+}
+async function clearCollectionError(raidId: string) {
+  const remaining = await db.job.count({
     where: {
-      createdAt: { lt: new Date(Date.now() - config.retentionDays * 86400000) },
-      contentExpiredAt: null,
-    },
-    data: { text: '', normalized: '', contentExpiredAt: now },
-  });
-  await db.raidBriefPost.updateMany({
-    where: { validatedAt: { lt: new Date(Date.now() - config.retentionDays * 86400000) } },
-    data: { preview: Prisma.JsonNull },
-  });
-  await db.job.deleteMany({ where: { doneAt: { lt: new Date(Date.now() - 7 * 86400000) } } });
-  // Daily reconciliation for ended campaigns within the configured retention period.
-  const ended = await db.raid.findMany({
-    where: {
-      status: 'ENDED',
-      hidden: false,
-      finalRefreshed: true,
-      trackingVersion: 1,
-      endsAt: { gte: new Date(Date.now() - config.retentionDays * 86400000) },
+      doneAt: null,
+      failedAt: null,
+      error: { not: null },
+      payload: { path: ['raidId'], equals: raidId },
     },
   });
-  for (const raid of ended)
-    await enqueue('refresh', `reconcile:${raid.id}:${now.toISOString().slice(0, 10)}`, {
-      raidId: raid.id,
-      after: '',
-      final: true,
+  if (!remaining)
+    await db.raid.updateMany({
+      where: { id: raidId, trackingVersion: 2 },
+      data: { collectionError: null },
     });
 }
 export async function runJob(job: Job) {
@@ -199,20 +263,8 @@ export async function runJob(job: Job) {
       });
     }
     await finishJob(job);
-    if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind)) {
-      const remaining = await db.job.count({
-        where: {
-          doneAt: null,
-          error: { not: null },
-          payload: { path: ['raidId'], equals: p.raidId },
-        },
-      });
-      if (!remaining)
-        await db.raid.updateMany({
-          where: { id: p.raidId, trackingVersion: 2 },
-          data: { collectionError: null },
-        });
-    }
+    if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
+      await clearCollectionError(p.raidId);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Collection failed';
     if (p.raidId)
@@ -225,7 +277,21 @@ export async function runJob(job: Job) {
       });
     if (p.mint)
       await db.token.updateMany({ where: { mint: p.mint }, data: { marketError: message } });
-    await finishJob(job, message, error instanceof ProviderError ? error.retryAfter : undefined);
+    const { dead } = await finishJob(
+      job,
+      message,
+      error instanceof ProviderError ? error.retryAfter : undefined,
+      { refundAttempt: error instanceof ProviderError && error.deferred },
+    );
+    if (dead) {
+      if (job.kind === 'submission' && p.submissionId)
+        await db.postSubmission.updateMany({
+          where: { id: p.submissionId, status: 'QUEUED' },
+          data: { status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
+        });
+      if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
+        await clearCollectionError(p.raidId);
+    }
     console.error(JSON.stringify({ job: job.id, kind: job.kind, error: message }));
   }
 }

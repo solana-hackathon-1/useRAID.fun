@@ -385,7 +385,9 @@ model Job {
   attempts Int @default(0)
   error String?
   doneAt DateTime?
+  failedAt DateTime?
   @@index([doneAt, runAt, lockedAt])
+  @@index([failedAt])
 }
 model Settings {
   id String @id @default("global")

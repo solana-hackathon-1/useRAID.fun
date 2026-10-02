@@ -16,8 +16,17 @@ async function main() {
   while (!stopping) {
     try {
       if (Date.now() - scheduled > 60000) {
-        await schedule();
         scheduled = Date.now();
+        try {
+          await schedule();
+        } catch (error) {
+          console.error(
+            JSON.stringify({
+              schedule: 'failed',
+              error: error instanceof Error ? error.message : String(error),
+            }),
+          );
+        }
       }
       const job = await claimJob();
       if (!job) {

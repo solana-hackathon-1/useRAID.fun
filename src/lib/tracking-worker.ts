@@ -1,6 +1,7 @@
 import { db } from './db';
 import { ingestTracking, markTrackingUnavailable, assertTrackingEnabled } from './tracking';
-import { lookupPosts } from './providers/x';
+import { lookupPosts, ProviderError } from './providers/x';
+import { validPostId } from './domain';
 export async function processTrackingLookup(
   raidId: string,
   postId: string,
@@ -15,7 +16,19 @@ export async function processTrackingLookup(
   });
   if (raid.hidden || raid.creator.suspended) throw new Error('Raid collection is restricted.');
   if (['APPROVED', 'ALLOCATED', 'HELD', 'HELD_RESOLVED'].includes(raid.trackingPhase)) return;
-  const result = await lookupPosts([postId], raidId);
+  const invalid = async () => {
+    if (submissionId)
+      await db.postSubmission.updateMany({
+        where: { id: submissionId, status: 'QUEUED' },
+        data: { status: 'EXCLUDED', reasonCode: 'INVALID_POST' },
+      });
+  };
+  if (!validPostId(postId)) return invalid();
+  const result = await lookupPosts([postId], raidId).catch(async (error) => {
+    if (submissionId && error instanceof ProviderError && error.status === 400) return null;
+    throw error;
+  });
+  if (!result) return invalid();
   const post = result.data?.find((p) => p.id === postId);
   if (post) {
     await ingestTracking(raidId, [post], {

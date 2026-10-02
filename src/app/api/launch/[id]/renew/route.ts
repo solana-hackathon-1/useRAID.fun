@@ -6,6 +6,7 @@ import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { failure } from '@/lib/http';
 import { config } from '@/lib/config';
+import { LOCKED_PHASES } from '@/lib/tracking-domain';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     if (!launchpadsAvailable) throw new HttpError(503, 'Launchpads are coming soon.');
@@ -29,10 +30,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         where: {
           tokenLaunchId: id,
           trackingVersion: 2,
-          OR: [
-            { trackingPhase: { notIn: ['ALLOCATED', 'HELD', 'HELD_RESOLVED'] } },
-            { finalFeeSweepAt: null },
-          ],
+          OR: [{ trackingPhase: { notIn: [...LOCKED_PHASES] } }, { finalFeeSweepAt: null }],
         },
       });
       if (unfinished)

@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { db } from './db';
 import { HttpError } from './auth-primitives';
 import { trackingEnabled } from './config';
-import { scoreContributions } from './tracking-domain';
+import { isLockedPhase, scoreContributions } from './tracking-domain';
 import { assertTrackingEnabled, lockTracking, requalifyDuplicates } from './tracking';
 
 export interface ResultPayload {
@@ -45,6 +45,7 @@ export async function trackingBlockers(tx: Prisma.TransactionClient, raidId: str
     tx.job.count({
       where: {
         doneAt: null,
+        failedAt: null,
         kind: { in: ['collect', 'refresh', 'submission', 'tracking-correction'] },
         payload: { path: ['raidId'], equals: raidId },
       },
@@ -78,7 +79,7 @@ export async function finalizeTracking(raidId: string, now = new Date()) {
         raid.endsAt > now ||
         raid.hidden ||
         raid.creator.suspended ||
-        ['ALLOCATED', 'HELD', 'HELD_RESOLVED'].includes(raid.trackingPhase)
+        isLockedPhase(raid.trackingPhase)
       )
         return;
       if (
@@ -258,10 +259,7 @@ export async function resolveTracking(
     if (actor?.role !== 'ADMIN' || actor.suspended)
       throw new HttpError(403, 'Administrator access required.');
     const raid = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
-    if (
-      raid.trackingVersion !== 2 ||
-      ['ALLOCATED', 'HELD', 'HELD_RESOLVED'].includes(raid.trackingPhase)
-    )
+    if (raid.trackingVersion !== 2 || isLockedPhase(raid.trackingPhase))
       throw new HttpError(409, 'Results are locked.');
     let changed = false;
     if (input.action === 'reject-dispute' || input.action === 'resolve-dispute') {

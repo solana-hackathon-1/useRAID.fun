@@ -100,19 +100,35 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
             data: { complete: false },
           });
         }
-      } else if (action === 'retry')
-        await tx.job.update({
-          where: { id: b.id },
+      } else if (action === 'retry') {
+        if (typeof b.id !== 'string') throw new HttpError(400, 'Invalid job.');
+        const stale = new Date(Date.now() - 600000);
+        const job = await tx.job.findUnique({ where: { id: b.id } });
+        const reset = await tx.job.updateMany({
+          where: {
+            id: b.id,
+            doneAt: null,
+            error: { not: null },
+            OR: [{ lockedAt: null }, { lockedAt: { lt: stale } }],
+          },
           data: {
             attempts: 0,
             error: null,
+            failedAt: null,
             lockedAt: null,
             lease: null,
-            doneAt: null,
             runAt: new Date(),
           },
         });
-      else throw new HttpError(400, 'Unsupported admin action.');
+        if (reset.count !== 1)
+          throw new HttpError(409, 'Only failed jobs that are not running can be retried.');
+        const submissionId = (job?.payload as { submissionId?: string } | null)?.submissionId;
+        if (job?.kind === 'submission' && submissionId)
+          await tx.postSubmission.updateMany({
+            where: { id: submissionId, status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
+            data: { status: 'QUEUED', reasonCode: null },
+          });
+      } else throw new HttpError(400, 'Unsupported admin action.');
       await tx.moderationEvent.create({
         data: { actorId: user.id, action, targetId: b.id || 'global', reason },
       });

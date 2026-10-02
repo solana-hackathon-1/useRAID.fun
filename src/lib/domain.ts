@@ -108,6 +108,9 @@ export function momentum(score: number, baseline?: { score: number; complete: bo
     ? Math.round(((score - baseline.score) / baseline.score) * 100)
     : null;
 }
+export function validPostId(id: string) {
+  return /^[1-9]\d{0,18}$/.test(id) && BigInt(id) <= 9223372036854775807n;
+}
 export function postId(url: string) {
   try {
     const u = new URL(url);
@@ -116,7 +119,8 @@ export function postId(url: string) {
       u.protocol !== 'https:'
     )
       return null;
-    return u.pathname.match(/^\/(?:[A-Za-z0-9_]+|i\/web)\/status\/(\d+)\/?$/)?.[1] || null;
+    const id = u.pathname.match(/^\/(?:[A-Za-z0-9_]+|i\/web)\/status\/(\d+)\/?$/)?.[1];
+    return id && validPostId(id) ? id : null;
   } catch {
     return null;
   }

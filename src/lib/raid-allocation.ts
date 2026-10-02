@@ -29,82 +29,85 @@ export function splitImpressionFunding(
   return { rewards: rewards.filter((r) => r.lamports > 0n), refund: budget - allocated };
 }
 export async function allocateRaidFunding(raidId: string) {
-  return db.$transaction(async (tx) => {
-    await lockTracking(tx, raidId);
-    const raid = await tx.raid.findUniqueOrThrow({
-      where: { id: raidId },
-      include: { creator: true },
-    });
-    if (
-      raid.studioVersion === 1 ||
-      raid.mint ||
-      raid.hidden ||
-      raid.creator.suspended ||
-      raid.fundingStatus !== 'VERIFIED' ||
-      raid.trackingPhase !== 'APPROVED' ||
-      !raid.activeResultId ||
-      !raid.fundingLamports ||
-      !raid.fundingWallet ||
-      !raid.impressionTarget
-    )
-      return;
-    if (await trackingBlockers(tx, raidId)) return;
-    if (await tx.raidAllocation.count({ where: { raidId } })) return;
-    const result = await tx.campaignResult.findUniqueOrThrow({
-      where: { id: raid.activeResultId },
-    });
-    const payload = result.payload as unknown as ResultPayload;
-    const posts = payload.contributions.filter(
-      (p) =>
-        p.qualification === 'QUALIFIED' &&
-        p.availability === 'AVAILABLE' &&
-        p.reviewStatus !== 'FLAGGED' &&
-        !p.hidden &&
-        !p.deleted,
-    );
-    if (posts.some((p) => p.views == null)) return; // Unknown views never mean zero earned.
-    if (
-      posts.reduce((sum, post) => sum + BigInt(post.views || 0), 0n) >
-      BigInt(Number.MAX_SAFE_INTEGER)
-    )
-      return;
-    const shares = splitImpressionFunding(
-      BigInt(raid.fundingLamports),
-      raid.impressionTarget,
-      payload.participants.map((p) => ({
-        xId: p.xId,
-        walletAddress: p.walletAddress,
-        views: posts
-          .filter((post) => post.authorId === p.xId)
-          .reduce((sum, post) => sum + (post.views || 0), 0),
-      })),
-    );
-    await tx.raidAllocation.createMany({
-      data: [
-        ...shares.rewards.map((r) => ({
-          raidId,
-          resultId: result.id,
-          kind: 'REWARD',
-          xId: r.xId,
-          walletAddress: r.walletAddress,
-          lamports: r.lamports.toString(),
+  return db.$transaction(
+    async (tx) => {
+      await lockTracking(tx, raidId);
+      const raid = await tx.raid.findUniqueOrThrow({
+        where: { id: raidId },
+        include: { creator: true },
+      });
+      if (
+        raid.studioVersion === 1 ||
+        raid.mint ||
+        raid.hidden ||
+        raid.creator.suspended ||
+        raid.fundingStatus !== 'VERIFIED' ||
+        raid.trackingPhase !== 'APPROVED' ||
+        !raid.activeResultId ||
+        !raid.fundingLamports ||
+        !raid.fundingWallet ||
+        !raid.impressionTarget
+      )
+        return;
+      if (await trackingBlockers(tx, raidId)) return;
+      if (await tx.raidAllocation.count({ where: { raidId } })) return;
+      const result = await tx.campaignResult.findUniqueOrThrow({
+        where: { id: raid.activeResultId },
+      });
+      const payload = result.payload as unknown as ResultPayload;
+      const posts = payload.contributions.filter(
+        (p) =>
+          p.qualification === 'QUALIFIED' &&
+          p.availability === 'AVAILABLE' &&
+          p.reviewStatus !== 'FLAGGED' &&
+          !p.hidden &&
+          !p.deleted,
+      );
+      if (posts.some((p) => p.views == null)) return; // Unknown views never mean zero earned.
+      if (
+        posts.reduce((sum, post) => sum + BigInt(post.views || 0), 0n) >
+        BigInt(Number.MAX_SAFE_INTEGER)
+      )
+        return;
+      const shares = splitImpressionFunding(
+        BigInt(raid.fundingLamports),
+        raid.impressionTarget,
+        payload.participants.map((p) => ({
+          xId: p.xId,
+          walletAddress: p.walletAddress,
+          views: posts
+            .filter((post) => post.authorId === p.xId)
+            .reduce((sum, post) => sum + (post.views || 0), 0),
         })),
-        ...(shares.refund > 0n
-          ? [
-              {
-                raidId,
-                resultId: result.id,
-                kind: 'REFUND',
-                xId: null,
-                walletAddress: raid.fundingWallet,
-                lamports: shares.refund.toString(),
-              },
-            ]
-          : []),
-      ],
-    });
-    await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'ALLOCATED' } });
-  });
+      );
+      await tx.raidAllocation.createMany({
+        data: [
+          ...shares.rewards.map((r) => ({
+            raidId,
+            resultId: result.id,
+            kind: 'REWARD',
+            xId: r.xId,
+            walletAddress: r.walletAddress,
+            lamports: r.lamports.toString(),
+          })),
+          ...(shares.refund > 0n
+            ? [
+                {
+                  raidId,
+                  resultId: result.id,
+                  kind: 'REFUND',
+                  xId: null,
+                  walletAddress: raid.fundingWallet,
+                  lamports: shares.refund.toString(),
+                },
+              ]
+            : []),
+        ],
+      });
+      await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'ALLOCATED' } });
+    },
+    { timeout: 30000 },
+  );
 }
 export async function recordRaidPayment(allocationId: string, signature: string, actorId: string) {
   if (!/^[1-9A-HJ-NP-Za-km-z]{64,90}$/.test(signature))

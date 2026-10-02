@@ -27,28 +27,41 @@ export async function enqueue(
     update: {},
   });
 }
+export const JOB_MAX_ATTEMPTS = 8;
 export async function claimJob() {
   const lease = randomUUID();
   const rows = await db.$transaction(async (tx) => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(729104)`;
     return tx.$queryRaw<
       Job[]
-    >`UPDATE "Job" SET "lockedAt"=NOW(), "lease"=${lease}, "attempts"="attempts"+1 WHERE id=(SELECT candidate.id FROM "Job" candidate WHERE candidate."doneAt" IS NULL AND candidate."attempts"<8 AND candidate."runAt"<=NOW() AND (candidate."lockedAt" IS NULL OR candidate."lockedAt"<NOW()-INTERVAL '10 minutes') AND NOT EXISTS (SELECT 1 FROM "Job" running WHERE running.id<>candidate.id AND running."doneAt" IS NULL AND running."lockedAt">NOW()-INTERVAL '10 minutes' AND running.payload->>'raidId'=candidate.payload->>'raidId') ORDER BY candidate."priority" DESC, candidate."runAt" FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`;
+    >`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC'), "lease"=${lease}, "attempts"="attempts"+1 WHERE id=(SELECT candidate.id FROM "Job" candidate WHERE candidate."doneAt" IS NULL AND candidate."failedAt" IS NULL AND candidate."attempts"<${JOB_MAX_ATTEMPTS} AND candidate."runAt"<=(NOW() AT TIME ZONE 'UTC') AND (candidate."lockedAt" IS NULL OR candidate."lockedAt"<(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes') AND NOT EXISTS (SELECT 1 FROM "Job" running WHERE running.id<>candidate.id AND running."doneAt" IS NULL AND running."failedAt" IS NULL AND running."lockedAt">(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes' AND running.payload->>'raidId'=candidate.payload->>'raidId') ORDER BY candidate."priority" DESC, candidate."runAt" FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`;
   });
   return rows[0] || null;
 }
-export async function finishJob(job: Job, error?: string, delaySeconds?: number) {
-  await db.job.updateMany({
+export async function finishJob(
+  job: Job,
+  error?: string,
+  delaySeconds?: number,
+  options: { refundAttempt?: boolean } = {},
+) {
+  if (!error) {
+    await db.job.updateMany({
+      where: { id: job.id, lease: job.lease },
+      data: { doneAt: new Date(), lockedAt: null, lease: null, error: null },
+    });
+    return { dead: false };
+  }
+  const dead = !options.refundAttempt && job.attempts >= JOB_MAX_ATTEMPTS;
+  const updated = await db.job.updateMany({
     where: { id: job.id, lease: job.lease },
-    data: error
-      ? {
-          lockedAt: null,
-          lease: null,
-          error,
-          runAt: new Date(
-            Date.now() + (delaySeconds || Math.min(900, 30 * 2 ** job.attempts)) * 1000,
-          ),
-        }
-      : { doneAt: new Date(), lockedAt: null, lease: null, error: null },
+    data: {
+      lockedAt: null,
+      lease: null,
+      error,
+      ...(options.refundAttempt ? { attempts: { decrement: 1 } } : {}),
+      ...(dead ? { failedAt: new Date() } : {}),
+      runAt: new Date(Date.now() + (delaySeconds || Math.min(900, 30 * 2 ** job.attempts)) * 1000),
+    },
   });
+  return { dead: dead && updated.count === 1 };
 }

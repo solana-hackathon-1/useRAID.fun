@@ -8,6 +8,7 @@ import { AdminAction, SettingsForm } from '@/components/admin';
 import { AdminPaymentForm } from '@/components/raid-tools';
 import { fundingPricing } from '@/lib/raid-funding';
 import { launchpadsAvailable } from '@/lib/release';
+import { JOB_MAX_ATTEMPTS } from '@/lib/queue';
 import { UsdcPaymentForm } from '@/components/usdc-operations';
 import { formatUsdc, studioSandbox, usdcSettings } from '@/lib/usdc';
 export const dynamic = 'force-dynamic';
@@ -364,7 +365,8 @@ export default async function AdminPage() {
           {jobs.map((j) => (
             <div className="admin-row" key={j.id}>
               <strong>
-                {j.kind} · attempt {j.attempts}/8
+                {j.kind} ·{' '}
+                {j.failedAt ? 'dead-lettered' : `attempt ${j.attempts}/${JOB_MAX_ATTEMPTS}`}
               </strong>
               <p>{j.error}</p>
               <AdminAction action="retry" id={j.id} label="Retry job" values={{}} />

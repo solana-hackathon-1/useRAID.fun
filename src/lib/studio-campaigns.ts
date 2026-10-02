@@ -64,69 +64,73 @@ export async function saveStudioRaid(user: User, input: unknown, id?: string) {
   } catch {
     /* Drafts retain links while provider is unavailable. */
   }
-  return db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
-    if (id) {
-      await lockTracking(tx, id);
-      const existing = await tx.raid.findUnique({ where: { id } });
-      if (!existing || existing.creatorId !== user.id) throw new HttpError(404, 'Draft not found.');
-      if (existing.studioVersion !== 1 || existing.status !== 'DRAFT' || existing.hidden)
-        throw new HttpError(409, 'Only your new Studio drafts can be edited.');
-    }
-    const settings = usdcSettings(),
-      now = new Date();
-    const token =
-      data.projectType === 'TOKEN'
-        ? await tx.token.upsert({
-            where: { mint: data.mint },
-            create: {
-              mint: data.mint,
-              name: data.name,
-              symbol: data.symbol,
-              imageUri: data.imageUri || null,
-            },
-            update: {},
-          })
-        : null;
-    const fields = {
-      studioVersion: 1,
-      fundingAsset: 'USDC',
-      fundingNetwork: settings.network,
-      trackingVersion: 2,
-      ruleVersion: 4,
-      scoringVersion: 2,
-      officialHandle: config.handle,
-      title: data.title,
-      description: data.description,
-      mint: token?.mint || null,
-      projectName: token?.name || data.title,
-      projectSymbol: token?.symbol || '',
-      imageUri: data.imageUri || token?.imageUri || null,
-      impressionTarget: data.impressionTarget,
-      quoteRate: settings.rateUnits,
-      poolUnits: settings.rateUnits ? quoteUsdc(data.impressionTarget, settings.rateUnits) : null,
-      fundingStatus: 'PENDING',
-      startsAt: now,
-      endsAt: new Date(+now + data.duration * 3600000),
-    };
-    const raid = id
-      ? await tx.raid.update({ where: { id }, data: fields })
-      : await tx.raid.create({
-          data: { ...fields, creatorId: user.id, tag: `raid_${randomBytes(5).toString('hex')}` },
+  return db.$transaction(
+    async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+      if (id) {
+        await lockTracking(tx, id);
+        const existing = await tx.raid.findUnique({ where: { id } });
+        if (!existing || existing.creatorId !== user.id)
+          throw new HttpError(404, 'Draft not found.');
+        if (existing.studioVersion !== 1 || existing.status !== 'DRAFT' || existing.hidden)
+          throw new HttpError(409, 'Only your new Studio drafts can be edited.');
+      }
+      const settings = usdcSettings(),
+        now = new Date();
+      const token =
+        data.projectType === 'TOKEN'
+          ? await tx.token.upsert({
+              where: { mint: data.mint },
+              create: {
+                mint: data.mint,
+                name: data.name,
+                symbol: data.symbol,
+                imageUri: data.imageUri || null,
+              },
+              update: {},
+            })
+          : null;
+      const fields = {
+        studioVersion: 1,
+        fundingAsset: 'USDC',
+        fundingNetwork: settings.network,
+        trackingVersion: 2,
+        ruleVersion: 4,
+        scoringVersion: 2,
+        officialHandle: config.handle,
+        title: data.title,
+        description: data.description,
+        mint: token?.mint || null,
+        projectName: token?.name || data.title,
+        projectSymbol: token?.symbol || '',
+        imageUri: data.imageUri || token?.imageUri || null,
+        impressionTarget: data.impressionTarget,
+        quoteRate: settings.rateUnits,
+        poolUnits: settings.rateUnits ? quoteUsdc(data.impressionTarget, settings.rateUnits) : null,
+        fundingStatus: 'PENDING',
+        startsAt: now,
+        endsAt: new Date(+now + data.duration * 3600000),
+      };
+      const raid = id
+        ? await tx.raid.update({ where: { id }, data: fields })
+        : await tx.raid.create({
+            data: { ...fields, creatorId: user.id, tag: `raid_${randomBytes(5).toString('hex')}` },
+          });
+      await tx.raidBriefPost.deleteMany({ where: { raidId: raid.id, postId: { notIn: ids } } });
+      for (const postId of ids) {
+        const preview = previews.find((p) => p.id === postId);
+        await tx.raidBriefPost.upsert({
+          where: { raidId_postId: { raidId: raid.id, postId } },
+          create: { raidId: raid.id, postId, ...(preview ? { preview, validatedAt: now } : {}) },
+          update: preview
+            ? { preview, validatedAt: now }
+            : { validatedAt: null, preview: Prisma.JsonNull },
         });
-    await tx.raidBriefPost.deleteMany({ where: { raidId: raid.id, postId: { notIn: ids } } });
-    for (const postId of ids) {
-      const preview = previews.find((p) => p.id === postId);
-      await tx.raidBriefPost.upsert({
-        where: { raidId_postId: { raidId: raid.id, postId } },
-        create: { raidId: raid.id, postId, ...(preview ? { preview, validatedAt: now } : {}) },
-        update: preview
-          ? { preview, validatedAt: now }
-          : { validatedAt: null, preview: Prisma.JsonNull },
-      });
-    }
-    return { id: raid.id };
-  });
+      }
+      return { id: raid.id };
+    },
+    { timeout: 30000 },
+  );
 }
 export async function launchStudioRaid(
   user: User,
@@ -153,83 +157,90 @@ export async function launchStudioRaid(
   );
   if (!targets.length || previews.length !== targets.length)
     throw new HttpError(409, 'Validate all target posts before launch.');
-  return db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
-    await lockTracking(tx, id);
-    await lockBalance(tx, user.id);
-    const raid = await tx.raid.findUniqueOrThrow({
-      where: { id },
-      include: { creator: true, briefPosts: true },
-    });
-    if (
-      raid.creatorId !== user.id ||
-      raid.studioVersion !== 1 ||
-      raid.hidden ||
-      raid.creator.suspended
-    )
-      throw new HttpError(403, 'Campaign access is restricted.');
-    if (raid.status === 'ACTIVE' || raid.status === 'ENDED') return { id };
-    if (raid.status !== 'DRAFT') throw new HttpError(409, 'Only drafts can launch.');
-    if (!(await tx.xAccount.findUnique({ where: { userId: user.id } })))
-      throw new HttpError(403, 'Connect X before launching.');
-    if (!(await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
-      throw new HttpError(403, 'Connect your wallet from Account before funding.');
-    const settings = await tx.settings.upsert({ where: { id: 'global' }, create: {}, update: {} }),
-      funding = usdcSettings();
-    if (
-      !trackingEnabled() ||
-      !funding.ready ||
-      !funding.rateUnits ||
-      (!studioSandbox() &&
-        (!settings.collectionEnabled || !config.liveApproved || !process.env.X_BEARER_TOKEN))
-    )
-      throw new HttpError(503, 'Live campaign funding is not ready. Your draft is saved.');
-    if (
-      raid.briefPosts.length !== previews.length ||
-      raid.briefPosts.some((p) => !previews.some((v) => v.id === p.postId))
-    )
-      throw new HttpError(409, 'Target posts changed; review and retry.');
-    const pool = quoteUsdc(raid.impressionTarget!, funding.rateUnits);
-    if (pool.toString() !== expectedUnits || raid.quoteRate !== funding.rateUnits)
-      throw new HttpError(409, 'Funding rate changed. Save draft again to review updated quote.');
-    if ((await balance(user.id, tx)).available < pool)
-      throw new HttpError(409, 'Insufficient USDC. Deposit funds to continue.');
-    const now = new Date();
-    if (
-      (await tx.raid.count({
-        where: { status: { in: ['ACTIVE', 'SCHEDULED'] }, hidden: false, endsAt: { gt: now } },
-      })) >= settings.maxActiveRaids
-    )
-      throw new HttpError(409, 'Campaign capacity reached. Try after another Raid ends.');
-    await tx.balanceEntry.create({
-      data: {
-        key: `raid-reserve:${id}`,
-        userId: user.id,
-        raidId: id,
-        network: funding.network,
-        kind: 'RAID_RESERVED',
-        availableDelta: -pool,
-        reservedDelta: pool,
-      },
-    });
-    for (const preview of previews)
-      await tx.raidBriefPost.update({
-        where: { raidId_postId: { raidId: id, postId: preview.id } },
-        data: { preview, validatedAt: now },
+  return db.$transaction(
+    async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+      await lockTracking(tx, id);
+      await lockBalance(tx, user.id);
+      const raid = await tx.raid.findUniqueOrThrow({
+        where: { id },
+        include: { creator: true, briefPosts: true },
       });
-    await tx.raid.update({
-      where: { id },
-      data: {
-        status: 'ACTIVE',
-        fundingStatus: 'VERIFIED',
-        poolUnits: pool,
-        fundingNetwork: funding.network,
-        fundingRecipient: funding.recipient,
-        fundedAt: now,
-        startsAt: now,
-        endsAt: new Date(+now + (+raid.endsAt - +raid.startsAt)),
-      },
-    });
-    return { id };
-  });
+      if (
+        raid.creatorId !== user.id ||
+        raid.studioVersion !== 1 ||
+        raid.hidden ||
+        raid.creator.suspended
+      )
+        throw new HttpError(403, 'Campaign access is restricted.');
+      if (raid.status === 'ACTIVE' || raid.status === 'ENDED') return { id };
+      if (raid.status !== 'DRAFT') throw new HttpError(409, 'Only drafts can launch.');
+      if (!(await tx.xAccount.findUnique({ where: { userId: user.id } })))
+        throw new HttpError(403, 'Connect X before launching.');
+      if (!(await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
+        throw new HttpError(403, 'Connect your wallet from Account before funding.');
+      const settings = await tx.settings.upsert({
+          where: { id: 'global' },
+          create: {},
+          update: {},
+        }),
+        funding = usdcSettings();
+      if (
+        !trackingEnabled() ||
+        !funding.ready ||
+        !funding.rateUnits ||
+        (!studioSandbox() &&
+          (!settings.collectionEnabled || !config.liveApproved || !process.env.X_BEARER_TOKEN))
+      )
+        throw new HttpError(503, 'Live campaign funding is not ready. Your draft is saved.');
+      if (
+        raid.briefPosts.length !== previews.length ||
+        raid.briefPosts.some((p) => !previews.some((v) => v.id === p.postId))
+      )
+        throw new HttpError(409, 'Target posts changed; review and retry.');
+      const pool = quoteUsdc(raid.impressionTarget!, funding.rateUnits);
+      if (pool.toString() !== expectedUnits || raid.quoteRate !== funding.rateUnits)
+        throw new HttpError(409, 'Funding rate changed. Save draft again to review updated quote.');
+      if ((await balance(user.id, tx)).available < pool)
+        throw new HttpError(409, 'Insufficient USDC. Deposit funds to continue.');
+      const now = new Date();
+      if (
+        (await tx.raid.count({
+          where: { status: { in: ['ACTIVE', 'SCHEDULED'] }, hidden: false, endsAt: { gt: now } },
+        })) >= settings.maxActiveRaids
+      )
+        throw new HttpError(409, 'Campaign capacity reached. Try after another Raid ends.');
+      await tx.balanceEntry.create({
+        data: {
+          key: `raid-reserve:${id}`,
+          userId: user.id,
+          raidId: id,
+          network: funding.network,
+          kind: 'RAID_RESERVED',
+          availableDelta: -pool,
+          reservedDelta: pool,
+        },
+      });
+      for (const preview of previews)
+        await tx.raidBriefPost.update({
+          where: { raidId_postId: { raidId: id, postId: preview.id } },
+          data: { preview, validatedAt: now },
+        });
+      await tx.raid.update({
+        where: { id },
+        data: {
+          status: 'ACTIVE',
+          fundingStatus: 'VERIFIED',
+          poolUnits: pool,
+          fundingNetwork: funding.network,
+          fundingRecipient: funding.recipient,
+          fundedAt: now,
+          startsAt: now,
+          endsAt: new Date(+now + (+raid.endsAt - +raid.startsAt)),
+        },
+      });
+      return { id };
+    },
+    { timeout: 30000 },
+  );
 }

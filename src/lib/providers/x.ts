@@ -5,18 +5,20 @@ export class ProviderError extends Error {
   constructor(
     message: string,
     public retryAfter = 60,
+    public deferred = false,
+    public status?: number,
   ) {
     super(message);
   }
 }
 export async function reserveUsage(units: number, raidId?: string, identity = false) {
   if (!identity && (!config.liveApproved || !process.env.X_BEARER_TOKEN))
-    throw new ProviderError('Live collection has not passed the feasibility gate.', 300);
+    throw new ProviderError('Live collection has not passed the feasibility gate.', 300, true);
   return db.$transaction(async (tx) => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(729102)`;
     const settings = await tx.settings.upsert({ where: { id: 'global' }, create: {}, update: {} });
     if (!identity && !settings.collectionEnabled)
-      throw new ProviderError('Collection is paused.', 300);
+      throw new ProviderError('Collection is paused.', 300, true);
     const now = new Date();
     const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
     const day = new Date(now.toISOString().slice(0, 10));
@@ -31,7 +33,7 @@ export async function reserveUsage(units: number, raidId?: string, identity = fa
       (usage._sum.reservedCents || 0) + cents > settings.cutoffCents ||
       calls >= settings.dailyRequestLimit
     )
-      throw new ProviderError('Collection budget or daily request limit reached.', 900);
+      throw new ProviderError('Collection budget or daily request limit reached.', 900, true);
     return tx.providerUsage.create({
       data: {
         provider: 'x',
@@ -51,12 +53,14 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
       throw new ProviderError(
         'X endpoint is waiting for its rate-limit reset.',
         Math.max(1, Math.ceil((+state.blockedUntil - Date.now()) / 1000)),
+        true,
       );
     if (state?.remaining != null && state.resetAt && state.resetAt > new Date()) {
       if (state.remaining <= 0)
         throw new ProviderError(
           'X endpoint quota exhausted.',
           Math.max(1, Math.ceil((+state.resetAt - Date.now()) / 1000)),
+          true,
         );
       await tx.xEndpointState.update({
         where: { key: path },
@@ -69,6 +73,8 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` },
     signal: AbortSignal.timeout(20000),
     cache: 'no-store',
+  }).catch(() => {
+    throw new ProviderError('X is unreachable.', 60, true);
   });
   const remainingHeader = response.headers.get('x-rate-limit-remaining');
   const resetHeader = response.headers.get('x-rate-limit-reset');
@@ -119,6 +125,8 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     throw new ProviderError(
       `X returned ${response.status}${response.status === 401 ? ' (credentials expired or invalid)' : ''}.`,
       response.status === 429 ? Math.max(60, Math.ceil((reset - Date.now()) / 1000) || 900) : 60,
+      response.status === 429 || response.status >= 500,
+      response.status,
     );
   }
   const body = await response.json();

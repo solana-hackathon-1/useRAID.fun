@@ -1,6 +1,9 @@
 import { eligible, normalize, type XPost } from './domain';
 import { matchedTarget } from './studio-attribution';
 
+export const LOCKED_PHASES = ['ALLOCATED', 'HELD', 'HELD_RESOLVED'] as const;
+export const isLockedPhase = (phase: string) =>
+  (LOCKED_PHASES as readonly string[]).includes(phase);
 export type TrackingPost = {
   id: string;
   authorId: string;

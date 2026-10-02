@@ -137,6 +137,81 @@ suite('Studio atomic balances and settlement', () => {
     ).toBe(1);
   });
 
+  it('settles a large result with bulk allocation inserts and conserves the pool', async () => {
+    const source = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+    const { id: _id, fundingSignature: _signature, ...fields } = source;
+    const count = 60;
+    const users = await Promise.all(
+      Array.from({ length: count }, (_, i) =>
+        db.user.create({ data: { xId: `bulk-${i}`, handle: `bulk${i}` } }),
+      ),
+    );
+    const pool = 60_000_000n;
+    const bulk = await db.raid.create({
+      data: {
+        ...fields,
+        tag: 'raid_bulk_settlement',
+        status: 'ENDED',
+        trackingPhase: 'APPROVED',
+        poolUnits: pool,
+        impressionTarget: 60000,
+      },
+    });
+    await db.balanceEntry.create({
+      data: {
+        key: 'bulk-reserve',
+        userId: owner.id,
+        raidId: bulk.id,
+        kind: 'RAID_RESERVED',
+        availableDelta: 0n,
+        reservedDelta: pool,
+      },
+    });
+    const result = await db.campaignResult.create({
+      data: {
+        raidId: bulk.id,
+        version: 1,
+        fingerprint: 'bulk-test',
+        payload: {
+          participants: users.map((u, i) => ({
+            enrollmentId: `e${i}`,
+            userId: u.id,
+            xId: u.xId,
+            walletAddress: Keypair.generate().publicKey.toBase58(),
+          })),
+          contributions: users.map((u, i) => ({
+            id: `p${i}`,
+            enrollmentId: `e${i}`,
+            authorId: u.xId,
+            views: 1000,
+            qualification: 'QUALIFIED',
+            availability: 'AVAILABLE',
+            reviewStatus: 'CLEAR',
+            hidden: false,
+            deleted: false,
+          })),
+        },
+      },
+    });
+    await db.raid.update({ where: { id: bulk.id }, data: { activeResultId: result.id } });
+    await allocateUsdcRaid(bulk.id);
+    await allocateUsdcRaid(bulk.id);
+    const allocations = await db.usdcAllocation.findMany({ where: { raidId: bulk.id } });
+    expect(allocations).toHaveLength(count);
+    expect(
+      await db.usdcTransfer.count({
+        where: { allocationId: { in: allocations.map((a) => a.id) }, kind: 'REWARD' },
+      }),
+    ).toBe(count);
+    const settled = await db.balanceEntry.findUniqueOrThrow({
+      where: { key: `raid-settle:${bulk.id}` },
+    });
+    expect(allocations.reduce((sum, a) => sum + a.amount, 0n) + settled.availableDelta).toBe(pool);
+    expect((await db.raid.findUniqueOrThrow({ where: { id: bulk.id } })).trackingPhase).toBe(
+      'ALLOCATED',
+    );
+  });
+
   it('keeps studio money rows bound to their user and raid with RESTRICT foreign keys', async () => {
     const rules = await db.$queryRaw<{ name: string; del: string; upd: string }[]>`
       SELECT conname AS name, confdeltype::text AS del, confupdtype::text AS upd

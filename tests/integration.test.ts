@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { db } from '../src/lib/db';
 import { createRaid, changeRaid } from '../src/lib/campaigns';
 import { collect, ingest, refresh } from '../src/lib/collection';
-import { claimJob, enqueue, finishJob } from '../src/lib/queue';
+import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
 import { reserveUsage, lookupPosts } from '../src/lib/providers/x';
 import { config } from '../src/lib/config';
 import { metrics } from '../src/lib/domain';
@@ -198,5 +198,106 @@ integration('PostgreSQL integration', () => {
     expect((await db.post.findUniqueOrThrow({ where: { id: p.id } })).likes).toBe(1);
     await ingest(raidId, [{ ...p, entities: { mentions: [], hashtags: [] } }]);
     expect((await db.post.findUniqueOrThrow({ where: { id: p.id } })).deleted).toBe(true);
+  });
+  it('claims jobs by UTC regardless of session time zone', async () => {
+    await db.job.deleteMany();
+    await db.$executeRawUnsafe(`ALTER ROLE CURRENT_USER SET TimeZone='Pacific/Kiritimati'`);
+    await db.$disconnect();
+    await db.$connect();
+    try {
+      await enqueue('test', 'tz-future', { raidId: 'tz-a' }, new Date(Date.now() + 3600000));
+      const due = await enqueue('test', 'tz-due', { raidId: 'tz-b' }, new Date(Date.now() - 1000));
+      const claimed = await claimJob();
+      expect(claimed?.id).toBe(due.id);
+      expect(await claimJob()).toBeNull();
+      expect(Math.abs(+claimed!.lockedAt! - Date.now())).toBeLessThan(5000);
+    } finally {
+      await db.$executeRawUnsafe(`ALTER ROLE CURRENT_USER RESET TimeZone`);
+      await db.$disconnect();
+      await db.$connect();
+      await db.job.deleteMany();
+    }
+  });
+  it('dead-letters a job after the maximum attempts', async () => {
+    await db.job.deleteMany();
+    const queued = await enqueue('test', 'dead-1', { raidId: 'dead-a' });
+    for (let attempt = 1; attempt <= JOB_MAX_ATTEMPTS; attempt++) {
+      await db.job.update({
+        where: { id: queued.id },
+        data: { runAt: new Date(Date.now() - 1000) },
+      });
+      const job = (await claimJob())!;
+      expect(job.attempts).toBe(attempt);
+      const result = await finishJob(job, 'boom');
+      expect(result.dead).toBe(attempt === JOB_MAX_ATTEMPTS);
+    }
+    const row = await db.job.findUniqueOrThrow({ where: { id: queued.id } });
+    expect(row.failedAt).not.toBeNull();
+    expect(row.doneAt).toBeNull();
+    await db.job.update({ where: { id: queued.id }, data: { runAt: new Date(Date.now() - 1000) } });
+    expect(await claimJob()).toBeNull();
+    await db.job.deleteMany();
+  });
+  it('does not consume attempts for deferred provider errors', async () => {
+    await db.job.deleteMany();
+    const queued = await enqueue('test', 'deferred-1', { raidId: 'deferred-a' });
+    for (let i = 0; i < JOB_MAX_ATTEMPTS + 2; i++) {
+      await db.job.update({
+        where: { id: queued.id },
+        data: { runAt: new Date(Date.now() - 1000) },
+      });
+      const job = (await claimJob())!;
+      expect(job.attempts).toBe(1);
+      expect(await finishJob(job, 'paused', 300, { refundAttempt: true })).toEqual({ dead: false });
+    }
+    const row = await db.job.findUniqueOrThrow({ where: { id: queued.id } });
+    expect(row.attempts).toBe(0);
+    expect(row.failedAt).toBeNull();
+    await db.job.deleteMany();
+  });
+  it('never dead-letters through a stale lease', async () => {
+    await db.job.deleteMany();
+    await enqueue('test', 'stale-1', { raidId: 'stale-a' });
+    const job = (await claimJob())!;
+    await db.job.update({ where: { id: job.id }, data: { attempts: JOB_MAX_ATTEMPTS } });
+    expect(await finishJob({ ...job, attempts: JOB_MAX_ATTEMPTS, lease: 'x' }, 'e')).toEqual({
+      dead: false,
+    });
+    expect((await db.job.findUniqueOrThrow({ where: { id: job.id } })).failedAt).toBeNull();
+    await db.job.deleteMany();
+  });
+  it('treats transport failures and 5xx as deferred provider errors', async () => {
+    vi.stubEnv('X_BEARER_TOKEN', 'test-only');
+    await db.xEndpointState.deleteMany();
+    await db.settings.upsert({
+      where: { id: 'global' },
+      create: { collectionEnabled: true },
+      update: { collectionEnabled: true },
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => {
+        throw new TypeError('fetch failed');
+      }),
+    );
+    await expect(lookupPosts(['1'], raidId)).rejects.toMatchObject({ deferred: true });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response('{}', { status: 503 })),
+    );
+    await expect(lookupPosts(['1'], raidId)).rejects.toMatchObject({
+      deferred: true,
+      status: 503,
+    });
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response('{}', { status: 400 })),
+    );
+    await expect(lookupPosts(['1'], raidId)).rejects.toMatchObject({
+      deferred: false,
+      status: 400,
+    });
+    vi.unstubAllGlobals();
+    await db.xEndpointState.deleteMany();
   });
 });

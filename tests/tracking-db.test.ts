@@ -16,6 +16,7 @@ import {
   openDispute,
   resolveTracking,
   carryHeldFunds,
+  trackingBlockers,
   type ResultPayload,
 } from '../src/lib/tracking-review';
 import { trackingView } from '../src/lib/tracking-view';
@@ -23,7 +24,8 @@ import { scoreContributions } from '../src/lib/tracking-domain';
 import { processTrackingLookup } from '../src/lib/tracking-worker';
 import { settleNextRound } from '../src/lib/rewards';
 import { collect, refresh } from '../src/lib/collection';
-import { claimJob, finishJob } from '../src/lib/queue';
+import { claimJob, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
+import { runJob } from '../src/lib/worker-jobs';
 import type { XPost } from '../src/lib/domain';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
@@ -551,5 +553,89 @@ suite('tracking v2 database lifecycle', () => {
     await expect(submitTrackingPost(raidId, userId, '130')).rejects.toMatchObject({ status: 503 });
     await expect(ingestTracking(raidId, [xpost('130')])).rejects.toMatchObject({ status: 503 });
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'true');
+  });
+  describe('queue robustness', () => {
+    const drain = async (times: number) => {
+      for (let i = 0; i < times; i++) {
+        await db.job.updateMany({ data: { runAt: new Date(Date.now() - 1000) } });
+        const job = await claimJob();
+        if (!job) return;
+        await runJob(job);
+      }
+    };
+    async function submission(id: string) {
+      const submitted = await submitTrackingPost(raidId, userId, id);
+      return db.job.findUniqueOrThrow({ where: { key: `submission:${submitted.id}` } });
+    }
+    it('dead-letters an unresolvable submission as LOOKUP_FAILED and stops blocking finalization', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response(JSON.stringify({ data: [] }), { status: 200 })),
+      );
+      const job = await submission('201');
+      await drain(JOB_MAX_ATTEMPTS);
+      const dead = await db.job.findUniqueOrThrow({ where: { id: job.id } });
+      expect(dead.failedAt).not.toBeNull();
+      const row = await db.postSubmission.findFirstOrThrow({ where: { postId: '201' } });
+      expect(row).toMatchObject({ status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' });
+      await close();
+      expect(await db.$transaction((tx) => trackingBlockers(tx, raidId))).toBe(0);
+      expect(
+        (await db.raid.findUniqueOrThrow({ where: { id: raidId } })).collectionError,
+      ).toBeNull();
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count()).toBe(1);
+    });
+    it('does not dead-letter submissions while X is failing with 5xx or unreachable', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response('{}', { status: 503 })),
+      );
+      const job = await submission('202');
+      await drain(JOB_MAX_ATTEMPTS + 2);
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => {
+          throw new TypeError('fetch failed');
+        }),
+      );
+      await drain(JOB_MAX_ATTEMPTS + 2);
+      const row = await db.job.findUniqueOrThrow({ where: { id: job.id } });
+      expect(row.failedAt).toBeNull();
+      expect(row.attempts).toBe(0);
+      expect((await db.postSubmission.findFirstOrThrow({ where: { postId: '202' } })).status).toBe(
+        'QUEUED',
+      );
+    });
+    it('excludes a submission when X rejects the lookup as an invalid request', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response('{}', { status: 400 })),
+      );
+      const job = await submission('203');
+      await drain(1);
+      expect(await db.postSubmission.findFirstOrThrow({ where: { postId: '203' } })).toMatchObject({
+        status: 'EXCLUDED',
+        reasonCode: 'INVALID_POST',
+      });
+      expect((await db.job.findUniqueOrThrow({ where: { id: job.id } })).doneAt).not.toBeNull();
+      expect(await db.$transaction((tx) => trackingBlockers(tx, raidId))).toBe(0);
+    });
+    it('excludes a malformed stored post id without calling X', async () => {
+      const fetcher = vi.fn(async () => new Response('{}', { status: 200 }));
+      vi.stubGlobal('fetch', fetcher);
+      const enrollment = await db.raidEnrollment.findFirstOrThrow({ where: { raidId } });
+      const created = await db.postSubmission.create({
+        data: { raidId, enrollmentId: enrollment.id, postId: '99999999999999999999' },
+      });
+      await processTrackingLookup(raidId, created.postId, 'k', created.id);
+      expect(fetcher).not.toHaveBeenCalled();
+      expect(
+        await db.postSubmission.findUniqueOrThrow({ where: { id: created.id } }),
+      ).toMatchObject({ status: 'EXCLUDED', reasonCode: 'INVALID_POST' });
+    });
   });
 });
