@@ -6,14 +6,14 @@ import { db } from '../src/lib/db';
 import { config } from '../src/lib/config';
 import { createWalletChallenge, verifyWalletChallenge } from '../src/lib/wallet-auth';
 import { hash } from '../src/lib/auth';
+import { assertTestDatabase } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('wallet ownership PostgreSQL invariants', () => {
   const key = Keypair.generate();
   const address = key.publicKey.toBase58();
   let ownerId = '';
   beforeAll(() => {
-    if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-      throw Error('Use a dedicated useraid_test database.');
+    assertTestDatabase();
     config.demo = false;
     config.appUrl = 'http://localhost:3000';
   });

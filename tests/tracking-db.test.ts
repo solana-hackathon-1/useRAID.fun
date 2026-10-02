@@ -25,6 +25,7 @@ import { settleNextRound } from '../src/lib/rewards';
 import { collect, refresh } from '../src/lib/collection';
 import { claimJob, finishJob } from '../src/lib/queue';
 import type { XPost } from '../src/lib/domain';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 suite('tracking v2 database lifecycle', () => {
   let raidId: string, userId: string, adminId: string, launchId: string;
@@ -40,8 +41,7 @@ suite('tracking v2 database lifecycle', () => {
     ...patch,
   });
   beforeAll(() => {
-    if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-      throw Error('Use dedicated useraid_test database.');
+    assertTestDatabase();
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'true');
     vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'true');
     vi.stubEnv('X_BEARER_TOKEN', 'test-only');
@@ -53,9 +53,7 @@ suite('tracking v2 database lifecycle', () => {
     vi.stubEnv('PLATFORM_TREASURY_ADDRESS', Keypair.generate().publicKey.toBase58());
   });
   beforeEach(async () => {
-    await db.$executeRawUnsafe(
-      'TRUNCATE "User", "Token", "Job", "Settings", "ProviderUsage", "XEndpointState" CASCADE',
-    );
+    await truncateAll(db);
     const user = await db.user.create({ data: { handle: 'alice', xId: 'alice', approved: true } });
     userId = user.id;
     adminId = (await db.user.create({ data: { handle: 'admin', role: 'ADMIN' } })).id;

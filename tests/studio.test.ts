@@ -82,6 +82,8 @@ describe('Studio amounts and target attribution', () => {
     vi.stubEnv('NODE_ENV', 'development');
     vi.stubEnv('DATABASE_URL', 'postgresql://localhost/useraid');
     expect(studioSandbox()).toBe(false);
+    vi.stubEnv('DATABASE_URL', 'postgresql://db.prod.example.com/useraid_studio_test');
+    expect(studioSandbox()).toBe(false);
     vi.unstubAllEnvs();
     config.appUrl = original;
   });

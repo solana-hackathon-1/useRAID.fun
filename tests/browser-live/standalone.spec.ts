@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { createHash, randomBytes } from 'node:crypto';
 import { db } from '../../src/lib/db';
+import { assertTestDatabase, truncateAll } from '../helpers/db-guard';
 
 let session: string;
 
 test.beforeAll(async () => {
-  if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-    throw Error('Use dedicated useraid_test database.');
-  await db.$executeRawUnsafe('TRUNCATE "User", "Token", "Job", "RateLimit" CASCADE');
+  assertTestDatabase();
+  await truncateAll(db);
   const creator = await db.user.create({
     data: { xId: 'standalone-creator', handle: 'standalone', approved: true },
   });
@@ -30,7 +30,7 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(async () => {
-  await db.$executeRawUnsafe('TRUNCATE "User", "Token", "Job", "RateLimit" CASCADE');
+  await truncateAll(db);
   await db.$disconnect();
 });
 

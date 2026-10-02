@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { db } from '@/lib/db';
 import { hash, checkOrigin } from '@/lib/auth';
+import { failure } from '@/lib/http';
 import { sessionCookie } from '@/lib/studio-mode';
 export async function GET(_request: Request, { params }: { params: Promise<{ action: string }> }) {
   const { action } = await params;
@@ -26,7 +27,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
     if (token) await db.session.deleteMany({ where: { tokenHash: hash(token) } });
     jar.delete(sessionCookie());
     return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: 'Request rejected' }, { status: 403 });
+  } catch (error) {
+    return failure(error);
   }
 }

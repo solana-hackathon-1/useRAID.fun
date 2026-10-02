@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { createHash, randomBytes } from 'node:crypto';
 import { db } from '../../src/lib/db';
+import { assertTestDatabase, truncateAll } from '../helpers/db-guard';
 test.describe.skip('deferred launchpad and creator-fee rewards', () => {
   const hash = (value: string) => createHash('sha256').update(value).digest('hex');
 
@@ -10,9 +11,8 @@ test.describe.skip('deferred launchpad and creator-fee rewards', () => {
   let paidParticipantSession = '';
 
   test.beforeAll(async () => {
-    if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-      throw Error('Use dedicated useraid_test database.');
-    await db.$executeRawUnsafe('TRUNCATE "User", "Token" CASCADE');
+    assertTestDatabase();
+    await truncateAll(db);
     await db.settings.upsert({
       where: { id: 'global' },
       create: {
@@ -126,7 +126,7 @@ test.describe.skip('deferred launchpad and creator-fee rewards', () => {
   });
 
   test.afterAll(async () => {
-    await db.$executeRawUnsafe('TRUNCATE "User", "Token" CASCADE');
+    await truncateAll(db);
     await db.$disconnect();
   });
 

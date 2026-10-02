@@ -6,6 +6,7 @@ import { claimJob, enqueue, finishJob } from '../src/lib/queue';
 import { reserveUsage, lookupPosts } from '../src/lib/providers/x';
 import { config } from '../src/lib/config';
 import { metrics } from '../src/lib/domain';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('PostgreSQL integration', () => {
   let user: Awaited<ReturnType<typeof db.user.create>>, raidId: string;
@@ -18,11 +19,8 @@ integration('PostgreSQL integration', () => {
   };
   beforeAll(async () => {
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'false');
-    if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-      throw Error('Use a dedicated useraid_test database.');
-    await db.$executeRawUnsafe(
-      'TRUNCATE "Event","ModerationEvent","ProviderUsage","XEndpointState","Job","RateLimit","Snapshot","Post","Raid","Token","Session","OAuthAttempt","User","Settings" CASCADE',
-    );
+    assertTestDatabase();
+    await truncateAll(db);
     user = await db.user.create({ data: { xId: 'test-owner', handle: 'test', approved: true } });
     await db.xAccount.create({
       data: { userId: user.id, xUserId: 'test-owner', username: 'test', displayName: 'Test' },

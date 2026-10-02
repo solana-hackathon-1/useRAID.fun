@@ -3,19 +3,19 @@ import { db } from '../src/lib/db';
 import { config } from '../src/lib/config';
 import { hash } from '../src/lib/auth';
 import { startAttempt, claimAttempt, completeConnection, disconnectX } from '../src/lib/x-oauth';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('X connection PostgreSQL invariants', () => {
   const profile = { id: '123456789', username: 'alice', name: 'Alice' };
   beforeAll(() => {
-    if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-      throw Error('Use a dedicated useraid_test database.');
+    assertTestDatabase();
     config.demo = false;
     config.appUrl = 'http://localhost:3000';
     vi.stubEnv('X_CLIENT_ID', 'fixture-client');
     vi.stubEnv('X_CLIENT_SECRET', 'fixture-secret');
   });
   beforeEach(async () => {
-    await db.$executeRawUnsafe('TRUNCATE "User", "OAuthAttempt", "Token" CASCADE');
+    await truncateAll(db);
   });
   afterAll(async () => {
     vi.unstubAllEnvs();

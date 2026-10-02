@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { assertTestDatabase } from './tests/helpers/db-guard';
 
-if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-  throw Error('Live browser fixtures require dedicated useraid_test database.');
+assertTestDatabase();
 
 export default defineConfig({
   testDir: './tests/browser-live',

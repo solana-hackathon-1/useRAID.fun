@@ -3,12 +3,12 @@ import { createHash, randomBytes } from 'node:crypto';
 import { db } from '../../src/lib/db';
 import { ingestTracking } from '../../src/lib/tracking';
 import { finalizeTracking } from '../../src/lib/tracking-review';
+import { assertTestDatabase, truncateAll } from '../helpers/db-guard';
 let raidId: string, userId: string, token: string;
 test.beforeAll(async () => {
-  if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-    throw Error('Use dedicated useraid_test database.');
+  assertTestDatabase();
   process.env.X_TRACKING_V2_ENABLED = 'true';
-  await db.$executeRawUnsafe('TRUNCATE "User", "Token", "Job", "RateLimit" CASCADE');
+  await truncateAll(db);
   const user = await db.user.create({ data: { xId: 'browser-tracker', handle: 'tracker' } });
   userId = user.id;
   await db.xAccount.create({
@@ -44,7 +44,7 @@ test.beforeAll(async () => {
   ).id;
 });
 test.afterAll(async () => {
-  await db.$executeRawUnsafe('TRUNCATE "User", "Token", "Job" CASCADE');
+  await truncateAll(db);
   await db.$disconnect();
 });
 test('join, submit, qualify, refresh, review, dispute, and payout eligibility', async ({

@@ -4,8 +4,8 @@ import { createHash, randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { ingest } from '../src/lib/collection';
 import { db as appDb } from '../src/lib/db';
-if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-  throw Error('Requires isolated useraid_test database');
+import { assertTestDatabase } from './helpers/db-guard';
+assertTestDatabase();
 const db = new PrismaClient();
 const server = spawn('node', ['node_modules/next/dist/bin/next', 'start', '--port', '3001'], {
   env: {

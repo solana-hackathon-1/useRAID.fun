@@ -704,3 +704,10 @@ export async function financeLaunch(launchId: string) {
     throw error;
   }
 }
+export const __test = {
+  reconcileFinancial,
+  payRound,
+  claimFees,
+  verifyFeeRecipient,
+  recordAndBroadcast,
+};

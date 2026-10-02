@@ -5,6 +5,7 @@ import { config } from '../src/lib/config';
 import { saveStudioRaid, launchStudioRaid } from '../src/lib/studio-campaigns';
 import { balance, requestWithdrawal, rejectWithdrawal } from '../src/lib/usdc';
 import { allocateUsdcRaid } from '../src/lib/studio-finance';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 vi.mock('../src/lib/providers/x', () => ({
   lookupPosts: vi.fn(async (ids: string[]) => ({
     data: ids.map((id) => ({ id, text: 'Public target', author_id: 'project' })),
@@ -14,9 +15,8 @@ const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 suite('Studio atomic balances and settlement', () => {
   let owner: Awaited<ReturnType<typeof db.user.create>>, raidId: string;
   beforeAll(async () => {
-    if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-      throw Error('Use isolated useraid_test DB.');
-    await db.$executeRawUnsafe('TRUNCATE "User", "Token", "Settings", "Job" CASCADE');
+    assertTestDatabase();
+    await truncateAll(db);
     vi.stubEnv('USDC_MICROS_PER_1000_IMPRESSIONS', '1000000');
     vi.stubEnv('USDC_FUNDING_ADDRESS', Keypair.generate().publicKey.toBase58());
     vi.stubEnv('SOLANA_RPC_URL', 'https://example.invalid');

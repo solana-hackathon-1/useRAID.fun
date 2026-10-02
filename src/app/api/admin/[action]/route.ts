@@ -2,14 +2,20 @@ import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { settingsInput } from '@/lib/validation';
-import { failure } from '@/lib/http';
+import { z } from 'zod';
+import { failure, readJson } from '@/lib/http';
 import { fundingPricing, fundingQuote } from '@/lib/raid-funding';
 export async function POST(request: Request, { params }: { params: Promise<{ action: string }> }) {
   try {
     checkOrigin(request);
     const user = await requireUser(true);
     const { action } = await params;
-    const b = await request.json();
+    const b = await readJson(
+      request,
+      z
+        .object({ reason: z.string().max(5000).optional(), id: z.string().max(100).optional() })
+        .passthrough(),
+    );
     const reason = typeof b.reason === 'string' ? b.reason.trim().slice(0, 500) : '';
     if (!reason) throw new HttpError(400, 'A reason is required for the audit log.');
     await db.$transaction(async (tx) => {

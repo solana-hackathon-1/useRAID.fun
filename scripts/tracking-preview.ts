@@ -1,9 +1,9 @@
 import 'dotenv/config';
 import { db } from '../src/lib/db';
 import { ingestTracking } from '../src/lib/tracking';
+import { assertTestDatabase } from '../tests/helpers/db-guard';
 
-if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_dev')
-  throw new Error('Local tracking preview requires isolated useraid_dev database.');
+assertTestDatabase('useraid_dev');
 if (process.env.X_TRACKING_V2_ENABLED !== 'true')
   throw new Error('Enable X_TRACKING_V2_ENABLED for local preview.');
 

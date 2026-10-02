@@ -5,13 +5,13 @@ import { createRaid, changeRaid } from '../src/lib/campaigns';
 import { completeImpressionTarget } from '../src/lib/raid-progress';
 import { allocateRaidFunding } from '../src/lib/raid-allocation';
 import { config } from '../src/lib/config';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 
 suite('standalone Raid database lifecycle', () => {
   let ownerId: string, raidId: string;
   beforeAll(async () => {
-    if (new URL(process.env.DATABASE_URL || 'http://invalid').pathname !== '/useraid_test')
-      throw Error('Use dedicated useraid_test database.');
+    assertTestDatabase();
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'true');
     vi.stubEnv('RAID_LAMPORTS_PER_1000_IMPRESSIONS', '1000000000');
     vi.stubEnv('RAID_FUNDING_ADDRESS', Keypair.generate().publicKey.toBase58());
@@ -19,9 +19,7 @@ suite('standalone Raid database lifecycle', () => {
     vi.stubEnv('SOLANA_RPC_URL', 'https://example.invalid');
     config.demo = false;
     config.liveApproved = true;
-    await db.$executeRawUnsafe(
-      'TRUNCATE "User", "Token", "Job", "Settings", "ProviderUsage", "XEndpointState" CASCADE',
-    );
+    await truncateAll(db);
     const owner = await db.user.create({ data: { xId: 'owner', handle: 'owner', approved: true } });
     ownerId = owner.id;
     await db.xAccount.create({
