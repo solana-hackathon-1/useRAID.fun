@@ -24,7 +24,9 @@ integration('PostgreSQL integration', () => {
       'TRUNCATE "Event","ModerationEvent","ProviderUsage","XEndpointState","Job","RateLimit","Snapshot","Post","Raid","Token","Session","OAuthAttempt","User","Settings" CASCADE',
     );
     user = await db.user.create({ data: { xId: 'test-owner', handle: 'test', approved: true } });
-    await db.xAccount.create({ data: { userId: user.id, xUserId: 'test-owner', username: 'test', displayName: 'Test' } });
+    await db.xAccount.create({
+      data: { userId: user.id, xUserId: 'test-owner', username: 'test', displayName: 'Test' },
+    });
     const raid = await createRaid(user, input);
     raidId = raid.id;
     config.demo = false;

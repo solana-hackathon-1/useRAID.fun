@@ -42,7 +42,9 @@ export function ExternalActions({
               Raid on X
             </a>
           )}
-          <button className="button secondary" disabled>Trading · Coming soon</button>
+          <button className="button secondary" disabled>
+            Trading · Coming soon
+          </button>
         </>
       )}
     </div>

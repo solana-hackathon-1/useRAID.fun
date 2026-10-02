@@ -9,7 +9,10 @@ export async function POST(request: Request) {
     const user = await requireUser();
     await rateLimit(`create:${user.id}`, 10, 3600);
     const input = await request.json();
-    return NextResponse.json(input.studioVersion === 1 ? await saveStudioRaid(user, input) : await createRaid(user, input), { status: 201 });
+    return NextResponse.json(
+      input.studioVersion === 1 ? await saveStudioRaid(user, input) : await createRaid(user, input),
+      { status: 201 },
+    );
   } catch (e) {
     return failure(e);
   }

@@ -208,7 +208,11 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
           },
           update: {
             handle: profile.username,
-            ...(admin ? { role: 'ADMIN', approved: true } : localAutoApprove ? { approved: true } : {}),
+            ...(admin
+              ? { role: 'ADMIN', approved: true }
+              : localAutoApprove
+                ? { approved: true }
+                : {}),
           },
         });
     const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });

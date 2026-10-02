@@ -16,7 +16,11 @@ if (!process.env.DATABASE_URL) {
         signedTransactions: await tx.financialTx.count({ where: { status: 'SIGNED' } }),
         unallocatedClaims:
           await tx.$queryRaw`SELECT count(*)::text AS count, sum("grossLamports")::text AS gross, sum("costLamports")::text AS costs FROM "FeeClaim" WHERE "roundId" IS NULL`,
-        standaloneFunding: await tx.raid.groupBy({ by: ['fundingStatus'], where: { mint: null }, _count: true }),
+        standaloneFunding: await tx.raid.groupBy({
+          by: ['fundingStatus'],
+          where: { mint: null },
+          _count: true,
+        }),
         unpaidStandaloneAllocations: await tx.raidAllocation.count({ where: { paidAt: null } }),
       };
     });

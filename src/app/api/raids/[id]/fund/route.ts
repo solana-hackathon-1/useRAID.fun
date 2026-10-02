@@ -10,5 +10,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     await rateLimit(`fund:${user.id}`, 10, 60);
     const body = z.object({ signature: z.string().max(90) }).parse(await request.json());
     return NextResponse.json(await verifyRaidFunding((await params).id, user.id, body.signature));
-  } catch (error) { return failure(error); }
+  } catch (error) {
+    return failure(error);
+  }
 }

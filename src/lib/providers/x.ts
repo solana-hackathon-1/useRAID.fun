@@ -154,8 +154,11 @@ export async function searchPosts(raid: {
   const end = new Date(
     Math.min(+raid.endsAt, raid.searchEndAt ? +raid.searchEndAt : Date.now() - 10000),
   );
-  const start = new Date(raid.ruleVersion && raid.ruleVersion >= 4 && raid.coveredUntil
-    ? Math.max(+raid.startsAt, +raid.coveredUntil - 1000) : +raid.startsAt);
+  const start = new Date(
+    raid.ruleVersion && raid.ruleVersion >= 4 && raid.coveredUntil
+      ? Math.max(+raid.startsAt, +raid.coveredUntil - 1000)
+      : +raid.startsAt,
+  );
   if (+end <= +start) return { data: [] as XPost[] };
   const p = new URLSearchParams({
     query:
@@ -174,7 +177,12 @@ export async function searchPosts(raid: {
 export async function lookupPosts(ids: string[], raidId?: string) {
   return xRead(
     'tweets',
-    new URLSearchParams({ ids: ids.join(','), 'tweet.fields': fields, expansions: 'author_id', 'user.fields': 'username,name' }),
+    new URLSearchParams({
+      ids: ids.join(','),
+      'tweet.fields': fields,
+      expansions: 'author_id',
+      'user.fields': 'username,name',
+    }),
     ids.length,
     raidId,
   );

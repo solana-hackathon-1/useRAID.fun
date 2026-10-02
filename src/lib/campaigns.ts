@@ -16,11 +16,14 @@ export async function createRaid(user: User, input: unknown) {
   if (+startsAt < Date.now() - 60000 || +startsAt > Date.now() + 30 * 86400000)
     throw new HttpError(400, 'Schedule within the next 30 days.');
   return db.$transaction(async (tx) => {
-    const token = data.projectType === 'TOKEN' ? await tx.token.upsert({
-      where: { mint: data.mint! },
-      create: { mint: data.mint!, symbol: data.symbol, name: data.name },
-      update: {},
-    }) : null;
+    const token =
+      data.projectType === 'TOKEN'
+        ? await tx.token.upsert({
+            where: { mint: data.mint! },
+            create: { mint: data.mint!, symbol: data.symbol, name: data.name },
+            update: {},
+          })
+        : null;
     return tx.raid.create({
       data: {
         ...newTrackingRules(),
@@ -33,7 +36,10 @@ export async function createRaid(user: User, input: unknown) {
         fundingStatus: token ? 'NOT_REQUIRED' : 'PENDING',
         fundingRequest: token ? '' : data.fundingRequest,
         impressionTarget: token ? null : data.impressionTarget,
-        fundingLamports: !token && pricing ? fundingQuote(data.impressionTarget!, pricing.lamportsPerThousand) : null,
+        fundingLamports:
+          !token && pricing
+            ? fundingQuote(data.impressionTarget!, pricing.lamportsPerThousand)
+            : null,
         fundingRecipient: !token && pricing ? pricing.recipient : null,
         creatorId: user.id,
         startsAt,
@@ -54,15 +60,24 @@ export async function changeRaid(user: User, id: string, action: string) {
     if (action === 'launch') {
       if (raid.studioVersion === 1) throw new HttpError(409, 'Use Fund & Launch for this Raid.');
       if (!raid.mint && raid.fundingStatus !== 'VERIFIED')
-        throw new HttpError(409, 'Fund this non-token Raid before launch. Funding terms are pending confirmation.');
+        throw new HttpError(
+          409,
+          'Fund this non-token Raid before launch. Funding terms are pending confirmation.',
+        );
       if (raid.status !== 'DRAFT') throw new HttpError(409, 'Only drafts can be launched.');
       const settings = await tx.settings.upsert({
         where: { id: 'global' },
         create: {},
         update: {},
       });
-      if (raid.trackingVersion === 2 && (!settings.collectionEnabled || !config.liveApproved || !process.env.X_BEARER_TOKEN))
-        throw new HttpError(503, 'Live X collection must be verified and enabled before this Raid can launch.');
+      if (
+        raid.trackingVersion === 2 &&
+        (!settings.collectionEnabled || !config.liveApproved || !process.env.X_BEARER_TOKEN)
+      )
+        throw new HttpError(
+          503,
+          'Live X collection must be verified and enabled before this Raid can launch.',
+        );
       const now = new Date();
       const duration = +raid.endsAt - +raid.startsAt;
       const start = raid.startsAt > now ? raid.startsAt : now,
