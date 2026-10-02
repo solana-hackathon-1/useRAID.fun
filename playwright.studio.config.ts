@@ -3,6 +3,7 @@ export default defineConfig({
   testDir: './tests/browser-studio',
   workers: 1,
   fullyParallel: false,
+  retries: process.env.CI ? 1 : 0,
   use: { baseURL: 'http://localhost:3007', trace: 'retain-on-failure' },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },

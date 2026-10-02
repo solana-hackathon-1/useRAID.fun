@@ -136,4 +136,61 @@ suite('Studio atomic balances and settlement', () => {
       }),
     ).toBe(1);
   });
+
+  it('keeps studio money rows bound to their user and raid with RESTRICT foreign keys', async () => {
+    const rules = await db.$queryRaw<{ name: string; del: string; upd: string }[]>`
+      SELECT conname AS name, confdeltype::text AS del, confupdtype::text AS upd
+      FROM pg_constraint
+      WHERE conname IN (
+        'BalanceEntry_userId_fkey',
+        'UsdcTransfer_userId_fkey',
+        'UsdcAllocation_raidId_fkey',
+        'UsdcAllocation_userId_fkey'
+      )
+      ORDER BY conname`;
+    expect(rules.map((rule) => rule.name)).toEqual([
+      'BalanceEntry_userId_fkey',
+      'UsdcAllocation_raidId_fkey',
+      'UsdcAllocation_userId_fkey',
+      'UsdcTransfer_userId_fkey',
+    ]);
+    for (const rule of rules) expect([rule.del, rule.upd]).toEqual(['r', 'c']);
+
+    const holder = await db.user.create({ data: { xId: 'fk-holder', handle: 'fk-holder' } });
+    await db.balanceEntry.create({
+      data: {
+        userId: holder.id,
+        key: 'fk-credit',
+        kind: 'DEPOSIT',
+        availableDelta: 1n,
+        reservedDelta: 0n,
+      },
+    });
+    await db.usdcTransfer.create({
+      data: {
+        userId: holder.id,
+        kind: 'WITHDRAWAL',
+        amount: 1n,
+        walletAddress: 'w',
+        recipient: 'w',
+        network: 'sandbox',
+        mint: 'm',
+      },
+    });
+    await expect(db.user.delete({ where: { id: holder.id } })).rejects.toMatchObject({
+      code: 'P2003',
+    });
+    await expect(
+      db.usdcAllocation.create({
+        data: {
+          raidId,
+          resultId: 'fk-result',
+          userId: 'missing-user',
+          xId: 'fk-x',
+          walletAddress: 'w',
+          amount: 1n,
+        },
+      }),
+    ).rejects.toMatchObject({ code: 'P2003' });
+  });
 });

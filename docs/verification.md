@@ -28,3 +28,7 @@ Screenshots are in `artifacts/discovery-desktop.png`, `artifacts/discovery-mobil
 - Railway provisioning, production spend, or production backup restoration.
 
 No X requests, posts, trades, paid deployments, or external account changes were made during the test suite. Complete `docs/operations.md` before enabling live collection.
+
+## Continuous integration
+
+`.github/workflows/checks.yml` runs three jobs: `static` (format, typecheck, lint, `npm run audit:check`), `test` (migrations, schema-drift diff against a shadow database, the full suite with `RUN_DB_TESTS=true`) and `browser` (demo, database-backed and live Playwright suites on Chromium). The Creator Studio browser suite (`npm run test:browser:studio`) stays out of CI because `studio:preview` needs `docker compose exec`; run it locally before release. Accepted audit advisories live in `audit-allowlist.json` with an expiry date.

@@ -2,7 +2,79 @@ import { test, expect } from '@playwright/test';
 import { createHash, randomBytes } from 'node:crypto';
 import { db } from '../../src/lib/db';
 import { assertTestDatabase, truncateAll } from '../helpers/db-guard';
-test.describe.skip('deferred launchpad and creator-fee rewards', () => {
+import { launchpadsAvailable } from '../../src/lib/release';
+
+const hashToken = (value: string) => createHash('sha256').update(value).digest('hex');
+
+test.describe('launchpad gate', () => {
+  let adminSession = '';
+  const mint = 'So11111111111111111111111111111111111111112';
+
+  test.beforeAll(async () => {
+    assertTestDatabase();
+    await truncateAll(db);
+    await db.token.create({ data: { mint, name: 'Gate Token', symbol: 'GATE' } });
+    const admin = await db.user.create({ data: { handle: 'gate-admin', role: 'ADMIN' } });
+    const now = Date.now();
+    await db.raid.create({
+      data: {
+        tag: 'raid_gate_token',
+        title: 'Gate raid',
+        description: 'Gate raid.',
+        mint,
+        creatorId: admin.id,
+        status: 'ACTIVE',
+        startsAt: new Date(now - 3600000),
+        endsAt: new Date(now + 23 * 3600000),
+      },
+    });
+    adminSession = randomBytes(32).toString('base64url');
+    await db.session.create({
+      data: {
+        userId: admin.id,
+        tokenHash: hashToken(adminSession),
+        expiresAt: new Date(Date.now() + 3600000),
+      },
+    });
+  });
+
+  test.afterAll(async () => {
+    await truncateAll(db);
+  });
+
+  test.skip(launchpadsAvailable, 'Gate is open; the full launchpad flow below runs instead.');
+
+  for (const action of ['enroll', 'renew']) {
+    test(`${action} is rejected as coming soon`, async ({ request }) => {
+      const response = await request.post(`/api/launch/any-launch/${action}`, {
+        headers: { origin: 'http://localhost:3006' },
+      });
+      expect(response.status()).toBe(503);
+      expect(JSON.stringify(await response.json())).toMatch(/coming soon/i);
+    });
+  }
+
+  test('token page shows no reward panel', async ({ page }) => {
+    await page.goto(`/tokens/${mint}`);
+    await expect(page.getByRole('heading', { name: 'Gate Token' }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Join raider rewards' })).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'Completed payouts' })).toHaveCount(0);
+  });
+
+  test('admin page hides launch controls', async ({ page }) => {
+    await page
+      .context()
+      .addCookies([{ name: 'raid_session', value: adminSession, url: 'http://localhost:3006' }]);
+    await page.goto('/admin');
+    await expect(page.getByRole('heading', { name: 'Launchpads · Coming soon' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Pause launches|Resume launches/ })).toHaveCount(
+      0,
+    );
+  });
+});
+
+const launchpadFlow = launchpadsAvailable ? test.describe : test.describe.skip;
+launchpadFlow('deferred launchpad and creator-fee rewards', () => {
   const hash = (value: string) => createHash('sha256').update(value).digest('hex');
 
   let mint = '';

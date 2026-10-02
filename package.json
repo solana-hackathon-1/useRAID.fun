@@ -22,7 +22,9 @@
     "test:live": "tsx tests/live-flow.ts",
     "tracking:audit": "tsx scripts/tracking-audit.ts",
     "tracking:preview": "tsx scripts/tracking-preview.ts",
-    "studio:preview": "tsx scripts/studio-preview.ts"
+    "studio:preview": "tsx scripts/studio-preview.ts",
+    "lint": "eslint .",
+    "audit:check": "tsx scripts/audit-check.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
@@ -49,6 +51,8 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.8",
     "prettier": "^3.9.9",
     "prisma": "^6.19.0",
     "tailwindcss": "^4.1.0",

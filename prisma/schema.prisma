@@ -23,6 +23,7 @@ model User {
   raidEnrollments RaidEnrollment[]
   ledger BalanceEntry[]
   transfers UsdcTransfer[]
+  usdcAllocations UsdcAllocation[]
 }
 model WalletIdentity {
   address String @id
@@ -245,7 +246,7 @@ model Raid {
   submissions PostSubmission[]
   results CampaignResult[]
   disputes RaidDispute[]
-  token Token? @relation(fields: [mint], references: [mint])
+  token Token? @relation(fields: [mint], references: [mint], onDelete: Restrict)
   creator User @relation(fields: [creatorId], references: [id])
   posts Post[]
   snapshots Snapshot[]
@@ -355,6 +356,7 @@ model UsdcAllocation {
   walletAddress String
   amount BigInt
   raid Raid @relation(fields: [raidId], references: [id])
+  user User @relation(fields: [userId], references: [id])
   @@unique([raidId, xId])
 }
 model Snapshot {

@@ -1,6 +1,20 @@
 name: Checks
 on: [push, pull_request]
 jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run audit:check
   test:
     runs-on: ubuntu-latest
     services:
@@ -25,6 +39,57 @@ jobs:
       - run: npm ci
       - run: npm run db:generate
       - run: npm run db:migrate
+      - name: Schema drift check
+        env:
+          PGPASSWORD: useraid
+        run: |
+          psql -h localhost -U useraid -d postgres -c 'CREATE DATABASE useraid_shadow'
+          npx prisma migrate diff \
+            --from-migrations prisma/migrations \
+            --to-schema-datamodel prisma/schema.prisma \
+            --shadow-database-url postgresql://useraid:useraid@localhost:5432/useraid_shadow \
+            --exit-code
       - run: npm test
-      - run: npm run build
-      - run: npm audit --audit-level=moderate
+  browser:
+    needs: test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: useraid
+          POSTGRES_PASSWORD: useraid
+          POSTGRES_DB: useraid_test
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U useraid" --health-interval 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://useraid:useraid@localhost:5432/useraid_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run db:migrate
+      - run: npx playwright install --with-deps chromium
+      - name: Demo browser suite
+        run: npm run test:browser
+      - name: Production build
+        run: npm run build
+        env:
+          DEMO_MODE: 'false'
+      - name: Database-backed browser journey
+        run: npm run test:live
+        env:
+          DEMO_MODE: 'false'
+      - name: Live browser suite
+        run: npm run test:browser:live
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: |
+            playwright-report/
+            test-results/

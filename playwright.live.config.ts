@@ -7,6 +7,7 @@ export default defineConfig({
   testDir: './tests/browser-live',
   fullyParallel: false,
   workers: 1,
+  retries: process.env.CI ? 1 : 0,
   use: { baseURL: 'http://localhost:3006', trace: 'retain-on-failure' },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },

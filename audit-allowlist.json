@@ -1,0 +1,32 @@
+[
+  {
+    "package": "bigint-buffer",
+    "advisory": "GHSA-3gc7-fjrx-p6mg",
+    "reason": "No patched release. Only reached through @solana/spl-token layout helpers decoding data from server-built transactions, never request input.",
+    "expires": "2027-01-01"
+  },
+  {
+    "package": "toml",
+    "advisory": "GHSA-82x6-q7mm-w9cf",
+    "reason": "Reached through @coral-xyz/anchor (pump SDK) parsing its own bundled IDL/config, never user-supplied TOML.",
+    "expires": "2027-01-01"
+  },
+  {
+    "package": "toml",
+    "advisory": "GHSA-v5mp-jgw5-2x6j",
+    "reason": "Reached through @coral-xyz/anchor (pump SDK) parsing its own bundled IDL/config, never user-supplied TOML.",
+    "expires": "2027-01-01"
+  },
+  {
+    "package": "stream-json",
+    "advisory": "GHSA-528h-pc64-c93x",
+    "reason": "Reached through @solana/web3.js -> jayson, which only parses responses from the configured Solana RPC.",
+    "expires": "2027-01-01"
+  },
+  {
+    "package": "uuid",
+    "advisory": "GHSA-w5hq-g745-h8pq",
+    "reason": "Reached through @solana/web3.js -> jayson request ids; no user-controlled buffer argument is passed.",
+    "expires": "2027-01-01"
+  }
+]
