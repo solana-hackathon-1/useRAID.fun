@@ -9,7 +9,7 @@ import { StudioAccountMenu, type StudioAccount } from './studio-account-menu';
 const links = [
   { href: '/', label: 'Discover' },
   { href: '/creator', label: 'Creator studio' },
-  { href: '/launch', label: 'Launchpads · Coming soon' },
+  { href: '/launch', label: 'Launch token' },
   { href: '/methodology', label: 'How it works' },
 ];
 export function Shell({

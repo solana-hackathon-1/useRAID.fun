@@ -34,6 +34,7 @@ export default async function CreatorPage({
         _count: { select: { enrollments: true } },
         usdcAllocations: { select: { id: true } },
         allocations: { select: { paidAt: true } },
+        tokenLaunch: { select: { campaignPayouts: {select:{raidId:true,status:true}} } },
       },
     }),
   ]);
@@ -58,10 +59,10 @@ export default async function CreatorPage({
         target: r.impressionTarget,
         raiders: r._count.enrollments,
         endsAt: r.endsAt.toISOString(),
-        legacy: r.studioVersion !== 1,
+        legacy: r.studioVersion !== 1 && r.fundingAsset !== 'LAUNCH',
         paid:
           r.trackingPhase === 'ALLOCATED' &&
-          (r.studioVersion === 1
+          (r.fundingAsset === 'LAUNCH' ? r.tokenLaunch?.campaignPayouts.filter(p=>p.raidId===r.id).every(p=>p.status==='PAID') === true : r.studioVersion === 1
             ? r.usdcAllocations.every((a) =>
                 payments.some((p) => p.allocationId === a.id && p.status === 'PAID'),
               )

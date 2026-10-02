@@ -31,7 +31,7 @@ export async function completeImpressionTarget(raidId: string) {
     await lockTracking(tx, raidId);
     const raid = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
     if (
-      (raid.mint && raid.studioVersion !== 1) ||
+      (raid.mint && raid.studioVersion !== 1 && raid.fundingAsset !== 'LAUNCH') ||
       raid.status !== 'ACTIVE' ||
       !raid.impressionTarget ||
       raid.fundingStatus !== 'VERIFIED' ||

@@ -12,11 +12,16 @@ import { publicRewardView } from '@/lib/reward-view';
 import { RewardPanel } from '@/components/reward-panel';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { meteoraTokenView } from '@/lib/meteora/view';
+import { MeteoraTokenPage } from '@/components/meteora-token-page';
 export const dynamic = 'force-dynamic';
 export default async function TokenPage({ params }: { params: Promise<{ mint: string }> }) {
-  const token = await getToken((await params).mint);
-  if (!token) notFound();
   const user = await currentUser();
+  const mint=(await params).mint;
+  const launch=await meteoraTokenView(mint,user?.id,true);
+  if(launch) return <MeteoraTokenPage view={launch} tradingEnabled={!config.demo&&process.env.METEORA_TRADING_ENABLED==='true'}/>;
+  const token = await getToken(mint);
+  if (!token) notFound();
   const rewards = launchpadsAvailable ? await publicRewardView(token.mint, user?.id) : null;
   const [wallet, xAccount] = user
     ? await Promise.all([

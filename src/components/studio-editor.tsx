@@ -270,12 +270,12 @@ export function StudioEditor({
               Start Token Raid <ArrowLeft className="studio-arrow-forward" size={17} />
             </span>
           </button>
-          <div className="studio-path coming">
+          <Link className="studio-path" href="/launch">
             <Rocket size={28} />
             <h2>Launch Token</h2>
             <p>Launch with community rewards built in.</p>
-            <span>Coming soon</span>
-          </div>
+            <span>Launch token →</span>
+          </Link>
         </div>
       </div>
     );

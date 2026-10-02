@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next';
 const config: NextConfig = {
-  distDir: process.env.NEXT_DIST_DIR === '.next-studio' ? '.next-studio' : '.next',
+  distDir: ['.next-studio','.next-meteora'].includes(process.env.NEXT_DIST_DIR || '') ? process.env.NEXT_DIST_DIR : '.next',
   devIndicators: false,
   allowedDevOrigins: ['192.168.101.3'],
   // OAuth callback URLs contain short-lived authorization codes and must not be logged.

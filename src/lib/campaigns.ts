@@ -49,9 +49,10 @@ export async function changeRaid(user: User, id: string, action: string) {
     if (!raid) throw new HttpError(404, 'Raid not found.');
     if (raid.creatorId !== user.id)
       throw new HttpError(403, 'This campaign belongs to another creator.');
-    if ((raid.studioVersion !== 1 && !user.approved) || user.suspended || raid.hidden)
+    if ((raid.studioVersion !== 1 && raid.fundingAsset !== 'LAUNCH' && !user.approved) || user.suspended || raid.hidden)
       throw new HttpError(403, 'Campaign access is restricted.');
     if (action === 'launch') {
+      if (raid.fundingAsset === 'LAUNCH') throw new HttpError(409, 'Reserve this token’s campaign budget from its launch page.');
       if (raid.studioVersion === 1) throw new HttpError(409, 'Use Fund & Launch for this Raid.');
       if (!raid.mint && raid.fundingStatus !== 'VERIFIED')
         throw new HttpError(409, 'Fund this non-token Raid before launch. Funding terms are pending confirmation.');

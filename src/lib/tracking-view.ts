@@ -90,6 +90,10 @@ export async function trackingView(raidId: string, userId?: string) {
         },
       })
     : [];
+  const launchBudgets = raid.fundingAsset === 'LAUNCH' ? await db.launchCampaignBudget.findMany({where:{raidId}}) : [];
+  const launchPayments = raid.fundingAsset === 'LAUNCH' && member ? await db.launchCampaignPayout.findMany({where:{raidId,xId:member.xId}}) : [];
+  const launchEstimates = launchBudgets.map(b=>({asset:b.asset,allocation:raid.impressionTarget && !impressions.missing ? splitImpressionFunding(b.reservedUnits,raid.impressionTarget,
+    members.map(m=>({xId:m.xId,walletAddress:m.walletAddress,views:observedImpressions(observations.filter(p=>p.enrollmentId===m.id)).total}))) : null}));
   const topPosts = observations
     .filter((p) => scoredIds.has(p.id))
     .sort((a, b) => postPoints(b) - postPoints(a) || a.id.localeCompare(b.id))
@@ -107,6 +111,9 @@ export async function trackingView(raidId: string, userId?: string) {
     }));
   return {
     impressions,
+    tokenSymbol: raid.projectSymbol,
+    launchBudgets: launchBudgets.map(b=>({asset:b.asset,reserved:b.reservedUnits.toString(),earned:b.earnedUnits.toString(),paid:b.paidUnits.toString(),network:b.network})),
+    ownLaunchPayments: launchPayments.map(p=>({id:p.id,asset:p.asset,units:p.units.toString(),status:p.status,signature:p.signature,network:p.network})),
     currency: raid.fundingAsset,
     poolUnits: raid.poolUnits?.toString() || null,
     ownUsdcPayments: ownUsdcPayments.map((t) => ({
@@ -164,6 +171,7 @@ export async function trackingView(raidId: string, userId?: string) {
       estimatedUsdc: estimates
         ? (estimates.rewards.find((r) => r.xId === a.xId)?.lamports || 0n).toString()
         : null,
+      estimatedLaunch: launchEstimates.map(e=>({asset:e.asset,units:e.allocation?(e.allocation.rewards.find(r=>r.xId===a.xId)?.lamports || 0n).toString():null})),
       estimatedLamports: scored.score
         ? ((estimatePool * BigInt(a.score)) / BigInt(scored.score)).toString()
         : '0',

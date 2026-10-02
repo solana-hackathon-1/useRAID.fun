@@ -2,7 +2,9 @@
 
 ## Current release
 
-Creator Studio supports X Campaigns and Existing Token Raids through one USDC-funded engine: target post previews, shared creator balance, impression calculator, duration, qualified contributors, review/disputes, manual payouts, and reports. Token Raids rank first. Legacy SOL Raids retain original rules. Run `npm run studio:preview` for isolated local testing at http://localhost:3007/studio-test. See [Studio setup, funding, CPA, and rollback](docs/creator-studio.md). Launchpads, trading, creator-fee payouts, and token creation are coming soon. Legacy launchpad implementation below remains disabled by release gate.
+Creator Studio supports X Campaigns and Existing Token Raids through one USDC-funded engine: target post previews, shared creator balance, impression calculator, duration, qualified contributors, review/disputes, manual payouts, and reports. Token Raids rank first. Legacy SOL Raids retain original rules. Run `npm run studio:preview` for isolated local testing at http://localhost:3007/studio-test. See [Studio setup, funding, CPA, and rollback](docs/creator-studio.md).
+
+Meteora token launches now have an isolated devnet pilot: DBC launch, native trading, DAMM v2 graduation, creator/community fee sharing and reviewed SOL/token campaign payouts. Run `npm run meteora:dev` at http://localhost:3008/launch and `npm run meteora:worker` separately after configuration. See [detailed Meteora setup](docs/meteora-launch.md). Funded end-to-end lifecycle verification remains pending service credentials; mainnet stays disabled. Legacy Pump launchpad implementation below remains disabled by its release gate.
 
 An attention MVP for Solana campaigns. Next.js + TypeScript + Tailwind, PostgreSQL + Prisma, and a separate PostgreSQL-backed collection worker.
 

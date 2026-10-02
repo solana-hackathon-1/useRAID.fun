@@ -2,6 +2,10 @@ import 'dotenv/config';
 import { trackingEnabled } from './lib/config';
 import { allocateRaidFunding } from './lib/raid-allocation';
 import { allocateUsdcRaid } from './lib/studio-finance';
+import { allocateLaunchCampaign } from './lib/meteora/campaigns';
+import { financeMeteoraLaunch } from './lib/meteora/worker';
+import { nextLaunchStep } from './lib/meteora/launch';
+import { meteoraNetwork } from './lib/meteora/config';
 import { launchpadsAvailable } from './lib/release';
 import { finalizeTracking } from './lib/tracking-review';
 import { processTrackingLookup } from './lib/tracking-worker';
@@ -84,12 +88,13 @@ async function schedule() {
     });
     for (const raid of closing) {
       await finalizeTracking(raid.id);
-      if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
+      if (raid.fundingAsset === 'LAUNCH') await allocateLaunchCampaign(raid.id);
+      else if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
       else await allocateRaidFunding(raid.id);
     }
   }
   const pendingLaunches = await db.tokenLaunch.findMany({
-    where: { status: 'SUBMITTED' },
+    where: { provider: 'PUMP', status: 'SUBMITTED' },
     select: { id: true },
   });
   for (const launch of launchpadsAvailable ? pendingLaunches : [])
@@ -99,7 +104,7 @@ async function schedule() {
       { launchId: launch.id },
     );
   const liveLaunches = await db.tokenLaunch.findMany({
-    where: { status: { in: ['LIVE', 'PAUSED'] } },
+    where: { provider: 'PUMP', status: { in: ['LIVE', 'PAUSED'] } },
     select: { id: true },
   });
   for (const launch of launchpadsAvailable ? liveLaunches : [])
@@ -107,6 +112,16 @@ async function schedule() {
       launchId: launch.id,
       raidId: launch.id,
     });
+  const meteoraLaunches = await db.tokenLaunch.findMany({
+    where: { provider: 'METEORA', network: meteoraNetwork(), status: { in: ['PREPARED', 'SUBMITTED', 'LIVE', 'PAUSED'] } },
+    select: { id: true, userId: true, status: true },
+  });
+  for (const launch of meteoraLaunches) {
+    if (['PREPARED', 'SUBMITTED'].includes(launch.status)) {
+      const submitted = await db.launchStep.count({ where: { launchId: launch.id, kind: 'SETUP', status: { in: ['SUBMITTED', 'CONFIRMED'] } } });
+      if (submitted) await enqueue('meteora-reconcile', `meteora-reconcile:${launch.id}:${Math.floor(Date.now()/60000)}`, { launchId: launch.id, raidId: `meteora:${launch.id}`, userId: launch.userId });
+    } else await enqueue('meteora-finance', `meteora-finance:${launch.id}:${Math.floor(Date.now()/60000)}`, { launchId: launch.id, raidId: `meteora:${launch.id}` });
+  }
   await db.session.deleteMany({ where: { expiresAt: { lt: now } } });
   await db.walletChallenge.deleteMany({ where: { expiresAt: { lt: now } } });
   await db.oAuthAttempt.deleteMany({ where: { expiresAt: { lt: now } } });
@@ -163,9 +178,12 @@ async function main() {
         final: boolean;
         postId: string;
         submissionId?: string;
+        userId?: string;
       };
       try {
-        if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
+        if (job.kind === 'meteora-reconcile') await nextLaunchStep(p.launchId, p.userId!);
+        else if (job.kind === 'meteora-finance') await financeMeteoraLaunch(p.launchId);
+        else if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
         else if (job.kind === 'finance') await financeLaunch(p.launchId);
         else if (job.kind === 'collect') await collect(p.raidId, job.id);
         else if (job.kind === 'refresh')

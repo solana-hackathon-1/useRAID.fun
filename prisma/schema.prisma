@@ -40,6 +40,25 @@ model WalletChallenge {
 }
 model TokenLaunch {
   id String @id @default(cuid())
+  provider String @default("PUMP")
+  network String @default("mainnet")
+  creatorAddress String?
+  configuration Json?
+  setupSecrets Json?
+  poolConfigAddress String?
+  feeVaultAddress String?
+  poolAddress String?
+  dammPoolAddress String?
+  positionAddress String?
+  positionNftAccount String?
+  migrationStatus String @default("BONDING")
+  chainSnapshot Json?
+  chainObservedAt DateTime?
+  workerObservedAt DateTime?
+  transactionSteps LaunchStep[]
+  campaignLedger LaunchBalanceEntry[]
+  campaignBudgets LaunchCampaignBudget[]
+  campaignPayouts LaunchCampaignPayout[]
   userId String
   mint String @unique
   name String
@@ -71,6 +90,76 @@ model TokenLaunch {
   enrollments RewardEnrollment[]
   payouts RewardPayout[]
   @@index([status, createdAt])
+}
+model LaunchStep {
+  id String @id @default(cuid())
+  launchId String
+  key String
+  kind String
+  label String
+  payer String
+  status String @default("PLANNED")
+  transaction String?
+  messageHash String?
+  blockhash String?
+  lastValidBlockHeight Int?
+  signature String? @unique
+  error String?
+  expiresAt DateTime?
+  metadata Json?
+  createdAt DateTime @default(now())
+  confirmedAt DateTime?
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  @@unique([launchId, key])
+  @@index([launchId, status])
+}
+model LaunchBalanceEntry {
+  id String @id @default(cuid())
+  key String @unique
+  launchId String
+  network String
+  asset String
+  kind String
+  availableDelta BigInt
+  reservedDelta BigInt
+  raidId String?
+  signature String?
+  createdAt DateTime @default(now())
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  @@index([launchId, network, asset])
+}
+model LaunchCampaignBudget {
+  id String @id @default(cuid())
+  launchId String
+  raidId String
+  network String
+  asset String
+  reservedUnits BigInt
+  earnedUnits BigInt @default(0)
+  paidUnits BigInt @default(0)
+  status String @default("RESERVED")
+  resultId String?
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  raid Raid @relation(fields: [raidId], references: [id])
+  @@unique([raidId, asset])
+}
+model LaunchCampaignPayout {
+  id String @id @default(cuid())
+  launchId String
+  raidId String
+  asset String
+  network String
+  walletAddress String
+  xId String
+  units BigInt
+  status String @default("PENDING")
+  approvedBy String?
+  approvedAt DateTime?
+  signature String? @unique
+  paidAt DateTime?
+  launch TokenLaunch @relation(fields: [launchId], references: [id])
+  @@unique([raidId, asset, xId])
+  @@index([status, launchId])
 }
 model FeeClaim {
   id String @id @default(cuid())
@@ -202,6 +291,8 @@ model Raid {
   quoteRate BigInt?
   imageUri String?
   usdcAllocations UsdcAllocation[]
+  launchBudgets LaunchCampaignBudget[]
+  launchDraft Json?
   mint String?
   projectName String @default("")
   projectSymbol String @default("")

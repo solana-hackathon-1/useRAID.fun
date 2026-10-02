@@ -1,12 +1,20 @@
 import { z } from 'zod';
+import { CID } from 'multiformats/cid';
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { HttpError } from './auth-primitives';
 
-const cid = z.string().regex(/^(?:bafy[a-z2-7]{20,}|Qm[1-9A-HJ-NP-Za-km-z]{44})$/);
+const cid = z.string().refine((value) => {
+  try {
+    CID.parse(value);
+    return true;
+  } catch {
+    return false;
+  }
+}, 'Invalid IPFS CID.');
 export function ipfsUri(value: string) {
   const match = /^ipfs:\/\/(.+)$/.exec(value);
-  if (!match) throw new HttpError(400, 'Invalid IPFS URI.');
-  return `ipfs://${cid.parse(match[1])}`;
+  if (!match || !cid.safeParse(match[1]).success) throw new HttpError(400, 'Invalid IPFS URI.');
+  return value;
 }
 function proofKey(version: string) {
   const source = Buffer.from(process.env[`LAUNCH_KEY_${version}`] || '', 'base64');
@@ -46,8 +54,10 @@ export async function pinFile(file: File) {
     signal: AbortSignal.timeout(30000),
   });
   if (!result.ok) throw new HttpError(503, 'IPFS upload failed.');
-  const parsed = z.object({ data: z.object({ cid }) }).parse(await result.json());
-  return `ipfs://${parsed.data.cid}`;
+  const parsed = z.object({ data: z.object({ cid }) }).safeParse(await result.json());
+  if (!parsed.success)
+    throw new HttpError(503, 'IPFS upload returned an invalid CID. Please try again.');
+  return `ipfs://${parsed.data.data.cid}`;
 }
 export async function pinMetadata(data: Record<string, string | undefined>) {
   const file = new File([JSON.stringify(data)], 'metadata.json', { type: 'application/json' });

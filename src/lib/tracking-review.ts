@@ -171,12 +171,12 @@ export async function finalizeTracking(raidId: string, now = new Date()) {
         data: {
           trackingPhase:
             raid.reviewEndsAt && raid.reviewEndsAt <= now
-              ? !raid.tokenLaunchId || scores.score
+              ? !raid.tokenLaunchId || raid.fundingAsset === 'LAUNCH' || scores.score
                 ? 'APPROVED'
                 : 'HELD'
               : 'REVIEW',
           holdReason:
-            raid.reviewEndsAt && raid.reviewEndsAt <= now && !scores.score
+            raid.reviewEndsAt && raid.reviewEndsAt <= now && !scores.score && !!raid.tokenLaunchId && raid.fundingAsset !== 'LAUNCH'
               ? 'NO_ELIGIBLE_SCORES'
               : null,
         },

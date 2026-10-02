@@ -18,13 +18,15 @@ import { RaidCard, TokenIcon, Sparkline, Freshness, compact, Empty } from './ui'
 import { AutoRefresh, track } from './refresh';
 import { RaidArtwork } from './brand';
 import styles from './discovery.module.css';
+import { MeteoraDiscovery } from './meteora-discovery';
+import type { launchDiscovery } from '@/lib/meteora/view';
 const tabs = [
   { name: 'Trending', icon: Flame },
   { name: 'Live', icon: Radio },
   { name: 'Rising', icon: Zap },
   { name: 'New raids', icon: Clock3 },
 ];
-export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean }) {
+export function Discovery({ raids, demo, launches=[] }: { raids: RaidView[]; demo: boolean; launches?:Awaited<ReturnType<typeof launchDiscovery>> }) {
   const [tab, setTab] = useState('Trending'),
     [search, setSearch] = useState(''),
     [onlyFresh, setOnlyFresh] = useState(false);
@@ -313,6 +315,7 @@ export function Discovery({ raids, demo }: { raids: RaidView[]; demo: boolean })
       <p className="small-print">
         Attention is measured activity, not investment merit. Always do your own research.
       </p>
+      {!demo && <MeteoraDiscovery launches={launches}/>}
     </>
   );
 }

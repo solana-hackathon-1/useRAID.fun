@@ -1,4 +1,5 @@
 import { TrackingOperations } from '@/components/tracking-operations';
+import { MeteoraOperations } from '@/components/meteora-operations';
 import Link from 'next/link';
 import { XDiagnostics } from '@/components/x-diagnostics';
 import { currentUser } from '@/lib/auth';
@@ -144,6 +145,7 @@ export default async function AdminPage() {
         <a href="#activity">Activity & audit</a>
       </nav>
       <div className="admin-grid">
+        <MeteoraOperations launchPaused={settings.launchPaused} payoutPaused={settings.payoutPaused} />
         <section className="panel" id="usdc-payments">
           <h2>USDC withdrawals & rewards</h2>
           <p>
