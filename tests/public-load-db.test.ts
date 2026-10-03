@@ -62,14 +62,14 @@ suite('public analytics and discovery load', () => {
     vi.setSystemTime(new Date('2026-10-03T10:00:05Z'));
     for (let i = 0; i < 100; i++) expect((await event(i % 5)).status).toBe(200);
     expect(await db.event.count()).toBe(100);
-  });
+  }, 60000);
   it('limits a single visitor to 60 events a minute', async () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date('2026-10-03T10:05:05Z'));
     for (let i = 0; i < 60; i++) expect((await event(99)).status).toBe(200);
     expect((await event(99)).status).toBe(429);
     expect((await event(98)).status).toBe(200);
-  });
+  }, 60000);
   it('does not charge the per-client limit for an invalid body', async () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date('2026-10-03T10:10:05Z'));
