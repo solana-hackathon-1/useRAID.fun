@@ -1,6 +1,17 @@
 # Pilot operations
 
-Current Creator Studio release and USDC funding/payment procedure: [creator-studio.md](creator-studio.md). [standalone-raids.md](standalone-raids.md) describes legacy SOL campaigns. Launchpad sections below describe deferred infrastructure. Configure X callback, collection access, approved USDC pricing, and custody wallet before accepting deposits.
+Current Creator Studio release and USDC funding/payment procedure: [creator-studio.md](creator-studio.md). [standalone-raids.md](standalone-raids.md) describes legacy SOL campaigns. Launchpad sections below describe deferred infrastructure that is gated off in code (`launchpadsAvailable` is `false`); the `.env.example` variables for it are inert, except that reconciliation of already-broadcast launches still runs. Configure X callback, collection access, approved USDC pricing, and custody wallet before accepting deposits.
+
+## Operator checklist
+
+Do these when deploying the `fix/everything` release, in order:
+
+1. Set `X_TRACKING_V2_SETTLEMENT_ENABLED=true` (required for Creator Studio launches, deposits and settlement) and `X_ADMIN_USER_ID` (or `ADMIN_X_IDS`) on web and worker. Tracking v2 is already on by default.
+2. Apply migrations (`npm run db:migrate`, run by the pre-deploy command), then run `npm run media:backfill` once to move inline images into `MediaAsset`.
+3. Change the Cloudflare Pages **Root directory** to `sites/coming-soon` (and the build watch path to `sites/coming-soon/*`) when this release deploys; the placeholder moved out of `public/` and its deploy breaks otherwise. See [coming-soon-deploy.md](coming-soon-deploy.md).
+4. Run `npm run tracking:audit` against production and account for every obligation it lists.
+5. After that audit, ship the later migration that runs `VALIDATE CONSTRAINT` on the `NOT VALID` state checks from `202610020012_state_checks`. Existing rows were not validated by that migration, so validate only once the audit shows every status value is in its vocabulary.
+6. Leave `LAUNCH_ENABLED` and `PAYOUT_ENABLED` false; launchpads are gated off in code regardless.
 
 ## Railway deployment
 
@@ -75,7 +86,7 @@ Encrypt backup storage and restrict access because it includes sessions and crea
 
 Removing an ID from the allowlist revokes admin access on the next request and the stored role is demoted at that account's next sign-in. Administrators can be suspended by another administrator, never by themselves; suspending ends their sessions, and sign-in stays blocked while suspended. The migration that records how a session was issued (X or wallet) also deletes the sessions of existing administrators, so every administrator signs in with X again after deploy.
 
-Conflict of interest: an administrator cannot review, correct, resolve disputes on, or carry held funds from or into a Raid they created or joined, and cannot review a post they authored. With a single administrator, a conflicted decision has to go to another administrator. A two-administrator (four-eyes) approval for tracking decisions is **deferred**: it needs a pending-decision workflow and at least two operators. Recommended scope when it is built is `carry-held` and exclude/restore on high-payout Raids; until then every decision is recorded in the moderation and contribution audit logs.
+Conflict of interest: an administrator cannot review, correct, resolve disputes on, or carry held funds from or into a Raid they created or joined, and cannot review a post they authored. With a single administrator, a conflicted decision has to go to another administrator. Four-eyes approval (a second administrator confirming tracking decisions) is **deferred**: it needs a pending-decision workflow and at least two operators. Recommended scope when it is built is `carry-held` and exclude/restore on high-payout Raids; until then every decision is recorded in the moderation and contribution audit logs.
 
 ## Images and security headers
 
@@ -83,4 +94,4 @@ Studio draft images are stored as `MediaAsset` rows and served immutably from `/
 
 ## Release gates
 
-`npm run typecheck`, `npm test` against isolated PostgreSQL, `npm run build`, `npm run test:browser`, and dependency audit must pass. Repeat database restoration and collection-kill-switch exercises before the live pilot. Provider-backed acceptance remains separate from tests using mocked X responses.
+`npm run format:check`, `npm run typecheck`, `npm run lint`, `npm test` and `RUN_DB_TESTS=true npm test` against isolated PostgreSQL, `npm run build`, `npm run test:live`, the three Playwright suites (`test:browser`, `test:browser:live`, `test:browser:studio`), the Docker image smoke test, a schema-drift check, and the dependency audit must pass. Repeat database restoration and collection-kill-switch exercises before the live pilot. Provider-backed acceptance remains separate from tests using mocked X responses.

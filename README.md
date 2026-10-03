@@ -2,7 +2,7 @@
 
 ## Current release
 
-Creator Studio supports X Campaigns and Existing Token Raids through one USDC-funded engine: target post previews, shared creator balance, impression calculator, duration, qualified contributors, review/disputes, manual payouts, and reports. Token Raids rank first. Legacy SOL Raids retain original rules. Run `npm run studio:preview` for isolated local testing at http://localhost:3007/studio-test. See [Studio setup, funding, CPA, and rollback](docs/creator-studio.md). Launchpads, trading, creator-fee payouts, and token creation are coming soon. Legacy launchpad implementation below remains disabled by release gate.
+Creator Studio supports X Campaigns and Existing Token Raids through one USDC-funded engine: target post previews, shared creator balance, impression calculator, duration, qualified contributors, review/disputes, manual payouts, and reports. Token Raids rank first. Legacy SOL Raids retain original rules. Run `npm run studio:preview` for isolated local testing at http://localhost:3007/studio-test. See [Studio setup, funding, CPA, and rollback](docs/creator-studio.md). Launchpads, trading, creator-fee payouts, and token creation are coming soon. The launchpad implementation below stays disabled by the release gate (`launchpadsAvailable` is `false` in `src/lib/release.ts`); only reconciliation of already-broadcast transactions keeps running. Studio launches and deposits need `X_TRACKING_V2_SETTLEMENT_ENABLED=true`; see the [operator checklist](docs/operations.md#operator-checklist) before deploying.
 
 An attention MVP for Solana campaigns. Next.js + TypeScript + Tailwind, PostgreSQL + Prisma, and a separate PostgreSQL-backed collection worker.
 
@@ -56,7 +56,9 @@ Live collection requires all three:
 
 Never set the feasibility flag merely to make the UI appear live. Without verified access, attribution, permitted storage/display, and affordable usage, leave collection paused.
 
-## pump.fun launches and rewards
+## pump.fun launches and rewards (deferred)
+
+This section describes deferred infrastructure. Launch routes answer 503 and the UI says **Coming soon** while the release gate is closed. Reconciliation of launches that were already broadcast (`launch-reconcile`, `finance`) still runs in the worker; nothing else does. Launchpad fee rewards are not subject to the per-author cap, which applies to funded Raids only.
 
 Launches are off by default. Set `DEMO_MODE=false`, complete X feasibility, enable collection in Operations, and configure a mainnet Solana RPC, Pinata JWT, versioned 32-byte AES key, separate operator and treasury addresses, and a funded worker signer. Set `LAUNCH_ENABLED=true` and `PAYOUT_ENABLED=true` only after those services work. The worker publishes readiness every minute; launch preparation and submission require a recent healthy heartbeat and at least 0.05 SOL in the operator wallet. The web service needs `OPERATOR_PUBLIC_KEY`; only the worker receives `OPERATOR_SECRET_KEY`. The web service needs `LAUNCH_KEY_1` (mint secrets), `FEE_SEAL_PUBLIC_1` and `LAUNCH_ASSET_KEY`; only the worker receives `FEE_SEAL_PRIVATE_1`, which opens the fee wallets the web service sealed. Keep old versioned keys configured after rotation until `npm run launch:rotate-keys -- --apply` has re-sealed every wallet.
 
@@ -68,19 +70,21 @@ Production validation must include a funded mainnet smoke test, chain fee verifi
 
 ## X tracking v2
 
-Optional Raid-specific enrollment, verified contribution history, top-ten scoring, immutable review results, disputes, and post-review rewards are available behind `X_TRACKING_V2_ENABLED` and `X_TRACKING_V2_SETTLEMENT_ENABLED` (both default off). Existing Raids retain legacy behavior. See [rollout, APIs, accounting, and validation](docs/x-tracking.md). Run `npm run tracking:audit` against the intended deployment before enabling.
+Tracking v2 is the default for new Raids: it is on unless `X_TRACKING_V2_ENABLED=false`, and a test pins that default. Raid-specific enrollment, verified contribution history, top-ten scoring (scoring v3 for new Raids), immutable review results, disputes, and post-review rewards all run through it. Existing Raids keep their frozen tracking, rule and scoring versions. Settlement is separate and **off** by default: `X_TRACKING_V2_SETTLEMENT_ENABLED=true` is required for any allocation, and for Creator Studio launches and deposits. Reconciliation of signed transactions runs in the worker whether or not the launchpad is gated or settlement is on. Two-administrator (four-eyes) approval of tracking decisions is deferred; decisions are audited instead. See [rollout, APIs, accounting, and validation](docs/x-tracking.md). Run `npm run tracking:audit` against the intended deployment before enabling settlement.
 
 ## Included
 
 - Searchable discovery with Trending, Live, Rising, and New Raids views.
 - Raid details, qualifying post feed, token profiles, attention history, and cached market snapshots.
-- Creator sign-in, affiliation submission, approval, drafts, scheduled/immediate campaigns, and campaign termination.
-- Administrator moderation, creator suspension, job retries, audit log, quotas, budget thresholds, and collection kill switch.
-- Official X search and lookup adapters, exact mention/tag attribution, URL submission recovery, idempotent ingestion, cursor pagination, metric refresh, and deletion reconciliation.
-- Score v1 with rolling-hour scoring, normalized text deduplication, three-post and 20-point author caps, timestamped versioned snapshots, and freshness-aware momentum.
+- Creator sign-in with an approval request in Creator Studio, drafts, scheduled/immediate campaigns, and campaign termination. Approved creators only can save drafts, preview target posts and launch.
+- Administrator moderation, creator suspension, job retries and dead-letter handling, audit log, quotas, budget thresholds, collection kill switch, pool release, expired-deposit crediting, USDC reconciliation, and paginated lists.
+- Official X search and lookup adapters, exact mention/tag attribution, URL submission recovery, idempotent ingestion, cursor pagination, staleness-tiered metric refresh, classified lookup failures, coverage expiry, and deletion reconciliation.
+- Scoring v3 for new Raids (100 x log2(1 + engagement), duplicate detection over unigrams and bigrams), with score v1 and v2 frozen on older Raids.
+- Funded Raids pay in USDC (Studio) or SOL (legacy) with a per-author cap (`RAID_AUTHOR_CAP_BPS`, default 25%), a creator who cannot enroll in or be paid from their own Raid, minimum payouts, early-end measurement until the scheduled end, and a finalized-chain check on withdrawals.
+- Ledger integrity enforced in PostgreSQL (append-only snapshots and ledger rows, linked money tables, checked state vocabularies added as `NOT VALID` constraints), a baseline schema migration, and a worker that refuses to boot on a stale schema.
 - DEX Screener pair selection by liquidity and an exact-mint Jupiter link. Trading remains external.
-- SOL-paired pump.fun token launches signed by a connected Solana wallet, with separate encrypted creator-fee wallets and 24-hour launch raids.
-- Hourly creator-fee rewards for verified X participants with proven Solana wallets. Claimed fees cover network costs, then split 90% to raiders and 10% to the platform. Balances below 0.001 SOL carry forward.
+- Deferred, gated off: SOL-paired pump.fun token launches with separate encrypted fee wallets, and hourly creator-fee rewards (90% raiders, 10% platform, balances below 0.001 SOL carry forward). Their reconciliation still runs for work already broadcast.
+- Security headers with a Content-Security-Policy driven by `src/lib/image-hosts.ts`, wallet-rotation limits, X-only administrator sign-in, and media stored as `MediaAsset` rows.
 - PostgreSQL job leasing, serialized per-raid claims, bounded retries, provider timeouts, conservative usage reservations, and spend-limit alerts in Operations.
 - Browser-local anonymous visit/click identifiers. Operations includes campaign completion, repeat creators, returning visitors, and usage by raid.
 
@@ -90,42 +94,47 @@ Optional Raid-specific enrollment, verified contribution history, top-ten scorin
 - `src/components`: responsive interface and forms.
 - `src/lib`: domain rules, authorization, persistence, collection, queue, and provider adapters.
 - `src/worker.ts`: scheduling, collection, reconciliation, and retention. It runs through `tsx` (a production dependency, as is `prisma` for pre-deploy migrations); the Docker runtime image ships `src/` and `tsconfig.json` for it.
-- `prisma`: schema, committed migration, and settings seed.
+- `prisma`: schema, committed migrations (additive only; the baseline is `202609270001_init`), and settings seed.
+- `sites/coming-soon`: the static placeholder, published separately (see [docs/coming-soon-deploy.md](docs/coming-soon-deploy.md)).
 - `tests`: deterministic domain, real PostgreSQL integration, and browser tests.
 - `package.json` pins `next`, `react` and `react-dom` to patch ranges because this Next.js version has breaking changes between minors; the `deepmerge-ts` override in `package.json` forces Prisma's config loader onto 8.x; keep it unless a Prisma upgrade makes it unnecessary.
-- `docs/operations.md`: deployment, spend, backup/restore, and pilot gates.
+- `docs/operations.md`: deployment, operator checklist, spend, backup/restore, and pilot gates.
+- `docs/verification.md`: the verification record of the `fix/everything` branch.
 
 ## Verification
 
 ```sh
+npm run format:check
 npm run typecheck
-npm test                          # unit tests; database suite skips by default
+npm run lint
+npm test                          # unit tests; database suites skip by default
 npm run build
 npx playwright install chromium
-npm run test:browser               # starts a demo server if none is running
+npm run test:browser               # demo suite; starts a demo server if none is running
 ```
 
-For database tests, point at a **dedicated database named `useraid_test`**. The integration suite truncates application tables in that database:
+Database tests need a **dedicated database named `useraid_test`** (the suite rejects any other name and any non-local host unless `ALLOW_REMOTE_TEST_DB=true`) and truncate its application tables. The repository ships a disposable one:
 
 ```sh
-DATABASE_URL=postgresql://useraid:useraid@localhost:5432/useraid_test npm run db:migrate
-DATABASE_URL=postgresql://useraid:useraid@localhost:5432/useraid_test RUN_DB_TESTS=true DEMO_MODE=false npm test
+docker compose -p useraid-test -f compose.yaml -f compose.test.yaml up -d --wait db   # port 55432
+export DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_test
+npm run db:migrate
+RUN_DB_TESTS=true DEMO_MODE=false npm test
 ```
 
-After a production build, run the database-backed browser journey with the same isolated database:
+After a production build, run the database-backed journeys against the same database:
 
 ```sh
-DATABASE_URL=postgresql://useraid:useraid@localhost:5432/useraid_test DEMO_MODE=false npm run test:live
-DATABASE_URL=postgresql://useraid:useraid@localhost:5432/useraid_test npm run test:browser:live
+DEMO_MODE=false npm run test:live
+npm run test:browser:live
+npm run test:browser:studio       # needs the Studio preview; run locally before release
 ```
 
-`test:live` starts a temporary server on port 3001 and verifies the approved-creator journey: admin approval, a saved Creator Studio draft, the launch gate refusing without X credentials and funding, the public Raid, ending it, and the X connection UI. `test:browser:live` starts one on port 3006 with fixture launch and payout records; desktop and mobile checks cover the launch form, reward enrollment, balances, and payout links. Both use only the dedicated test database. Neither exercises a funded Solana transaction or makes X requests.
-
-The suite rejects other database names. Provider tests mock network responses and incur no X charges. CI runs migrations, unit/integration tests, the production build, and a dependency audit.
+`test:live` starts a temporary server on port 3001 and verifies the approved-creator journey: admin approval, a saved Creator Studio draft, the launch gate refusing without X credentials and funding, the public Raid, ending it, and the X connection UI. `test:browser:live` starts one on port 3006 with fixture records for tracking, standalone Raids, administration and security. `test:browser:studio` drives the sandbox Studio. None of them moves SOL or makes X requests. Provider tests mock network responses and incur no X charges. CI runs formatting, typecheck, lint, the audit check, the Docker image smoke test, migrations with a schema-drift diff, the full database suite, and the demo and live Playwright suites. The record of what was run on this branch is in [docs/verification.md](docs/verification.md).
 
 ## Operating defaults
 
-Five approved creators; ten scheduled/active campaigns; 24-hour default campaigns; 72-hour maximum; 5-minute collection; 1-minute active market refresh; 30-second page refresh. X budget is $200/month with a $180 application cutoff and alerts at $140/$180. Hosting target is at most $100/month and must be validated against the chosen deployment.
+Five approved creators; ten scheduled/active campaigns; 24-hour default campaigns; 72-hour maximum; 5-minute collection; 1-minute active market refresh; 30-second page refresh. X-read cadence: stored posts under a day old refresh every `X_REFRESH_MINUTES` (default 30) and older ones at four times that; Studio target-post lookups are limited to `STUDIO_LOOKUPS_PER_DAY` (default 300) per creator. X budget is $200/month with a $180 application cutoff and alerts at $140/$180. Hosting target is at most $100/month and must be validated against the chosen deployment.
 
 Usage accounting reserves the maximum possible response cost before each X call, then settles to returned resources when successful. Failed requests retain their reservation. Daily provider deduplication discounts are deliberately not assumed. Recorded usage is a conservative operational ceiling, not an invoice. X identity reads are accounted for too.
 

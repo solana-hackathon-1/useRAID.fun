@@ -1,6 +1,6 @@
 # X tracking v2 rollout
 
-Version 2 tracking is on unless `X_TRACKING_V2_ENABLED=false`, and settlement stays off unless `X_TRACKING_V2_SETTLEMENT_ENABLED=true`. Existing Raids keep tracking/rule/scoring version 1; migration does not rescore history or change paid transactions. Version 2 rules are copied when a Raid is created. Changing deployment flags does not convert existing Raids.
+Version 2 tracking is the default and is on unless `X_TRACKING_V2_ENABLED=false`; a unit test pins that default. Settlement stays off unless `X_TRACKING_V2_SETTLEMENT_ENABLED=true`. That settlement flag is **required** for Creator Studio (launches and deposits are unavailable without it and settlement pauses with funds reserved) and for any v2 allocation. Reconciliation of signed transactions runs in the worker regardless of the launchpad gate or the settlement flag. Existing Raids keep tracking/rule/scoring version 1; migration does not rescore history or change paid transactions. Version 2 rules are copied when a Raid is created. Changing deployment flags does not convert existing Raids.
 
 ## Deployment gates
 
@@ -8,10 +8,10 @@ Version 2 tracking is on unless `X_TRACKING_V2_ENABLED=false`, and settlement st
 2. Back up PostgreSQL and fee-wallet encryption keys. Apply committed additive migrations with `npm run db:migrate`. Run web and worker from the same release.
 3. Run unit, dedicated-database integration, build, demo browser, and live-fixture browser checks. `useraid_test` is required for destructive test fixtures.
 4. Independently verify X OAuth, search, lookup, returned metric fields, permitted display and storage/retention, and real cost. Existing $200 monthly budget and $180 cutoff remain. Reservation prices are existing conservative assumptions, not validated current provider prices. Leave `LIVE_COLLECTION_APPROVED=false` until this gate passes.
-5. Enable `X_TRACKING_V2_ENABLED=true` on web and worker for new Raids. Observe contribution history, queue backlog, coverage, endpoint limits, finalization, and disputes. This alone does not enable v2 payment.
+5. Confirm `X_TRACKING_V2_ENABLED` is unset or `true` on web and worker (it is the default; `false` pauses v2 for new Raids). Observe contribution history, queue backlog, coverage, endpoint limits, finalization, and disputes. This alone does not enable v2 payment.
 6. Only after audit, provider validation, a funded settlement smoke test, and restore verification, enable `X_TRACKING_V2_SETTLEMENT_ENABLED=true` with existing payout gates. Do not enable paid services for mocked tests.
 
-Rollback: turn either v2 flag off to stop new v2 allocations/transfers. Existing signed financial transactions and launch receipts still reconcile in the worker, including paused launches and while launchpads are deferred; already broadcast transactions cannot be recalled. Keep additive schema and historical records. Do not roll back migrations or delete signed transactions.
+Rollback: turn either v2 flag off to stop new v2 allocations/transfers (turning tracking off pauses v2 for new Raids; turning settlement off is the usual brake). Existing signed financial transactions and launch receipts still reconcile in the worker, including paused launches and while launchpads are deferred; already broadcast transactions cannot be recalled. Keep additive schema and historical records. Do not roll back migrations or delete signed transactions.
 
 ## Behavior
 
@@ -32,7 +32,7 @@ Rollback: turn either v2 flag off to stop new v2 allocations/transfers. Existing
 
 V2 fee claims are tagged with their Raid before broadcast and retain that attribution through confirmation. Each claim can be allocated once. The final sweep completes after Raid close; allocation uses fees actually collected for that Raid, not an assertion of exact historical on-chain accrual at `endsAt`. Once final sweep completes, later vault accrual waits for a later Raid. Balances below the existing claim threshold remain in the vault.
 
-Settlement consumes frozen scores and wallets. Existing cost deduction, 90/10 net split, deterministic remainder allocation, signed-transaction reconciliation, and sub-0.001 SOL carry-forward remain. Fee collection can continue while review is pending, but new payouts require review approval and both v2 flags.
+Settlement consumes frozen scores and wallets. For funded Raids (USDC and SOL) no single raider earns more than `RAID_AUTHOR_CAP_BPS` of the pool (default 25%, frozen at funding) and the Raid creator cannot enroll or be paid. Launchpad fee rewards are **uncapped**: the cap policy applies to funded Raids only, and launchpads are deferred. For launch fees the existing cost deduction, 90/10 net split, deterministic remainder allocation, signed-transaction reconciliation, and sub-0.001 SOL carry-forward remain. Fee collection can continue while review is pending, but new payouts require review approval and both v2 flags.
 
 Renewal waits until the previous v2 Raid is allocated or held and its fee sweep is complete. Held funds remain unallocated. Operations may explicitly assign held claims to an active later Raid of the same token, with an audit reason; this changes ledger attribution and does not send SOL. No arbitrary score or wallet edits are exposed.
 
@@ -43,6 +43,7 @@ Renewal waits until the previous v2 Raid is allocated or held and its fee sweep 
 - `GET /api/raids/:id`: private/no-store response adds tracking health, leaderboard, top posts, result version/deadline, and requesting user's contributions/submissions/disputes.
 - `POST /api/raids/:id/disputes`: enrolled owner; category, reason, optional X post ID.
 - `POST /api/raids/:id/resolve`: admin only; audited clear/exclude/restore/refresh, missing-post import, dispute resolution/rejection, or held-claim reassignment.
+- Two-administrator (four-eyes) approval of tracking decisions is **deferred** (see [operations.md](operations.md#administrator-access-and-review)); every decision is audited.
 - Operations shows blocked Raids, held funds, flagged/excluded posts, disputes, stale counts, job backlog, rate-limit resets, and last successful requests. Existing failed-job retry control remains.
 
 ## Local verification
@@ -52,9 +53,11 @@ Use an isolated PostgreSQL database named `useraid_test`. Run migrations, then:
 ```sh
 RUN_DB_TESTS=true DEMO_MODE=false npm test
 npm run typecheck
+npm run format:check
 DEMO_MODE=true npm run build
 npm run test:browser
 npm run test:browser:live
+npm run test:browser:studio
 ```
 
 Export that test database's `DATABASE_URL` for database and live-browser commands. Browser tracking fixtures use mocked contributions and real local enrollment/review routes; existing OAuth and wallet tests verify identity boundaries. No fixture spends X credits or transfers SOL. Live-provider behavior and funded transfers require separate rollout validation.
