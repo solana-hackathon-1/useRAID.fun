@@ -1,6 +1,6 @@
 import { db } from './db';
 import { ingestTracking, markTrackingUnavailable, assertTrackingEnabled } from './tracking';
-import { lookupPosts, ProviderError } from './providers/x';
+import { lookupOutcome, lookupPosts, ProviderError } from './providers/x';
 import { validPostId } from './domain';
 export async function processTrackingLookup(
   raidId: string,
@@ -42,14 +42,15 @@ export async function processTrackingLookup(
       (await db.post.findUnique({ where: { id: postId } }))?.availability === 'DATA_INCOMPLETE'
     )
       throw new Error('X returned incomplete metrics.');
-  } else if (
-    result.errors?.some((e) => e.resource_id === postId && e.type?.endsWith('/resource-not-found'))
-  ) {
+  } else {
+    const outcome = lookupOutcome(result.errors, postId);
+    if (outcome === 'unknown') throw new Error('X returned incomplete lookup data.');
+    const reasonCode = outcome === 'restricted' ? 'POST_RESTRICTED' : 'POST_UNAVAILABLE';
     if (submissionId)
       await db.postSubmission.update({
         where: { id: submissionId },
-        data: { status: 'EXCLUDED', reasonCode: 'POST_UNAVAILABLE' },
+        data: { status: 'EXCLUDED', reasonCode },
       });
-    await markTrackingUnavailable(raidId, [postId], true, correction);
-  } else throw new Error('X returned incomplete lookup data.');
+    await markTrackingUnavailable(raidId, [postId], true, correction, reasonCode);
+  }
 }

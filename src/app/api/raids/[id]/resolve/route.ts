@@ -13,6 +13,7 @@ const input = z.object({
     'resolve-dispute',
     'import-post',
     'carry-held',
+    'accept-coverage',
   ]),
   reason: z.string().min(1).max(2000),
   postId: z.string().optional(),

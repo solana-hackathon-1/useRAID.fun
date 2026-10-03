@@ -6,6 +6,8 @@ import { trackingEnabled } from './config';
 import { isLockedPhase, scoreContributions } from './tracking-domain';
 import { assertTrackingEnabled, lockTracking, requalifyDuplicates } from './tracking';
 
+export const REVIEW_MS = 2 * 3600000;
+export const MAX_REVIEW_MS = 24 * 3600000;
 export interface ResultPayload {
   ruleVersion: number;
   scoringVersion: number;
@@ -55,6 +57,7 @@ export async function trackingBlockers(tx: Prisma.TransactionClient, raidId: str
     tx.post.count({
       where: {
         raidId,
+        adminExcluded: false,
         OR: [
           { reviewStatus: 'FLAGGED' },
           { qualification: 'DATA_INCOMPLETE' },
@@ -157,12 +160,21 @@ export async function finalizeTracking(raidId: string, now = new Date()) {
             createdAt: now,
           },
         });
+        const first = previous
+          ? await tx.campaignResult.findFirst({
+              where: { raidId },
+              orderBy: { version: 'asc' },
+              select: { createdAt: true },
+            })
+          : null;
         await tx.raid.update({
           where: { id: raidId },
           data: {
             activeResultId: result.id,
             trackingPhase: 'REVIEW',
-            reviewEndsAt: new Date(+now + 2 * 3600000),
+            reviewEndsAt: new Date(
+              Math.min(+now + REVIEW_MS, first ? +first.createdAt + MAX_REVIEW_MS : Infinity),
+            ),
           },
         });
         return result;
@@ -244,7 +256,8 @@ export async function resolveTracking(
       | 'refresh'
       | 'reject-dispute'
       | 'resolve-dispute'
-      | 'import-post';
+      | 'import-post'
+      | 'accept-coverage';
     postId?: string;
     disputeId?: string;
     reason: string;
@@ -253,114 +266,145 @@ export async function resolveTracking(
   assertTrackingEnabled();
   if (!input.reason?.trim() || input.reason.length > 2000)
     throw new HttpError(400, 'An audit reason is required (up to 2000 characters).');
-  return db.$transaction(async (tx) => {
-    await lockTracking(tx, raidId);
-    const actor = await tx.user.findUnique({ where: { id: actorId } });
-    if (actor?.role !== 'ADMIN' || actor.suspended)
-      throw new HttpError(403, 'Administrator access required.');
-    const raid = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
-    if (raid.trackingVersion !== 2 || isLockedPhase(raid.trackingPhase))
-      throw new HttpError(409, 'Results are locked.');
-    let changed = false;
-    if (input.action === 'reject-dispute' || input.action === 'resolve-dispute') {
-      const dispute = input.disputeId
-        ? await tx.raidDispute.findUnique({ where: { id: input.disputeId } })
-        : null;
-      if (!dispute || dispute.raidId !== raidId || dispute.status !== 'OPEN')
-        throw new HttpError(409, 'Open dispute not found.');
-      await tx.raidDispute.update({
-        where: { id: dispute.id },
-        data: {
-          status: input.action === 'reject-dispute' ? 'REJECTED' : 'RESOLVED',
-          resolution: input.reason,
-          actorId,
-          resolvedAt: new Date(),
-        },
-      });
-    } else if (input.action === 'import-post') {
-      const dispute = input.disputeId
-        ? await tx.raidDispute.findUnique({ where: { id: input.disputeId } })
-        : null;
-      if (!dispute || dispute.raidId !== raidId || dispute.status !== 'OPEN' || !dispute.postId)
-        throw new HttpError(409, 'Open missing-post dispute with post ID required.');
-      const submission = await tx.postSubmission.upsert({
-        where: {
-          raidId_enrollmentId_postId: {
-            raidId,
-            enrollmentId: dispute.enrollmentId,
-            postId: dispute.postId,
-          },
-        },
-        create: { raidId, enrollmentId: dispute.enrollmentId, postId: dispute.postId },
-        update: { status: 'QUEUED', reasonCode: null },
-      });
-      await tx.job.create({
-        data: {
-          key: `dispute-import:${dispute.id}:${crypto.randomUUID()}`,
-          kind: 'submission',
-          priority: 30,
-          payload: { raidId, postId: dispute.postId, submissionId: submission.id },
-        },
-      });
-    } else {
-      const post = input.postId ? await tx.post.findUnique({ where: { id: input.postId } }) : null;
-      if (!post || post.raidId !== raidId) throw new HttpError(404, 'Contribution not found.');
-      if (input.action === 'clear')
-        await tx.post.update({ where: { id: post.id }, data: { reviewStatus: 'CLEARED' } });
-      else if (input.action === 'exclude')
-        await tx.post.update({
-          where: { id: post.id },
+  return db.$transaction(
+    async (tx) => {
+      await lockTracking(tx, raidId);
+      const actor = await tx.user.findUnique({ where: { id: actorId } });
+      if (actor?.role !== 'ADMIN' || actor.suspended)
+        throw new HttpError(403, 'Administrator access required.');
+      const raid = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
+      if (raid.trackingVersion !== 2 || isLockedPhase(raid.trackingPhase))
+        throw new HttpError(409, 'Results are locked.');
+      let changed = false;
+      if (input.action === 'reject-dispute' || input.action === 'resolve-dispute') {
+        const dispute = input.disputeId
+          ? await tx.raidDispute.findUnique({ where: { id: input.disputeId } })
+          : null;
+        if (!dispute || dispute.raidId !== raidId || dispute.status !== 'OPEN')
+          throw new HttpError(409, 'Open dispute not found.');
+        await tx.raidDispute.update({
+          where: { id: dispute.id },
           data: {
-            adminExcluded: true,
-            qualification: 'EXCLUDED',
-            reasonCode: 'ADMIN_EXCLUDED',
-            reviewStatus: 'CLEARED',
+            status: input.action === 'reject-dispute' ? 'REJECTED' : 'RESOLVED',
+            resolution: input.reason,
+            actorId,
+            resolvedAt: new Date(),
           },
         });
-      else if (input.action === 'refresh' || input.action === 'restore') {
-        if (input.action === 'restore')
-          await tx.post.update({
-            where: { id: post.id },
-            data: { adminExcluded: false, hidden: false },
-          });
+      } else if (input.action === 'accept-coverage') {
+        if (
+          raid.holdReason !== 'COVERAGE_EXPIRED' ||
+          raid.status !== 'ENDED' ||
+          raid.finalRefreshed
+        )
+          throw new HttpError(409, 'This Raid is not waiting on a coverage decision.');
+        await tx.raid.update({
+          where: { id: raidId },
+          data: {
+            holdReason: null,
+            collectionError: null,
+            nextToken: null,
+            searchEndAt: null,
+            pendingNewestId: null,
+            trackingPhase: 'FINALIZING',
+          },
+        });
         await tx.job.create({
           data: {
-            key: `correction:${post.id}:${crypto.randomUUID()}`,
-            kind: 'tracking-correction',
+            key: `accept-coverage:${raidId}:${crypto.randomUUID()}`,
+            kind: 'refresh',
             priority: 30,
-            payload: { raidId, postId: post.id },
+            payload: { raidId, after: '', final: true, coveredUntil: raid.endsAt.toISOString() },
           },
         });
-      } else throw new HttpError(400, 'Unsupported correction.');
-      const updated = await tx.post.findUniqueOrThrow({ where: { id: post.id } });
-      await tx.contributionDecision.create({
-        data: {
-          postId: post.id,
-          actorId,
-          qualification: updated.qualification,
-          reasonCode: updated.reasonCode,
-          ruleVersion: post.ruleVersion,
-          evidence: {
-            action: input.action,
-            reason: input.reason,
-            observationId: post.lastObservationId,
+      } else if (input.action === 'import-post') {
+        const dispute = input.disputeId
+          ? await tx.raidDispute.findUnique({ where: { id: input.disputeId } })
+          : null;
+        if (!dispute || dispute.raidId !== raidId || dispute.status !== 'OPEN' || !dispute.postId)
+          throw new HttpError(409, 'Open missing-post dispute with post ID required.');
+        const submission = await tx.postSubmission.upsert({
+          where: {
+            raidId_enrollmentId_postId: {
+              raidId,
+              enrollmentId: dispute.enrollmentId,
+              postId: dispute.postId,
+            },
           },
+          create: { raidId, enrollmentId: dispute.enrollmentId, postId: dispute.postId },
+          update: { status: 'QUEUED', reasonCode: null },
+        });
+        await tx.job.create({
+          data: {
+            key: `dispute-import:${dispute.id}:${crypto.randomUUID()}`,
+            kind: 'submission',
+            priority: 30,
+            payload: { raidId, postId: dispute.postId, submissionId: submission.id },
+          },
+        });
+      } else {
+        const post = input.postId
+          ? await tx.post.findUnique({ where: { id: input.postId } })
+          : null;
+        if (!post || post.raidId !== raidId) throw new HttpError(404, 'Contribution not found.');
+        if (input.action === 'clear')
+          await tx.post.update({ where: { id: post.id }, data: { reviewStatus: 'CLEARED' } });
+        else if (input.action === 'exclude')
+          await tx.post.update({
+            where: { id: post.id },
+            data: {
+              adminExcluded: true,
+              qualification: 'EXCLUDED',
+              reasonCode: 'ADMIN_EXCLUDED',
+              reviewStatus: 'CLEARED',
+            },
+          });
+        else if (input.action === 'refresh' || input.action === 'restore') {
+          if (input.action === 'restore')
+            await tx.post.update({
+              where: { id: post.id },
+              data: { adminExcluded: false, hidden: false },
+            });
+          await tx.job.create({
+            data: {
+              key: `correction:${post.id}:${crypto.randomUUID()}`,
+              kind: 'tracking-correction',
+              priority: 30,
+              payload: { raidId, postId: post.id },
+            },
+          });
+        } else throw new HttpError(400, 'Unsupported correction.');
+        const updated = await tx.post.findUniqueOrThrow({ where: { id: post.id } });
+        await tx.contributionDecision.create({
+          data: {
+            postId: post.id,
+            actorId,
+            qualification: updated.qualification,
+            reasonCode: updated.reasonCode,
+            ruleVersion: post.ruleVersion,
+            evidence: {
+              action: input.action,
+              reason: input.reason,
+              observationId: post.lastObservationId,
+            },
+          },
+        });
+        await requalifyDuplicates(tx, raidId);
+        changed = true;
+      }
+      await tx.moderationEvent.create({
+        data: {
+          actorId,
+          action: `tracking:${input.action}`,
+          targetId: input.postId || input.disputeId || raidId,
+          reason: input.reason,
         },
       });
-      await requalifyDuplicates(tx, raidId);
-      changed = true;
-    }
-    await tx.moderationEvent.create({
-      data: {
-        actorId,
-        action: `tracking:${input.action}`,
-        targetId: input.postId || input.disputeId || raidId,
-        reason: input.reason,
-      },
-    });
-    if (changed && raid.activeResultId)
-      await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'FINALIZING' } });
-  });
+      if (changed && raid.activeResultId)
+        await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'FINALIZING' } });
+    },
+    { timeout: 30000 },
+  );
 }
 
 // An explicit operator decision may carry held claims to a later Raid of the same token.

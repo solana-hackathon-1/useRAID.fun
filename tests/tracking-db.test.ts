@@ -25,7 +25,8 @@ import { processTrackingLookup } from '../src/lib/tracking-worker';
 import { settleNextRound } from '../src/lib/rewards';
 import { collect, refresh } from '../src/lib/collection';
 import { claimJob, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
-import { runJob } from '../src/lib/worker-jobs';
+import { runJob, schedule } from '../src/lib/worker-jobs';
+import { searchPosts } from '../src/lib/providers/x';
 import type { XPost } from '../src/lib/domain';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
@@ -636,6 +637,265 @@ suite('tracking v2 database lifecycle', () => {
       expect(
         await db.postSubmission.findUniqueOrThrow({ where: { id: created.id } }),
       ).toMatchObject({ status: 'EXCLUDED', reasonCode: 'INVALID_POST' });
+    });
+  });
+  describe('lookup and finalization correctness', () => {
+    const problem = (type: string, id: string) => ({
+      resource_id: id,
+      type: `https://api.x.com/2/problems/${type}`,
+    });
+    const respond = (body: unknown) =>
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response(JSON.stringify(body), { status: 200 })),
+      );
+    const endsAtOf = async () =>
+      (await db.raid.findUniqueOrThrow({ where: { id: raidId } })).endsAt.toISOString();
+    it('excludes a restricted post as POST_RESTRICTED without blocking finalization', async () => {
+      await ingestTracking(raidId, [xpost('301')]);
+      await close();
+      respond({ errors: [problem('not-authorized-for-resource', '301')] });
+      await refresh(raidId, '', true, await endsAtOf());
+      expect(await db.post.findUniqueOrThrow({ where: { id: '301' } })).toMatchObject({
+        availability: 'UNAVAILABLE',
+        reasonCode: 'POST_RESTRICTED',
+        qualification: 'EXCLUDED',
+      });
+      expect(await db.$transaction((tx) => trackingBlockers(tx, raidId))).toBe(0);
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count()).toBe(1);
+    });
+    it('escalates an unresolved final lookup to LOOKUP_FAILED at attempt five', async () => {
+      await ingestTracking(raidId, [xpost('302')]);
+      await close();
+      await db.raid.update({ where: { id: raidId }, data: { finalRefreshed: false } });
+      respond({ data: [] });
+      const ends = await endsAtOf();
+      await expect(refresh(raidId, '', true, ends, 'k4', 4)).rejects.toThrow('incomplete lookup');
+      expect((await db.post.findUniqueOrThrow({ where: { id: '302' } })).availability).toBe(
+        'DATA_INCOMPLETE',
+      );
+      await refresh(raidId, '', true, ends, 'k5', 5);
+      expect(await db.post.findUniqueOrThrow({ where: { id: '302' } })).toMatchObject({
+        availability: 'UNAVAILABLE',
+        reasonCode: 'LOOKUP_FAILED',
+      });
+      expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).finalRefreshed).toBe(
+        true,
+      );
+      expect(await db.$transaction((tx) => trackingBlockers(tx, raidId))).toBe(0);
+    });
+    it('does not escalate a non-final pass', async () => {
+      await ingestTracking(raidId, [xpost('304')]);
+      respond({ data: [] });
+      await expect(refresh(raidId, '', false, undefined, 'k', 6)).rejects.toThrow(
+        'incomplete lookup',
+      );
+      expect((await db.post.findUniqueOrThrow({ where: { id: '304' } })).availability).toBe(
+        'DATA_INCOMPLETE',
+      );
+    });
+    it('lets an admin exclusion unblock a post stuck as DATA_INCOMPLETE', async () => {
+      await ingestTracking(raidId, [xpost('303')]);
+      await close();
+      await markTrackingUnavailable(raidId, ['303'], false);
+      expect(await db.$transaction((tx) => trackingBlockers(tx, raidId))).toBe(1);
+      await resolveTracking(raidId, adminId, {
+        action: 'exclude',
+        postId: '303',
+        reason: 'Cannot be verified',
+      });
+      expect(await db.$transaction((tx) => trackingBlockers(tx, raidId))).toBe(0);
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count()).toBe(1);
+    });
+    it('keeps refreshing a post already owned by this Raid when the author overlaps another Raid', async () => {
+      const original = await db.raid.update({ where: { id: raidId }, data: { ruleVersion: 3 } });
+      const other = await db.raid.create({
+        data: {
+          mint: original.mint,
+          creatorId: userId,
+          tag: 'raid_overlap',
+          title: 'Overlapping Raid',
+          description: 'Mention attribution fixture',
+          status: 'ACTIVE',
+          startsAt: original.startsAt,
+          endsAt: original.endsAt,
+          trackingVersion: 2,
+          ruleVersion: 3,
+          scoringVersion: 2,
+        },
+      });
+      await enrollRaid(other.id, userId);
+      await db.raidEnrollment.updateMany({
+        where: { raidId: other.id },
+        data: { joinedAt: new Date(+started + 1000) },
+      });
+      const mention = (likes: number) =>
+        xpost('310', {
+          text: 'Original @useRAID',
+          entities: { mentions: [{ username: 'useRAID' }] },
+          public_metrics: { like_count: likes, reply_count: 0, retweet_count: 0, quote_count: 0 },
+        });
+      const claim = await submitTrackingPost(raidId, userId, '310');
+      await ingestTracking(raidId, [mention(3)], { submissionId: claim.id });
+      await close();
+      respond({ data: [mention(9)] });
+      await refresh(raidId, '', true, await endsAtOf());
+      const post = await db.post.findUniqueOrThrow({ where: { id: '310' } });
+      expect(post.likes).toBe(9);
+      expect(+post.observedAt).toBeGreaterThanOrEqual(
+        +(await db.raid.findUniqueOrThrow({ where: { id: raidId } })).endsAt,
+      );
+      await db.job.updateMany({ data: { doneAt: new Date() } });
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count({ where: { raidId } })).toBe(1);
+    });
+    it('does not reopen results for an unrelated review-time submission', async () => {
+      await ingestTracking(raidId, [xpost('401')]);
+      await close();
+      await finalizeTracking(raidId);
+      const before = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(before.trackingPhase).toBe('REVIEW');
+      const submitted = await submitTrackingPost(raidId, userId, '402');
+      respond({
+        data: [xpost('402', { created_at: new Date(+started - 3600000).toISOString() })],
+      });
+      await db.job.update({
+        where: { key: `submission:${submitted.id}` },
+        data: { runAt: new Date(Date.now() - 1000) },
+      });
+      const job = await claimJob();
+      await processTrackingLookup(raidId, '402', job!.id, submitted.id);
+      await finishJob(job!);
+      await finalizeTracking(raidId);
+      const after = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(after.trackingPhase).toBe('REVIEW');
+      expect(+after.reviewEndsAt!).toBe(+before.reviewEndsAt!);
+      expect(await db.campaignResult.count()).toBe(1);
+      expect(await db.post.findUnique({ where: { id: '402' } })).toBeNull();
+      expect(
+        await db.postSubmission.findUniqueOrThrow({ where: { id: submitted.id } }),
+      ).toMatchObject({ status: 'EXCLUDED', reasonCode: 'OUTSIDE_RAID' });
+    });
+    it('caps repeated review extensions at 24 hours from the first result', async () => {
+      await ingestTracking(raidId, [xpost('501')]);
+      await close();
+      const t0 = new Date();
+      await finalizeTracking(raidId, t0);
+      const first = await db.campaignResult.findFirstOrThrow({ orderBy: { version: 'asc' } });
+      for (const [id, hours] of [
+        ['502', 23],
+        ['503', 24.5],
+      ] as const) {
+        await ingestTracking(raidId, [xpost(id)], { correction: true });
+        await finalizeTracking(raidId, new Date(+t0 + hours * 3600000));
+        expect(
+          +(await db.raid.findUniqueOrThrow({ where: { id: raidId } })).reviewEndsAt!,
+        ).toBeLessThanOrEqual(+first.createdAt + 24 * 3600000);
+      }
+      expect(await db.campaignResult.count()).toBe(3);
+      expect(+(await db.raid.findUniqueOrThrow({ where: { id: raidId } })).reviewEndsAt!).toBe(
+        +first.createdAt + 24 * 3600000,
+      );
+    });
+    it('holds a Raid whose search window expired until an admin accepts coverage', async () => {
+      const ended = new Date(Date.now() - 8 * 86400000);
+      await db.raid.update({
+        where: { id: raidId },
+        data: {
+          status: 'ENDED',
+          startsAt: new Date(+ended - 3600000),
+          endsAt: ended,
+          trackingPhase: 'FINALIZING',
+          finalRefreshed: false,
+        },
+      });
+      await expect(
+        resolveTracking(raidId, adminId, { action: 'accept-coverage', reason: 'early' }),
+      ).rejects.toMatchObject({ status: 409 });
+      await schedule();
+      const held = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(held.holdReason).toBe('COVERAGE_EXPIRED');
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count()).toBe(0);
+      await expect(
+        resolveTracking(raidId, userId, { action: 'accept-coverage', reason: 'no' }),
+      ).rejects.toMatchObject({ status: 403 });
+      await resolveTracking(raidId, adminId, {
+        action: 'accept-coverage',
+        reason: 'Accept partial search coverage',
+      });
+      respond({ data: [] });
+      await db.job.updateMany({ data: { runAt: new Date(Date.now() - 1000) } });
+      const job = await claimJob();
+      expect(job!.key).toMatch(/^accept-coverage:/);
+      await runJob(job!);
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid).toMatchObject({ finalRefreshed: true, holdReason: null });
+      expect(+raid.coveredUntil!).toBe(+ended);
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count()).toBe(1);
+    });
+    it('finalizes an expired v1 Raid as partial coverage', async () => {
+      const { mint } = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      const legacy = await db.raid.create({
+        data: {
+          mint,
+          creatorId: userId,
+          tag: 'raid_legacy',
+          title: 'Legacy',
+          description: 'Legacy expired window',
+          status: 'ENDED',
+          startsAt: new Date(Date.now() - 10 * 86400000),
+          endsAt: new Date(Date.now() - 8 * 86400000),
+        },
+      });
+      await schedule();
+      expect(await db.raid.findUniqueOrThrow({ where: { id: legacy.id } })).toMatchObject({
+        finalRefreshed: true,
+        coverage: 'partial',
+      });
+    });
+    it('searches the full window on the final pass and clamps to the 7-day limit', async () => {
+      const urls: URL[] = [];
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async (url: string | URL | Request) => {
+          urls.push(new URL(String(url)));
+          return new Response(JSON.stringify({ data: [] }), { status: 200 });
+        }),
+      );
+      const startsAt = new Date(Date.now() - 6 * 3600000);
+      const endsAt = new Date(Date.now() - 3 * 3600000);
+      const covered = new Date(Date.now() - 4 * 3600000);
+      const raid = {
+        id: raidId,
+        tag: 'raid_tracking',
+        startsAt,
+        endsAt,
+        sinceId: null,
+        nextToken: null,
+        trackingVersion: 2,
+        officialHandle: 'useRAID',
+        coveredUntil: covered,
+      };
+      const startOf = () => urls.at(-1)!.searchParams.get('start_time');
+      await searchPosts({ ...raid, ruleVersion: 4, searchEndAt: new Date(+endsAt - 3600000) });
+      expect(startOf()).toBe(new Date(+covered - 1000).toISOString());
+      await searchPosts({ ...raid, ruleVersion: 4, searchEndAt: endsAt });
+      expect(startOf()).toBe(startsAt.toISOString());
+      await searchPosts({ ...raid, ruleVersion: 3, searchEndAt: new Date(+endsAt - 3600000) });
+      expect(startOf()).toBe(startsAt.toISOString());
+      await searchPosts({
+        ...raid,
+        ruleVersion: 3,
+        startsAt: new Date(Date.now() - 9 * 86400000),
+        searchEndAt: endsAt,
+      });
+      const clamped = Date.parse(startOf()!);
+      expect(clamped).toBeGreaterThan(Date.now() - 7 * 86400000);
+      expect(clamped).toBeLessThan(Date.now() - 7 * 86400000 + 120000);
     });
   });
 });

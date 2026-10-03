@@ -72,15 +72,69 @@ export function validMetrics(post: XPost) {
     )
   );
 }
-export function similarText(a: string, b: string) {
-  const at = normalize(a).split(' ').filter(Boolean),
-    bt = normalize(b).split(' ').filter(Boolean);
-  if (at.length < 20 || bt.length < 20) return false;
-  const x = new Set(at),
-    y = new Set(bt);
-  const intersection = [...x].filter((t) => y.has(t)).length;
-  return intersection / new Set([...x, ...y]).size >= 0.9;
+export interface TokenSet {
+  count: number;
+  set: Set<string>;
 }
+export function tokenSet(text: string): TokenSet {
+  const tokens = normalize(text).split(' ').filter(Boolean);
+  return { count: tokens.length, set: new Set(tokens) };
+}
+export function similarTokens(a: TokenSet, b: TokenSet) {
+  if (a.count < 20 || b.count < 20) return false;
+  let intersection = 0;
+  for (const t of a.set) if (b.set.has(t)) intersection++;
+  return intersection / (a.set.size + b.set.size - intersection) >= 0.9;
+}
+export function similarText(a: string, b: string) {
+  return similarTokens(tokenSet(a), tokenSet(b));
+}
+export interface PeerPost {
+  id: string;
+  authorId: string;
+  text: string;
+  contentExpiredAt: Date | null;
+}
+// Peers of a post: other-author exact copies, or near copies (Jaccard >= 0.9 over unique tokens,
+// which needs the unique-token counts within a factor of 0.9 of each other, so only that window is compared).
+export function duplicatePeers(posts: PeerPost[]) {
+  const rows = posts.map((post) => ({
+    post,
+    norm: normalize(post.text),
+    tokens: tokenSet(post.text),
+  }));
+  const live = rows.filter((r) => !r.post.contentExpiredAt);
+  const byText = new Map<string, typeof rows>();
+  for (const r of live) byText.set(r.norm, [...(byText.get(r.norm) || []), r]);
+  const wide = live
+    .filter((r) => r.tokens.count >= 20)
+    .sort((a, b) => a.tokens.set.size - b.tokens.set.size);
+  const peers = new Map<string, string[]>();
+  for (const r of rows) {
+    const found = new Set<string>();
+    if (r.norm)
+      for (const o of byText.get(r.norm) || [])
+        if (o.post.id !== r.post.id && o.post.authorId !== r.post.authorId) found.add(o.post.id);
+    if (r.tokens.count >= 20) {
+      const size = r.tokens.set.size;
+      let lo = 0,
+        hi = wide.length;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (wide[mid].tokens.set.size * 10 < size * 9) lo = mid + 1;
+        else hi = mid;
+      }
+      for (let i = lo; i < wide.length && wide[i].tokens.set.size * 9 <= size * 10; i++) {
+        const o = wide[i];
+        if (o.post.id !== r.post.id && o.norm !== r.norm && similarTokens(r.tokens, o.tokens))
+          found.add(o.post.id);
+      }
+    }
+    peers.set(r.post.id, [...found]);
+  }
+  return peers;
+}
+
 export const postPoints = (p: Pick<TrackingPost, 'likes' | 'replies' | 'reposts' | 'quotes'>) =>
   100 * (1 + Math.log2(1 + p.likes + p.replies + p.reposts + p.quotes));
 export function scoreContributions(posts: TrackingPost[]) {

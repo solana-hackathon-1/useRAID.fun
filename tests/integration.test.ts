@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { db } from '../src/lib/db';
 import { createRaid, changeRaid } from '../src/lib/campaigns';
-import { collect, ingest, refresh } from '../src/lib/collection';
+import { collect, ingest, refresh, snapshot } from '../src/lib/collection';
 import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
 import { reserveUsage, lookupPosts } from '../src/lib/providers/x';
 import { config } from '../src/lib/config';
@@ -299,5 +299,149 @@ integration('PostgreSQL integration', () => {
     });
     vi.unstubAllGlobals();
     await db.xEndpointState.deleteMany();
+  });
+  describe('lookup and finalization correctness', () => {
+    const base = 'https://api.x.com/2/problems/';
+    const livePost = (id: string, tag: string) => ({
+      id,
+      author_id: 'carol',
+      text: `Post ${id} @useRAID #${tag}`,
+      created_at: new Date(Date.now() - 1000).toISOString(),
+      entities: { mentions: [{ username: 'useRAID' }], hashtags: [{ tag }] },
+      public_metrics: { like_count: 1, reply_count: 0, quote_count: 0, retweet_count: 0 },
+    });
+    async function reset(patch: Record<string, unknown> = {}) {
+      await db.settings.upsert({
+        where: { id: 'global' },
+        create: { collectionEnabled: true, cutoffCents: 18000, dailyRequestLimit: 100000 },
+        update: { collectionEnabled: true, cutoffCents: 18000, dailyRequestLimit: 100000 },
+      });
+      await db.providerUsage.deleteMany();
+      await db.xEndpointState.deleteMany();
+      await db.snapshot.deleteMany({ where: { raidId } });
+      await db.post.deleteMany({ where: { raidId } });
+      return db.raid.update({
+        where: { id: raidId },
+        data: {
+          status: 'ACTIVE',
+          startsAt: new Date(Date.now() - 3600000),
+          endsAt: new Date(Date.now() + 3600000),
+          finalRefreshed: false,
+          coveredUntil: null,
+          coverage: 'partial',
+          nextToken: null,
+          sinceId: null,
+          searchEndAt: null,
+          pendingNewestId: null,
+          ...patch,
+        },
+      });
+    }
+    const json = (body: unknown) => new Response(JSON.stringify(body), { status: 200 });
+    it('does not let a protected or suspended author break refresh', async () => {
+      const raid = await reset();
+      await ingest(raidId, [livePost('7001', raid.tag), livePost('7002', raid.tag)]);
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () =>
+          json({
+            data: [livePost('7001', raid.tag)],
+            errors: [{ resource_id: '7002', type: `${base}not-authorized-for-resource` }],
+          }),
+        ),
+      );
+      await refresh(raidId, '', false);
+      expect(await db.post.findUniqueOrThrow({ where: { id: '7002' } })).toMatchObject({
+        deleted: true,
+        text: '',
+      });
+      expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).coverage).toBe(
+        'complete',
+      );
+    });
+    it('still throws for unknown lookup errors on a v1 non-final pass and escalates on the final pass', async () => {
+      const raid = await reset();
+      await ingest(raidId, [livePost('7003', raid.tag)]);
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => json({ data: [] })),
+      );
+      await expect(refresh(raidId, '', true, undefined, undefined, 4)).rejects.toThrow(
+        'incomplete lookup',
+      );
+      expect((await db.post.findUniqueOrThrow({ where: { id: '7003' } })).deleted).toBe(false);
+      await refresh(raidId, '', true, undefined, undefined, 5);
+      expect((await db.post.findUniqueOrThrow({ where: { id: '7003' } })).deleted).toBe(true);
+      expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).finalRefreshed).toBe(
+        true,
+      );
+    });
+    it('keeps a late non-final refresh from undoing the final state', async () => {
+      const endsAt = new Date(Date.now() - 60000);
+      await reset({ status: 'ENDED', endsAt, finalRefreshed: true, coveredUntil: endsAt });
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => json({ data: [] })),
+      );
+      await refresh(raidId, '', false, new Date(+endsAt - 3600000).toISOString());
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.finalRefreshed).toBe(true);
+      expect(+raid.coveredUntil!).toBe(+endsAt);
+    });
+    it('writes no coverage when the search cursor moved after the refresh began', async () => {
+      const endsAt = new Date(Date.now() - 60000);
+      await reset({ status: 'ENDED', endsAt, searchEndAt: endsAt });
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => json({ data: [] })),
+      );
+      await refresh(raidId, '', true, endsAt.toISOString());
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.finalRefreshed).toBe(false);
+      expect(raid.coveredUntil).toBeNull();
+    });
+    it('does not downgrade a complete snapshot with an incomplete one in the same minute', async () => {
+      await reset();
+      vi.useFakeTimers({ toFake: ['Date'], now: new Date('2026-10-02T10:00:10Z') });
+      try {
+        await snapshot(raidId, true);
+        await snapshot(raidId, false);
+        expect(await db.snapshot.findMany({ where: { raidId } })).toMatchObject([
+          { complete: true },
+        ]);
+        await db.snapshot.deleteMany({ where: { raidId } });
+        await snapshot(raidId, false);
+        await snapshot(raidId, true);
+        expect(await db.snapshot.findMany({ where: { raidId } })).toMatchObject([
+          { complete: true },
+        ]);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+    it('does not overwrite cursors changed by a concurrent end', async () => {
+      await reset();
+      let release!: () => void;
+      const gate = new Promise<void>((resolve) => (release = resolve));
+      let started!: () => void;
+      const searching = new Promise<void>((resolve) => (started = resolve));
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => {
+          started();
+          await gate;
+          return json({ data: [], meta: { newest_id: '5555', next_token: 'stale-page' } });
+        }),
+      );
+      const running = collect(raidId, 'stale');
+      await searching;
+      await changeRaid(user, raidId, 'end');
+      release();
+      await running;
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.nextToken).toBeNull();
+      expect(raid.pendingNewestId).toBeNull();
+      expect(await db.job.count({ where: { key: { startsWith: `page:${raidId}` } } })).toBe(0);
+    });
   });
 });

@@ -60,6 +60,34 @@ export async function schedule(now = new Date()) {
       data: { status: 'ENDED' },
     });
   });
+  await step('coverage-expired', async () => {
+    // X recent search cannot reach past 7 days; record the dead end instead of leaving the Raid silently stuck.
+    const expired = {
+      status: 'ENDED',
+      finalRefreshed: false,
+      endsAt: { lt: new Date(+now - 7 * 86400000) },
+    };
+    await db.raid.updateMany({
+      where: { ...expired, trackingVersion: 1 },
+      data: {
+        finalRefreshed: true,
+        coverage: 'partial',
+        collectionError: 'Final collection window expired.',
+      },
+    });
+    await db.raid.updateMany({
+      where: {
+        ...expired,
+        trackingVersion: 2,
+        holdReason: null,
+        trackingPhase: { notIn: [...LOCKED_PHASES] },
+      },
+      data: {
+        holdReason: 'COVERAGE_EXPIRED',
+        collectionError: 'Final search window expired; administrator decision required.',
+      },
+    });
+  });
   await step('collect', async () => {
     const settings = await db.settings.upsert({
       where: { id: 'global' },
@@ -234,7 +262,7 @@ export async function runJob(job: Job) {
     else if (job.kind === 'finance') await financeLaunch(p.launchId);
     else if (job.kind === 'collect') await collect(p.raidId, job.id);
     else if (job.kind === 'refresh')
-      await refresh(p.raidId, p.after, p.final, p.coveredUntil, job.id);
+      await refresh(p.raidId, p.after, p.final, p.coveredUntil, job.id, job.attempts);
     else if (job.kind === 'tracking-correction')
       await processTrackingLookup(p.raidId, p.postId, job.id, undefined, true);
     else if (job.kind === 'submission') {

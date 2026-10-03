@@ -3,7 +3,7 @@ import { db } from '@/lib/db';
 import { AdminAction } from './admin';
 import { trackingEnabled, trackingSettlementEnabled } from '@/lib/config';
 export async function TrackingOperations() {
-  const [raids, flags, disputes, endpoints, stale, backlog] = await Promise.all([
+  const [raids, flags, lookupFailures, disputes, endpoints, stale, backlog] = await Promise.all([
     db.raid.findMany({
       where: { trackingVersion: 2, trackingPhase: { not: 'ALLOCATED' } },
       orderBy: { createdAt: 'asc' },
@@ -17,6 +17,14 @@ export async function TrackingOperations() {
           { qualification: 'EXCLUDED' },
           { availability: { not: 'AVAILABLE' } },
         ],
+      },
+      take: 50,
+    }),
+    db.post.findMany({
+      where: {
+        raid: { trackingVersion: 2 },
+        adminExcluded: false,
+        reasonCode: { in: ['LOOKUP_FAILED', 'POST_RESTRICTED'] },
       },
       take: 50,
     }),
@@ -38,6 +46,10 @@ export async function TrackingOperations() {
     },
     _sum: { grossLamports: true, costLamports: true },
   });
+  const decisions = [
+    ...lookupFailures,
+    ...flags.filter((p) => !lookupFailures.some((l) => l.id === p.id)),
+  ];
   return (
     <section className="panel" id="tracking">
       <h2>X tracking operations</h2>
@@ -69,6 +81,15 @@ export async function TrackingOperations() {
               No allocation or transfer authorized.
             </p>
           )}
+          {r.holdReason === 'COVERAGE_EXPIRED' && (
+            <AdminAction
+              url={`/api/raids/${r.id}/resolve`}
+              action="tracking"
+              id={r.id}
+              label="Accept partial search coverage and finalize"
+              values={{ action: 'accept-coverage' }}
+            />
+          )}
           {r.trackingPhase === 'HELD' &&
             raids
               .filter(
@@ -91,7 +112,7 @@ export async function TrackingOperations() {
         </div>
       ))}
       <h3>Contribution decisions</h3>
-      {flags.map((p) => (
+      {decisions.map((p) => (
         <div className="admin-row" key={p.id}>
           <p>
             Post {p.id} · {p.qualification} · {p.reasonCode} · {p.reviewStatus} · {p.availability}

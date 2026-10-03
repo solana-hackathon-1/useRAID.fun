@@ -1,13 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import {
   automaticRaidId,
+  duplicatePeers,
   qualificationReason,
   scoreContributions,
   similarText,
   validMetrics,
   type TrackingPost,
 } from '../src/lib/tracking-domain';
-import type { XPost } from '../src/lib/domain';
+import { normalize, type XPost } from '../src/lib/domain';
+import { lookupOutcome } from '../src/lib/providers/x';
 const raid = {
   id: 'legacy-raid',
   tag: 'raid_test',
@@ -175,5 +177,56 @@ describe('tracking v2 rules', () => {
       similarText(text, text.replace('word19', 'changed').replace('word18', 'different')),
     ).toBe(false);
     expect(similarText('short repeated text', 'short repeated text')).toBe(false);
+  });
+  it('classifies lookup errors per post', () => {
+    const e = (type: string, id = '9') => [{ resource_id: id, type }];
+    const base = 'https://api.twitter.com/2/problems/';
+    expect(lookupOutcome(e(`${base}resource-not-found`), '9')).toBe('missing');
+    expect(lookupOutcome(e(`${base}not-authorized-for-resource`), '9')).toBe('restricted');
+    expect(lookupOutcome(e(`${base}resource-unavailable`), '9')).toBe('restricted');
+    expect(lookupOutcome(e(`${base}client-forbidden`), '9')).toBe('unknown');
+    expect(lookupOutcome(e(`${base}resource-not-found`, '8'), '9')).toBe('unknown');
+    expect(lookupOutcome(undefined, '9')).toBe('unknown');
+  });
+  it('finds the same duplicate peers as the quadratic reference', () => {
+    let seed = 7;
+    const rand = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+    const vocab = Array.from({ length: 40 }, (_, i) => `w${i}`);
+    const bases = Array.from({ length: 6 }, () =>
+      Array.from({ length: 18 + Math.floor(rand() * 14) }, () => vocab[Math.floor(rand() * 40)]),
+    );
+    const posts = Array.from({ length: 200 }, (_, i) => {
+      const words = [...bases[Math.floor(rand() * bases.length)]];
+      if (rand() < 0.5) words[Math.floor(rand() * words.length)] = `x${i}`;
+      if (rand() < 0.3) words.push(vocab[Math.floor(rand() * 40)]);
+      if (rand() < 0.1) words.length = Math.min(words.length, 10);
+      return {
+        id: String(1000 + i),
+        authorId: `a${Math.floor(rand() * 20)}`,
+        text: words.join(' '),
+        contentExpiredAt: rand() < 0.05 ? new Date() : null,
+      };
+    });
+    const naive = (p: (typeof posts)[number]) => {
+      const text = normalize(p.text);
+      return posts
+        .filter(
+          (o) =>
+            o.id !== p.id &&
+            !o.contentExpiredAt &&
+            ((o.authorId !== p.authorId && text && normalize(o.text) === text) ||
+              (normalize(o.text) !== text && similarText(p.text, o.text))),
+        )
+        .map((o) => o.id)
+        .sort();
+    };
+    const fast = duplicatePeers(posts);
+    let related = 0;
+    for (const p of posts) {
+      const expected = naive(p);
+      related += expected.length;
+      expect([...fast.get(p.id)!].sort()).toEqual(expected);
+    }
+    expect(related).toBeGreaterThan(50);
   });
 });

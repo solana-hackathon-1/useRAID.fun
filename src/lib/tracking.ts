@@ -4,7 +4,12 @@ import { db } from './db';
 import { HttpError } from './auth-primitives';
 import { trackingEnabled } from './config';
 import { normalize, type XPost } from './domain';
-import { automaticRaidId, qualificationReason, similarText, validMetrics } from './tracking-domain';
+import {
+  automaticRaidId,
+  qualificationReason,
+  duplicatePeers,
+  validMetrics,
+} from './tracking-domain';
 import { matchedTarget } from './studio-attribution';
 
 export async function lockTracking(tx: Prisma.TransactionClient, raidId: string) {
@@ -107,6 +112,7 @@ export async function requalifyDuplicates(tx: Prisma.TransactionClient, raidId: 
     orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
   });
   const first = new Map<string, string>();
+  const peerIds = duplicatePeers(posts);
   for (const p of posts) {
     const text = normalize(p.text),
       key = `${p.authorId}:${p.contentHash || text}`;
@@ -114,18 +120,10 @@ export async function requalifyDuplicates(tx: Prisma.TransactionClient, raidId: 
     if ((p.contentHash || text) && !duplicate) first.set(key, p.id);
     const qualification = duplicate ? 'EXCLUDED' : 'QUALIFIED';
     const reasonCode = duplicate ? 'DUPLICATE_CONTENT' : null;
-    const peers = !duplicate
-      ? posts.filter(
-          (other) =>
-            other.id !== p.id &&
-            !other.contentExpiredAt &&
-            ((other.authorId !== p.authorId && text && normalize(other.text) === text) ||
-              (normalize(other.text) !== text && similarText(p.text, other.text))),
-        )
-      : [];
+    const peers = !duplicate ? peerIds.get(p.id)! : [];
     const fingerprint = peers.length
       ? createHash('sha256')
-          .update([p.id, ...peers.map((x) => x.id)].sort().join(':'))
+          .update([p.id, ...peers].sort().join(':'))
           .digest('hex')
       : null;
     const reviewStatus = fingerprint
@@ -150,7 +148,7 @@ export async function requalifyDuplicates(tx: Prisma.TransactionClient, raidId: 
           ruleVersion: p.ruleVersion,
           evidence: {
             duplicateOf: duplicate || null,
-            relatedPosts: peers.map((x) => x.id),
+            relatedPosts: peers,
             reviewStatus,
           },
         },
@@ -211,12 +209,21 @@ export async function ingestTracking(
               include: { raid: { include: { briefPosts: true } } },
             })
           : [];
+      const owned = new Set(
+        (
+          await tx.post.findMany({
+            where: { raidId, id: { in: posts.map((p) => p.id).filter(Boolean) } },
+            select: { id: true },
+          })
+        ).map((p) => p.id),
+      );
       for (const p of [...posts].sort((a, b) => a.id.localeCompare(b.id))) {
         if (!p.id || !p.author_id || !Number.isFinite(Date.parse(p.created_at)))
           throw new Error('X returned incomplete post identity.');
         if (
           raid.ruleVersion >= 3 &&
           !submission &&
+          !owned.has(p.id) &&
           automaticRaidId(
             p,
             matchingEnrollments
@@ -271,6 +278,15 @@ export async function ingestTracking(
           m = p.public_metrics;
         const qualification = reasonCode ? 'EXCLUDED' : valid ? 'QUALIFIED' : 'DATA_INCOMPLETE';
         if (!valid && !reasonCode) reasonCode = 'METRICS_INCOMPLETE';
+        // An unrelated or ineligible post must not enter a frozen payload or reopen review.
+        if (raid.activeResultId && !options.correction && !old && qualification === 'EXCLUDED') {
+          if (submission)
+            await tx.postSubmission.update({
+              where: { id: submission.id },
+              data: { status: qualification, reasonCode },
+            });
+          continue;
+        }
         const now = new Date();
         const data = {
           targetPostId: raid.ruleVersion >= 4 ? matchedTarget(p, raid.briefPosts) : null,
@@ -377,39 +393,43 @@ export async function markTrackingUnavailable(
   ids: string[],
   missing: boolean,
   correction = false,
+  reasonCode = 'POST_UNAVAILABLE',
 ) {
-  await db.$transaction(async (tx) => {
-    await lockTracking(tx, raidId);
-    const raid = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
-    if (raid.activeResultId && !correction) return;
-    if (correction && raid.activeResultId)
-      await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'FINALIZING' } });
-    for (const id of ids) {
-      const p = await tx.post.findFirst({ where: { id, raidId } });
-      if (!p) continue;
-      await tx.post.update({
-        where: { id },
-        data: {
-          availability: missing ? 'UNAVAILABLE' : 'DATA_INCOMPLETE',
-          ...(missing
-            ? {
-                text: '',
-                normalized: '',
-                qualification: 'EXCLUDED',
-                reasonCode: 'POST_UNAVAILABLE',
-              }
-            : {}),
-        },
-      });
-      await tx.contributionDecision.create({
-        data: {
-          postId: id,
-          qualification: missing ? 'EXCLUDED' : p.qualification,
-          reasonCode: missing ? 'POST_UNAVAILABLE' : 'LOOKUP_INCOMPLETE',
-          ruleVersion: p.ruleVersion,
-          evidence: { missing, observedAt: new Date().toISOString() },
-        },
-      });
-    }
-  });
+  await db.$transaction(
+    async (tx) => {
+      await lockTracking(tx, raidId);
+      const raid = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
+      if (raid.activeResultId && !correction) return;
+      if (correction && raid.activeResultId)
+        await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'FINALIZING' } });
+      for (const id of ids) {
+        const p = await tx.post.findFirst({ where: { id, raidId } });
+        if (!p) continue;
+        await tx.post.update({
+          where: { id },
+          data: {
+            availability: missing ? 'UNAVAILABLE' : 'DATA_INCOMPLETE',
+            ...(missing
+              ? {
+                  text: '',
+                  normalized: '',
+                  qualification: 'EXCLUDED',
+                  reasonCode,
+                }
+              : {}),
+          },
+        });
+        await tx.contributionDecision.create({
+          data: {
+            postId: id,
+            qualification: missing ? 'EXCLUDED' : p.qualification,
+            reasonCode: missing ? reasonCode : 'LOOKUP_INCOMPLETE',
+            ruleVersion: p.ruleVersion,
+            evidence: { missing, observedAt: new Date().toISOString() },
+          },
+        });
+      }
+    },
+    { timeout: 30000 },
+  );
 }

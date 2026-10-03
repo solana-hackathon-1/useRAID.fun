@@ -145,6 +145,21 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     includes?: { users?: { id: string; username: string; name: string }[] };
   };
 }
+export function lookupOutcome(
+  errors: { resource_id?: string; type?: string }[] | undefined,
+  id: string,
+): 'missing' | 'restricted' | 'unknown' {
+  const types = (errors || []).filter((e) => e.resource_id === id).map((e) => e.type || '');
+  if (types.some((t) => t.endsWith('/resource-not-found'))) return 'missing';
+  if (
+    types.some(
+      (t) => t.endsWith('/not-authorized-for-resource') || t.endsWith('/resource-unavailable'),
+    )
+  )
+    return 'restricted';
+  return 'unknown';
+}
+const SEARCH_WINDOW_MS = 7 * 86400000;
 const fields = 'author_id,created_at,entities,public_metrics,referenced_tweets';
 export async function searchPosts(raid: {
   id: string;
@@ -162,11 +177,13 @@ export async function searchPosts(raid: {
   const end = new Date(
     Math.min(+raid.endsAt, raid.searchEndAt ? +raid.searchEndAt : Date.now() - 10000),
   );
-  const start = new Date(
-    raid.ruleVersion && raid.ruleVersion >= 4 && raid.coveredUntil
+  const finalPass = !!raid.searchEndAt && +raid.searchEndAt >= +raid.endsAt;
+  const wanted =
+    raid.ruleVersion && raid.ruleVersion >= 4 && raid.coveredUntil && !finalPass
       ? Math.max(+raid.startsAt, +raid.coveredUntil - 1000)
-      : +raid.startsAt,
-  );
+      : +raid.startsAt;
+  // X recent search rejects start_time beyond its 7-day window.
+  const start = new Date(Math.max(wanted, Date.now() - SEARCH_WINDOW_MS + 60000));
   if (+end <= +start) return { data: [] as XPost[] };
   const p = new URLSearchParams({
     query:

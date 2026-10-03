@@ -4,9 +4,11 @@ import { scoreContributions } from './tracking-domain';
 import { db } from './db';
 import { config } from './config';
 import { eligible, metrics, normalize, type XPost } from './domain';
-import { lookupPosts, searchPosts } from './providers/x';
+import { lookupOutcome, lookupPosts, searchPosts } from './providers/x';
 import { enqueue } from './queue';
 import { completeImpressionTarget } from './raid-progress';
+// Final-pass lookups that stay unresolved this many attempts are excluded (below JOB_MAX_ATTEMPTS).
+export const LOOKUP_ESCALATE_ATTEMPT = 5;
 export async function ingest(raidId: string, posts: XPost[], sampleKey?: string) {
   const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
   if (raid.trackingVersion === 2) return ingestTracking(raidId, posts, { sampleKey });
@@ -64,11 +66,13 @@ export async function snapshot(raidId: string, complete: boolean) {
     complete,
     scoreVersion: raid.scoringVersion,
   };
-  await db.snapshot.upsert({
-    where: { raidId_at: { raidId, at } },
-    create: { raidId, at, ...data },
-    update: data,
-  });
+  if (complete)
+    await db.snapshot.upsert({
+      where: { raidId_at: { raidId, at } },
+      create: { raidId, at, ...data },
+      update: data,
+    });
+  else await db.snapshot.createMany({ data: [{ raidId, at, ...data }], skipDuplicates: true });
   if (complete && raid.impressionTarget) await completeImpressionTarget(raidId);
 }
 export async function collect(raidId: string, sampleKey?: string) {
@@ -92,23 +96,30 @@ export async function collect(raidId: string, sampleKey?: string) {
     throw new Error('X search returned partial errors; collection will retry.');
   await ingest(raidId, result.data || [], sampleKey);
   const newest = result.meta?.newest_id || raid.pendingNewestId;
+  const unchanged = {
+    id: raidId,
+    searchEndAt: raid.searchEndAt,
+    nextToken: raid.nextToken,
+    endsAt: raid.endsAt,
+  };
   if (result.meta?.next_token) {
-    await db.raid.update({
-      where: { id: raidId },
+    const moved = await db.raid.updateMany({
+      where: unchanged,
       data: {
         nextToken: result.meta.next_token,
         pendingNewestId: raid.pendingNewestId || newest,
         coverage: 'partial',
       },
     });
+    if (!moved.count) return;
     await enqueue(
       'collect',
       `page:${raidId}:${raid.searchEndAt?.toISOString()}:${result.meta.next_token}`,
       { raidId },
     );
   } else {
-    await db.raid.update({
-      where: { id: raidId },
+    const moved = await db.raid.updateMany({
+      where: unchanged,
       data: {
         sinceId: raid.pendingNewestId || newest || raid.sinceId,
         nextToken: null,
@@ -116,6 +127,7 @@ export async function collect(raidId: string, sampleKey?: string) {
         searchEndAt: null,
       },
     });
+    if (!moved.count) return;
     await enqueue('refresh', `refresh:${raidId}:${Date.now()}`, {
       raidId,
       after: '',
@@ -131,6 +143,7 @@ export async function refresh(
   final: boolean,
   coveredUntil?: string,
   sampleKey?: string,
+  attempt = 1,
 ) {
   const raid = await db.raid.findUniqueOrThrow({
     where: { id: raidId },
@@ -153,26 +166,38 @@ export async function refresh(
       raidId,
     );
     await ingest(raidId, result.data || [], sampleKey);
-    // Only explicit missing-resource responses mark a post deleted, never a transport failure.
-    const missing = (result.errors || [])
-      .filter((e) => e.type?.endsWith('/resource-not-found') && e.resource_id)
-      .map((e) => e.resource_id!);
-    if (missing.length && raid.trackingVersion === 2)
-      await markTrackingUnavailable(raidId, missing, true);
-    if (missing.length && raid.trackingVersion !== 2)
+    // Only explicit X resource errors mark a post gone, never a transport failure.
+    const ids = posts.map((p) => p.id);
+    const outcome = new Map(ids.map((id) => [id, lookupOutcome(result.errors, id)]));
+    const returned = new Set((result.data || []).map((p) => p.id));
+    const withOutcome = (kind: string) =>
+      ids.filter((id) => !returned.has(id) && outcome.get(id) === kind);
+    const missing = withOutcome('missing');
+    const restricted = withOutcome('restricted');
+    if (raid.trackingVersion === 2) {
+      if (missing.length) await markTrackingUnavailable(raidId, missing, true);
+      if (restricted.length)
+        await markTrackingUnavailable(raidId, restricted, true, false, 'POST_RESTRICTED');
+    } else if (missing.length || restricted.length)
       await db.post.updateMany({
-        where: { id: { in: missing }, raidId },
+        where: { id: { in: [...missing, ...restricted] }, raidId },
         data: { deleted: true, text: '', normalized: '' },
       });
-    const accounted = new Set([...(result.data || []).map((p) => p.id), ...missing]);
-    if (posts.some((p) => !accounted.has(p.id))) {
-      if (raid.trackingVersion === 2)
-        await markTrackingUnavailable(
-          raidId,
-          posts.filter((p) => !accounted.has(p.id)).map((p) => p.id),
-          false,
-        );
-      throw new Error('X returned incomplete lookup data.');
+    const accounted = new Set([...returned, ...missing, ...restricted]);
+    const unresolved = ids.filter((id) => !accounted.has(id));
+    if (unresolved.length) {
+      if (final && attempt >= LOOKUP_ESCALATE_ATTEMPT) {
+        if (raid.trackingVersion === 2)
+          await markTrackingUnavailable(raidId, unresolved, true, false, 'LOOKUP_FAILED');
+        else
+          await db.post.updateMany({
+            where: { id: { in: unresolved }, raidId },
+            data: { deleted: true, text: '', normalized: '' },
+          });
+      } else {
+        if (raid.trackingVersion === 2) await markTrackingUnavailable(raidId, unresolved, false);
+        throw new Error('X returned incomplete lookup data.');
+      }
     }
   }
   if (posts.length === 100) {
@@ -183,17 +208,25 @@ export async function refresh(
       coveredUntil,
     });
   } else {
-    if (raid.nextToken || raid.searchEndAt) return;
-    await db.raid.update({
-      where: { id: raidId },
+    // Read the cursors at write time so a late or stale refresh can neither undo nor outrun a newer pass.
+    const done = await db.raid.updateMany({
+      where: { id: raidId, nextToken: null, searchEndAt: null },
       data: {
         observedAt: new Date(),
-        ...(coveredUntil ? { coveredUntil: new Date(coveredUntil) } : {}),
         coverage: 'complete',
         collectionError: null,
-        finalRefreshed: final,
+        ...(final ? { finalRefreshed: true } : {}),
       },
     });
+    if (!done.count) return;
+    if (coveredUntil)
+      await db.raid.updateMany({
+        where: {
+          id: raidId,
+          OR: [{ coveredUntil: null }, { coveredUntil: { lt: new Date(coveredUntil) } }],
+        },
+        data: { coveredUntil: new Date(coveredUntil) },
+      });
     await snapshot(raidId, true);
   }
 }

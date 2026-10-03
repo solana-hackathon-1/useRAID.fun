@@ -4,6 +4,7 @@ import type { User } from '@prisma/client';
 import { db } from './db';
 import { HttpError } from './auth-primitives';
 import { raidInput } from './validation';
+import { lockTracking } from './tracking';
 import { fundingPricing, fundingQuote } from './raid-funding';
 import { config } from './config';
 export async function createRaid(user: User, input: unknown) {
@@ -51,6 +52,7 @@ export async function createRaid(user: User, input: unknown) {
 export async function changeRaid(user: User, id: string, action: string) {
   return db.$transaction(async (tx) => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+    await lockTracking(tx, id);
     const raid = await tx.raid.findUnique({ where: { id } });
     if (!raid) throw new HttpError(404, 'Raid not found.');
     if (raid.creatorId !== user.id)
