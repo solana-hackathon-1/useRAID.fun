@@ -243,6 +243,8 @@ model Raid {
   activeResultId String?
   finalFeeSweepAt DateTime?
   holdReason String?
+  authorCapBps Int @default(10000)
+  measureUntil DateTime?
   enrollments RaidEnrollment[]
   submissions PostSubmission[]
   results CampaignResult[]
@@ -305,7 +307,7 @@ model RaidBriefPost {
 model RaidAllocation {
   id String @id @default(cuid())
   raidId String
-  resultId String
+  resultId String?
   kind String
   xId String?
   walletAddress String

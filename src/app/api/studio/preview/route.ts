@@ -1,5 +1,5 @@
 import { requireUser, rateLimit, HttpError } from '@/lib/auth';
-import { targetIds, targetPreviews } from '@/lib/studio-targets';
+import { chargeStudioLookups, targetIds, targetPreviews } from '@/lib/studio-targets';
 import { fetchMarket } from '@/lib/providers/market';
 import { studioSandbox } from '@/lib/usdc';
 import { validMint } from '@/lib/domain';
@@ -10,8 +10,11 @@ export async function GET(request: Request) {
     await rateLimit(`studio-preview:${user.id}`, 30, 60);
     const query = new URL(request.url).searchParams;
     if (query.get('type') === 'post') {
-      const id = targetIds([query.get('url') || ''])[0],
-        preview = (await targetPreviews([id]))[0];
+      if (!user.approved)
+        throw new HttpError(403, 'Creator approval is required before previewing X posts.');
+      const id = targetIds([query.get('url') || ''])[0];
+      await chargeStudioLookups(user.id, 1);
+      const preview = (await targetPreviews([id]))[0];
       if (!preview) throw new HttpError(404, 'Post unavailable. Choose a public X post.');
       return Response.json(preview);
     }

@@ -5,8 +5,9 @@ import { trackingEnabled, config } from './config';
 import { allocateRaidFunding } from './raid-allocation';
 import { allocateUsdcRaid } from './studio-finance';
 import { launchpadsAvailable } from './release';
-import { finalizeTracking } from './tracking-review';
+import { finalizeTracking, measureEnd } from './tracking-review';
 import { LOCKED_PHASES } from './tracking-domain';
+import { observedImpressions } from './raid-progress';
 import { processTrackingLookup } from './tracking-worker';
 import { db } from './db';
 import { enqueue, finishJob } from './queue';
@@ -132,6 +133,33 @@ export async function schedule(now = new Date()) {
       });
   });
   if (trackingEnabled()) {
+    await step('measure', async () => {
+      const measuring = await db.raid.findMany({
+        where: {
+          trackingVersion: 2,
+          status: 'ENDED',
+          activeResultId: null,
+          measureUntil: { not: null },
+          hidden: false,
+          creator: { suspended: false },
+        },
+        select: { id: true, measureUntil: true, endsAt: true, impressionTarget: true },
+      });
+      for (const raid of measuring)
+        await step(`measure:${raid.id}`, async () => {
+          const posts = await db.post.findMany({
+            where: { raidId: raid.id, qualification: 'QUALIFIED' },
+          });
+          const hour = Math.floor(+now / 3600000);
+          if (!posts.length || measureEnd(raid, observedImpressions(posts).total) <= raid.endsAt)
+            return;
+          const payload = { raidId: raid.id, after: '', final: true };
+          if (raid.measureUntil! > now)
+            await enqueue('refresh', `measure:${raid.id}:${hour}`, payload);
+          else if (posts.some((p) => p.observedAt < raid.measureUntil!))
+            await enqueue('refresh', `measure-final:${raid.id}:${hour}`, payload);
+        });
+    });
     await step('finalize', async () => {
       const closing = await db.raid.findMany({
         where: {

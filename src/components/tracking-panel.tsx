@@ -91,6 +91,15 @@ export function TrackingPanel({
           {view.holdReason?.replaceAll('_', ' ').toLowerCase()}.
         </p>
       )}
+      {view.measuringUntil && (
+        <p className="notice" role="status">
+          Posting is closed. Existing posts keep earning until{' '}
+          {new Date(view.measuringUntil).toISOString().slice(0, 16).replace('T', ' ')} UTC.
+        </p>
+      )}
+      {view.isCreator && (
+        <p className="notice">You created this Raid, so you cannot join it or earn from it.</p>
+      )}
       {view.canJoin && (
         <>
           <WalletLogin currentAddress={walletAddress} />
@@ -153,7 +162,11 @@ export function TrackingPanel({
           {view.ownUsdcPayments.map((t) => (
             <p key={t.id}>
               {formatUsdc(t.amount)} USDC ·{' '}
-              {t.status === 'PAID' ? 'Paid' : 'Operator payment pending'}
+              {t.kind === 'REWARD_CREDIT'
+                ? 'Credited to your balance'
+                : t.status === 'PAID'
+                  ? 'Paid'
+                  : 'Operator payment pending'}
               {t.signature && t.network !== 'sandbox' && (
                 <>
                   {' '}

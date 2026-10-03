@@ -598,7 +598,8 @@ export function StudioEditor({
               required={!insufficient && walletConnected}
             />{' '}
             I accept that platform holds this pool. Reviewed contributor impressions determine
-            rewards; unearned funds return to my balance. Delivery is not guaranteed.
+            rewards; no single raider can earn more than 25% of the pool, with any excess going to
+            other raiders. Unearned funds return to my balance. Delivery is not guaranteed.
           </label>
           <button
             className="button studio-launch"

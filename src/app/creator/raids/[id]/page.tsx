@@ -105,8 +105,10 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
           <details className="studio-end-control">
             <summary>End Raid early</summary>
             <p>
-              Results enter review. Unearned USDC returns to your balance after final metrics are
-              reviewed.
+              Posting closes now. If raiders have already posted, their posts keep earning until the
+              scheduled end ({raid.endsAt.toISOString().slice(0, 16).replace('T', ' ')} UTC);
+              results then enter review and unearned USDC returns to your balance. Funds stay
+              reserved until then.
             </p>
             <MutationButton url={`/api/raids/${raid.id}`} body={{ action: 'end' }}>
               End campaign

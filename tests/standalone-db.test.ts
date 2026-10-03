@@ -13,6 +13,7 @@ suite('standalone Raid database lifecycle', () => {
   beforeAll(async () => {
     assertTestDatabase();
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'true');
+    vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'true');
     vi.stubEnv('RAID_LAMPORTS_PER_1000_IMPRESSIONS', '1000000000');
     vi.stubEnv('RAID_FUNDING_ADDRESS', Keypair.generate().publicKey.toBase58());
     vi.stubEnv('X_BEARER_TOKEN', 'fixture');
@@ -92,24 +93,28 @@ suite('standalone Raid database lifecycle', () => {
   it('allocates only after reviewed result and preserves funding exactly', async () => {
     const now = new Date();
     const wallet = (await db.raidEnrollment.findFirstOrThrow({ where: { raidId } })).walletAddress;
+    const raider = await db.user.create({ data: { xId: 'raider', handle: 'raider' } });
+    const raiderWallet = Keypair.generate().publicKey.toBase58();
+    const view = (authorId: string) => ({
+      authorId,
+      views: 1000,
+      qualification: 'QUALIFIED',
+      availability: 'AVAILABLE',
+      reviewStatus: 'CLEAR',
+      hidden: false,
+      deleted: false,
+    });
     const result = await db.campaignResult.create({
       data: {
         raidId,
         version: 1,
         fingerprint: 'fixture',
         payload: {
-          participants: [{ xId: 'owner', walletAddress: wallet }],
-          contributions: [
-            {
-              authorId: 'owner',
-              views: 1000,
-              qualification: 'QUALIFIED',
-              availability: 'AVAILABLE',
-              reviewStatus: 'CLEAR',
-              hidden: false,
-              deleted: false,
-            },
+          participants: [
+            { xId: 'owner', userId: ownerId, walletAddress: wallet },
+            { xId: 'raider', userId: raider.id, walletAddress: raiderWallet },
           ],
+          contributions: [view('owner'), view('raider')],
         },
       },
     });
@@ -127,6 +132,75 @@ suite('standalone Raid database lifecycle', () => {
     expect(allocations).toHaveLength(2);
     expect(allocations.reduce((sum, a) => sum + BigInt(a.lamports), 0n)).toBe(2_000_000_000n);
     expect(allocations.find((a) => a.kind === 'REWARD')?.lamports).toBe('1000000000');
+    expect(allocations.find((a) => a.kind === 'REWARD')?.walletAddress).toBe(raiderWallet);
     expect(allocations.find((a) => a.kind === 'REFUND')?.lamports).toBe('1000000000');
+  });
+  it('refunds rewards below the minimum payout to the creator', async () => {
+    const wallet = Keypair.generate().publicKey.toBase58();
+    const raid = await db.raid.create({
+      data: {
+        tag: 'raid_min_payout',
+        title: 'Minimum payout',
+        description: '',
+        fundingStatus: 'VERIFIED',
+        fundingLamports: '1000000000',
+        fundingRecipient: Keypair.generate().publicKey.toBase58(),
+        fundingWallet: Keypair.generate().publicKey.toBase58(),
+        impressionTarget: 1_000_000,
+        authorCapBps: 2500,
+        creatorId: ownerId,
+        status: 'ENDED',
+        trackingVersion: 2,
+        trackingPhase: 'APPROVED',
+        startsAt: new Date(Date.now() - 7200000),
+        endsAt: new Date(Date.now() - 3600000),
+      },
+    });
+    const users = await Promise.all(
+      ['big', 'tiny'].map((xId) => db.user.create({ data: { xId, handle: xId } })),
+    );
+    const result = await db.campaignResult.create({
+      data: {
+        raidId: raid.id,
+        version: 1,
+        fingerprint: 'min-payout',
+        payload: {
+          participants: users.map((u) => ({
+            xId: u.xId,
+            userId: u.id,
+            walletAddress: u.xId === 'big' ? wallet : Keypair.generate().publicKey.toBase58(),
+          })),
+          contributions: users.map((u) => ({
+            authorId: u.xId,
+            views: u.xId === 'big' ? 100_000 : 800,
+            qualification: 'QUALIFIED',
+            availability: 'AVAILABLE',
+            reviewStatus: 'CLEAR',
+            hidden: false,
+            deleted: false,
+          })),
+        },
+      },
+    });
+    await db.raid.update({ where: { id: raid.id }, data: { activeResultId: result.id } });
+    await allocateRaidFunding(raid.id);
+    const allocations = await db.raidAllocation.findMany({ where: { raidId: raid.id } });
+    expect(allocations.filter((a) => a.kind === 'REWARD').map((a) => a.walletAddress)).toEqual([
+      wallet,
+    ]);
+    expect(allocations.find((a) => a.kind === 'REWARD')?.lamports).toBe('100000000');
+    expect(allocations.find((a) => a.kind === 'REFUND')?.lamports).toBe('900000000');
+  });
+  it('does not allocate while the settlement flag is off', async () => {
+    vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'false');
+    try {
+      const raid = await db.raid.findFirstOrThrow({ where: { tag: 'raid_min_payout' } });
+      await db.raidAllocation.deleteMany({ where: { raidId: raid.id } });
+      await db.raid.update({ where: { id: raid.id }, data: { trackingPhase: 'APPROVED' } });
+      await allocateRaidFunding(raid.id);
+      expect(await db.raidAllocation.count({ where: { raidId: raid.id } })).toBe(0);
+    } finally {
+      vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'true');
+    }
   });
 });

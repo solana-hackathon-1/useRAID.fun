@@ -32,6 +32,7 @@ export async function enrollRaid(raidId: string, userId: string) {
       raid.endsAt <= new Date()
     )
       throw new HttpError(409, 'No active tracking Raid.');
+    if (raid.creatorId === userId) throw new HttpError(403, 'Creators cannot join their own Raid.');
     const [wallet, account, user] = await Promise.all([
       tx.walletIdentity.findUnique({ where: { userId } }),
       tx.xAccount.findUnique({ where: { userId } }),

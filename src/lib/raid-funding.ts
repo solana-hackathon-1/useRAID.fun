@@ -2,7 +2,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import { db } from './db';
 import { HttpError } from './auth-primitives';
 import { lockTracking } from './tracking';
-import { config } from './config';
+import { authorCapBps, config } from './config';
 
 export function fundingPricing() {
   const rate = Number(process.env.RAID_LAMPORTS_PER_1000_IMPRESSIONS);
@@ -120,6 +120,7 @@ export async function verifyRaidFunding(raidId: string, userId: string, signatur
         fundingSignature: signature,
         fundedAt: new Date(),
         fundingWallet: wallet.address,
+        authorCapBps: authorCapBps(),
       },
     });
   });

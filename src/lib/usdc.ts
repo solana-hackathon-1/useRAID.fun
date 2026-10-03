@@ -14,7 +14,7 @@ import {
 import type { Prisma, UsdcTransfer } from '@prisma/client';
 import { db } from './db';
 import { HttpError } from './auth-primitives';
-import { config, trackingEnabled } from './config';
+import { config, trackingEnabled, trackingSettlementEnabled } from './config';
 import { studioSandbox } from './studio-mode';
 export { studioSandbox } from './studio-mode';
 import { quoteUsdc, units, formatUsdc } from './usdc-amount';
@@ -46,6 +46,23 @@ export function usdcSettings() {
       PublicKey.isOnCurve(new PublicKey(recipient).toBytes());
   } catch {}
   return { network, mint: USDC_MINTS[network], recipient, rateUnits, ready };
+}
+export function usdcLimits() {
+  const units = (name: string, fallback: bigint) => {
+    const value = process.env[name] || '';
+    return /^\d{1,15}$/.test(value) ? BigInt(value) : fallback;
+  };
+  const count = (name: string, fallback: number) => {
+    const value = Number(process.env[name] || fallback);
+    return Number.isInteger(value) && value >= 1 ? value : fallback;
+  };
+  return {
+    minDeposit: units('USDC_MIN_DEPOSIT_UNITS', 1_000_000n),
+    minWithdrawal: units('USDC_MIN_WITHDRAWAL_UNITS', 1_000_000n),
+    minReward: units('USDC_MIN_REWARD_UNITS', 100_000n),
+    maxOpenDeposits: count('USDC_MAX_OPEN_DEPOSITS', 3),
+    maxOpenWithdrawals: count('USDC_MAX_OPEN_WITHDRAWALS', 3),
+  };
 }
 export async function lockBalance(tx: Prisma.TransactionClient, userId: string) {
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`balance:${userId}`}, 0))`;
@@ -173,23 +190,39 @@ export function matchesUsdcReceipt(
 export async function createDeposit(userId: string, amount: bigint) {
   if (amount <= 0n || amount > 999_999_999_000_000n)
     throw new HttpError(400, 'Invalid USDC amount.');
+  const limits = usdcLimits();
+  if (amount < limits.minDeposit)
+    throw new HttpError(400, `Minimum deposit is ${formatUsdc(limits.minDeposit)} USDC.`);
   const settings = usdcSettings();
   if (!(await depositsReady()))
     throw new HttpError(503, 'Deposits open when campaign funding and live tracking are ready.');
   const wallet = await db.walletIdentity.findUnique({ where: { userId } });
   if (!wallet) throw new HttpError(403, 'Connect your wallet from Account before depositing.');
-  const intent = await db.usdcTransfer.create({
-    data: {
-      userId,
-      amount,
-      kind: 'DEPOSIT',
-      status: 'AWAITING_TRANSFER',
-      walletAddress: wallet.address,
-      recipient: settings.recipient,
-      mint: settings.mint,
-      network: settings.network,
-      expiresAt: new Date(Date.now() + 30 * 60000),
-    },
+  const intent = await db.$transaction(async (tx) => {
+    await lockBalance(tx, userId);
+    const open = await tx.usdcTransfer.count({
+      where: {
+        userId,
+        kind: 'DEPOSIT',
+        status: 'AWAITING_TRANSFER',
+        expiresAt: { gt: new Date() },
+      },
+    });
+    if (open >= limits.maxOpenDeposits)
+      throw new HttpError(429, 'Finish or wait for your open deposit requests to expire.');
+    return tx.usdcTransfer.create({
+      data: {
+        userId,
+        amount,
+        kind: 'DEPOSIT',
+        status: 'AWAITING_TRANSFER',
+        walletAddress: wallet.address,
+        recipient: settings.recipient,
+        mint: settings.mint,
+        network: settings.network,
+        expiresAt: new Date(Date.now() + 30 * 60000),
+      },
+    });
   });
   if (studioSandbox()) return { id: intent.id, transaction: null, network: settings.network };
   const rpc = await usdcRpc(settings.network);
@@ -225,6 +258,7 @@ export async function depositsReady() {
   const settings = usdcSettings();
   if (!settings.ready || !settings.rateUnits || !trackingEnabled()) return false;
   if (studioSandbox()) return true;
+  if (!trackingSettlementEnabled()) return false;
   if (!config.liveApproved || !process.env.X_BEARER_TOKEN) return false;
   return !!(await db.settings.findUnique({ where: { id: 'global' } }))?.collectionEnabled;
 }
@@ -303,6 +337,15 @@ export async function requestWithdrawal(userId: string, amount: bigint, requestK
     const previous = await tx.balanceEntry.findUnique({ where: { key } });
     if (previous?.transferId)
       return tx.usdcTransfer.findUniqueOrThrow({ where: { id: previous.transferId } });
+    const limits = usdcLimits();
+    if (amount < limits.minWithdrawal)
+      throw new HttpError(400, `Minimum withdrawal is ${formatUsdc(limits.minWithdrawal)} USDC.`);
+    if (
+      (await tx.usdcTransfer.count({
+        where: { userId, kind: 'WITHDRAWAL', status: 'REQUESTED' },
+      })) >= limits.maxOpenWithdrawals
+    )
+      throw new HttpError(429, 'Wait for your open withdrawals to be paid or rejected.');
     const wallet = await tx.walletIdentity.findUnique({ where: { userId } });
     if (!wallet) throw new HttpError(403, 'Connect your verified wallet first.');
     if ((await balance(userId, tx)).available < amount)

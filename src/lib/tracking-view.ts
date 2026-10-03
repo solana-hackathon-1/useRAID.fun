@@ -1,5 +1,5 @@
 import { db } from './db';
-import { trackingEnabled } from './config';
+import { authorCapBps, trackingEnabled } from './config';
 import { scoreContributions, postPoints } from './tracking-domain';
 import type { ResultPayload } from './tracking-review';
 import { observedImpressions } from './raid-progress';
@@ -71,11 +71,14 @@ export async function trackingView(raidId: string, userId?: string) {
       ? splitImpressionFunding(
           raid.poolUnits,
           raid.impressionTarget,
-          members.map((m) => ({
-            xId: m.xId,
-            walletAddress: m.walletAddress,
-            views: observedImpressions(observations.filter((p) => p.enrollmentId === m.id)).total,
-          })),
+          members
+            .filter((m) => m.userId !== raid.creatorId)
+            .map((m) => ({
+              xId: m.xId,
+              walletAddress: m.walletAddress,
+              views: observedImpressions(observations.filter((p) => p.enrollmentId === m.id)).total,
+            })),
+          { capBps: raid.status === 'DRAFT' ? authorCapBps() : raid.authorCapBps },
         )
       : null;
   const ownUsdcPayments = userId
@@ -111,6 +114,7 @@ export async function trackingView(raidId: string, userId?: string) {
     poolUnits: raid.poolUnits?.toString() || null,
     ownUsdcPayments: ownUsdcPayments.map((t) => ({
       id: t.id,
+      kind: t.kind,
       amount: t.amount.toString(),
       status: t.status,
       signature: t.signature,
@@ -143,7 +147,15 @@ export async function trackingView(raidId: string, userId?: string) {
       !!member &&
       ((raid.status === 'ACTIVE' && raid.endsAt > new Date()) ||
         (raid.trackingPhase === 'REVIEW' && !!raid.reviewEndsAt && raid.reviewEndsAt > new Date())),
-    canJoin: trackingEnabled() && !member && raid.status === 'ACTIVE' && raid.endsAt > new Date(),
+    measuringUntil:
+      raid.measureUntil && raid.measureUntil > new Date() ? raid.measureUntil.toISOString() : null,
+    isCreator: !!userId && raid.creatorId === userId,
+    canJoin:
+      trackingEnabled() &&
+      !member &&
+      raid.creatorId !== userId &&
+      raid.status === 'ACTIVE' &&
+      raid.endsAt > new Date(),
     enrollment: member
       ? {
           id: member.id,

@@ -4,6 +4,7 @@ import { db } from './db';
 import { HttpError } from './auth-primitives';
 import { trackingEnabled } from './config';
 import { isLockedPhase, scoreContributions } from './tracking-domain';
+import { observedImpressions } from './raid-progress';
 import { assertTrackingEnabled, lockTracking, requalifyDuplicates } from './tracking';
 
 export const REVIEW_MS = 2 * 3600000;
@@ -68,6 +69,14 @@ export async function trackingBlockers(tx: Prisma.TransactionClient, raidId: str
   ]);
   return jobs + submissions + disputed + posts;
 }
+export function measureEnd(
+  raid: { endsAt: Date; measureUntil: Date | null; impressionTarget: number | null },
+  impressions: number,
+) {
+  if (!raid.measureUntil || raid.measureUntil <= raid.endsAt) return raid.endsAt;
+  if (raid.impressionTarget && impressions >= raid.impressionTarget) return raid.endsAt;
+  return raid.measureUntil;
+}
 export async function finalizeTracking(raidId: string, now = new Date()) {
   if (!trackingEnabled()) return;
   return db.$transaction(
@@ -97,10 +106,12 @@ export async function finalizeTracking(raidId: string, now = new Date()) {
         return;
       if (await trackingBlockers(tx, raidId)) return;
       const posts = await tx.post.findMany({ where: { raidId }, orderBy: { id: 'asc' } });
+      // An early end keeps measuring already-qualified posts until the originally scheduled end.
+      const until = measureEnd(raid, observedImpressions(posts).total);
+      if (until > now) return;
       if (
         posts.some(
-          (p) =>
-            p.qualification === 'QUALIFIED' && (!p.lastObservationId || p.observedAt < raid.endsAt),
+          (p) => p.qualification === 'QUALIFIED' && (!p.lastObservationId || p.observedAt < until),
         )
       )
         return;

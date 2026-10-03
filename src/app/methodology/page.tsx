@@ -38,10 +38,14 @@ export default function Methodology() {
         impressions. Contributions must quote or link a selected target post and mention the
         official account. Target-post views never count. Funded USDC stays with the platform until
         final review. A Raid ends when qualifying participant posts reach its target, or when its
-        duration expires. Verified views earn a proportional share for raiders up to the target;
-        unused funds return to the creator. Missing X view counts delay allocation. Impressions are
-        not unique people and delivery is not guaranteed. Payouts require reviewed results and
-        manually signed transfers.
+        duration expires. Verified views earn a proportional share for raiders up to the target, and
+        no single raider can earn more than 25% of the funded pool: any excess goes to other raiders
+        and the rest returns to the creator. The Raid creator cannot join or be paid from their own
+        Raid. Ending early closes posting, but posts already made keep earning until the scheduled
+        end. Rewards below the minimum payout are credited to the raider&apos;s balance instead of
+        paid out. Unused funds return to the creator. Missing X view counts delay allocation.
+        Impressions are not unique people and delivery is not guaranteed. Payouts require reviewed
+        results and manually signed transfers.
       </p>
       <p>
         Content CPA means reviewed earned USDC divided by qualifying original or quote posts. CPM is

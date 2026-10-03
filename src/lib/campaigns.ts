@@ -1,4 +1,4 @@
-import { newTrackingRules } from './config';
+import { newTrackingRules, trackingSettlementEnabled } from './config';
 import { randomBytes } from 'node:crypto';
 import type { User } from '@prisma/client';
 import { db } from './db';
@@ -7,8 +7,11 @@ import { raidInput } from './validation';
 import { lockTracking } from './tracking';
 import { fundingPricing, fundingQuote } from './raid-funding';
 import { config } from './config';
-export async function createRaid(user: User, input: unknown) {
+export function assertApprovedCreator(user: Pick<User, 'approved' | 'suspended'>) {
   if (!user.approved || user.suspended) throw new HttpError(403, 'Creator approval is required.');
+}
+export async function createRaid(user: User, input: unknown) {
+  assertApprovedCreator(user);
   if (!(await db.xAccount.findUnique({ where: { userId: user.id } })))
     throw new HttpError(403, 'Connect your verified X account before creating a Raid.');
   const data = raidInput.parse(input);
@@ -57,9 +60,9 @@ export async function changeRaid(user: User, id: string, action: string) {
     if (!raid) throw new HttpError(404, 'Raid not found.');
     if (raid.creatorId !== user.id)
       throw new HttpError(403, 'This campaign belongs to another creator.');
-    if ((raid.studioVersion !== 1 && !user.approved) || user.suspended || raid.hidden)
-      throw new HttpError(403, 'Campaign access is restricted.');
+    if (user.suspended || raid.hidden) throw new HttpError(403, 'Campaign access is restricted.');
     if (action === 'launch') {
+      assertApprovedCreator(user);
       if (raid.studioVersion === 1) throw new HttpError(409, 'Use Fund & Launch for this Raid.');
       if (!raid.mint && raid.fundingStatus !== 'VERIFIED')
         throw new HttpError(
@@ -67,6 +70,8 @@ export async function changeRaid(user: User, id: string, action: string) {
           'Fund this non-token Raid before launch. Funding terms are pending confirmation.',
         );
       if (raid.status !== 'DRAFT') throw new HttpError(409, 'Only drafts can be launched.');
+      if (!raid.mint && !trackingSettlementEnabled())
+        throw new HttpError(503, 'Funded Raid settlement is not enabled yet.');
       const settings = await tx.settings.upsert({
         where: { id: 'global' },
         create: {},
@@ -98,12 +103,22 @@ export async function changeRaid(user: User, id: string, action: string) {
         data: { startsAt: start, endsAt: end, status: start > now ? 'SCHEDULED' : 'ACTIVE' },
       });
     }
-    if (action === 'end' && ['ACTIVE', 'SCHEDULED'].includes(raid.status))
+    if (action === 'end' && ['ACTIVE', 'SCHEDULED'].includes(raid.status)) {
+      // Raiders who already posted keep earning until the scheduled end; posting closes now.
+      const now = new Date();
+      const measured =
+        raid.trackingVersion === 2 &&
+        raid.status === 'ACTIVE' &&
+        raid.fundingStatus === 'VERIFIED' &&
+        raid.endsAt > now &&
+        (await tx.post.count({ where: { raidId: id, qualification: 'QUALIFIED' } })) +
+          (await tx.postSubmission.count({ where: { raidId: id, status: 'QUEUED' } })) >
+          0;
       return tx.raid.update({
         where: { id },
         data: {
           status: 'ENDED',
-          endsAt: new Date(),
+          endsAt: now,
           finalRefreshed: raid.status === 'SCHEDULED',
           ...(raid.trackingVersion === 2
             ? {
@@ -114,10 +129,12 @@ export async function changeRaid(user: User, id: string, action: string) {
                 searchQuery: null,
                 pendingNewestId: null,
                 finalRefreshed: false,
+                ...(measured ? { measureUntil: raid.endsAt } : {}),
               }
             : {}),
         },
       });
+    }
     throw new HttpError(400, 'Unsupported campaign action.');
   });
 }

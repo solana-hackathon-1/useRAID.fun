@@ -252,7 +252,9 @@ export function StudioBalance({
                   ? 'Deposit'
                   : t.kind === 'REWARD'
                     ? 'Raider reward'
-                    : 'Withdrawal'}
+                    : t.kind === 'REWARD_CREDIT'
+                      ? 'Raider reward (credited to balance)'
+                      : 'Withdrawal'}
               </strong>
               <p>
                 {new Date(t.createdAt).toLocaleDateString('en')} ·{' '}

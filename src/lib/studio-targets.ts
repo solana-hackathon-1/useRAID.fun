@@ -3,7 +3,10 @@ import { lookupPosts } from './providers/x';
 import { postId } from './domain';
 export { matchedTarget } from './studio-attribution';
 import { HttpError } from './auth-primitives';
+import { assertApprovedCreator } from './campaigns';
 import { studioSandbox } from './usdc';
+import { rateLimit } from './auth';
+import { studioLookupsPerDay } from './config';
 export type TargetPreview = {
   id: string;
   text: string;
@@ -30,6 +33,10 @@ export async function targetPreviews(ids: string[], raidId?: string): Promise<Ta
     checkedAt: new Date().toISOString(),
   }));
 }
+export async function chargeStudioLookups(userId: string, count: number) {
+  if (count > 0 && !studioSandbox())
+    await rateLimit(`studio-lookups:${userId}`, studioLookupsPerDay(), 86400, count);
+}
 export function targetIds(urls: string[]) {
   const ids = urls.map((url) => postId(url));
   if (ids.some((id) => !id)) throw new HttpError(400, 'Enter a public X post URL.');
@@ -39,9 +46,11 @@ export function targetIds(urls: string[]) {
 }
 export async function addStudioTarget(raidId: string, userId: string, url: string) {
   const id = targetIds([url])[0];
-  const raid = await db.raid.findUnique({ where: { id: raidId } });
+  const raid = await db.raid.findUnique({ where: { id: raidId }, include: { creator: true } });
   if (!raid || raid.creatorId !== userId || raid.hidden)
     throw new HttpError(404, 'Raid not found.');
+  assertApprovedCreator(raid.creator);
+  await chargeStudioLookups(userId, 1);
   const preview = (await targetPreviews([id], raidId))[0];
   if (!preview) throw new HttpError(400, 'Target post is unavailable. Choose another public post.');
   return db.$transaction(async (tx) => {

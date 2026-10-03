@@ -18,8 +18,13 @@ export async function sandboxUser(fixtureId?: string) {
   const xId = fixtureId ? `studio-test-${fixtureId}` : 'studio-local-creator';
   const user = await db.user.upsert({
     where: { xId },
-    create: { xId, handle: 'test_creator', role: 'ADMIN' },
-    update: {},
+    create: {
+      xId,
+      handle: 'test_creator',
+      role: 'ADMIN',
+      approved: !fixtureId?.startsWith('unapproved-'),
+    },
+    update: { approved: !fixtureId?.startsWith('unapproved-') },
   });
   await db.xAccount.upsert({
     where: { userId: user.id },

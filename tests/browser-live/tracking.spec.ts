@@ -11,6 +11,9 @@ test.beforeAll(async () => {
   await truncateAll(db);
   const user = await db.user.create({ data: { xId: 'browser-tracker', handle: 'tracker' } });
   userId = user.id;
+  const creator = await db.user.create({
+    data: { xId: 'browser-creator', handle: 'creator', approved: true },
+  });
   await db.xAccount.create({
     data: { userId, xUserId: user.xId!, username: 'tracker', displayName: 'Tracker' },
   });
@@ -29,7 +32,7 @@ test.beforeAll(async () => {
     await db.raid.create({
       data: {
         mint,
-        creatorId: userId,
+        creatorId: creator.id,
         tag: 'raid_browser_tracking',
         title: 'Tracked Raid',
         description: 'Verified contribution browser journey.',

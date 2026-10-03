@@ -31,7 +31,7 @@ import type { XPost } from '../src/lib/domain';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 suite('tracking v2 database lifecycle', () => {
-  let raidId: string, userId: string, adminId: string, launchId: string;
+  let raidId: string, userId: string, adminId: string, launchId: string, creatorId: string;
   const started = new Date(Date.now() - 3600000),
     posted = new Date(Date.now() - 600000);
   const xpost = (id: string, patch: Partial<XPost> = {}): XPost => ({
@@ -60,6 +60,9 @@ suite('tracking v2 database lifecycle', () => {
     const user = await db.user.create({ data: { handle: 'alice', xId: 'alice', approved: true } });
     userId = user.id;
     adminId = (await db.user.create({ data: { handle: 'admin', role: 'ADMIN' } })).id;
+    creatorId = (
+      await db.user.create({ data: { handle: 'creator', xId: 'creator', approved: true } })
+    ).id;
     await db.xAccount.create({
       data: { userId, xUserId: 'alice', username: 'alice', displayName: 'Alice' },
     });
@@ -88,7 +91,7 @@ suite('tracking v2 database lifecycle', () => {
     const raid = await db.raid.create({
       data: {
         mint,
-        creatorId: userId,
+        creatorId,
         tag: 'raid_tracking',
         title: 'Tracking test',
         description: 'Tracking lifecycle fixture',
@@ -191,7 +194,7 @@ suite('tracking v2 database lifecycle', () => {
     const other = await db.raid.create({
       data: {
         mint: original.mint,
-        creatorId: userId,
+        creatorId,
         tag: 'raid_overlap',
         title: 'Overlapping Raid',
         description: 'Mention attribution fixture',
@@ -252,7 +255,7 @@ suite('tracking v2 database lifecycle', () => {
     const other = await db.raid.create({
       data: {
         mint: original.mint,
-        creatorId: userId,
+        creatorId,
         tag: 'raid_other',
         title: 'Other',
         description: 'Other Raid',
@@ -518,7 +521,7 @@ suite('tracking v2 database lifecycle', () => {
     const target = await db.raid.create({
       data: {
         mint: source.mint,
-        creatorId: userId,
+        creatorId,
         tokenLaunchId: launchId,
         tag: 'raid_next',
         title: 'Next',
@@ -718,7 +721,7 @@ suite('tracking v2 database lifecycle', () => {
       const other = await db.raid.create({
         data: {
           mint: original.mint,
-          creatorId: userId,
+          creatorId,
           tag: 'raid_overlap',
           title: 'Overlapping Raid',
           description: 'Mention attribution fixture',
@@ -846,7 +849,7 @@ suite('tracking v2 database lifecycle', () => {
       const legacy = await db.raid.create({
         data: {
           mint,
-          creatorId: userId,
+          creatorId,
           tag: 'raid_legacy',
           title: 'Legacy',
           description: 'Legacy expired window',
@@ -951,6 +954,93 @@ suite('tracking v2 database lifecycle', () => {
       const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
       expect(raid.searchQuery).toBeNull();
       expect(raid.searchEndAt).toBeNull();
+    });
+  });
+
+  describe('money policies', () => {
+    const measured = (id: string, views: number) =>
+      xpost(id, {
+        public_metrics: {
+          like_count: 3,
+          reply_count: 0,
+          retweet_count: 0,
+          quote_count: 0,
+          impression_count: views,
+        },
+      });
+    const fundedRaid = (impressionTarget = 1_000_000) =>
+      db.raid.update({
+        where: { id: raidId },
+        data: { fundingStatus: 'VERIFIED', impressionTarget },
+      });
+    const endEarly = async () =>
+      changeRaid(await db.user.findUniqueOrThrow({ where: { id: creatorId } }), raidId, 'end');
+    const settled = async () => {
+      await db.raid.update({
+        where: { id: raidId },
+        data: {
+          finalRefreshed: true,
+          coverage: 'complete',
+          coveredUntil: new Date(),
+          observedAt: new Date(),
+          collectionError: null,
+        },
+      });
+    };
+
+    it('rejects the raid creator from joining their own raid', async () => {
+      await expect(enrollRaid(raidId, creatorId)).rejects.toMatchObject({ status: 403 });
+      expect(await db.raidEnrollment.count({ where: { userId: creatorId } })).toBe(0);
+    });
+    it('hides the join action from the creator', async () => {
+      const view = await trackingView(raidId, creatorId);
+      expect(view).toMatchObject({ isCreator: true, canJoin: false });
+      expect(await trackingView(raidId, userId)).toMatchObject({ isCreator: false });
+    });
+    it('keeps measuring qualified posts after an early end, then settles on the original end', async () => {
+      await fundedRaid();
+      await ingestTracking(raidId, [measured('301', 100)]);
+      const original = (await db.raid.findUniqueOrThrow({ where: { id: raidId } })).endsAt;
+      const ended = await endEarly();
+      expect(ended.measureUntil).toEqual(original);
+      expect(+ended.endsAt).toBeLessThanOrEqual(Date.now());
+      await expect(submitTrackingPost(raidId, userId, '302')).rejects.toMatchObject({
+        status: 409,
+      });
+      await settled();
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count({ where: { raidId } })).toBe(0);
+      await schedule();
+      expect(
+        await db.job.count({ where: { key: { startsWith: `measure:${raidId}:` }, doneAt: null } }),
+      ).toBe(1);
+      const after = new Date(+original + 1000);
+      await db.job.updateMany({ data: { doneAt: new Date() } });
+      await finalizeTracking(raidId, after);
+      expect(await db.campaignResult.count({ where: { raidId } })).toBe(0);
+      await schedule(after);
+      expect(
+        await db.job.count({
+          where: { key: { startsWith: `measure-final:${raidId}:` }, doneAt: null },
+        }),
+      ).toBe(1);
+      await db.job.updateMany({ data: { doneAt: new Date() } });
+      await db.post.updateMany({ where: { raidId }, data: { observedAt: after } });
+      const result = await finalizeTracking(raidId, after);
+      expect(result).toBeTruthy();
+      expect(await db.campaignResult.count({ where: { raidId } })).toBe(1);
+    });
+    it('does not measure when nobody has posted', async () => {
+      await fundedRaid();
+      expect((await endEarly()).measureUntil).toBeNull();
+    });
+    it('finalizes without waiting once the impression target is already met', async () => {
+      await fundedRaid(100);
+      await ingestTracking(raidId, [measured('303', 100)]);
+      expect((await endEarly()).measureUntil).not.toBeNull();
+      await settled();
+      await db.post.updateMany({ where: { raidId }, data: { observedAt: new Date() } });
+      expect(await finalizeTracking(raidId)).toBeTruthy();
     });
   });
 });

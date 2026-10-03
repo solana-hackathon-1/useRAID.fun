@@ -19,3 +19,16 @@ export const newTrackingRules = () =>
   trackingEnabled()
     ? { trackingVersion: 2, ruleVersion: 3, scoringVersion: 2, officialHandle: config.handle }
     : {};
+
+export const authorCapBps = () => {
+  const value = Number(process.env.RAID_AUTHOR_CAP_BPS || 2500);
+  return Number.isInteger(value) && value >= 1 && value <= 10000 ? value : 2500;
+};
+export const solMinPayout = () => {
+  const value = process.env.SOL_MIN_PAYOUT_LAMPORTS || '890880';
+  return /^\d{1,15}$/.test(value) ? BigInt(value) : 890_880n;
+};
+export const studioLookupsPerDay = () => {
+  const value = Number(process.env.STUDIO_LOOKUPS_PER_DAY || 300);
+  return Number.isInteger(value) && value >= 1 ? value : 300;
+};
