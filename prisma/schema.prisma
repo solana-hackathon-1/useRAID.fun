@@ -75,6 +75,7 @@ model TokenLaunch {
   status String @default("PREPARED")
   reservationExpiresAt DateTime?
   error String?
+  rentReserveLamports BigInt @default(0)
   raidId String? @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -166,6 +167,7 @@ model FinancialTx {
   createdAt DateTime @default(now())
   confirmedAt DateTime?
   @@index([launchId, status])
+  @@index([launchId, kind, roundId])
 }
 model Session {
   tokenHash String @id

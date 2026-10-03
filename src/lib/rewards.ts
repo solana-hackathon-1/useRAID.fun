@@ -3,10 +3,10 @@ import { launchpadsAvailable } from './release';
 import { lockTracking } from './tracking';
 import { trackingBlockers, type ResultPayload } from './tracking-review';
 import bs58 from 'bs58';
-import { randomUUID } from 'node:crypto';
 import {
   Connection,
   Keypair,
+  type AccountInfo,
   PublicKey,
   SystemProgram,
   Transaction,
@@ -19,6 +19,7 @@ import {
   getAssociatedTokenAddressSync,
   NATIVE_MINT,
   TOKEN_PROGRAM_ID,
+  unpackAccount,
 } from '@solana/spl-token';
 import {
   OnlinePumpSdk,
@@ -34,11 +35,13 @@ import {
 import type { TokenLaunch, Prisma } from '@prisma/client';
 import { db } from './db';
 import { config } from './config';
-import { decryptSecret } from './launch-crypto';
+import { decryptFeeSecret } from './launch-crypto';
 import { connection, assertMainnet } from './pump-launch';
 import { authorScores, splitRewards } from './reward-math';
 
 const MIN_PAYOUT = 1_000_000n;
+const EXPIRY_MARGIN_BLOCKS = 150;
+export class FinancePauseError extends Error {}
 function operator() {
   const secret = process.env.OPERATOR_SECRET_KEY;
   if (!secret) throw new Error('Operator signer unavailable');
@@ -50,7 +53,7 @@ function operator() {
   return key;
 }
 function feeKey(launch: TokenLaunch) {
-  return Keypair.fromSecretKey(decryptSecret(launch.feeSecret, `fee:${launch.mint}`));
+  return Keypair.fromSecretKey(decryptFeeSecret(launch.feeSecret, `fee:${launch.mint}`));
 }
 export function payoutsEnabled() {
   return (
@@ -93,7 +96,7 @@ async function expectedFee(
     SystemProgram.transfer({ fromPubkey: feeAddress, toPubkey: payer, lamports: 1 }),
   );
   const fee = (await rpc.getFeeForMessage(tx.compileMessage(), 'finalized')).value;
-  if (!fee || fee > 100_000) throw new Error('Unexpected network fee; payouts paused');
+  if (!fee || fee > 100_000) throw new FinancePauseError('Unexpected network fee; payouts paused');
   return BigInt(fee);
 }
 async function recordAndBroadcast(
@@ -103,7 +106,7 @@ async function recordAndBroadcast(
   roundId: string | null,
   instructions: TransactionInstruction[],
   expectedCost: bigint | null,
-  key: string,
+  wallet: string | null,
   onRecorded?: (tx: Prisma.TransactionClient, signature: string) => Promise<void>,
 ) {
   const gas = operator(),
@@ -119,7 +122,7 @@ async function recordAndBroadcast(
     actualEstimate > 100_000 ||
     (expectedCost !== null && BigInt(actualEstimate) !== expectedCost)
   )
-    throw new Error('Network fee changed before signing');
+    throw new FinancePauseError('Network fee changed before signing');
   const signers = message.accountKeys.slice(0, message.header.numRequiredSignatures);
   tx.sign(...(signers.some((k) => k.equals(fee.publicKey)) ? [gas, fee] : [gas]));
   const raw = tx.serialize();
@@ -127,12 +130,21 @@ async function recordAndBroadcast(
     sigVerify: true,
     commitment: 'finalized',
   });
-  if (simulation.value.err) throw new Error(`${kind} simulation failed; inspect chain accounts.`);
+  if (simulation.value.err) {
+    const logs = (simulation.value.logs || []).slice(0, 3).join(' | ').slice(0, 200);
+    throw new FinancePauseError(
+      `${kind} simulation failed; inspect chain accounts.${logs ? ` ${logs}` : ''}`,
+    );
+  }
   const signature = bs58.encode(tx.signature!);
   const row = await db.$transaction(async (t) => {
+    await t.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`finance:${launch.id}`}, 0))`;
+    if (await t.financialTx.count({ where: { launchId: launch.id, status: 'SIGNED' } }))
+      throw new Error('Another financial transaction is pending');
+    const sequence = await t.financialTx.count({ where: { launchId: launch.id, kind, roundId } });
     const record = await t.financialTx.create({
       data: {
-        key,
+        key: `${kind.toLowerCase()}:${roundId ?? launch.id}:${wallet ?? '-'}:${sequence}`,
         launchId: launch.id,
         roundId,
         raidId: roundId
@@ -162,7 +174,7 @@ async function verifyFeeRecipient(rpc: Connection, launch: TokenLaunch) {
     (wallet && (!wallet.owner.equals(SystemProgram.programId) || wallet.executable)) ||
     wallet?.owner.equals(PUMP_FEE_PROGRAM_ID)
   )
-    throw new Error('Fee recipient or bonding curve changed');
+    throw new FinancePauseError('Fee recipient or bonding curve changed');
   const curve = PUMP_SDK.decodeBondingCurve(info);
   if (
     !curve.creator.equals(expected) ||
@@ -170,15 +182,16 @@ async function verifyFeeRecipient(rpc: Connection, launch: TokenLaunch) {
     curve.isMayhemMode ||
     !curve.quoteMint.equals(PublicKey.default)
   )
-    throw new Error('Bonding curve fee recipient changed');
+    throw new FinancePauseError('Bonding curve fee recipient changed');
   if (curve.complete) {
     const pool = await getPumpAmmProgram(rpc).account.pool.fetchNullable(
       canonicalPumpPoolPda(mint),
     );
-    if (!pool || !pool.coinCreator.equals(expected))
-      throw new Error('Graduated pool fee recipient changed');
+    if (!pool) return { curve, migrating: true };
+    if (!pool.coinCreator.equals(expected))
+      throw new FinancePauseError('Graduated pool fee recipient changed');
   }
-  return curve;
+  return { curve, migrating: false };
 }
 async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
   const open = await db.financialTx.findFirst({
@@ -186,30 +199,47 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
     orderBy: { createdAt: 'asc' },
   });
   if (!open) return false;
-  const result = (
+  const lookup = { commitment: 'finalized', maxSupportedTransactionVersion: 0 } as const;
+  let result: { confirmationStatus?: string; err?: unknown } | null = (
     await rpc.getSignatureStatuses([open.signature], { searchTransactionHistory: true })
   ).value[0];
-  if (result?.confirmationStatus === 'finalized' && !result.err) {
-    const tx = await rpc.getTransaction(open.signature, {
-      commitment: 'finalized',
-      maxSupportedTransactionVersion: 0,
-    });
+  if (!result) {
+    const height = await rpc.getBlockHeight('finalized');
+    if (height <= open.lastValidBlockHeight + EXPIRY_MARGIN_BLOCKS) {
+      await rpc
+        .sendRawTransaction(Buffer.from(open.raw, 'base64'), { maxRetries: 2 })
+        .catch(() => {});
+      return true;
+    }
+    if (Date.now() - +open.createdAt < 5 * 60000) return true;
+    const landed = await rpc.getTransaction(open.signature, lookup);
+    if (landed) result = { confirmationStatus: 'finalized', err: landed.meta?.err ?? null };
+    else {
+      await db.$transaction(async (t) => {
+        const expired = await t.financialTx.updateMany({
+          where: { id: open.id, status: 'SIGNED' },
+          data: { status: 'EXPIRED', confirmedAt: new Date() },
+        });
+        if (expired.count === 1 && open.kind === 'PAYOUT')
+          await t.rewardPayout.updateMany({
+            where: { signature: open.signature },
+            data: { signature: null, status: 'READY' },
+          });
+      });
+      return true;
+    }
+  }
+  if (result.confirmationStatus === 'finalized' && !result.err) {
+    const tx = await rpc.getTransaction(open.signature, lookup);
     if (!tx?.meta || tx.meta.err) throw new Error('Finalized financial transaction unavailable');
     const actualCost = BigInt(tx.meta.fee);
-    if (actualCost !== open.costLamports) {
-      await db.tokenLaunch.update({
-        where: { id: launch.id },
-        data: { status: 'PAUSED', error: 'Network fee differed from approved accounting.' },
-      });
-      throw new Error('Network fee mismatch');
-    }
     await db.$transaction(async (t) => {
       if (open.kind === 'CLAIM') {
         const keys = tx.transaction.message.staticAccountKeys;
         const index = keys.findIndex((k) => k.toBase58() === launch.feeAddress);
-        if (index < 0) throw new Error('Claim recipient missing from transaction');
+        if (index < 0) throw new FinancePauseError('Claim recipient missing from transaction');
         const gross = BigInt(tx.meta!.postBalances[index]) - BigInt(tx.meta!.preBalances[index]);
-        if (gross < 0n) throw new Error('Negative claim');
+        if (gross < 0n) throw new FinancePauseError('Negative claim');
         await t.feeClaim.upsert({
           where: { signature: open.signature },
           create: {
@@ -248,13 +278,20 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
         data: { status: 'CONFIRMED', costLamports: actualCost, confirmedAt: new Date() },
       });
     });
+    if (actualCost !== open.costLamports) {
+      await db.tokenLaunch.updateMany({
+        where: { id: launch.id, status: 'LIVE' },
+        data: {
+          status: 'PAUSED',
+          error: `Network fee ${actualCost} differed from approved ${open.costLamports} on ${open.signature}.`,
+        },
+      });
+      return true;
+    }
     return false;
   }
-  if (result?.err) {
-    const failed = await rpc.getTransaction(open.signature, {
-      commitment: 'finalized',
-      maxSupportedTransactionVersion: 0,
-    });
+  if (result.err) {
+    const failed = await rpc.getTransaction(open.signature, lookup);
     if (!failed?.meta?.err) throw new Error('Failed transaction receipt unavailable');
     await db.$transaction(async (t) => {
       await t.feeClaim.upsert({
@@ -263,6 +300,7 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
           launchId: launch.id,
           signature: open.signature,
           raidId: open.raidId,
+          roundId: open.kind === 'CLAIM' ? null : open.roundId,
           source: 'failed-network-cost',
           grossLamports: 0n,
           costLamports: BigInt(failed.meta!.fee),
@@ -278,8 +316,8 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
           where: { signature: open.signature },
           data: { signature: null, status: 'READY' },
         });
-      await t.tokenLaunch.update({
-        where: { id: launch.id },
+      await t.tokenLaunch.updateMany({
+        where: { id: launch.id, status: 'LIVE' },
         data: {
           status: 'PAUSED',
           error: `On-chain ${open.kind.toLowerCase()} failed; inspect ${open.signature}.`,
@@ -288,19 +326,29 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
     });
     return true;
   }
-  if ((await rpc.getBlockHeight('finalized')) > open.lastValidBlockHeight) {
-    if (Date.now() - +open.createdAt < 5 * 60000) return true;
-    await db.tokenLaunch.update({
-      where: { id: launch.id },
-      data: {
-        status: 'PAUSED',
-        error: `Signed ${open.kind.toLowerCase()} expired without a definitive receipt; inspect ${open.signature} before resuming.`,
-      },
-    });
-    return true;
-  }
   await rpc.sendRawTransaction(Buffer.from(open.raw, 'base64'), { maxRetries: 2 }).catch(() => {});
   return true;
+}
+function assertOwnWrappedSolAccount(
+  address: PublicKey,
+  info: AccountInfo<Buffer>,
+  owner: PublicKey,
+) {
+  let account;
+  try {
+    account = unpackAccount(address, info, TOKEN_PROGRAM_ID);
+  } catch {
+    throw new FinancePauseError('Fee wallet wSOL account has foreign authority');
+  }
+  if (
+    !account.mint.equals(NATIVE_MINT) ||
+    !account.owner.equals(owner) ||
+    !account.isInitialized ||
+    account.isFrozen ||
+    account.delegate ||
+    account.closeAuthority
+  )
+    throw new FinancePauseError('Fee wallet wSOL account has foreign authority');
 }
 async function claimFees(rpc: Connection, launch: TokenLaunch, raidId?: string) {
   const fee = new PublicKey(launch.feeAddress),
@@ -324,27 +372,30 @@ async function claimFees(rpc: Connection, launch: TokenLaunch, raidId?: string) 
     TOKEN_PROGRAM_ID,
     gas.publicKey,
   );
+  const destination = getAssociatedTokenAddressSync(NATIVE_MINT, fee, true);
+  const existing = await rpc.getAccountInfo(destination, 'finalized');
+  if (existing) assertOwnWrappedSolAccount(destination, existing, fee);
   if (ammAmount === 0n) instructions.splice(1);
   if (ammAmount > 0n) {
-    const destination = getAssociatedTokenAddressSync(NATIVE_MINT, fee, true);
-    if (await rpc.getAccountInfo(destination, 'finalized'))
-      throw new Error('Unexpected fee wallet WSOL account');
-    const accountRent = BigInt(await rpc.getMinimumBalanceForRentExemption(165));
-    instructions.splice(
-      1,
-      0,
-      createAssociatedTokenAccountIdempotentInstruction(
-        gas.publicKey,
-        destination,
-        fee,
-        NATIVE_MINT,
-      ),
-    );
+    if (!existing)
+      instructions.splice(
+        1,
+        0,
+        createAssociatedTokenAccountIdempotentInstruction(
+          gas.publicKey,
+          destination,
+          fee,
+          NATIVE_MINT,
+        ),
+      );
     instructions.push(createCloseAccountInstruction(destination, fee, fee));
-    instructions.push(
-      SystemProgram.transfer({ fromPubkey: fee, toPubkey: gas.publicKey, lamports: accountRent }),
-    );
-  }
+    if (!existing) {
+      const accountRent = BigInt(await rpc.getMinimumBalanceForRentExemption(165));
+      instructions.push(
+        SystemProgram.transfer({ fromPubkey: fee, toPubkey: gas.publicKey, lamports: accountRent }),
+      );
+    }
+  } else if (existing) instructions.push(createCloseAccountInstruction(destination, fee, fee));
   await recordAndBroadcast(
     rpc,
     launch,
@@ -352,7 +403,7 @@ async function claimFees(rpc: Connection, launch: TokenLaunch, raidId?: string) 
     null,
     instructions,
     null,
-    `claim:${launch.id}:${randomUUID()}`,
+    null,
     raidId
       ? async (tx, signature) => {
           await tx.financialTx.update({ where: { signature }, data: { raidId } });
@@ -400,15 +451,23 @@ export async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
         )
           return false;
         const claims = await db.feeClaim.findMany({
-          where: { launchId: launch.id, roundId: null, raidId: reviewed ? raid.id : null },
+          where: {
+            launchId: launch.id,
+            roundId: null,
+            raidId: reviewed ? raid.id : null,
+            ...(reviewed || ends === +raid.endsAt ? {} : { claimedAt: { lt: new Date(ends) } }),
+          },
           orderBy: { claimedAt: 'asc' },
         });
         if (!claims.length) {
-          if (reviewed)
-            await db.raid.updateMany({
-              where: { id: raid.id, trackingPhase: 'APPROVED' },
-              data: { trackingPhase: 'HELD', holdReason: 'NO_COLLECTED_FEES' },
-            });
+          if (!reviewed) {
+            starts = ends;
+            continue;
+          }
+          await db.raid.updateMany({
+            where: { id: raid.id, trackingPhase: 'APPROVED' },
+            data: { trackingPhase: 'HELD', holdReason: 'NO_COLLECTED_FEES' },
+          });
           return false;
         }
         const gross = claims.reduce((a, c) => a + c.grossLamports, 0n),
@@ -570,6 +629,13 @@ export async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
   }
   return false;
 }
+async function rentTopUp(rpc: Connection, fee: PublicKey, debit: bigint) {
+  const balance = BigInt(await rpc.getBalance(fee, 'finalized'));
+  if (balance < debit) throw new FinancePauseError('Fee wallet balance insufficient');
+  const rentFloor = BigInt(await rpc.getMinimumBalanceForRentExemption(0));
+  const after = balance - debit;
+  return after > 0n && after < rentFloor ? rentFloor - after : 0n;
+}
 async function payRound(rpc: Connection, launch: TokenLaunch) {
   const round = await db.rewardRound.findFirst({
     where: { launchId: launch.id, status: 'READY' },
@@ -589,14 +655,22 @@ async function payRound(rpc: Connection, launch: TokenLaunch) {
     const amount = rows.reduce((a, p) => a + p.lamports, 0n);
     const block = await rpc.getLatestBlockhash('finalized');
     const cost = await expectedFee(rpc, gas.publicKey, fee.publicKey, block.blockhash);
-    if (BigInt(await rpc.getBalance(fee.publicKey, 'finalized')) < amount + cost)
-      throw new Error('Fee wallet balance insufficient for recorded payouts');
+    const topUp = await rentTopUp(rpc, fee.publicKey, amount + cost);
     await recordAndBroadcast(
       rpc,
       launch,
       'PAYOUT',
       round.id,
       [
+        ...(topUp > 0n
+          ? [
+              SystemProgram.transfer({
+                fromPubkey: gas.publicKey,
+                toPubkey: fee.publicKey,
+                lamports: topUp,
+              }),
+            ]
+          : []),
         SystemProgram.transfer({
           fromPubkey: fee.publicKey,
           toPubkey: new PublicKey(wallet),
@@ -609,47 +683,86 @@ async function payRound(rpc: Connection, launch: TokenLaunch) {
         }),
       ],
       cost,
-      `pay:${round.id}:${wallet}:${randomUUID()}`,
+      wallet,
       async (t, signature) => {
         const updated = await t.rewardPayout.updateMany({
           where: { id: { in: rows.map((r) => r.id) }, status: 'READY' },
           data: { signature, status: 'SENT' },
         });
         if (updated.count !== rows.length) throw new Error('Payout rows changed before signing');
+        if (topUp > 0n)
+          await t.tokenLaunch.update({
+            where: { id: launch.id },
+            data: { rentReserveLamports: { increment: topUp } },
+          });
       },
     );
     return true;
   }
-  const claimCosts = (await db.feeClaim.findMany({ where: { roundId: round.id } })).reduce(
-    (a, c) => a + c.costLamports,
-    0n,
-  );
+  const roundClaims = await db.feeClaim.findMany({ where: { roundId: round.id } });
+  const budgeted = roundClaims
+    .filter((c) => c.source !== 'failed-network-cost')
+    .reduce((a, c) => a + c.costLamports, 0n);
+  const failed = roundClaims
+    .filter((c) => c.source === 'failed-network-cost')
+    .reduce((a, c) => a + c.costLamports, 0n);
+  const absorbed = failed < round.platformLamports ? failed : round.platformLamports;
+  const treasuryAmount = round.platformLamports - absorbed;
   const block = await rpc.getLatestBlockhash('finalized');
   const cost = await expectedFee(rpc, gas.publicKey, fee.publicKey, block.blockhash);
-  if (
-    BigInt(await rpc.getBalance(fee.publicKey, 'finalized')) <
-    round.platformLamports + claimCosts + cost
-  )
-    throw new Error('Fee wallet balance insufficient for recorded fees');
+  const reimbursement = budgeted + absorbed + cost;
+  const topUp = await rentTopUp(rpc, fee.publicKey, treasuryAmount + reimbursement);
   await recordAndBroadcast(
     rpc,
     launch,
     'PLATFORM',
     round.id,
     [
-      SystemProgram.transfer({
-        fromPubkey: fee.publicKey,
-        toPubkey: new PublicKey(process.env.PLATFORM_TREASURY_ADDRESS!),
-        lamports: round.platformLamports,
-      }),
+      ...(topUp > 0n
+        ? [
+            SystemProgram.transfer({
+              fromPubkey: gas.publicKey,
+              toPubkey: fee.publicKey,
+              lamports: topUp,
+            }),
+          ]
+        : []),
+      ...(treasuryAmount > 0n
+        ? [
+            SystemProgram.transfer({
+              fromPubkey: fee.publicKey,
+              toPubkey: new PublicKey(process.env.PLATFORM_TREASURY_ADDRESS!),
+              lamports: treasuryAmount,
+            }),
+          ]
+        : []),
       SystemProgram.transfer({
         fromPubkey: fee.publicKey,
         toPubkey: gas.publicKey,
-        lamports: claimCosts + cost,
+        lamports: reimbursement,
       }),
     ],
     cost,
-    `platform:${round.id}:${randomUUID()}`,
+    null,
+    async (t) => {
+      if (absorbed > 0n)
+        await t.rewardRound.update({
+          where: { id: round.id },
+          data: { costLamports: { increment: absorbed } },
+        });
+      if (topUp > 0n)
+        await t.tokenLaunch.update({
+          where: { id: launch.id },
+          data: { rentReserveLamports: { increment: topUp } },
+        });
+      if (failed > absorbed)
+        await t.tokenLaunch.update({
+          where: { id: launch.id },
+          data: {
+            error: `Operator absorbed ${failed - absorbed} lamports of failed transaction cost.`,
+          },
+        });
+    },
   );
   return true;
 }
@@ -661,7 +774,6 @@ export async function financeLaunch(launchId: string) {
   const rpc = connection();
   try {
     await assertMainnet(rpc);
-    await verifyFeeRecipient(rpc, launch);
     if (await reconcileFinancial(rpc, launch)) return;
     if (await db.financialTx.count({ where: { launchId, status: 'SIGNED' } })) return;
     if (
@@ -671,6 +783,7 @@ export async function financeLaunch(launchId: string) {
       launch.status !== 'LIVE'
     )
       return;
+    await verifyFeeRecipient(rpc, launch);
     if (await payRound(rpc, launch)) return;
     const currentRaid = launch.raidId
       ? await db.raid.findUnique({ where: { id: launch.raidId } })
@@ -691,15 +804,10 @@ export async function financeLaunch(launchId: string) {
       await claimFees(rpc, launch);
     }
   } catch (error) {
-    const reason = error instanceof Error ? error.message.slice(0, 200) : 'Finance failed';
-    if (
-      /recipient changed|fee mismatch|Graduated pool|balance insufficient|Unexpected fee wallet WSOL/.test(
-        reason,
-      )
-    )
-      await db.tokenLaunch.update({
-        where: { id: launchId },
-        data: { status: 'PAUSED', error: reason },
+    if (error instanceof FinancePauseError)
+      await db.tokenLaunch.updateMany({
+        where: { id: launchId, status: 'LIVE' },
+        data: { status: 'PAUSED', error: error.message.slice(0, 200) },
       });
     throw error;
   }
