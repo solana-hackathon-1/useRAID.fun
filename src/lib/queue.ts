@@ -18,10 +18,10 @@ export async function enqueue(
         ? 30
         : kind === 'submission'
           ? 20
-          : kind === 'finance' || kind === 'launch-reconcile'
-            ? 15
-            : kind === 'collect' || kind === 'refresh'
-              ? 10
+          : kind === 'collect' || kind === 'refresh'
+            ? 10
+            : kind === 'finance' || kind === 'launch-reconcile'
+              ? 5
               : 0,
     },
     update: {},

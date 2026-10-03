@@ -1,17 +1,25 @@
-import { newTrackingRules } from './config';
-import { launchpadsAvailable } from './release';
+import { newTrackingRules, trackingSettlementEnabled } from './config';
+import { assertLaunchpadsAvailable, launchpadsAvailable } from './release';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
-import { Connection, Keypair, PublicKey, Transaction } from '@solana/web3.js';
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  Transaction,
+  type VersionedTransactionResponse,
+} from '@solana/web3.js';
 import { PUMP_SDK, PUMP_PROGRAM_ID, bondingCurvePda } from './pump-sdk';
 import { TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
 import { db } from './db';
 import { config } from './config';
 import { HttpError } from './auth-primitives';
-import { encryptSecret, decryptSecret } from './launch-crypto';
+import { encryptSecret, decryptSecret, sealSecret, sealVersion } from './launch-crypto';
 import { pinMetadata, ipfsUri, verifyAsset } from './launch-ipfs';
 import { walletAddress } from './wallet-auth';
 import { verifySignedLaunch } from './launch-signatures';
+import { assertApprovedCreator } from './campaigns';
+import type { TokenLaunch } from '@prisma/client';
 
 const optionalUrl = z
   .union([
@@ -47,7 +55,9 @@ export function launchEnabled() {
     !!process.env.X_BEARER_TOKEN &&
     !!process.env.SOLANA_RPC_URL &&
     !!process.env.PINATA_JWT &&
-    !!process.env[`LAUNCH_KEY_${process.env.LAUNCH_KEY_VERSION || '1'}`]
+    !!process.env[`LAUNCH_KEY_${process.env.LAUNCH_KEY_VERSION || '1'}`] &&
+    !!process.env[`FEE_SEAL_PUBLIC_${sealVersion()}`] &&
+    !!process.env.LAUNCH_ASSET_KEY
   );
 }
 export async function assertMainnet(rpc: Connection) {
@@ -59,8 +69,20 @@ export function connection() {
   if (!url || !/^https:\/\//.test(url)) throw new HttpError(503, 'Solana RPC unavailable.');
   return new Connection(url, 'finalized');
 }
+const RESERVATION_MS = 20 * 60000;
+async function assertApprovedLauncher(userId: string) {
+  const user = await db.user.findUnique({ where: { id: userId } });
+  if (!user) throw new HttpError(403, 'Creator approval is required.');
+  assertApprovedCreator(user);
+}
+const outstanding = (userId: string, excludeId?: string) => ({
+  userId,
+  ...(excludeId ? { id: { not: excludeId } } : {}),
+  OR: [{ status: 'SUBMITTED' }, { status: 'PREPARED', reservationExpiresAt: { gt: new Date() } }],
+});
 export async function prepareLaunch(userId: string, input: unknown) {
   if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
+  await assertApprovedLauncher(userId);
   const data = launchInput.parse(input);
   verifyAsset(data.imageUri, 'logo', userId, data.imageProof);
   if (data.bannerUri) {
@@ -128,6 +150,8 @@ export async function prepareLaunch(userId: string, input: unknown) {
         },
       }));
     if (reserved >= current.maxActiveRaids) throw new HttpError(409, 'Campaign capacity full.');
+    if (await tx.tokenLaunch.count({ where: outstanding(userId) }))
+      throw new HttpError(409, 'Finish or wait out your pending launch first.');
     return tx.tokenLaunch.create({
       data: {
         userId,
@@ -139,8 +163,8 @@ export async function prepareLaunch(userId: string, input: unknown) {
         imageUri: image,
         bannerUri: banner,
         feeAddress: feeWallet.publicKey.toBase58(),
-        reservationExpiresAt: new Date(Date.now() + 3600000),
-        feeSecret: encryptSecret(feeWallet.secretKey, `fee:${mint.publicKey}`),
+        reservationExpiresAt: new Date(Date.now() + RESERVATION_MS),
+        feeSecret: sealSecret(feeWallet.secretKey, `fee:${mint.publicKey}`),
         mintSecret: encryptSecret(mint.secretKey, `mint:${mint.publicKey}`),
       },
     });
@@ -148,11 +172,13 @@ export async function prepareLaunch(userId: string, input: unknown) {
   return buildLaunchTransaction(launch.id, userId);
 }
 export async function buildLaunchTransaction(id: string, userId: string) {
-  if (!launchpadsAvailable) throw new HttpError(503, 'Launchpads are coming soon.');
+  assertLaunchpadsAvailable();
   const launch = await db.tokenLaunch.findUnique({ where: { id } });
   if (!launch || launch.userId !== userId) throw new HttpError(404, 'Launch not found.');
   if (launch.status === 'LIVE') return publicLaunch(launch);
   if (launch.status === 'SUBMITTED') return publicLaunch(launch);
+  if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
+  await assertApprovedLauncher(userId);
   if (!launch.reservationExpiresAt || launch.reservationExpiresAt <= new Date()) {
     await db.$transaction(async (tx) => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
@@ -175,9 +201,11 @@ export async function buildLaunchTransaction(id: string, userId: string) {
           },
         }));
       if (reserved >= settings.maxActiveRaids) throw new HttpError(409, 'Campaign capacity full.');
+      if (await tx.tokenLaunch.count({ where: outstanding(userId, id) }))
+        throw new HttpError(409, 'Finish or wait out your pending launch first.');
       await tx.tokenLaunch.update({
         where: { id },
-        data: { reservationExpiresAt: new Date(Date.now() + 3600000) },
+        data: { reservationExpiresAt: new Date(Date.now() + RESERVATION_MS) },
       });
     });
   }
@@ -227,6 +255,14 @@ export async function buildLaunchTransaction(id: string, userId: string) {
     transaction: prepared,
     estimatedLamports: rent + 50000,
     metadataUri: launch.metadataUri,
+    ...rewardCopy(),
+  };
+}
+function rewardCopy() {
+  return {
+    rewardMode:
+      newTrackingRules().trackingVersion === 2 ? ('reviewed' as const) : ('hourly' as const),
+    settlementEnabled: trackingSettlementEnabled(),
   };
 }
 export function publicLaunch(launch: {
@@ -250,10 +286,12 @@ export function publicLaunch(launch: {
     signature: launch.signature,
     raidId: launch.raidId,
     error: launch.error,
+    ...rewardCopy(),
   };
 }
 export async function submitLaunch(id: string, userId: string, rawBase64: string) {
   if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
+  await assertApprovedLauncher(userId);
   const settings = await db.settings.findUnique({ where: { id: 'global' } });
   if (
     !settings?.collectionEnabled ||
@@ -306,9 +344,74 @@ export async function submitLaunch(id: string, userId: string, rawBase64: string
   }
   return publicLaunch(await db.tokenLaunch.findUniqueOrThrow({ where: { id } }));
 }
-export async function reconcileLaunch(id: string) {
+type PublicLaunch = ReturnType<typeof publicLaunch>;
+const NO_REVIEWED_CREATION =
+  'Mint exists but no reviewed creation transaction was found; operator review required.';
+function mintSigned(tx: VersionedTransactionResponse, mint: PublicKey) {
+  const { staticAccountKeys, header } = tx.transaction.message;
+  return staticAccountKeys.slice(0, header.numRequiredSignatures).some((key) => key.equals(mint));
+}
+// The server holds the mint secret and only ever partially signs messages it built, so a finalized
+// creation signed by the mint key proves this server reviewed that message even if preparedHash was overwritten by a rebuild.
+async function recoverLaunchByMint(rpc: Connection, launch: TokenLaunch) {
+  const mint = new PublicKey(launch.mint);
+  const wallet = await db.walletIdentity.findUnique({ where: { userId: launch.userId } });
+  let creation: string | undefined;
+  let before: string | undefined;
+  for (let page = 0; page < 20; page++) {
+    const sigs = await rpc.getSignaturesForAddress(mint, { limit: 1000, before }, 'finalized');
+    creation = sigs.filter((entry) => !entry.err).at(-1)?.signature ?? creation;
+    if (sigs.length < 1000) break;
+    before = sigs.at(-1)!.signature;
+  }
+  const tx = creation
+    ? await rpc.getTransaction(creation, {
+        maxSupportedTransactionVersion: 0,
+        commitment: 'finalized',
+      })
+    : null;
+  if (
+    creation &&
+    creation !== launch.signature &&
+    wallet &&
+    tx &&
+    !tx.meta?.err &&
+    tx.transaction.message.staticAccountKeys[0].toBase58() === wallet.address &&
+    mintSigned(tx, mint)
+  ) {
+    try {
+      const adopted = await db.tokenLaunch.updateMany({
+        where: { id: launch.id, signature: launch.signature },
+        data: { signature: creation, status: 'SUBMITTED', error: null },
+      });
+      if (adopted.count === 1) return true;
+    } catch {
+      // The signature belongs to another row; fall through to operator review.
+    }
+  }
+  if (launch.error !== NO_REVIEWED_CREATION)
+    await db.tokenLaunch.update({
+      where: { id: launch.id },
+      data: { error: NO_REVIEWED_CREATION },
+    });
+  return false;
+}
+async function adoptOrReport(rpc: Connection, launch: TokenLaunch, recovered: boolean) {
+  if (!recovered && (await recoverLaunchByMint(rpc, launch)))
+    return reconcileLaunch(launch.id, true);
+  return publicLaunch(await db.tokenLaunch.findUniqueOrThrow({ where: { id: launch.id } }));
+}
+export async function reconcileLaunch(id: string, recovered = false): Promise<PublicLaunch> {
   const launch = await db.tokenLaunch.findUniqueOrThrow({ where: { id } });
-  if (launch.status === 'LIVE' || !launch.signature) return publicLaunch(launch);
+  if (launch.status === 'LIVE') return publicLaunch(launch);
+  if (!launch.signature) {
+    if (!launch.preparedHash) return publicLaunch(launch);
+    const rpc = connection();
+    await assertMainnet(rpc);
+    if (await rpc.getAccountInfo(new PublicKey(launch.mint), 'finalized'))
+      return adoptOrReport(rpc, launch, recovered);
+    return publicLaunch(launch);
+  }
   const rpc = connection();
   await assertMainnet(rpc);
   const status = await rpc.getSignatureStatuses([launch.signature], {
@@ -337,7 +440,7 @@ export async function reconcileLaunch(id: string) {
       (await rpc.getBlockHeight('finalized')) > launch.lastValidBlockHeight
     ) {
       if (await rpc.getAccountInfo(new PublicKey(launch.mint), 'finalized'))
-        throw new Error('Mint exists but launch receipt is unavailable; inspect before retrying.');
+        return adoptOrReport(rpc, launch, recovered);
       await db.tokenLaunch.update({
         where: { id },
         data: {
@@ -360,8 +463,9 @@ export async function reconcileLaunch(id: string) {
     !tx ||
     tx.meta?.err ||
     tx.transaction.message.staticAccountKeys[0].toBase58() !== payer ||
-    createHash('sha256').update(tx.transaction.message.serialize()).digest('hex') !==
-      launch.preparedHash
+    (createHash('sha256').update(tx.transaction.message.serialize()).digest('hex') !==
+      launch.preparedHash &&
+      !mintSigned(tx, new PublicKey(launch.mint)))
   )
     throw new Error('Finalized launch transaction mismatch.');
   const mintInfo = await rpc.getAccountInfo(new PublicKey(launch.mint), 'finalized');

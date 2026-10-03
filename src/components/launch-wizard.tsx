@@ -70,6 +70,8 @@ export function LaunchWizard({
     feeAddress: string;
     transaction: string;
     estimatedLamports: number;
+    rewardMode: 'reviewed' | 'hourly';
+    settlementEnabled: boolean;
   } | null>(null);
   const [live, setLive] = useState<{
     mint: string;
@@ -171,6 +173,8 @@ export function LaunchWizard({
           feeAddress: state.feeAddress,
           transaction: '',
           estimatedLamports: 0,
+          rewardMode: state.rewardMode,
+          settlementEnabled: state.settlementEnabled,
         });
         setStep(2);
         return;
@@ -402,8 +406,10 @@ export function LaunchWizard({
               protocol charges. No useRAID launch charge.
             </p>
             <p>
-              Hourly reward rounds. First raid lasts 24 hours. Mint:{' '}
-              <code className="mint">{prepared.mint}</code>
+              {prepared.rewardMode === 'reviewed'
+                ? `Rewards are paid after the 24-hour Raid is reviewed.${prepared.settlementEnabled ? '' : ' Payouts are not yet enabled.'}`
+                : 'Hourly reward rounds.'}{' '}
+              First raid lasts 24 hours. Mint: <code className="mint">{prepared.mint}</code>
             </p>
             {prepared.transaction ? (
               <button className="button" onClick={signAndLaunch} disabled={busy || !selected}>
@@ -451,8 +457,9 @@ export function LaunchWizard({
       <aside className="panel">
         <h2>How rewards work</h2>
         <p>
-          pump.fun pays creator fees to token fee wallet. Each hour, qualifying raiders share 90% of
-          collected fees after network costs, proportional to score.
+          pump.fun pays creator fees to token fee wallet. Qualifying raiders share 90% of collected
+          fees after network costs, proportional to score, once the Raid&apos;s results are
+          reviewed.
         </p>
         <p className="small-print">
           Launches and trading carry risk. useRAID.fun is not affiliated with pump.fun.

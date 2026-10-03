@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { failure, readJson } from '@/lib/http';
 import { releaseFundedRaid } from '@/lib/studio-finance';
 import { fundingPricing, fundingQuote } from '@/lib/raid-funding';
+import { assertLaunchpadsAvailable } from '@/lib/release';
 export async function POST(request: Request, { params }: { params: Promise<{ action: string }> }) {
   try {
     checkOrigin(request);
@@ -41,9 +42,20 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
           update: { launchPaused: b.launchPaused, payoutPaused: b.payoutPaused },
         });
       } else if (action === 'launch-resume') {
+        assertLaunchpadsAvailable();
         const launch = await tx.tokenLaunch.findUnique({ where: { id: b.id } });
         if (!launch || launch.status !== 'PAUSED')
           throw new HttpError(409, 'Launch is not paused.');
+        if (
+          await tx.financialTx.count({
+            where: {
+              launchId: launch.id,
+              status: 'SIGNED',
+              createdAt: { gt: new Date(Date.now() - 600000) },
+            },
+          })
+        )
+          throw new HttpError(409, 'Resolve signed transaction first.');
         await tx.tokenLaunch.update({ where: { id: b.id }, data: { status: 'LIVE', error: null } });
       } else if (action === 'funding-quote') {
         const raid = await tx.raid.findUnique({ where: { id: b.id } });

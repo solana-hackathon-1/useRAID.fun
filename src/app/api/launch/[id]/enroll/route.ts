@@ -1,12 +1,12 @@
 import { enrollRaid } from '@/lib/tracking';
-import { launchpadsAvailable } from '@/lib/release';
+import { assertLaunchpadsAvailable } from '@/lib/release';
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { failure } from '@/lib/http';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    if (!launchpadsAvailable) throw new HttpError(503, 'Launchpad rewards are coming soon.');
+    assertLaunchpadsAvailable('Launchpad rewards are coming soon.');
     checkOrigin(request);
     const user = await requireUser();
     const launch = await db.tokenLaunch.findUnique({
@@ -27,6 +27,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       const member = await enrollRaid(launch.raid.id, user.id);
       return NextResponse.json({ enrolled: true, walletAddress: member.walletAddress });
     }
+    if (launch.userId === user.id) throw new HttpError(403, 'Creators cannot join their own Raid.');
     const [wallet, account] = await Promise.all([
       db.walletIdentity.findUnique({ where: { userId: user.id } }),
       db.xAccount.findUnique({ where: { userId: user.id } }),

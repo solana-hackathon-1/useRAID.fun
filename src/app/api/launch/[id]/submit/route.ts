@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser } from '@/lib/auth';
 import { submitLaunch } from '@/lib/pump-launch';
 import { failure } from '@/lib/http';
+import { assertLaunchpadsAvailable } from '@/lib/release';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    assertLaunchpadsAvailable();
     checkOrigin(request);
     const user = await requireUser();
     const { transaction } = await request.json();

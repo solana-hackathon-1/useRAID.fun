@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, rateLimit } from '@/lib/auth';
 import { prepareLaunch } from '@/lib/pump-launch';
 import { failure } from '@/lib/http';
+import { assertLaunchpadsAvailable } from '@/lib/release';
 export async function POST(request: Request) {
   try {
+    assertLaunchpadsAvailable();
     checkOrigin(request);
     const user = await requireUser();
     await rateLimit(`launch:${user.id}`, 5, 3600);

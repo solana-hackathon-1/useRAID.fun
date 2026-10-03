@@ -1,6 +1,6 @@
 # X tracking v2 rollout
 
-New tracking is disabled by default. Existing Raids keep tracking/rule/scoring version 1; migration does not rescore history or change paid transactions. Version 2 rules are copied when a Raid is created. Changing deployment flags does not convert existing Raids.
+Version 2 tracking is on unless `X_TRACKING_V2_ENABLED=false`, and settlement stays off unless `X_TRACKING_V2_SETTLEMENT_ENABLED=true`. Existing Raids keep tracking/rule/scoring version 1; migration does not rescore history or change paid transactions. Version 2 rules are copied when a Raid is created. Changing deployment flags does not convert existing Raids.
 
 ## Deployment gates
 
@@ -11,7 +11,7 @@ New tracking is disabled by default. Existing Raids keep tracking/rule/scoring v
 5. Enable `X_TRACKING_V2_ENABLED=true` on web and worker for new Raids. Observe contribution history, queue backlog, coverage, endpoint limits, finalization, and disputes. This alone does not enable v2 payment.
 6. Only after audit, provider validation, a funded settlement smoke test, and restore verification, enable `X_TRACKING_V2_SETTLEMENT_ENABLED=true` with existing payout gates. Do not enable paid services for mocked tests.
 
-Rollback: turn either v2 flag off to stop new v2 allocations/transfers. Existing signed financial transactions still reconcile, including paused launches; already broadcast transactions cannot be recalled. Keep additive schema and historical records. Do not roll back migrations or delete signed transactions.
+Rollback: turn either v2 flag off to stop new v2 allocations/transfers. Existing signed financial transactions and launch receipts still reconcile in the worker, including paused launches and while launchpads are deferred; already broadcast transactions cannot be recalled. Keep additive schema and historical records. Do not roll back migrations or delete signed transactions.
 
 ## Behavior
 

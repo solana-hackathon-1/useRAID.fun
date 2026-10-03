@@ -197,25 +197,86 @@ export async function schedule(now = new Date()) {
     });
   }
   await step('launch-jobs', async () => {
+    // Reconciling an already-broadcast launch or signed transaction is bookkeeping, so it runs while launchpads are deferred.
+    const minute = Math.floor(Date.now() / 60000);
     const pendingLaunches = await db.tokenLaunch.findMany({
-      where: { status: 'SUBMITTED' },
-      select: { id: true },
+      where: {
+        OR: [
+          { status: 'SUBMITTED' },
+          {
+            status: 'PREPARED',
+            signature: null,
+            preparedHash: { not: null },
+            updatedAt: { gt: new Date(+now - 86400000) },
+          },
+        ],
+      },
+      select: { id: true, status: true },
     });
-    for (const launch of launchpadsAvailable ? pendingLaunches : [])
+    for (const launch of pendingLaunches)
       await enqueue(
         'launch-reconcile',
-        `launch-reconcile:${launch.id}:${Math.floor(Date.now() / 60000)}`,
+        launch.status === 'SUBMITTED'
+          ? `launch-reconcile:${launch.id}:${minute}`
+          : `launch-reconcile:${launch.id}:p${Math.floor(Date.now() / 300000)}`,
         { launchId: launch.id },
       );
+    const signed = new Set(
+      (
+        await db.financialTx.findMany({
+          where: { status: 'SIGNED' },
+          distinct: ['launchId'],
+          select: { launchId: true },
+        })
+      ).map((tx) => tx.launchId),
+    );
+    const ready = launchpadsAvailable
+      ? new Set(
+          (
+            await db.rewardRound.findMany({
+              where: { status: 'READY' },
+              distinct: ['launchId'],
+              select: { launchId: true },
+            })
+          ).map((round) => round.launchId),
+        )
+      : new Set<string>();
     const liveLaunches = await db.tokenLaunch.findMany({
       where: { status: { in: ['LIVE', 'PAUSED'] } },
-      select: { id: true },
+      select: {
+        id: true,
+        status: true,
+        raid: {
+          select: {
+            status: true,
+            trackingVersion: true,
+            trackingPhase: true,
+            finalFeeSweepAt: true,
+          },
+        },
+      },
     });
-    for (const launch of launchpadsAvailable ? liveLaunches : [])
-      await enqueue('finance', `finance:${launch.id}:${Math.floor(Date.now() / 60000)}`, {
-        launchId: launch.id,
-        raidId: launch.id,
-      });
+    for (const launch of liveLaunches) {
+      const open = signed.has(launch.id);
+      if (!launchpadsAvailable && !open) continue;
+      if (launch.status === 'PAUSED' && !open) continue;
+      const raid = launch.raid;
+      const busy =
+        open ||
+        ready.has(launch.id) ||
+        raid?.status === 'ACTIVE' ||
+        (raid?.status === 'ENDED' &&
+          !['ALLOCATED', 'HELD', 'HELD_RESOLVED'].includes(raid.trackingPhase)) ||
+        (raid?.trackingVersion === 2 && !raid.finalFeeSweepAt);
+      // claimJob serialises jobs sharing payload.raidId, so keep it set to the launch id.
+      await enqueue(
+        'finance',
+        busy
+          ? `finance:${launch.id}:${minute}`
+          : `finance:${launch.id}:h${Math.floor(Date.now() / 3600000)}`,
+        { launchId: launch.id, raidId: launch.id },
+      );
+    }
   });
   await step('cleanup', async () => {
     await db.session.deleteMany({ where: { expiresAt: { lt: now } } });
@@ -345,7 +406,7 @@ export async function runJob(job: Job) {
       await clearCollectionError(p.raidId);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Collection failed';
-    if (p.raidId)
+    if (p.raidId && job.kind !== 'finance')
       await db.raid.updateMany({
         where: { id: p.raidId },
         data: {

@@ -3,8 +3,10 @@ import { checkOrigin, requireUser, rateLimit, HttpError } from '@/lib/auth';
 import { pinFile, signAsset, validateImage } from '@/lib/launch-ipfs';
 import { launchEnabled } from '@/lib/pump-launch';
 import { failure } from '@/lib/http';
+import { assertLaunchpadsAvailable } from '@/lib/release';
 export async function POST(request: Request) {
   try {
+    assertLaunchpadsAvailable();
     checkOrigin(request);
     const user = await requireUser();
     if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
@@ -40,8 +42,10 @@ export async function POST(request: Request) {
     const file = form.get('file');
     if ((kind !== 'logo' && kind !== 'banner') || !(file instanceof File))
       throw new HttpError(400, 'Image and kind required.');
-    await validateImage(file, kind);
-    const uri = await pinFile(file);
+    const image = await validateImage(file, kind);
+    const uri = await pinFile(
+      new File([image.bytes], `${kind}.${image.ext}`, { type: image.mime }),
+    );
     return NextResponse.json({ uri, proof: signAsset(uri, kind, user.id) });
   } catch (error) {
     return failure(error);

@@ -1,5 +1,5 @@
 import { newTrackingRules } from '@/lib/config';
-import { launchpadsAvailable } from '@/lib/release';
+import { assertLaunchpadsAvailable } from '@/lib/release';
 import { randomBytes } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
@@ -9,7 +9,7 @@ import { config } from '@/lib/config';
 import { LOCKED_PHASES } from '@/lib/tracking-domain';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    if (!launchpadsAvailable) throw new HttpError(503, 'Launchpads are coming soon.');
+    assertLaunchpadsAvailable();
     checkOrigin(request);
     const user = await requireUser();
     const id = (await params).id;

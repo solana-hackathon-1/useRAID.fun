@@ -8,6 +8,13 @@ import { config } from '../src/lib/config';
 import { assertSchemaCurrent, runJob, schedule, step } from '../src/lib/worker-jobs';
 import { claimJob, enqueue } from '../src/lib/queue';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+const gate = vi.hoisted(() => ({ on: false }));
+vi.mock('../src/lib/release', () => ({
+  get launchpadsAvailable() {
+    return gate.on;
+  },
+  assertLaunchpadsAvailable: () => {},
+}));
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 suite('worker jobs module', () => {
   let raidId: string;
@@ -76,16 +83,134 @@ suite('worker jobs module', () => {
       finalRefreshed: false,
     });
   });
-  it('enqueues no launch or finance jobs while launchpads are unavailable', async () => {
-    await db.token.upsert({
-      where: { mint: 'So11111111111111111111111111111111111111112' },
-      create: { mint: 'So11111111111111111111111111111111111111112', name: 'S', symbol: 'S' },
-      update: {},
+  describe('launch jobs', () => {
+    const launchJobs = async () =>
+      (await db.job.findMany({ where: { kind: { in: ['launch-reconcile', 'finance'] } } })).map(
+        (j) => ({
+          kind: j.kind,
+          key: j.key,
+          launchId: (j.payload as { launchId: string }).launchId,
+        }),
+      );
+    const launch = async (status: string, data: Record<string, unknown> = {}) => {
+      const owner = await db.user.findFirstOrThrow();
+      return db.tokenLaunch.create({
+        data: {
+          userId: owner.id,
+          mint: `mint-${Math.random().toString(36).slice(2)}`,
+          name: 'N',
+          symbol: 'S',
+          description: 'd',
+          metadataUri: 'u',
+          imageUri: 'i',
+          feeAddress: `fee-${Math.random().toString(36).slice(2)}`,
+          feeSecret: 'x',
+          mintSecret: 'y',
+          status,
+          ...data,
+        },
+      });
+    };
+    const signed = (launchId: string) =>
+      db.financialTx.create({
+        data: {
+          key: `k-${launchId}`,
+          launchId,
+          kind: 'CLAIM',
+          raw: 'r',
+          signature: `s-${launchId}`,
+          blockhash: 'b',
+          lastValidBlockHeight: 1,
+        },
+      });
+    afterEach(() => {
+      gate.on = false;
     });
-    await schedule();
-    expect(await db.job.count({ where: { kind: { in: ['launch-reconcile', 'finance'] } } })).toBe(
-      0,
-    );
+    it('reconciles recorded work while launchpads are unavailable and nothing else', async () => {
+      const submitted = await launch('SUBMITTED', { signature: 'sig-submitted' });
+      const prepared = await launch('PREPARED', { preparedHash: 'h' });
+      const unprepared = await launch('PREPARED');
+      const liveSigned = await launch('LIVE');
+      await signed(liveSigned.id);
+      const pausedSigned = await launch('PAUSED');
+      await signed(pausedSigned.id);
+      await launch('LIVE');
+      await launch('PAUSED');
+      await schedule();
+      const jobs = await launchJobs();
+      expect(
+        jobs
+          .filter((j) => j.kind === 'launch-reconcile')
+          .map((j) => j.launchId)
+          .sort(),
+      ).toEqual([submitted.id, prepared.id].sort());
+      expect(
+        jobs
+          .filter((j) => j.kind === 'finance')
+          .map((j) => j.launchId)
+          .sort(),
+      ).toEqual([liveSigned.id, pausedSigned.id].sort());
+      expect(jobs.some((j) => j.launchId === unprepared.id)).toBe(false);
+    });
+    it('ignores a prepared launch that has been idle for a day', async () => {
+      const old = await launch('PREPARED', { preparedHash: 'h' });
+      await db.$executeRaw`UPDATE "TokenLaunch" SET "updatedAt" = NOW() - INTERVAL '2 days' WHERE id = ${old.id}`;
+      await schedule();
+      expect(await launchJobs()).toEqual([]);
+    });
+    it('polls busy launches every minute and idle ones hourly once launchpads are on', async () => {
+      gate.on = true;
+      const idle = await launch('LIVE');
+      const busy = await launch('LIVE');
+      const busyRaid = await db.raid.create({
+        data: {
+          tag: 'raid_busy_launch',
+          title: 'Busy',
+          description: '',
+          creatorId: (await db.user.findFirstOrThrow()).id,
+          tokenLaunchId: busy.id,
+          status: 'ACTIVE',
+          startsAt: new Date(Date.now() - 1000),
+          endsAt: new Date(Date.now() + 3600000),
+        },
+      });
+      await db.tokenLaunch.update({ where: { id: busy.id }, data: { raidId: busyRaid.id } });
+      const pausedIdle = await launch('PAUSED');
+      const pausedSigned = await launch('PAUSED');
+      await signed(pausedSigned.id);
+      await schedule();
+      const finance = (await launchJobs()).filter((j) => j.kind === 'finance');
+      expect(finance.find((j) => j.launchId === idle.id)!.key).toContain(':h');
+      expect(finance.find((j) => j.launchId === busy.id)!.key).not.toContain(':h');
+      expect(finance.find((j) => j.launchId === pausedSigned.id)!.key).not.toContain(':h');
+      expect(finance.some((j) => j.launchId === pausedIdle.id)).toBe(false);
+    });
+    it('ranks finance work below collection and keeps the launch id as the serialising key', async () => {
+      const finance = await enqueue('finance', 'finance:l1:1', { launchId: 'l1', raidId: 'l1' });
+      const reconcile = await enqueue('launch-reconcile', 'launch-reconcile:l1:1', {
+        launchId: 'l1',
+      });
+      const collect = await enqueue('collect', 'collect:r1:1', { raidId: 'r1' });
+      expect(finance.priority).toBe(5);
+      expect(reconcile.priority).toBe(5);
+      expect(collect.priority).toBe(10);
+      expect((await claimJob())!.id).toBe(collect.id);
+    });
+    it('does not write a collection error onto a raid when a finance job fails', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.stubEnv('OPERATOR_SECRET_KEY', 'not-a-key');
+      vi.stubEnv('SOLANA_RPC_URL', 'https://rpc.example');
+      const l = await launch('LIVE');
+      await db.raid.update({ where: { id: raidId }, data: { collectionError: null } });
+      await enqueue('finance', 'finance:fail:1', { launchId: l.id, raidId });
+      const job = (await claimJob())!;
+      await runJob(job);
+      expect(
+        (await db.raid.findUniqueOrThrow({ where: { id: raidId } })).collectionError,
+      ).toBeNull();
+      expect((await db.job.findUniqueOrThrow({ where: { id: job.id } })).error).not.toBeNull();
+      vi.unstubAllEnvs();
+    });
   });
   it('finishes an unknown job kind without throwing', async () => {
     await enqueue('mystery', 'mystery:1', {});
