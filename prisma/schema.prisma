@@ -24,17 +24,31 @@ model User {
   ledger BalanceEntry[]
   transfers UsdcTransfer[]
   usdcAllocations UsdcAllocation[]
+  mediaAssets MediaAsset[]
+}
+model MediaAsset {
+  id String @id @default(cuid())
+  sha256 String @unique
+  mime String
+  bytes Bytes
+  size Int
+  uploaderId String?
+  createdAt DateTime @default(now())
+  uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)
 }
 model WalletIdentity {
   address String @id
   userId String @unique
   verifiedAt DateTime @default(now())
+  previousAddress String?
+  rotatedAt DateTime?
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 model WalletChallenge {
   digest String @id
   address String
   message String
+  userId String?
   expiresAt DateTime
   consumedAt DateTime?
   @@index([address, expiresAt])
@@ -157,6 +171,7 @@ model Session {
   tokenHash String @id
   userId String
   expiresAt DateTime
+  via String @default("x")
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@index([expiresAt])
 }

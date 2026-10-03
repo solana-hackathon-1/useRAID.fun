@@ -69,8 +69,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
         if (typeof b.approved !== 'boolean' || typeof b.suspended !== 'boolean')
           throw new HttpError(400, 'Invalid creator status.');
         const target = await tx.user.findUniqueOrThrow({ where: { id: b.id } });
-        if (target.role === 'ADMIN' && b.suspended)
-          throw new HttpError(400, 'Administrators cannot be suspended here.');
+        if (target.id === user.id) throw new HttpError(400, 'You cannot change your own access.');
         const settings = await tx.settings.upsert({
           where: { id: 'global' },
           create: {},

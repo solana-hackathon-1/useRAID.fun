@@ -7,6 +7,7 @@ import { db as appDb } from '../src/lib/db';
 import { assertTestDatabase } from './helpers/db-guard';
 assertTestDatabase();
 const db = new PrismaClient();
+const suffix = randomBytes(4).toString('hex');
 const server = spawn('node', ['node_modules/next/dist/bin/next', 'start', '--port', '3001'], {
   env: {
     ...process.env,
@@ -14,6 +15,7 @@ const server = spawn('node', ['node_modules/next/dist/bin/next', 'start', '--por
     APP_URL: 'http://localhost:3001',
     NEXT_PUBLIC_APP_URL: 'http://localhost:3001',
     LIVE_COLLECTION_APPROVED: 'false',
+    X_ADMIN_USER_ID: `admin-${suffix}`,
   },
   stdio: 'ignore',
 });
@@ -31,7 +33,6 @@ try {
     create: { maxActiveRaids: 10, maxCreators: 5 },
     update: { maxActiveRaids: 10, maxCreators: 5, collectionEnabled: false },
   });
-  const suffix = randomBytes(4).toString('hex');
   const admin = await db.user.create({
     data: { xId: `admin-${suffix}`, handle: `admin_${suffix}`, role: 'ADMIN', approved: true },
   });

@@ -22,9 +22,17 @@ import { MarketPanel } from '@/components/market';
 import { RaidShare } from '@/components/raid-tools';
 import { TargetPosts } from '@/components/target-posts';
 import { formatUsdc } from '@/lib/usdc-amount';
+import { oauthMessage } from '@/lib/oauth-messages';
 export const dynamic = 'force-dynamic';
-export default async function RaidPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function RaidPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ auth?: string }>;
+}) {
   const raid = await getRaid((await params).id);
+  const authMessage = oauthMessage((await searchParams).auth);
   if (!raid) notFound();
   const user = raid.trackingVersion === 2 ? await currentUser() : null;
   const tracking = raid.trackingVersion === 2 ? await trackingView(raid.id, user?.id) : null;
@@ -38,7 +46,17 @@ export default async function RaidPage({ params }: { params: Promise<{ id: strin
       });
   return (
     <>
-      <AutoRefresh />
+      <AutoRefresh
+        active={
+          raid.status === 'ACTIVE' ||
+          (!!tracking && !['ALLOCATED', 'HELD_RESOLVED'].includes(tracking.phase))
+        }
+      />
+      {authMessage && (
+        <p role="status" className="notice">
+          {authMessage}
+        </p>
+      )}
       <RaidShare id={raid.id} demo={config.demo} />
       <div className="breadcrumb">
         <Link href="/">

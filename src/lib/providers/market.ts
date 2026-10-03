@@ -1,3 +1,4 @@
+import { allowedImageUrl } from '../image-hosts';
 export interface Market {
   imageUri?: string;
   price: number | null;
@@ -32,7 +33,9 @@ export function selectMarket(pairs: Pair[], mint: string): Market | null {
     .sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0))[0];
   if (!pair) return null;
   return {
-    ...(pair.info?.imageUrl?.startsWith('https://') ? { imageUri: pair.info.imageUrl } : {}),
+    ...(pair.info?.imageUrl && allowedImageUrl(pair.info.imageUrl)
+      ? { imageUri: pair.info.imageUrl }
+      : {}),
     price: pair.priceUsd ? Number(pair.priceUsd) : null,
     marketCap: pair.marketCap ?? null,
     fdv: pair.fdv ?? null,

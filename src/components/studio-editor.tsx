@@ -334,7 +334,13 @@ export function StudioEditor({
               {tokenResolved && (
                 <div className="studio-token-details">
                   {draft.imageUri ? (
-                    <img alt="" src={draft.imageUri} className="studio-token-image" />
+                    <img
+                      alt=""
+                      src={draft.imageUri}
+                      className="studio-token-image"
+                      referrerPolicy="no-referrer"
+                      loading="lazy"
+                    />
                   ) : (
                     <span className="studio-token-placeholder">
                       {draft.symbol.slice(0, 2) || '?'}

@@ -361,6 +361,8 @@ export async function requestWithdrawal(userId: string, amount: bigint, requestK
       throw new HttpError(429, 'Wait for your open withdrawals to be paid or rejected.');
     const wallet = await tx.walletIdentity.findUnique({ where: { userId } });
     if (!wallet) throw new HttpError(403, 'Connect your verified wallet first.');
+    if (wallet.rotatedAt && Date.now() - +wallet.rotatedAt < 24 * 3600000)
+      throw new HttpError(409, 'Withdrawals unlock 24 hours after a wallet change.');
     if ((await balance(userId, tx)).available < amount)
       throw new HttpError(409, 'Insufficient available USDC.');
     const transfer = await tx.usdcTransfer.create({

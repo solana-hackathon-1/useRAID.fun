@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import type { TrackingView } from '@/lib/tracking-view';
 import { SubmitPost } from './actions';
 import { WalletLogin } from './wallet-login';
@@ -104,9 +103,9 @@ export function TrackingPanel({
         <>
           <WalletLogin currentAddress={walletAddress} />
           {!xConnected && (
-            <Link className="inline-link" href="/api/auth/x">
+            <a className="inline-link" href={`/api/auth/x?return=raid:${raidId}`}>
               Connect X
-            </Link>
+            </a>
           )}
           <button
             className="button"

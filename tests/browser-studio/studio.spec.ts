@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { watchConsole } from '../helpers/browser-console';
 test.beforeEach(async ({ page }) => {
   const login = await page.request.post('/api/studio/sandbox', {
     headers: { origin: 'http://localhost:3007' },
@@ -128,4 +129,16 @@ test('unapproved creators request approval before they can create a Raid', async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
+});
+test('shows the sign-in result to a signed-in creator and loads under the CSP', async ({
+  page,
+}) => {
+  const problems = watchConsole(page);
+  await page.goto('/creator/account?auth=identity');
+  await expect(page.getByText(/already tied to another account with activity/)).toBeVisible();
+  await page.goto('/creator?auth=connected');
+  await expect(page.getByText('X account connected.')).toBeVisible();
+  await page.goto('/creator/new');
+  await page.waitForLoadState('networkidle');
+  expect(problems).toEqual([]);
 });

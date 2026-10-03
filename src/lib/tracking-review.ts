@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
-import type { Prisma } from '@prisma/client';
+import type { Prisma, User } from '@prisma/client';
 import { db } from './db';
 import { HttpError } from './auth-primitives';
+import { isAdmin } from './admins';
 import { trackingEnabled } from './config';
 import { isLockedPhase, scoreContributions } from './tracking-domain';
 import { observedImpressions } from './raid-progress';
@@ -256,6 +257,19 @@ export async function openDispute(
     });
   });
 }
+async function assertNoConflict(tx: Prisma.TransactionClient, raidId: string, actor: User) {
+  const raid = await tx.raid.findUniqueOrThrow({
+    where: { id: raidId },
+    select: { creatorId: true },
+  });
+  if (raid.creatorId === actor.id)
+    throw new HttpError(403, 'You cannot review a Raid you created.');
+  const enrolled = await tx.raidEnrollment.findFirst({
+    where: { raidId, OR: [{ userId: actor.id }, ...(actor.xId ? [{ xId: actor.xId }] : [])] },
+    select: { id: true },
+  });
+  if (enrolled) throw new HttpError(403, 'You cannot review a Raid you joined.');
+}
 export async function resolveTracking(
   raidId: string,
   actorId: string,
@@ -281,8 +295,8 @@ export async function resolveTracking(
     async (tx) => {
       await lockTracking(tx, raidId);
       const actor = await tx.user.findUnique({ where: { id: actorId } });
-      if (actor?.role !== 'ADMIN' || actor.suspended)
-        throw new HttpError(403, 'Administrator access required.');
+      if (!isAdmin(actor)) throw new HttpError(403, 'Administrator access required.');
+      await assertNoConflict(tx, raidId, actor);
       const raid = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
       if (raid.trackingVersion !== 2 || isLockedPhase(raid.trackingPhase))
         throw new HttpError(409, 'Results are locked.');
@@ -359,6 +373,8 @@ export async function resolveTracking(
           ? await tx.post.findUnique({ where: { id: input.postId } })
           : null;
         if (!post || post.raidId !== raidId) throw new HttpError(404, 'Contribution not found.');
+        if (actor.xId && post.authorId === actor.xId)
+          throw new HttpError(403, 'You cannot review your own contribution.');
         if (input.action === 'clear')
           await tx.post.update({ where: { id: post.id }, data: { reviewStatus: 'CLEARED' } });
         else if (input.action === 'exclude')
@@ -433,8 +449,9 @@ export async function carryHeldFunds(
   return db.$transaction(async (tx) => {
     for (const id of [raidId, targetRaidId].sort()) await lockTracking(tx, id);
     const actor = await tx.user.findUnique({ where: { id: actorId } });
-    if (actor?.role !== 'ADMIN' || actor.suspended)
-      throw new HttpError(403, 'Administrator access required.');
+    if (!isAdmin(actor)) throw new HttpError(403, 'Administrator access required.');
+    await assertNoConflict(tx, raidId, actor);
+    await assertNoConflict(tx, targetRaidId, actor);
     const source = await tx.raid.findUniqueOrThrow({ where: { id: raidId } });
     const target = await tx.raid.findUniqueOrThrow({ where: { id: targetRaidId } });
     if (

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Plus, ArrowUpRight } from 'lucide-react';
 import { formatUsdc } from '@/lib/usdc-amount';
 import { CreatorApproval } from './creator-approval';
+import { oauthMessage } from '@/lib/oauth-messages';
 
 export type StudioCard = {
   id: string;
@@ -22,12 +23,14 @@ export type StudioCard = {
   legacy: boolean;
 };
 export function StudioHome({
+  auth,
   approved,
   affiliation,
   available,
   reserved,
   raids,
 }: {
+  auth?: string;
   approved: boolean;
   affiliation: string;
   available: string;
@@ -55,6 +58,11 @@ export function StudioHome({
           <Plus size={18} /> Create Raid
         </Link>
       </header>
+      {oauthMessage(auth) && (
+        <p role="status" className="notice">
+          {oauthMessage(auth)}
+        </p>
+      )}
       {!approved && <CreatorApproval initial={affiliation} />}
       <div className="studio-balance">
         <div>
@@ -92,7 +100,13 @@ export function StudioHome({
           <article key={raid.id} className="studio-raid-row">
             <div className="studio-identity">
               {raid.imageUri ? (
-                <img src={raid.imageUri} alt="" className="studio-token-image" />
+                <img
+                  src={raid.imageUri}
+                  alt=""
+                  className="studio-token-image"
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                />
               ) : (
                 <span className="studio-token-placeholder">
                   {(raid.symbol || raid.title).slice(0, 2).toUpperCase()}

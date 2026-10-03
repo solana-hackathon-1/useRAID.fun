@@ -8,9 +8,29 @@ import { metrics, momentum, interactions } from './domain';
 import type { RaidView } from './types';
 import type { Market } from './providers/market';
 import { displayIdentity } from './token-identity';
-export async function getRaids(filter: Prisma.RaidWhereInput = {}): Promise<RaidView[]> {
-  if (config.demo) return demoRaids();
+const LIST_TTL_MS = 10000;
+let listMemo: { at: number; value: Promise<RaidView[]> } | null = null;
+export function resetRaidListMemo() {
+  listMemo = null;
+}
+// The unfiltered discovery list is public and polled, so concurrent callers share one query for a few seconds.
+export function getRaids(filter: Prisma.RaidWhereInput = {}): Promise<RaidView[]> {
+  if (config.demo) return Promise.resolve(demoRaids());
+  if (Object.keys(filter).length) return loadRaids(filter);
+  if (!listMemo || Date.now() - listMemo.at > LIST_TTL_MS) {
+    const value = loadRaids({});
+    const entry = { at: Date.now(), value };
+    listMemo = entry;
+    value.catch(() => {
+      if (listMemo === entry) listMemo = null;
+    });
+  }
+  return listMemo.value;
+}
+async function loadRaids(filter: Prisma.RaidWhereInput): Promise<RaidView[]> {
   const now = new Date();
+  // List mode reads the latest snapshot and a short activity feed; detail pages compute from every post.
+  const detail = 'id' in filter || 'mint' in filter;
   const raids = await db.raid.findMany({
     where: {
       hidden: false,
@@ -21,7 +41,24 @@ export async function getRaids(filter: Prisma.RaidWhereInput = {}): Promise<Raid
     include: {
       token: true,
       results: { orderBy: { version: 'desc' }, take: 1 },
-      posts: { where: { hidden: false, deleted: false } },
+      posts: detail
+        ? { where: { hidden: false, deleted: false } }
+        : {
+            where: {
+              hidden: false,
+              deleted: false,
+              OR: [
+                { qualification: 'LEGACY' },
+                {
+                  qualification: 'QUALIFIED',
+                  availability: 'AVAILABLE',
+                  reviewStatus: { not: 'FLAGGED' },
+                },
+              ],
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 20,
+          },
       snapshots: { where: { at: { gte: new Date(+now - 2 * 3600000) } }, orderBy: { at: 'asc' } },
     },
     orderBy: { createdAt: 'desc' },
@@ -32,7 +69,18 @@ export async function getRaids(filter: Prisma.RaidWhereInput = {}): Promise<Raid
     const scoringPosts = result
       ? result.contributions.map((p) => ({ ...p, text: '', createdAt: new Date(p.createdAt) }))
       : r.posts;
-    const m = r.trackingVersion === 2 ? scoreContributions(scoringPosts) : metrics(r.posts, now);
+    const latest = r.snapshots.at(-1);
+    const m =
+      !detail && !result
+        ? {
+            score: latest?.score ?? 0,
+            raiders: latest?.raiders ?? 0,
+            posts: latest?.posts ?? 0,
+            interactions: latest?.interactions ?? 0,
+          }
+        : r.trackingVersion === 2
+          ? scoreContributions(scoringPosts)
+          : metrics(r.posts, now);
     const identity = displayIdentity(r);
     const target = +now - 3600000;
     const baseline = r.snapshots.filter((s) => +s.at <= target && +s.at >= target - 300000).at(-1);
@@ -175,4 +223,15 @@ export function aggregateFreshness(raids: RaidView[]): Pick<RaidView, 'freshness
           ? 'stale'
           : 'fresh';
   return { observedAt: observed[0] || null, freshness };
+}
+// A visitor counts as returning only after discovery views on two different days.
+export async function returningVisitors(since: Date) {
+  const rows = await db.$queryRaw<{ n: number }[]>`
+    SELECT count(*)::int AS n FROM (
+      SELECT visitor FROM "Event"
+      WHERE type = 'discovery_view' AND visitor IS NOT NULL AND at >= ${since}
+      GROUP BY visitor
+      HAVING count(DISTINCT date_trunc('day', at)) >= 2
+    ) v`;
+  return rows[0]?.n ?? 0;
 }

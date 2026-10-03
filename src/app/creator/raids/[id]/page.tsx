@@ -25,7 +25,11 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
     account = await db.xAccount.findUnique({ where: { userId: user.id } });
   return (
     <div className="studio">
-      <AutoRefresh />
+      <AutoRefresh
+        active={
+          raid.status === 'ACTIVE' || !['ALLOCATED', 'HELD_RESOLVED'].includes(view?.phase ?? '')
+        }
+      />
       <Link className="studio-back" href="/creator">
         ← Creator Studio
       </Link>

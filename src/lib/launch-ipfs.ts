@@ -53,14 +53,18 @@ export async function pinMetadata(data: Record<string, string | undefined>) {
   const file = new File([JSON.stringify(data)], 'metadata.json', { type: 'application/json' });
   return pinFile(file);
 }
+export function sniffImage(bytes: Uint8Array): 'image/png' | 'image/jpeg' | 'image/gif' | null {
+  const png =
+    bytes.length >= 8 &&
+    bytes.slice(0, 8).every((b, i) => b === [137, 80, 78, 71, 13, 10, 26, 10][i]);
+  const jpg = bytes.length >= 3 && bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
+  const head = String.fromCharCode(...bytes.slice(0, 6));
+  const gif = head === 'GIF87a' || head === 'GIF89a';
+  return png ? 'image/png' : jpg ? 'image/jpeg' : gif ? 'image/gif' : null;
+}
 export async function validateImage(file: File, kind: 'logo' | 'banner') {
   if (file.size < 1 || file.size > 5 * 1024 * 1024)
     throw new HttpError(400, `${kind} must be under 5 MB.`);
-  const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer());
-  const png = bytes.slice(0, 8).every((b, i) => b === [137, 80, 78, 71, 13, 10, 26, 10][i]);
-  const jpg = bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
-  const gif =
-    String.fromCharCode(...bytes.slice(0, 6)) === 'GIF87a' ||
-    String.fromCharCode(...bytes.slice(0, 6)) === 'GIF89a';
-  if (!(png || jpg || gif)) throw new HttpError(400, `${kind} must be PNG, JPG, or GIF.`);
+  if (!sniffImage(new Uint8Array(await file.slice(0, 12).arrayBuffer())))
+    throw new HttpError(400, `${kind} must be PNG, JPG, or GIF.`);
 }

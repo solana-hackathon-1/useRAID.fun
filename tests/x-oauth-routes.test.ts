@@ -130,3 +130,75 @@ it('disconnect requires origin and session, then unlinks without signing out', a
   expect((await disconnect(new Request('http://localhost:3000'))).status).toBe(401);
   expect(mocks.disconnect).toHaveBeenCalledTimes(1);
 });
+
+const state2 = 'b'.repeat(43);
+const cuid = 'c'.repeat(25);
+it('keeps several states so concurrent authorizations both complete', async () => {
+  const first = await startX(new Request('http://localhost:3000/api/auth/x'));
+  expect(first.cookies.get('raid_oauth')?.value).toBe(state);
+  mocks.cookies.set('raid_oauth', state);
+  mocks.start.mockResolvedValueOnce({ state: state2, url: 'https://x.com/i/oauth2/authorize?b' });
+  const second = await startX(new Request('http://localhost:3000/api/auth/x'));
+  expect(second.cookies.get('raid_oauth')?.value).toBe(`${state}.${state2}`);
+  mocks.cookies.set('raid_oauth', `${state}.${state2}`);
+  const response = await callbackX(callback());
+  expect(response.headers.get('location')).toBe('/creator?auth=connected');
+  expect(response.cookies.get('raid_oauth')).toMatchObject({ value: state2, maxAge: 600 });
+});
+it('ignores router prefetches without any side effect', async () => {
+  for (const headers of [
+    { 'next-router-prefetch': '1' },
+    { 'sec-purpose': 'prefetch' },
+    { purpose: 'prefetch' },
+  ] as Record<string, string>[]) {
+    const response = await startX(new Request('http://localhost:3000/api/auth/x', { headers }));
+    expect(response.status).toBe(204);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    expect(response.cookies.get('raid_oauth')).toBeUndefined();
+  }
+  expect(mocks.limit).not.toHaveBeenCalled();
+  expect(mocks.publicLimit).not.toHaveBeenCalled();
+  expect(mocks.start).not.toHaveBeenCalled();
+});
+it('returns to an allowlisted destination only', async () => {
+  const started = await startX(new Request('http://localhost:3000/api/auth/x?return=account'));
+  expect(started.cookies.get('raid_oauth_return')).toMatchObject({ value: 'account', maxAge: 600 });
+  mocks.cookies.set('raid_oauth_return', 'account');
+  const done = await callbackX(callback());
+  expect(done.headers.get('location')).toBe('/creator/account?auth=connected');
+  expect(done.cookies.get('raid_oauth_return')?.maxAge).toBe(0);
+  expect(done.cookies.get('raid_oauth')?.maxAge).toBe(0);
+  for (const bad of [
+    'https://evil.example',
+    '../x',
+    '//evil.example',
+    'raid:short',
+    'constructor',
+  ]) {
+    const response = await startX(
+      new Request(`http://localhost:3000/api/auth/x?return=${encodeURIComponent(bad)}`),
+    );
+    expect(response.cookies.get('raid_oauth_return')?.maxAge).toBe(0);
+    mocks.cookies.set('raid_oauth_return', bad);
+    expect((await callbackX(callback())).headers.get('location')).toBe('/creator?auth=connected');
+  }
+  mocks.cookies.set('raid_oauth_return', `raid:${cuid}`);
+  expect((await callbackX(callback())).headers.get('location')).toBe(
+    `/raids/${cuid}?auth=connected`,
+  );
+  mocks.cookies.set('raid_oauth_return', 'admin');
+  mocks.claim.mockRejectedValueOnce(new OAuthError('state'));
+  expect((await callbackX(callback())).headers.get('location')).toBe('/admin?auth=state');
+});
+it('clears the session cookie only when the session is really gone', async () => {
+  mocks.cookies.set('raid_session', 'session-value');
+  const kept = await startX(new Request('http://localhost:3000/api/auth/x'));
+  expect(kept.cookies.get('raid_session')).toBeUndefined();
+  mocks.start.mockResolvedValueOnce({ state, url: 'https://x.com/a', clearSession: true });
+  const cleared = await startX(new Request('http://localhost:3000/api/auth/x'));
+  expect(cleared.cookies.get('raid_session')?.maxAge).toBe(0);
+  mocks.complete.mockRejectedValueOnce(new OAuthError('session'));
+  const callbackResponse = await callbackX(callback());
+  expect(callbackResponse.headers.get('location')).toBe('/creator?auth=session');
+  expect(callbackResponse.cookies.get('raid_session')?.maxAge).toBe(0);
+});

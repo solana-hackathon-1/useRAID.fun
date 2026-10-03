@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0",
+    "dev": "next dev",
+    "dev:lan": "next dev --hostname 0.0.0.0",
     "build": "prisma generate && next build",
     "start": "next start --hostname 0.0.0.0",
     "worker": "tsx src/worker.ts",
@@ -21,6 +22,7 @@
     "format:check": "prettier --check .",
     "test:live": "tsx tests/live-flow.ts",
     "tracking:audit": "tsx scripts/tracking-audit.ts",
+    "media:backfill": "tsx scripts/backfill-media.ts",
     "tracking:preview": "tsx scripts/tracking-preview.ts",
     "studio:preview": "tsx scripts/studio-preview.ts",
     "lint": "eslint .",

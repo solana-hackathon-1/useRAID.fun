@@ -128,4 +128,93 @@ integration('X connection PostgreSQL invariants', () => {
     await db.user.update({ where: { id: user.id }, data: { suspended: true } });
     await expect(connect()).rejects.toMatchObject({ code: 'suspended' });
   });
+  it('demotes a stored ADMIN whose id left the environment allowlist', async () => {
+    vi.stubEnv('X_ADMIN_USER_ID', profile.id);
+    await connect();
+    vi.stubEnv('X_ADMIN_USER_ID', '');
+    await connect();
+    expect(await db.user.findUniqueOrThrow({ where: { xId: profile.id } })).toMatchObject({
+      role: 'CREATOR',
+      approved: true,
+    });
+  });
+  it('demotes through the owner path as well', async () => {
+    vi.stubEnv('X_ADMIN_USER_ID', profile.id);
+    const token = await connect();
+    vi.stubEnv('X_ADMIN_USER_ID', '');
+    await connect(hash(token));
+    expect(await db.user.findUniqueOrThrow({ where: { xId: profile.id } })).toMatchObject({
+      role: 'CREATOR',
+    });
+  });
+  describe('merging an activity-free duplicate account', () => {
+    async function walletUser(withActivity: boolean) {
+      const user = await db.user.create({ data: { handle: 'walletonly' } });
+      await db.walletIdentity.create({ data: { userId: user.id, address: `w-${user.id}` } });
+      const raw = `session-${user.id}`;
+      await db.session.create({
+        data: {
+          tokenHash: hash(raw),
+          userId: user.id,
+          via: 'wallet',
+          expiresAt: new Date(Date.now() + 1e6),
+        },
+      });
+      if (withActivity) await credit(user.id, 'wallet-credit');
+      return { user, hash: hash(raw) };
+    }
+    const credit = (userId: string, key: string) =>
+      db.balanceEntry.create({
+        data: { userId, key, kind: 'DEPOSIT', availableDelta: 5n, reservedDelta: 0n },
+      });
+    it('signs in as the existing X account and takes over the wallet of an empty wallet-only account', async () => {
+      await connect();
+      const x = await db.user.findUniqueOrThrow({ where: { xId: profile.id } });
+      const w = await walletUser(false);
+      const token = await connect(w.hash);
+      expect(await db.user.findUnique({ where: { id: w.user.id } })).toBeNull();
+      expect(await db.walletIdentity.findUniqueOrThrow({ where: { userId: x.id } })).toMatchObject({
+        address: `w-${w.user.id}`,
+      });
+      expect(
+        (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).userId,
+      ).toBe(x.id);
+      expect(await db.moderationEvent.count({ where: { action: 'account:merge' } })).toBe(1);
+    });
+    it('refuses when both accounts have activity and changes nothing', async () => {
+      await connect();
+      const x = await db.user.findUniqueOrThrow({ where: { xId: profile.id } });
+      await credit(x.id, 'x-credit');
+      const w = await walletUser(true);
+      await expect(connect(w.hash)).rejects.toMatchObject({ code: 'identity' });
+      expect(await db.user.count()).toBe(2);
+      expect((await db.user.findUniqueOrThrow({ where: { id: w.user.id } })).xId).toBeNull();
+      expect(await db.moderationEvent.count()).toBe(0);
+    });
+    it('absorbs an empty X account into the signed-in wallet account that has activity', async () => {
+      await connect();
+      const x = await db.user.findUniqueOrThrow({ where: { xId: profile.id } });
+      const w = await walletUser(true);
+      await connect(w.hash);
+      expect(await db.user.findUnique({ where: { id: x.id } })).toBeNull();
+      expect(await db.user.findUniqueOrThrow({ where: { id: w.user.id } })).toMatchObject({
+        xId: profile.id,
+      });
+      expect(await db.xAccount.findUniqueOrThrow({ where: { userId: w.user.id } })).toMatchObject({
+        xUserId: profile.id,
+      });
+    });
+  });
+  it('ignores LOCAL_AUTO_APPROVE_CREATORS in production', async () => {
+    const { state } = await startAttempt(null);
+    const attempt = await claimAttempt(state, null);
+    vi.stubEnv('LOCAL_AUTO_APPROVE_CREATORS', 'true');
+    vi.stubEnv('NODE_ENV', 'production');
+    await completeConnection(attempt, profile);
+    vi.stubEnv('NODE_ENV', 'test');
+    expect((await db.user.findUniqueOrThrow({ where: { xId: profile.id } })).approved).toBe(false);
+    const again = await claimAttempt((await startAttempt(null)).state, null);
+    await completeConnection(again, { ...profile, id: '999', username: 'bob' });
+    expect((await db.user.findUniqueOrThrow({ where: { xId: '999' } })).approved).toBe(true);
+  });
 });

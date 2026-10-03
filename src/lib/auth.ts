@@ -5,13 +5,14 @@ export { hash, random, HttpError } from './auth-primitives';
 import { db } from './db';
 import { config } from './config';
 import { sessionCookie } from './studio-mode';
+import { isAdmin } from './admins';
 export const cookieOptions = {
   httpOnly: true,
   sameSite: 'lax' as const,
   secure: process.env.NODE_ENV === 'production' || config.appUrl.startsWith('https:'),
   path: '/',
 };
-export async function currentUser() {
+export async function currentSession() {
   if (config.demo) return null;
   const value = (await cookies()).get(sessionCookie())?.value;
   if (!value) return null;
@@ -19,13 +20,25 @@ export async function currentUser() {
     where: { tokenHash: hash(value) },
     include: { user: true },
   });
-  return session && session.expiresAt > new Date() && !session.user.suspended ? session.user : null;
+  return session && session.expiresAt > new Date() && !session.user.suspended
+    ? { user: session.user, via: session.via }
+    : null;
+}
+export async function currentUser() {
+  return (await currentSession())?.user ?? null;
+}
+// A wallet signature can be relayed by another site, so administrator access needs an X sign-in.
+export async function adminUser() {
+  const session = await currentSession();
+  return session && isAdmin(session.user) && session.via === 'x' ? session.user : null;
 }
 export async function requireUser(admin = false) {
-  const user = await currentUser();
-  if (!user) throw new HttpError(401, 'Sign in to continue.');
-  if (admin && user.role !== 'ADMIN') throw new HttpError(403, 'Administrator access required.');
-  return user;
+  const session = await currentSession();
+  if (!session) throw new HttpError(401, 'Sign in to continue.');
+  if (admin && !isAdmin(session.user)) throw new HttpError(403, 'Administrator access required.');
+  if (admin && session.via !== 'x')
+    throw new HttpError(403, 'Sign in with X for administrator access.');
+  return session.user;
 }
 export function checkOrigin(request: Request) {
   if (request.headers.get('origin') !== new URL(config.appUrl).origin)

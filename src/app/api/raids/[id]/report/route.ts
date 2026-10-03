@@ -3,12 +3,14 @@ import { trackingView } from '@/lib/tracking-view';
 import { failure } from '@/lib/http';
 import { config } from '@/lib/config';
 import { db } from '@/lib/db';
+import { publicRateLimit } from '@/lib/auth';
 const csv = (value: unknown) => {
   const text = String(value ?? '');
   return `"${(/^[=+@\-\t\r\n]/.test(text) ? "'" : '') + text.replaceAll('"', '""')}"`;
 };
-export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    await publicRateLimit(request, 'report', 20, 600, 300);
     const raid = await getRaid((await params).id);
     if (!raid || config.demo)
       return Response.json({ error: 'Public Raid not found.' }, { status: 404 });
@@ -19,16 +21,16 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
     });
     const qualifiedActions =
       tracking?.leaderboard.reduce((sum, member) => sum + member.qualifiedPosts, 0) || 0;
-    const earnedSol =
-      funding?.fundingLamports && tracking?.impressionTarget
-        ? ((Number(funding.fundingLamports) / 1e9) *
-            Math.min(tracking.impressions.total, tracking.impressionTarget)) /
-          tracking.impressionTarget
-        : null;
     const reviewed =
       !!tracking?.resultVersion &&
       ['APPROVED', 'ALLOCATED'].includes(tracking.phase) &&
       !tracking.impressions.missing;
+    const earnedSol =
+      funding?.fundingLamports && tracking?.impressionTarget && reviewed
+        ? ((Number(funding.fundingLamports) / 1e9) *
+            Math.min(tracking.impressions.total, tracking.impressionTarget)) /
+          tracking.impressionTarget
+        : null;
     const earnedUsdc =
       funding?.poolUnits && tracking?.impressionTarget && reviewed
         ? ((Number(funding.poolUnits) / 1e6) *
@@ -59,7 +61,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
         'Content CPA (SOL per qualifying post)',
         earnedSol !== null && qualifiedActions
           ? (earnedSol / qualifiedActions).toFixed(8)
-          : 'Unavailable',
+          : 'Unavailable — requires reviewed results and complete views',
       ],
       ['Reward currency', funding?.fundingAsset || 'SOL'],
       ['USDC reward pool', funding?.poolUnits ? Number(funding.poolUnits) / 1e6 : 'Not applicable'],

@@ -51,7 +51,9 @@ export function StudioAccountMenu({ account }: { account: StudioAccount }) {
         aria-controls="studio-account-dropdown"
         onClick={() => setOpen(!open)}
       >
-        {account.image && <img src={account.image} alt="" />}
+        {account.image && (
+          <img src={account.image} alt="" referrerPolicy="no-referrer" loading="lazy" />
+        )}
         <span>@{account.handle}</span>
         {account.connected && <Check size={15} aria-label="X connected" />}
         <ChevronDown size={14} />

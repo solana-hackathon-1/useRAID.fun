@@ -110,7 +110,10 @@ test('join, submit, qualify, refresh, review, dispute, and payout eligibility', 
   await page.getByLabel('Reason', { exact: true }).fill('Please verify my final metrics.');
   await page.getByRole('button', { name: 'Submit dispute' }).click();
   await expect(page.getByText('Dispute recorded. Results remain under review.')).toBeVisible();
-  const admin = await db.user.create({ data: { handle: 'reviewer', role: 'ADMIN' } });
+  const admin = await db.user.create({
+    data: { handle: 'reviewer', xId: 'reviewer-x', role: 'ADMIN' },
+  });
+  process.env.ADMIN_X_IDS = 'reviewer-x';
   const dispute = await db.raidDispute.findFirstOrThrow({ where: { raidId } });
   const { resolveTracking } = await import('../../src/lib/tracking-review');
   await resolveTracking(raidId, admin.id, {

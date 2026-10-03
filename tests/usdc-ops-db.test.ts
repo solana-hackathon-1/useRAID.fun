@@ -143,6 +143,7 @@ suite('USDC operations', () => {
     vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'true');
     vi.stubEnv('RAID_LAMPORTS_PER_1000_IMPRESSIONS', '1000000000');
     vi.stubEnv('RAID_FUNDING_ADDRESS', Keypair.generate().publicKey.toBase58());
+    vi.stubEnv('X_ADMIN_USER_ID', 'ops-admin');
     config.demo = false;
     config.liveApproved = true;
     await db.settings.create({ data: { collectionEnabled: true } });
@@ -290,6 +291,24 @@ suite('USDC operations', () => {
     expect(await db.balanceEntry.count({ where: { kind: 'WITHDRAWAL_RELEASED' } })).toBe(1);
   });
 
+  it('holds withdrawals for 24 hours after a wallet change', async () => {
+    await db.walletIdentity.update({
+      where: { userId: owner.id },
+      data: { rotatedAt: new Date(Date.now() - 3600000) },
+    });
+    await expect(
+      requestWithdrawal(owner.id, 1_000_000n, 'ops-withdrawal-hold-1'),
+    ).rejects.toMatchObject({ status: 409 });
+    await db.walletIdentity.update({
+      where: { userId: owner.id },
+      data: { rotatedAt: new Date(Date.now() - 25 * 3600000) },
+    });
+    await expect(
+      requestWithdrawal(owner.id, 999_999_000_000n, 'ops-withdrawal-hold-2'),
+    ).rejects.toMatchObject({ message: 'Insufficient available USDC.' });
+    await db.walletIdentity.update({ where: { userId: owner.id }, data: { rotatedAt: null } });
+  });
+
   it('reconciles ledger liabilities and pending rewards against custody', async () => {
     await db.usdcTransfer.create({
       data: {
@@ -324,7 +343,13 @@ suite('USDC operations', () => {
       data: { userId: rival.id, xUserId: rival.xId!, username: rival.handle, displayName: 'R' },
     });
     const token = (user: typeof owner, name: string, symbol: string) =>
-      draft(user, { projectType: 'TOKEN', mint, name, symbol, imageUri: 'https://x.test/i.png' });
+      draft(user, {
+        projectType: 'TOKEN',
+        mint,
+        name,
+        symbol,
+        imageUri: 'https://pbs.twimg.com/i.png',
+      });
     const a = await db.raid.findUniqueOrThrow({
       where: { id: await token(owner, 'Alpha', 'AAA') },
       include: { token: true },

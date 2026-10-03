@@ -1,12 +1,18 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+const mocks = vi.hoisted(() => ({ cookie: '' }));
+vi.mock('next/headers', () => ({
+  cookies: async () => ({
+    get: () => (mocks.cookie ? { value: mocks.cookie } : undefined),
+  }),
+}));
 import { Keypair } from '@solana/web3.js';
 import nacl from 'tweetnacl';
 import bs58 from 'bs58';
 import { db } from '../src/lib/db';
 import { config } from '../src/lib/config';
-import { createWalletChallenge, verifyWalletChallenge } from '../src/lib/wallet-auth';
-import { hash } from '../src/lib/auth';
-import { assertTestDatabase } from './helpers/db-guard';
+import { createWalletChallenge, verifyWalletChallenge, rotateWallet } from '../src/lib/wallet-auth';
+import { hash, requireUser } from '../src/lib/auth';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('wallet ownership PostgreSQL invariants', () => {
   const key = Keypair.generate();
@@ -27,7 +33,7 @@ integration('wallet ownership PostgreSQL invariants', () => {
     bs58.encode(nacl.sign.detached(new TextEncoder().encode(message), key.secretKey));
   it('creates wallet-only user, consumes challenge once, and rejects stale challenge', async () => {
     const challenge = await createWalletChallenge(address);
-    expect(challenge.message).toContain('http://localhost:3000');
+    expect(challenge.message).toContain('URI: http://localhost:3000');
     const token = await verifyWalletChallenge(challenge.digest, sign(challenge.message), address);
     const session = await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } });
     ownerId = session.userId;
@@ -45,13 +51,326 @@ integration('wallet ownership PostgreSQL invariants', () => {
     ).rejects.toMatchObject({ status: 401 });
   });
   it('refuses linking wallet already owned by another X identity', async () => {
+    await db.user.update({ where: { id: ownerId }, data: { xId: 'wallet-owner-x' } });
     const other = await db.user.create({ data: { xId: 'wallet-conflict-test', handle: 'other' } });
-    const challenge = await createWalletChallenge(address);
+    const challenge = await createWalletChallenge(address, other.id);
     await expect(
       verifyWalletChallenge(challenge.digest, sign(challenge.message), address, other.id),
     ).rejects.toMatchObject({ status: 409 });
     expect(await db.walletIdentity.findUnique({ where: { address } })).toMatchObject({
       userId: ownerId,
+    });
+  });
+});
+integration('wallet sign-in hardening, rotation and account merge', () => {
+  const pair = () => {
+    const kp = Keypair.generate();
+    return {
+      kp,
+      address: kp.publicKey.toBase58(),
+      sign: (message: string) =>
+        bs58.encode(nacl.sign.detached(new TextEncoder().encode(message), kp.secretKey)),
+    };
+  };
+  type Wallet = ReturnType<typeof pair>;
+  async function walletSignIn(w: Wallet, currentUserId?: string, sessionHash?: string) {
+    const c = await createWalletChallenge(w.address, currentUserId);
+    return verifyWalletChallenge(
+      c.digest,
+      w.sign(c.message),
+      w.address,
+      currentUserId,
+      sessionHash,
+    );
+  }
+  async function xUser(xId: string, extra: Record<string, unknown> = {}) {
+    const user = await db.user.create({ data: { xId, handle: xId, ...extra } });
+    await db.xAccount.create({
+      data: { userId: user.id, xUserId: xId, username: xId, displayName: xId },
+    });
+    return user;
+  }
+  async function session(userId: string, via: string) {
+    const raw = `token-${userId}-${via}`;
+    await db.session.create({
+      data: { tokenHash: hash(raw), userId, via, expiresAt: new Date(Date.now() + 1e6) },
+    });
+    return raw;
+  }
+  async function rotation(userId: string, w: Wallet) {
+    const c = await createWalletChallenge(w.address, userId, 'rotate');
+    return rotateWallet(userId, c.digest, w.sign(c.message), w.address);
+  }
+  beforeAll(async () => {
+    assertTestDatabase();
+    config.demo = false;
+    config.appUrl = 'http://localhost:3000';
+    await truncateAll(db);
+  });
+  beforeEach(async () => {
+    mocks.cookie = '';
+    await db.session.deleteMany();
+    await db.walletChallenge.deleteMany();
+    await db.moderationEvent.deleteMany();
+  });
+  afterAll(() => db.$disconnect());
+  it('issues a Sign-In With Solana formatted challenge', async () => {
+    const w = pair();
+    const { message } = await createWalletChallenge(w.address);
+    expect(message.split('\n').slice(0, 2)).toEqual([
+      'localhost:3000 wants you to sign in with your Solana account:',
+      w.address,
+    ]);
+    expect(message).toMatch(
+      /\n\nURI: http:\/\/localhost:3000\nVersion: 1\nChain ID: mainnet\nNonce: [\w-]+\nIssued At: \d{4}-[^\n]+Z\nExpiration Time: \d{4}-[^\n]+Z$/,
+    );
+  });
+  it('binds a challenge to the signer state it was issued for', async () => {
+    const w = pair();
+    const owner = await xUser('binding-owner');
+    const anonymous = await createWalletChallenge(w.address);
+    await expect(
+      verifyWalletChallenge(anonymous.digest, w.sign(anonymous.message), w.address, owner.id),
+    ).rejects.toMatchObject({ status: 401 });
+    const link = await createWalletChallenge(w.address, owner.id);
+    await expect(
+      verifyWalletChallenge(link.digest, w.sign(link.message), w.address),
+    ).rejects.toMatchObject({ status: 401 });
+    await verifyWalletChallenge(link.digest, w.sign(link.message), w.address, owner.id);
+    expect(
+      await db.walletIdentity.findUniqueOrThrow({ where: { address: w.address } }),
+    ).toMatchObject({ userId: owner.id });
+  });
+  it('does not let a link signature perform a wallet rotation', async () => {
+    const owner = await xUser('purpose-owner');
+    const first = pair();
+    await walletSignIn(first, owner.id);
+    const second = pair();
+    const link = await createWalletChallenge(second.address, owner.id);
+    await expect(
+      rotateWallet(owner.id, link.digest, second.sign(link.message), second.address),
+    ).rejects.toMatchObject({ status: 401 });
+    expect(
+      (await db.walletIdentity.findUniqueOrThrow({ where: { userId: owner.id } })).address,
+    ).toBe(first.address);
+  });
+  it('refuses to sign a suspended owner in and creates no session', async () => {
+    const w = pair();
+    const token = await walletSignIn(w);
+    const { userId } = await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } });
+    await db.user.update({ where: { id: userId }, data: { suspended: true } });
+    await db.session.deleteMany();
+    await expect(walletSignIn(w)).rejects.toMatchObject({ status: 403 });
+    expect(await db.session.count()).toBe(0);
+  });
+  it('rotates the session and records how it was issued', async () => {
+    const w = pair();
+    const first = await walletSignIn(w);
+    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(first) } })).via).toBe(
+      'wallet',
+    );
+    const again = await walletSignIn(w, undefined, hash(first));
+    expect(await db.session.count()).toBe(1);
+    expect(await db.session.findUnique({ where: { tokenHash: hash(first) } })).toBeNull();
+    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(again) } })).via).toBe(
+      'wallet',
+    );
+  });
+  it('keeps an X session an X session when the same user links a wallet', async () => {
+    const user = await xUser('linker');
+    const raw = await session(user.id, 'x');
+    const token = await walletSignIn(pair(), user.id, hash(raw));
+    expect(await db.session.count()).toBe(1);
+    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via).toBe(
+      'x',
+    );
+  });
+  it('requires an X session for administrator access', async () => {
+    vi.stubEnv('X_ADMIN_USER_ID', 'wallet-admin');
+    const admin = await xUser('wallet-admin', { role: 'ADMIN', approved: true });
+    mocks.cookie = await session(admin.id, 'wallet');
+    await expect(requireUser(true)).rejects.toMatchObject({ status: 403 });
+    expect((await requireUser()).id).toBe(admin.id);
+    await db.session.deleteMany();
+    mocks.cookie = await session(admin.id, 'x');
+    expect((await requireUser(true)).id).toBe(admin.id);
+    vi.unstubAllEnvs();
+  });
+  describe('merging an activity-free duplicate account', () => {
+    it('moves a wallet from an empty wallet-only account onto the signed-in X account', async () => {
+      const w = pair();
+      const walletToken = await walletSignIn(w);
+      const orphan = (
+        await db.session.findUniqueOrThrow({ where: { tokenHash: hash(walletToken) } })
+      ).userId;
+      const xu = await xUser('merge-x');
+      await walletSignIn(w, xu.id);
+      expect(await db.user.findUnique({ where: { id: orphan } })).toBeNull();
+      expect(
+        await db.walletIdentity.findUniqueOrThrow({ where: { address: w.address } }),
+      ).toMatchObject({
+        userId: xu.id,
+      });
+      expect(await db.moderationEvent.count({ where: { action: 'account:merge' } })).toBe(1);
+    });
+    it('keeps the wallet account when the X account is the empty one', async () => {
+      const w = pair();
+      const walletToken = await walletSignIn(w);
+      const walletUser = (
+        await db.session.findUniqueOrThrow({ where: { tokenHash: hash(walletToken) } })
+      ).userId;
+      await db.balanceEntry.create({
+        data: {
+          userId: walletUser,
+          key: 'seed',
+          kind: 'DEPOSIT',
+          availableDelta: 5n,
+          reservedDelta: 0n,
+        },
+      });
+      const xu = await xUser('merge-x2');
+      await walletSignIn(w, xu.id);
+      expect(await db.user.findUnique({ where: { id: xu.id } })).toBeNull();
+      const kept = await db.user.findUniqueOrThrow({ where: { id: walletUser } });
+      expect(kept.xId).toBe('merge-x2');
+      expect(await db.xAccount.count({ where: { userId: walletUser } })).toBe(1);
+    });
+    it('refuses when both accounts have activity', async () => {
+      const w = pair();
+      const walletToken = await walletSignIn(w);
+      const walletUser = (
+        await db.session.findUniqueOrThrow({ where: { tokenHash: hash(walletToken) } })
+      ).userId;
+      const xu = await xUser('merge-x3');
+      for (const [userId, key] of [
+        [walletUser, 'a'],
+        [xu.id, 'b'],
+      ] as const)
+        await db.balanceEntry.create({
+          data: { userId, key, kind: 'DEPOSIT', availableDelta: 5n, reservedDelta: 0n },
+        });
+      await expect(walletSignIn(w, xu.id)).rejects.toMatchObject({ status: 409 });
+      expect(await db.user.count({ where: { id: { in: [walletUser, xu.id] } } })).toBe(2);
+      expect(
+        await db.walletIdentity.findUniqueOrThrow({ where: { address: w.address } }),
+      ).toMatchObject({
+        userId: walletUser,
+      });
+    });
+    it('refuses when the wallet owner joined a Raid', async () => {
+      const w = pair();
+      const walletToken = await walletSignIn(w);
+      const walletUser = (
+        await db.session.findUniqueOrThrow({ where: { tokenHash: hash(walletToken) } })
+      ).userId;
+      const creator = await xUser('merge-creator');
+      const raid = await db.raid.create({
+        data: {
+          creatorId: creator.id,
+          tag: 'raid_merge',
+          title: 'T',
+          description: 'D',
+          startsAt: new Date(),
+          endsAt: new Date(Date.now() + 1000),
+          trackingVersion: 2,
+        },
+      });
+      await db.raidEnrollment.create({
+        data: { raidId: raid.id, userId: walletUser, xId: 'e', walletAddress: w.address },
+      });
+      const xu = await xUser('merge-x4', { role: 'CREATOR', suspended: false });
+      await db.balanceEntry.create({
+        data: { userId: xu.id, key: 'c', kind: 'DEPOSIT', availableDelta: 5n, reservedDelta: 0n },
+      });
+      await expect(walletSignIn(w, xu.id)).rejects.toMatchObject({ status: 409 });
+      expect(await db.user.findUnique({ where: { id: walletUser } })).not.toBeNull();
+    });
+  });
+  describe('wallet rotation', () => {
+    async function rotatable() {
+      const user = await xUser(`rot-${Math.random().toString(36).slice(2, 8)}`);
+      const first = pair();
+      await walletSignIn(first, user.id);
+      return { user, first };
+    }
+    it('replaces the address and records the previous one', async () => {
+      const { user, first } = await rotatable();
+      const second = pair();
+      await rotation(user.id, second);
+      expect(
+        await db.walletIdentity.findUniqueOrThrow({ where: { userId: user.id } }),
+      ).toMatchObject({
+        address: second.address,
+        previousAddress: first.address,
+      });
+      expect(
+        (await db.walletIdentity.findUniqueOrThrow({ where: { userId: user.id } })).rotatedAt,
+      ).not.toBeNull();
+      expect(await db.moderationEvent.count({ where: { action: 'wallet-rotated' } })).toBe(1);
+    });
+    it('keeps an existing enrollment on the wallet snapshotted when it was made', async () => {
+      const { user, first } = await rotatable();
+      const creator = await xUser('rot-creator');
+      const raid = await db.raid.create({
+        data: {
+          creatorId: creator.id,
+          tag: 'raid_rot',
+          title: 'T',
+          description: 'D',
+          startsAt: new Date(),
+          endsAt: new Date(Date.now() + 1000),
+          trackingVersion: 2,
+        },
+      });
+      await db.raidEnrollment.create({
+        data: { raidId: raid.id, userId: user.id, xId: 'rx', walletAddress: first.address },
+      });
+      await rotation(user.id, pair());
+      expect(
+        (await db.raidEnrollment.findFirstOrThrow({ where: { raidId: raid.id } })).walletAddress,
+      ).toBe(first.address);
+    });
+    it('refuses while a withdrawal or live deposit is open', async () => {
+      const { user, first } = await rotatable();
+      const transfer = (kind: string, status: string, expiresAt?: Date) =>
+        db.usdcTransfer.create({
+          data: {
+            kind,
+            status,
+            userId: user.id,
+            amount: 1n,
+            walletAddress: first.address,
+            recipient: 'r',
+            network: 'sandbox',
+            mint: 'm',
+            expiresAt,
+          },
+        });
+      const open = await transfer('WITHDRAWAL', 'REQUESTED');
+      await expect(rotation(user.id, pair())).rejects.toMatchObject({ status: 409 });
+      await db.usdcTransfer.update({ where: { id: open.id }, data: { status: 'PAID' } });
+      await transfer('DEPOSIT', 'AWAITING_TRANSFER', new Date(Date.now() + 60000));
+      await expect(rotation(user.id, pair())).rejects.toMatchObject({ status: 409 });
+      await db.usdcTransfer.deleteMany({ where: { status: 'AWAITING_TRANSFER' } });
+      await transfer('DEPOSIT', 'AWAITING_TRANSFER', new Date(Date.now() - 60000));
+      await rotation(user.id, pair());
+    });
+    it('refuses an address owned by another account and a second change within 7 days', async () => {
+      const { user } = await rotatable();
+      const other = await rotatable();
+      const taken = await db.walletIdentity.findUniqueOrThrow({ where: { userId: other.user.id } });
+      const claim = await createWalletChallenge(taken.address, user.id, 'rotate');
+      await expect(
+        rotateWallet(user.id, claim.digest, other.first.sign(claim.message), taken.address),
+      ).rejects.toMatchObject({ status: 409 });
+      await rotation(user.id, pair());
+      await expect(rotation(user.id, pair())).rejects.toMatchObject({ status: 429 });
+    });
+    it('requires a connected X account', async () => {
+      const w = pair();
+      const token = await walletSignIn(w);
+      const { userId } = await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } });
+      await expect(rotation(userId, pair())).rejects.toMatchObject({ status: 403 });
     });
   });
 });

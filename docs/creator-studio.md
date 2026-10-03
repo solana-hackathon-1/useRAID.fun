@@ -40,6 +40,8 @@ Operations shows **Release reserved pool to creator** on a funded Raid that is h
 
 Token name, symbol and image are snapshotted on each Raid from what its creator submitted. The shared token record only becomes authoritative once the market provider has supplied them (`metadataSource = MARKET`); until then token pages are labelled unverified.
 
+A verified wallet can be changed from Account (**Change wallet**), signing with the new wallet while signed in with X. It needs a connected X account, no open withdrawal or live deposit intent, and at most one change per 7 days; withdrawals pause for 24 hours afterwards. The old address stops working for sign-in. Raids already joined keep paying the wallet recorded at enrollment.
+
 ## Rollback
 
 Migration adds fields/tables and defaults legacy campaigns to Studio version zero/SOL; no existing data rewrite. Disable live funding by clearing rate and deployment gate. Do not drop new tables or delete balance entries. Finish/reconcile pending deposits and transfers before changing network or platform wallet. New network does not expose old-network available funds. Reverting application to older revision stops new Studio launches but cannot settle existing USDC obligations: retain current worker/payment operations until all obligations resolved.

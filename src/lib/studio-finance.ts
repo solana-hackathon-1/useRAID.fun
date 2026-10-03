@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { db } from './db';
 import { HttpError } from './auth-primitives';
+import { isAdmin } from './admins';
 import { lockTracking } from './tracking';
 import { lockBalance, usdcLimits, studioSandbox, USDC_MINTS } from './usdc';
 import { trackingSettlementEnabled } from './config';
@@ -149,8 +150,7 @@ export async function releaseFundedRaid(raidId: string, actorId: string, reason:
       const raid = await tx.raid.findUnique({ where: { id: raidId }, include: { creator: true } });
       if (!raid) throw new HttpError(404, 'Raid not found.');
       const actor = await tx.user.findUnique({ where: { id: actorId } });
-      if (!actor || actor.role !== 'ADMIN' || actor.suspended)
-        throw new HttpError(403, 'Administrator access is required.');
+      if (!isAdmin(actor)) throw new HttpError(403, 'Administrator access is required.');
       if (['ALLOCATED', 'HELD_RESOLVED'].includes(raid.trackingPhase))
         throw new HttpError(409, 'This Raid is already settled or released.');
       if (

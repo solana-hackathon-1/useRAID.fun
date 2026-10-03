@@ -5,6 +5,7 @@ import { qualificationReason } from '../src/lib/tracking-domain';
 import { studioSandbox } from '../src/lib/usdc';
 import { config } from '../src/lib/config';
 import { composeUrl } from '../src/lib/domain';
+import { studioInput } from '../src/lib/studio-campaigns';
 const at = new Date('2026-09-30T10:00:00Z');
 const target = { postId: '123456789', createdAt: at };
 const post = {
@@ -87,4 +88,30 @@ describe('Studio amounts and target attribution', () => {
     vi.unstubAllEnvs();
     config.appUrl = original;
   });
+});
+describe('Studio draft image rule', () => {
+  const base = {
+    studioVersion: 1,
+    projectType: 'PROJECT',
+    title: 'Image rule',
+    impressionTarget: 2000,
+    duration: 24,
+  };
+  const parse = (imageUri: string) => studioInput.safeParse({ ...base, imageUri }).success;
+  it('accepts an empty value, an allowlisted https host, or a stored media path', () => {
+    expect(parse('')).toBe(true);
+    expect(parse('https://pbs.twimg.com/a.png')).toBe(true);
+    expect(parse(`/api/media/${'c'.repeat(25)}`)).toBe(true);
+  });
+  it.each([
+    'https://evil.example/a.png',
+    'http://pbs.twimg.com/a.png',
+    'javascript:alert(1)',
+    'data:image/png;base64,iVBORw0KGgo=',
+    'data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=',
+    '/api/media/short',
+    '/api/media/../secret',
+    `/api/media/${'c'.repeat(25)}?x=1`,
+    '//evil.example/a.png',
+  ])('rejects %s', (value) => expect(parse(value)).toBe(false));
 });

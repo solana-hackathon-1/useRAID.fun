@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export default async function AccountPage({
   searchParams,
 }: {
-  searchParams: Promise<{ returnTo?: string }>;
+  searchParams: Promise<{ returnTo?: string; auth?: string }>;
 }) {
   const user = await currentUser();
   if (!user) return <StudioAccess />;
@@ -16,7 +16,7 @@ export default async function AccountPage({
     db.xAccount.findUnique({ where: { userId: user.id } }),
     db.walletIdentity.findUnique({ where: { userId: user.id } }),
   ]);
-  const { returnTo } = await searchParams;
+  const { returnTo, auth } = await searchParams;
   return (
     <div className="studio">
       <Link className="studio-back" href="/creator">
@@ -34,11 +34,11 @@ export default async function AccountPage({
         )}
       </header>
       <section className="studio-section">
-        <XConnection account={account} />
+        <XConnection account={account} status={auth} returnTo="account" />
       </section>
       <section className="studio-section">
         <h2>Solana wallet</h2>
-        <WalletLogin currentAddress={wallet?.address || null} />
+        <WalletLogin currentAddress={wallet?.address || null} canChange={!!account} />
       </section>
     </div>
   );

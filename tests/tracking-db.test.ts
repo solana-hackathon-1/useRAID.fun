@@ -45,6 +45,7 @@ suite('tracking v2 database lifecycle', () => {
   });
   beforeAll(() => {
     assertTestDatabase();
+    vi.stubEnv('X_ADMIN_USER_ID', 'admin-x');
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'true');
     vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'true');
     vi.stubEnv('X_BEARER_TOKEN', 'test-only');
@@ -59,7 +60,8 @@ suite('tracking v2 database lifecycle', () => {
     await truncateAll(db);
     const user = await db.user.create({ data: { handle: 'alice', xId: 'alice', approved: true } });
     userId = user.id;
-    adminId = (await db.user.create({ data: { handle: 'admin', role: 'ADMIN' } })).id;
+    adminId = (await db.user.create({ data: { handle: 'admin', xId: 'admin-x', role: 'ADMIN' } }))
+      .id;
     creatorId = (
       await db.user.create({ data: { handle: 'creator', xId: 'creator', approved: true } })
     ).id;
@@ -551,6 +553,62 @@ suite('tracking v2 database lifecycle', () => {
         where: { action: 'tracking:carry-held', targetId: raidId },
       }),
     ).toBe(1);
+  });
+  describe('conflict of interest', () => {
+    const clear = (postId = '401') =>
+      resolveTracking(raidId, adminId, { action: 'clear', postId, reason: 'Checked' });
+    it('lets an unrelated administrator review', async () => {
+      await ingestTracking(raidId, [xpost('401')]);
+      await clear();
+      expect(
+        await db.moderationEvent.count({ where: { action: 'tracking:clear', actorId: adminId } }),
+      ).toBe(1);
+    });
+    it('rejects the administrator who created the Raid', async () => {
+      await ingestTracking(raidId, [xpost('401')]);
+      await db.raid.update({ where: { id: raidId }, data: { creatorId: adminId } });
+      await expect(clear()).rejects.toMatchObject({ status: 403 });
+      expect(await db.moderationEvent.count({ where: { action: 'tracking:clear' } })).toBe(0);
+    });
+    it('rejects an administrator who joined the Raid, by account or by X id', async () => {
+      await ingestTracking(raidId, [xpost('401')]);
+      const byAccount = await db.raidEnrollment.create({
+        data: { raidId, userId: adminId, xId: 'other-x', walletAddress: 'w' },
+      });
+      await expect(clear()).rejects.toMatchObject({ status: 403 });
+      await db.raidEnrollment.delete({ where: { id: byAccount.id } });
+      await db.raidEnrollment.create({
+        data: { raidId, userId: creatorId, xId: 'admin-x', walletAddress: 'w2' },
+      });
+      await expect(clear()).rejects.toMatchObject({ status: 403 });
+    });
+    it('rejects reviewing a contribution the administrator authored', async () => {
+      await ingestTracking(raidId, [xpost('401')]);
+      await db.post.updateMany({ where: { id: '401' }, data: { authorId: 'admin-x' } });
+      await expect(clear()).rejects.toMatchObject({ status: 403 });
+    });
+    it("rejects carrying held funds from or into the administrator's own Raid", async () => {
+      const source = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      const target = await db.raid.create({
+        data: {
+          mint: source.mint,
+          creatorId: adminId,
+          tag: 'raid_admin',
+          title: 'Admin Raid',
+          description: 'Created by the administrator',
+          status: 'ACTIVE',
+          startsAt: new Date(),
+          endsAt: new Date(Date.now() + 3600000),
+          trackingVersion: 2,
+        },
+      });
+      await expect(carryHeldFunds(raidId, target.id, adminId, 'Move')).rejects.toMatchObject({
+        status: 403,
+      });
+      await expect(carryHeldFunds(target.id, raidId, adminId, 'Move')).rejects.toMatchObject({
+        status: 403,
+      });
+    });
   });
   it('stops new tracking mutations when gate closes', async () => {
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'false');

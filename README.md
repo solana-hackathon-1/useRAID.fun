@@ -17,6 +17,8 @@ npm run db:generate
 npm run dev
 ```
 
+`npm run dev` listens on localhost only. To open the dev server from another device use `npm run dev:lan` and list that device's hostname in `ALLOWED_DEV_ORIGINS` (comma-separated, no scheme or port). `LOCAL_AUTO_APPROVE_CREATORS=true` approves every X sign-in as a creator for local testing; it is ignored when `NODE_ENV=production`, logs a warning when active, and bypasses Studio creator approval, so never rely on it outside development.
+
 Open http://localhost:3000. `DEMO_MODE=true` renders illustrative campaigns without a database or provider credentials. All mutation, posting, trading, and analytics actions are disabled in demo mode. Demo names do not imply affiliation, and demo mint addresses do not identify the named assets.
 
 ## Database-backed mode
@@ -33,7 +35,7 @@ npm run worker
 
 The seed creates operating settings only. No fabricated posts or market prices enter the live database. For production, use `npm run build` then `npm start`.
 
-Configure `NEXT_PUBLIC_APP_URL`, `X_CLIENT_ID`, `X_CLIENT_SECRET`, and optionally `X_ADMIN_USER_ID` (an immutable X user ID). Legacy `APP_URL` is a fallback; legacy `ADMIN_X_IDS` still joins the admin allowlist. Production requires an explicit HTTPS app origin. Register exactly `http://localhost:3000/api/auth/x/callback` locally, or `${NEXT_PUBLIC_APP_URL}/api/auth/x/callback` in production. Administrators bootstrap into the existing ADMIN role on sign-in; other creators still require approval. OAuth uses `tweet.read users.read`; access tokens are used only for profile lookup and are not persisted. No refresh tokens are requested.
+Configure `NEXT_PUBLIC_APP_URL`, `X_CLIENT_ID`, `X_CLIENT_SECRET`, and optionally `X_ADMIN_USER_ID` (an immutable X user ID). Legacy `APP_URL` is a fallback; `ADMIN_X_IDS` (comma-separated) joins `X_ADMIN_USER_ID` in the administrator allowlist. The allowlist is checked on every request: administrators sign in with X (a wallet-only session never grants admin access), removing an id revokes access on the next request, and administrators can be suspended by another administrator, but never by themselves. Set one of the two variables before deploying or nobody can administer the site. Production requires an explicit HTTPS app origin. Register exactly `http://localhost:3000/api/auth/x/callback` locally, or `${NEXT_PUBLIC_APP_URL}/api/auth/x/callback` in production. Administrators bootstrap into the ADMIN role on sign-in and an ADMIN whose id left the allowlist is demoted at the next sign-in; other creators still require approval. OAuth uses `tweet.read users.read`; access tokens are used only for profile lookup and are not persisted. No refresh tokens are requested.
 
 ### Test Connect X locally
 

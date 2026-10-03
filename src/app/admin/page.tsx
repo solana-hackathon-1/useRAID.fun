@@ -1,7 +1,9 @@
 import { TrackingOperations } from '@/components/tracking-operations';
-import Link from 'next/link';
+import { oauthMessage } from '@/lib/oauth-messages';
 import { XDiagnostics } from '@/components/x-diagnostics';
-import { currentUser } from '@/lib/auth';
+import { adminUser } from '@/lib/auth';
+import { adminXIds } from '@/lib/admins';
+import { returningVisitors } from '@/lib/data';
 import { config } from '@/lib/config';
 import { db } from '@/lib/db';
 import { AdminAction, SettingsForm } from '@/components/admin';
@@ -13,12 +15,22 @@ import { UsdcPaymentForm } from '@/components/usdc-operations';
 import { reconcileUsdc } from '@/lib/usdc-reconcile';
 import { formatUsdc, studioSandbox, usdcSettings } from '@/lib/usdc';
 export const dynamic = 'force-dynamic';
-export default async function AdminPage() {
-  const user = await currentUser();
-  if (!user || user.role !== 'ADMIN')
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ auth?: string }>;
+}) {
+  const [user, { auth }] = await Promise.all([adminUser(), searchParams]);
+  const authMessage = oauthMessage(auth);
+  if (!user)
     return (
       <div className="panel access-card">
         <h1>Operations</h1>
+        {authMessage && (
+          <p role="alert" className="notice">
+            {authMessage}
+          </p>
+        )}
         <p>
           Administrator access is required to manage creators, moderate campaigns, and control
           collection.
@@ -26,9 +38,9 @@ export default async function AdminPage() {
         {config.demo ? (
           <div className="notice info">Admin controls are disabled in the read-only preview.</div>
         ) : (
-          <Link className="button" href="/api/auth/x">
+          <a className="button" href="/api/auth/x?return=admin">
             Sign in with X
-          </Link>
+          </a>
         )}
       </div>
     );
@@ -38,7 +50,7 @@ export default async function AdminPage() {
     await Promise.all([
       db.settings.upsert({ where: { id: 'global' }, create: {}, update: {} }),
       db.user.findMany({
-        where: { role: { not: 'ADMIN' } },
+        where: { OR: [{ xId: null }, { xId: { notIn: adminXIds() } }] },
         orderBy: [{ approved: 'asc' }, { createdAt: 'desc' }],
         take: 50,
       }),
@@ -67,11 +79,7 @@ export default async function AdminPage() {
       where: { status: { in: ['ACTIVE', 'ENDED', 'SCHEDULED'] } },
       _count: true,
     }),
-    db.event.groupBy({
-      by: ['visitor'],
-      where: { type: 'discovery_view', visitor: { not: null }, at: { gte: month } },
-      _count: true,
-    }),
+    returningVisitors(month),
     db.providerUsage.groupBy({
       by: ['raidId'],
       where: { provider: 'x', at: { gte: month } },
@@ -474,7 +482,7 @@ export default async function AdminPage() {
               Creators with a second campaign (all time):{' '}
               {creatorCampaigns.filter((c) => c._count >= 2).length}
             </p>
-            <p>Returning discovery visitors: {visitors.filter((v) => v._count >= 2).length}</p>
+            <p>Returning discovery visitors (seen on 2+ days): {visitors}</p>
           </div>
           {events.map((e) => (
             <div className="admin-row" key={e.type}>

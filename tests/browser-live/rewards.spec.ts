@@ -13,8 +13,12 @@ test.describe('launchpad gate', () => {
   test.beforeAll(async () => {
     assertTestDatabase();
     await truncateAll(db);
-    await db.token.create({ data: { mint, name: 'Gate Token', symbol: 'GATE' } });
-    const admin = await db.user.create({ data: { handle: 'gate-admin', role: 'ADMIN' } });
+    await db.token.create({
+      data: { mint, name: 'Gate Token', symbol: 'GATE', metadataSource: 'MARKET' },
+    });
+    const admin = await db.user.create({
+      data: { handle: 'gate-admin', xId: 'gate-admin-x', role: 'ADMIN' },
+    });
     const now = Date.now();
     await db.raid.create({
       data: {

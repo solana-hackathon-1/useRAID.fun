@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { signAsset, validateImage, verifyAsset } from '../src/lib/launch-ipfs';
+import { sniffImage, signAsset, validateImage, verifyAsset } from '../src/lib/launch-ipfs';
 
 const logo = 'ipfs://bafybeigdyrzt4j5q2p3x7uh5tlvnruzbwpjlvszwncln6q2jv7idv2uyvu';
 const other = 'ipfs://bafybeigdyrzt4j5q2p3x7uh5tlvnruzbwpjlvszwncln6q2jv7idv2uyva';
@@ -28,5 +28,21 @@ describe('server-verified launch images', () => {
     await expect(
       validateImage(new File([new Uint8Array(5 * 1024 * 1024 + 1)], 'big.gif'), 'banner'),
     ).rejects.toThrow();
+  });
+});
+describe('sniffImage', () => {
+  const bytes = (...values: number[]) => new Uint8Array(values);
+  const ascii = (text: string) => new Uint8Array([...text].map((c) => c.charCodeAt(0)));
+  it('recognises PNG, JPEG and both GIF headers from magic bytes', () => {
+    expect(sniffImage(bytes(137, 80, 78, 71, 13, 10, 26, 10, 0))).toBe('image/png');
+    expect(sniffImage(bytes(255, 216, 255, 224))).toBe('image/jpeg');
+    expect(sniffImage(ascii('GIF87a....'))).toBe('image/gif');
+    expect(sniffImage(ascii('GIF89a....'))).toBe('image/gif');
+  });
+  it('rejects everything else', () => {
+    expect(sniffImage(ascii('<svg xmlns='))).toBeNull();
+    expect(sniffImage(ascii('GIF90a'))).toBeNull();
+    expect(sniffImage(bytes(137, 80))).toBeNull();
+    expect(sniffImage(bytes())).toBeNull();
   });
 });

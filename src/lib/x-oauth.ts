@@ -1,9 +1,12 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { z } from 'zod';
-import type { OAuthAttempt, Prisma } from '@prisma/client';
+import type { OAuthAttempt } from '@prisma/client';
 import { db } from './db';
 import { config } from './config';
 import { hash, random } from './auth-primitives';
+import { adminXIds } from './admins';
+import { allowedImageUrl } from './image-hosts';
+import { absorbAccount, isEmptyAccount, lockIdentity } from './account-merge';
 import { reserveUsage, settleReservation } from './providers/x';
 
 export class OAuthError extends Error {
@@ -41,14 +44,26 @@ export function authorizationUrl(state: string, verifier: string) {
   });
   return `https://x.com/i/oauth2/authorize?${query}`;
 }
+const STATE = /^[A-Za-z0-9_-]{43}$/;
+const MAX_STATES = 3;
+// The state cookie holds up to a few dot-joined states so a second tab does not invalidate the first.
+function states(cookie: string | undefined) {
+  return (cookie || '').split('.').filter((s) => STATE.test(s));
+}
+export function addState(cookie: string | undefined, state: string) {
+  return [...states(cookie).filter((s) => s !== state), state].slice(-MAX_STATES).join('.');
+}
+export function removeState(cookie: string | undefined, state: string) {
+  return states(cookie)
+    .filter((s) => s !== state)
+    .join('.');
+}
 export function validState(state: string | null, cookie: string | undefined) {
-  return (
-    !!state &&
-    !!cookie &&
-    /^[A-Za-z0-9_-]{43}$/.test(state) &&
-    /^[A-Za-z0-9_-]{43}$/.test(cookie) &&
-    timingSafeEqual(Buffer.from(state), Buffer.from(cookie))
-  );
+  if (!state || !cookie || !STATE.test(state)) return false;
+  let match = false;
+  for (const candidate of states(cookie))
+    if (timingSafeEqual(Buffer.from(state), Buffer.from(candidate))) match = true;
+  return match;
 }
 const profileSchema = z.object({
   data: z.object({
@@ -110,9 +125,7 @@ export async function fetchXIdentity(code: string, verifier: string) {
   }
 }
 export type XIdentity = Awaited<ReturnType<typeof fetchXIdentity>>;
-export async function lockIdentity(tx: Prisma.TransactionClient, xId: string) {
-  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`x-auth:${xId}`}, 0))`;
-}
+export { lockIdentity };
 export async function startAttempt(sessionHash: string | null) {
   oauthConfig();
   const state = random(),
@@ -157,13 +170,12 @@ export async function claimAttempt(state: string, sessionHash: string | null) {
   if (!attempt) throw new OAuthError('state');
   return attempt;
 }
+let warnedAutoApprove = false;
 export async function completeConnection(attempt: OAuthAttempt, profile: XIdentity) {
   const sessionToken = random();
   await db.$transaction(async (tx) => {
     // Lock the permanent owner even for an attempted connection to a different identity.
-    const owner = attempt.userId
-      ? await tx.user.findUnique({ where: { id: attempt.userId } })
-      : null;
+    let owner = attempt.userId ? await tx.user.findUnique({ where: { id: attempt.userId } }) : null;
     if (attempt.userId && !owner) throw new OAuthError('session');
     await lockIdentity(tx, owner?.xId || profile.id);
     const live = await tx.oAuthAttempt.deleteMany({
@@ -182,27 +194,40 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
     }
     let user = await tx.user.findUnique({ where: { xId: profile.id } });
     if (user?.suspended) throw new OAuthError('suspended');
-    if (owner && user && owner.id !== user.id) throw new OAuthError('identity');
-    const admins = [
-      process.env.X_ADMIN_USER_ID || '',
-      ...(process.env.ADMIN_X_IDS || '').split(','),
-    ]
-      .map((s) => s.trim())
-      .filter(Boolean);
-    const admin = admins.includes(profile.id);
+    if (owner && user && owner.id !== user.id) {
+      // Two accounts for one person: fold the one with no activity into the other.
+      if (owner.xId || (await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
+        throw new OAuthError('identity');
+      if (await isEmptyAccount(tx, owner.id)) {
+        await absorbAccount(tx, user.id, owner.id);
+        owner = null;
+      } else if (await isEmptyAccount(tx, user.id)) {
+        await absorbAccount(tx, owner.id, user.id);
+        user = null;
+      } else throw new OAuthError('identity');
+    }
+    const admin = adminXIds().includes(profile.id);
     const localAutoApprove =
       process.env.NODE_ENV !== 'production' && process.env.LOCAL_AUTO_APPROVE_CREATORS === 'true';
+    if (localAutoApprove && !warnedAutoApprove) {
+      warnedAutoApprove = true;
+      console.warn('LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.');
+    }
+    // Admin comes from the environment allowlist on every sign-in; a stored ADMIN role that fell off it is demoted.
+    const access = (role?: string) =>
+      admin
+        ? { role: 'ADMIN', approved: true }
+        : {
+            ...(role === 'ADMIN' ? { role: 'CREATOR' } : {}),
+            ...(localAutoApprove ? { approved: true } : {}),
+          };
     user = owner
       ? await tx.user.update({
           where: { id: owner.id },
           data: {
             xId: profile.id,
             handle: profile.username,
-            ...(admin
-              ? { role: 'ADMIN', approved: true }
-              : localAutoApprove
-                ? { approved: true }
-                : {}),
+            ...access(owner.role),
           },
         })
       : await tx.user.upsert({
@@ -215,11 +240,7 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
           },
           update: {
             handle: profile.username,
-            ...(admin
-              ? { role: 'ADMIN', approved: true }
-              : localAutoApprove
-                ? { approved: true }
-                : {}),
+            ...access(user?.role),
           },
         });
     const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
@@ -228,7 +249,10 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
       xUserId: profile.id,
       username: profile.username,
       displayName: profile.name,
-      profileImage: profile.profile_image_url || null,
+      profileImage:
+        profile.profile_image_url && allowedImageUrl(profile.profile_image_url)
+          ? profile.profile_image_url
+          : null,
     };
     await tx.xAccount.upsert({
       where: { userId: user.id },
@@ -241,6 +265,7 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
       data: {
         tokenHash: hash(sessionToken),
         userId: user.id,
+        via: 'x',
         expiresAt: new Date(Date.now() + 7 * 86400000),
       },
     });

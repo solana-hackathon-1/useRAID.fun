@@ -1,7 +1,14 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { config } from '../src/lib/config';
-import { authorizationUrl, validState, oauthConfig, fetchXIdentity } from '../src/lib/x-oauth';
+import {
+  authorizationUrl,
+  validState,
+  addState,
+  removeState,
+  oauthConfig,
+  fetchXIdentity,
+} from '../src/lib/x-oauth';
 const usage = vi.hoisted(() => ({
   reserve: vi.fn(),
   settle: vi.fn(),
@@ -42,6 +49,23 @@ describe('X OAuth protocol', () => {
     for (const value of [undefined, '', 'b'.repeat(43), 'short', 'é'.repeat(43)])
       expect(validState(state, value)).toBe(false);
     expect(validState(null, state)).toBe(false);
+  });
+  it('accepts any of several concurrent states and ignores malformed segments', () => {
+    const [s0, s1, s2] = ['a', 'b', 'c'].map((c) => c.repeat(43));
+    expect(validState(s1, `${s0}.${s1}`)).toBe(true);
+    expect(validState(s0, `${s0}.${s1}`)).toBe(true);
+    expect(validState(s2, `${s0}.${s1}`)).toBe(false);
+    expect(validState(s1, `junk.${s1}.é`)).toBe(true);
+    expect(validState('junk', 'junk')).toBe(false);
+    expect(addState(`${s0}.${s1}`, s2)).toBe(`${s0}.${s1}.${s2}`);
+    expect(addState(`${s0}.${s1}.${s2}`, 'd'.repeat(43)).split('.')).toEqual([
+      s1,
+      s2,
+      'd'.repeat(43),
+    ]);
+    expect(removeState(`${s0}.${s1}`, s0)).toBe(s1);
+    expect(removeState(s1, s1)).toBe('');
+    expect(removeState(undefined, s1)).toBe('');
   });
   it('requires confidential credentials, a valid origin, and production HTTPS', () => {
     vi.stubEnv('X_CLIENT_SECRET', '');

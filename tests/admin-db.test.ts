@@ -103,4 +103,22 @@ suite('admin job retry', () => {
       reasonCode: null,
     });
   });
+  it('lets an administrator suspend another administrator but never themselves', async () => {
+    const other = await db.user.create({ data: { handle: 'other', xId: 'other', role: 'ADMIN' } });
+    await db.session.create({
+      data: { tokenHash: 'other-session', userId: other.id, expiresAt: new Date(Date.now() + 1e6) },
+    });
+    const suspend = (id: string) =>
+      POST(
+        routeRequest('http://localhost:3000/api/admin/creator', {
+          body: { id, approved: true, suspended: true, reason: 'review' },
+        }),
+        routeContext({ action: 'creator' }),
+      );
+    expect((await suspend(adminId)).status).toBe(400);
+    expect((await db.user.findUniqueOrThrow({ where: { id: adminId } })).suspended).toBe(false);
+    expect((await suspend(other.id)).status).toBe(200);
+    expect((await db.user.findUniqueOrThrow({ where: { id: other.id } })).suspended).toBe(true);
+    expect(await db.session.count({ where: { userId: other.id } })).toBe(0);
+  });
 });

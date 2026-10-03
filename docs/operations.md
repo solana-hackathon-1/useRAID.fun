@@ -6,7 +6,7 @@ Current Creator Studio release and USDC funding/payment procedure: [creator-stud
 
 Create a PostgreSQL service, a web service using `railway.toml`, and a worker service using `railway.worker.toml`. Share database and public configuration between web and worker; keep `OPERATOR_SECRET_KEY` only on worker. Start with one replica each. The web deployment runs committed migrations; deploy it before starting a new worker version. Use an HTTPS `APP_URL` and register the exact OAuth callback.
 
-Set `DEMO_MODE=false`, `LIVE_COLLECTION_APPROVED=false`, and the real official account handle. Populate X credentials through Railway secrets, never repository files. Seed settings with `npm run db:seed`. Sign in using an ID listed in `ADMIN_X_IDS`, then approve invited creators based on submitted affiliation evidence.
+Set `DEMO_MODE=false`, `LIVE_COLLECTION_APPROVED=false`, and the real official account handle. Populate X credentials through Railway secrets, never repository files. Seed settings with `npm run db:seed`. Set `X_ADMIN_USER_ID` or `ADMIN_X_IDS` (immutable X user IDs) before deploying: they are the only source of administrators, checked on every request, so a DB-only ADMIN role without a listed ID no longer grants access. Sign in with X using a listed ID (a wallet-only session never grants admin access), then approve invited creators based on submitted affiliation evidence.
 
 X request accounting: a request that fails without a billable response (transport failure, non-2xx) releases its reservation to zero; a timeout keeps it because X may still have billed. Sign-in lookups are tracked separately (`x-identity`) under an admin-editable daily sign-in limit and the monthly hard cap, so an exhausted collection cutoff never blocks sign-in; the gap between the cutoff and the monthly budget is the headroom reserved for sign-ins. Rule 3+ mention searches add a persisted `from:<enrolled author ids>` filter (limited by `X_SEARCH_QUERY_MAX_CHARS`, falling back to the unfiltered query when too long) and skip X entirely for raids with no enrollments. Stored posts are re-read by staleness tier: posts under a day old every `X_REFRESH_MINUTES` (default 30), older posts every four times that, while final passes still read everything. A post read costs 0.5 cents, so the $180 cutoff is about 36,000 reads; the 30-minute tier cuts re-read volume roughly sixfold for recent posts and 24-fold for older ones.
 
@@ -60,6 +60,16 @@ psql "$RESTORE_DATABASE_URL" -c 'SELECT count(*) FROM "Raid"; SELECT count(*) FR
 ```
 
 Encrypt backup storage and restrict access because it includes sessions and creator identities. Delete the temporary dump according to your retention policy. Do not log database URLs.
+
+## Administrator access and review
+
+Removing an ID from the allowlist revokes admin access on the next request and the stored role is demoted at that account's next sign-in. Administrators can be suspended by another administrator, never by themselves; suspending ends their sessions, and sign-in stays blocked while suspended. The migration that records how a session was issued (X or wallet) also deletes the sessions of existing administrators, so every administrator signs in with X again after deploy.
+
+Conflict of interest: an administrator cannot review, correct, resolve disputes on, or carry held funds from or into a Raid they created or joined, and cannot review a post they authored. With a single administrator, a conflicted decision has to go to another administrator. A two-administrator (four-eyes) approval for tracking decisions is **deferred**: it needs a pending-decision workflow and at least two operators. Recommended scope when it is built is `carry-held` and exclude/restore on high-payout Raids; until then every decision is recorded in the moderation and contribution audit logs.
+
+## Images and security headers
+
+Studio draft images are stored as `MediaAsset` rows and served immutably from `/api/media/<id>`; token and profile images may only come from the hosts in `src/lib/image-hosts.ts`, which is also the `img-src` allowlist of the Content-Security-Policy set in `next.config.ts` (script and style inline allowances remain because pages carry no nonce; a nonce-based policy needs a proxy and fully dynamic rendering and is a later step). Add a host to that file before relying on a new image CDN. After deploying the `media_assets` migration run `npm run media:backfill` once to move inline `data:` images from Raid and Token rows into `MediaAsset`; until it runs, old rows keep rendering and a draft saved with an inline image is converted on save. Strict-Transport-Security is sent in production only. Check the wallet picker in Phantom and Solflare after changing the policy.
 
 ## Release gates
 

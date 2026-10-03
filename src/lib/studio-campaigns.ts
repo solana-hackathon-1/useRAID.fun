@@ -10,6 +10,8 @@ import { chargeStudioLookups, targetIds, targetPreviews } from './studio-targets
 import { lockTracking } from './tracking';
 import { assertApprovedCreator } from './campaigns';
 import { verifiedToken } from './token-identity';
+import { allowedImageUrl } from './image-hosts';
+import { importDataUri, MEDIA_PATH } from './media';
 
 export const studioInput = z
   .object({
@@ -22,13 +24,10 @@ export const studioInput = z
     symbol: z.string().trim().max(15).default(''),
     imageUri: z
       .string()
-      .max(400000)
+      .max(300)
       .default('')
       .refine(
-        (v) =>
-          !v ||
-          /^https:\/\//.test(v) ||
-          /^data:image\/(png|jpeg|gif);base64,[A-Za-z0-9+/=]+$/.test(v),
+        (v) => !v || allowedImageUrl(v) || MEDIA_PATH.test(v),
         'Choose a PNG, JPEG, or GIF image.',
       ),
     targetPosts: z.array(z.string().max(300)).max(100).default([]),
@@ -48,7 +47,11 @@ export async function saveStudioRaid(user: User, input: unknown, id?: string) {
   if (user.suspended || !(await db.xAccount.findUnique({ where: { userId: user.id } })))
     throw new HttpError(403, 'Connect X to create a Raid.');
   assertApprovedCreator(user);
-  const data = studioInput.parse(input),
+  const legacy =
+    input && typeof input === 'object'
+      ? await importDataUri((input as { imageUri?: unknown }).imageUri, user.id)
+      : null;
+  const data = studioInput.parse(legacy ? { ...(input as object), imageUri: legacy } : input),
     ids = targetIds(data.targetPosts);
   if (id) {
     const existing = await db.raid.findUnique({ where: { id } });

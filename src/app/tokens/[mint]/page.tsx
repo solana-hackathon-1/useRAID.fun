@@ -27,7 +27,7 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
   const active = token.raids.filter((r) => r.status === 'ACTIVE');
   return (
     <>
-      <AutoRefresh />
+      <AutoRefresh active={token.raids.some((r) => r.status === 'ACTIVE')} />
       <div className="breadcrumb">
         <Link href="/">Discovery</Link>
         <span>/</span>
@@ -40,6 +40,8 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
               className="token-launch-logo"
               src={`https://gateway.pinata.cloud/ipfs/${rewards.imageUri.slice(7)}`}
               alt={`${token.name} logo`}
+              referrerPolicy="no-referrer"
+              loading="lazy"
             />
           ) : (
             <TokenIcon symbol={token.symbol} large />

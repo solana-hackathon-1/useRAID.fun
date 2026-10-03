@@ -22,6 +22,8 @@ export function TokenIcon({
       <img
         src={imageUri}
         alt=""
+        referrerPolicy="no-referrer"
+        loading="lazy"
         className={`token-icon ${large ? 'large' : ''}`}
         style={{ objectFit: 'cover' }}
       />
