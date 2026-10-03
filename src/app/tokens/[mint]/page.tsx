@@ -47,6 +47,11 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
           <div>
             <h1>{token.name}</h1>
             <p>${token.symbol} · Solana</p>
+            {token.metadataSource === 'CREATOR' && (
+              <p>
+                <small>Unverified — supplied by a campaign creator</small>
+              </p>
+            )}
           </div>
         </div>
         <ExternalActions

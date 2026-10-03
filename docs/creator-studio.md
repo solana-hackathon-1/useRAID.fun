@@ -30,7 +30,15 @@ Creator approval is required to save drafts, preview target posts and launch. Un
 
 ## Manual payouts
 
-After allocation, Operations lists USDC rewards and withdrawals with network, mint, destination, amount, and required memo. Operator reviews, sends transferChecked from platform wallet to recipient associated token account, includes exact memo, then verifies finalized receipt. App never holds outbound signing key. Pending withdrawal reserves available funds; rejection needs audit reason and restores funds. Reward payments do not credit creator balance. Old SOL Raids preserve old funding, qualification, and payment paths. Keep funds reserved for unpaid liabilities; manual payout ops must reconcile custody wallet against outstanding balances and transfers before withdrawing platform capital.
+After allocation, Operations lists USDC rewards and withdrawals with network, mint, destination, amount, and required memo. Operator reviews, sends transferChecked from platform wallet to recipient associated token account, includes exact memo, then verifies finalized receipt. App never holds outbound signing key. Pending withdrawal reserves available funds; rejection needs audit reason and restores funds. Reward payments do not credit creator balance. Old SOL Raids preserve old funding, qualification, and payment paths. Keep funds reserved for unpaid liabilities; the **USDC reconciliation** card in Operations compares ledger liabilities (available plus reserved, raider credits included) and reward transfers awaiting payment with the custody wallet's USDC balance, and the worker logs a `usdc-deficit` alert hourly when custody falls short. Check it before withdrawing platform capital.
+
+Rejecting a withdrawal first checks the chain for a finalized payment matching that withdrawal and refuses with a 409 when one exists; verify that signature instead. Never send a payment while a rejection is in progress. The check needs `SOLANA_RPC_URL` and answers 503 when the history cannot be ruled out.
+
+A genuine deposit that finalized after its 30-minute intent expired is credited from Operations, under **Expired deposit intents**, with the transaction signature and an audit reason. The receipt must still match the memo, amount, wallet and recipient, and the transaction must postdate the intent; only the expiry is waived. A signature settles one transfer only.
+
+Operations shows **Release reserved pool to creator** on a funded Raid that is hidden, whose creator is suspended, or that is held. It returns the whole reserved pool (USDC) or records a full refund row (SOL) and ends the Raid as `HELD_RESOLVED`; raiders' accrued views on that Raid are forfeited. It shares the `raid-settle:<id>` ledger key with settlement, so a release and a settlement cannot both happen. To pay raiders instead, restore the campaign or creator so normal settlement resumes.
+
+Token name, symbol and image are snapshotted on each Raid from what its creator submitted. The shared token record only becomes authoritative once the market provider has supplied them (`metadataSource = MARKET`); until then token pages are labelled unverified.
 
 ## Rollback
 

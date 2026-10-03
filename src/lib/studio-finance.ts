@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { db } from './db';
+import { HttpError } from './auth-primitives';
 import { lockTracking } from './tracking';
 import { lockBalance, usdcLimits, studioSandbox, USDC_MINTS } from './usdc';
 import { trackingSettlementEnabled } from './config';
@@ -133,6 +134,78 @@ export async function allocateUsdcRaid(raidId: string) {
         },
       });
       await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'ALLOCATED' } });
+    },
+    { timeout: 30000 },
+  );
+}
+
+export async function releaseFundedRaid(raidId: string, actorId: string, reason: string) {
+  const note = reason.trim();
+  if (note.length < 5 || note.length > 500)
+    throw new HttpError(400, 'A reason of 5 to 500 characters is required.');
+  await db.$transaction(
+    async (tx) => {
+      await lockTracking(tx, raidId);
+      const raid = await tx.raid.findUnique({ where: { id: raidId }, include: { creator: true } });
+      if (!raid) throw new HttpError(404, 'Raid not found.');
+      const actor = await tx.user.findUnique({ where: { id: actorId } });
+      if (!actor || actor.role !== 'ADMIN' || actor.suspended)
+        throw new HttpError(403, 'Administrator access is required.');
+      if (['ALLOCATED', 'HELD_RESOLVED'].includes(raid.trackingPhase))
+        throw new HttpError(409, 'This Raid is already settled or released.');
+      if (
+        raid.fundingStatus !== 'VERIFIED' ||
+        !(raid.hidden || raid.creator.suspended || raid.trackingPhase === 'HELD')
+      )
+        throw new HttpError(
+          409,
+          'Release applies only to hidden, suspended or held Raids; others settle automatically.',
+        );
+      const now = new Date();
+      if (raid.studioVersion === 1) {
+        if (!raid.poolUnits) throw new HttpError(409, 'Raid has no reserved pool.');
+        await lockBalance(tx, raid.creatorId);
+        const key = `raid-settle:${raidId}`;
+        if (await tx.balanceEntry.findUnique({ where: { key } }))
+          throw new HttpError(409, 'This Raid pool is already settled or released.');
+        await tx.balanceEntry.create({
+          data: {
+            key,
+            userId: raid.creatorId,
+            raidId,
+            network: raid.fundingNetwork,
+            kind: 'RAID_RELEASED',
+            availableDelta: raid.poolUnits,
+            reservedDelta: -raid.poolUnits,
+          },
+        });
+      } else {
+        if (raid.mint || !raid.fundingLamports || !raid.fundingWallet)
+          throw new HttpError(409, 'Release applies only to funded Raids.');
+        if (await tx.raidAllocation.count({ where: { raidId } }))
+          throw new HttpError(409, 'This Raid pool is already settled or released.');
+        await tx.raidAllocation.create({
+          data: {
+            raidId,
+            resultId: null,
+            kind: 'REFUND',
+            walletAddress: raid.fundingWallet,
+            lamports: raid.fundingLamports,
+          },
+        });
+      }
+      await tx.raid.update({
+        where: { id: raidId },
+        data: {
+          status: 'ENDED',
+          endsAt: raid.endsAt < now ? raid.endsAt : now,
+          trackingPhase: 'HELD_RESOLVED',
+          holdReason: 'RELEASED_BY_ADMIN',
+        },
+      });
+      await tx.moderationEvent.create({
+        data: { actorId, action: 'funded-raid-released', targetId: raidId, reason: note },
+      });
     },
     { timeout: 30000 },
   );

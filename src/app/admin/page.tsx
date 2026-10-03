@@ -10,6 +10,7 @@ import { fundingPricing } from '@/lib/raid-funding';
 import { launchpadsAvailable } from '@/lib/release';
 import { JOB_MAX_ATTEMPTS } from '@/lib/queue';
 import { UsdcPaymentForm } from '@/components/usdc-operations';
+import { reconcileUsdc } from '@/lib/usdc-reconcile';
 import { formatUsdc, studioSandbox, usdcSettings } from '@/lib/usdc';
 export const dynamic = 'force-dynamic';
 export default async function AdminPage() {
@@ -104,6 +105,16 @@ export default async function AdminPage() {
     take: 100,
     include: { user: true },
   });
+  const expiredDeposits = await db.usdcTransfer.findMany({
+    where: { kind: 'DEPOSIT', status: 'AWAITING_TRANSFER', expiresAt: { lt: now } },
+    orderBy: { createdAt: 'desc' },
+    take: 50,
+    include: { user: true },
+  });
+  const reconciliation = await Promise.race([
+    reconcileUsdc().catch(() => null),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), 8000)),
+  ]);
   return (
     <>
       <div className="page-title">
@@ -150,6 +161,7 @@ export default async function AdminPage() {
       </div>
       <nav className="section-nav" aria-label="Operations sections">
         <a href="#limits">Operating limits</a>
+        <a href="#usdc-reconciliation">USDC reconciliation</a>
         <a href="#standalone-funding">Raid funding</a>
         <a href="#finance">Launchpads</a>
         <a href="#creators">Creators</a>
@@ -192,6 +204,58 @@ export default async function AdminPage() {
                 withdrawal={t.kind === 'WITHDRAWAL'}
                 sandbox={studioSandbox() && t.network === 'sandbox'}
               />
+            </div>
+          ))}
+        </section>
+        <section className="panel" id="usdc-reconciliation">
+          <h2>USDC reconciliation</h2>
+          {!reconciliation ? (
+            <p>Reconciliation unavailable.</p>
+          ) : (
+            <>
+              {reconciliation.surplus !== null && reconciliation.surplus < 0n && (
+                <div className="notice">
+                  Custody wallet is short of recorded liabilities by{' '}
+                  {formatUsdc(-reconciliation.surplus)} USDC.
+                </div>
+              )}
+              <p>
+                Network: {reconciliation.network}
+                <br />
+                Ledger liabilities (available + reserved, credits included):{' '}
+                {formatUsdc(reconciliation.liabilities)} USDC
+                <br />
+                Reward transfers awaiting payment: {formatUsdc(reconciliation.pendingRewards)} USDC
+                <br />
+                Custody wallet balance:{' '}
+                {reconciliation.custody === null
+                  ? 'Not applicable'
+                  : `${formatUsdc(reconciliation.custody)} USDC`}
+                <br />
+                Surplus:{' '}
+                {reconciliation.surplus === null
+                  ? 'Not applicable'
+                  : `${reconciliation.surplus < 0n ? '-' : ''}${formatUsdc(
+                      reconciliation.surplus < 0n
+                        ? -reconciliation.surplus
+                        : reconciliation.surplus,
+                    )} USDC`}
+                <br />
+                Unconfirmed deposit intents: {reconciliation.unconfirmedDeposits}
+              </p>
+            </>
+          )}
+          <h3>Expired deposit intents</h3>
+          {!expiredDeposits.length && <p>No expired deposit intents.</p>}
+          {expiredDeposits.map((t) => (
+            <div className="admin-row" key={t.id}>
+              <strong>
+                @{t.user.handle} · {formatUsdc(t.amount)} USDC
+              </strong>
+              <p>
+                {t.network} · Required memo: <code>useRAID:usdc:{t.id}</code>
+              </p>
+              <UsdcPaymentForm id={t.id} withdrawal={false} sandbox={false} late />
             </div>
           ))}
         </section>
@@ -353,6 +417,23 @@ export default async function AdminPage() {
                 label={r.hidden ? 'Restore campaign' : 'Hide campaign'}
                 values={{ hidden: !r.hidden }}
               />
+              {r.fundingStatus === 'VERIFIED' &&
+                !['ALLOCATED', 'HELD_RESOLVED'].includes(r.trackingPhase) &&
+                (r.hidden || r.creator.suspended || r.trackingPhase === 'HELD') && (
+                  <>
+                    <p>
+                      Releasing returns the whole reserved pool to the creator and forfeits
+                      raiders&apos; accrued views on this Raid. To pay raiders instead, restore the
+                      campaign or creator so settlement resumes.
+                    </p>
+                    <AdminAction
+                      action="raid-release"
+                      id={r.id}
+                      label="Release reserved pool to creator"
+                      values={{}}
+                    />
+                  </>
+                )}
             </div>
           ))}
         </section>

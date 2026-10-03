@@ -7,6 +7,7 @@ import { raidInput } from './validation';
 import { lockTracking } from './tracking';
 import { fundingPricing, fundingQuote } from './raid-funding';
 import { config } from './config';
+import { verifiedToken } from './token-identity';
 export function assertApprovedCreator(user: Pick<User, 'approved' | 'suspended'>) {
   if (!user.approved || user.suspended) throw new HttpError(403, 'Creator approval is required.');
 }
@@ -28,6 +29,7 @@ export async function createRaid(user: User, input: unknown) {
             update: {},
           })
         : null;
+    const verified = verifiedToken(token);
     return tx.raid.create({
       data: {
         ...newTrackingRules(),
@@ -35,8 +37,8 @@ export async function createRaid(user: User, input: unknown) {
         title: data.title,
         description: data.description,
         mint: token?.mint || null,
-        projectName: data.name,
-        projectSymbol: data.symbol,
+        projectName: verified?.name || data.name,
+        projectSymbol: verified?.symbol || data.symbol,
         fundingStatus: token ? 'NOT_REQUIRED' : 'PENDING',
         fundingRequest: token ? '' : data.fundingRequest,
         impressionTarget: token ? null : data.impressionTarget,

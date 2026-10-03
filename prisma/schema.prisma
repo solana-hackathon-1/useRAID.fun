@@ -190,6 +190,8 @@ model Token {
   market Json?
   marketAt DateTime?
   marketError String?
+  metadataSource String @default("CREATOR")
+  metadataVerifiedAt DateTime?
 }
 model Raid {
   id String @id @default(cuid())

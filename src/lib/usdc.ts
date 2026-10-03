@@ -17,6 +17,7 @@ import { HttpError } from './auth-primitives';
 import { config, trackingEnabled, trackingSettlementEnabled } from './config';
 import { studioSandbox } from './studio-mode';
 export { studioSandbox } from './studio-mode';
+import { findTransferPayment } from './usdc-chain';
 import { quoteUsdc, units, formatUsdc } from './usdc-amount';
 export { quoteUsdc, units, formatUsdc };
 
@@ -130,13 +131,14 @@ export async function usdcRpc(network: string) {
 export function matchesUsdcReceipt(
   receipt: ParsedTransactionWithMeta | null,
   intent: UsdcTransfer,
+  opts: { ignoreExpiry?: boolean } = {},
 ) {
   if (
     !receipt?.meta ||
     receipt.meta.err ||
     !receipt.blockTime ||
     receipt.blockTime * 1000 < +intent.createdAt - 1000 ||
-    (intent.expiresAt && receipt.blockTime * 1000 > +intent.expiresAt)
+    (!opts.ignoreExpiry && intent.expiresAt && receipt.blockTime * 1000 > +intent.expiresAt)
   )
     return false;
   const sourceOwner = intent.kind === 'DEPOSIT' ? intent.walletAddress : intent.recipient;
@@ -152,14 +154,17 @@ export function matchesUsdcReceipt(
   const keys = receipt.transaction.message.accountKeys;
   if (!keys.some((k) => k.signer && k.pubkey.toBase58() === sourceOwner)) return false;
   const instructions = receipt.transaction.message.instructions;
-  const memo = instructions.some(
+  const memos = instructions.filter(
     (i) =>
       'parsed' in i &&
       i.program === 'spl-memo' &&
       i.programId.toBase58() === 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr' &&
-      i.parsed === `useRAID:usdc:${intent.id}`,
+      typeof i.parsed === 'string' &&
+      i.parsed.startsWith('useRAID:'),
   );
-  const paid = instructions.some(
+  const memo =
+    memos.length === 1 && 'parsed' in memos[0] && memos[0].parsed === `useRAID:usdc:${intent.id}`;
+  const transfers = instructions.filter(
     (i) =>
       'parsed' in i &&
       i.program === 'spl-token' &&
@@ -172,6 +177,7 @@ export function matchesUsdcReceipt(
       i.parsed.info.tokenAmount?.decimals === 6 &&
       i.parsed.info.tokenAmount.amount === intent.amount.toString(),
   );
+  const paid = transfers.length === 1;
   const index = keys.findIndex((k) => k.pubkey.toBase58() === destination);
   const before = receipt.meta.preTokenBalances?.find(
     (b) => b.accountIndex === index && b.mint === intent.mint,
@@ -267,6 +273,7 @@ export async function verifyUsdcTransfer(
   signature: string,
   actorId: string,
   admin = false,
+  late?: { reason: string },
 ) {
   const intent = await db.usdcTransfer.findUnique({ where: { id } });
   if (!intent || (!admin && (intent.userId !== actorId || intent.kind !== 'DEPOSIT')))
@@ -274,6 +281,8 @@ export async function verifyUsdcTransfer(
   if (intent.status === 'PAID' && intent.signature === signature) return;
   if (!['REQUESTED', 'AWAITING_TRANSFER'].includes(intent.status))
     throw new HttpError(409, 'Transfer already completed or rejected.');
+  if (late && (!admin || intent.kind !== 'DEPOSIT'))
+    throw new HttpError(403, 'Late credit is limited to administrators and deposits.');
   if (intent.network === 'sandbox') {
     if (!studioSandbox() || signature !== `sandbox:${id}`)
       throw new HttpError(403, 'Test transfers are unavailable.');
@@ -285,7 +294,7 @@ export async function verifyUsdcTransfer(
       commitment: 'finalized',
       maxSupportedTransactionVersion: 0,
     });
-    if (!matchesUsdcReceipt(receipt, intent))
+    if (!matchesUsdcReceipt(receipt, intent, { ignoreExpiry: !!late }))
       throw new HttpError(
         409,
         'Wait for finalization; transfer must match USDC token, amount, wallet, recipient, and memo.',
@@ -297,6 +306,8 @@ export async function verifyUsdcTransfer(
     if (current.status === 'PAID' && current.signature === signature) return;
     if (!['REQUESTED', 'AWAITING_TRANSFER'].includes(current.status))
       throw new HttpError(409, 'Transfer state changed.');
+    if (await tx.usdcTransfer.findFirst({ where: { signature, id: { not: id } } }))
+      throw new HttpError(409, 'This transaction already settled another transfer.');
     await tx.usdcTransfer.update({
       where: { id },
       data: { status: 'PAID', signature, paidAt: new Date() },
@@ -317,9 +328,11 @@ export async function verifyUsdcTransfer(
       await tx.moderationEvent.create({
         data: {
           actorId,
-          action: 'usdc-payment',
+          action: late ? 'usdc-late-deposit' : 'usdc-payment',
           targetId: id,
-          reason: `Finalized payment ${signature}`,
+          reason: late
+            ? `Late deposit credited (${late.reason}); finalized payment ${signature}`
+            : `Finalized payment ${signature}`,
         },
       });
   });
@@ -379,6 +392,12 @@ export async function rejectWithdrawal(id: string, actorId: string, reason: stri
   const intent = await db.usdcTransfer.findUniqueOrThrow({ where: { id } });
   if (intent.kind !== 'WITHDRAWAL' || !reason.trim())
     throw new HttpError(400, 'Only unpaid withdrawals can be rejected with a reason.');
+  const paid = await findTransferPayment(intent);
+  if (paid)
+    throw new HttpError(
+      409,
+      `Withdrawal already paid on-chain (${paid}); verify that signature instead.`,
+    );
   await db.$transaction(async (tx) => {
     await lockBalance(tx, intent.userId);
     const current = await tx.usdcTransfer.findUniqueOrThrow({ where: { id } });

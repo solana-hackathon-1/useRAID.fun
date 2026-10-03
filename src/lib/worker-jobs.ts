@@ -16,6 +16,8 @@ import { fetchMarket } from './providers/market';
 import { lookupPosts, ProviderError } from './providers/x';
 import { financeLaunch, updateFinanceReadiness } from './rewards';
 import { reconcileLaunch } from './pump-launch';
+import { usdcSettings } from './usdc';
+import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 export async function step(name: string, fn: () => Promise<unknown>) {
   try {
     await fn();
@@ -38,6 +40,7 @@ export async function assertSchemaCurrent(
   >`SELECT 1 FROM "_prisma_migrations" WHERE migration_name = ${latest} AND finished_at IS NOT NULL`;
   if (!applied.length) throw new Error(`Database schema is behind migration ${latest}.`);
 }
+let reconciledHour = 0;
 export async function schedule(now = new Date()) {
   await step('finance-readiness', () => updateFinanceReadiness());
   await step('status-transitions', async () => {
@@ -259,6 +262,15 @@ export async function schedule(now = new Date()) {
         final: true,
       });
   });
+  await step('usdc-reconcile', async () => {
+    const hour = Math.floor(+now / 3600000);
+    const settings = usdcSettings();
+    if (hour === reconciledHour || !settings.ready || settings.network === 'sandbox') return;
+    reconciledHour = hour;
+    const r = await reconcileUsdc(settings.network);
+    if (r.surplus !== null && r.surplus < 0n)
+      console.error(JSON.stringify({ alert: 'usdc-deficit', ...reconciliationJson(r) }));
+  });
 }
 async function clearCollectionError(raidId: string) {
   const remaining = await db.job.count({
@@ -316,6 +328,15 @@ export async function runJob(job: Job) {
           market: market ? JSON.parse(JSON.stringify(market)) : Prisma.DbNull,
           marketAt: new Date(),
           marketError: market ? null : 'No eligible market pair found.',
+          ...(market?.name.trim() && market.symbol.trim()
+            ? {
+                name: market.name.trim().slice(0, 80),
+                symbol: market.symbol.trim().slice(0, 15),
+                ...(market.imageUri ? { imageUri: market.imageUri } : {}),
+                metadataSource: 'MARKET',
+                metadataVerifiedAt: new Date(),
+              }
+            : {}),
         },
       });
     }

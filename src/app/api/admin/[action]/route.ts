@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { settingsInput } from '@/lib/validation';
 import { z } from 'zod';
 import { failure, readJson } from '@/lib/http';
+import { releaseFundedRaid } from '@/lib/studio-finance';
 import { fundingPricing, fundingQuote } from '@/lib/raid-funding';
 export async function POST(request: Request, { params }: { params: Promise<{ action: string }> }) {
   try {
@@ -18,6 +19,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
     );
     const reason = typeof b.reason === 'string' ? b.reason.trim().slice(0, 500) : '';
     if (!reason) throw new HttpError(400, 'A reason is required for the audit log.');
+    if (action === 'raid-release') {
+      if (typeof b.id !== 'string') throw new HttpError(400, 'Invalid Raid.');
+      await releaseFundedRaid(b.id, user.id, reason);
+      return NextResponse.json({ ok: true });
+    }
     await db.$transaction(async (tx) => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
       if (action === 'settings')

@@ -124,4 +124,37 @@ describe('USDC finalized receipt evidence', () => {
     r.meta!.postTokenBalances![0].uiTokenAmount.amount = '0';
     expect(matchesUsdcReceipt(r, intent)).toBe(false);
   });
+  it('honours the expiry only unless an administrator overrides it', () => {
+    const late = receipt();
+    late.blockTime = 201;
+    expect(matchesUsdcReceipt(late, intent)).toBe(false);
+    expect(matchesUsdcReceipt(late, intent, { ignoreExpiry: true })).toBe(true);
+    const early = receipt();
+    early.blockTime = 98;
+    expect(matchesUsdcReceipt(early, intent, { ignoreExpiry: true })).toBe(false);
+    const other = receipt();
+    other.blockTime = 201;
+    const memo = other.transaction.message.instructions[0];
+    if ('parsed' in memo) memo.parsed = 'useRAID:usdc:another-intent';
+    expect(matchesUsdcReceipt(other, intent, { ignoreExpiry: true })).toBe(false);
+  });
+  it('requires exactly one useRAID memo and one matching transfer', () => {
+    const twoMemos = receipt();
+    twoMemos.transaction.message.instructions.push({
+      ...twoMemos.transaction.message.instructions[0],
+      parsed: 'useRAID:usdc:another-intent',
+    } as never);
+    expect(matchesUsdcReceipt(twoMemos, intent)).toBe(false);
+    const twoTransfers = receipt();
+    twoTransfers.transaction.message.instructions.push(
+      twoTransfers.transaction.message.instructions[1],
+    );
+    expect(matchesUsdcReceipt(twoTransfers, intent)).toBe(false);
+    const unrelatedMemo = receipt();
+    unrelatedMemo.transaction.message.instructions.push({
+      ...unrelatedMemo.transaction.message.instructions[0],
+      parsed: 'hello',
+    } as never);
+    expect(matchesUsdcReceipt(unrelatedMemo, intent)).toBe(true);
+  });
 });

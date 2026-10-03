@@ -199,6 +199,8 @@ export async function recordRaidPayment(allocationId: string, signature: string,
       current.lamports !== allocation.lamports
     )
       throw new HttpError(409, 'Allocation changed or already paid.');
+    if (await tx.raidAllocation.findFirst({ where: { signature, id: { not: allocationId } } }))
+      throw new HttpError(409, 'This transaction already settled another allocation.');
     await tx.raidAllocation.update({
       where: { id: allocationId },
       data: { signature, paidAt: new Date() },

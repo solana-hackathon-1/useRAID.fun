@@ -54,7 +54,7 @@ export function CreatorApproval({ initial }: { initial: string }) {
             minLength={20}
             maxLength={1000}
             required
-            placeholder="Your project, role, official website, and evidence of affiliation."
+            placeholder="Your project, role, official website, token contract address, and evidence of affiliation, e.g. an official post from the project account."
           />
         </label>
         <div className="form-actions">

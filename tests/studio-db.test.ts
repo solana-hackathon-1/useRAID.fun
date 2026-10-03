@@ -12,6 +12,7 @@ vi.mock('../src/lib/providers/x', () => ({
     data: ids.map((id) => ({ id, text: 'Public target', author_id: 'project' })),
   })),
 }));
+vi.mock('../src/lib/usdc-chain', () => ({ findTransferPayment: vi.fn(async () => null) }));
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 suite('Studio atomic balances and settlement', () => {
   let owner: Awaited<ReturnType<typeof db.user.create>>, raidId: string;

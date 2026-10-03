@@ -7,6 +7,7 @@ import { demoRaids } from './demo';
 import { metrics, momentum, interactions } from './domain';
 import type { RaidView } from './types';
 import type { Market } from './providers/market';
+import { displayIdentity } from './token-identity';
 export async function getRaids(filter: Prisma.RaidWhereInput = {}): Promise<RaidView[]> {
   if (config.demo) return demoRaids();
   const now = new Date();
@@ -32,6 +33,7 @@ export async function getRaids(filter: Prisma.RaidWhereInput = {}): Promise<Raid
       ? result.contributions.map((p) => ({ ...p, text: '', createdAt: new Date(p.createdAt) }))
       : r.posts;
     const m = r.trackingVersion === 2 ? scoreContributions(scoringPosts) : metrics(r.posts, now);
+    const identity = displayIdentity(r);
     const target = +now - 3600000;
     const baseline = r.snapshots.filter((s) => +s.at <= target && +s.at >= target - 300000).at(-1);
     const fresh = !!r.observedAt && +now - +r.observedAt < 600000 && r.coverage === 'complete';
@@ -48,13 +50,13 @@ export async function getRaids(filter: Prisma.RaidWhereInput = {}): Promise<Raid
       trackingVersion: r.trackingVersion,
       fundingAsset: r.fundingAsset,
       poolUnits: r.poolUnits?.toString() || null,
-      imageUri: r.imageUri || r.token?.imageUri || null,
+      imageUri: identity.imageUri,
       tag: r.tag,
       title: r.title,
       description: r.description,
       mint: r.mint,
-      symbol: r.token?.symbol || r.projectSymbol || r.title.slice(0, 2).toUpperCase(),
-      name: r.token?.name || r.projectName,
+      symbol: identity.symbol,
+      name: identity.name,
       status: r.endsAt <= now ? 'ENDED' : r.status,
       startsAt: r.startsAt.toISOString(),
       endsAt: r.endsAt.toISOString(),
@@ -140,8 +142,13 @@ export async function getToken(mint: string) {
           posts: raids.reduce((sum, r) => sum + r.posts, 0),
           interactions: raids.reduce((sum, r) => sum + r.interactions, 0),
         };
+  const metadataSource = config.demo
+    ? 'MARKET'
+    : (await db.token.findUnique({ where: { mint }, select: { metadataSource: true } }))
+        ?.metadataSource || 'CREATOR';
   return {
     mint,
+    metadataSource,
     symbol: raids[0].symbol,
     name: raids[0].name,
     raids,

@@ -4,6 +4,7 @@ import { StudioHome } from '@/components/studio-home';
 import { StudioAccess } from '@/components/studio-access';
 import { balance } from '@/lib/usdc';
 import { observedImpressions } from '@/lib/raid-progress';
+import { displayIdentity } from '@/lib/token-identity';
 export const dynamic = 'force-dynamic';
 export default async function CreatorPage({
   searchParams,
@@ -50,8 +51,8 @@ export default async function CreatorPage({
       raids={raids.map((r) => ({
         id: r.id,
         title: r.title,
-        symbol: r.token?.symbol || r.projectSymbol,
-        imageUri: r.imageUri || r.token?.imageUri || null,
+        symbol: displayIdentity(r).symbol,
+        imageUri: displayIdentity(r).imageUri,
         status: r.status,
         phase: r.trackingPhase,
         pool: r.studioVersion === 1 ? r.poolUnits?.toString() || null : r.fundingLamports,

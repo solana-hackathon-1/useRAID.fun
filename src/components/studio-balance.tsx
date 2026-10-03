@@ -276,6 +276,15 @@ export function StudioBalance({
                   Receipt
                 </a>
               )}
+              {t.kind === 'DEPOSIT' &&
+                t.status === 'AWAITING_TRANSFER' &&
+                t.expiresAt &&
+                +new Date(t.expiresAt) < Date.now() && (
+                  <p>
+                    Intent expired. If you sent funds, contact support with the transaction
+                    signature.
+                  </p>
+                )}
               {t.kind === 'DEPOSIT' && t.status === 'AWAITING_TRANSFER' && !sandbox && (
                 <DepositRecovery id={t.id} onVerified={() => router.refresh()} />
               )}

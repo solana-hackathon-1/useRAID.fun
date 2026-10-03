@@ -9,6 +9,7 @@ import { balance, lockBalance, quoteUsdc, usdcSettings, studioSandbox } from './
 import { chargeStudioLookups, targetIds, targetPreviews } from './studio-targets';
 import { lockTracking } from './tracking';
 import { assertApprovedCreator } from './campaigns';
+import { verifiedToken } from './token-identity';
 
 export const studioInput = z
   .object({
@@ -105,11 +106,11 @@ export async function saveStudioRaid(user: User, input: unknown, id?: string) {
                 mint: data.mint,
                 name: data.name,
                 symbol: data.symbol,
-                imageUri: data.imageUri || null,
               },
               update: {},
             })
           : null;
+      const verified = verifiedToken(token);
       const fields = {
         studioVersion: 1,
         fundingAsset: 'USDC',
@@ -121,9 +122,9 @@ export async function saveStudioRaid(user: User, input: unknown, id?: string) {
         title: data.title,
         description: data.description,
         mint: token?.mint || null,
-        projectName: token?.name || data.title,
-        projectSymbol: token?.symbol || '',
-        imageUri: data.imageUri || token?.imageUri || null,
+        projectName: token ? verified?.name || data.name : data.title,
+        projectSymbol: token ? verified?.symbol || data.symbol : '',
+        imageUri: data.imageUri || verified?.imageUri || null,
         impressionTarget: data.impressionTarget,
         quoteRate: settings.rateUnits,
         poolUnits: settings.rateUnits ? quoteUsdc(data.impressionTarget, settings.rateUnits) : null,
