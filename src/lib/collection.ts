@@ -4,7 +4,7 @@ import { scoreContributions } from './tracking-domain';
 import { db } from './db';
 import { config } from './config';
 import { eligible, metrics, normalize, type XPost } from './domain';
-import { lookupOutcome, lookupPosts, searchPosts } from './providers/x';
+import { lookupOutcome, lookupPosts, searchPosts, searchQuery } from './providers/x';
 import { enqueue } from './queue';
 import { completeImpressionTarget } from './raid-progress';
 // Final-pass lookups that stay unresolved this many attempts are excluded (below JOB_MAX_ATTEMPTS).
@@ -85,13 +85,29 @@ export async function collect(raidId: string, sampleKey?: string) {
     raid.finalRefreshed
   )
     return;
-  if (!raid.searchEndAt)
+  if (!raid.searchEndAt) {
+    // Rule 3+ searches only the enrolled authors; the query is fixed for every page of the window.
+    // An empty string records a window with nobody enrolled, which never calls X.
+    const authors =
+      raid.trackingVersion === 2 && raid.ruleVersion >= 3
+        ? (
+            await db.raidEnrollment.findMany({
+              where: { raidId },
+              select: { xId: true },
+              orderBy: { xId: 'asc' },
+            })
+          ).map((e) => e.xId)
+        : null;
     raid = await db.raid.update({
       where: { id: raidId },
-      data: { searchEndAt: new Date(Math.min(+raid.endsAt, Date.now() - 10000)) },
+      data: {
+        searchEndAt: new Date(Math.min(+raid.endsAt, Date.now() - 10000)),
+        ...(authors ? { searchQuery: authors.length ? searchQuery(raid, authors) : '' } : {}),
+      },
       include: { creator: true },
     });
-  const result = await searchPosts(raid);
+  }
+  const result = raid.searchQuery === '' ? { data: [] as XPost[] } : await searchPosts(raid);
   if (result.errors?.length)
     throw new Error('X search returned partial errors; collection will retry.');
   await ingest(raidId, result.data || [], sampleKey);
@@ -125,6 +141,7 @@ export async function collect(raidId: string, sampleKey?: string) {
         nextToken: null,
         pendingNewestId: null,
         searchEndAt: null,
+        searchQuery: null,
       },
     });
     if (!moved.count) return;
@@ -155,8 +172,21 @@ export async function refresh(
     (raid.trackingVersion === 2 && (!trackingEnabled() || raid.activeResultId))
   )
     return;
+  const tier = config.refreshMinutes * 60000;
+  // Routine passes re-read recent posts every tier and older posts every fourth; final passes read all.
+  const due = final
+    ? {}
+    : {
+        OR: [
+          {
+            createdAt: { gte: new Date(Date.now() - 86400000) },
+            observedAt: { lt: new Date(Date.now() - tier) },
+          },
+          { observedAt: { lt: new Date(Date.now() - 4 * tier) } },
+        ],
+      };
   const posts = await db.post.findMany({
-    where: { raidId, deleted: false, ...(after ? { id: { gt: after } } : {}) },
+    where: { raidId, deleted: false, ...due, ...(after ? { id: { gt: after } } : {}) },
     orderBy: { id: 'asc' },
     take: 100,
   });

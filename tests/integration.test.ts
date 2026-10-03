@@ -6,6 +6,7 @@ import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue
 import { reserveUsage, lookupPosts } from '../src/lib/providers/x';
 import { config } from '../src/lib/config';
 import { metrics } from '../src/lib/domain';
+import { publicRateLimit, rateLimit } from '../src/lib/auth';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('PostgreSQL integration', () => {
@@ -120,6 +121,10 @@ integration('PostgreSQL integration', () => {
     await expect(lookupPosts(['12345'], raidId)).rejects.toMatchObject({
       retryAfter: expect.any(Number),
     });
+    await db.post.updateMany({
+      where: { raidId },
+      data: { observedAt: new Date(Date.now() - 3 * 3600000) },
+    });
     await expect(refresh(raidId, '', false)).rejects.toThrow('rate-limit reset');
     expect(fetch).toHaveBeenCalledTimes(1);
     expect((await db.post.findUniqueOrThrow({ where: { id: '12345' } })).deleted).toBe(false);
@@ -141,6 +146,10 @@ integration('PostgreSQL integration', () => {
         ),
       ),
     );
+    await db.post.updateMany({
+      where: { raidId },
+      data: { observedAt: new Date(Date.now() - 3 * 3600000) },
+    });
     await refresh(raidId, '', false);
     const post = await db.post.findUniqueOrThrow({ where: { id: '12345' } });
     expect(post.deleted).toBe(true);
@@ -350,6 +359,10 @@ integration('PostgreSQL integration', () => {
           }),
         ),
       );
+      await db.post.updateMany({
+        where: { raidId },
+        data: { observedAt: new Date(Date.now() - 3 * 3600000) },
+      });
       await refresh(raidId, '', false);
       expect(await db.post.findUniqueOrThrow({ where: { id: '7002' } })).toMatchObject({
         deleted: true,
@@ -442,6 +455,131 @@ integration('PostgreSQL integration', () => {
       expect(raid.nextToken).toBeNull();
       expect(raid.pendingNewestId).toBeNull();
       expect(await db.job.count({ where: { key: { startsWith: `page:${raidId}` } } })).toBe(0);
+    });
+  });
+  describe('X budget and public load controls', () => {
+    const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
+    const defaults = {
+      collectionEnabled: true,
+      monthlyBudgetCents: 20000,
+      cutoffCents: 18000,
+      dailyRequestLimit: 100000,
+      identityDailyLimit: 1000,
+    };
+    const stale = () => new Date(Date.now() - 3 * 3600000);
+    async function reset(patch: Record<string, unknown> = {}) {
+      vi.stubEnv('X_BEARER_TOKEN', 'test-only');
+      const data = { ...defaults, ...patch };
+      await db.settings.upsert({ where: { id: 'global' }, create: data, update: data });
+      await db.providerUsage.deleteMany();
+      await db.xEndpointState.deleteMany();
+      await db.post.deleteMany({ where: { raidId } });
+      await db.rateLimit.deleteMany();
+    }
+    const seed = (id: string, createdAt: Date, observedAt: Date) =>
+      db.post.create({
+        data: { id, raidId, authorId: 'carol', text: id, normalized: id, createdAt, observedAt },
+      });
+    const requested = (fetcher: ReturnType<typeof vi.fn>) =>
+      new URL(String(fetcher.mock.calls[0][0])).searchParams.get('ids');
+    it('charges a weighted cost against one rate-limit bucket', async () => {
+      await reset();
+      await rateLimit('cost-test', 10, 60, 7);
+      await expect(rateLimit('cost-test', 10, 60, 4)).rejects.toMatchObject({ status: 429 });
+    });
+    it('uses a shared ceiling without a trusted header and per-client buckets with one', async () => {
+      await reset();
+      const at = (ip?: string) =>
+        new Request('http://localhost/x', { headers: ip ? { 'x-real-ip': ip } : {} });
+      for (let i = 0; i < 3; i++) await publicRateLimit(at(), 'pub', 1, 60, 3);
+      await expect(publicRateLimit(at(), 'pub', 1, 60, 3)).rejects.toMatchObject({ status: 429 });
+      vi.stubEnv('TRUSTED_IP_HEADER', 'x-real-ip');
+      try {
+        await publicRateLimit(at('203.0.113.1'), 'pub', 1, 60, 3);
+        await publicRateLimit(at('203.0.113.2'), 'pub', 1, 60, 3);
+        await expect(publicRateLimit(at('203.0.113.1'), 'pub', 1, 60, 3)).rejects.toMatchObject({
+          status: 429,
+        });
+      } finally {
+        vi.stubEnv('TRUSTED_IP_HEADER', '');
+      }
+    });
+    it('releases the reservation after a 429, a 503 and a transport failure, but keeps it after a timeout', async () => {
+      const usage = () => db.providerUsage.findMany({ where: { raidId } });
+      await reset();
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => json({}, 429)),
+      );
+      await expect(lookupPosts(['12345'], raidId)).rejects.toMatchObject({ status: 429 });
+      expect(await usage()).toMatchObject([{ reservedCents: 0, units: 0 }]);
+      await reset();
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => json({}, 503)),
+      );
+      await expect(lookupPosts(['12345', '12346'], raidId)).rejects.toMatchObject({ status: 503 });
+      expect(await usage()).toMatchObject([{ reservedCents: 0 }]);
+      await reset();
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => {
+          throw new TypeError('fetch failed');
+        }),
+      );
+      await expect(lookupPosts(['12345'], raidId)).rejects.toMatchObject({ deferred: true });
+      expect(await usage()).toMatchObject([{ reservedCents: 0 }]);
+      await reset();
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => {
+          throw new DOMException('slow', 'TimeoutError');
+        }),
+      );
+      await expect(lookupPosts(['1', '2', '3'], raidId)).rejects.toMatchObject({ deferred: true });
+      expect(await usage()).toMatchObject([
+        { reservedCents: 2, reason: 'Timed out; reservation kept' },
+      ]);
+      vi.unstubAllGlobals();
+    });
+    it('keeps sign-in accounting separate from the collection cutoff and daily request limit', async () => {
+      await reset({ cutoffCents: 1 });
+      await expect(reserveUsage(100, raidId)).rejects.toThrow('budget');
+      const identity = await reserveUsage(1, undefined, true);
+      expect(identity.provider).toBe('x-identity');
+      await reset({ dailyRequestLimit: 1 });
+      await reserveUsage(1, undefined, true);
+      expect((await reserveUsage(1, raidId)).provider).toBe('x');
+      await expect(reserveUsage(1, raidId)).rejects.toThrow('daily request limit');
+    });
+    it('limits sign-ins per day and by the monthly hard cap, even with collection paused', async () => {
+      await reset({ identityDailyLimit: 1, collectionEnabled: false });
+      await reserveUsage(1, undefined, true);
+      await expect(reserveUsage(1, undefined, true)).rejects.toThrow(
+        'Sign-in is temporarily unavailable',
+      );
+      await reset({ monthlyBudgetCents: 100, cutoffCents: 50 });
+      await db.providerUsage.create({
+        data: { provider: 'x', units: 1, reservedCents: 100, reason: 'fixture' },
+      });
+      await expect(reserveUsage(1, undefined, true)).rejects.toThrow(
+        'Sign-in is temporarily unavailable',
+      );
+    });
+    it('refreshes stored posts by staleness tier and reads everything on a final pass', async () => {
+      await reset();
+      const recent = new Date(Date.now() - 3600000);
+      await seed('8001', recent, stale());
+      await seed('8002', recent, new Date());
+      await seed('8003', new Date(Date.now() - 3 * 86400000), new Date(Date.now() - 3600000));
+      const fetcher = vi.fn(async () => json({ data: [] }));
+      vi.stubGlobal('fetch', fetcher);
+      await expect(refresh(raidId, '', false)).rejects.toThrow('incomplete lookup');
+      expect(requested(fetcher)).toBe('8001');
+      fetcher.mockClear();
+      await expect(refresh(raidId, '', true)).rejects.toThrow('incomplete lookup');
+      expect(requested(fetcher)?.split(',').sort()).toEqual(['8001', '8002', '8003']);
+      vi.unstubAllGlobals();
     });
   });
 });

@@ -486,8 +486,8 @@ suite('tracking v2 database lifecycle', () => {
     expect(next!.kind).toBe('collect');
     await collect(raidId, next!.id);
     expect(queries.map((url) => url.searchParams.get('query'))).toEqual([
-      '@useRAID -is:retweet -is:reply',
-      '@useRAID -is:retweet -is:reply',
+      '@useRAID -is:retweet -is:reply (from:alice)',
+      '@useRAID -is:retweet -is:reply (from:alice)',
     ]);
     expect(queries[1].searchParams.get('next_token')).toBe('page-two');
     await finishJob(next!);
@@ -687,6 +687,10 @@ suite('tracking v2 database lifecycle', () => {
     });
     it('does not escalate a non-final pass', async () => {
       await ingestTracking(raidId, [xpost('304')]);
+      await db.post.updateMany({
+        where: { raidId },
+        data: { observedAt: new Date(Date.now() - 3 * 3600000) },
+      });
       respond({ data: [] });
       await expect(refresh(raidId, '', false, undefined, 'k', 6)).rejects.toThrow(
         'incomplete lookup',
@@ -896,6 +900,57 @@ suite('tracking v2 database lifecycle', () => {
       const clamped = Date.parse(startOf()!);
       expect(clamped).toBeGreaterThan(Date.now() - 7 * 86400000);
       expect(clamped).toBeLessThan(Date.now() - 7 * 86400000 + 120000);
+    });
+  });
+  describe('raid-specific search', () => {
+    const queryOf = (fetcher: ReturnType<typeof vi.fn>, call: number) =>
+      new URL(String(fetcher.mock.calls[call][0])).searchParams.get('query');
+    beforeEach(async () => {
+      await db.raid.update({ where: { id: raidId }, data: { ruleVersion: 3 } });
+    });
+    it('skips X entirely and still advances coverage when nobody is enrolled', async () => {
+      await db.raidEnrollment.deleteMany({ where: { raidId } });
+      const fetcher = vi.fn(async () => new Response('{}', { status: 200 }));
+      vi.stubGlobal('fetch', fetcher);
+      await collect(raidId, 'empty');
+      expect(fetcher).not.toHaveBeenCalled();
+      expect(await db.providerUsage.count()).toBe(0);
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.searchEndAt).toBeNull();
+      expect(raid.searchQuery).toBeNull();
+      const job = await db.job.findFirstOrThrow({ where: { kind: 'refresh' } });
+      expect(job.payload).toMatchObject({ raidId, final: false });
+      expect((job.payload as { coveredUntil?: string }).coveredUntil).toBeTruthy();
+    });
+    it('persists the author filter for the whole window and clears it afterwards', async () => {
+      const bob = await db.user.create({ data: { handle: 'bob', xId: 'bob' } });
+      const fetcher = vi
+        .fn()
+        .mockResolvedValueOnce(
+          new Response(
+            JSON.stringify({ data: [], meta: { next_token: 'page-2', newest_id: '9' } }),
+          ),
+        )
+        .mockResolvedValueOnce(new Response(JSON.stringify({ data: [], meta: {} })));
+      vi.stubGlobal('fetch', fetcher);
+      await collect(raidId, 'first');
+      expect(queryOf(fetcher, 0)).toBe('@useRAID -is:retweet -is:reply (from:alice)');
+      expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).searchQuery).toBe(
+        '@useRAID -is:retweet -is:reply (from:alice)',
+      );
+      await db.raidEnrollment.create({
+        data: {
+          raidId,
+          userId: bob.id,
+          xId: 'bob',
+          walletAddress: Keypair.generate().publicKey.toBase58(),
+        },
+      });
+      await collect(raidId, 'second');
+      expect(queryOf(fetcher, 1)).toBe('@useRAID -is:retweet -is:reply (from:alice)');
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.searchQuery).toBeNull();
+      expect(raid.searchEndAt).toBeNull();
     });
   });
 });

@@ -9,7 +9,7 @@ import {
   type TrackingPost,
 } from '../src/lib/tracking-domain';
 import { normalize, type XPost } from '../src/lib/domain';
-import { lookupOutcome } from '../src/lib/providers/x';
+import { lookupOutcome, searchQuery } from '../src/lib/providers/x';
 const raid = {
   id: 'legacy-raid',
   tag: 'raid_test',
@@ -228,5 +228,20 @@ describe('tracking v2 rules', () => {
       expect([...fast.get(p.id)!].sort()).toEqual(expected);
     }
     expect(related).toBeGreaterThan(50);
+  });
+});
+describe('raid-specific search query', () => {
+  const v2 = { tag: 'raid_test', trackingVersion: 2, officialHandle: 'useRAID' };
+  it('filters rule 3+ mentions to the enrolled authors, sorted by id', () => {
+    const query = searchQuery({ ...v2, ruleVersion: 3 }, ['20', '10']);
+    expect(query).toBe('@useRAID -is:retweet -is:reply (from:10 OR from:20)');
+  });
+  it('keeps the tag query for rule 2 and legacy raids', () => {
+    expect(searchQuery({ ...v2, ruleVersion: 2 }, ['10'])).toBe('@useRAID #raid_test -is:retweet');
+    expect(searchQuery({ tag: 'raid_test' }, null)).toMatch(/#raid_test -is:retweet$/);
+  });
+  it('falls back to the unfiltered query when the author list exceeds the limit', () => {
+    const ids = Array.from({ length: 40 }, (_, i) => `19000000000000000${i + 10}`);
+    expect(searchQuery({ ...v2, ruleVersion: 3 }, ids)).toBe('@useRAID -is:retweet -is:reply');
   });
 });

@@ -52,6 +52,7 @@ export async function completeImpressionTarget(raidId: string) {
         sinceId: null,
         nextToken: null,
         searchEndAt: null,
+        searchQuery: null,
         pendingNewestId: null,
         finalRefreshed: false,
       },

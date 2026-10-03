@@ -33,23 +33,28 @@ export default async function AdminPage() {
     );
   const now = new Date(),
     month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-  const [settings, users, raids, posts, jobs, usage, events, audit] = await Promise.all([
-    db.settings.upsert({ where: { id: 'global' }, create: {}, update: {} }),
-    db.user.findMany({ orderBy: { createdAt: 'desc' }, take: 50 }),
-    db.raid.findMany({ orderBy: { createdAt: 'desc' }, take: 50, include: { creator: true } }),
-    db.post.findMany({ orderBy: { createdAt: 'desc' }, take: 30 }),
-    db.job.findMany({
-      where: { error: { not: null }, doneAt: null },
-      orderBy: { runAt: 'desc' },
-      take: 20,
-    }),
-    db.providerUsage.aggregate({
-      where: { provider: 'x', at: { gte: month } },
-      _sum: { reservedCents: true },
-    }),
-    db.event.groupBy({ by: ['type'], where: { at: { gte: month } }, _count: true }),
-    db.moderationEvent.findMany({ orderBy: { createdAt: 'desc' }, take: 15 }),
-  ]);
+  const [settings, users, raids, posts, jobs, usage, identityUsage, events, audit] =
+    await Promise.all([
+      db.settings.upsert({ where: { id: 'global' }, create: {}, update: {} }),
+      db.user.findMany({ orderBy: { createdAt: 'desc' }, take: 50 }),
+      db.raid.findMany({ orderBy: { createdAt: 'desc' }, take: 50, include: { creator: true } }),
+      db.post.findMany({ orderBy: { createdAt: 'desc' }, take: 30 }),
+      db.job.findMany({
+        where: { error: { not: null }, doneAt: null },
+        orderBy: { runAt: 'desc' },
+        take: 20,
+      }),
+      db.providerUsage.aggregate({
+        where: { provider: 'x', at: { gte: month } },
+        _sum: { reservedCents: true },
+      }),
+      db.providerUsage.aggregate({
+        where: { provider: 'x-identity', at: { gte: month } },
+        _sum: { reservedCents: true },
+      }),
+      db.event.groupBy({ by: ['type'], where: { at: { gte: month } }, _count: true }),
+      db.moderationEvent.findMany({ orderBy: { createdAt: 'desc' }, take: 15 }),
+    ]);
   const [completed, creatorCampaigns, visitors, campaignUsage] = await Promise.all([
     db.raid.count({ where: { status: 'ENDED' } }),
     db.raid.groupBy({
@@ -87,7 +92,8 @@ export default async function AdminPage() {
     }),
   ]);
   const spend = usage._sum.reservedCents || 0,
-    ratio = spend / settings.monthlyBudgetCents;
+    signInSpend = identityUsage._sum.reservedCents || 0,
+    ratio = (spend + signInSpend) / settings.monthlyBudgetCents;
   const usdcPayments = await db.usdcTransfer.findMany({
     where: { status: 'REQUESTED', kind: { in: ['REWARD', 'WITHDRAWAL'] } },
     orderBy: { createdAt: 'asc' },
@@ -111,13 +117,17 @@ export default async function AdminPage() {
       {ratio >= 0.7 && (
         <div className="notice">
           {ratio >= 0.9 ? '90%' : '70%'} budget alert: conservative recorded usage has reached $
-          {(spend / 100).toFixed(2)}.
+          {((spend + signInSpend) / 100).toFixed(2)}.
         </div>
       )}
       <div className="metric-grid">
         <div>
           <span>Recorded X usage ceiling</span>
           <strong>${(spend / 100).toFixed(2)}</strong>
+        </div>
+        <div>
+          <span>Sign-in spend this month</span>
+          <strong>${(signInSpend / 100).toFixed(2)}</strong>
         </div>
         <div>
           <span>Monthly budget</span>

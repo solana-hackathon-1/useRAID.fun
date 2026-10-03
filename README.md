@@ -126,7 +126,7 @@ Five approved creators; ten scheduled/active campaigns; 24-hour default campaign
 
 Usage accounting reserves the maximum possible response cost before each X call, then settles to returned resources when successful. Failed requests retain their reservation. Daily provider deduplication discounts are deliberately not assumed. Recorded usage is a conservative operational ceiling, not an invoice. X identity reads are accounted for too.
 
-`TRUSTED_IP_HEADER` must only name a header overwritten by your trusted proxy. With no trusted header, public request limits share a conservative bucket. Never trust arbitrary client-supplied forwarding headers.
+`TRUSTED_IP_HEADER` must only name a single-value header that your trusted proxy overwrites (for example `CF-Connecting-IP` on Cloudflare; confirm which header your Railway edge sets, `X-Real-IP` or `X-Forwarded-For`). If the value holds a comma-separated list, only the last entry, the hop the proxy appended, is used, and it must be a valid IP address. With no trusted header, public request limits share one platform-wide ceiling per route; `/api/health` reports `rateLimitMode` as `per-client` or `shared`. Never trust arbitrary client-supplied forwarding headers.
 
 ## Current boundary
 

@@ -10,6 +10,7 @@ const mocks = vi.hoisted(() => ({
   origin: vi.fn(),
   user: vi.fn(),
   limit: vi.fn(),
+  publicLimit: vi.fn(),
 }));
 vi.mock('next/headers', () => ({
   cookies: async () => ({
@@ -23,6 +24,7 @@ vi.mock('../src/lib/auth', async (importOriginal) => ({
   checkOrigin: mocks.origin,
   requireUser: mocks.user,
   rateLimit: mocks.limit,
+  publicRateLimit: mocks.publicLimit,
 }));
 vi.mock('../src/lib/x-oauth', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../src/lib/x-oauth')>()),
@@ -52,6 +54,17 @@ beforeEach(() => {
   mocks.origin.mockImplementation(() => {});
 });
 afterEach(() => vi.unstubAllEnvs());
+it('limits sign-in starts per session when a session cookie exists, otherwise per client', async () => {
+  mocks.cookies.set('raid_session', 'session-value');
+  await startX(new Request('http://localhost:3000/api/auth/x'));
+  expect(mocks.limit).toHaveBeenCalledWith(expect.stringMatching(/^oauth:session:/), 30, 600);
+  expect(mocks.publicLimit).not.toHaveBeenCalled();
+  mocks.cookies.delete('raid_session');
+  mocks.limit.mockClear();
+  await startX(new Request('http://localhost:3000/api/auth/x'));
+  expect(mocks.publicLimit).toHaveBeenCalledWith(expect.any(Request), 'oauth', 30, 600, 600);
+  expect(mocks.limit).not.toHaveBeenCalled();
+});
 it('starts with HttpOnly and SameSite cookies', async () => {
   const response = await startX(
     new Request('http://localhost:3000/api/auth/x?returnTo=https://evil.example'),

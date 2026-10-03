@@ -1,6 +1,13 @@
 import { submitTrackingPost } from '@/lib/tracking';
 import { NextResponse } from 'next/server';
-import { checkOrigin, requireUser, clientKey, rateLimit, HttpError } from '@/lib/auth';
+import {
+  checkOrigin,
+  requireUser,
+  currentUser,
+  publicRateLimit,
+  rateLimit,
+  HttpError,
+} from '@/lib/auth';
 import { db } from '@/lib/db';
 import { postId } from '@/lib/domain';
 import { enqueue } from '@/lib/queue';
@@ -8,7 +15,6 @@ import { failure } from '@/lib/http';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     checkOrigin(request);
-    await rateLimit(`submit:${clientKey(request)}`, 10, 3600);
     const id = postId((await request.json()).url);
     if (!id) throw new HttpError(400, 'Enter an https://x.com/.../status/... post URL.');
     const raid = await db.raid.findUnique({
@@ -39,6 +45,9 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       raid.endsAt < new Date()
     )
       throw new HttpError(400, 'This raid is not accepting posts.');
+    const user = await currentUser();
+    if (user) await rateLimit(`submit:user:${user.id}`, 10, 3600);
+    else await publicRateLimit(request, 'submit', 10, 3600, 200);
     await rateLimit(`submissions:raid:${raid.id}`, 50, 3600);
     await enqueue('submission', `submission:${raid.id}:${id}`, { raidId: raid.id, postId: id });
     return NextResponse.json(

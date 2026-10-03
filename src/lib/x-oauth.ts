@@ -4,7 +4,7 @@ import type { OAuthAttempt, Prisma } from '@prisma/client';
 import { db } from './db';
 import { config } from './config';
 import { hash, random } from './auth-primitives';
-import { reserveUsage } from './providers/x';
+import { reserveUsage, settleReservation } from './providers/x';
 
 export class OAuthError extends Error {
   constructor(public code: string) {
@@ -89,14 +89,21 @@ export async function fetchXIdentity(code: string, verifier: string) {
         token_type: z.string().refine((v) => v.toLowerCase() === 'bearer'),
       })
       .parse(await token.json());
-    await reserveUsage(1, undefined, true);
+    const reservation = await reserveUsage(1, undefined, true);
     const me = await fetch('https://api.x.com/2/users/me?user.fields=profile_image_url', {
       headers: { Authorization: `Bearer ${credentials.access_token}` },
       cache: 'no-store',
       redirect: 'error',
       signal: AbortSignal.timeout(15000),
+    }).catch(async (error) => {
+      if (!(error instanceof DOMException && error.name === 'TimeoutError'))
+        await settleReservation(reservation.id, 0, 'Transport failure; no response');
+      throw error;
     });
-    if (!me.ok) throw new OAuthError('provider');
+    if (!me.ok) {
+      await settleReservation(reservation.id, 0, `X returned ${me.status}; nothing billable`);
+      throw new OAuthError('provider');
+    }
     return profileSchema.parse(await me.json()).data;
   } catch {
     throw new OAuthError('provider');

@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { checkOrigin, clientKey, rateLimit, HttpError } from '@/lib/auth';
+import { checkOrigin, publicRateLimit, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { failure } from '@/lib/http';
 export async function POST(request: Request) {
   try {
     checkOrigin(request);
-    await rateLimit(`event:${clientKey(request)}`, 60, 60);
+    await publicRateLimit(request, 'event', 60, 60, 1200);
     const b = await request.json();
     if (
       !['discovery_view', 'raid_view', 'share_click', 'trade_click', 'raid_click'].includes(b.type)

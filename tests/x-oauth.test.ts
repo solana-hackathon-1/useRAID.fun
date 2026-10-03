@@ -2,9 +2,18 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { config } from '../src/lib/config';
 import { authorizationUrl, validState, oauthConfig, fetchXIdentity } from '../src/lib/x-oauth';
-vi.mock('../src/lib/providers/x', () => ({ reserveUsage: vi.fn() }));
+const usage = vi.hoisted(() => ({
+  reserve: vi.fn(),
+  settle: vi.fn(),
+}));
+vi.mock('../src/lib/providers/x', () => ({
+  reserveUsage: usage.reserve,
+  settleReservation: usage.settle,
+}));
 
 beforeEach(() => {
+  usage.reserve.mockReset().mockResolvedValue({ id: 'reservation' });
+  usage.settle.mockReset();
   config.demo = false;
   config.appUrl = 'http://localhost:3000';
   vi.stubEnv('X_CLIENT_ID', 'fixture-client');
@@ -99,6 +108,37 @@ describe('X OAuth protocol', () => {
       code: 'provider',
       message: 'provider',
     });
+  });
+  it('releases the sign-in reservation when users/me returns no billable response', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(
+          Response.json({ access_token: 'fixture-token', token_type: 'bearer' }),
+        )
+        .mockResolvedValueOnce(new Response('unauthorized', { status: 401 })),
+    );
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.settle).toHaveBeenCalledWith('reservation', 0, expect.stringContaining('401'));
+  });
+  it('keeps the sign-in reservation after a timeout but releases it after other transport errors', async () => {
+    const token = () => Response.json({ access_token: 'fixture-token', token_type: 'bearer' });
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(token())
+        .mockRejectedValueOnce(new DOMException('slow', 'TimeoutError')),
+    );
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.settle).not.toHaveBeenCalled();
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValueOnce(token()).mockRejectedValueOnce(new TypeError('fetch failed')),
+    );
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.settle).toHaveBeenCalledWith('reservation', 0, expect.any(String));
   });
 });
 

@@ -231,6 +231,7 @@ model Raid {
   sinceId String?
   nextToken String?
   searchEndAt DateTime?
+  searchQuery String?
   pendingNewestId String?
   finalRefreshed Boolean @default(false)
   trackingVersion Int @default(1)
@@ -397,6 +398,7 @@ model Settings {
   monthlyBudgetCents Int @default(20000)
   cutoffCents Int @default(18000)
   dailyRequestLimit Int @default(5000)
+  identityDailyLimit Int @default(1000)
   launchPaused Boolean @default(false)
   payoutPaused Boolean @default(false)
   payoutWorkerAt DateTime?
@@ -432,6 +434,7 @@ model Event {
   visitor String?
   at DateTime @default(now())
   @@index([type, at])
+  @@index([type, visitor, at])
 }
 
 model RaidEnrollment {

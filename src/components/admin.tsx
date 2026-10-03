@@ -72,6 +72,7 @@ export function SettingsForm({
     monthlyBudgetCents: number;
     cutoffCents: number;
     dailyRequestLimit: number;
+    identityDailyLimit: number;
   };
 }) {
   const router = useRouter();
@@ -94,6 +95,7 @@ export function SettingsForm({
               monthlyBudgetCents: Number(d.get('monthlyBudgetCents')),
               cutoffCents: Number(d.get('cutoffCents')),
               dailyRequestLimit: Number(d.get('dailyRequestLimit')),
+              identityDailyLimit: Number(d.get('identityDailyLimit')),
               reason: d.get('reason'),
             }),
           });
@@ -124,6 +126,7 @@ export function SettingsForm({
             { key: 'monthlyBudgetCents', label: 'X budget (cents)', max: 20000 },
             { key: 'cutoffCents', label: 'Collection cutoff (cents)', max: 19000 },
             { key: 'dailyRequestLimit', label: 'Daily request limit', max: 5000 },
+            { key: 'identityDailyLimit', label: 'Daily sign-in limit', max: 20000 },
           ].map((f) => (
             <label className="field" key={f.key}>
               {f.label}

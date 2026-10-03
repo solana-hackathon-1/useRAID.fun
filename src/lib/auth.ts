@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { isIP } from 'node:net';
 import { hash, HttpError } from './auth-primitives';
 export { hash, random, HttpError } from './auth-primitives';
 import { db } from './db';
@@ -35,22 +36,45 @@ export function checkOrigin(request: Request) {
       'Demo mode is read-only. Connect the database and X account to enable this action.',
     );
 }
-export async function rateLimit(key: string, limit: number, seconds: number) {
+export async function rateLimit(key: string, limit: number, seconds: number, cost = 1) {
   const bucket = Math.floor(Date.now() / (seconds * 1000));
   const row = await db.rateLimit.upsert({
     where: { key: `${key}:${bucket}` },
     create: {
       key: `${key}:${bucket}`,
-      count: 1,
+      count: cost,
       expiresAt: new Date((bucket + 1) * seconds * 1000),
     },
-    update: { count: { increment: 1 } },
+    update: { count: { increment: cost } },
   });
   if (row.count > limit) throw new HttpError(429, 'Too many requests. Try again later.');
 }
-export function clientKey(request: Request) {
+export function clientIp(request: Request): string | null {
   const header = process.env.TRUSTED_IP_HEADER;
-  return hash(
-    header ? request.headers.get(header)?.split(',')[0].trim() || 'unknown' : 'shared-public',
-  );
+  if (!header) return null;
+  // The last entry is the hop the trusted proxy appended; earlier entries are client-forgeable.
+  const value = request.headers.get(header)?.split(',').at(-1)?.trim();
+  return value && isIP(value) ? value : null;
+}
+export function clientKey(request: Request) {
+  const ip = clientIp(request);
+  return ip ? hash(ip) : null;
+}
+let warnedShared = false;
+export async function publicRateLimit(
+  request: Request,
+  scope: string,
+  limit: number,
+  seconds: number,
+  sharedLimit: number,
+) {
+  const ip = clientIp(request);
+  if (ip) return rateLimit(`${scope}:ip:${hash(ip)}`, limit, seconds);
+  if (!warnedShared && process.env.NODE_ENV === 'production') {
+    warnedShared = true;
+    console.warn(
+      'TRUSTED_IP_HEADER is unset or invalid: public rate limits fall back to one shared bucket.',
+    );
+  }
+  return rateLimit(`${scope}:shared`, sharedLimit, seconds);
 }

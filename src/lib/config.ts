@@ -8,6 +8,8 @@ export const config = {
   handle: process.env.X_OFFICIAL_HANDLE || 'useRAID',
   liveApproved: Reflect.get(process.env, 'LIVE_COLLECTION_APPROVED') === 'true',
   retentionDays: Math.max(1, Number(process.env.X_RETENTION_DAYS || 30)),
+  refreshMinutes: Math.max(5, Number(process.env.X_REFRESH_MINUTES || 30)),
+  searchQueryMaxChars: Math.max(64, Number(process.env.X_SEARCH_QUERY_MAX_CHARS || 512)),
 };
 
 export const trackingEnabled = () => process.env.X_TRACKING_V2_ENABLED !== 'false';

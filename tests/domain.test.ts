@@ -179,7 +179,18 @@ describe('identity and external URLs', () => {
         monthlyBudgetCents: 20000,
         cutoffCents: 20000,
         dailyRequestLimit: 5000,
+        identityDailyLimit: 1000,
       }).success,
     ).toBe(false);
+    const valid = {
+      collectionEnabled: true,
+      maxActiveRaids: 10,
+      maxCreators: 5,
+      monthlyBudgetCents: 20000,
+      cutoffCents: 18000,
+      dailyRequestLimit: 5000,
+    };
+    expect(settingsInput.safeParse({ ...valid, identityDailyLimit: 1000 }).success).toBe(true);
+    expect(settingsInput.safeParse(valid).success).toBe(false);
   });
 });

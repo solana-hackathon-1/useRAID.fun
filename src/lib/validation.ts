@@ -48,5 +48,6 @@ export const settingsInput = z
     monthlyBudgetCents: z.number().int().min(100).max(20000),
     cutoffCents: z.number().int().min(1).max(19000),
     dailyRequestLimit: z.number().int().min(1).max(5000),
+    identityDailyLimit: z.number().int().min(1).max(20000),
   })
   .refine((x) => x.cutoffCents < x.monthlyBudgetCents, 'Cutoff must be below the budget.');

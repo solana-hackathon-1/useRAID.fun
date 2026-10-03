@@ -8,7 +8,7 @@ import {
   checkOrigin,
   requireUser,
   rateLimit,
-  clientKey,
+  publicRateLimit,
   HttpError,
 } from './auth';
 import {
@@ -37,9 +37,10 @@ export async function startX(request: Request) {
   if (studioSandbox()) return NextResponse.redirect(new URL('/studio-test', request.url));
   try {
     oauthConfig();
-    await rateLimit(`oauth:${clientKey(request)}`, 30, 600);
     const jar = await cookies();
     const raw = jar.get('raid_session')?.value;
+    if (raw) await rateLimit(`oauth:session:${hash(raw)}`, 30, 600);
+    else await publicRateLimit(request, 'oauth', 30, 600, 600);
     const attempt = await startAttempt(raw ? hash(raw) : null);
     const response = NextResponse.redirect(attempt.url);
     response.headers.set('Cache-Control', 'no-store');

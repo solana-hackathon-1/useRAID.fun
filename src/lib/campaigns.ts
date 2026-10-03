@@ -111,6 +111,7 @@ export async function changeRaid(user: User, id: string, action: string) {
                 sinceId: null,
                 nextToken: null,
                 searchEndAt: null,
+                searchQuery: null,
                 pendingNewestId: null,
                 finalRefreshed: false,
               }

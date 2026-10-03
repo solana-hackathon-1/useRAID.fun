@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { checkOrigin, clientKey, rateLimit, currentUser, cookieOptions } from '@/lib/auth';
+import { checkOrigin, publicRateLimit, currentUser, cookieOptions } from '@/lib/auth';
 import { verifyWalletChallenge } from '@/lib/wallet-auth';
 import { z } from 'zod';
 import { failure, readJson } from '@/lib/http';
@@ -7,7 +7,7 @@ import { sessionCookie } from '@/lib/studio-mode';
 export async function POST(request: Request) {
   try {
     checkOrigin(request);
-    await rateLimit(`wallet-verify:${clientKey(request)}`, 20, 600);
+    await publicRateLimit(request, 'wallet-verify', 20, 600, 400);
     const { digest, address, signature } = await readJson(
       request,
       z.object({

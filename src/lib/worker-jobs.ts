@@ -51,6 +51,7 @@ export async function schedule(now = new Date()) {
         sinceId: null,
         nextToken: null,
         searchEndAt: null,
+        searchQuery: null,
         pendingNewestId: null,
         finalRefreshed: false,
       },

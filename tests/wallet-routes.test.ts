@@ -4,7 +4,7 @@ vi.mock('next/headers', () => ({ cookies: async () => ({ get: () => undefined })
 vi.mock('../src/lib/auth', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../src/lib/auth')>()),
   checkOrigin: vi.fn(),
-  rateLimit: mocks.rateLimit,
+  publicRateLimit: mocks.rateLimit,
   currentUser: async () => null,
 }));
 vi.mock('../src/lib/wallet-auth', () => ({

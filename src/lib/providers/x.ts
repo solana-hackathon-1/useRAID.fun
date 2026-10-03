@@ -22,27 +22,41 @@ export async function reserveUsage(units: number, raidId?: string, identity = fa
     const now = new Date();
     const month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
     const day = new Date(now.toISOString().slice(0, 10));
+    const providers = identity ? ['x', 'x-identity'] : ['x'];
     const usage = await tx.providerUsage.aggregate({
-      where: { provider: 'x', at: { gte: month } },
+      where: { provider: { in: providers }, at: { gte: month } },
       _sum: { reservedCents: true },
     });
-    const calls = await tx.providerUsage.count({ where: { provider: 'x', at: { gte: day } } });
     // Conservative upper-bound accounting: no daily deduplication discount assumed.
     const cents = Math.ceil(units * (identity ? 1 : 0.5));
-    if (
-      (usage._sum.reservedCents || 0) + cents > settings.cutoffCents ||
-      calls >= settings.dailyRequestLimit
-    )
-      throw new ProviderError('Collection budget or daily request limit reached.', 900, true);
+    const spent = usage._sum.reservedCents || 0;
+    if (identity) {
+      // Sign-in has its own daily limit and may use the headroom above the collection cutoff.
+      const signIns = await tx.providerUsage.count({
+        where: { provider: 'x-identity', at: { gte: day } },
+      });
+      if (spent + cents > settings.monthlyBudgetCents || signIns >= settings.identityDailyLimit)
+        throw new ProviderError('Sign-in is temporarily unavailable (daily limit).', 900, true);
+    } else {
+      const calls = await tx.providerUsage.count({ where: { provider: 'x', at: { gte: day } } });
+      if (spent + cents > settings.cutoffCents || calls >= settings.dailyRequestLimit)
+        throw new ProviderError('Collection budget or daily request limit reached.', 900, true);
+    }
     return tx.providerUsage.create({
       data: {
-        provider: 'x',
+        provider: identity ? 'x-identity' : 'x',
         raidId,
         units,
         reservedCents: cents,
         reason: identity ? 'X identity lookup reservation' : 'Upper-bound post read reservation',
       },
     });
+  });
+}
+export function settleReservation(id: string, units: number, reason: string) {
+  return db.providerUsage.update({
+    where: { id },
+    data: { units, reservedCents: Math.ceil(units * 0.5), reason },
   });
 }
 async function xRead(path: string, params: URLSearchParams, units: number, raidId?: string) {
@@ -73,7 +87,14 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` },
     signal: AbortSignal.timeout(20000),
     cache: 'no-store',
-  }).catch(() => {
+  }).catch(async (error) => {
+    // A timed-out request may still have been served and billed, so it keeps its reservation.
+    if (error instanceof DOMException && error.name === 'TimeoutError')
+      await db.providerUsage.update({
+        where: { id: reservation.id },
+        data: { reason: 'Timed out; reservation kept' },
+      });
+    else await settleReservation(reservation.id, 0, 'Transport failure; no response');
     throw new ProviderError('X is unreachable.', 60, true);
   });
   const remainingHeader = response.headers.get('x-rate-limit-remaining');
@@ -121,6 +142,7 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     });
   });
   if (!response.ok) {
+    await settleReservation(reservation.id, 0, `X returned ${response.status}; nothing billable`);
     const reset = Number(response.headers.get('x-rate-limit-reset')) * 1000;
     throw new ProviderError(
       `X returned ${response.status}${response.status === 401 ? ' (credentials expired or invalid)' : ''}.`,
@@ -130,14 +152,11 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     );
   }
   const body = await response.json();
-  await db.providerUsage.update({
-    where: { id: reservation.id },
-    data: {
-      units: body.data?.length || 0,
-      reservedCents: Math.ceil((body.data?.length || 0) * 0.5),
-      reason: 'Observed post reads; no deduplication discount',
-    },
-  });
+  await settleReservation(
+    reservation.id,
+    body.data?.length || 0,
+    'Observed post reads; no deduplication discount',
+  );
   return body as {
     data?: XPost[];
     meta?: { next_token?: string; newest_id?: string };
@@ -159,6 +178,28 @@ export function lookupOutcome(
     return 'restricted';
   return 'unknown';
 }
+let warnedQueryLength = false;
+export function searchQuery(
+  raid: { tag: string; trackingVersion?: number; ruleVersion?: number; officialHandle?: string },
+  authorXIds: string[] | null,
+) {
+  if (raid.trackingVersion !== 2) return `@${config.handle} #${raid.tag} -is:retweet`;
+  if ((raid.ruleVersion || 1) < 3) return `@${raid.officialHandle} #${raid.tag} -is:retweet`;
+  const base = `@${raid.officialHandle} -is:retweet -is:reply`;
+  if (!authorXIds?.length) return base;
+  const filtered = `${base} (${[...authorXIds]
+    .sort((a, b) => (a.length === b.length ? (a < b ? -1 : 1) : a.length - b.length))
+    .map((id) => `from:${id}`)
+    .join(' OR ')})`;
+  if (filtered.length <= config.searchQueryMaxChars) return filtered;
+  if (!warnedQueryLength) {
+    warnedQueryLength = true;
+    console.warn(
+      'X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.',
+    );
+  }
+  return base;
+}
 const SEARCH_WINDOW_MS = 7 * 86400000;
 const fields = 'author_id,created_at,entities,public_metrics,referenced_tweets';
 export async function searchPosts(raid: {
@@ -173,6 +214,7 @@ export async function searchPosts(raid: {
   trackingVersion?: number;
   ruleVersion?: number;
   coveredUntil?: Date | null;
+  searchQuery?: string | null;
 }) {
   const end = new Date(
     Math.min(+raid.endsAt, raid.searchEndAt ? +raid.searchEndAt : Date.now() - 10000),
@@ -186,10 +228,7 @@ export async function searchPosts(raid: {
   const start = new Date(Math.max(wanted, Date.now() - SEARCH_WINDOW_MS + 60000));
   if (+end <= +start) return { data: [] as XPost[] };
   const p = new URLSearchParams({
-    query:
-      raid.trackingVersion === 2 && (raid.ruleVersion || 1) >= 3
-        ? `@${raid.officialHandle} -is:retweet -is:reply`
-        : `@${raid.trackingVersion === 2 ? raid.officialHandle : config.handle} #${raid.tag} -is:retweet`,
+    query: raid.searchQuery || searchQuery(raid, null),
     'tweet.fields': fields,
     max_results: '100',
     start_time: start.toISOString(),

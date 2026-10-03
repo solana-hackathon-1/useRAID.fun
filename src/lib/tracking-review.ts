@@ -305,6 +305,7 @@ export async function resolveTracking(
             collectionError: null,
             nextToken: null,
             searchEndAt: null,
+            searchQuery: null,
             pendingNewestId: null,
             trackingPhase: 'FINALIZING',
           },

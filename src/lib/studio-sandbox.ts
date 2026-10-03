@@ -118,6 +118,7 @@ export async function sandboxContribution(raidId: string, creatorId: string, com
         coverage: 'complete',
         nextToken: null,
         searchEndAt: null,
+        searchQuery: null,
       },
     });
     await finalizeTracking(raidId);
