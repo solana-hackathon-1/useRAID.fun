@@ -5,6 +5,8 @@ import {
   qualificationReason,
   scoreContributions,
   similarText,
+  similarTextV3,
+  postPoints,
   validMetrics,
   type TrackingPost,
 } from '../src/lib/tracking-domain';
@@ -178,6 +180,46 @@ describe('tracking v2 rules', () => {
     ).toBe(false);
     expect(similarText('short repeated text', 'short repeated text')).toBe(false);
   });
+  it('scores v3 zero-engagement posts at 0 and keeps v2 unchanged', () => {
+    const none = { likes: 0, replies: 0, reposts: 0, quotes: 0 };
+    expect(postPoints(none, 3)).toBe(0);
+    expect(postPoints(none, 2)).toBe(100);
+    expect(postPoints(none)).toBe(100);
+    expect(postPoints({ ...none, likes: 3 }, 3)).toBe(200);
+    const posts = [
+      post('1', 0),
+      { ...post('2', 0), authorId: 'bob' },
+      { ...post('3', 3), authorId: 'cara' },
+    ];
+    expect(scoreContributions(posts, 3).leaderboard.map((a) => a.xId)).toEqual(['cara']);
+    expect(scoreContributions(posts, 3).score).toBe(200);
+    expect(scoreContributions(posts, 2).leaderboard).toHaveLength(3);
+    expect(scoreContributions(posts).score).toBe(100 + 100 + 300);
+  });
+  it('detects short near-duplicates only for v3 and only from six tokens', () => {
+    const text = 'gm raiders loving the new useRAID campaign launch today friends';
+    const changed = text.replace('friends', 'frens');
+    expect(similarTextV3(text, changed)).toBe(true);
+    expect(similarText(text, changed)).toBe(false);
+    expect(
+      similarTextV3(text, 'completely unrelated words about something else entirely here'),
+    ).toBe(false);
+    expect(similarTextV3('gm raiders loving it', 'gm raiders loving this')).toBe(false);
+  });
+  it('flags only the later copy under v3 and both under v2', () => {
+    const base = { contentExpiredAt: null, text: 'same words for both raiders in this raid' };
+    const posts = [
+      { id: '1', authorId: 'a', ...base },
+      { id: '2', authorId: 'b', ...base },
+      { id: '3', authorId: 'c', ...base, text: base.text + ' now' },
+    ];
+    expect([...duplicatePeers(posts, { version: 3 }).entries()]).toEqual([
+      ['1', []],
+      ['2', ['1']],
+      ['3', expect.arrayContaining(['1', '2'])],
+    ]);
+    expect(duplicatePeers(posts, { version: 2 }).get('1')).toEqual(['2']);
+  });
   it('classifies lookup errors per post', () => {
     const e = (type: string, id = '9') => [{ resource_id: id, type }];
     const base = 'https://api.twitter.com/2/problems/';
@@ -188,7 +230,7 @@ describe('tracking v2 rules', () => {
     expect(lookupOutcome(e(`${base}resource-not-found`, '8'), '9')).toBe('unknown');
     expect(lookupOutcome(undefined, '9')).toBe('unknown');
   });
-  it('finds the same duplicate peers as the quadratic reference', () => {
+  it.each([2, 3])('finds the same duplicate peers as the quadratic reference (v%i)', (version) => {
     let seed = 7;
     const rand = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
     const vocab = Array.from({ length: 40 }, (_, i) => `w${i}`);
@@ -207,6 +249,7 @@ describe('tracking v2 rules', () => {
         contentExpiredAt: rand() < 0.05 ? new Date() : null,
       };
     });
+    const similar = version === 3 ? similarTextV3 : similarText;
     const naive = (p: (typeof posts)[number]) => {
       const text = normalize(p.text);
       return posts
@@ -214,13 +257,14 @@ describe('tracking v2 rules', () => {
           (o) =>
             o.id !== p.id &&
             !o.contentExpiredAt &&
+            (version < 3 || posts.indexOf(o) < posts.indexOf(p)) &&
             ((o.authorId !== p.authorId && text && normalize(o.text) === text) ||
-              (normalize(o.text) !== text && similarText(p.text, o.text))),
+              (normalize(o.text) !== text && similar(p.text, o.text))),
         )
         .map((o) => o.id)
         .sort();
     };
-    const fast = duplicatePeers(posts);
+    const fast = duplicatePeers(posts, { version });
     let related = 0;
     for (const p of posts) {
       const expected = naive(p);

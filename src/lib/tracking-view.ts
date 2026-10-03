@@ -55,10 +55,12 @@ export async function trackingView(raidId: string, userId?: string) {
       : [],
   ]);
   const frozen = result?.payload as unknown as ResultPayload | undefined;
+  const scoringVersion = frozen?.scoringVersion ?? raid.scoringVersion;
   const scored = scoreContributions(
     frozen
       ? frozen.contributions.map((p) => ({ ...p, text: '', createdAt: new Date(p.createdAt) }))
       : posts,
+    scoringVersion,
   );
   const scoredIds = new Set(scored.leaderboard.flatMap((a) => a.scoredPostIds));
   const member = members.find((m) => m.userId === userId);
@@ -95,12 +97,15 @@ export async function trackingView(raidId: string, userId?: string) {
     : [];
   const topPosts = observations
     .filter((p) => scoredIds.has(p.id))
-    .sort((a, b) => postPoints(b) - postPoints(a) || a.id.localeCompare(b.id))
+    .sort(
+      (a, b) =>
+        postPoints(b, scoringVersion) - postPoints(a, scoringVersion) || a.id.localeCompare(b.id),
+    )
     .slice(0, 10)
     .map((p) => ({
       id: p.id,
       authorId: p.authorId,
-      score: postPoints(p),
+      score: postPoints(p, scoringVersion),
       likes: p.likes,
       replies: p.replies,
       reposts: p.reposts,
@@ -192,7 +197,7 @@ export async function trackingView(raidId: string, userId?: string) {
             reviewStatus: p.reviewStatus,
             observedAt: p.lastObservationId ? p.observedAt.toISOString() : null,
             scored: scoredIds.has(p.id),
-            score: scoredIds.has(p.id) ? postPoints(p) : 0,
+            score: scoredIds.has(p.id) ? postPoints(p, scoringVersion) : 0,
           }))
       : [],
     submissions: submissions.map((s) => ({

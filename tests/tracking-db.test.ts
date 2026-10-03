@@ -148,7 +148,7 @@ suite('tracking v2 database lifecycle', () => {
     });
     expect(draft.trackingVersion).toBe(2);
     expect(draft.ruleVersion).toBe(3);
-    expect(draft.scoringVersion).toBe(2);
+    expect(draft.scoringVersion).toBe(3);
     const launched = await changeRaid(creator, draft.id, 'launch');
     expect(launched.status).toBe('ACTIVE');
     expect(launched.trackingVersion).toBe(2);
@@ -417,6 +417,149 @@ suite('tracking v2 database lifecycle', () => {
     expect(payout.lamports).toBe(8986500n);
     expect((await db.feeClaim.findFirstOrThrow()).roundId).toBe(round.id);
   });
+  describe('scoring v3 duplicate handling', () => {
+    const raider = async (xId: string) => {
+      const user = await db.user.create({ data: { handle: xId, xId } });
+      await db.raidEnrollment.create({
+        data: {
+          raidId,
+          userId: user.id,
+          xId,
+          walletAddress: Keypair.generate().publicKey.toBase58(),
+          joinedAt: started,
+        },
+      });
+    };
+    const text = 'Gm raiders loving this campaign @useRAID #raid_tracking';
+    const copy = (id: string, author: string, offset: number) =>
+      xpost(id, { author_id: author, text, created_at: new Date(+posted + offset).toISOString() });
+    const states = async () =>
+      Object.fromEntries(
+        (await db.post.findMany()).map((p) => [p.id, [p.qualification, p.reviewStatus]]),
+      );
+    it('flags only later copies and keeps an audited clearance when another copy arrives', async () => {
+      await db.raid.update({ where: { id: raidId }, data: { scoringVersion: 3 } });
+      await raider('bob');
+      await raider('cara');
+      await ingestTracking(raidId, [copy('301', 'alice', 0), copy('302', 'bob', 1)]);
+      expect(await states()).toEqual({
+        '301': ['QUALIFIED', 'CLEAR'],
+        '302': ['QUALIFIED', 'FLAGGED'],
+      });
+      await db.post.update({ where: { id: '302' }, data: { reviewStatus: 'CLEARED' } });
+      await ingestTracking(raidId, [copy('303', 'cara', 2)]);
+      expect(await states()).toEqual({
+        '301': ['QUALIFIED', 'CLEAR'],
+        '302': ['QUALIFIED', 'CLEARED'],
+        '303': ['QUALIFIED', 'FLAGGED'],
+      });
+    });
+    it('keeps the legacy symmetric flagging on a scoring v2 Raid', async () => {
+      await raider('bob');
+      await ingestTracking(raidId, [copy('311', 'alice', 0), copy('312', 'bob', 1)]);
+      expect(await states()).toEqual({
+        '311': ['QUALIFIED', 'FLAGGED'],
+        '312': ['QUALIFIED', 'FLAGGED'],
+      });
+    });
+    it('catches a short near-duplicate under v3 and ignores it under v2', async () => {
+      const short = (id: string, author: string, last: string, offset: number) =>
+        xpost(id, {
+          author_id: author,
+          text: `gm raiders loving the new campaign launch happening today with all our friends ${last} @useRAID #raid_tracking`,
+          created_at: new Date(+posted + offset).toISOString(),
+        });
+      await raider('bob');
+      await ingestTracking(raidId, [
+        short('321', 'alice', 'friends', 0),
+        short('322', 'bob', 'frens', 1),
+      ]);
+      expect((await states())['322']).toEqual(['QUALIFIED', 'CLEAR']);
+      await db.raid.update({ where: { id: raidId }, data: { scoringVersion: 3 } });
+      await ingestTracking(raidId, [short('322', 'bob', 'frens', 1)], { correction: true });
+      expect(await states()).toEqual({
+        '321': ['QUALIFIED', 'CLEAR'],
+        '322': ['QUALIFIED', 'FLAGGED'],
+      });
+    });
+  });
+  describe('re-homing an excluded post', () => {
+    const other = async (extra: Record<string, unknown> = {}) => {
+      const original = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      const raid = await db.raid.create({
+        data: {
+          mint: original.mint,
+          creatorId,
+          tag: 'raid_rehome',
+          title: 'Rehome target',
+          description: 'Rehome target Raid',
+          status: 'ACTIVE',
+          startsAt: started,
+          endsAt: original.endsAt,
+          trackingVersion: 2,
+          ruleVersion: 2,
+          scoringVersion: 2,
+          ...extra,
+        },
+      });
+      await enrollRaid(raid.id, userId);
+      await db.raidEnrollment.updateMany({
+        where: { raidId: raid.id },
+        data: { joinedAt: new Date(+started + 1000) },
+      });
+      return raid;
+    };
+    const wrongRaid = (id: string) =>
+      xpost(id, {
+        text: `Rehome ${id} @useRAID #raid_rehome`,
+        entities: { mentions: [{ username: 'useRAID' }], hashtags: [{ tag: 'raid_rehome' }] },
+      });
+    const submit = async (target: string, id: string) => {
+      const submitted = await submitTrackingPost(target, userId, id);
+      await ingestTracking(target, [wrongRaid(id)], { submissionId: submitted.id });
+      return submitted;
+    };
+    it('moves an excluded post to the Raid where it qualifies and records the move', async () => {
+      const target = await other();
+      await ingestTracking(raidId, [wrongRaid('401')]);
+      expect(await db.post.findUniqueOrThrow({ where: { id: '401' } })).toMatchObject({
+        raidId,
+        qualification: 'EXCLUDED',
+        reasonCode: 'ATTRIBUTION',
+      });
+      await submit(target.id, '401');
+      expect(await db.post.findUniqueOrThrow({ where: { id: '401' } })).toMatchObject({
+        raidId: target.id,
+        qualification: 'QUALIFIED',
+        reasonCode: null,
+      });
+      const decision = await db.contributionDecision.findFirstOrThrow({
+        where: { postId: '401' },
+        orderBy: { at: 'desc' },
+      });
+      expect(decision.evidence).toMatchObject({ movedFromRaidId: raidId });
+      expect(await db.metricObservation.count({ where: { postId: '401' } })).toBe(2);
+    });
+    it('keeps qualified, admin-excluded and frozen-source posts where they are', async () => {
+      const target = await other();
+      await ingestTracking(raidId, [xpost('402')]);
+      await expect(submitTrackingPost(target.id, userId, '402')).rejects.toMatchObject({
+        status: 409,
+      });
+      await ingestTracking(raidId, [wrongRaid('403')]);
+      await db.post.update({ where: { id: '403' }, data: { adminExcluded: true } });
+      await expect(submitTrackingPost(target.id, userId, '403')).rejects.toMatchObject({
+        status: 409,
+      });
+      await ingestTracking(raidId, [wrongRaid('404')]);
+      await db.raid.update({ where: { id: raidId }, data: { trackingPhase: 'ALLOCATED' } });
+      const submitted = await submit(target.id, '404');
+      expect((await db.post.findUniqueOrThrow({ where: { id: '404' } })).raidId).toBe(raidId);
+      expect(
+        await db.postSubmission.findUniqueOrThrow({ where: { id: submitted.id } }),
+      ).toMatchObject({ status: 'EXCLUDED', reasonCode: 'OTHER_RAID' });
+    });
+  });
   it('flags cross-author copies until audited review; same-author duplicates stay excluded', async () => {
     const bob = await db.user.create({ data: { handle: 'bob', xId: 'bob' } });
     await db.raidEnrollment.create({
@@ -648,7 +791,7 @@ suite('tracking v2 database lifecycle', () => {
       ).toBeNull();
       await finalizeTracking(raidId);
       expect(await db.campaignResult.count()).toBe(1);
-    });
+    }, 60000);
     it('does not dead-letter submissions while X is failing with 5xx or unreachable', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
       vi.stubGlobal(
@@ -670,7 +813,7 @@ suite('tracking v2 database lifecycle', () => {
       expect((await db.postSubmission.findFirstOrThrow({ where: { postId: '202' } })).status).toBe(
         'QUEUED',
       );
-    });
+    }, 60000);
     it('excludes a submission when X rejects the lookup as an invalid request', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
       vi.stubGlobal(

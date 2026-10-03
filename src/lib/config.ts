@@ -17,7 +17,7 @@ export const trackingSettlementEnabled = () =>
   trackingEnabled() && process.env.X_TRACKING_V2_SETTLEMENT_ENABLED === 'true';
 export const newTrackingRules = () =>
   trackingEnabled()
-    ? { trackingVersion: 2, ruleVersion: 3, scoringVersion: 2, officialHandle: config.handle }
+    ? { trackingVersion: 2, ruleVersion: 3, scoringVersion: 3, officialHandle: config.handle }
     : {};
 
 export const authorCapBps = () => {

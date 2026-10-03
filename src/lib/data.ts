@@ -79,7 +79,7 @@ async function loadRaids(filter: Prisma.RaidWhereInput): Promise<RaidView[]> {
             interactions: latest?.interactions ?? 0,
           }
         : r.trackingVersion === 2
-          ? scoreContributions(scoringPosts)
+          ? scoreContributions(scoringPosts, result?.scoringVersion ?? r.scoringVersion)
           : metrics(r.posts, now);
     const identity = displayIdentity(r);
     const target = +now - 3600000;

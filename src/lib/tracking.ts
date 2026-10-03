@@ -18,6 +18,21 @@ export async function lockTracking(tx: Prisma.TransactionClient, raidId: string)
 export function assertTrackingEnabled() {
   if (!trackingEnabled()) throw new HttpError(503, 'X tracking is paused.');
 }
+// An excluded, non-frozen post may move to the Raid its author submits it to; qualified or
+// admin-handled posts stay where they were first counted.
+const rehomable = (
+  post: {
+    qualification: string;
+    adminExcluded: boolean;
+    reasonCode: string | null;
+    authorId: string;
+  },
+  xId: string,
+) =>
+  post.qualification === 'EXCLUDED' &&
+  !post.adminExcluded &&
+  post.reasonCode !== 'DUPLICATE_CONTENT' &&
+  post.authorId === xId;
 export async function enrollRaid(raidId: string, userId: string) {
   assertTrackingEnabled();
   return db.$transaction(async (tx) => {
@@ -82,7 +97,7 @@ export async function submitTrackingPost(raidId: string, userId: string, postId:
     )
       throw new HttpError(409, 'This Raid is not accepting submissions.');
     const post = await tx.post.findUnique({ where: { id: postId } });
-    if (post && post.raidId !== raidId)
+    if (post && post.raidId !== raidId && !rehomable(post, enrollment.xId))
       throw new HttpError(409, 'Post already belongs to another Raid.');
     const submission = await tx.postSubmission.create({
       data: { raidId, enrollmentId: enrollment.id, postId },
@@ -112,8 +127,12 @@ export async function requalifyDuplicates(tx: Prisma.TransactionClient, raidId: 
     },
     orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
   });
+  const { scoringVersion } = await tx.raid.findUniqueOrThrow({
+    where: { id: raidId },
+    select: { scoringVersion: true },
+  });
   const first = new Map<string, string>();
-  const peerIds = duplicatePeers(posts);
+  const peerIds = duplicatePeers(posts, { version: scoringVersion });
   for (const p of posts) {
     const text = normalize(p.text),
       key = `${p.authorId}:${p.contentHash || text}`;
@@ -218,6 +237,7 @@ export async function ingestTracking(
           })
         ).map((p) => p.id),
       );
+      const movedFrom = new Set<string>();
       for (const p of [...posts].sort((a, b) => a.id.localeCompare(b.id))) {
         if (!p.id || !p.author_id || !Number.isFinite(Date.parse(p.created_at)))
           throw new Error('X returned incomplete post identity.');
@@ -247,13 +267,31 @@ export async function ingestTracking(
         // Global post lock prevents concurrent cross-Raid imports from acquiring the same ID.
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`post:${p.id}`}, 0))`;
         const old = await tx.post.findUnique({ where: { id: p.id } });
+        let movedFromRaidId: string | null = null;
         if (old && old.raidId !== raidId) {
-          if (submission)
-            await tx.postSubmission.update({
-              where: { id: submission.id },
-              data: { status: 'EXCLUDED', reasonCode: 'OTHER_RAID' },
-            });
-          continue;
+          const source =
+            submission && rehomable(old, submission.enrollment.xId)
+              ? await tx.raid.findUnique({ where: { id: old.raidId } })
+              : null;
+          const [{ locked }] = source
+            ? await tx.$queryRaw<{ locked: boolean }[]>`
+                SELECT pg_try_advisory_xact_lock(hashtextextended(${`tracking:${old.raidId}`}, 0)) AS locked`
+            : [{ locked: false }];
+          if (source && !locked)
+            throw new Error('Post is being processed by another Raid; retrying.');
+          if (
+            !source ||
+            ['APPROVED', 'ALLOCATED', 'HELD', 'HELD_RESOLVED'].includes(source.trackingPhase) ||
+            source.activeResultId
+          ) {
+            if (submission)
+              await tx.postSubmission.update({
+                where: { id: submission.id },
+                data: { status: 'EXCLUDED', reasonCode: 'OTHER_RAID' },
+              });
+            continue;
+          }
+          movedFromRaidId = old.raidId;
         }
         // Repeated URL submissions must not refresh frozen results.
         if (old && raid.activeResultId && !options.correction) {
@@ -335,8 +373,9 @@ export async function ingestTracking(
             source: options.source || 'SEARCH',
             ...data,
           },
-          update: data,
+          update: { ...data, raidId },
         });
+        if (movedFromRaidId) movedFrom.add(movedFromRaidId);
         if (valid && m) {
           const observation = await tx.metricObservation.create({
             data: {
@@ -364,6 +403,7 @@ export async function ingestTracking(
           !old ||
           old.qualification !== qualification ||
           old.reasonCode !== reasonCode ||
+          movedFromRaidId ||
           options.correction
         )
           await tx.contributionDecision.create({
@@ -372,7 +412,12 @@ export async function ingestTracking(
               qualification,
               reasonCode,
               ruleVersion: raid.ruleVersion,
-              evidence: { authorId: p.author_id, enrollmentId: enrollment?.id || null, sampleKey },
+              evidence: {
+                authorId: p.author_id,
+                enrollmentId: enrollment?.id || null,
+                sampleKey,
+                ...(movedFromRaidId ? { movedFromRaidId } : {}),
+              },
             },
           });
         if (enrollment)
@@ -384,6 +429,7 @@ export async function ingestTracking(
           await tx.raid.update({ where: { id: raidId }, data: { trackingPhase: 'FINALIZING' } });
       }
       await requalifyDuplicates(tx, raidId);
+      for (const from of movedFrom) await requalifyDuplicates(tx, from);
     },
     { timeout: 30000 },
   );

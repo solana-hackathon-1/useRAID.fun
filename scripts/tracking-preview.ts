@@ -1,11 +1,11 @@
 import 'dotenv/config';
 import { db } from '../src/lib/db';
 import { ingestTracking } from '../src/lib/tracking';
-import { assertTestDatabase } from '../tests/helpers/db-guard';
+import { trackingEnabled } from '../src/lib/config';
+import { ensureLocalDatabase } from './local-db';
 
-assertTestDatabase('useraid_dev');
-if (process.env.X_TRACKING_V2_ENABLED !== 'true')
-  throw new Error('Enable X_TRACKING_V2_ENABLED for local preview.');
+ensureLocalDatabase('useraid_dev');
+if (!trackingEnabled()) throw new Error('Enable X_TRACKING_V2_ENABLED for local preview.');
 
 const raidId = 'local-tracking-fixture';
 const mint = 'So11111111111111111111111111111111111111112';

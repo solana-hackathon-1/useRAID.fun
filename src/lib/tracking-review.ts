@@ -120,7 +120,7 @@ export async function finalizeTracking(raidId: string, now = new Date()) {
         where: { raidId },
         orderBy: { xId: 'asc' },
       });
-      const scores = scoreContributions(posts);
+      const scores = scoreContributions(posts, raid.scoringVersion);
       const payload: ResultPayload = {
         ruleVersion: raid.ruleVersion,
         scoringVersion: raid.scoringVersion,

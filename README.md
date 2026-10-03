@@ -118,7 +118,7 @@ DATABASE_URL=postgresql://useraid:useraid@localhost:5432/useraid_test DEMO_MODE=
 DATABASE_URL=postgresql://useraid:useraid@localhost:5432/useraid_test npm run test:browser:live
 ```
 
-`test:live` starts a temporary server on port 3001 and verifies the existing campaign lifecycle. `test:browser:live` starts one on port 3006 with fixture launch and payout records; desktop and mobile checks cover the launch form, reward enrollment, balances, and payout links. Both use only the dedicated test database. Neither exercises a funded Solana transaction or makes X requests.
+`test:live` starts a temporary server on port 3001 and verifies the approved-creator journey: admin approval, a saved Creator Studio draft, the launch gate refusing without X credentials and funding, the public Raid, ending it, and the X connection UI. `test:browser:live` starts one on port 3006 with fixture launch and payout records; desktop and mobile checks cover the launch form, reward enrollment, balances, and payout links. Both use only the dedicated test database. Neither exercises a funded Solana transaction or makes X requests.
 
 The suite rejects other database names. Provider tests mock network responses and incur no X charges. CI runs migrations, unit/integration tests, the production build, and a dependency audit.
 

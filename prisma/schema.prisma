@@ -276,6 +276,8 @@ model Raid {
   launch TokenLaunch? @relation("LaunchRaids", fields: [tokenLaunchId], references: [id])
   @@index([tokenLaunchId, startsAt])
   @@index([status, startsAt, endsAt])
+  @@index([creatorId, createdAt])
+  @@index([mint])
 }
 model Post {
   id String @id
@@ -349,6 +351,7 @@ model BalanceEntry {
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
   @@index([userId, createdAt])
+  @@index([userId, network])
 }
 model UsdcTransfer {
   id String @id @default(cuid())
@@ -473,6 +476,7 @@ model RaidEnrollment {
   @@unique([raidId, xId])
   @@unique([raidId, userId])
   @@unique([raidId, walletAddress])
+  @@index([xId, joinedAt])
 }
 model PostSubmission {
   id String @id @default(cuid())

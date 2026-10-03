@@ -57,7 +57,10 @@ export async function snapshot(raidId: string, complete: boolean) {
   const at = new Date(Math.floor(+now / 60000) * 60000);
   const posts = await db.post.findMany({ where: { raidId } });
   const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
-  const calculated = raid.trackingVersion === 2 ? scoreContributions(posts) : metrics(posts, now);
+  const calculated =
+    raid.trackingVersion === 2
+      ? scoreContributions(posts, raid.scoringVersion)
+      : metrics(posts, now);
   const data = {
     score: calculated.score,
     raiders: calculated.raiders,

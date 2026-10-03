@@ -2,7 +2,6 @@ import { chromium, expect } from '@playwright/test';
 import { PrismaClient } from '@prisma/client';
 import { createHash, randomBytes } from 'node:crypto';
 import { spawn } from 'node:child_process';
-import { ingest } from '../src/lib/collection';
 import { db as appDb } from '../src/lib/db';
 import { assertTestDatabase } from './helpers/db-guard';
 assertTestDatabase();
@@ -86,45 +85,47 @@ try {
   await expect(row.getByRole('button', { name: 'Revoke approval', exact: true })).toBeVisible();
   const page = await creatorContext.newPage();
   await page.goto('http://localhost:3001/creator');
-  await page.getByLabel('Campaign title').fill(`Browser campaign ${suffix}`);
+  await expect(page.getByRole('heading', { name: 'Creator Studio', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Creator approval required' })).toHaveCount(0);
+  await page.getByRole('link', { name: 'Create Raid', exact: true }).first().click();
+  await page.getByRole('button', { name: /X Campaign No token needed/ }).click();
+  await page.getByLabel('Campaign name', { exact: true }).fill(`Browser campaign ${suffix}`);
   await page
-    .getByLabel('Description', { exact: true })
-    .fill('A controlled browser test campaign for community participation.');
-  await page.getByLabel('Solana token mint').fill('So11111111111111111111111111111111111111112');
-  await page.getByLabel('Token symbol', { exact: true }).fill('SOL');
-  await page.getByLabel('Token name', { exact: true }).fill('Solana');
-  await page.getByRole('button', { name: 'Save draft' }).click();
-  await expect(page.getByText('Draft saved.', { exact: false })).toBeVisible();
-  await page.getByRole('button', { name: 'Launch / schedule' }).click();
-  await expect(page.getByRole('button', { name: 'End campaign' })).toBeVisible();
-  const raid = await db.raid.findFirstOrThrow({
-    where: { creatorId: creator.id, status: 'ACTIVE' },
+    .getByLabel('X post 1', { exact: true })
+    .fill('https://x.com/project/status/123456789123456789');
+  await page.getByRole('button', { name: 'Save draft', exact: true }).click();
+  await expect(page.getByText('Draft saved.', { exact: true })).toBeVisible();
+  await page.waitForURL(/\/creator\/new\?draft=/);
+  const draft = await db.raid.findFirstOrThrow({
+    where: { creatorId: creator.id },
+    include: { briefPosts: true },
   });
-  // Exercise the same ingest adapter with a controlled provider fixture; no network request.
-  await ingest(raid.id, [
-    {
-      id: `9${Date.now()}`,
-      author_id: 'browser_author',
-      text: `Original browser fixture @useRAID #${raid.tag}`,
-      created_at: new Date().toISOString(),
-      entities: { mentions: [{ username: 'useRAID' }], hashtags: [{ tag: raid.tag }] },
-      public_metrics: { like_count: 3, reply_count: 2, quote_count: 1, retweet_count: 0 },
-    },
-  ]);
-  await db.raid.update({
-    where: { id: raid.id },
-    data: { coverage: 'complete', observedAt: new Date() },
+  expect(draft).toMatchObject({ studioVersion: 1, status: 'DRAFT', fundingAsset: 'USDC' });
+  expect(draft.briefPosts.map((p) => p.postId)).toEqual(['123456789123456789']);
+  // This server has no funding rate, X credentials or approved collection, so launch must refuse.
+  const launch = await page.request.patch(`http://localhost:3001/api/raids/${draft.id}`, {
+    headers: { origin: 'http://localhost:3001' },
+    data: { action: 'fund-launch', expectedUnits: '1000000', termsAccepted: true },
   });
-  await page.getByRole('link', { name: 'View raid', exact: true }).click();
-  await expect(page.getByText('Original browser fixture', { exact: false })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Trade on Jupiter' })).toHaveAttribute(
-    'href',
-    /So11111111111111111111111111111111111111112/,
-  );
+  expect(launch.status()).toBe(503);
+  expect(await launch.text()).toContain('Live campaign funding is not ready');
+  expect((await db.raid.findUniqueOrThrow({ where: { id: draft.id } })).status).toBe('DRAFT');
+  // Stand in for the funded, X-validated launch, which needs the live X API and a USDC deposit.
+  const raid = await db.raid.update({
+    where: { id: draft.id },
+    data: { status: 'ACTIVE', coverage: 'complete', observedAt: new Date() },
+  });
+  await page.goto(`http://localhost:3001/creator/raids/${raid.id}`);
+  await expect(
+    page.getByRole('heading', { name: `Browser campaign ${suffix}`, exact: true }),
+  ).toBeVisible();
+  await page.getByRole('link', { name: 'View public Raid', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Raid these posts' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Raid on X' })).toHaveAttribute(
     'href',
-    new RegExp(raid.tag),
+    /status%2F123456789123456789/,
   );
+  await expect(page.getByRole('button', { name: 'Trading · Coming soon' })).toBeDisabled();
   const denied = await page.request.post('http://localhost:3001/api/admin/settings', {
     headers: { origin: 'http://localhost:3001' },
     data: {},
@@ -136,7 +137,7 @@ try {
   });
   expect(crossOrigin.status()).toBe(403);
   await page.screenshot({ path: 'artifacts/raid-live-fixture.png', fullPage: true });
-  await page.goto('http://localhost:3001/creator');
+  await page.goto('http://localhost:3001/creator/account');
   await expect(page.getByRole('heading', { name: 'X Connected' })).toBeVisible();
   await page.route('**/api/auth/x/disconnect', (route) =>
     route.fulfill({ status: 500, json: { error: 'Fixture error' } }),
@@ -157,25 +158,32 @@ try {
   await page.getByRole('button', { name: 'Disconnect', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Disconnecting…' })).toBeDisabled();
   releaseDisconnect();
-  await expect(page.getByRole('button', { name: 'Connect X', exact: true })).toBeVisible();
+  await page.waitForURL('http://localhost:3001/creator');
+  await page.goto('http://localhost:3001/creator/account');
+  await expect(page.getByRole('link', { name: 'Connect X', exact: true })).toBeVisible();
   expect(await db.xAccount.count({ where: { userId: creator.id } })).toBe(0);
   expect(await db.raid.findUnique({ where: { id: raid.id } })).not.toBeNull();
-  await page.goto('http://localhost:3001/creator?auth=cancelled');
+  await page.goto('http://localhost:3001/creator/account?auth=cancelled');
   await expect(
     page.getByRole('region', { name: 'X account connection' }).getByRole('alert'),
   ).toContainText('X authorization was cancelled');
-  await page.route('**/api/auth/x', async (route) => {
-    await route.fulfill({ status: 303, headers: { location: '/creator?auth=state' } });
+  await page.route(/\/api\/auth\/x\?/, async (route) => {
+    await route.fulfill({ status: 303, headers: { location: '/creator/account?auth=state' } });
   });
-  await page.getByRole('button', { name: 'Connect X', exact: true }).click();
+  await page.getByRole('link', { name: 'Connect X', exact: true }).click();
   await expect(
     page.getByRole('region', { name: 'X account connection' }).getByRole('alert'),
   ).toContainText('Authorization expired or was invalid');
-  await page.unroute('**/api/auth/x');
+  await page.unroute(/\/api\/auth\/x\?/);
+  await page.goto(`http://localhost:3001/creator/raids/${raid.id}`);
+  await page.getByText('End Raid early').click();
   await page.getByRole('button', { name: 'End campaign' }).click();
   await expect(page.getByRole('button', { name: 'End campaign' })).toHaveCount(0);
+  await expect
+    .poll(async () => (await db.raid.findUniqueOrThrow({ where: { id: raid.id } })).status)
+    .toBe('ENDED');
   console.log(
-    'PASS: admin approval → creator draft → launch → fixture ingestion → public raid → exact-mint trade link → end; X connection UI, disconnect, errors, and history preservation verified; admin and cross-origin authorization enforced.',
+    'PASS: admin approval → Creator Studio draft → launch gate → public raid → end; X connection UI, disconnect, errors, and history preservation verified; admin and cross-origin authorization enforced.',
   );
 } finally {
   await browser.close();
@@ -186,6 +194,7 @@ try {
   });
   const ids = fixtureRaids.map((r) => r.id);
   await db.post.deleteMany({ where: { raidId: { in: ids } } });
+  await db.raidBriefPost.deleteMany({ where: { raidId: { in: ids } } });
   await db.snapshot.deleteMany({ where: { raidId: { in: ids } } });
   await db.event.deleteMany({ where: { raidId: { in: ids } } });
   await db.raid.deleteMany({ where: { id: { in: ids } } });

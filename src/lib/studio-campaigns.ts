@@ -120,7 +120,7 @@ export async function saveStudioRaid(user: User, input: unknown, id?: string) {
         fundingNetwork: settings.network,
         trackingVersion: 2,
         ruleVersion: 4,
-        scoringVersion: 2,
+        scoringVersion: 3,
         officialHandle: config.handle,
         title: data.title,
         description: data.description,
