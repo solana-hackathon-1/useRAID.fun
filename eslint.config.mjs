@@ -24,6 +24,7 @@ export default defineConfig([
   ...warnOnly(nextTypescript),
   globalIgnores([
     '.next/**',
+    '.next-*/**',
     'out/**',
     'build/**',
     'artifacts/**',
