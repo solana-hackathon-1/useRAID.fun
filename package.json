@@ -23,6 +23,7 @@
     "test:live": "tsx tests/live-flow.ts",
     "tracking:audit": "tsx scripts/tracking-audit.ts",
     "media:backfill": "tsx scripts/backfill-media.ts",
+    "launch:rotate-keys": "tsx scripts/rotate-launch-keys.ts",
     "tracking:preview": "tsx scripts/tracking-preview.ts",
     "studio:preview": "tsx scripts/studio-preview.ts",
     "lint": "eslint .",
