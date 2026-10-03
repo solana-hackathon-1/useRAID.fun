@@ -1,14 +1,19 @@
 # Publish the coming-soon page
 
-The complete static site is in `public/coming-soon/`. It uses local fonts and plain HTML/CSS. No build, JavaScript, database, secrets, or Next.js server is required. The full application is not part of this deployment.
+The complete static site is in `sites/coming-soon/`. It uses local fonts and plain HTML/CSS. No build, JavaScript, database, secrets, or Next.js server is required. The full application is not part of this deployment.
 
 ## Preview
 
-With the existing development server running, open <http://localhost:3000/coming-soon/index.html>.
+The page is not part of the Next.js app, so it is not served by `npm run dev`. Serve the folder directly:
+
+```sh
+npx serve sites/coming-soon
+# or: python3 -m http.server -d sites/coming-soon 4000
+```
 
 ## Connect GitHub to Cloudflare Pages
 
-1. Commit and push `public/coming-soon/` and this guide to your GitHub repository (`0xdushy4nt/useRAID.fun`). Include only the files you intend to publish; other app work may still be uncommitted.
+1. Commit and push `sites/coming-soon/` and this guide to your GitHub repository (`0xdushy4nt/useRAID.fun`). Include only the files you intend to publish; other app work may still be uncommitted.
 2. In Cloudflare, open **Workers & Pages**, create a **Pages** project, and choose **Connect to Git**. If the screen starts with Workers, switch to Pages.
 3. Authorize GitHub and select `useRAID.fun`.
 4. Apply these settings:
@@ -17,7 +22,7 @@ With the existing development server running, open <http://localhost:3000/coming
    | ---------------------- | ------------------------------------------- |
    | Production branch      | `main` (or the branch containing this page) |
    | Framework preset       | `None`                                      |
-   | Root directory         | `public/coming-soon`                        |
+   | Root directory         | `sites/coming-soon`                         |
    | Build command          | `exit 0`                                    |
    | Build output directory | `.`                                         |
    | Environment variable   | `SKIP_DEPENDENCY_INSTALL` = `1`             |
@@ -26,7 +31,9 @@ With the existing development server running, open <http://localhost:3000/coming
 
 5. Save and deploy. Open the generated `*.pages.dev` address and confirm the page appears.
 
-Future pushes to the production branch deploy automatically. Optionally limit build watch paths to `public/coming-soon/*` in the project's build settings; these paths are relative to the repository root.
+> Moving from `public/coming-soon` to `sites/coming-soon` keeps the placeholder out of the application's static files. The Cloudflare Pages project must switch its **Root directory** to `sites/coming-soon` (and the build watch path to `sites/coming-soon/*`) at the same time as this change deploys, or the placeholder deploy breaks.
+
+Future pushes to the production branch deploy automatically. Optionally limit build watch paths to `sites/coming-soon/*` in the project's build settings; these paths are relative to the repository root.
 
 ## Connect your domain
 
@@ -43,6 +50,6 @@ No GitHub Pages configuration, GitHub Actions workflow, API keys, or app environ
 
 ## Change the page or launch the app
 
-Edit copy in `public/coming-soon/index.html` and appearance in `public/coming-soon/styles.css`, then push. Font licenses are included with the assets. When the full app is ready, deploy it with its server/database requirements and switch the domain to that deployment. These static Pages settings host only the placeholder.
+Edit copy in `sites/coming-soon/index.html` and appearance in `sites/coming-soon/styles.css`, then push. Font licenses are included with the assets. When the full app is ready, deploy it with its server/database requirements and switch the domain to that deployment. These static Pages settings host only the placeholder.
 
 Official references: [static HTML](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/), [build settings](https://developers.cloudflare.com/pages/configuration/build-configuration/), [custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/).

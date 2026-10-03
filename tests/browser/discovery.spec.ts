@@ -113,3 +113,7 @@ test('page has no document overflow and no runtime errors', async ({ page }) => 
   );
   expect(errors).toEqual([]);
 });
+test('the coming-soon placeholder is not served by the app', async ({ request }) => {
+  expect((await request.get('/coming-soon/index.html')).status()).toBe(404);
+  expect((await request.get('/coming-soon/assets/favicon.svg')).status()).toBe(404);
+});
