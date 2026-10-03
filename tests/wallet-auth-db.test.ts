@@ -13,6 +13,7 @@ import { config } from '../src/lib/config';
 import { createWalletChallenge, verifyWalletChallenge, rotateWallet } from '../src/lib/wallet-auth';
 import { hash, requireUser } from '../src/lib/auth';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { creditUsdc } from './helpers/ledger';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('wallet ownership PostgreSQL invariants', () => {
   const key = Keypair.generate();
@@ -111,7 +112,7 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
     mocks.cookie = '';
     await db.session.deleteMany();
     await db.walletChallenge.deleteMany();
-    await db.moderationEvent.deleteMany();
+    await db.$executeRaw`TRUNCATE "ModerationEvent"`;
   });
   afterAll(() => db.$disconnect());
   it('issues a Sign-In With Solana formatted challenge', async () => {
@@ -219,15 +220,7 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
       const walletUser = (
         await db.session.findUniqueOrThrow({ where: { tokenHash: hash(walletToken) } })
       ).userId;
-      await db.balanceEntry.create({
-        data: {
-          userId: walletUser,
-          key: 'seed',
-          kind: 'DEPOSIT',
-          availableDelta: 5n,
-          reservedDelta: 0n,
-        },
-      });
+      await creditUsdc(db, walletUser, 'seed', 5n);
       const xu = await xUser('merge-x2');
       await walletSignIn(w, xu.id);
       expect(await db.user.findUnique({ where: { id: xu.id } })).toBeNull();
@@ -246,9 +239,7 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
         [walletUser, 'a'],
         [xu.id, 'b'],
       ] as const)
-        await db.balanceEntry.create({
-          data: { userId, key, kind: 'DEPOSIT', availableDelta: 5n, reservedDelta: 0n },
-        });
+        await creditUsdc(db, userId, key, 5n);
       await expect(walletSignIn(w, xu.id)).rejects.toMatchObject({ status: 409 });
       expect(await db.user.count({ where: { id: { in: [walletUser, xu.id] } } })).toBe(2);
       expect(
@@ -279,9 +270,7 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
         data: { raidId: raid.id, userId: walletUser, xId: 'e', walletAddress: w.address },
       });
       const xu = await xUser('merge-x4', { role: 'CREATOR', suspended: false });
-      await db.balanceEntry.create({
-        data: { userId: xu.id, key: 'c', kind: 'DEPOSIT', availableDelta: 5n, reservedDelta: 0n },
-      });
+      await creditUsdc(db, xu.id, 'c', 5n);
       await expect(walletSignIn(w, xu.id)).rejects.toMatchObject({ status: 409 });
       expect(await db.user.findUnique({ where: { id: walletUser } })).not.toBeNull();
     });

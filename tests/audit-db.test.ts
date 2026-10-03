@@ -2,6 +2,7 @@ import { beforeAll, afterAll, describe, expect, it } from 'vitest';
 import { db } from '../src/lib/db';
 import { buildAuditReport } from '../src/lib/audit';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { creditUsdc } from './helpers/ledger';
 
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const counts = async () => ({
@@ -40,29 +41,22 @@ suite('tracking audit', () => {
         description: 'Legacy SOL raid with a token',
         mint,
         fundingAsset: 'SOL',
-        fundingStatus: 'FUNDED',
+        fundingStatus: 'VERIFIED',
         creatorId: user.id,
         startsAt: new Date(Date.now() - 3600000),
         endsAt: new Date(Date.now() + 3600000),
       },
     });
-    await db.balanceEntry.createMany({
-      data: [
-        {
-          userId: user.id,
-          key: 'audit-deposit',
-          kind: 'DEPOSIT',
-          availableDelta: 10_000_000n,
-          reservedDelta: 0n,
-        },
-        {
-          userId: user.id,
-          key: 'audit-reserve',
-          kind: 'RAID_RESERVE',
-          availableDelta: -5_000_000n,
-          reservedDelta: 5_000_000n,
-        },
-      ],
+    await creditUsdc(db, user.id, 'audit-deposit', 10_000_000n);
+    await db.balanceEntry.create({
+      data: {
+        userId: user.id,
+        key: 'audit-reserve',
+        raidId: raid.id,
+        kind: 'RAID_RESERVED',
+        availableDelta: -5_000_000n,
+        reservedDelta: 5_000_000n,
+      },
     });
     const base = {
       userId: user.id,
@@ -71,10 +65,13 @@ suite('tracking audit', () => {
       network: 'mainnet',
       mint: 'mint',
     };
+    const result = await db.campaignResult.create({
+      data: { raidId: raid.id, version: 1, fingerprint: 'audit', payload: {} },
+    });
     const paidAllocation = await db.usdcAllocation.create({
       data: {
         raidId: raid.id,
-        resultId: 'r1',
+        resultId: result.id,
         userId: user.id,
         xId: 'x1',
         walletAddress: 'wallet',
@@ -84,7 +81,7 @@ suite('tracking audit', () => {
     const unpaidAllocation = await db.usdcAllocation.create({
       data: {
         raidId: raid.id,
-        resultId: 'r1',
+        resultId: result.id,
         userId: user.id,
         xId: 'x2',
         walletAddress: 'wallet',
@@ -141,10 +138,30 @@ suite('tracking audit', () => {
     ]);
   });
 
+  it('lists every stored state value and flags any outside the vocabulary', async () => {
+    const report = await db.$transaction((tx) => buildAuditReport(tx));
+    expect(report.states).toEqual(
+      expect.arrayContaining([
+        { table: 'Raid', column: 'status', value: 'ACTIVE', count: '1', allowed: true },
+        { table: 'UsdcTransfer', column: 'kind', value: 'REWARD', count: '2', allowed: true },
+      ]),
+    );
+    expect(report.unexpectedStates).toEqual([]);
+    await db.$executeRaw`ALTER TABLE "Raid" DROP CONSTRAINT "Raid_status_check"`;
+    try {
+      await db.$executeRaw`UPDATE "Raid" SET "status" = 'LEGACY_ODD' WHERE "tag" = 'raid_audit_legacy'`;
+      expect((await db.$transaction((tx) => buildAuditReport(tx))).unexpectedStates).toEqual([
+        { table: 'Raid', column: 'status', value: 'LEGACY_ODD', count: '1', allowed: false },
+      ]);
+    } finally {
+      await db.$executeRaw`UPDATE "Raid" SET "status" = 'ACTIVE' WHERE "tag" = 'raid_audit_legacy'`;
+      await db.$executeRaw`ALTER TABLE "Raid" ADD CONSTRAINT "Raid_status_check" CHECK ("status" IN ('DRAFT','SCHEDULED','ACTIVE','ENDED')) NOT VALID`;
+    }
+  });
   it('counts legacy SOL raids that carry a token as standalone funding', async () => {
     const report = await db.$transaction((tx) => buildAuditReport(tx));
     expect(report.standaloneFunding).toEqual([
-      expect.objectContaining({ fundingStatus: 'FUNDED', _count: 1 }),
+      expect.objectContaining({ fundingStatus: 'VERIFIED', _count: 1 }),
     ]);
   });
 });

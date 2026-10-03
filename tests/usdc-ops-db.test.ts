@@ -33,6 +33,7 @@ import { enqueue, claimJob } from '../src/lib/queue';
 import { runJob } from '../src/lib/worker-jobs';
 import { displayIdentity } from '../src/lib/token-identity';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { creditUsdc } from './helpers/ledger';
 vi.mock('../src/lib/providers/x', () => ({
   lookupPosts: vi.fn(async (ids: string[]) => ({
     data: ids.map((id) => ({ id, text: 'Public target', author_id: 'project' })),
@@ -111,9 +112,7 @@ suite('USDC operations', () => {
       ...extra,
     }).then((raid) => raid.id);
   const credit = (userId: string, key: string, amount: bigint) =>
-    db.balanceEntry.create({
-      data: { userId, key, kind: 'DEPOSIT', availableDelta: amount, reservedDelta: 0n },
-    });
+    creditUsdc(db, userId, key, amount);
   const deposit = (amount: bigint, expiresAt: Date) =>
     db.usdcTransfer.create({
       data: {
@@ -189,7 +188,10 @@ suite('USDC operations', () => {
     await expect(releaseFundedRaid(id, admin.id, 'Second attempt')).rejects.toMatchObject({
       status: 409,
     });
-    await db.raid.update({ where: { id }, data: { hidden: false, trackingPhase: 'APPROVED' } });
+    await expect(
+      db.raid.update({ where: { id }, data: { trackingPhase: 'APPROVED' } }),
+    ).rejects.toThrow(/settled Raid/);
+    await db.raid.update({ where: { id }, data: { hidden: false } });
     await allocateUsdcRaid(id);
     expect(await db.balanceEntry.count({ where: { raidId: id, kind: 'RAID_SETTLED' } })).toBe(0);
     expect(await db.balanceEntry.count({ where: { raidId: id, kind: 'RAID_RELEASED' } })).toBe(1);

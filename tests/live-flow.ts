@@ -198,7 +198,6 @@ try {
   await db.snapshot.deleteMany({ where: { raidId: { in: ids } } });
   await db.event.deleteMany({ where: { raidId: { in: ids } } });
   await db.raid.deleteMany({ where: { id: { in: ids } } });
-  await db.moderationEvent.deleteMany({ where: { actorId: { in: cleanupUserIds } } });
   await db.user.deleteMany({ where: { id: { in: cleanupUserIds } } });
   await Promise.all([db.$disconnect(), appDb.$disconnect()]);
 }

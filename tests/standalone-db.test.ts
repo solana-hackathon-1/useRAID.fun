@@ -192,15 +192,61 @@ suite('standalone Raid database lifecycle', () => {
     expect(allocations.find((a) => a.kind === 'REFUND')?.lamports).toBe('900000000');
   });
   it('does not allocate while the settlement flag is off', async () => {
+    const raid = await db.raid.create({
+      data: {
+        tag: 'raid_flag_off',
+        title: 'Flag off',
+        description: '',
+        fundingStatus: 'VERIFIED',
+        fundingLamports: '1000000000',
+        fundingRecipient: Keypair.generate().publicKey.toBase58(),
+        fundingWallet: Keypair.generate().publicKey.toBase58(),
+        impressionTarget: 1_000_000,
+        creatorId: ownerId,
+        status: 'ENDED',
+        trackingVersion: 2,
+        trackingPhase: 'APPROVED',
+        startsAt: new Date(Date.now() - 7200000),
+        endsAt: new Date(Date.now() - 3600000),
+      },
+    });
+    const raider = await db.user.create({ data: { xId: 'flag-off', handle: 'flag-off' } });
+    const result = await db.campaignResult.create({
+      data: {
+        raidId: raid.id,
+        version: 1,
+        fingerprint: 'flag-off',
+        payload: {
+          participants: [
+            {
+              xId: 'flag-off',
+              userId: raider.id,
+              walletAddress: Keypair.generate().publicKey.toBase58(),
+            },
+          ],
+          contributions: [
+            {
+              authorId: 'flag-off',
+              views: 500_000,
+              qualification: 'QUALIFIED',
+              availability: 'AVAILABLE',
+              reviewStatus: 'CLEAR',
+              hidden: false,
+              deleted: false,
+            },
+          ],
+        },
+      },
+    });
+    await db.raid.update({ where: { id: raid.id }, data: { activeResultId: result.id } });
     vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'false');
     try {
-      const raid = await db.raid.findFirstOrThrow({ where: { tag: 'raid_min_payout' } });
-      await db.raidAllocation.deleteMany({ where: { raidId: raid.id } });
-      await db.raid.update({ where: { id: raid.id }, data: { trackingPhase: 'APPROVED' } });
       await allocateRaidFunding(raid.id);
       expect(await db.raidAllocation.count({ where: { raidId: raid.id } })).toBe(0);
     } finally {
       vi.stubEnv('X_TRACKING_V2_SETTLEMENT_ENABLED', 'true');
     }
+    await allocateRaidFunding(raid.id);
+    expect(await db.raidAllocation.count({ where: { raidId: raid.id } })).toBeGreaterThan(0);
   });
 });

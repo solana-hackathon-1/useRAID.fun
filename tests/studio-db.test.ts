@@ -7,6 +7,7 @@ import { balance, requestWithdrawal, rejectWithdrawal, createDeposit } from '../
 import { allocateUsdcRaid } from '../src/lib/studio-finance';
 import { lookupPosts } from '../src/lib/providers/x';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { creditUsdc } from './helpers/ledger';
 vi.mock('../src/lib/providers/x', () => ({
   lookupPosts: vi.fn(async (ids: string[]) => ({
     data: ids.map((id) => ({ id, text: 'Public target', author_id: 'project' })),
@@ -41,15 +42,7 @@ suite('Studio atomic balances and settlement', () => {
     await db.walletIdentity.create({
       data: { userId: owner.id, address: Keypair.generate().publicKey.toBase58() },
     });
-    await db.balanceEntry.create({
-      data: {
-        userId: owner.id,
-        key: 'test-credit',
-        kind: 'DEPOSIT',
-        availableDelta: 10_000_000n,
-        reservedDelta: 0n,
-      },
-    });
+    await creditUsdc(db, owner.id, 'test-credit', 10_000_000n);
     raidId = (
       await saveStudioRaid(owner, {
         studioVersion: 1,
@@ -164,6 +157,7 @@ suite('Studio atomic balances and settlement', () => {
       data: {
         ...fields,
         tag: 'raid_dust_settlement',
+        activeResultId: null,
         status: 'ENDED',
         trackingPhase: 'APPROVED',
         poolUnits: pool,
@@ -171,13 +165,14 @@ suite('Studio atomic balances and settlement', () => {
         authorCapBps: 10000,
       },
     });
+    await creditUsdc(db, owner.id, 'dust-credit', pool);
     await db.balanceEntry.create({
       data: {
         key: 'dust-reserve',
         userId: owner.id,
         raidId: dust.id,
         kind: 'RAID_RESERVED',
-        availableDelta: 0n,
+        availableDelta: -pool,
         reservedDelta: pool,
       },
     });
@@ -303,7 +298,9 @@ suite('Studio atomic balances and settlement', () => {
       await rejectWithdrawal(open.id, owner.id, 'Test cleanup');
     for (let i = 0; i < 3; i++) await createDeposit(owner.id, 1_000_000n).catch(() => undefined);
     await expect(createDeposit(owner.id, 1_000_000n)).rejects.toMatchObject({ status: 429 });
-    await db.usdcTransfer.deleteMany({ where: { userId: owner.id, kind: 'DEPOSIT' } });
+    await db.usdcTransfer.deleteMany({
+      where: { userId: owner.id, kind: 'DEPOSIT', status: 'AWAITING_TRANSFER' },
+    });
   });
 
   it('settles a large result with bulk allocation inserts and conserves the pool', async () => {
@@ -320,19 +317,21 @@ suite('Studio atomic balances and settlement', () => {
       data: {
         ...fields,
         tag: 'raid_bulk_settlement',
+        activeResultId: null,
         status: 'ENDED',
         trackingPhase: 'APPROVED',
         poolUnits: pool,
         impressionTarget: 60000,
       },
     });
+    await creditUsdc(db, owner.id, 'bulk-credit', pool);
     await db.balanceEntry.create({
       data: {
         key: 'bulk-reserve',
         userId: owner.id,
         raidId: bulk.id,
         kind: 'RAID_RESERVED',
-        availableDelta: 0n,
+        availableDelta: -pool,
         reservedDelta: pool,
       },
     });
@@ -406,6 +405,7 @@ suite('Studio atomic balances and settlement', () => {
         userId: holder.id,
         key: 'fk-credit',
         kind: 'DEPOSIT',
+        network: 'sandbox',
         availableDelta: 1n,
         reservedDelta: 0n,
       },

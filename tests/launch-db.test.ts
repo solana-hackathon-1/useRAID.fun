@@ -119,7 +119,6 @@ suite('launch flow', () => {
     await db.post.deleteMany();
     await db.rewardEnrollment.deleteMany();
     await db.financialTx.deleteMany();
-    await db.moderationEvent.deleteMany();
     await db.raid.deleteMany();
     await db.tokenLaunch.deleteMany();
     await db.token.deleteMany();

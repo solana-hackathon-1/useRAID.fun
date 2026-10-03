@@ -43,6 +43,21 @@ suite('tracking v2 database lifecycle', () => {
     public_metrics: { like_count: 3, reply_count: 0, retweet_count: 0, quote_count: 0 },
     ...patch,
   });
+  const enrollAt = async (raid: string, user: string, joinedAt: Date) => {
+    const [wallet, account] = await Promise.all([
+      db.walletIdentity.findUniqueOrThrow({ where: { userId: user } }),
+      db.xAccount.findUniqueOrThrow({ where: { userId: user } }),
+    ]);
+    return db.raidEnrollment.create({
+      data: {
+        raidId: raid,
+        userId: user,
+        xId: account.xUserId,
+        walletAddress: wallet.address,
+        joinedAt,
+      },
+    });
+  };
   beforeAll(() => {
     assertTestDatabase();
     vi.stubEnv('X_ADMIN_USER_ID', 'admin-x');
@@ -109,11 +124,7 @@ suite('tracking v2 database lifecycle', () => {
     raidId = raid.id;
     await db.tokenLaunch.update({ where: { id: launchId }, data: { raidId } });
     await db.settings.create({ data: { collectionEnabled: true } });
-    await enrollRaid(raidId, userId);
-    await db.raidEnrollment.updateMany({
-      where: { raidId },
-      data: { joinedAt: new Date(+started + 1000) },
-    });
+    await enrollAt(raidId, userId, new Date(+started + 1000));
   });
   afterAll(async () => {
     vi.unstubAllEnvs();
@@ -208,11 +219,7 @@ suite('tracking v2 database lifecycle', () => {
         scoringVersion: 2,
       },
     });
-    await enrollRaid(other.id, userId);
-    await db.raidEnrollment.updateMany({
-      where: { raidId: other.id },
-      data: { joinedAt: new Date(+started + 1000) },
-    });
+    await enrollAt(other.id, userId, new Date(+started + 1000));
     const post = xpost('mention-overlap', {
       text: 'Original @useRAID',
       entities: { mentions: [{ username: 'useRAID' }] },
@@ -502,11 +509,7 @@ suite('tracking v2 database lifecycle', () => {
           ...extra,
         },
       });
-      await enrollRaid(raid.id, userId);
-      await db.raidEnrollment.updateMany({
-        where: { raidId: raid.id },
-        data: { joinedAt: new Date(+started + 1000) },
-      });
+      await enrollAt(raid.id, userId, new Date(+started + 1000));
       return raid;
     };
     const wrongRaid = (id: string) =>
@@ -713,13 +716,15 @@ suite('tracking v2 database lifecycle', () => {
       await expect(clear()).rejects.toMatchObject({ status: 403 });
       expect(await db.moderationEvent.count({ where: { action: 'tracking:clear' } })).toBe(0);
     });
-    it('rejects an administrator who joined the Raid, by account or by X id', async () => {
+    it('rejects an administrator who joined the Raid by account', async () => {
       await ingestTracking(raidId, [xpost('401')]);
-      const byAccount = await db.raidEnrollment.create({
+      await db.raidEnrollment.create({
         data: { raidId, userId: adminId, xId: 'other-x', walletAddress: 'w' },
       });
       await expect(clear()).rejects.toMatchObject({ status: 403 });
-      await db.raidEnrollment.delete({ where: { id: byAccount.id } });
+    });
+    it('rejects an administrator who joined the Raid by X id', async () => {
+      await ingestTracking(raidId, [xpost('401')]);
       await db.raidEnrollment.create({
         data: { raidId, userId: creatorId, xId: 'admin-x', walletAddress: 'w2' },
       });
@@ -934,11 +939,7 @@ suite('tracking v2 database lifecycle', () => {
           scoringVersion: 2,
         },
       });
-      await enrollRaid(other.id, userId);
-      await db.raidEnrollment.updateMany({
-        where: { raidId: other.id },
-        data: { joinedAt: new Date(+started + 1000) },
-      });
+      await enrollAt(other.id, userId, new Date(+started + 1000));
       const mention = (likes: number) =>
         xpost('310', {
           text: 'Original @useRAID',
@@ -1113,17 +1114,24 @@ suite('tracking v2 database lifecycle', () => {
       await db.raid.update({ where: { id: raidId }, data: { ruleVersion: 3 } });
     });
     it('skips X entirely and still advances coverage when nobody is enrolled', async () => {
-      await db.raidEnrollment.deleteMany({ where: { raidId } });
+      const {
+        id: _id,
+        tag: _tag,
+        ...source
+      } = await db.raid.findUniqueOrThrow({
+        where: { id: raidId },
+      });
+      const emptyId = (await db.raid.create({ data: { ...source, tag: 'raid_empty' } })).id;
       const fetcher = vi.fn(async () => new Response('{}', { status: 200 }));
       vi.stubGlobal('fetch', fetcher);
-      await collect(raidId, 'empty');
+      await collect(emptyId, 'empty');
       expect(fetcher).not.toHaveBeenCalled();
       expect(await db.providerUsage.count()).toBe(0);
-      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: emptyId } });
       expect(raid.searchEndAt).toBeNull();
       expect(raid.searchQuery).toBeNull();
       const job = await db.job.findFirstOrThrow({ where: { kind: 'refresh' } });
-      expect(job.payload).toMatchObject({ raidId, final: false });
+      expect(job.payload).toMatchObject({ raidId: emptyId, final: false });
       expect((job.payload as { coveredUntil?: string }).coveredUntil).toBeTruthy();
     });
     it('persists the author filter for the whole window and clears it afterwards', async () => {

@@ -222,6 +222,7 @@ model Raid {
   quoteRate BigInt?
   imageUri String?
   usdcAllocations UsdcAllocation[]
+  balanceEntries BalanceEntry[]
   mint String?
   projectName String @default("")
   projectSymbol String @default("")
@@ -336,7 +337,9 @@ model RaidAllocation {
   signature String? @unique
   paidAt DateTime?
   raid Raid @relation(fields: [raidId], references: [id])
+  result CampaignResult? @relation(fields: [resultId], references: [id], onDelete: Restrict)
   @@unique([raidId, kind, walletAddress])
+  @@index([resultId])
 }
 model BalanceEntry {
   network       String @default("mainnet")
@@ -350,8 +353,11 @@ model BalanceEntry {
   transferId String?
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
+  raid Raid? @relation(fields: [raidId], references: [id], onDelete: Restrict)
+  transfer UsdcTransfer? @relation(fields: [transferId], references: [id], onDelete: Restrict)
   @@index([userId, createdAt])
   @@index([userId, network])
+  @@index([raidId])
 }
 model UsdcTransfer {
   id String @id @default(cuid())
@@ -369,6 +375,8 @@ model UsdcTransfer {
   expiresAt DateTime?
   paidAt DateTime?
   user User @relation(fields: [userId], references: [id])
+  allocation UsdcAllocation? @relation(fields: [allocationId], references: [id], onDelete: Restrict)
+  entries BalanceEntry[]
   @@index([userId, createdAt])
   @@index([status, kind])
 }
@@ -382,7 +390,10 @@ model UsdcAllocation {
   amount BigInt
   raid Raid @relation(fields: [raidId], references: [id])
   user User @relation(fields: [userId], references: [id])
+  result CampaignResult @relation(fields: [resultId], references: [id])
+  transfer UsdcTransfer?
   @@unique([raidId, xId])
+  @@index([resultId])
 }
 model Snapshot {
   id String @id @default(cuid())
@@ -523,6 +534,8 @@ model CampaignResult {
   version Int
   fingerprint String
   settlement RewardRound?
+  usdcAllocations UsdcAllocation[]
+  raidAllocations RaidAllocation[]
   payload Json
   createdAt DateTime @default(now())
   raid Raid @relation(fields: [raidId], references: [id])

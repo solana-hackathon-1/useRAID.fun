@@ -1,7 +1,28 @@
 import type { Prisma } from '@prisma/client';
+import { CHECKED_STATES } from './states';
+
+const COLUMNS = Object.entries(CHECKED_STATES).map(([name, allowed]) => {
+  const [table, column] = name.replace(/_check$/, '').split('_');
+  return { table, column, allowed: allowed as readonly string[] };
+});
+
+// Every distinct stored value of each CHECK-constrained column, so rows that predate (and would fail)
+// the NOT VALID state checks are visible before the VALIDATE migration.
+async function stateValues(tx: Prisma.TransactionClient) {
+  const rows = [];
+  for (const { table, column, allowed } of COLUMNS)
+    for (const row of await tx.$queryRawUnsafe<{ value: string; count: string }[]>(
+      `SELECT "${column}" AS value, count(*)::text AS count FROM "${table}" GROUP BY "${column}" ORDER BY "${column}"`,
+    ))
+      rows.push({ table, column, ...row, allowed: allowed.includes(row.value) });
+  return rows;
+}
 
 export async function buildAuditReport(tx: Prisma.TransactionClient) {
+  const states = await stateValues(tx);
   return {
+    states,
+    unexpectedStates: states.filter((row) => !row.allowed),
     raids: await tx.$queryRaw`SELECT status, count(*)::text AS count FROM "Raid" GROUP BY status`,
     legacyEnrollments: await tx.rewardEnrollment.count(),
     balances:

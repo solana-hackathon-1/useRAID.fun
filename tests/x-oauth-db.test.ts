@@ -4,6 +4,7 @@ import { config } from '../src/lib/config';
 import { hash } from '../src/lib/auth';
 import { startAttempt, claimAttempt, completeConnection, disconnectX } from '../src/lib/x-oauth';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { creditUsdc } from './helpers/ledger';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('X connection PostgreSQL invariants', () => {
   const profile = { id: '123456789', username: 'alice', name: 'Alice' };
@@ -163,10 +164,7 @@ integration('X connection PostgreSQL invariants', () => {
       if (withActivity) await credit(user.id, 'wallet-credit');
       return { user, hash: hash(raw) };
     }
-    const credit = (userId: string, key: string) =>
-      db.balanceEntry.create({
-        data: { userId, key, kind: 'DEPOSIT', availableDelta: 5n, reservedDelta: 0n },
-      });
+    const credit = (userId: string, key: string) => creditUsdc(db, userId, key, 5n);
     it('signs in as the existing X account and takes over the wallet of an empty wallet-only account', async () => {
       await connect();
       const x = await db.user.findUniqueOrThrow({ where: { xId: profile.id } });
