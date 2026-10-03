@@ -6,12 +6,11 @@ import { config } from '@/lib/config';
 import { TokenIcon, RaidCard, compact, Freshness, CampaignStatus, Empty } from '@/components/ui';
 import { MarketPanel } from '@/components/market';
 import { AutoRefresh } from '@/components/refresh';
-import { ExternalActions } from '@/components/actions';
-import { composeUrl, tradeUrl } from '@/lib/domain';
 import { publicRewardView } from '@/lib/reward-view';
 import { RewardPanel } from '@/components/reward-panel';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { formatUtcDate } from '@/lib/format';
 export const dynamic = 'force-dynamic';
 export default async function TokenPage({ params }: { params: Promise<{ mint: string }> }) {
   const token = await getToken((await params).mint);
@@ -44,7 +43,7 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
               loading="lazy"
             />
           ) : (
-            <TokenIcon symbol={token.symbol} large />
+            <TokenIcon symbol={token.symbol} imageUri={token.imageUri} large />
           )}
           <div>
             <h1>{token.name}</h1>
@@ -56,13 +55,11 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
             )}
           </div>
         </div>
-        <ExternalActions
-          demo={config.demo}
-          raidId={token.raids[0].id}
-          compose={composeUrl(config.handle, token.raids[0].tag)}
-          trade={tradeUrl(token.mint)}
-          active={false}
-        />
+        {active[0] && (
+          <Link className="button" href={`/raids/${active[0].id}`}>
+            Join live raid
+          </Link>
+        )}
       </div>
       <div className="detail-grid">
         <div>
@@ -128,8 +125,7 @@ export default async function TokenPage({ params }: { params: Promise<{ mint: st
                 </Link>
                 <p>
                   <CampaignStatus status={r.status} demo={config.demo} /> ·{' '}
-                  {new Date(r.startsAt).toLocaleDateString('en', { timeZone: 'UTC' })} ·{' '}
-                  {compact(r.raiders)} raiders
+                  {formatUtcDate(r.startsAt)} · {compact(r.raiders)} raiders
                 </p>
               </div>
             ))}

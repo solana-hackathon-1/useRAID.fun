@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { getRaid } from '@/lib/data';
 import { config } from '@/lib/config';
-import { composeUrl, tradeUrl } from '@/lib/domain';
+import { composeUrl } from '@/lib/domain';
 import {
   TokenIcon,
   Freshness,
@@ -23,6 +23,7 @@ import { RaidShare } from '@/components/raid-tools';
 import { TargetPosts } from '@/components/target-posts';
 import { formatUsdc } from '@/lib/usdc-amount';
 import { oauthMessage } from '@/lib/oauth-messages';
+import { formatNumber, formatUtcDateTime } from '@/lib/format';
 export const dynamic = 'force-dynamic';
 export default async function RaidPage({
   params,
@@ -94,7 +95,6 @@ export default async function RaidPage({
             tracking?.ruleVersion,
             briefPosts[0]?.postId,
           )}
-          trade={raid.mint ? tradeUrl(raid.mint) : null}
           active={raid.status === 'ACTIVE'}
         />
       </div>
@@ -144,15 +144,12 @@ export default async function RaidPage({
               </div>
             )}
             <p className="small-print">
-              {raid.status === 'ACTIVE' ? 'Ends' : 'Ended'}{' '}
-              {new Date(raid.endsAt).toLocaleString('en', { timeZone: 'UTC' })} UTC
+              {raid.status === 'ACTIVE' ? 'Ends' : 'Ended'} {formatUtcDateTime(raid.endsAt)}
             </p>
             <div className="metric-grid">
               <div>
                 <span>Attention score</span>
-                <strong>
-                  {raid.freshness === 'unavailable' ? '—' : raid.score.toLocaleString()}
-                </strong>
+                <strong>{raid.freshness === 'unavailable' ? '—' : formatNumber(raid.score)}</strong>
               </div>
               <div>
                 <span>Unique raiders</span>

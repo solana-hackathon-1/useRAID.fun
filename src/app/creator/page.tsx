@@ -62,6 +62,7 @@ export default async function CreatorPage({
         target: r.impressionTarget,
         raiders: r._count.enrollments,
         endsAt: r.endsAt.toISOString(),
+        hoursLeft: Math.max(0, Math.ceil((+r.endsAt - Date.now()) / 3600000)),
         legacy: r.studioVersion !== 1,
         paid:
           r.trackingPhase === 'ALLOCATED' &&

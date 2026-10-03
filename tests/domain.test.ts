@@ -5,6 +5,7 @@ import {
   momentum,
   normalize,
   postId,
+  scoreTime,
   tradeUrl,
   validMint,
   type ScoringPost,
@@ -24,6 +25,19 @@ const post = (id: string, authorId = 'alice', likes = 0): ScoringPost => ({
   createdAt: new Date(+now - 60000),
   hidden: false,
   deleted: false,
+});
+describe('score time', () => {
+  it('evaluates an ended raid at its end and a live raid now', () => {
+    const end = new Date(+now);
+    const later = new Date(+now + 5 * 3600000);
+    expect(scoreTime(end, later)).toBe(end);
+    expect(scoreTime(later, now)).toBe(now);
+  });
+  it('keeps the final score of a raid that ended hours ago', () => {
+    const later = new Date(+now + 5 * 3600000);
+    expect(metrics([post('1')], later).score).toBe(0);
+    expect(metrics([post('1')], scoreTime(new Date(+now), later)).score).toBe(100);
+  });
 });
 describe('attention score', () => {
   it('caps the top three posts per author and author contribution', () => {

@@ -125,7 +125,7 @@ try {
     'href',
     /status%2F123456789123456789/,
   );
-  await expect(page.getByRole('button', { name: 'Trading · Coming soon' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /Trad/ })).toHaveCount(0);
   const denied = await page.request.post('http://localhost:3001/api/admin/settings', {
     headers: { origin: 'http://localhost:3001' },
     data: {},

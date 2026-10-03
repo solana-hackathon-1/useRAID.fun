@@ -20,6 +20,7 @@ import {
   type ResultPayload,
 } from '../src/lib/tracking-review';
 import { trackingView } from '../src/lib/tracking-view';
+import { loadTrackingOps } from '../src/lib/tracking-ops';
 import { scoreContributions } from '../src/lib/tracking-domain';
 import { processTrackingLookup } from '../src/lib/tracking-worker';
 import { settleNextRound } from '../src/lib/rewards';
@@ -1251,5 +1252,56 @@ suite('tracking v2 database lifecycle', () => {
       await db.post.updateMany({ where: { raidId }, data: { observedAt: new Date() } });
       expect(await finalizeTracking(raidId)).toBeTruthy();
     });
+  });
+  it('separates operator blockers from excluded history and counts both', async () => {
+    const at = (i: number) => new Date(+posted + i * 1000);
+    const row = (id: string, i: number, patch: Record<string, unknown>) => ({
+      id,
+      raidId,
+      authorId: 'alice',
+      text: id,
+      normalized: id,
+      createdAt: at(i),
+      observedAt: at(i),
+      ...patch,
+    });
+    await db.post.createMany({
+      data: [
+        ...Array.from({ length: 60 }, (_, i) =>
+          row(`flagged-${String(i).padStart(2, '0')}`, i, { reviewStatus: 'FLAGGED' }),
+        ),
+        ...Array.from({ length: 10 }, (_, i) =>
+          row(`excluded-${i}`, 100 + i, { qualification: 'EXCLUDED', reasonCode: 'NO_MENTION' }),
+        ),
+        row('lookup-failed', 200, {
+          qualification: 'EXCLUDED',
+          availability: 'UNAVAILABLE',
+          reasonCode: 'LOOKUP_FAILED',
+        }),
+        row('admin-excluded', 201, {
+          qualification: 'EXCLUDED',
+          reasonCode: 'ADMIN_EXCLUDED',
+          adminExcluded: true,
+        }),
+        row('qualified', 202, { qualification: 'QUALIFIED' }),
+      ],
+    });
+    await db.raid.update({ where: { id: raidId }, data: { trackingPhase: 'REVIEW' } });
+    const ops = await loadTrackingOps();
+    expect(ops.needsReviewCount).toBe(61);
+    expect(ops.needsReview).toHaveLength(50);
+    expect(ops.needsReview.map((p) => p.id)).toContain('flagged-00');
+    expect(
+      ops.needsReview.every((p) => p.reviewStatus === 'FLAGGED' || p.id === 'lookup-failed'),
+    ).toBe(true);
+    const times = ops.needsReview.map((p) => +p.createdAt);
+    expect(times).toEqual([...times].sort((a, b) => a - b));
+    expect(ops.historyCount).toBe(11);
+    expect(ops.history.map((p) => p.id).sort()).toEqual(
+      ['admin-excluded', ...Array.from({ length: 10 }, (_, i) => `excluded-${i}`)].sort(),
+    );
+    expect(ops.raids.map((r) => r.id)).toEqual([raidId]);
+    await db.raid.update({ where: { id: raidId }, data: { trackingPhase: 'ALLOCATED' } });
+    expect((await loadTrackingOps()).raids).toEqual([]);
   });
 });

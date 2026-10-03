@@ -2,11 +2,20 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { track } from './refresh';
-export function RaidShare({ id, demo }: { id: string; demo: boolean }) {
+import { formatNumber } from '@/lib/format';
+export function RaidShare({
+  id,
+  demo,
+  trackView = true,
+}: {
+  id: string;
+  demo: boolean;
+  trackView?: boolean;
+}) {
   const [message, setMessage] = useState('');
   useEffect(() => {
-    if (!demo) track('raid_view', id);
-  }, [id, demo]);
+    if (!demo && trackView) track('raid_view', id);
+  }, [id, demo, trackView]);
   return (
     <div className="form-actions">
       <button
@@ -76,7 +85,7 @@ export function CreatorRaidTools({
     <div>
       {funding.required && (
         <p>
-          Target: {funding.target?.toLocaleString()} observed impressions · Funding:{' '}
+          Target: {formatNumber(funding.target)} observed impressions · Funding:{' '}
           {funding.verified ? 'Verified' : 'Required'}
         </p>
       )}

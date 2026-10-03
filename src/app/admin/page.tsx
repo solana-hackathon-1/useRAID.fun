@@ -14,13 +14,49 @@ import { JOB_MAX_ATTEMPTS } from '@/lib/queue';
 import { UsdcPaymentForm } from '@/components/usdc-operations';
 import { reconcileUsdc } from '@/lib/usdc-reconcile';
 import { formatUsdc, studioSandbox, usdcSettings } from '@/lib/usdc';
+import { formatNumber, formatUtcDateTime } from '@/lib/format';
+import {
+  ADMIN_PAGE,
+  adminListArgs,
+  adminPageNumber,
+  type AdminListParams,
+} from '@/lib/admin-lists';
+import Link from 'next/link';
 export const dynamic = 'force-dynamic';
+function Pager({
+  param,
+  page,
+  hasNext,
+  params,
+  anchor,
+}: {
+  param: keyof AdminListParams;
+  page: number;
+  hasNext: boolean;
+  params: AdminListParams;
+  anchor: string;
+}) {
+  if (page === 1 && !hasNext) return null;
+  const href = (to: number) => {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries({ ...params, [param]: to > 1 ? String(to) : '' }))
+      if (value && key !== 'auth') query.set(key, value);
+    return `/admin${query.size ? `?${query}` : ''}#${anchor}`;
+  };
+  return (
+    <nav className="pager" aria-label={`${anchor} pages`}>
+      {page > 1 ? <Link href={href(page - 1)}>Previous</Link> : <span />}
+      <span>Page {page}</span>
+      {hasNext ? <Link href={href(page + 1)}>Next</Link> : <span />}
+    </nav>
+  );
+}
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ auth?: string }>;
+  searchParams: Promise<{ auth?: string } & AdminListParams>;
 }) {
-  const [user, { auth }] = await Promise.all([adminUser(), searchParams]);
+  const [user, { auth, ...params }] = await Promise.all([adminUser(), searchParams]);
   const authMessage = oauthMessage(auth);
   if (!user)
     return (
@@ -46,16 +82,13 @@ export default async function AdminPage({
     );
   const now = new Date(),
     month = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-  const [settings, users, raids, posts, jobs, usage, identityUsage, events, audit] =
+  const lists = adminListArgs(params, adminXIds());
+  const [settings, allUsers, allRaids, allPosts, jobs, usage, identityUsage, events, audit] =
     await Promise.all([
       db.settings.upsert({ where: { id: 'global' }, create: {}, update: {} }),
-      db.user.findMany({
-        where: { OR: [{ xId: null }, { xId: { notIn: adminXIds() } }] },
-        orderBy: [{ approved: 'asc' }, { createdAt: 'desc' }],
-        take: 50,
-      }),
-      db.raid.findMany({ orderBy: { createdAt: 'desc' }, take: 50, include: { creator: true } }),
-      db.post.findMany({ orderBy: { createdAt: 'desc' }, take: 30 }),
+      db.user.findMany(lists.users),
+      db.raid.findMany(lists.raids),
+      db.post.findMany(lists.posts),
       db.job.findMany({
         where: { error: { not: null }, doneAt: null },
         orderBy: { runAt: 'desc' },
@@ -86,6 +119,20 @@ export default async function AdminPage({
       _sum: { reservedCents: true },
     }),
   ]);
+  const usageTitles = new Map(
+    (
+      await db.raid.findMany({
+        where: { id: { in: campaignUsage.flatMap((c) => (c.raidId ? [c.raidId] : [])) } },
+        select: { id: true, title: true },
+      })
+    ).map((r) => [r.id, r.title]),
+  );
+  const creatorPage = adminPageNumber(params.creatorPage),
+    campaignPage = adminPageNumber(params.campaignPage),
+    postPage = adminPageNumber(params.postPage);
+  const users = allUsers.slice(0, ADMIN_PAGE),
+    raids = allRaids.slice(0, ADMIN_PAGE),
+    posts = allPosts.slice(0, ADMIN_PAGE);
   const pausedLaunches = await db.tokenLaunch.findMany({
     where: { status: 'PAUSED' },
     select: { id: true, mint: true, name: true, error: true },
@@ -167,6 +214,17 @@ export default async function AdminPage({
           <strong>{jobs.length}</strong>
         </div>
       </div>
+      <form method="get" className="search-box" role="search">
+        <input
+          name="q"
+          type="search"
+          aria-label="Search operations"
+          placeholder="Search creators, campaigns and posts"
+          defaultValue={lists.q}
+        />
+        {params.creators === 'pending' && <input type="hidden" name="creators" value="pending" />}
+        <button className="button secondary small">Search</button>
+      </form>
       <nav className="section-nav" aria-label="Operations sections">
         <a href="#limits">Operating limits</a>
         <a href="#usdc-reconciliation">USDC reconciliation</a>
@@ -287,8 +345,7 @@ export default async function AdminPage({
                 {raid.title} · @{raid.creator.handle}
               </strong>
               <p>
-                Target: {raid.impressionTarget?.toLocaleString()} impressions ·{' '}
-                {raid.fundingRequest}
+                Target: {formatNumber(raid.impressionTarget)} impressions · {raid.fundingRequest}
               </p>
               <p>
                 Quote:{' '}
@@ -389,6 +446,20 @@ export default async function AdminPage({
         </section>
         <section className="panel" id="creators">
           <h2>Creator approvals</h2>
+          <p className="small-print">
+            {params.creators === 'pending' ? (
+              <Link href={`/admin${lists.q ? `?q=${encodeURIComponent(lists.q)}` : ''}#creators`}>
+                Show all creators
+              </Link>
+            ) : (
+              <Link
+                href={`/admin?creators=pending${lists.q ? `&q=${encodeURIComponent(lists.q)}` : ''}#creators`}
+              >
+                Show only pending requests
+              </Link>
+            )}
+          </p>
+          {!users.length && <p>No creators match.</p>}
           {users.map((u) => (
             <div className="admin-row" key={u.id}>
               <strong>
@@ -409,9 +480,17 @@ export default async function AdminPage({
               />
             </div>
           ))}
+          <Pager
+            param="creatorPage"
+            page={creatorPage}
+            hasNext={allUsers.length > ADMIN_PAGE}
+            params={params}
+            anchor="creators"
+          />
         </section>
         <section className="panel" id="campaigns">
           <h2>Campaign moderation</h2>
+          {!raids.length && <p>No campaigns match.</p>}
           {raids.map((r) => (
             <div className="admin-row" key={r.id}>
               <strong>{r.title}</strong>
@@ -444,9 +523,17 @@ export default async function AdminPage({
                 )}
             </div>
           ))}
+          <Pager
+            param="campaignPage"
+            page={campaignPage}
+            hasNext={allRaids.length > ADMIN_PAGE}
+            params={params}
+            anchor="campaigns"
+          />
         </section>
         <section className="panel" id="posts">
           <h2>Post moderation</h2>
+          {!posts.length && <p>No posts match.</p>}
           {posts.map((p) => (
             <div className="admin-row" key={p.id}>
               <p>{p.text || 'Deleted / expired content'}</p>
@@ -459,6 +546,13 @@ export default async function AdminPage({
               />
             </div>
           ))}
+          <Pager
+            param="postPage"
+            page={postPage}
+            hasNext={allPosts.length > ADMIN_PAGE}
+            params={params}
+            anchor="posts"
+          />
         </section>
         <section className="panel" id="failures">
           <h2>Collection failures</h2>
@@ -495,7 +589,7 @@ export default async function AdminPage({
           {campaignUsage.map((c) => (
             <div className="admin-row" key={c.raidId || 'identity'}>
               <p>
-                {raids.find((r) => r.id === c.raidId)?.title || c.raidId || 'Identity lookups'}: $
+                {(c.raidId && usageTitles.get(c.raidId)) || c.raidId || 'Identity lookups'}: $
                 {((c._sum.reservedCents || 0) / 100).toFixed(2)}
               </p>
             </div>
@@ -504,7 +598,7 @@ export default async function AdminPage({
           {audit.map((a) => (
             <div className="admin-row" key={a.id}>
               <strong>
-                {a.action} · {new Date(a.createdAt).toLocaleString('en', { timeZone: 'UTC' })} UTC
+                {a.action} · {formatUtcDateTime(a.createdAt)}
               </strong>
               <p>{a.reason}</p>
             </div>

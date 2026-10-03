@@ -8,6 +8,7 @@ import type { SolanaSignAndSendTransactionFeature } from '@solana/wallet-standar
 import bs58 from 'bs58';
 import { formatUsdc } from '@/lib/usdc-amount';
 import type { BalanceView } from '@/lib/usdc';
+import { formatUtcDate } from '@/lib/format';
 
 export function StudioBalance({
   view,
@@ -236,11 +237,9 @@ export function StudioBalance({
           Check deposit confirmation
         </button>
       )}
-      {message && (
-        <p className="message" role="status">
-          {message}
-        </p>
-      )}
+      <p className={message ? 'message' : undefined} role="status">
+        {message}
+      </p>
       <section className="studio-section">
         <h2>Transfers</h2>
         {!view.transfers.length && <p>Deposits, rewards, and withdrawals will appear here.</p>}
@@ -257,7 +256,7 @@ export function StudioBalance({
                       : 'Withdrawal'}
               </strong>
               <p>
-                {new Date(t.createdAt).toLocaleDateString('en')} ·{' '}
+                {formatUtcDate(t.createdAt)} ·{' '}
                 {t.status === 'PAID'
                   ? 'Completed'
                   : t.status === 'REJECTED'
@@ -301,7 +300,7 @@ export function StudioBalance({
             <div>
               <strong>{e.kind.replaceAll('_', ' ').toLowerCase()}</strong>
               <p>
-                {new Date(e.createdAt).toLocaleDateString('en')}
+                {formatUtcDate(e.createdAt)}
                 {e.raidId && (
                   <>
                     {' '}

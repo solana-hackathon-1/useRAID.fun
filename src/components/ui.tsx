@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowUpRight, Radio } from 'lucide-react';
 import type { RaidView } from '@/lib/types';
 import { formatUsdc } from '@/lib/usdc-amount';
+import { formatNumber } from '@/lib/format';
 export const compact = (n: number | null | undefined) =>
   n == null
     ? '—'
@@ -129,7 +130,7 @@ export function AttentionChart({ history }: { history: RaidView['history'] }) {
       className="attention-chart"
       viewBox="0 0 660 236"
       role="img"
-      aria-label={`Attention score from ${formatTime(history[0].at)} to ${formatTime(history[history.length - 1].at)} UTC. Latest score ${history[history.length - 1].score.toLocaleString()}.`}
+      aria-label={`Attention score from ${formatTime(history[0].at)} to ${formatTime(history[history.length - 1].at)} UTC. Latest score ${formatNumber(history[history.length - 1].score)}.`}
     >
       {[0, 0.5, 1].map((fraction) => (
         <g key={fraction}>
@@ -193,7 +194,7 @@ export function RaidCard({ raid }: { raid: RaidView }) {
       <div className="card-bottom">
         <div>
           <span className="muted">Attention score</span>
-          <strong>{raid.freshness === 'unavailable' ? '—' : raid.score.toLocaleString()}</strong>
+          <strong>{raid.freshness === 'unavailable' ? '—' : formatNumber(raid.score)}</strong>
         </div>
         <div
           className={`card-growth ${raid.momentum !== null && raid.momentum < 0 ? 'negative' : ''}`}

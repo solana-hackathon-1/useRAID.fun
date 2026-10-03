@@ -5,6 +5,27 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Plus, Check, X, Coins, MessageSquare, Rocket } from 'lucide-react';
 import { formatUsdc, units, quoteUsdc } from '@/lib/usdc-amount';
 import type { TargetPreview } from '@/lib/studio-targets';
+import { formatNumber } from '@/lib/format';
+
+const storage = {
+  get(key: string) {
+    try {
+      return sessionStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set(key: string, value: string) {
+    try {
+      sessionStorage.setItem(key, value);
+    } catch {}
+  },
+  remove(key: string) {
+    try {
+      sessionStorage.removeItem(key);
+    } catch {}
+  },
+};
 
 export type StudioDraft = {
   id?: string;
@@ -76,7 +97,7 @@ export function StudioEditor({
   useEffect(() => {
     if (!initial && !path) {
       try {
-        const saved = sessionStorage.getItem(storageKey);
+        const saved = storage.get(storageKey);
         if (saved) {
           setRecovered(JSON.parse(saved));
         }
@@ -85,7 +106,7 @@ export function StudioEditor({
     loaded.current = true;
   }, [initial, path, storageKey]);
   useEffect(() => {
-    if (loaded.current && chosen) sessionStorage.setItem(storageKey, JSON.stringify(draft));
+    if (loaded.current && chosen) storage.set(storageKey, JSON.stringify(draft));
   }, [draft, chosen, storageKey]);
   let pool: bigint | null = null;
   try {
@@ -156,7 +177,7 @@ export function StudioEditor({
           { action: 'fund-launch', expectedUnits: pool?.toString(), termsAccepted: terms },
           'PATCH',
         );
-        sessionStorage.removeItem(storageKey);
+        storage.remove(storageKey);
         router.push(`/creator/raids/${id}`);
         router.refresh();
       } else {
@@ -533,7 +554,7 @@ export function StudioEditor({
           </section>
           <section className="studio-section">
             <h2>Duration</h2>
-            <div className="studio-durations" aria-label="Campaign duration">
+            <div className="studio-durations" role="group" aria-label="Campaign duration">
               {[
                 [6, '6h'],
                 [12, '12h'],
@@ -575,7 +596,7 @@ export function StudioEditor({
             </div>
             <div>
               <dt>Impression target</dt>
-              <dd>{draft.impressionTarget.toLocaleString()}</dd>
+              <dd>{formatNumber(draft.impressionTarget)}</dd>
             </div>
             <div>
               <dt>Duration</dt>
@@ -625,11 +646,12 @@ export function StudioEditor({
               Add {formatUsdc(pool! - BigInt(available))} USDC to fund this Raid.
             </p>
           )}
-          {message && (
-            <p role={error ? 'alert' : 'status'} className={`message ${error ? 'error' : ''}`}>
-              {message}
-            </p>
-          )}
+          <p role="status" aria-live="polite" className={!error && message ? 'message' : undefined}>
+            {!error && message}
+          </p>
+          <p role="alert" className={error && message ? 'message error' : undefined}>
+            {error && message}
+          </p>
         </aside>
       </form>
       <a className="studio-mobile-review button" href="#launch-summary">

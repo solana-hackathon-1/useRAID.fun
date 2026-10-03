@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { WalletLogin } from './wallet-login';
+import { formatUtcDateTime } from '@/lib/format';
 type View = Awaited<ReturnType<typeof import('@/lib/reward-view').publicRewardView>>;
 const sol = (value: string) => `${(Number(BigInt(value)) / 1e9).toFixed(5)} SOL`;
 export function RewardPanel({
@@ -88,7 +89,7 @@ export function RewardPanel({
       {view.rounds.length ? (
         view.rounds.map((r) => (
           <div className="campaign-manage" key={r.startsAt}>
-            <strong>{new Date(r.endsAt).toLocaleString()}</strong>
+            <strong>{formatUtcDateTime(r.endsAt)}</strong>
             <p>
               {r.status} · {sol(r.grossLamports)} claimed · {sol(r.costLamports)} costs ·{' '}
               {sol(r.raiderLamports)} raiders · {sol(r.platformLamports)} platform

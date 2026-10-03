@@ -1,17 +1,15 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUpRight, Radio } from 'lucide-react';
+import { Radio } from 'lucide-react';
 import { track } from './refresh';
 export function ExternalActions({
   compose,
-  trade,
   raidId,
   demo,
   active = true,
 }: {
   compose: string;
-  trade: string | null;
   raidId: string;
   demo: boolean;
   active?: boolean;
@@ -23,9 +21,6 @@ export function ExternalActions({
           <button className="button" disabled title="Example campaign; posting disabled">
             <Radio size={16} />
             Raid on X
-          </button>
-          <button className="button secondary" disabled title="Example token; trading disabled">
-            Trade <ArrowUpRight size={16} />
           </button>
         </>
       ) : (
@@ -42,9 +37,6 @@ export function ExternalActions({
               Raid on X
             </a>
           )}
-          <button className="button secondary" disabled>
-            Trading · Coming soon
-          </button>
         </>
       )}
     </div>

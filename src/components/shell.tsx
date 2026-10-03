@@ -12,6 +12,8 @@ const links = [
   { href: '/launch', label: 'Launchpads · Coming soon' },
   { href: '/methodology', label: 'How it works' },
 ];
+const isCurrent = (path: string, href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`);
 export function Shell({
   children,
   demo,
@@ -25,6 +27,11 @@ export function Shell({
 }) {
   const path = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPath, setMenuPath] = useState(path);
+  if (menuPath !== path) {
+    setMenuPath(path);
+    setMenuOpen(false);
+  }
   const menuButton = useRef<HTMLButtonElement>(null);
   return (
     <>
@@ -57,7 +64,11 @@ export function Shell({
           </Link>
           <nav className="desktop-nav" aria-label="Main navigation">
             {links.map(({ href, label }) => (
-              <Link key={href} href={href} aria-current={path === href ? 'page' : undefined}>
+              <Link
+                key={href}
+                href={href}
+                aria-current={isCurrent(path, href) ? 'page' : undefined}
+              >
                 {label}
               </Link>
             ))}
@@ -91,7 +102,7 @@ export function Shell({
             <Link
               key={href}
               href={href}
-              aria-current={path === href ? 'page' : undefined}
+              aria-current={isCurrent(path, href) ? 'page' : undefined}
               onClick={() => setMenuOpen(false)}
             >
               {label}

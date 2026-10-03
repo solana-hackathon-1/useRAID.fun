@@ -5,6 +5,7 @@ import { Plus, ArrowUpRight } from 'lucide-react';
 import { formatUsdc } from '@/lib/usdc-amount';
 import { CreatorApproval } from './creator-approval';
 import { oauthMessage } from '@/lib/oauth-messages';
+import { formatNumber } from '@/lib/format';
 
 export type StudioCard = {
   id: string;
@@ -19,6 +20,7 @@ export type StudioCard = {
   target: number | null;
   raiders: number;
   endsAt: string;
+  hoursLeft: number;
   paid: boolean;
   legacy: boolean;
 };
@@ -79,9 +81,14 @@ export function StudioHome({
       <section className="studio-list">
         <div className="studio-list-heading">
           <h2>Your Raids</h2>
-          <div className="studio-tabs" aria-label="Filter Raids">
+          <div className="studio-tabs" role="group" aria-label="Filter Raids">
             {['All', 'Live', 'Drafts', 'Ended'].map((f) => (
-              <button key={f} aria-pressed={filter === f} onClick={() => setFilter(f)}>
+              <button
+                key={f}
+                type="button"
+                aria-pressed={filter === f}
+                onClick={() => setFilter(f)}
+              >
                 {f}
               </button>
             ))}
@@ -129,7 +136,7 @@ export function StudioHome({
                     ? `${raid.currency === 'USDC' ? formatUsdc(raid.pool) : (Number(raid.pool) / 1e9).toFixed(4)} ${raid.currency} rewards`
                     : 'Funding quote pending'}
                   {raid.status === 'ACTIVE'
-                    ? ` · ${Math.max(0, Math.ceil((Date.parse(raid.endsAt) - Date.now()) / 3600000))}h left`
+                    ? ` · ${raid.hoursLeft}h left`
                     : raid.status === 'ENDED'
                       ? ` · ${raid.paid ? 'Paid' : raid.phase === 'ALLOCATED' ? 'Payments pending' : 'Results under review'}`
                       : ''}
@@ -140,7 +147,7 @@ export function StudioHome({
               {raid.target && (
                 <>
                   <span>
-                    {raid.views.toLocaleString()} / {raid.target.toLocaleString()} impressions
+                    {formatNumber(raid.views)} / {formatNumber(raid.target)} impressions
                   </span>
                   <progress max={raid.target} value={Math.min(raid.views, raid.target)} />
                 </>

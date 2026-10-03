@@ -1,5 +1,6 @@
 import type { Market } from '@/lib/providers/market';
 import { money } from './ui';
+import { formatUtcDateTime } from '@/lib/format';
 export function MarketPanel({
   market,
   at,
@@ -53,7 +54,7 @@ export function MarketPanel({
             {at && (
               <p>
                 {Date.now() - +new Date(at) > 180000 ? 'Stale · ' : ''}Observed{' '}
-                {new Date(at).toLocaleString('en', { timeZone: 'UTC' })} UTC
+                {formatUtcDateTime(at)}
               </p>
             )}
             {market && (

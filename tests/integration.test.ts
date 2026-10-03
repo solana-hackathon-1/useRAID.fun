@@ -6,6 +6,7 @@ import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue
 import { reserveUsage, lookupPosts } from '../src/lib/providers/x';
 import { config } from '../src/lib/config';
 import { metrics } from '../src/lib/domain';
+import { getRaid } from '../src/lib/data';
 import { publicRateLimit, rateLimit } from '../src/lib/auth';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
@@ -581,5 +582,35 @@ integration('PostgreSQL integration', () => {
       expect(requested(fetcher)?.split(',').sort()).toEqual(['8001', '8002', '8003']);
       vi.unstubAllGlobals();
     });
+  });
+  it('keeps the final score of an ended v1 raid instead of decaying it to zero', async () => {
+    const endsAt = new Date(Date.now() - 5 * 3600000);
+    const ended = await db.raid.create({
+      data: {
+        tag: 'raid_ended_v1',
+        title: 'Ended v1 campaign',
+        description: 'A v1 raid that ended hours ago.',
+        creatorId: user.id,
+        status: 'ENDED',
+        startsAt: new Date(+endsAt - 3600000),
+        endsAt,
+      },
+    });
+    await db.post.create({
+      data: {
+        id: 'ended-v1-post',
+        raidId: ended.id,
+        authorId: 'alice',
+        text: 'Final hour of the campaign',
+        normalized: 'final hour of the campaign',
+        createdAt: new Date(+endsAt - 600000),
+        observedAt: endsAt,
+        likes: 3,
+      },
+    });
+    const view = (await getRaid(ended.id))!;
+    expect(view.status).toBe('ENDED');
+    expect(view.score).toBeGreaterThan(0);
+    expect(view.posts).toBe(1);
   });
 });

@@ -5,6 +5,7 @@ import type { TrackingView } from '@/lib/tracking-view';
 import { SubmitPost } from './actions';
 import { WalletLogin } from './wallet-login';
 import { formatUsdc } from '@/lib/usdc-amount';
+import { formatNumber } from '@/lib/format';
 export function TrackingPanel({
   raidId,
   view,
@@ -46,8 +47,8 @@ export function TrackingPanel({
     <section className="panel">
       <h2>Raid contributions</h2>
       <p>
-        {view.impressions.total.toLocaleString()} observed impressions
-        {view.impressionTarget ? ` / ${view.impressionTarget.toLocaleString()} target` : ''}
+        {formatNumber(view.impressions.total)} observed impressions
+        {view.impressionTarget ? ` / ${formatNumber(view.impressionTarget)} target` : ''}
         {view.impressions.missing
           ? ` · Views unavailable for ${view.impressions.missing} qualifying posts`
           : ''}
@@ -230,14 +231,14 @@ export function TrackingPanel({
       {view.leaderboard.map((a, i) => (
         <div className="admin-row" key={a.xId}>
           <strong>
-            #{i + 1} @{a.handle} — {a.score.toLocaleString()} Attention
+            #{i + 1} @{a.handle} — {formatNumber(a.score)} Attention
           </strong>
           <p>
             {a.qualifiedPosts} qualified posts · {a.scoredPostIds.length} scored
             {view.currency === 'USDC' && (
               <>
                 {' '}
-                · {a.views.toLocaleString()} observed impressions ·{' '}
+                · {formatNumber(a.views)} observed impressions ·{' '}
                 {a.estimatedUsdc === null
                   ? 'Reward estimate unavailable'
                   : `${formatUsdc(a.estimatedUsdc)} USDC estimated (subject to final review)`}
@@ -260,8 +261,8 @@ export function TrackingPanel({
           — {p.score.toFixed(2)} Attention <small>· observed {p.observedAt}</small>
           <br />
           <small>
-            {p.views === null ? 'Views unavailable' : `${p.views.toLocaleString()} views`} ·{' '}
-            {p.likes} likes · {p.replies} replies · {p.reposts} reposts · {p.quotes} quotes
+            {p.views === null ? 'Views unavailable' : `${formatNumber(p.views)} views`} · {p.likes}{' '}
+            likes · {p.replies} replies · {p.reposts} reposts · {p.quotes} quotes
           </small>
         </p>
       ))}

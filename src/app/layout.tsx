@@ -15,9 +15,7 @@ const barlow = localFont({
 });
 import { Shell } from '@/components/shell';
 import { config } from '@/lib/config';
-import { currentSession } from '@/lib/auth';
-import { isAdmin } from '@/lib/admins';
-import { db } from '@/lib/db';
+import { shellAccount } from '@/lib/shell-account';
 import { studioSandbox } from '@/lib/usdc';
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -26,26 +24,11 @@ export const metadata: Metadata = {
     'Discover Solana campaigns through measured community attention. Follow the conversation, understand the momentum.',
 };
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const session = await currentSession();
-  const user = session?.user ?? null;
-  const account = user ? await db.xAccount.findUnique({ where: { userId: user.id } }) : null;
+  const account = await shellAccount();
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${manrope.variable} ${barlow.variable}`}>
-        <Shell
-          demo={config.demo}
-          sandbox={studioSandbox()}
-          account={
-            user
-              ? {
-                  handle: account?.username || user.handle,
-                  image: account?.profileImage || null,
-                  connected: !!account,
-                  admin: isAdmin(user) && session?.via === 'x',
-                }
-              : null
-          }
-        >
+        <Shell demo={config.demo} sandbox={studioSandbox()} account={account}>
           {children}
         </Shell>
       </body>

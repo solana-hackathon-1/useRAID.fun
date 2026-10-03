@@ -67,6 +67,7 @@ export function eligible(
     !post.referenced_tweets?.some((t) => t.type === 'retweeted'),
   );
 }
+export const scoreTime = (endsAt: Date, now: Date) => (endsAt < now ? endsAt : now);
 export function metrics(posts: ScoringPost[], now: Date) {
   const visible = posts.filter((p) => !p.hidden && !p.deleted && +p.createdAt <= +now);
   const unique = new Map<string, ScoringPost>();

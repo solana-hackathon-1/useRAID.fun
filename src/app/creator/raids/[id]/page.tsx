@@ -11,6 +11,7 @@ import { trackingView } from '@/lib/tracking-view';
 import { TrackingPanel } from '@/components/tracking-panel';
 import { TargetPosts } from '@/components/target-posts';
 import { AutoRefresh } from '@/components/refresh';
+import { formatNumber, formatUtcDateTime } from '@/lib/format';
 export const dynamic = 'force-dynamic';
 export default async function ManageRaid({ params }: { params: Promise<{ id: string }> }) {
   const user = await currentUser();
@@ -23,6 +24,8 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
   const view = await trackingView(raid.id, user.id),
     wallet = await db.walletIdentity.findUnique({ where: { userId: user.id } }),
     account = await db.xAccount.findUnique({ where: { userId: user.id } });
+  // Mirrors the getRaids filter that the public page and the report route share.
+  const isPublic = ['ACTIVE', 'ENDED'].includes(raid.status) && !raid.hidden && !user.suspended;
   return (
     <div className="studio">
       <AutoRefresh
@@ -36,7 +39,13 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
       <header className="studio-heading">
         <div>
           <span className={`studio-status ${raid.status === 'ACTIVE' ? 'live' : ''}`}>
-            {raid.status === 'ACTIVE' ? 'Live' : raid.status === 'DRAFT' ? 'Draft' : 'Ended'}
+            {raid.status === 'ACTIVE'
+              ? 'Live'
+              : raid.status === 'DRAFT'
+                ? 'Draft'
+                : raid.status === 'SCHEDULED'
+                  ? 'Scheduled'
+                  : 'Ended'}
           </span>
           <h1>{raid.title}</h1>
           <p>
@@ -56,8 +65,8 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
         <section className="studio-section studio-campaign-progress">
           <h2>Impression progress</h2>
           <strong>
-            {view.impressions.total.toLocaleString()}{' '}
-            <small>/ {raid.impressionTarget?.toLocaleString()}</small>
+            {formatNumber(view.impressions.total)}{' '}
+            <small>/ {formatNumber(raid.impressionTarget)}</small>
           </strong>
           <progress
             max={raid.impressionTarget || 1}
@@ -65,20 +74,26 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
           />
           <p>
             {raid.status === 'ACTIVE'
-              ? `Ends ${raid.endsAt.toLocaleString('en')}`
+              ? `Ends ${formatUtcDateTime(raid.endsAt)}`
               : raid.targetReachedAt
                 ? 'Target reached. Results and payments follow review.'
                 : 'Campaign ended.'}
           </p>
         </section>
       )}
-      {raid.status !== 'DRAFT' && (
+      {isPublic ? (
         <>
-          <RaidShare id={raid.id} demo={false} />
+          <RaidShare id={raid.id} demo={false} trackView={false} />
           <Link href={`/raids/${raid.id}`} className="inline-link">
             View public Raid
           </Link>
         </>
+      ) : (
+        <p className="small-print">
+          {raid.hidden || user.suspended
+            ? 'Hidden by moderation — the public page and report are unavailable.'
+            : 'The public page and report become available when the Raid goes live.'}
+        </p>
       )}
       {studioSandbox() && raid.status === 'ACTIVE' && <SandboxControls raidId={raid.id} />}
       <TargetPosts

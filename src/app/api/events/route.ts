@@ -6,9 +6,7 @@ export async function POST(request: Request) {
   try {
     checkOrigin(request);
     const b = await request.json();
-    if (
-      !['discovery_view', 'raid_view', 'share_click', 'trade_click', 'raid_click'].includes(b.type)
-    )
+    if (!['discovery_view', 'raid_view', 'share_click', 'raid_click'].includes(b.type))
       throw new HttpError(400, 'Invalid event');
     if (b.visitor && !/^[a-f0-9-]{36}$/.test(b.visitor))
       throw new HttpError(400, 'Invalid visitor');

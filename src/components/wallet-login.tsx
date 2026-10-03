@@ -6,6 +6,8 @@ import type { Wallet, WalletAccount } from '@wallet-standard/base';
 import type { StandardConnectFeature } from '@wallet-standard/features';
 import type { SolanaSignMessageFeature } from '@solana/wallet-standard-features';
 import bs58 from 'bs58';
+const rejected = (e: unknown) =>
+  e instanceof Error && (e.name === 'WalletSignMessageError' || /reject/i.test(e.message));
 export function WalletLogin({
   currentAddress,
   canChange = false,
@@ -82,7 +84,13 @@ export function WalletLogin({
       setChanging(false);
       router.refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Wallet failed.');
+      setError(
+        rejected(e)
+          ? 'Request cancelled in wallet. Choose a wallet to try again.'
+          : e instanceof Error
+            ? e.message
+            : 'Wallet failed.',
+      );
     } finally {
       setBusy(false);
     }
@@ -95,20 +103,20 @@ export function WalletLogin({
           : 'Verify your Solana wallet to join Raids.'}
       </p>
       {(!currentAddress || changing) && (
-        <select
-          aria-label="Select Solana wallet"
-          disabled={busy}
-          defaultValue=""
-          onChange={(e) => {
-            const wallet = wallets.find((w) => w.name === e.target.value);
-            if (wallet) void connect(wallet);
-          }}
-        >
-          <option value="">Select wallet</option>
+        <div className="wallet-options" role="group" aria-label="Solana wallets">
           {wallets.map((w) => (
-            <option key={w.name}>{w.name}</option>
+            <button
+              key={w.name}
+              type="button"
+              className="button secondary small"
+              disabled={busy}
+              onClick={() => void connect(w)}
+            >
+              {w.icon && <img src={w.icon} alt="" width={16} height={16} />}
+              Connect {w.name}
+            </button>
           ))}
-        </select>
+        </div>
       )}
       {canChange && currentAddress && !changing && (
         <button className="button secondary" onClick={() => setChanging(true)}>

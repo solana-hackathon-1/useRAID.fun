@@ -1,55 +1,41 @@
 import Link from 'next/link';
-import { db } from '@/lib/db';
+import { loadTrackingOps } from '@/lib/tracking-ops';
+import { formatUtcDateTime } from '@/lib/format';
 import { AdminAction } from './admin';
 import { trackingEnabled, trackingSettlementEnabled } from '@/lib/config';
 export async function TrackingOperations() {
-  const [raids, flags, lookupFailures, disputes, endpoints, stale, backlog] = await Promise.all([
-    db.raid.findMany({
-      where: { trackingVersion: 2, trackingPhase: { not: 'ALLOCATED' } },
-      orderBy: { createdAt: 'asc' },
-      take: 50,
-    }),
-    db.post.findMany({
-      where: {
-        raid: { trackingVersion: 2 },
-        OR: [
-          { reviewStatus: 'FLAGGED' },
-          { qualification: 'EXCLUDED' },
-          { availability: { not: 'AVAILABLE' } },
-        ],
-      },
-      take: 50,
-    }),
-    db.post.findMany({
-      where: {
-        raid: { trackingVersion: 2 },
-        adminExcluded: false,
-        reasonCode: { in: ['LOOKUP_FAILED', 'POST_RESTRICTED'] },
-      },
-      take: 50,
-    }),
-    db.raidDispute.findMany({ where: { status: 'OPEN' }, orderBy: { createdAt: 'asc' }, take: 50 }),
-    db.xEndpointState.findMany(),
-    db.post.count({
-      where: {
-        raid: { trackingVersion: 2, status: 'ACTIVE' },
-        observedAt: { lt: new Date(Date.now() - 600000) },
-      },
-    }),
-    db.job.count({ where: { doneAt: null } }),
-  ]);
-  const held = await db.feeClaim.groupBy({
-    by: ['raidId'],
-    where: {
-      roundId: null,
-      raidId: { in: raids.filter((r) => r.trackingPhase === 'HELD').map((r) => r.id) },
-    },
-    _sum: { grossLamports: true, costLamports: true },
-  });
-  const decisions = [
-    ...lookupFailures,
-    ...flags.filter((p) => !lookupFailures.some((l) => l.id === p.id)),
-  ];
+  const {
+    raids,
+    raidCount,
+    held,
+    carryTargets,
+    needsReview,
+    needsReviewCount,
+    history,
+    historyCount,
+    disputes,
+    disputeCount,
+    endpoints,
+    stale,
+    backlog,
+  } = await loadTrackingOps();
+  const decision = (p: (typeof needsReview)[number]) => (
+    <div className="admin-row" key={p.id}>
+      <p>
+        Post {p.id} · {p.qualification} · {p.reasonCode} · {p.reviewStatus} · {p.availability}
+      </p>
+      {(['clear', 'exclude', 'restore', 'refresh'] as const).map((action) => (
+        <AdminAction
+          key={action}
+          url={`/api/raids/${p.raidId}/resolve`}
+          action="tracking"
+          id={p.id}
+          label={`${action} post ${p.id}`}
+          values={{ action, postId: p.id }}
+        />
+      ))}
+    </div>
+  );
   return (
     <section className="panel" id="tracking">
       <h2>X tracking operations</h2>
@@ -60,11 +46,15 @@ export async function TrackingOperations() {
       </p>
       {endpoints.map((e) => (
         <p key={e.key}>
-          {e.key} · last success {e.lastSuccessAt?.toISOString() || 'never'} · remaining{' '}
-          {e.remaining ?? 'unknown'} · reset {e.resetAt?.toISOString() || 'unknown'} {e.lastError}
+          {e.key} · last success {e.lastSuccessAt ? formatUtcDateTime(e.lastSuccessAt) : 'never'} ·
+          remaining {e.remaining ?? 'unknown'} · reset{' '}
+          {e.resetAt ? formatUtcDateTime(e.resetAt) : 'unknown'} {e.lastError}
         </p>
       ))}
-      <h3>Finalization and held funds</h3>
+      <h3>
+        Finalization and held funds ({raidCount}
+        {raidCount > raids.length ? `, showing ${raids.length}` : ''})
+      </h3>
       {raids.map((r) => (
         <div className="admin-row" key={r.id}>
           <Link className="inline-link" href={`/raids/${r.id}`}>
@@ -72,7 +62,7 @@ export async function TrackingOperations() {
           </Link>
           <p>
             {r.trackingPhase} · {r.coverage} · {r.collectionError || 'No provider error'} · review{' '}
-            {r.reviewEndsAt?.toISOString() || 'not started'}
+            {r.reviewEndsAt ? formatUtcDateTime(r.reviewEndsAt) : 'not started'}
           </p>
           {r.trackingPhase === 'HELD' && (
             <p>
@@ -91,14 +81,8 @@ export async function TrackingOperations() {
             />
           )}
           {r.trackingPhase === 'HELD' &&
-            raids
-              .filter(
-                (target) =>
-                  target.id !== r.id &&
-                  target.tokenLaunchId &&
-                  target.tokenLaunchId === r.tokenLaunchId &&
-                  target.status === 'ACTIVE',
-              )
+            carryTargets
+              .filter((target) => target.id !== r.id && target.tokenLaunchId === r.tokenLaunchId)
               .map((target) => (
                 <AdminAction
                   key={target.id}
@@ -111,25 +95,20 @@ export async function TrackingOperations() {
               ))}
         </div>
       ))}
-      <h3>Contribution decisions</h3>
-      {decisions.map((p) => (
-        <div className="admin-row" key={p.id}>
-          <p>
-            Post {p.id} · {p.qualification} · {p.reasonCode} · {p.reviewStatus} · {p.availability}
-          </p>
-          {(['clear', 'exclude', 'restore', 'refresh'] as const).map((action) => (
-            <AdminAction
-              key={action}
-              url={`/api/raids/${p.raidId}/resolve`}
-              action="tracking"
-              id={p.id}
-              label={`${action} post ${p.id}`}
-              values={{ action, postId: p.id }}
-            />
-          ))}
-        </div>
-      ))}
-      <h3>Open disputes</h3>
+      <h3>
+        Needs review ({needsReviewCount}
+        {needsReviewCount > needsReview.length ? `, showing ${needsReview.length}` : ''})
+      </h3>
+      {!needsReview.length && <p>No contributions need a decision.</p>}
+      {needsReview.map(decision)}
+      <details>
+        <summary>Excluded / unavailable ({historyCount})</summary>
+        {historyCount > history.length && (
+          <p className="small-print">Showing the {history.length} most recently observed.</p>
+        )}
+        {history.map(decision)}
+      </details>
+      <h3>Open disputes ({disputeCount})</h3>
       {disputes.map((d) => (
         <div className="admin-row" key={d.id}>
           <strong>

@@ -4,7 +4,7 @@ import type { Prisma } from '@prisma/client';
 import { db } from './db';
 import { config } from './config';
 import { demoRaids } from './demo';
-import { metrics, momentum, interactions } from './domain';
+import { metrics, momentum, interactions, scoreTime } from './domain';
 import type { RaidView } from './types';
 import type { Market } from './providers/market';
 import { displayIdentity } from './token-identity';
@@ -80,7 +80,7 @@ async function loadRaids(filter: Prisma.RaidWhereInput): Promise<RaidView[]> {
           }
         : r.trackingVersion === 2
           ? scoreContributions(scoringPosts, result?.scoringVersion ?? r.scoringVersion)
-          : metrics(r.posts, now);
+          : metrics(r.posts, scoreTime(r.endsAt, now));
     const identity = displayIdentity(r);
     const target = +now - 3600000;
     const baseline = r.snapshots.filter((s) => +s.at <= target && +s.at >= target - 300000).at(-1);
@@ -173,7 +173,10 @@ export async function getToken(mint: string) {
         score: raids[0].score,
       }
     : !raids.some((r) => r.trackingVersion === 2)
-      ? metrics(posts, new Date())
+      ? metrics(
+          posts,
+          scoreTime(new Date(Math.max(...raids.map((r) => Date.parse(r.endsAt)))), new Date()),
+        )
       : {
           score: raids.reduce((sum, r) => sum + r.score, 0),
           raiders: new Set(
@@ -199,6 +202,7 @@ export async function getToken(mint: string) {
     metadataSource,
     symbol: raids[0].symbol,
     name: raids[0].name,
+    imageUri: raids.find((r) => r.imageUri)?.imageUri ?? null,
     raids,
     totals,
     market: raids[0].market,

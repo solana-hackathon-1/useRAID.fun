@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Check, ChevronDown } from 'lucide-react';
@@ -14,7 +14,11 @@ export function StudioAccountMenu({ account }: { account: StudioAccount }) {
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState('');
   const button = useRef<HTMLButtonElement>(null),
+    dropdown = useRef<HTMLDivElement>(null),
     router = useRouter();
+  useEffect(() => {
+    if (open) dropdown.current?.querySelector('a')?.focus();
+  }, [open]);
   async function action(path: string) {
     setBusy(true);
     try {
@@ -55,7 +59,12 @@ export function StudioAccountMenu({ account }: { account: StudioAccount }) {
           <img src={account.image} alt="" referrerPolicy="no-referrer" loading="lazy" />
         )}
         <span>@{account.handle}</span>
-        {account.connected && <Check size={15} aria-label="X connected" />}
+        {account.connected && (
+          <>
+            <Check size={15} aria-hidden="true" />
+            <span className="visually-hidden">X connected</span>
+          </>
+        )}
         <ChevronDown size={14} />
       </button>
       {open && (
@@ -65,7 +74,7 @@ export function StudioAccountMenu({ account }: { account: StudioAccount }) {
             aria-label="Close account menu"
             onClick={() => setOpen(false)}
           />
-          <div id="studio-account-dropdown" className="studio-account-dropdown">
+          <div id="studio-account-dropdown" ref={dropdown} className="studio-account-dropdown">
             <Link href="/creator/account" onClick={() => setOpen(false)}>
               Account
             </Link>
