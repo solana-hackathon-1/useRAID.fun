@@ -3,6 +3,7 @@ import { db } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { StudioEditor, type StudioDraft } from '@/components/studio-editor';
 import { StudioAccess } from '@/components/studio-access';
+import { CreatorApproval } from '@/components/creator-approval';
 import { balance, usdcSettings } from '@/lib/usdc';
 import type { TargetPreview } from '@/lib/studio-targets';
 export const dynamic = 'force-dynamic';
@@ -20,6 +21,13 @@ export default async function NewRaid({
     balance(user.id),
   ]);
   if (!account) return <StudioAccess />;
+  if (!user.approved)
+    return (
+      <div className="studio">
+        <h1>Create a Raid</h1>
+        <CreatorApproval initial={user.affiliation || ''} />
+      </div>
+    );
   let initial: StudioDraft | null = null;
   if (draft) {
     const raid = await db.raid.findUnique({

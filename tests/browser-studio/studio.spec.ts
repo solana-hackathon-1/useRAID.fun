@@ -42,7 +42,7 @@ test('launch, target attribution, completion, reviewed allocation and manual tes
     .getByRole('button', { name: 'Reach target & finish test review', exact: true })
     .click();
   await expect(page.getByText('ALLOCATED', { exact: false })).toBeVisible();
-  await expect(page.getByText(/2.50 USDC estimated/)).toBeVisible();
+  await expect(page.getByText(/0.625 USDC estimated/)).toBeVisible();
   const report = await page.request.get(`/api/raids/${id}/report`);
   expect(report.ok()).toBe(true);
   expect(await report.text()).toContain('reviewed USDC');
@@ -50,10 +50,12 @@ test('launch, target attribution, completion, reviewed allocation and manual tes
   await expect(page.getByRole('heading', { name: 'Raid these posts' })).toBeVisible();
   await page.goto('/admin');
   const queue = page.locator('#usdc-payments');
-  await expect(queue.getByText('REWARD · @test_raider · 2.50 USDC', { exact: true })).toBeVisible();
+  await expect(
+    queue.getByText('REWARD · @test_raider · 0.625 USDC', { exact: true }),
+  ).toBeVisible();
   const payment = queue
     .locator('.admin-row')
-    .filter({ hasText: 'REWARD · @test_raider · 2.50 USDC' })
+    .filter({ hasText: 'REWARD · @test_raider · 0.625 USDC' })
     .last();
   const memo = (await payment.locator('code').textContent())!;
   await payment.getByRole('button', { name: 'Confirm test payment' }).click();
@@ -103,6 +105,26 @@ test('existing token uses same editor; Launch Token stays Coming soon', async ({
     .fill('So11111111111111111111111111111111111111112');
   await expect(page.getByText('Token found', { exact: true })).toBeVisible();
   await expect(page.getByLabel('Campaign name', { exact: true })).not.toHaveValue('');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});
+test('unapproved creators request approval before they can create a Raid', async ({ page }) => {
+  const login = await page.request.post('/api/studio/sandbox', {
+    headers: { origin: 'http://localhost:3007' },
+    data: { action: 'login', fixtureId: `unapproved-${crypto.randomUUID()}` },
+  });
+  expect(login.ok()).toBe(true);
+  await page.goto('/creator');
+  await expect(page.getByRole('heading', { name: 'Creator approval required' })).toBeVisible();
+  await page
+    .getByLabel('Project affiliation')
+    .fill('Founder of the Example project, official site example.com');
+  await page.getByRole('button', { name: 'Request creator approval' }).click();
+  await expect(page.getByText('Request submitted for administrator review.')).toBeVisible();
+  await page.goto('/creator/new');
+  await expect(page.getByRole('heading', { name: 'Creator approval required' })).toBeVisible();
+  await expect(page.getByLabel('Campaign name', { exact: true })).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

@@ -36,7 +36,11 @@ export default async function AdminPage() {
   const [settings, users, raids, posts, jobs, usage, identityUsage, events, audit] =
     await Promise.all([
       db.settings.upsert({ where: { id: 'global' }, create: {}, update: {} }),
-      db.user.findMany({ orderBy: { createdAt: 'desc' }, take: 50 }),
+      db.user.findMany({
+        where: { role: { not: 'ADMIN' } },
+        orderBy: [{ approved: 'asc' }, { createdAt: 'desc' }],
+        take: 50,
+      }),
       db.raid.findMany({ orderBy: { createdAt: 'desc' }, take: 50, include: { creator: true } }),
       db.post.findMany({ orderBy: { createdAt: 'desc' }, take: 30 }),
       db.job.findMany({
@@ -313,28 +317,26 @@ export default async function AdminPage() {
         </section>
         <section className="panel" id="creators">
           <h2>Creator approvals</h2>
-          {users
-            .filter((u) => u.role !== 'ADMIN')
-            .map((u) => (
-              <div className="admin-row" key={u.id}>
-                <strong>
-                  @{u.handle} · {u.suspended ? 'Suspended' : u.approved ? 'Approved' : 'Pending'}
-                </strong>
-                <p>{u.affiliation || 'No affiliation submitted.'}</p>
-                <AdminAction
-                  action="creator"
-                  id={u.id}
-                  label={u.approved ? 'Revoke approval' : 'Approve creator'}
-                  values={{ approved: !u.approved, suspended: u.suspended }}
-                />
-                <AdminAction
-                  action="creator"
-                  id={u.id}
-                  label={u.suspended ? 'Restore access' : 'Suspend creator'}
-                  values={{ approved: u.approved, suspended: !u.suspended }}
-                />
-              </div>
-            ))}
+          {users.map((u) => (
+            <div className="admin-row" key={u.id}>
+              <strong>
+                @{u.handle} · {u.suspended ? 'Suspended' : u.approved ? 'Approved' : 'Pending'}
+              </strong>
+              <p>{u.affiliation || 'No affiliation submitted.'}</p>
+              <AdminAction
+                action="creator"
+                id={u.id}
+                label={u.approved ? 'Revoke approval' : 'Approve creator'}
+                values={{ approved: !u.approved, suspended: u.suspended }}
+              />
+              <AdminAction
+                action="creator"
+                id={u.id}
+                label={u.suspended ? 'Restore access' : 'Suspend creator'}
+                values={{ approved: u.approved, suspended: !u.suspended }}
+              />
+            </div>
+          ))}
         </section>
         <section className="panel" id="campaigns">
           <h2>Campaign moderation</h2>

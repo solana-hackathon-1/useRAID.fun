@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Plus, ArrowUpRight } from 'lucide-react';
 import { formatUsdc } from '@/lib/usdc-amount';
+import { CreatorApproval } from './creator-approval';
 
 export type StudioCard = {
   id: string;
@@ -21,10 +22,14 @@ export type StudioCard = {
   legacy: boolean;
 };
 export function StudioHome({
+  approved,
+  affiliation,
   available,
   reserved,
   raids,
 }: {
+  approved: boolean;
+  affiliation: string;
   available: string;
   reserved: string;
   raids: StudioCard[];
@@ -50,6 +55,7 @@ export function StudioHome({
           <Plus size={18} /> Create Raid
         </Link>
       </header>
+      {!approved && <CreatorApproval initial={affiliation} />}
       <div className="studio-balance">
         <div>
           <span>Available balance</span>
