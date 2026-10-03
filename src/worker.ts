@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { db } from './lib/db';
 import { config } from './lib/config';
 import { claimJob } from './lib/queue';
-import { runJob, schedule } from './lib/worker-jobs';
+import { assertSchemaCurrent, runJob, schedule } from './lib/worker-jobs';
 let stopping = false;
 process.on('SIGTERM', () => {
   stopping = true;
@@ -12,6 +12,7 @@ process.on('SIGINT', () => {
 });
 async function main() {
   if (config.demo) throw new Error('Worker cannot run in demo mode.');
+  await assertSchemaCurrent();
   let scheduled = 0;
   while (!stopping) {
     try {

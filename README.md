@@ -89,9 +89,10 @@ Optional Raid-specific enrollment, verified contribution history, top-ten scorin
 - `src/app`: public pages, creator/admin pages, and internal HTTP route handlers.
 - `src/components`: responsive interface and forms.
 - `src/lib`: domain rules, authorization, persistence, collection, queue, and provider adapters.
-- `src/worker.ts`: scheduling, collection, reconciliation, and retention.
+- `src/worker.ts`: scheduling, collection, reconciliation, and retention. It runs through `tsx` (a production dependency, as is `prisma` for pre-deploy migrations); the Docker runtime image ships `src/` and `tsconfig.json` for it.
 - `prisma`: schema, committed migration, and settings seed.
 - `tests`: deterministic domain, real PostgreSQL integration, and browser tests.
+- `package.json` pins `next`, `react` and `react-dom` to patch ranges because this Next.js version has breaking changes between minors; the `deepmerge-ts` override in `package.json` forces Prisma's config loader onto 8.x; keep it unless a Prisma upgrade makes it unnecessary.
 - `docs/operations.md`: deployment, spend, backup/restore, and pilot gates.
 
 ## Verification

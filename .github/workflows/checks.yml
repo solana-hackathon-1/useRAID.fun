@@ -15,6 +15,15 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run audit:check
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t useraid:ci .
+      - name: Runtime image smoke test
+        run: |
+          docker run --rm useraid:ci node -e "require.resolve('prisma/package.json'); require.resolve('tsx/package.json'); require.resolve('@prisma/client/package.json')"
+          docker run --rm useraid:ci sh -c 'test ! -d /app/tests && test -d /app/prisma/migrations && test -f /app/src/worker.ts && npx prisma --version'
   test:
     runs-on: ubuntu-latest
     services:

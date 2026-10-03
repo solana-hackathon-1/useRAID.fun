@@ -6,3 +6,10 @@ artifacts
 test-results
 playwright-report
 *.tsbuildinfo
+tests
+docs
+playwright*.ts
+coverage
+sites
+compose*.yaml
+.github
