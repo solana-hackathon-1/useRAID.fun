@@ -29,7 +29,9 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     ".next-studio/types/**/*.ts",
-    ".next-studio/dev/types/**/*.ts"
+    ".next-studio/dev/types/**/*.ts",
+    ".next-db-down/types/**/*.ts",
+    ".next-db-down/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -8,9 +8,18 @@ export default defineConfig({
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
     { name: 'mobile', use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' } },
   ],
-  webServer: {
-    command: 'DEMO_MODE=true npm run dev -- --port 3000',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: 'DEMO_MODE=true npm run dev -- --port 3000',
+      url: 'http://localhost:3000',
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command:
+        'DEMO_MODE=false NEXT_DIST_DIR=.next-db-down DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:1/useraid_down npm run dev -- --port 3008',
+      url: 'http://localhost:3008/privacy',
+      reuseExistingServer: !process.env.CI,
+      timeout: 60000,
+    },
+  ],
 });

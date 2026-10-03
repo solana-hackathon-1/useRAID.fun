@@ -2,6 +2,7 @@
 node_modules/
 .next/
 .next-studio/
+.next-db-down/
 .env
 .env.*
 !.env.example
