@@ -192,9 +192,16 @@ export function MeteoraLaunchWizard({ readiness, walletAddress, signedIn, recove
   const template = readiness.template;
   useEffect(() => {
     if (!logo) return;
-    const url = URL.createObjectURL(logo);
-    setImage(url);
-    return () => URL.revokeObjectURL(url);
+    // data: URL, not blob:, because the CSP img-src allows data: but not blob:.
+    let current = true;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (current && typeof reader.result === 'string') setImage(reader.result);
+    };
+    reader.readAsDataURL(logo);
+    return () => {
+      current = false;
+    };
   }, [logo]);
   useEffect(() => {
     if (launch?.step?.status !== 'SUBMITTED') return;
@@ -428,7 +435,9 @@ export function MeteoraLaunchWizard({ readiness, walletAddress, signedIn, recove
                 event.preventDefault();
                 setError('');
                 if (new TextEncoder().encode(form.name.trim()).length > 32) {
-                  setError('Token name must fit 32 UTF-8 bytes. Shorten names with emoji or accented characters.');
+                  setError(
+                    'Token name must fit 32 UTF-8 bytes. Shorten names with emoji or accented characters.',
+                  );
                   return;
                 }
                 setStage(2);

@@ -10,12 +10,12 @@ Local PostgreSQL and isolated `useraid_meteora_devnet` database are already crea
 
 ## 1. Configuration files
 
-| Location | Purpose |
-| --- | --- |
-| `.env.local` | Shared server settings: devnet RPC, Pinata JWT, encryption key, operator public address, X credentials and feature switches. Next web service and Meteora runner read this file. |
-| `.env.meteora.worker` | Operator private key only. `meteora:worker` and `meteora:doctor` load this file; the Meteora web runner does not. |
-| `.env` | Existing base configuration, including local PostgreSQL connection. Keep its existing values. |
-| `.env.example`, `.env.meteora.worker.example` | Blank references; do not replace existing configuration wholesale. |
+| Location                                      | Purpose                                                                                                                                                                          |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `.env.local`                                  | Shared server settings: devnet RPC, Pinata JWT, encryption key, operator public address, X credentials and feature switches. Next web service and Meteora runner read this file. |
+| `.env.meteora.worker`                         | Operator private key only. `meteora:worker` and `meteora:doctor` load this file; the Meteora web runner does not.                                                                |
+| `.env`                                        | Existing base configuration, including local PostgreSQL connection. Keep its existing values.                                                                                    |
+| `.env.example`, `.env.meteora.worker.example` | Blank references; do not replace existing configuration wholesale.                                                                                                               |
 
 Real environment files are Git-ignored. Never use `NEXT_PUBLIC_` for credentials. Keep operator private key out of web deployment. Encryption key must be available to both web and worker: it encrypts/decrypts per-launch signing keys. Back up encryption keys securely alongside encrypted database backups; losing a key prevents the worker from recovering its associated campaign wallets.
 
@@ -159,18 +159,32 @@ Campaign start requires a connected X account, fresh healthy worker, tracking/se
 
 No manual mint, pool config, fee-sharing vault or campaign wallet address is required; those are created per launch.
 
-| Setting | Devnet template |
-| --- | --- |
-| Fixed supply / decimals | 1 billion / 6 |
-| Quote asset | SOL |
-| Trading fee before / after graduation | 1% / 1%; dynamic fees off |
-| Graduation | 1 SOL devnet; planned 10 SOL mainnet |
-| Token allocation | 20% supply for migration liquidity; nominal 5% campaign reserve |
-| Distributable revenue | 80% creator, 20% campaign, 0% useRAID |
-| LP ownership | Entire fee-producing partner position permanently locked, controlled by fee-sharing PDA |
-| Authority rules | No future minting, no freeze authority, immutable metadata |
+| Setting                               | Devnet template                                                                         |
+| ------------------------------------- | --------------------------------------------------------------------------------------- |
+| Fixed supply / decimals               | 1 billion / 6                                                                           |
+| Quote asset                           | SOL                                                                                     |
+| Trading fee before / after graduation | 1% / 1%; dynamic fees off                                                               |
+| Graduation                            | 1 SOL devnet; planned 10 SOL mainnet                                                    |
+| Token allocation                      | 20% supply for migration liquidity; nominal 5% campaign reserve                         |
+| Distributable revenue                 | 80% creator, 20% campaign, 0% useRAID                                                   |
+| LP ownership                          | Entire fee-producing partner position permanently locked, controlled by fee-sharing PDA |
+| Authority rules                       | No future minting, no freeze authority, immutable metadata                              |
 
 Meteora protocol fees are separate; 80/20 applies to distributable revenue, not every trader-paid lamport. SDK rounding produces a small reserve remainder above nominal 50 million tokens; public configuration snapshot records exact integer amounts and supply conservation. Allocation changes require a new launch template/configuration; existing launches keep signed economics. Current UI intentionally uses one canonical template rather than dynamic sliders.
+
+## Integration with the hardened release
+
+Meteora runs on the same rails as the other funded Raids, so these rules apply to it too:
+
+- **Gates.** `launchpadsAvailable` (`src/lib/release.ts`) stays `false` and only gates the legacy Pump launchpad. Meteora is controlled by `METEORA_LAUNCH_ENABLED` and its readiness checks. While both are off, `/launch` shows the Coming soon card. The launch API routes (`prepare`, `upload`, `[id]/retry`, `[id]/submit`) serve Meteora launches only; Pump requests still receive 503.
+- **Image proofs.** Upload proofs are signed with `LAUNCH_ASSET_KEY` (web only, 32 random bytes, base64), not with the launch encryption key. Readiness stays off until it is set. The worker ignores this setting.
+- **Settlement.** Fee-funded campaigns settle only while `X_TRACKING_V2_SETTLEMENT_ENABLED=true`; while it is off, allocation pauses and the reservation stays in place.
+- **Author cap and minimum.** The per-author cap (`RAID_AUTHOR_CAP_BPS`, default 25%) is frozen on the Raid when the campaign starts and applies to the SOL and token budgets. SOL rewards below `SOL_MIN_PAYOUT_LAMPORTS` are not paid and return to the campaign balance.
+- **State vocabularies.** Campaign Raids use `fundingAsset = 'LAUNCH'`, which `src/lib/states.ts` and the `Raid_fundingAsset_check` constraint allow.
+- **Worker.** Meteora jobs (`meteora-reconcile`, `meteora-finance`) and LAUNCH settlement run from `src/lib/worker-jobs.ts` as isolated steps with the usual dead-lettering.
+- **Admin and public routes.** Payout decisions need an X-signed administrator session and a same-origin request. Public read endpoints are rate limited. Request bodies are parsed with `readJson`.
+- **Migrations.** The three Meteora migrations keep their `202610020001`-`202610020003` names. The hardening migrations follow as `202610030001`-`202610030012`.
+- **Content security policy.** The wizard previews the chosen logo from a `data:` URL, so `img-src` needs no `blob:`. Wallet signing happens in the browser extension and all RPC calls stay on the server, so `connect-src` stays `'self'`.
 
 ## 10. Mainnet prerequisites
 
