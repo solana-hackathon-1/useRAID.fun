@@ -18,7 +18,7 @@ export default defineConfig({
     },
     {
       command:
-        'DEMO_MODE=false NEXT_DIST_DIR=.next-db-down DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:1/useraid_down npm run dev -- --port 3008',
+        'DEMO_MODE=false METEORA_LAUNCH_ENABLED=true NEXT_DIST_DIR=.next-db-down DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:1/useraid_down npm run dev -- --port 3008',
       url: 'http://localhost:3008/privacy',
       reuseExistingServer: !process.env.CI,
       timeout: 180000,
