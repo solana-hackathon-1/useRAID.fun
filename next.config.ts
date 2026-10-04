@@ -16,7 +16,9 @@ const csp = [
   "frame-ancestors 'none'",
 ].join('; ');
 const config: NextConfig = {
-  distDir: ['.next-studio', '.next-db-down'].includes(process.env.NEXT_DIST_DIR ?? '')
+  distDir: ['.next-studio', '.next-db-down', '.next-meteora'].includes(
+    process.env.NEXT_DIST_DIR ?? '',
+  )
     ? process.env.NEXT_DIST_DIR
     : '.next',
   devIndicators: false,

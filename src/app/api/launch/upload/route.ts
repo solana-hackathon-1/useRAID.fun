@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, rateLimit, HttpError } from '@/lib/auth';
 import { pinFile, signAsset, validateImage } from '@/lib/launch-ipfs';
 import { launchEnabled } from '@/lib/pump-launch';
+import { meteoraReadiness } from '@/lib/meteora/config';
 import { failure } from '@/lib/http';
 import { assertLaunchpadsAvailable } from '@/lib/release';
 export async function POST(request: Request) {
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
     assertLaunchpadsAvailable();
     checkOrigin(request);
     const user = await requireUser();
-    if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
+    if (!launchEnabled() && !meteoraReadiness().enabled) throw new HttpError(503, 'Token launches unavailable.');
     await rateLimit(`launch-upload:${user.id}`, 20, 3600);
     if (Number(request.headers.get('content-length') || 0) > 6 * 1024 * 1024)
       throw new HttpError(413, 'Image too large.');

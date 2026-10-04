@@ -16,6 +16,10 @@ import { fetchMarket } from './providers/market';
 import { lookupPosts, ProviderError } from './providers/x';
 import { financeLaunch, updateFinanceReadiness } from './rewards';
 import { reconcileLaunch } from './pump-launch';
+import { allocateLaunchCampaign } from './meteora/campaigns';
+import { meteoraNetwork } from './meteora/config';
+import { nextLaunchStep } from './meteora/launch';
+import { financeMeteoraLaunch } from './meteora/worker';
 import { usdcSettings } from './usdc';
 import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 export async function step(name: string, fn: () => Promise<unknown>) {
@@ -170,12 +174,13 @@ export async function schedule(now = new Date()) {
           status: 'ENDED',
           trackingPhase: { notIn: ['APPROVED', ...LOCKED_PHASES] },
         },
-        select: { id: true, studioVersion: true },
+        select: { id: true, studioVersion: true, fundingAsset: true },
       });
       for (const raid of closing)
         await step(`settle:${raid.id}`, async () => {
           await finalizeTracking(raid.id);
-          if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
+          if (raid.fundingAsset === 'LAUNCH') await allocateLaunchCampaign(raid.id);
+          else if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
           else await allocateRaidFunding(raid.id);
         });
     });
@@ -186,13 +191,21 @@ export async function schedule(now = new Date()) {
           status: 'ENDED',
           trackingPhase: 'APPROVED',
           fundingStatus: 'VERIFIED',
-          OR: [{ studioVersion: 1 }, { mint: null, fundingLamports: { not: null } }],
+          OR: [
+            { studioVersion: 1 },
+            { fundingAsset: 'LAUNCH' },
+            { mint: null, fundingLamports: { not: null } },
+          ],
         },
-        select: { id: true, studioVersion: true },
+        select: { id: true, studioVersion: true, fundingAsset: true },
       });
       for (const raid of approved)
         await step(`allocate:${raid.id}`, () =>
-          raid.studioVersion === 1 ? allocateUsdcRaid(raid.id) : allocateRaidFunding(raid.id),
+          raid.fundingAsset === 'LAUNCH'
+            ? allocateLaunchCampaign(raid.id)
+            : raid.studioVersion === 1
+              ? allocateUsdcRaid(raid.id)
+              : allocateRaidFunding(raid.id),
         );
     });
   }
@@ -201,6 +214,7 @@ export async function schedule(now = new Date()) {
     const minute = Math.floor(Date.now() / 60000);
     const pendingLaunches = await db.tokenLaunch.findMany({
       where: {
+        provider: 'PUMP',
         OR: [
           { status: 'SUBMITTED' },
           {
@@ -242,7 +256,7 @@ export async function schedule(now = new Date()) {
         )
       : new Set<string>();
     const liveLaunches = await db.tokenLaunch.findMany({
-      where: { status: { in: ['LIVE', 'PAUSED'] } },
+      where: { provider: 'PUMP', status: { in: ['LIVE', 'PAUSED'] } },
       select: {
         id: true,
         status: true,
@@ -276,6 +290,41 @@ export async function schedule(now = new Date()) {
           : `finance:${launch.id}:h${Math.floor(Date.now() / 3600000)}`,
         { launchId: launch.id, raidId: launch.id },
       );
+    }
+  });
+  await step('meteora-jobs', async () => {
+    // Meteora launches are independent of the deferred Pump launchpad and have their own switches.
+    const minute = Math.floor(Date.now() / 60000);
+    const launches = await db.tokenLaunch.findMany({
+      where: {
+        provider: 'METEORA',
+        network: meteoraNetwork(),
+        status: { in: ['PREPARED', 'SUBMITTED', 'LIVE', 'PAUSED'] },
+      },
+      select: { id: true, userId: true, status: true },
+    });
+    for (const launch of launches) {
+      await step(`meteora:${launch.id}`, async () => {
+        if (['PREPARED', 'SUBMITTED'].includes(launch.status)) {
+          const submitted = await db.launchStep.count({
+            where: {
+              launchId: launch.id,
+              kind: 'SETUP',
+              status: { in: ['SUBMITTED', 'CONFIRMED'] },
+            },
+          });
+          if (submitted)
+            await enqueue('meteora-reconcile', `meteora-reconcile:${launch.id}:${minute}`, {
+              launchId: launch.id,
+              raidId: `meteora:${launch.id}`,
+              userId: launch.userId,
+            });
+        } else
+          await enqueue('meteora-finance', `meteora-finance:${launch.id}:${minute}`, {
+            launchId: launch.id,
+            raidId: `meteora:${launch.id}`,
+          });
+      });
     }
   });
   await step('cleanup', async () => {
@@ -358,9 +407,12 @@ export async function runJob(job: Job) {
     final: boolean;
     postId: string;
     submissionId?: string;
+    userId?: string;
   };
   try {
-    if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
+    if (job.kind === 'meteora-reconcile') await nextLaunchStep(p.launchId, p.userId!);
+    else if (job.kind === 'meteora-finance') await financeMeteoraLaunch(p.launchId);
+    else if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
     else if (job.kind === 'finance') await financeLaunch(p.launchId);
     else if (job.kind === 'collect') await collect(p.raidId, job.id);
     else if (job.kind === 'refresh')
@@ -406,7 +458,7 @@ export async function runJob(job: Job) {
       await clearCollectionError(p.raidId);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Collection failed';
-    if (p.raidId && job.kind !== 'finance')
+    if (p.raidId && !['finance', 'meteora-finance', 'meteora-reconcile'].includes(job.kind))
       await db.raid.updateMany({
         where: { id: p.raidId },
         data: {

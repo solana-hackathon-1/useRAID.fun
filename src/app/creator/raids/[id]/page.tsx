@@ -12,6 +12,7 @@ import { TrackingPanel } from '@/components/tracking-panel';
 import { TargetPosts } from '@/components/target-posts';
 import { AutoRefresh } from '@/components/refresh';
 import { formatNumber, formatUtcDateTime } from '@/lib/format';
+import { formatUnits } from '@/lib/meteora/amounts';
 export const dynamic = 'force-dynamic';
 export default async function ManageRaid({ params }: { params: Promise<{ id: string }> }) {
   const user = await currentUser();
@@ -49,15 +50,22 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
           </span>
           <h1>{raid.title}</h1>
           <p>
-            {raid.poolUnits !== null
-              ? `${formatUsdc(raid.poolUnits)} USDC reward pool`
-              : 'Legacy SOL campaign'}
+            {raid.fundingAsset === 'LAUNCH'
+              ? `${raid.poolUnits ? formatUnits(raid.poolUnits) : '0'} SOL reward budget + optional token rewards`
+              : raid.poolUnits !== null
+                ? `${formatUsdc(raid.poolUnits)} USDC reward pool`
+                : 'Legacy SOL campaign'}
             {raid.hidden ? ' · Hidden by moderation' : ''}
           </p>
         </div>
         {raid.status === 'DRAFT' && raid.studioVersion === 1 && (
           <Link className="button" href={`/creator/new?draft=${raid.id}`}>
             Continue draft
+          </Link>
+        )}
+        {raid.status === 'DRAFT' && raid.fundingAsset === 'LAUNCH' && (
+          <Link className="button" href={`/launch/${raid.tokenLaunchId}/campaign`}>
+            Set up fee-funded raid
           </Link>
         )}
       </header>
@@ -102,19 +110,22 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
         active={raid.status === 'ACTIVE'}
       />
       <section className="studio-section">
-        <CreatorRaidTools
-          id={raid.id}
-          canEdit={['DRAFT', 'ACTIVE', 'SCHEDULED'].includes(raid.status)}
-          funding={{
-            required: raid.studioVersion !== 1 && !raid.mint,
-            verified: raid.fundingStatus === 'VERIFIED',
-            lamports: raid.fundingLamports,
-            recipient: raid.fundingRecipient,
-            target: raid.impressionTarget,
-          }}
-        />
+        {raid.fundingAsset !== 'LAUNCH' && (
+          <CreatorRaidTools
+            id={raid.id}
+            canEdit={['DRAFT', 'ACTIVE', 'SCHEDULED'].includes(raid.status)}
+            funding={{
+              required: raid.studioVersion !== 1 && !raid.mint,
+              verified: raid.fundingStatus === 'VERIFIED',
+              lamports: raid.fundingLamports,
+              recipient: raid.fundingRecipient,
+              target: raid.impressionTarget,
+            }}
+          />
+        )}
         {raid.status === 'DRAFT' &&
           raid.studioVersion !== 1 &&
+          raid.fundingAsset !== 'LAUNCH' &&
           (raid.mint || raid.fundingStatus === 'VERIFIED') && (
             <MutationButton url={`/api/raids/${raid.id}`} body={{ action: 'launch' }}>
               Launch / schedule
@@ -126,8 +137,8 @@ export default async function ManageRaid({ params }: { params: Promise<{ id: str
             <p>
               Posting closes now. If raiders have already posted, their posts keep earning until the
               scheduled end ({raid.endsAt.toISOString().slice(0, 16).replace('T', ' ')} UTC);
-              results then enter review and unearned USDC returns to your balance. Funds stay
-              reserved until then.
+              results then enter review and unearned rewards return to the campaign balance. Funds
+              stay reserved until then.
             </p>
             <MutationButton url={`/api/raids/${raid.id}`} body={{ action: 'end' }}>
               End campaign

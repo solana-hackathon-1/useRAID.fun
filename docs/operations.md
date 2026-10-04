@@ -10,7 +10,7 @@ Do these when deploying the `fix/everything` release, in order:
 2. Apply migrations (`npm run db:migrate`, run by the pre-deploy command), then run `npm run media:backfill` once to move inline images into `MediaAsset`.
 3. Change the Cloudflare Pages **Root directory** to `sites/coming-soon` (and the build watch path to `sites/coming-soon/*`) when this release deploys; the placeholder moved out of `public/` and its deploy breaks otherwise. See [coming-soon-deploy.md](coming-soon-deploy.md).
 4. Run `npm run tracking:audit` against production and account for every obligation it lists.
-5. After that audit, ship the later migration that runs `VALIDATE CONSTRAINT` on the `NOT VALID` state checks from `202610020012_state_checks`. Existing rows were not validated by that migration, so validate only once the audit shows every status value is in its vocabulary.
+5. After that audit, ship the later migration that runs `VALIDATE CONSTRAINT` on the `NOT VALID` state checks from `202610030012_state_checks`. Existing rows were not validated by that migration, so validate only once the audit shows every status value is in its vocabulary.
 6. Leave `LAUNCH_ENABLED` and `PAYOUT_ENABLED` false; launchpads are gated off in code regardless.
 
 ## Railway deployment

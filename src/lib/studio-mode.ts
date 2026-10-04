@@ -12,4 +12,4 @@ export function studioSandbox() {
     return false;
   }
 }
-export const sessionCookie = () => (studioSandbox() ? 'raid_studio_session' : 'raid_session');
+export const sessionCookie = () => studioSandbox() ? 'raid_studio_session' : process.env.METEORA_NETWORK === 'devnet' ? 'raid_meteora_devnet_session' : 'raid_session';

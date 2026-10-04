@@ -1,6 +1,6 @@
 -- Ledger links, money vocabularies, deferred conservation and append-only guards.
 -- BalanceEntry is already append-only (balance_entry_immutable) and the four FKs owned by
--- 202610020001 are not repeated here.
+-- 202610030001 are not repeated here.
 
 ALTER TABLE "BalanceEntry" ADD CONSTRAINT "BalanceEntry_kind_check" CHECK ("kind" IN ('DEPOSIT','WITHDRAWAL','WITHDRAWAL_RESERVED','WITHDRAWAL_RELEASED','RAID_RESERVED','RAID_SETTLED','RAID_RELEASED','RAID_REWARD_CREDIT','TEST_FUNDS'));
 ALTER TABLE "UsdcTransfer" ADD CONSTRAINT "UsdcTransfer_kind_check" CHECK ("kind" IN ('DEPOSIT','WITHDRAWAL','REWARD','REWARD_CREDIT'));

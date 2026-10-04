@@ -1,12 +1,13 @@
 import Link from 'next/link';
-import { LaunchWizard } from '@/components/launch-wizard';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { launchEnabled } from '@/lib/pump-launch';
+import { meteoraLaunchSwitch, meteoraReadiness } from '@/lib/meteora/config';
+import { MeteoraLaunchWizard } from '@/components/meteora-launch-wizard';
 import { launchpadsAvailable } from '@/lib/release';
 export const dynamic = 'force-dynamic';
 export default async function LaunchPage() {
-  if (!launchpadsAvailable)
+  // Both launch products are off by default: the Pump gate stays closed and Meteora has its own switch.
+  if (!launchpadsAvailable && !meteoraLaunchSwitch())
     return (
       <section className="panel access-card">
         <span className="status-pill">Coming soon</span>
@@ -24,37 +25,27 @@ export default async function LaunchPage() {
       </section>
     );
   const user = await currentUser();
+  const readiness = meteoraReadiness();
   const wallet = user ? await db.walletIdentity.findUnique({ where: { userId: user.id } }) : null;
-  const settings = launchEnabled()
-    ? await db.settings.findUnique({ where: { id: 'global' } })
-    : null;
   const recoveries = user
     ? await db.tokenLaunch.findMany({
-        where: { userId: user.id, status: { in: ['PREPARED', 'SUBMITTED'] } },
+        where: {
+          userId: user.id,
+          provider: 'METEORA',
+          network: readiness.network,
+          status: { in: ['PREPARED', 'SUBMITTED', 'LIVE', 'PAUSED'] },
+        },
+        select: { id: true, name: true, symbol: true, status: true, mint: true },
         orderBy: { createdAt: 'desc' },
-        take: 5,
-        select: { id: true, name: true, symbol: true, status: true },
+        take: 20,
       })
     : [];
-  const enabled =
-    launchEnabled() &&
-    !!settings?.collectionEnabled &&
-    !settings.launchPaused &&
-    !settings.payoutPaused &&
-    !!settings.payoutWorkerAt &&
-    +settings.payoutWorkerAt > Date.now() - 120000 &&
-    settings.operatorAddress === process.env.OPERATOR_PUBLIC_KEY;
   return (
-    <>
-      <div className="page-title">
-        <h1>Launch a token</h1>
-        <p>SOL-paired pump.fun launch. Creator fees fund raider rewards.</p>
-      </div>
-      <LaunchWizard
-        sessionWallet={wallet?.address || null}
-        enabled={enabled}
-        recoveries={recoveries}
-      />
-    </>
+    <MeteoraLaunchWizard
+      readiness={readiness}
+      walletAddress={wallet?.address || null}
+      signedIn={!!user}
+      recoveries={recoveries}
+    />
   );
 }

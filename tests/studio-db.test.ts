@@ -148,7 +148,7 @@ suite('Studio atomic balances and settlement', () => {
 
   it('credits dust rewards to the raider balance instead of the manual payout queue', async () => {
     const source = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
-    const { id: _id, fundingSignature: _signature, ...fields } = source;
+    const { id: _id, fundingSignature: _signature, launchDraft: _draft, ...fields } = source;
     const [big, tiny] = await Promise.all(
       ['dust-big', 'dust-tiny'].map((xId) => db.user.create({ data: { xId, handle: xId } })),
     );
@@ -305,7 +305,7 @@ suite('Studio atomic balances and settlement', () => {
 
   it('settles a large result with bulk allocation inserts and conserves the pool', async () => {
     const source = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
-    const { id: _id, fundingSignature: _signature, ...fields } = source;
+    const { id: _id, fundingSignature: _signature, launchDraft: _draft, ...fields } = source;
     const count = 60;
     const users = await Promise.all(
       Array.from({ length: count }, (_, i) =>

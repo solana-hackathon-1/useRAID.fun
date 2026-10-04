@@ -1118,6 +1118,7 @@ suite('tracking v2 database lifecycle', () => {
       const {
         id: _id,
         tag: _tag,
+        launchDraft: _draft,
         ...source
       } = await db.raid.findUniqueOrThrow({
         where: { id: raidId },

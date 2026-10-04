@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CHECKED_STATES } from '@/lib/states';
 
-const sql = ['202610020011_ledger_integrity', '202610020012_state_checks']
+const sql = ['202610030011_ledger_integrity', '202610030012_state_checks']
   .map((name) => readFileSync(`prisma/migrations/${name}/migration.sql`, 'utf8'))
   .join('\n');
 

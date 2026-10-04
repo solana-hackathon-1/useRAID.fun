@@ -35,18 +35,21 @@ Migrations (all additive; the baseline is `202609270001_init`, and `prisma migra
 - `202609290001_x_tracking`
 - `202609290002_standalone_raids`
 - `202609300001_creator_studio`
-- `202610020001_studio_fk_alignment`
-- `202610020002_job_dead_letter`
-- `202610020003_x_budget_controls`
-- `202610020004_raid_money_policies`
-- `202610020005_token_metadata_source`
-- `202610020006_auth_hardening`
-- `202610020007_media_assets`
-- `202610020008_wallet_rotation`
-- `202610020009_launch_finance_hardening`
-- `202610020010_hot_path_indexes`
-- `202610020011_ledger_integrity`
-- `202610020012_state_checks`
+- `202610020001_meteora_launch`
+- `202610020002_launch_drafts`
+- `202610020003_launch_integrity`
+- `202610030001_studio_fk_alignment`
+- `202610030002_job_dead_letter`
+- `202610030003_x_budget_controls`
+- `202610030004_raid_money_policies`
+- `202610030005_token_metadata_source`
+- `202610030006_auth_hardening`
+- `202610030007_media_assets`
+- `202610030008_wallet_rotation`
+- `202610030009_launch_finance_hardening`
+- `202610030010_hot_path_indexes`
+- `202610030011_ledger_integrity`
+- `202610030012_state_checks`
 
 Policies in force at the end of the branch:
 

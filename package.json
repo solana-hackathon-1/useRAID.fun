@@ -27,9 +27,17 @@
     "tracking:preview": "tsx scripts/tracking-preview.ts",
     "studio:preview": "tsx scripts/studio-preview.ts",
     "lint": "eslint .",
-    "audit:check": "tsx scripts/audit-check.ts"
+    "audit:check": "tsx scripts/audit-check.ts",
+    "meteora:dev": "tsx scripts/meteora-devnet.ts web",
+    "meteora:worker": "tsx scripts/meteora-devnet.ts worker",
+    "meteora:migrate": "tsx scripts/meteora-devnet.ts migrate",
+    "test:meteora:db": "tsx scripts/meteora-devnet.ts test",
+    "meteora:doctor": "tsx scripts/meteora-devnet.ts doctor"
   },
   "dependencies": {
+    "@meteora-ag/cp-amm-sdk": "1.5.1",
+    "@meteora-ag/dynamic-bonding-curve-sdk": "1.5.13",
+    "@meteora-ag/dynamic-fee-sharing-sdk": "1.1.0",
     "@prisma/client": "^6.19.0",
     "@pump-fun/pump-sdk": "^2.0.0",
     "@solana/spl-token": "^0.4.15",
@@ -38,9 +46,11 @@
     "@wallet-standard/app": "^1.1.1",
     "@wallet-standard/base": "^1.1.1",
     "@wallet-standard/features": "^1.1.1",
+    "bn.js": "5.2.5",
     "bs58": "^6.0.0",
     "dotenv": "^17.2.0",
     "lucide-react": "^0.468.0",
+    "multiformats": "14.0.5",
     "next": "~16.3.6",
     "prisma": "^6.19.0",
     "react": "~19.3.0",
@@ -51,6 +61,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.56.0",
+    "@types/bn.js": "5.2.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

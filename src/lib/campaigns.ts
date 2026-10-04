@@ -64,6 +64,8 @@ export async function changeRaid(user: User, id: string, action: string) {
       throw new HttpError(403, 'This campaign belongs to another creator.');
     if (user.suspended || raid.hidden) throw new HttpError(403, 'Campaign access is restricted.');
     if (action === 'launch') {
+      if (raid.fundingAsset === 'LAUNCH')
+        throw new HttpError(409, 'Reserve this token’s campaign budget from its launch page.');
       assertApprovedCreator(user);
       if (raid.studioVersion === 1) throw new HttpError(409, 'Use Fund & Launch for this Raid.');
       if (!raid.mint && raid.fundingStatus !== 'VERIFIED')

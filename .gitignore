@@ -3,9 +3,12 @@ node_modules/
 .next/
 .next-studio/
 .next-db-down/
+.next-meteora/
+work/
 .env
 .env.*
 !.env.example
+!.env.meteora.worker.example
 coverage/
 test-results/
 playwright-report/

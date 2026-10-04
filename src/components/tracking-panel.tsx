@@ -6,6 +6,7 @@ import { SubmitPost } from './actions';
 import { WalletLogin } from './wallet-login';
 import { formatUsdc } from '@/lib/usdc-amount';
 import { formatNumber } from '@/lib/format';
+import { formatUnits } from '@/lib/meteora/amounts';
 export function TrackingPanel({
   raidId,
   view,
@@ -76,7 +77,9 @@ export function TrackingPanel({
         Your best 10 posts count toward Attention.{' '}
         {view.currency === 'USDC'
           ? 'All qualifying contributor views determine USDC rewards, not Attention score. Payments follow operator approval.'
-          : 'Automated rewards are coming soon.'}{' '}
+          : view.currency === 'LAUNCH'
+            ? 'All qualifying contributor views determine SOL and token rewards. Payments follow Operations approval; unused budget returns to this launch’s campaign balance.'
+            : 'Automated rewards are coming soon.'}{' '}
         Results follow collection and a two-hour review.
       </p>
       {view.resultVersion && (
@@ -84,6 +87,44 @@ export function TrackingPanel({
           Result version {view.resultVersion} ·{' '}
           {view.reviewEndsAt ? `Review deadline: ${new Date(view.reviewEndsAt).toISOString()}` : ''}
         </p>
+      )}
+      {view.launchBudgets.length > 0 && (
+        <div>
+          <h3>Fixed campaign budget</h3>
+          {view.launchBudgets.map((b) => (
+            <p key={b.asset}>
+              {formatUnits(b.reserved, b.asset === 'SOL' ? 9 : 6)}{' '}
+              {b.asset === 'SOL' ? 'SOL' : view.tokenSymbol} reserved ·{' '}
+              {formatUnits(b.earned, b.asset === 'SOL' ? 9 : 6)} earned ·{' '}
+              {formatUnits(b.paid, b.asset === 'SOL' ? 9 : 6)} paid · {b.network}
+            </p>
+          ))}
+        </div>
+      )}
+      {view.ownLaunchPayments.length > 0 && (
+        <div>
+          <h3>Your reviewed rewards</h3>
+          {view.ownLaunchPayments.map((p) => (
+            <p key={p.id}>
+              {formatUnits(p.units, p.asset === 'SOL' ? 9 : 6)}{' '}
+              {p.asset === 'SOL' ? 'SOL' : view.tokenSymbol} · {p.status.toLowerCase()}
+              {p.signature && (
+                <>
+                  {' '}
+                  ·{' '}
+                  <a
+                    className="inline-link"
+                    href={`https://solscan.io/tx/${p.signature}${p.network === 'devnet' ? '?cluster=devnet' : ''}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Payment receipt
+                  </a>
+                </>
+              )}
+            </p>
+          ))}
+        </div>
       )}
       {view.phase === 'HELD' && (
         <p className="notice">
@@ -242,6 +283,20 @@ export function TrackingPanel({
                 {a.estimatedUsdc === null
                   ? 'Reward estimate unavailable'
                   : `${formatUsdc(a.estimatedUsdc)} USDC estimated (subject to final review)`}
+              </>
+            )}
+            {view.currency === 'LAUNCH' && (
+              <>
+                {' '}
+                · {a.views.toLocaleString()} observed impressions ·{' '}
+                {a.estimatedLaunch
+                  .map((e) =>
+                    e.units === null
+                      ? 'Estimate unavailable'
+                      : `${formatUnits(e.units, e.asset === 'SOL' ? 9 : 6)} ${e.asset === 'SOL' ? 'SOL' : view.tokenSymbol}`,
+                  )
+                  .join(' + ')}{' '}
+                estimated, subject to final review
               </>
             )}
           </p>

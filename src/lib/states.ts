@@ -9,7 +9,8 @@ export const TRACKING_PHASE = [
   'HELD_RESOLVED',
 ] as const;
 export const FUNDING_STATUS = ['NOT_REQUIRED', 'PENDING', 'VERIFIED'] as const;
-export const FUNDING_ASSET = ['SOL', 'USDC'] as const;
+// LAUNCH: a Meteora campaign funded from a launch's own fee and reserve balances (LaunchBalanceEntry).
+export const FUNDING_ASSET = ['SOL', 'USDC', 'LAUNCH'] as const;
 export const HOLD_REASON = [
   'INSUFFICIENT_FUNDS',
   'NO_COLLECTED_FEES',

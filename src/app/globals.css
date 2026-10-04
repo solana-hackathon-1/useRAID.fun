@@ -829,14 +829,15 @@ aside,
   display: grid;
   place-items: center;
   color: var(--text);
-  background: var(--accent);
+  background: #000;
   border-radius: 9px;
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
 }
-.logo-mark svg {
-  width: 30px;
-  height: 30px;
+.logo-mark img {
+  border-radius: inherit;
+  width: 44px;
+  height: 44px;
 }
 .desktop-nav {
   display: flex;
@@ -1468,10 +1469,10 @@ footer {
   font-weight: 750;
   color: var(--text);
 }
-.footer-logo svg {
-  height: 28px;
-  width: 28px;
-  color: var(--accent-text);
+.footer-logo img {
+  height: 40px;
+  width: 40px;
+  border-radius: 8px;
 }
 .footer-links {
   display: flex;
@@ -2116,12 +2117,12 @@ footer {
     gap: 6px;
   }
   .logo-mark {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
   }
-  .logo-mark svg {
-    width: 26px;
-    height: 26px;
+  .logo-mark img {
+    width: 36px;
+    height: 36px;
   }
   .header-cta.button {
     font-size: 12px;

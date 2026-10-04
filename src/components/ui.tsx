@@ -191,6 +191,7 @@ export function RaidCard({ raid }: { raid: RaidView }) {
       {raid.fundingAsset === 'USDC' && raid.poolUnits && (
         <p>{formatUsdc(raid.poolUnits)} USDC rewards</p>
       )}
+      {raid.fundingAsset === 'LAUNCH' && raid.poolUnits && <p>{(Number(raid.poolUnits)/1e9).toFixed(4)} SOL + optional token rewards</p>}
       <div className="card-bottom">
         <div>
           <span className="muted">Attention score</span>

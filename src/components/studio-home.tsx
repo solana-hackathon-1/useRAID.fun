@@ -133,7 +133,7 @@ export function StudioHome({
                 <h3>{raid.title}</h3>
                 <p>
                   {raid.pool
-                    ? `${raid.currency === 'USDC' ? formatUsdc(raid.pool) : (Number(raid.pool) / 1e9).toFixed(4)} ${raid.currency} rewards`
+                    ? `${raid.currency === 'USDC' ? formatUsdc(raid.pool) : (Number(raid.pool) / 1e9).toFixed(4)} ${raid.currency === 'LAUNCH' ? 'SOL + token' : raid.currency} rewards`
                     : 'Funding quote pending'}
                   {raid.status === 'ACTIVE'
                     ? ` · ${raid.hoursLeft}h left`
@@ -157,7 +157,7 @@ export function StudioHome({
             <Link
               className="button secondary small"
               href={
-                raid.status === 'DRAFT' && !raid.legacy
+                raid.status === 'DRAFT' && !raid.legacy && raid.currency !== 'LAUNCH'
                   ? `/creator/new?draft=${raid.id}`
                   : `/creator/raids/${raid.id}`
               }

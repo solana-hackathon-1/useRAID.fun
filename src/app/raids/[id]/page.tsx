@@ -112,10 +112,10 @@ export default async function RaidPage({
             </div>
             <h2 className="campaign-heading">{raid.title}</h2>
             <p className="campaign-copy">{raid.description}</p>
-            {tracking?.currency === 'USDC' && (
+            {(tracking?.currency === 'USDC' || tracking?.currency === 'LAUNCH') && (
               <>
                 <p>
-                  {tracking.poolUnits ? formatUsdc(tracking.poolUnits) : '—'} USDC reward pool ·
+                  {tracking.poolUnits ? tracking.currency === 'USDC' ? formatUsdc(tracking.poolUnits) : (Number(tracking.poolUnits)/1e9).toFixed(4) : '—'} {tracking.currency === 'LAUNCH' ? 'SOL + optional token' : 'USDC'} reward pool ·
                   Ends at target or duration
                 </p>
                 <TargetPosts
@@ -125,7 +125,7 @@ export default async function RaidPage({
                 />
               </>
             )}
-            {tracking?.currency !== 'USDC' && briefPosts.length > 0 && (
+            {tracking?.currency !== 'USDC' && tracking?.currency !== 'LAUNCH' && briefPosts.length > 0 && (
               <div>
                 <h3>Campaign posts</h3>
                 <p>Use these posts as context for your original contributions.</p>
