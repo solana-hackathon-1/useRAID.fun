@@ -117,7 +117,19 @@ jobs:
       - name: Demo browser suite
         run: npm run test:browser
       - name: Studio desktop and mobile suite
-        run: npm run test:browser:studio
+        env:
+          COMPOSE_FILE: compose.yaml:compose.test.yaml
+          COMPOSE_PROJECT_NAME: raid-ci-studio
+          DATABASE_URL: postgresql://useraid:useraid@localhost:55432/useraid_studio_test
+        run: |
+          docker compose up -d --wait db
+          npm run test:browser:studio
+      - name: Stop isolated Studio database
+        if: always()
+        env:
+          COMPOSE_FILE: compose.yaml:compose.test.yaml
+          COMPOSE_PROJECT_NAME: raid-ci-studio
+        run: docker compose down -v
       - name: Production build
         run: npm run build
         env:
