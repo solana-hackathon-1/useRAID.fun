@@ -1,0 +1,318 @@
+# RAID delivery coverage register
+
+[Two-week sprint and alpha/beta plan](raid-sprint-plan.md) · [Master timeline](raid-delivery-timeline.md) · [Phase development and testing checklists](raid-development-phases.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md)
+
+**Prepared:** 6 October 2026. **Evidence state:** planning map only; all scenario results are PENDING until executed against a named commit/environment. This register maps every numbered blueprint section, R/P/D/I requirement, AC scenario, OPEN decision, production gate and screen. It schedules work; it does not replace canonical policy. Section references and IDs resolve in the [complete blueprint index](../RAID_BLUEPRINT_MAP.md).
+
+## Contents
+
+- [All blueprint sections](#all-blueprint-sections)
+- [Locked requirements](#locked-requirements)
+- [Product directions](#product-directions)
+- [Defaults](#defaults)
+- [Engineering invariants](#engineering-invariants)
+- [All acceptance scenarios](#all-acceptance-scenarios)
+- [OPEN decision deadlines](#open-decision-deadlines)
+- [Production gates](#production-gates)
+- [Screen delivery](#screen-delivery)
+- [Responsibility coverage](#responsibility-coverage)
+- [Evidence checklist](#evidence-checklist)
+
+## All blueprint sections
+
+Every section has an owning milestone or recurring use. Implementation follows the relevant subsection contracts, not just the short titles below. For example, each phase uses section 23.8 failure states and section 32 evidence boundaries even if its main domain is elsewhere.
+
+| Section                                                              | Canonical domain                 | Delivery/use                                                                                                                       |
+| -------------------------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| [00](../RAID_AGENT_BLUEPRINT.md#00-agent-entry-point)                | Agent entry point                | M0; mandatory reading for every phase                                                                                              |
+| [01](../RAID_AGENT_BLUEPRINT.md#01-evidence-and-authority)           | Evidence and authority           | M0; evidence authority throughout                                                                                                  |
+| [02](../RAID_AGENT_BLUEPRINT.md#02-decision-register)                | Decision register                | M0; requirement/decision register throughout                                                                                       |
+| [03](../RAID_AGENT_BLUEPRINT.md#03-vocabulary)                       | Vocabulary                       | M0; shared vocabulary throughout                                                                                                   |
+| [04](../RAID_AGENT_BLUEPRINT.md#04-product-map)                      | Product map                      | M0; M5 alpha/closed-beta complete product loop                                                                                     |
+| [05](../RAID_AGENT_BLUEPRINT.md#05-launchpad)                        | Launchpad                        | M1 existing-project verification; M3 launch; M5 release                                                                            |
+| [06](../RAID_AGENT_BLUEPRINT.md#06-guilds-and-membership)            | Guilds and membership            | M1 Guild/holder roles; M5 verified history                                                                                         |
+| [07](../RAID_AGENT_BLUEPRINT.md#07-identity-and-onboarding)          | Identity and onboarding          | M1 humans; M7 AI operator registration                                                                                             |
+| [08](../RAID_AGENT_BLUEPRINT.md#08-skills-and-ranks)                 | Skills and ranks                 | M1 relevant assessments; M2 admission; M7 agent evaluation; M8 calibrated scoring                                                  |
+| [09](../RAID_AGENT_BLUEPRINT.md#09-reputation-and-guild-trust)       | Reputation and Guild Trust       | M1 fact-based records; M5 attributable corrections; M6 Guild Trust; M8 calibration                                                 |
+| [10](../RAID_AGENT_BLUEPRINT.md#10-visibility-and-code-access)       | Visibility and code access       | M1 safe projections; M6 explicit grants/isolation/revocation                                                                       |
+| [11](../RAID_AGENT_BLUEPRINT.md#11-creating-and-recommending-a-raid) | Creating and recommending a Raid | M2 creation/rubric; M7 improved bounded assistance                                                                                 |
+| [12](../RAID_AGENT_BLUEPRINT.md#12-normal-raid-lifecycle)            | Normal Raid lifecycle            | M2 terms/work/review/closure; M4 payment integration                                                                               |
+| [13](../RAID_AGENT_BLUEPRINT.md#13-one-active-raid)                  | One active Raid                  | M2 participant enforcement; M6 Party/Challenge atomicity; M7 operator limits; M8 Roles                                             |
+| [14](../RAID_AGENT_BLUEPRINT.md#14-parties)                          | Parties                          | M6 Party roster/consent/splits; M7 AI Party members                                                                                |
+| [15](../RAID_AGENT_BLUEPRINT.md#15-guild-challenges)                 | Guild Challenges                 | M6 paid SELECTION and handoff; M8 PRIZE                                                                                            |
+| [16](../RAID_AGENT_BLUEPRINT.md#16-rewards-and-escrow)               | Rewards and escrow               | M4 exact assets/escrow/claims; M6 team pools; M8 new assets/awards                                                                 |
+| [17](../RAID_AGENT_BLUEPRINT.md#17-reviews-and-disputes)             | Reviews and disputes             | M2 review; M4 finality/disputes; M5 staffed mediation; M6/M8 judging appeals                                                       |
+| [18](../RAID_AGENT_BLUEPRINT.md#18-feed-and-sponsored-placement)     | Feed and sponsored placement     | M1/M2 feed; M6 fixed placements; M8 bids; notification safety throughout                                                           |
+| [19](../RAID_AGENT_BLUEPRINT.md#19-ai-agents)                        | AI agents                        | M7 evaluated managed runtime, cost/tool/permission limits                                                                          |
+| [20](../RAID_AGENT_BLUEPRINT.md#20-ai-influencers)                   | AI influencers                   | M2/M5 manual content evidence; M7 participant evaluation; M8 approved publication                                                  |
+| [21](../RAID_AGENT_BLUEPRINT.md#21-ongoing-roles)                    | Ongoing Roles                    | M8 funded Role periods/renewals/closure                                                                                            |
+| [22](../RAID_AGENT_BLUEPRINT.md#22-token-economy)                    | Token economy                    | M0 preserves no token-rank ladder; M4 asset distinction; M8 conditional utility interfaces; actual token issuance separately gated |
+| [23](../RAID_AGENT_BLUEPRINT.md#23-screens-and-user-experience)      | Screens and user experience      | M1–M8 responsive accessible user flows and all adverse states                                                                      |
+| [24](../RAID_AGENT_BLUEPRINT.md#24-system-architecture)              | System architecture              | M0 architecture/ownership; M5 deployment/durability; M7 isolation                                                                  |
+| [25](../RAID_AGENT_BLUEPRINT.md#25-domain-and-data-model)            | Domain and data model            | M0/M1/M2 core schema; M4 finance; M6 access/team/discovery; M7 AI; M8 advanced entities                                            |
+| [26](../RAID_AGENT_BLUEPRINT.md#26-api-contracts)                    | API contracts                    | M0 API conventions; command families delivered with each owning phase                                                              |
+| [27](../RAID_AGENT_BLUEPRINT.md#27-events-and-background-jobs)       | Events and background jobs       | M0 event contracts; M2 outbox/deadlines; M3/M4 reconciliation; M6–M8 provider jobs                                                 |
+| [28](../RAID_AGENT_BLUEPRINT.md#28-permissions-and-security)         | Permissions and security         | M0 authority map; M1–M8 server authorization and adversarial boundaries                                                            |
+| [29](../RAID_AGENT_BLUEPRINT.md#29-configuration-and-administration) | Configuration and administration | M0 typed config; M4/M5 audited flags; per-feature configuration thereafter                                                         |
+| [30](../RAID_AGENT_BLUEPRINT.md#30-operations-and-recovery)          | Operations and recovery          | M0 environment plan; M4 recovery contracts; M5 tested operations; M6–M8 incident additions                                         |
+| [31](../RAID_AGENT_BLUEPRINT.md#31-metrics)                          | Metrics                          | M5 useful-loop metrics; M6 delivery metrics; M7 costs; M8 attribution/fairness                                                     |
+| [32](../RAID_AGENT_BLUEPRINT.md#32-testing-strategy)                 | Testing strategy                 | M0 fixture/evidence plan; testing in every phase                                                                                   |
+| [33](../RAID_AGENT_BLUEPRINT.md#33-agent-work-contracts)             | Agent work contracts             | M0 task/role ownership; all phases use bounded work contracts                                                                      |
+| [34](../RAID_AGENT_BLUEPRINT.md#34-build-sequence)                   | Build sequence                   | M0–M8 dependency order; S1–S8 two-week alpha/beta gates and feature-specific live gates                                            |
+| [35](../RAID_AGENT_BLUEPRINT.md#35-acceptance-scenarios)             | Acceptance scenarios             | Exact scenario mapping below; execute with phase ownership                                                                         |
+| [36](../RAID_AGENT_BLUEPRINT.md#36-worked-examples)                  | Worked examples                  | M2 beginner; M6 confidential/selection; M4 mixed blocked reward; M7 budget-cap worked flows                                        |
+| [37](../RAID_AGENT_BLUEPRINT.md#37-what-agents-must-not-infer)       | What agents must not infer       | M0 conflict review; no inferred authority/economics throughout                                                                     |
+| [38](../RAID_AGENT_BLUEPRINT.md#38-open-decisions)                   | Open decisions                   | M0 owner assignment; deadlines below; OPEN decisions stay explicit                                                                 |
+| [39](../RAID_AGENT_BLUEPRINT.md#39-definition-of-done)               | Definition of done               | Evidence gate at every phase and release; honest status                                                                            |
+| [40](../RAID_AGENT_BLUEPRINT.md#40-handoff-templates)                | Handoff templates                | Every task/decision/completion handoff and requirement amendment                                                                   |
+| [41](../RAID_AGENT_BLUEPRINT.md#41-sources)                          | Sources                          | Recheck installed/provider primary documentation during implementation; this schedule adds no external platform claims             |
+
+## Locked requirements
+
+Canonical wording is retained here for traceability. Ownership is a schedule assignment, not implementation evidence.
+
+| ID  | Canonical requirement                                                                                                                 | Phase ownership |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| R01 | RAID retains a project launchpad and Guild identity.                                                                                  | M1/M3/M5        |
+| R02 | A project launched through RAID becomes a Guild; its authorized creator becomes the Guild Founder.                                    | M1/M3           |
+| R03 | Holding the recognized project token establishes holder eligibility for that Guild.                                                   | M1              |
+| R04 | A Raider can work across Guilds and can also be a Founder or Member.                                                                  | M1/M2           |
+| R05 | Every published Raid has an E–S difficulty label and explicit skill requirements.                                                     | M2              |
+| R06 | Skill rank represents demonstrated capacity, not token wealth or paid placement.                                                      | M1/M7/M8        |
+| R07 | RAID recommends task difficulty and reward composition/range; participant routing and duration complete the proposed assistance flow. | M2/M7           |
+| R08 | The public website has a discoverable Raid feed.                                                                                      | M1/M2           |
+| R09 | Paid placement exists as a clearly distinguishable visibility product.                                                                | M6/M8           |
+| R10 | Guilds accumulate a reputation based on funding, payment, requirements, and treatment of contributors.                                | M1/M5/M8        |
+| R11 | Sensitive work uses progressive trust and explicit access approval.                                                                   | M1/M6           |
+| R12 | Skills can be claimed, evidenced, assessed, and verified independently.                                                               | M1/M7           |
+| R13 | One Raider may hold only one active Raid/work engagement at a time.                                                                   | M2/M6/M7/M8     |
+| R14 | A high-trust Challenge may select a Raider or Party for a larger Raid.                                                                | M6              |
+
+## Product directions
+
+Canonical wording is retained here for traceability. Ownership is a schedule assignment, not implementation evidence.
+
+| ID  | Canonical requirement                                                                       | Phase ownership                                                         |
+| --- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| P01 | Humans, registered AI agents, and AI influencers are distinct participant types.            | M1 identity; M7 AI; M8 channel automation                               |
+| P02 | Parties combine complementary contributors.                                                 | M6                                                                      |
+| P03 | Prize-based Guild Challenges can compare multiple solutions.                                | M8                                                                      |
+| P04 | Ongoing Roles may follow later.                                                             | M8                                                                      |
+| P05 | Rewards can combine supported stablecoins, SOL, project tokens, and RAID.                   | M4 bundle model/one asset; M6 splits; M8 each additional approved asset |
+| P06 | RAID token utilities may include platform services, execution credits, and paid visibility. | M8 conditional interfaces; token issuance separate                      |
+| P07 | Newcomers should have a low-risk path to earning and proving skill.                         | M1/M2/M5                                                                |
+| P08 | AI assistance should reduce founder configuration work.                                     | M2/M7                                                                   |
+
+## Defaults
+
+Canonical wording is retained here for traceability. Ownership is a schedule assignment, not implementation evidence.
+
+| ID  | Canonical requirement                                                                                                                                              | Phase ownership                                             |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| D01 | One TypeScript modular monolith, PostgreSQL, web process, background worker, and separate untrusted execution environments.                                        | M0/M5/M7                                                    |
+| D02 | No mandatory RAID holding/staking requirement in the baseline.                                                                                                     | M0/M1; M8 preserves disabled license until O04              |
+| D03 | Every paid execution slot, public or private, must have fully verified reward funding before accepting commitments and verified escrow binding before work starts. | M2 simulation; M4 real binding; M6 funded entries           |
+| D04 | All confidential Raids and all B/A/S work require approval plus participant acceptance.                                                                            | M2/M6                                                       |
+| D05 | A standard Raid has one selected Raider or one Party.                                                                                                              | M2/M6                                                       |
+| D06 | Build and review duties hold the active slot; a terminal work outcome releases it independently of settlement.                                                     | M2/M4                                                       |
+| D07 | Skill-specific ranks and evidence are canonical; an optional profile headline cannot override them.                                                                | M1/M7                                                       |
+| D08 | Use public or sanitized task material for initial onboarding and trial work.                                                                                       | M1/M6                                                       |
+| D09 | Initial automated recommendations use a bounded rubric; an LLM can explain or propose a structured draft.                                                          | M2/M7                                                       |
+| D10 | Initial sponsored placements use disclosed fixed slots; bidding is a later compatible mode.                                                                        | M6 fixed slots; M8 approved bid mode                        |
+| D11 | Exact launch protocol, custody design, program authorities, fee schedule, and token economics remain OPEN.                                                         | M0 decision queue; M3/M4/M8 resolve only applicable choices |
+| D12 | Mainnet payments and trading remain disabled until their specific implementation and operating gates pass.                                                         | M3/M4/M5 per-feature gates                                  |
+| D13 | Removing a wallet or losing a token balance cannot erase completed work, assessed skills, or financial claims.                                                     | M1/M4/M5                                                    |
+
+## Engineering invariants
+
+Canonical wording is retained here for traceability. Ownership is a schedule assignment, not implementation evidence.
+
+| ID  | Canonical requirement                                                                                                                 | Phase ownership                         |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| I01 | The database rejects a second active engagement for the same canonical participant.                                                   | M2/M6/M7/M8                             |
+| I02 | Party activation either reserves every participant or reserves none.                                                                  | M6/M7                                   |
+| I03 | Every financial obligation and transfer uses integer base units and a full asset identity.                                            | M0/M4/M6/M8                             |
+| I04 | Cumulative paid, refunded, and remaining obligations never exceed verified credited funds for that asset.                             | M4/M6/M8                                |
+| I05 | A duplicate command, webhook, retry, or reconciliation pass cannot create a duplicate business outcome.                               | M2–M8 command and external replay       |
+| I06 | Private bytes never appear in public API fields, rendered page payloads, search indexes, previews, logs, or notification snippets.    | M1/M2/M6/M7; all new public projections |
+| I07 | No background score change, token sale, or service outage grants code access or confiscates a reward.                                 | M1/M4/M6/M8                             |
+| I08 | Every acceptance and financial decision refers to immutable terms and a specific submission/version.                                  | M2/M4/M6/M8                             |
+| I09 | External effects are recorded, retried, and reconciled; a database transaction cannot pretend to atomically commit GitHub and Solana. | M2/M3/M4/M6/M7/M8                       |
+| I10 | Only authorized actors can change the underlying business state; hiding a button is not authorization.                                | M1–M8 every server command              |
+| I11 | Payout, refund, access grant, and dispute decisions have an audit trail and explicit authority.                                       | M4/M5/M6/M8                             |
+| I12 | Sample program IDs, fake mints, and fabricated performance data cannot pass production validation.                                    | M0/M3/M4/M5; each new provider/asset    |
+
+## All acceptance scenarios
+
+Each of the 72 scenarios has an accountable first verification phase below. Cross-cutting scenarios must be repeated when a later feature introduces that failure path. "First verification" means a planned test milestone, not an existing passing test. Exact required behavior remains in blueprint section 35; the label below identifies its trigger.
+
+| Scenario | Canonical trigger                                                                                                                                                       | First verification phase              | Repeat/integration evidence                                  |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------ |
+| AC01     | User connects a second wallet while holding an active Raid.                                                                                                             | M1                                    | M5 public release                                            |
+| AC02     | Reuse a wallet-login nonce or change its domain.                                                                                                                        | M1                                    | M5 public release                                            |
+| AC03     | New user completes orientation with no verified skill.                                                                                                                  | M1                                    | M5 public release                                            |
+| AC04     | E-ranked participant buys a large RAID balance.                                                                                                                         | M1                                    | M5 public release                                            |
+| AC05     | A-ranked frontend developer applies for B-ranked Solana work without that skill.                                                                                        | M1                                    | M5 public release                                            |
+| AC06     | Experienced newcomer passes a relevant advanced assessment.                                                                                                             | M1                                    | M5 public release                                            |
+| AC07     | Token holder attempts Guild administration or private download.                                                                                                         | M1                                    | M5 public release                                            |
+| AC08     | RPC outage prevents refreshing holder balance.                                                                                                                          | M1                                    | M5 public release                                            |
+| AC09     | Related accounts farm reciprocal easy tasks.                                                                                                                            | M5                                    | M6 trust; M8 calibrated scoring                              |
+| AC10     | Dispute finding is reversed on appeal.                                                                                                                                  | M5                                    | M6 trust; M8 calibrated scoring                              |
+| AC11     | Same Raider accepts two different Raids concurrently.                                                                                                                   | M2                                    | M4 funded binding; M5/M6/M7/M8 each acceptance path          |
+| AC12     | Two applicants accept the same available slot.                                                                                                                          | M2                                    | M4 funded binding; M5/M6/M7/M8 each acceptance path          |
+| AC13     | A Party contains one busy member.                                                                                                                                       | M6                                    | M7 AI Parties; M8 prize mode                                 |
+| AC14     | Normal acceptance races with Challenge acceptance.                                                                                                                      | M6                                    | M7 AI Parties; M8 prize mode                                 |
+| AC15     | Two registered agents under one capacity-limited operator accept different work.                                                                                        | M7                                    | Any new operator policy                                      |
+| AC16     | Human and AI members under one operator join the same allowed Party.                                                                                                    | M7                                    | Any new operator policy                                      |
+| AC17     | An offer was generated while available, but the Raider later became busy.                                                                                               | M2                                    | M4 real money; M5 release; later work formats                |
+| AC18     | Public paid work has no private resources but binding is pending.                                                                                                       | M2                                    | M4 real money; M5 release; later work formats                |
+| AC19     | Worker submits and review/revision duty remains.                                                                                                                        | M2                                    | M4 real money; M5 release; later work formats                |
+| AC20     | Work is accepted but its payment is still pending.                                                                                                                      | M2                                    | M4 real money; M5 release; later work formats                |
+| AC21     | Reviewer never responds, or worker never submits.                                                                                                                       | M2                                    | M4 real money; M5 release; later work formats                |
+| AC22     | Terminal work is reopened while the Raider has new work.                                                                                                                | M2                                    | M4 real money; M5 release; later work formats                |
+| AC23     | A delayed closure job arrives after the Raider starts another job.                                                                                                      | M2                                    | M4 real money; M5 release; later work formats                |
+| AC24     | Five application targets close or offers expire.                                                                                                                        | M2                                    | M4 real money; M5 release; later work formats                |
+| AC25     | A withdrawn worker is replaced.                                                                                                                                         | M2                                    | M4 real money; M5 release; later work formats                |
+| AC26     | Client supplies unrelated successful transaction signature.                                                                                                             | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC27     | RPC accepts a transaction but it never finalizes.                                                                                                                       | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC28     | Reward promises two assets; only one is deposited.                                                                                                                      | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC29     | Two mints share a ticker, or same mint address is presented on wrong network.                                                                                           | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC30     | Asset policy version changes for the same underlying asset.                                                                                                             | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC31     | Founder refunds while work binding is racing.                                                                                                                           | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC32     | Funding/claim webhook is delivered repeatedly.                                                                                                                          | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC33     | Payout times out after success and is rebuilt with a new signature.                                                                                                     | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC34     | A shared pool funds several slots.                                                                                                                                      | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC35     | Work is committed but not yet reviewed/allocated.                                                                                                                       | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC36     | Some Party/asset claims settle and another fails.                                                                                                                       | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC37     | Token transfer becomes frozen after funding.                                                                                                                            | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC38     | Appeal arrives at claimability boundary.                                                                                                                                | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC39     | Operational work closes while a signed binding later finalizes.                                                                                                         | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC40     | Unauthorized actor changes payout address or settlement beneficiaries.                                                                                                  | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC41     | Mainnet config contains test asset/program or mock provider.                                                                                                            | M4                                    | M5 release; M6 pools; M8 new assets/awards                   |
+| AC42     | Visitor inspects private-Raid HTML, API data, search, metadata or preview.                                                                                              | M1                                    | M5/M6/M7 affected private projections                        |
+| AC43     | High-rank token holder requests a repo without approval.                                                                                                                | M1                                    | M5/M6/M7 affected private projections                        |
+| AC44     | Founder grants one repository expecting folder secrecy.                                                                                                                 | M6                                    | M7 runtime isolation; new provider scopes                    |
+| AC45     | Source Challenge grant is revoked after main-Raid grant starts on same repo.                                                                                            | M6                                    | M7 runtime isolation; new provider scopes                    |
+| AC46     | Contributor had independent repository rights before the Raid.                                                                                                          | M6                                    | M7 runtime isolation; new provider scopes                    |
+| AC47     | Provider revocation fails or old grant job arrives late.                                                                                                                | M6                                    | M7 runtime isolation; new provider scopes                    |
+| AC48     | Submission includes a malicious build script, URL, or prompt instruction.                                                                                               | M6                                    | M7 runtime isolation; new provider scopes                    |
+| AC49     | Account is restricted with an unsettled claim.                                                                                                                          | M4                                    | M5 account restriction; later claim paths                    |
+| AC50     | Party leader changes accepted split without other members.                                                                                                              | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC51     | Valid Challenge entry does not win.                                                                                                                                     | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC52     | Founder changes judging weights after commitments.                                                                                                                      | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC53     | Four guaranteed prototype payments plus a prize are promised.                                                                                                           | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC54     | Selected Challenge builder declines main Raid.                                                                                                                          | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC55     | Selection-to-main handoff races with another offer or operator job.                                                                                                     | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC56     | Main-Raid binding fails after handoff.                                                                                                                                  | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC57     | Guild wants to use a nonwinner's private code.                                                                                                                          | M6                                    | M8 prize/judging/rights where applicable                     |
+| AC58     | Founder buys sponsored placement.                                                                                                                                       | M6                                    | M8 bidding and refunds                                       |
+| AC59     | Bid loses or purchased placement cannot be delivered.                                                                                                                   | M6                                    | M8 bidding and refunds                                       |
+| AC60     | Social publish request times out after provider success.                                                                                                                | M8                                    | Each added automatic channel adapter                         |
+| AC61     | AI reaches total budget across retries/subagents.                                                                                                                       | M7                                    | New model/tool/operator configuration                        |
+| AC62     | AI tries to approve its own output or withdraw reward.                                                                                                                  | M7                                    | New model/tool/operator configuration                        |
+| AC63     | Agent changes model/version to evade failure history/capacity.                                                                                                          | M7                                    | New model/tool/operator configuration                        |
+| AC64     | Failed/cancelled AI run leaves an active engagement.                                                                                                                    | M7                                    | New model/tool/operator configuration                        |
+| AC65     | Role title is used to hide an ongoing second job.                                                                                                                       | M8                                    | Each Role renewal/assignment path                            |
+| AC66     | Founder launches a new project through the selected route, verifies its resulting mint, activates the Guild, funds a public Raid, and a Raider completes and claims it. | M5                                    | Every selected launch/payment route change                   |
+| AC67     | Process crashes after external success but before local receipt.                                                                                                        | M3                                    | M4 finance; M5 restore; M6–M8 every external effect          |
+| AC68     | Restore after losing records newer than the last snapshot, including a new accepted engagement and completed external effect.                                           | M5                                    | Each durability/authority/provider change                    |
+| AC69     | Same idempotency key is reused with a different payload.                                                                                                                | M0 contract / M2 executable command   | M3–M8 every retriable mutation                               |
+| AC70     | Keyboard/mobile user completes the core flow with wallet rejection and retry.                                                                                           | M2                                    | M3 transaction UI; M5 release; M6–M8 new flows               |
+| AC71     | Authorized representative links an existing project/token and completes the supported funded-work flow.                                                                 | M5                                    | M1 authority starts; each existing-project onboarding change |
+| AC72     | Founder/admin changes ordinary Raid reward, scope, deadline or global defaults after acceptance.                                                                        | M0 contract / M2 executable amendment | M4 financial; M5 release; M6–M8 accepted contracts           |
+
+## OPEN decision deadlines
+
+Every row remains OPEN until the owner records an accepted section 40 decision with exact values, rationale, affected contracts, migration/rollout and tests. Dates below are target working days, not automatic approval. Owner roles must be assigned to named people in M0. Failure to decide blocks the dependent live feature, while independent implementation continues.
+
+| ID  | Decision                                                                                  | Target / dependency                                                         | Accountable responsibility                          | Safe independent work                                                  |
+| --- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------- |
+| O01 | Exact launch mechanism and protocol/provider.                                             | D10; M3 launch                                                              | Project owner + AG04                                | Guilds/existing-project attestation and adapter interface              |
+| O02 | Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy. | D10; selected launch parameters                                             | Project owner + AG04                                | Parameter validation and controlled not-configured UI                  |
+| O03 | Real RAID token plan and utility activation.                                              | D68 only if a token release is selected; actual launch separately estimated | Project owner + AG04                                | Utility interfaces; no invented token issuance                         |
+| O04 | Any flat RAID access license after removal of rank-linked stakes.                         | D68 only if license activation is selected                                  | Project owner + AG05                                | Disabled optional entitlement interface; starter work stays accessible |
+| O05 | Escrow provider/custom program and custody/upgrade authority.                             | D10; M4 real custody/binding                                                | Project owner + AG04/AG08/AG09                      | Exact accounting and synthetic adapter                                 |
+| O06 | Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery.             | D10; M4 claimability and mediation                                          | Project owner + staffed mediator + AG04/AG09        | Bounded operational closure; preserve pending claims                   |
+| O07 | Initial supported assets and extension/freeze policy.                                     | D10 for initial asset; before each added asset                              | AG04 + security/treasury owner                      | Multi-asset model with unsupported paths disabled                      |
+| O08 | Platform fees, launch fees, promotion prices and AI charging/refunds.                     | D10 initial payment/launch; D48 placements; D58 AI; D68 bids                | Project owner + finance/AG04/AG07                   | Quote/refund interfaces with no example pricing as policy              |
+| O09 | Numeric skill/score thresholds and calibration.                                           | D68 for automatic numerical promotion/scoring                               | AG05 + project owner                                | Qualitative rubric/manual relevant assessment and confidence           |
+| O10 | Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy.                | D48 selection; D68 prize mode                                               | Project owner + rights/mediation owner              | Challenge draft/rubric/rights interfaces                               |
+| O11 | Formal privacy, retention, account deletion and identity-attestation policy.              | D30; before public operations or private data retention                     | Project owner + AG05/AG09                           | Minimal-data staging fixtures and retention controls                   |
+| O12 | Supported jurisdictions/users and contract/service terms.                                 | D30; before public paid operation                                           | Project owner + appropriate operating-terms adviser | Test-only flows and explicit operating-gate UI                         |
+| O13 | GitHub organization/provider plans and supported grant mechanism.                         | D48; M6 confidential resource enablement                                    | AG05 + integration/organization owner               | Safe teasers and provider grant adapter                                |
+| O14 | Model providers, data retention/training permissions, tool providers, price cards.        | D58; M7 managed execution                                                   | Project owner + AG06/security                       | Budget/tool policy contracts and isolated synthetic runs               |
+| O15 | Organization AI-operator registration/concurrency policy.                                 | Before organization scaling; D68 if in selected V2 scope                    | Project owner + AG05/AG06                           | Individual-operator pilot default with strict cap                      |
+| O16 | Social channels and allowed APIs/automation/metrics.                                      | D68; M8 automatic channels                                                  | Account owner + AG07 + project owner                | Manual draft/publication evidence                                      |
+| O17 | Sponsored auction mechanism and reserve/charge/refund rules.                              | D68; M8 auction enablement                                                  | Project owner + treasury/AG07                       | Fixed slots and disabled bid interfaces                                |
+| O18 | Hosting, selected package/runtime versions, provider SLOs and budgets.                    | D2 staging target; D30 production configuration                             | AG09 + project owner                                | Local web/worker/test database and config validation                   |
+| O19 | Ongoing Role contracts/cadence and operator support hours.                                | D68 Role policies; D30 initial support/mediation staffing                   | Project owner + AG09                                | Role period/renewal interfaces; finite ordinary work deadlines         |
+
+## Production gates
+
+These are the blueprint's live-feature gates. Their evidence must name the deployed/tested version and operating model. A passing unit suite or a merged PR does not satisfy all gates.
+
+| Gate                         | Canonical evidence                                                                                     | Phase/release responsibility                                            |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| G01 — Launch route           | Approved protocol, parameters, verified IDs, authority/fee behavior, recovery.                         | M3 prepares; M5 verifies before live launch; later token route repeats  |
+| G02 — Custody and settlement | Defined authority, program/provider capability, reserves/claims/refunds, recovery, relevant assurance. | M4 mechanism assurance; M5 operational release                          |
+| G03 — Financial finality     | Notice, ordinary acceptance finality, objection/appeal, final decision, hold/claim race behavior.      | M4 every claimability path; M6/M8 judging and awards repeat             |
+| G04 — Supported assets       | Exact registry, decimals/program checks, extension policy, complete tested paths.                      | M4 first asset; M8 each new asset independently                         |
+| G05 — Operating terms        | Supported jurisdictions/users, rights, fees, dispute operator and service scope.                       | M5 public paid launch/work; repeat on scope/jurisdiction/rights changes |
+| G06 — Private resources      | Real authorization, effective provider grants, isolation, revocation and incident handling.            | M6 confidential work/private trials; M7 runtime access repeats          |
+| G07 — Managed execution      | Operator identity, sandbox, tool authority, spend controls, provider data policy.                      | M7 managed AI; repeat on tool/provider/operator policy changes          |
+| G08 — External publication   | Account control, current API capability, content approval, retry/takedown/metrics rules.               | M8 approved automatic influencer/channel publication                    |
+| G09 — Promotions             | Funded inventory/bids, charge/delivery/refund reconciliation.                                          | M6 fixed inventory; M8 bid/delivery/refund evidence                     |
+| G10 — Operations             | Monitoring, staffed case ownership, backups/restore, release/incident playbooks.                       | M5 any live release; M6–M8 add incident/runbook evidence                |
+
+## Screen delivery
+
+All 16 screen contracts in blueprint section 23.2 are mapped. Each release must cover loading, empty, stale, denied, unsupported, retryable/final failure, duplicate, expired terms and maintenance states where applicable. Show timezone on deadlines; never infer authorization/funding from client state.
+
+| Screen                     | First delivery and extensions                    | Required user-facing evidence                                                                                    |
+| -------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Homepage                   | M1/M2; M6/M8 additions                           | Visible Guild/launch identity and funded safe feed; permitted Challenge cards and separate Sponsored labels.     |
+| Raid feed                  | M1/M2; M6 sponsorship                            | Structured filters and eligibility explanation; asset-specific value sorting if prices unavailable.              |
+| Guild directory            | M1                                               | Verified project identity, safe public cards, unknown/no-history states.                                         |
+| Guild profile              | M1; M5 history; M6 trust                         | Founder/control verification, work history, token freshness and separate reputation/Trust.                       |
+| Launch wizard              | M3                                               | Exact route/actions/costs/controls before signing; rejection, expiry, partial completion and verification.       |
+| Create-Raid wizard         | M2; M4 funding                                   | Outcome/criteria, bounded recommendation, difficulty/skills, immutable terms and full reward bundle/net fees.    |
+| Raid detail                | M2; M6 private access                            | Accurate fit/capacity/funding, permitted teaser and actionable apply/accept/access path.                         |
+| Raider onboarding/profile  | M1; M5 history; M7 AI                            | Claimed versus verified skills, relevant trial route, canonical identity and current one-active work.            |
+| My Raid workspace          | M2; M4 payment; M6 teams                         | Accepted terms, resource readiness, progress, versioned submissions/revisions and independent claim status.      |
+| Founder applicant review   | M2; M6 grants/teams                              | Relevant skill evidence, reliability/Guild Trust, current capacity and scoped offer/approval.                    |
+| Submission review          | M2; M4 disputes; M6 judging                      | Specific artifact version/criteria, authorized decision, finite deadlines and original terms.                    |
+| Party builder              | M6                                               | Real roster/coverage, exact per-asset splits and every member’s consent.                                         |
+| Challenge detail/workspace | M6 selection; M8 prize                           | Separate modes/rights/rubric/liability, entry commitment, qualification and main-work offer.                     |
+| Payments                   | M4                                               | Obligations by actual asset, separate fees, partial/unknown/blocked/finalized transfers and authorized recovery. |
+| Sponsor dashboard          | M6 fixed inventory; M8 bids                      | Inventory, exact price/bid/time, delivery definition, maximum charge and refund evidence.                        |
+| Operator console           | M0 baseline; M4/M5; feature incidents thereafter | Scoped audit/config/case/reconciliation/lag and recovery; no arbitrary state or balance edit.                    |
+
+## Responsibility coverage
+
+The accelerated staffing assumption bundles these roles. M0 must assign named accountable owners and review capacity; having a role label does not make somebody available.
+
+| Blueprint role                     | Responsibility in this plan                                                                                       |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| AG01 Product and orchestration     | M0 decisions/scope, daily dependencies, M5 release and later enablement decisions.                                |
+| AG02 Frontend and experience       | M1–M8 screen contracts, adverse states, accessibility and server-derived status.                                  |
+| AG03 Backend and domain            | M0 shared schema, M1/M2 identity/work/capacity, M4 integration, M6 team/handoff and M8 Role/prize domains.        |
+| AG04 Solana and treasury           | M3 launch, M4 funding/finality/recovery, M6 splits/compensation, M8 awards/bids/asset extensions.                 |
+| AG05 Trust and private access      | M1 assessments/records, M5 fair attributable history, M6 private resources, M7 capability, M8 calibrated scoring. |
+| AG06 AI execution                  | M7 operator/runtime/budgets; M8 automated channel execution integration where selected.                           |
+| AG07 Discovery and distribution    | M1/M2 feed, M6 inventory, M8 bidding/channels/attribution.                                                        |
+| AG08 QA and security               | First acceptance evidence, independent adverse-case review and gate findings in every phase.                      |
+| AG09 Operations and release        | M0 environments, M4 incidents, M5 restore/release/support, M6–M8 new feature runbooks.                            |
+| AG10 Documentation and integration | M0 inventory/traceability, all contract/decision/status/handoff updates and GitHub-readable evidence.             |
+
+## Evidence checklist
+
+- [ ] All phase work is mapped to exact IDs, inspected paths, permissions and state transitions.
+- [ ] Required scenarios have an actual SHA, date, environment/network, result and artifact reference.
+- [ ] All OPEN choices have an accepted decision or clearly disabled dependent feature.
+- [ ] Each enabled feature has its relevant production gates, operator and recovery path.
+- [ ] Metrics/history exclude test data and retain append-only correction evidence.
+- [ ] Previous accepted campaign/work terms and protected financial claims survive changes.
+- [ ] Newcomers and experienced users both complete supported keyboard/mobile paths.
+- [ ] Current forecast distinguishes delivered, test-verified, live-enabled and blocked work.
+
+The checklist is intentionally unchecked at planning time. This planning deliverable’s own validation record is in [timeline verification](raid-plan-verification.md); it is separate from executing the planned application phases.
