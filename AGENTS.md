@@ -1,3 +1,15 @@
+# RAID blueprint authority
+
+The canonical product and engineering specification is [RAID_AGENT_BLUEPRINT.md](RAID_AGENT_BLUEPRINT.md). Treat it as the authoritative RAID project document across every feature and domain. The active user's instructions and applicable system/developer instructions take precedence; preserve the Next.js rules below.
+
+Before editing, read blueprint sections 00–04 and 13, then the relevant domain sections, section 33 role contract, section 34 milestone, and section 35 acceptance scenarios. Use the complete section map in [RAID_BLUEPRINT_MAP.md](RAID_BLUEPRINT_MAP.md) to find every domain.
+
+For each change, explicitly map the user outcome to blueprint requirement/invariant IDs, affected entities, permissions, state transitions, existing repository files, and meaningful verification. Read related money, identity, access, and concurrency rules even when working in another domain. Inspect actual code and migrations; the blueprint describes intended behavior, not proven implementation.
+
+Preserve LOCKED requirements. Apply DEFAULT choices unless a recorded decision replaces them. Keep DIRECTION, OPEN, and EXAMPLE distinct; never turn an unresolved decision or example into production policy. Record conflicts and implementation gaps rather than silently rewriting the specification or claiming completion. Implement only the assigned scope and its dependencies.
+
+Use section 39 for completion and section 40 for task/handoff/decision records. Report actual verification and remaining gaps. When the owner changes a requirement, update the canonical blueprint's decision register and affected contracts/tests together. Agent-folder blueprint files are links to the canonical source; do not create divergent copies.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
