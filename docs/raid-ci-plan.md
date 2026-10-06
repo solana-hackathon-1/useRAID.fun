@@ -80,3 +80,7 @@ CI status/evidence on the Project belongs to the feature's actual candidate; the
 ## Completion report CI records
 
 Implementation reports require a `ci` object keyed by every required check from the task packet. Each record contains `result: SUCCESS`, full candidate `sha` and actual `evidence_url`. Missing/failed checks are rejected by the completion validator. A independently reviewed non-code task boundary may record why implementation checks are not applicable; it does not authorize feature or release approval. Reviewers verify the actual run and artifacts, not merely a string claiming success.
+
+## Studio database isolation
+
+The Studio preview helper requires Docker Compose and creates its own `useraid_studio_test` database. CI starts the existing test Compose override on port 55432 under project `raid-ci-studio`, supplies those Compose settings to the preview helper and always cleans up that isolated database. Demo/live jobs keep the GitHub service database on 5432. This corrects a real hosted-CI setup failure without weakening the preview safeguards or changing application logic.
