@@ -16,6 +16,7 @@ def complete_report():
     report.update(task_id='T001', implementer='implementer', reviewer='independent-reviewer')
     report['criteria'] = {c['id']: {**{key: 'Fixture evidence' for key in MODULE.REQUIRED}, 'result': 'PASS', 'sha': 'a' * 40, 'reviewer': 'independent-reviewer'} for c in REGISTRY['packets']['T001']['criteria']}
     report['tdd'] = {phase: {'command': 'recorded test command', 'sha': 'a' * 40, 'evidence_url': 'https://example.test/fixture-report', 'result': 'FAIL' if phase == 'red' else 'PASS', 'expected_failure': 'missing behavior', 'observed_failure': 'assertion failed', 'observed': 'required assertions passed'} for phase in ['red', 'green', 'refactor']}
+    report['ci'] = {name: {'result': 'SUCCESS', 'sha': 'a' * 40, 'evidence_url': 'https://example.test/fixture-check'} for name in REGISTRY['packets']['T001']['ci_requirements']}
     return report
 
 
@@ -45,6 +46,18 @@ class CompletionValidation(unittest.TestCase):
 
     def test_self_review_rejected(self):
         self.report['reviewer'] = 'implementer'
+        self.assertTrue(self.errors())
+
+    def test_missing_ci_result_rejected(self):
+        self.report['ci'].pop('ci-gate')
+        self.assertTrue(self.errors())
+
+    def test_mixed_ci_candidates_rejected(self):
+        self.report['ci']['test']['sha'] = 'b' * 40
+        self.assertTrue(self.errors())
+
+    def test_failed_ci_result_rejected(self):
+        self.report['ci']['test']['result'] = 'FAILURE'
         self.assertTrue(self.errors())
 
     def test_missing_tdd_rejected(self):

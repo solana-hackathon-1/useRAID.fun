@@ -110,6 +110,16 @@ Detailed criteria and completion review: [agent task contracts](raid-agent-task-
 
 ## Detailed criteria and TDD fields
 
-The Project now has 44 fields. **Criteria coverage** starts at zero reviewed criteria per task; update only from actual evidence. **Completion review** starts Not reviewed and becomes Needs changes, Blocked or Accepted through independent review. **Task contract** links to the numbered issue criteria. Every implementation change follows RED → GREEN → REFACTOR, with genuine failure/pass/regression evidence and full commit SHAs. Read [mandatory TDD and completion rules](raid-agent-task-contracts.md#mandatory-test-driven-development) before implementation.
+The Project now has 49 visible fields. **Criteria coverage** starts at zero reviewed criteria per task; update only from actual evidence. **Completion review** starts Not reviewed and becomes Needs changes, Blocked or Accepted through independent review. **Task contract** links to the numbered issue criteria. Every implementation change follows RED → GREEN → REFACTOR, with genuine failure/pass/regression evidence and full commit SHAs. Read [mandatory TDD and completion rules](raid-agent-task-contracts.md#mandatory-test-driven-development) before implementation.
 
 Every internal feature, including authentication and sessions, must satisfy [the module reuse and adapter matrix](raid-module-reuse.md). Criteria C20/C21 require shared adapter tests, safe provider switching, same-change documentation and an independent consuming example. These are required development outcomes; existing features are not claimed compliant until verified.
+
+[CI requirements for every feature](raid-ci-plan.md) · [Automatically refreshed epic/issue status](raid-project-status.md).
+
+The **CI and test coverage** view shows **Required CI**, **CI status** and **CI evidence** for all 165 issues. Feature CI starts Not run; T005 remains Blocked for recorded baseline failures. Record actual check/artifact URLs and candidate SHA. [Project status](raid-project-status.md) updates automatically from GitHub issue closure/reopening and highlights incomplete epics.
+
+## AI assignments
+
+Every issue includes [model, effort, capacity and human responsibility recommendations](raid-agent-assignment.md). The Project exposes **AI suitability**, **Model recommendations** (Codex and Claude, effort and staffing). These recommendations retain the full TDD and review contract.
+
+Open the [AI assignments view](https://github.com/orgs/solana-hackathon-1/projects/1/views/18) for per-issue models, effort and staffing, and the [CI and test coverage view](https://github.com/orgs/solana-hackathon-1/projects/1/views/17) for required checks and evidence.

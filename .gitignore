@@ -11,3 +11,5 @@ test-results/
 playwright-report/
 *.tsbuildinfo
 .DS_Store
+__pycache__/
+*.py[cod]

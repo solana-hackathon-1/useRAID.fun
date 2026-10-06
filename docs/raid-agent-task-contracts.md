@@ -788,3 +788,7 @@ The completion report for every Task requires a `tdd` object containing `red`, `
 - **24.7 — Owned feature reuse:** [module contract](../RAID_AGENT_BLUEPRINT.md#247-reusable-module-and-documentation-contract) and criterion C21 require documented independently consumable features, including authentication. Use [the complete feature/provider matrix](raid-module-reuse.md).
 
 The dedicated `planning-contracts` CI job runs the requirement/packet and completion-validator tests. It detects stale blueprint hashes and missing mandatory criteria and validates rejection of malformed/incomplete/self-reviewed/TDD evidence packets. It does not inspect the truth of remote evidence or remove GitHub user permissions.
+
+## C22 — Required CI evidence
+
+Every issue includes its feature test layers and named CI checks. Wire actual new tests into discovery and record candidate SHA, check results, artifacts, executed/skipped counts and remaining gaps. Read [the CI matrix and automatic status guide](raid-ci-plan.md). Missing or skipped applicable checks prevent valid completion; broad suite success cannot substitute for absent feature tests.

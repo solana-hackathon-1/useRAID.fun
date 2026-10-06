@@ -1,0 +1,2659 @@
+{
+  "version": 1,
+  "verified_date": "2026-10-06",
+  "status": "Recommendations; no agents assigned or work verified",
+  "sources": [
+    "https://learn.chatgpt.com/docs/models",
+    "https://platform.claude.com/docs/en/models/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/effort"
+  ],
+  "models": {
+    "gpt-6-luna": ["low", "medium", "high", "xhigh", "max"],
+    "gpt-6.1-sol": ["low", "medium", "high", "xhigh", "max", "ultra"],
+    "gpt-6-astra": ["low", "medium", "high", "xhigh", "max", "ultra"],
+    "claude-sonnet-5-5": ["low", "medium", "high"],
+    "claude-opus-5-5": ["low", "medium", "high", "xhigh", "max"]
+  },
+  "issues": {
+    "E01": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Give every developer one reliable set of IDs, types, state transitions and implementation evidence.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E02": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Keep one work identity and history when a person changes wallets or login methods.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E03": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Let verified projects manage work while keeping holder membership separate from ownership and permissions.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E04": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Help beginners find starter work and experienced builders demonstrate the relevant ability without buying a rank.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E05": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Give founders a clear task contract and useful bounded difficulty/reward guidance.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E06": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Make double acceptance impossible at the database boundary across every admission path.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E07": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Let contributors deliver versioned proof and get bounded review without losing unpaid claims.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E08": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Create and independently verify one supported launch instead of treating a returned signature as success.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E09": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Protect the exact reward promised to every contributor and pay each immutable claim once.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E10": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve contested work through explicit authority and preserve claims while duties close.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E11": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Make the web/worker system observable, recoverable and supportable without losing acknowledged obligations.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E12": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Prove the integrated core internally before inviting outside testers.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E13": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Validate real founder/Raider behavior in a small supported cohort before public beta.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E14": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Help people discover appropriate work and see truthful progress without leaking private material.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E15": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Give only approved people scoped resources and verify effective removal without deleting unrelated rights.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E16": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Let a real consenting team deliver one assignment with individually protected capacity and payouts.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E17": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Pay promised selection work, choose a builder fairly, and offer main work through a separate funded agreement.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E18": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Sell visibly labeled inventory and reconcile delivery, charge and refund without buying credibility.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E19": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Run evaluated AI work under real identity, permission, capacity and total-spend limits.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E20": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Separate content creation from approved publication and verify honest delivered evidence.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E21": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Build attributable fair reputation and consented funded Roles; keep unapproved token policy disabled.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E22": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Confirm that real users understand and can complete the promised workflow, separately from developers proving technical correctness.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "E23": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 0,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Keep the entire canonical RAID blueprint visible on the board, with every domain/subsection traced to concrete developer work and the evidence needed for delivery.",
+      "human_responsibility": "Engineering owner prioritizes children, resolves dependencies and reviews actual closure evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O01": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O02": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O03": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O04": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O05": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O06": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O07": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O08": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O09": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O10": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O11": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O12": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O13": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O14": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O15": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O16": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O17": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O18": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "O19": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "human_responsibility": "Owner chooses policy and records the decision; AI prepares options and impact evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T001": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Know what can be reused and what is still missing before altering production contracts.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T002": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Developers agree on the same IDs and boundaries before parallel implementation.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T003": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Move existing data safely into new contracts without editing applied migrations.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T004": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Every developer can reproduce important failure cases and record what really passed.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T005": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A normal change gets meaningful checks and deploys into the correct application environment.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T006": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Changing a wallet or login method never gives another work slot or erases earned history.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T007": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A relayed or replayed signature cannot authenticate the wrong account or origin.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T008": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Newcomers understand commitments; experienced builders can prove relevant ability directly.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T009": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A verified project can administer its own workspace with explicit permissions.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T010": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Linking an existing mint is clearly labeled and requires proof of project authority.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T011": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Token holders see accurate membership freshness while private rights stay separately granted.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T012": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A profile separates claimed ability from assessed relevant skill.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T013": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Builders can demonstrate skills with bounded fair exercises and explicit evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T014": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. People understand why a task fits while risk signals do not become arbitrary punishment.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T015": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A visitor understands RAID and sees only approved project/work information.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T016": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A published task says exactly what is required, rewarded and reviewed.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T017": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Founders get useful advice while keeping control of assumptions and the final contract.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T018": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Founders can draft a clear task and understand all asset legs, net reward and fees.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T019": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Retrying a business action cannot silently create duplicate work, claims or history.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T020": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Two competing accepts cannot reserve the same Raider or work slot twice.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T021": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Every entry path checks current eligibility, terms, funds, consent and capacity.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T022": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Workers and founders can see the accepted contract, next action and truthful current state.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T023": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A review always decides on a specific deliverable against agreed criteria.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T024": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. An abandoned review cannot trap a Raider or erase money still owed.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T025": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Material changes require agreement rather than editing accepted promises.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T026": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A founder follows one approved launch mechanism without silent protocol/fee switching.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T027": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A founder sees what they sign and can safely recover an interrupted launch.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T028": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Launch success means the intended verified mint and authority facts exist.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T029": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. The reward amount identifies the actual asset and never loses precision.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T030": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. The payment mechanism protects committed rewards and constrains who may move them.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T031": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A client signature cannot invent funds or promise the same deposit to several workers.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T032": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. No commissioned work starts before verified funding binding and required resources.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T033": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Each beneficiary and asset gets an exact claim that can settle once across new signatures.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T034": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. People can see exactly what is owed, pending, blocked or actually paid.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T035": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A contested award cannot become claimable while its timely appeal is held.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T036": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Wallet recovery and account restriction cannot confiscate an earned entitlement.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T037": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Sample assets or missing authorities cannot accidentally enable real operations.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T038": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Late jobs and provider outages are recoverable without repeated external action.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T039": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A restore can recover original terms, consent and semantic IDs before writing again.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T040": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Operators know who can contain, investigate and resolve each supported failure.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T041": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. History shows actual useful work rather than wealth or repeated webhook ratings.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T042": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. People know the next required action without exposing private briefs in previews.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T043": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Operators understand activation/completion/settlement without counting fake traffic or fabricated dollars.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T044": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Internal testers prove founder, beginner and specialist can complete supported core paths.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T045": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Keyboard/mobile users can complete core actions safely even when a wallet rejects.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T046": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. The candidate survives real transaction races and recovery rather than only happy-path demos.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T047": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Invite outside testers only after core security/money/capacity/recovery blockers are verified fixed.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T048": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Outside testers receive accurate environment, terms, budget/cap and support information.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T049": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Real testers expose workflow confusion and support needs before broader access.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T050": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A clean second beta week verifies fixes instead of adding new functionality.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T051": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A named owner decides which tested capabilities can open to wider users.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T052": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. More eligible users can join without forcing incomplete feature contracts.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T053": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Discovery and skill scores do not reveal confidential work or grant repositories.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T054": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A grant represents what the provider really allows, not imaginary folder secrecy.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T055": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Closed work ends task-derived credentials even when the provider fails.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T056": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Every team member understands their responsibility, terms and payout before commitment.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T057": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A team with one busy member cannot partially reserve others or bypass capacity.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T058": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Participants know whether they are applying or accepting bounded paid prototype work.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T059": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Winning selection never silently commits someone to the larger job.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T060": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Founders buy defined visibility without buying trust, rank or judgment.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T061": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. An AI worker has stable identity and evidence rather than a model-price rank.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T062": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. One operator cannot create aliases to bypass the managed-agent pilot cap.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T063": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Untrusted task material cannot steal secrets or authorize outside actions.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T064": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A retry or parallel subcall cannot spend beyond the owner’s authorized cap.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T065": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A failed AI process does not leave indefinite work locks or undo external effects by assumption.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T066": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A permitted task completes under limits and its output is reviewed by authorized people.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T067": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. All promised prizes/stipends are reserved and awarded under declared rules.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T068": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A bidder knows the maximum charge and gets protected release/refund if not delivered.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T069": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Adding SOL/project-token/RAID support is tested behavior rather than a ticker entry.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T070": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. The exact approved content is published once through a controlled account.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T071": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Draft creation, publication and performance bonuses remain separate obligations.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T072": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Numerical scoring uses reviewed evidence and preserves newcomer opportunity.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T073": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Ongoing responsibility uses the same one-active rule and paid consent as normal work.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T074": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Unapproved tokenomics and access licenses stay disabled while independent work proceeds.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T075": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Actual token issuance has its own economics, authority and assurance work beyond the sprint target.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T076": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A larger operator model is explicit instead of silently increasing individual capacity.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T077": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. The project leaves beta only when the enabled scope is actually supported and proven.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T078": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Prove identity, skills and fair admission against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T079": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Prove canonical capacity and bounded work closure against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T080": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Prove funding, exact assets and settlement boundaries against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T081": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Prove private visibility, provider scopes and malicious artifacts against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T082": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Prove party and challenge atomicity/rights against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T083": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Prove promotion labels, auction release and delivery recovery against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T084": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Prove ai operator capacity, spend, tools and closure against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T085": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Prove automatic channel publication recovery against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T086": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Prove role capacity and renewal against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T087": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Prove core end-to-end, restore, replay and accessibility against the actual boundary, with reproducible negative and recovery evidence.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T088": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 5,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Prove suspect reciprocal activity is reviewed fairly and appeal corrections preserve evidence rather than erase history.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T089": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Web and service callers use one validated command model, rather than a second set of hidden state edits.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T090": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Linked GitHub/social credentials prove the specific account controlled, without pretending they prove unique humanity or skill.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T091": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Malicious inputs cannot expose secrets, trigger unauthorized network access or execute trusted code.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T092": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Users can exercise the chosen privacy policy while required financial/access/work evidence remains recoverable and restricted.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T093": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Launch, contributor reward, platform fee, AI compute and promotion funds are never silently spent on each other.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T094": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. A founder can understand what was spent and what is returned after a capped partial or failed run.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T095": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Content participants can submit verifiable agreed work before automated social publishing is enabled.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T096": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A new developer can locate concrete work for every blueprint section without guessing missing scope.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "T097": {
+      "suitability": "AI-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 3,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A Raider can find current permitted funded work by actual skill and reward fit without misleading asset values or paid credibility.",
+      "human_responsibility": "Independent reviewer verifies TDD, permission, state, financial and reuse evidence; owner approves unresolved policy.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U001": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A visitor representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U002": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U003": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A visitor representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U004": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A founder and token holder representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U005": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U006": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U007": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A beginner and experienced raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U008": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A newcomer and experienced builder representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U009": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U010": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U011": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A founder reviewer and raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U012": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A contributor and founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U013": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A party leader and individual members representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U014": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A challenge entrant and founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U015": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A sponsor representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "U016": {
+      "suitability": "AI-assisted",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 scoped implementation/preparation agent + 1 independent reviewer + representative human tester",
+      "reason": "Bounded delivery work with explicit contracts and evidence. A operator, product owner and representatives representative can complete and explain this user journey without relying on developer implementation details.",
+      "human_responsibility": "A representative user executes and signs off acceptance; AI prepares fixtures, automates objective checks and records failures.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G01": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G02": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G03": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G04": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G05": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G06": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G07": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G08": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G09": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6-astra",
+        "effort": "xhigh"
+      },
+      "claude": {
+        "model": "claude-opus-5-5",
+        "effort": "xhigh"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Authority, funds, identity, access or concurrency requires deeper review. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    },
+    "G10": {
+      "suitability": "Human-led",
+      "codex": {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      "claude": {
+        "model": "claude-sonnet-5-5",
+        "effort": "high"
+      },
+      "estimate_points": 2,
+      "capacity": "1 preparation agent + 1 human owner + independent reviewer",
+      "reason": "Bounded delivery work with explicit contracts and evidence. Record whether the affected live feature is actually safe and supported to enable.",
+      "human_responsibility": "Named release approver verifies evidence and authorizes release; AI assembles and checks the evidence.",
+      "execution_rule": "Read the linked blueprint packet; respect dependencies and OPEN choices; RED → GREEN → refactor; document reusable contracts; pass C01–C22 and independent review before completion."
+    }
+  }
+}

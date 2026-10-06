@@ -1,5 +1,10 @@
 name: Checks
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   planning-contracts:
     runs-on: ubuntu-latest
@@ -24,7 +29,17 @@ jobs:
       - run: npm run format:check
       - run: npm run typecheck
       - run: npm run lint
+  dependency-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
       - run: npm run audit:check
+
   docker:
     runs-on: ubuntu-latest
     steps:
@@ -68,9 +83,15 @@ jobs:
             --to-schema-datamodel prisma/schema.prisma \
             --shadow-database-url postgresql://useraid:useraid@localhost:5432/useraid_shadow \
             --exit-code
-      - run: npm test
+      - name: All unit and real-database tests
+        run: npm test -- --reporter=default --reporter=junit --outputFile=test-results/vitest.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vitest-database-results
+          path: test-results/
+          if-no-files-found: warn
   browser:
-    needs: test
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -95,6 +116,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Demo browser suite
         run: npm run test:browser
+      - name: Studio desktop and mobile suite
+        run: npm run test:browser:studio
       - name: Production build
         run: npm run build
         env:
@@ -106,9 +129,28 @@ jobs:
       - name: Live browser suite
         run: npm run test:browser:live
       - uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
           name: playwright-results
           path: |
             playwright-report/
             test-results/
+
+  ci-gate:
+    if: always()
+    needs: [planning-contracts, static, dependency-security, test, docker, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject failed, skipped or cancelled required checks
+        env:
+          JOB_RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os, sys
+          results = json.loads(os.environ['JOB_RESULTS'])
+          failed = {name: job['result'] for name, job in results.items() if job['result'] != 'success'}
+          if failed:
+              print('Required CI jobs did not pass:', failed)
+              sys.exit(1)
+          print('Every required CI job passed for this candidate.')
+          PYCODE
