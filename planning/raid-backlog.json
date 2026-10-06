@@ -175,13 +175,14 @@
       "role": "AG01/AG03/AG10",
       "phase": "M0",
       "sections": "00–04,24–29,33–41",
-      "requirements": "R01–R14; I01–I12",
+      "requirements": "R01–R14; I01–I12; R15,R16,I13",
       "outcome": "Give every developer one reliable set of IDs, types, state transitions and implementation evidence.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E02",
@@ -189,13 +190,14 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "07,13,25–28",
-      "requirements": "R04,R12,R13; I01,I07,I10",
+      "requirements": "R04,R12,R13; I01,I07,I10; R15,R16,I13",
       "outcome": "Keep one work identity and history when a person changes wallets or login methods.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E03",
@@ -203,13 +205,14 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "05–07,09,25,28",
-      "requirements": "R01–R04,R10; I06,I07,I10",
+      "requirements": "R01–R04,R10; I06,I07,I10; R15,R16,I13",
       "outcome": "Let verified projects manage work while keeping holder membership separate from ownership and permissions.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E04",
@@ -217,13 +220,14 @@
       "role": "AG05/AG02",
       "phase": "M1",
       "sections": "07–09,11,23",
-      "requirements": "R05,R06,R12; P07; I07,I10",
+      "requirements": "R05,R06,R12; P07; I07,I10; R15,R16,I13",
       "outcome": "Help beginners find starter work and experienced builders demonstrate the relevant ability without buying a rank.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E05",
@@ -231,13 +235,14 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "08,11–12,16,23,26",
-      "requirements": "R05,R07; P08; I03,I08,I10",
+      "requirements": "R05,R07; P08; I03,I08,I10; R15,R16,I13",
       "outcome": "Give founders a clear task contract and useful bounded difficulty/reward guidance.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E06",
@@ -245,13 +250,14 @@
       "role": "AG03",
       "phase": "M2",
       "sections": "12–15,25–27",
-      "requirements": "R13; I01,I02,I05,I08,I09",
+      "requirements": "R13; I01,I02,I05,I08,I09; R15,R16,I13",
       "outcome": "Make double acceptance impossible at the database boundary across every admission path.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E07",
@@ -259,13 +265,14 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "12–13,17,23,27",
-      "requirements": "R04,R13; I05,I08,I10",
+      "requirements": "R04,R13; I05,I08,I10; R15,R16,I13",
       "outcome": "Let contributors deliver versioned proof and get bounded review without losing unpaid claims.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E08",
@@ -273,13 +280,14 @@
       "role": "AG04/AG02",
       "phase": "M3",
       "sections": "05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "Create and independently verify one supported launch instead of treating a returned signature as success.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E09",
@@ -287,13 +295,14 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Protect the exact reward promised to every contributor and pay each immutable claim once.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E10",
@@ -301,13 +310,14 @@
       "role": "AG04/AG03/AG09",
       "phase": "M4",
       "sections": "16–17,28–30",
-      "requirements": "I04,I07,I08,I10,I11",
+      "requirements": "I04,I07,I08,I10,I11; R15,R16,I13",
       "outcome": "Resolve contested work through explicit authority and preserve claims while duties close.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E11",
@@ -315,13 +325,14 @@
       "role": "AG09/AG03",
       "phase": "M0–M5",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Make the web/worker system observable, recoverable and supportable without losing acknowledged obligations.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E12",
@@ -329,13 +340,14 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Prove the integrated core internally before inviting outside testers.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E13",
@@ -343,13 +355,14 @@
       "role": "AG01/AG08/AG09",
       "phase": "M5 beta",
       "sections": "30–35,38–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Validate real founder/Raider behavior in a small supported cohort before public beta.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E14",
@@ -357,13 +370,14 @@
       "role": "AG07/AG02/AG09",
       "phase": "M1/M5/M6",
       "sections": "18,23,27,31",
-      "requirements": "R08,R10; I06,I07",
+      "requirements": "R08,R10; I06,I07; R15,R16,I13",
       "outcome": "Help people discover appropriate work and see truthful progress without leaking private material.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E15",
@@ -371,13 +385,14 @@
       "role": "AG05/AG03",
       "phase": "M6",
       "sections": "09–10,13,25–30",
-      "requirements": "R11; I06,I07,I09–I11",
+      "requirements": "R11; I06,I07,I09–I11; R15,R16,I13",
       "outcome": "Give only approved people scoped resources and verify effective removal without deleting unrelated rights.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E16",
@@ -385,13 +400,14 @@
       "role": "AG03/AG04/AG02",
       "phase": "M6",
       "sections": "08,13–14,16–17",
-      "requirements": "P02; I01–I05,I08",
+      "requirements": "P02; I01–I05,I08; R15,R16,I13",
       "outcome": "Let a real consenting team deliver one assignment with individually protected capacity and payouts.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E17",
@@ -399,13 +415,14 @@
       "role": "AG03/AG04/AG05",
       "phase": "M6/M8",
       "sections": "13,15–17",
-      "requirements": "R14; P03; I01–I05,I08,I11",
+      "requirements": "R14; P03; I01–I05,I08,I11; R15,R16,I13",
       "outcome": "Pay promised selection work, choose a builder fairly, and offer main work through a separate funded agreement.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E18",
@@ -413,13 +430,14 @@
       "role": "AG07/AG04",
       "phase": "M6/M8",
       "sections": "18,22,26–31",
-      "requirements": "R09; D10; I03–I05,I10",
+      "requirements": "R09; D10; I03–I05,I10; R15,R16,I13",
       "outcome": "Sell visibly labeled inventory and reconcile delivery, charge and refund without buying credibility.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E19",
@@ -427,13 +445,14 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "Run evaluated AI work under real identity, permission, capacity and total-spend limits.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E20",
@@ -441,13 +460,14 @@
       "role": "AG07/AG06",
       "phase": "M8",
       "sections": "20,27–31",
-      "requirements": "P01; I05,I06,I09–I11",
+      "requirements": "P01; I05,I06,I09–I11; R15,R16,I13",
       "outcome": "Separate content creation from approved publication and verify honest delivered evidence.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E21",
@@ -455,13 +475,14 @@
       "role": "AG05/AG03/AG04",
       "phase": "M5/M8",
       "sections": "08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Build attributable fair reputation and consented funded Roles; keep unapproved token policy disabled.",
       "kind": "epic",
       "sprint": null,
       "priority": "P1",
       "dependencies": [],
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E22",
@@ -471,11 +492,12 @@
       "phase": "M5–M8",
       "role": "AG01/AG08 + representative founder/Raider testers",
       "sections": "04,23,31–35,39–40",
-      "requirements": "R01–R14; I01–I12",
+      "requirements": "R01–R14; I01–I12; R15,R16,I13",
       "outcome": "Confirm that real users understand and can complete the promised workflow, separately from developers proving technical correctness.",
       "dependencies": [],
       "priority": "P0",
-      "parent_epic": "E23"
+      "parent_epic": "E23",
+      "acs": "AC73,AC74,AC75"
     },
     {
       "id": "E23",
@@ -485,10 +507,11 @@
       "phase": "M0–M8",
       "role": "AG01/AG10/AG08 + all domain owners",
       "sections": "00–41; all subsections",
-      "requirements": "R01–R14; P01–P08; D01–D13; I01–I12; AC01–AC72; O01–O19; G01–G10",
+      "requirements": "R01–R14; P01–P08; D01–D13; I01–I12; AC01–AC72; O01–O19; G01–G10; R15,R16,I13",
       "outcome": "Keep the entire canonical RAID blueprint visible on the board, with every domain/subsection traced to concrete developer work and the evidence needed for delivery.",
       "dependencies": [],
-      "priority": "P0"
+      "priority": "P0",
+      "acs": "AC01–AC75"
     },
     {
       "id": "O01",
@@ -499,7 +522,7 @@
       "role": "AG04/AG02 + project owner",
       "phase": "M3",
       "sections": "02,38,40; 05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -512,7 +535,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "Typed adapter; choose one supported route first.",
@@ -527,7 +550,7 @@
       "role": "AG04/AG02 + project owner",
       "phase": "M3",
       "sections": "02,38,40; 05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -540,7 +563,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "No invented economics; expose only selected route's supported parameters.",
@@ -555,7 +578,7 @@
       "role": "AG05/AG03/AG04 + project owner",
       "phase": "M5/M8",
       "sections": "02,38,40; 08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -568,7 +591,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Separate milestone; no presumed supply/price/allocations.",
@@ -583,7 +606,7 @@
       "role": "AG05/AG03/AG04 + project owner",
       "phase": "M5/M8",
       "sections": "02,38,40; 08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -596,7 +619,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Off by default; preserve optional policy interface.",
@@ -611,7 +634,7 @@
       "role": "AG04/AG03 + project owner",
       "phase": "M4",
       "sections": "02,38,40; 13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -624,7 +647,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "Mediated candidate design with constrained authority, pending review.",
@@ -639,7 +662,7 @@
       "role": "AG04/AG03/AG09 + project owner",
       "phase": "M4",
       "sections": "02,38,40; 16–17,28–30",
-      "requirements": "I04,I07,I08,I10,I11",
+      "requirements": "I04,I07,I08,I10,I11; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -652,7 +675,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "Bounded operations and protected claims; commercial finality must be selected.",
@@ -667,7 +690,7 @@
       "role": "AG04/AG03 + project owner",
       "phase": "M4",
       "sections": "02,38,40; 13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -680,7 +703,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "Small reviewed allowlist; full-identity asset model.",
@@ -695,7 +718,7 @@
       "role": "AG04/AG03 + project owner",
       "phase": "M4",
       "sections": "02,38,40; 13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -708,7 +731,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Exact quotes and net rewards; examples not binding.",
@@ -723,7 +746,7 @@
       "role": "AG05/AG02 + project owner",
       "phase": "M1",
       "sections": "02,38,40; 07–09,11,23",
-      "requirements": "R05,R06,R12; P07; I07,I10",
+      "requirements": "R05,R06,R12; P07; I07,I10; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -736,7 +759,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Qualitative skill rubric, evidence metrics and confidence first.",
@@ -751,7 +774,7 @@
       "role": "AG03/AG04/AG05 + project owner",
       "phase": "M6/M8",
       "sections": "02,38,40; 13,15–17",
-      "requirements": "R14; P03; I01–I05,I08,I11",
+      "requirements": "R14; P03; I01–I05,I08,I11; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -764,7 +787,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Paid bounded selection first; separate prize mode.",
@@ -779,7 +802,7 @@
       "role": "AG09/AG03 + project owner",
       "phase": "M0–M5",
       "sections": "02,38,40; 24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -792,7 +815,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "Minimal necessary data; no automatic mandatory KYC assumption.",
@@ -807,7 +830,7 @@
       "role": "AG09/AG03 + project owner",
       "phase": "M0–M5",
       "sections": "02,38,40; 24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -820,7 +843,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "Resolve for the actual launch/work/payment model.",
@@ -835,7 +858,7 @@
       "role": "AG05/AG03 + project owner",
       "phase": "M6",
       "sections": "02,38,40; 09–10,13,25–30",
-      "requirements": "R11; I06,I07,I09–I11",
+      "requirements": "R11; I06,I07,I09–I11; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -848,7 +871,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Verify actual capability; scoped resource and effective-access reconciliation.",
@@ -863,7 +886,7 @@
       "role": "AG06/AG03/AG05 + project owner",
       "phase": "M7",
       "sections": "02,38,40; 07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -876,7 +899,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Provider-agnostic policy; explicit per-task permission.",
@@ -891,7 +914,7 @@
       "role": "AG06/AG03/AG05 + project owner",
       "phase": "M7",
       "sections": "02,38,40; 07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -904,7 +927,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Individual-operator pilot cap as specified; no silent scale-up.",
@@ -919,7 +942,7 @@
       "role": "AG07/AG06 + project owner",
       "phase": "M8",
       "sections": "02,38,40; 20,27–31",
-      "requirements": "P01; I05,I06,I09–I11",
+      "requirements": "P01; I05,I06,I09–I11; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -932,7 +955,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Manual evidence before approved automated publishing.",
@@ -947,7 +970,7 @@
       "role": "AG07/AG04 + project owner",
       "phase": "M6/M8",
       "sections": "02,38,40; 18,22,26–31",
-      "requirements": "R09; D10; I03–I05,I10",
+      "requirements": "R09; D10; I03–I05,I10; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -960,7 +983,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "Fixed slots first; first-price candidate remains disabled.",
@@ -975,7 +998,7 @@
       "role": "AG09/AG03 + project owner",
       "phase": "M0–M5",
       "sections": "02,38,40; 24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -988,7 +1011,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "working_position": "Simple web/worker/PostgreSQL topology; verify against deployment environment.",
@@ -1003,7 +1026,7 @@
       "role": "AG05/AG03/AG04 + project owner",
       "phase": "M5/M8",
       "sections": "02,38,40; 08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
       "steps": [
         "Prepare concrete options and affected dependencies.",
@@ -1016,7 +1039,7 @@
         "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "working_position": "One active duty period; no concurrency loophole.",
@@ -1031,7 +1054,7 @@
       "role": "AG01/AG03/AG10",
       "phase": "M0",
       "sections": "00–04,24–29,33–41",
-      "requirements": "R01–R14; I01–I12",
+      "requirements": "R01–R14; I01–I12; R15,R16,I13",
       "outcome": "Know what can be reused and what is still missing before altering production contracts.",
       "steps": [
         "Inspect source, schema, migrations, CI, flags and prior results",
@@ -1043,7 +1066,7 @@
         "New policies have a documented compatibility path for old commitments"
       ],
       "dependencies": [],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1056,7 +1079,7 @@
       "role": "AG01/AG03/AG10",
       "phase": "M0",
       "sections": "00–04,24–29,33–41",
-      "requirements": "R01–R14; I01–I12",
+      "requirements": "R01–R14; I01–I12; R15,R16,I13",
       "outcome": "Developers agree on the same IDs and boundaries before parallel implementation.",
       "steps": [
         "Define canonical identity, Guild, terms, engagement, asset and exact amount contracts",
@@ -1068,7 +1091,7 @@
         "Work, money, access, dispute and transaction states remain distinct"
       ],
       "dependencies": ["T001"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1081,7 +1104,7 @@
       "role": "AG01/AG03/AG10",
       "phase": "M0",
       "sections": "00–04,24–29,33–41",
-      "requirements": "R01–R14; I01–I12",
+      "requirements": "R01–R14; I01–I12; R15,R16,I13",
       "outcome": "Move existing data safely into new contracts without editing applied migrations.",
       "steps": [
         "List schema additions and backfills",
@@ -1093,7 +1116,7 @@
         "Applied migrations remain immutable"
       ],
       "dependencies": ["T001", "T002"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1106,7 +1129,7 @@
       "role": "AG01/AG03/AG10",
       "phase": "M0",
       "sections": "00–04,24–29,33–41",
-      "requirements": "R01–R14; I01–I12",
+      "requirements": "R01–R14; I01–I12; R15,R16,I13",
       "outcome": "Every developer can reproduce important failure cases and record what really passed.",
       "steps": [
         "Create newcomer, assessed specialist, busy contributor and same-symbol assets",
@@ -1118,7 +1141,7 @@
         "All 72 scenarios have a planned owner and appropriate environment"
       ],
       "dependencies": ["T002"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1131,7 +1154,7 @@
       "role": "AG09/AG03",
       "phase": "M0–M5",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "A normal change gets meaningful checks and deploys into the correct application environment.",
       "steps": [
         "Investigate GitHub Actions startup failures and Cloudflare deployment failure",
@@ -1143,7 +1166,7 @@
         "Required checks can execute on the chosen path; no deployment claim from configuration alone"
       ],
       "dependencies": ["T001"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1156,7 +1179,7 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "07,13,25–28",
-      "requirements": "R04,R12,R13; I01,I07,I10",
+      "requirements": "R04,R12,R13; I01,I07,I10; R15,R16,I13",
       "outcome": "Changing a wallet or login method never gives another work slot or erases earned history.",
       "steps": [
         "Extend existing account and wallet-link services around a stable participant",
@@ -1168,7 +1191,7 @@
         "Merge cannot hide two active engagements"
       ],
       "dependencies": ["T002", "T003"],
-      "acs": "AC01",
+      "acs": "AC01; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1181,7 +1204,7 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "07,13,25–28",
-      "requirements": "R04,R12,R13; I01,I07,I10",
+      "requirements": "R04,R12,R13; I01,I07,I10; R15,R16,I13",
       "outcome": "A relayed or replayed signature cannot authenticate the wrong account or origin.",
       "steps": [
         "Bind nonce/domain/URI/network/expiry/link intent",
@@ -1193,7 +1216,7 @@
         "No key/secret appears in logs"
       ],
       "dependencies": ["T006"],
-      "acs": "AC02",
+      "acs": "AC02; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1206,7 +1229,7 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "07,13,25–28",
-      "requirements": "R04,R12,R13; I01,I07,I10",
+      "requirements": "R04,R12,R13; I01,I07,I10; R15,R16,I13",
       "outcome": "Newcomers understand commitments; experienced builders can prove relevant ability directly.",
       "steps": [
         "Collect work interests and timezone",
@@ -1218,7 +1241,7 @@
         "Both user types reach an appropriate next action"
       ],
       "dependencies": ["T006", "T007"],
-      "acs": "AC03,AC06",
+      "acs": "AC03,AC06; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1231,7 +1254,7 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "05–07,09,25,28",
-      "requirements": "R01–R04,R10; I06,I07,I10",
+      "requirements": "R01–R04,R10; I06,I07,I10; R15,R16,I13",
       "outcome": "A verified project can administer its own workspace with explicit permissions.",
       "steps": [
         "Add public/private Guild data boundaries and stable slugs",
@@ -1244,7 +1267,7 @@
         "Treasury/dispute authority is separate from profile administration"
       ],
       "dependencies": ["T002", "T003", "T006"],
-      "acs": "AC07",
+      "acs": "AC07; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1257,7 +1280,7 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "05–07,09,25,28",
-      "requirements": "R01–R04,R10; I06,I07,I10",
+      "requirements": "R01–R04,R10; I06,I07,I10; R15,R16,I13",
       "outcome": "Linking an existing mint is clearly labeled and requires proof of project authority.",
       "steps": [
         "Record control attestation and supporting evidence",
@@ -1269,7 +1292,7 @@
         "Existing-project onboarding differs from a new launch"
       ],
       "dependencies": ["T009"],
-      "acs": "AC71",
+      "acs": "AC71; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1282,7 +1305,7 @@
       "role": "AG03/AG05",
       "phase": "M1",
       "sections": "05–07,09,25,28",
-      "requirements": "R01–R04,R10; I06,I07,I10",
+      "requirements": "R01–R04,R10; I06,I07,I10; R15,R16,I13",
       "outcome": "Token holders see accurate membership freshness while private rights stay separately granted.",
       "steps": [
         "Aggregate supported token-account balances by exact asset",
@@ -1294,7 +1317,7 @@
         "Token sale cannot delete work or claims"
       ],
       "dependencies": ["T010"],
-      "acs": "AC07,AC08",
+      "acs": "AC07,AC08; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1307,7 +1330,7 @@
       "role": "AG05/AG02",
       "phase": "M1",
       "sections": "07–09,11,23",
-      "requirements": "R05,R06,R12; P07; I07,I10",
+      "requirements": "R05,R06,R12; P07; I07,I10; R15,R16,I13",
       "outcome": "A profile separates claimed ability from assessed relevant skill.",
       "steps": [
         "Create stable skill IDs/aliases",
@@ -1319,7 +1342,7 @@
         "One verified frontend skill cannot satisfy Solana requirements"
       ],
       "dependencies": ["T002", "T006"],
-      "acs": "AC04,AC05",
+      "acs": "AC04,AC05; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1332,7 +1355,7 @@
       "role": "AG05/AG02",
       "phase": "M1",
       "sections": "07–09,11,23",
-      "requirements": "R05,R06,R12; P07; I07,I10",
+      "requirements": "R05,R06,R12; P07; I07,I10; R15,R16,I13",
       "outcome": "Builders can demonstrate skills with bounded fair exercises and explicit evidence.",
       "steps": [
         "Create public/synthetic trial variants and permitted-tool policy",
@@ -1344,7 +1367,7 @@
         "Trial is not unpaid founder production work"
       ],
       "dependencies": ["T012"],
-      "acs": "AC06",
+      "acs": "AC06; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1357,7 +1380,7 @@
       "role": "AG05/AG02",
       "phase": "M1",
       "sections": "07–09,11,23",
-      "requirements": "R05,R06,R12; P07; I07,I10",
+      "requirements": "R05,R06,R12; P07; I07,I10; R15,R16,I13",
       "outcome": "People understand why a task fits while risk signals do not become arbitrary punishment.",
       "steps": [
         "Model explicit AND/OR skill predicates and Party coverage",
@@ -1369,7 +1392,7 @@
         "Shared Wi-Fi or young wallet alone is not permanent fraud proof"
       ],
       "dependencies": ["T012", "T013"],
-      "acs": "AC04,AC05,AC09",
+      "acs": "AC04,AC05,AC09; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1382,7 +1405,7 @@
       "role": "AG07/AG02/AG09",
       "phase": "M1/M5/M6",
       "sections": "18,23,27,31",
-      "requirements": "R08,R10; I06,I07",
+      "requirements": "R08,R10; I06,I07; R15,R16,I13",
       "outcome": "A visitor understands RAID and sees only approved project/work information.",
       "steps": [
         "Create public projections with no private annex/payout metadata",
@@ -1394,7 +1417,7 @@
         "Keyboard and mobile visitor can navigate primary actions"
       ],
       "dependencies": ["T009", "T011", "T012"],
-      "acs": "AC42,AC43,AC70",
+      "acs": "AC42,AC43,AC70; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1407,7 +1430,7 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "08,11–12,16,23,26",
-      "requirements": "R05,R07; P08; I03,I08,I10",
+      "requirements": "R05,R07; P08; I03,I08,I10; R15,R16,I13",
       "outcome": "A published task says exactly what is required, rewarded and reviewed.",
       "steps": [
         "Model outcome, acceptance criteria, E–S difficulty, structured skills, admission and visibility",
@@ -1419,7 +1442,7 @@
         "Founder cannot overwrite already accepted scope or reward"
       ],
       "dependencies": ["T002", "T009", "T014"],
-      "acs": "AC72",
+      "acs": "AC72; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1432,7 +1455,7 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "08,11–12,16,23,26",
-      "requirements": "R05,R07; P08; I03,I08,I10",
+      "requirements": "R05,R07; P08; I03,I08,I10; R15,R16,I13",
       "outcome": "Founders get useful advice while keeping control of assumptions and the final contract.",
       "steps": [
         "Use a versioned bounded rubric for complexity, skill, duration and supported reward ranges",
@@ -1444,7 +1467,7 @@
         "Unevaluated model advice is not authoritative pricing"
       ],
       "dependencies": ["T016"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1457,7 +1480,7 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "08,11–12,16,23,26",
-      "requirements": "R05,R07; P08; I03,I08,I10",
+      "requirements": "R05,R07; P08; I03,I08,I10; R15,R16,I13",
       "outcome": "Founders can draft a clear task and understand all asset legs, net reward and fees.",
       "steps": [
         "Build draft/criteria/recommendation/admission/visibility steps",
@@ -1469,7 +1492,7 @@
         "Private details are never preloaded into public cards"
       ],
       "dependencies": ["T016", "T017"],
-      "acs": "AC28,AC42,AC70",
+      "acs": "AC28,AC42,AC70; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1482,7 +1505,7 @@
       "role": "AG03",
       "phase": "M2",
       "sections": "12–15,25–27",
-      "requirements": "R13; I01,I02,I05,I08,I09",
+      "requirements": "R13; I01,I02,I05,I08,I09; R15,R16,I13",
       "outcome": "Retrying a business action cannot silently create duplicate work, claims or history.",
       "steps": [
         "Persist actor+operation+key request digest and result",
@@ -1494,7 +1517,7 @@
         "Different payload returns an explicit conflict"
       ],
       "dependencies": ["T002", "T003"],
-      "acs": "AC32,AC69",
+      "acs": "AC32,AC69; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1507,7 +1530,7 @@
       "role": "AG03",
       "phase": "M2",
       "sections": "12–15,25–27",
-      "requirements": "R13; I01,I02,I05,I08,I09",
+      "requirements": "R13; I01,I02,I05,I08,I09; R15,R16,I13",
       "outcome": "Two competing accepts cannot reserve the same Raider or work slot twice.",
       "steps": [
         "Create database-backed participant commitments and source vacancy constraints",
@@ -1519,7 +1542,7 @@
         "No orphan engagement, extra outbox effect or double-filled slot"
       ],
       "dependencies": ["T016", "T019"],
-      "acs": "AC11,AC12",
+      "acs": "AC11,AC12; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -1532,7 +1555,7 @@
       "role": "AG03",
       "phase": "M2",
       "sections": "12–15,25–27",
-      "requirements": "R13; I01,I02,I05,I08,I09",
+      "requirements": "R13; I01,I02,I05,I08,I09; R15,R16,I13",
       "outcome": "Every entry path checks current eligibility, terms, funds, consent and capacity.",
       "steps": [
         "Add nonbinding applications and expiry/cap cleanup",
@@ -1545,7 +1568,7 @@
         "Paid public work cannot start while binding is pending"
       ],
       "dependencies": ["T014", "T020"],
-      "acs": "AC17,AC18,AC24",
+      "acs": "AC17,AC18,AC24; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1558,7 +1581,7 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "12–13,17,23,27",
-      "requirements": "R04,R13; I05,I08,I10",
+      "requirements": "R04,R13; I05,I08,I10; R15,R16,I13",
       "outcome": "Workers and founders can see the accepted contract, next action and truthful current state.",
       "steps": [
         "Show accepted terms, capacity and setup readiness",
@@ -1570,7 +1593,7 @@
         "My Raid remains obvious while review duties hold capacity"
       ],
       "dependencies": ["T018", "T021"],
-      "acs": "AC19,AC70",
+      "acs": "AC19,AC70; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1583,7 +1606,7 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "12–13,17,23,27",
-      "requirements": "R04,R13; I05,I08,I10",
+      "requirements": "R04,R13; I05,I08,I10; R15,R16,I13",
       "outcome": "A review always decides on a specific deliverable against agreed criteria.",
       "steps": [
         "Store immutable artifact version and evidence references",
@@ -1595,7 +1618,7 @@
         "Review and work/payment states stay separate"
       ],
       "dependencies": ["T019", "T022"],
-      "acs": "AC19,AC72",
+      "acs": "AC19,AC72; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1608,7 +1631,7 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "12–13,17,23,27",
-      "requirements": "R04,R13; I05,I08,I10",
+      "requirements": "R04,R13; I05,I08,I10; R15,R16,I13",
       "outcome": "An abandoned review cannot trap a Raider or erase money still owed.",
       "steps": [
         "Implement finite setup/build/review/revision deadlines",
@@ -1620,7 +1643,7 @@
         "Payment pending does not consume terminal work capacity"
       ],
       "dependencies": ["T020", "T023"],
-      "acs": "AC20,AC21,AC22,AC23,AC25",
+      "acs": "AC20,AC21,AC22,AC23,AC25; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1633,7 +1656,7 @@
       "role": "AG03/AG02",
       "phase": "M2",
       "sections": "12–13,17,23,27",
-      "requirements": "R04,R13; I05,I08,I10",
+      "requirements": "R04,R13; I05,I08,I10; R15,R16,I13",
       "outcome": "Material changes require agreement rather than editing accepted promises.",
       "steps": [
         "Version scope/reward/deadline changes with affected consent",
@@ -1645,7 +1668,7 @@
         "Replacement records new obligation rather than deleting old contribution"
       ],
       "dependencies": ["T016", "T024"],
-      "acs": "AC25,AC72",
+      "acs": "AC25,AC72; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1658,7 +1681,7 @@
       "role": "AG04/AG02",
       "phase": "M3",
       "sections": "05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "A founder follows one approved launch mechanism without silent protocol/fee switching.",
       "steps": [
         "Record O01/O02 choice and verified route parameters",
@@ -1670,7 +1693,7 @@
         "Route and authorities match the recorded decision"
       ],
       "dependencies": ["T002", "T010", "O01", "O02"],
-      "acs": "AC29,AC41",
+      "acs": "AC29,AC41; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1683,7 +1706,7 @@
       "role": "AG04/AG02",
       "phase": "M3",
       "sections": "05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "A founder sees what they sign and can safely recover an interrupted launch.",
       "steps": [
         "Show token controls, exact costs, recipient/program/network",
@@ -1695,7 +1718,7 @@
         "Submitted signature is not shown as verified LIVE"
       ],
       "dependencies": ["T026"],
-      "acs": "AC27,AC67,AC70",
+      "acs": "AC27,AC67,AC70; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1708,7 +1731,7 @@
       "role": "AG04/AG02",
       "phase": "M3",
       "sections": "05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "Launch success means the intended verified mint and authority facts exist.",
       "steps": [
         "Decode required finalized effects and expected account/program identities",
@@ -1720,7 +1743,7 @@
         "Crash after broadcast does not create another launch"
       ],
       "dependencies": ["T026", "T027"],
-      "acs": "AC26,AC27,AC29,AC67",
+      "acs": "AC26,AC27,AC29,AC67; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1733,7 +1756,7 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "The reward amount identifies the actual asset and never loses precision.",
       "steps": [
         "Key assets by network/mint/program and native/token kind",
@@ -1745,7 +1768,7 @@
         "Policy version cannot duplicate spendable balance"
       ],
       "dependencies": ["T002", "O07"],
-      "acs": "AC28,AC29,AC30,AC41",
+      "acs": "AC28,AC29,AC30,AC41; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1758,7 +1781,7 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "The payment mechanism protects committed rewards and constrains who may move them.",
       "steps": [
         "Compare existing custody to O05 authority model",
@@ -1770,7 +1793,7 @@
         "No model/admin generic arbitrary-withdrawal power"
       ],
       "dependencies": ["T020", "T026", "O05", "O06"],
-      "acs": "AC31,AC35,AC38,AC39",
+      "acs": "AC31,AC35,AC38,AC39; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -1783,7 +1806,7 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "A client signature cannot invent funds or promise the same deposit to several workers.",
       "steps": [
         "Verify vault/program/asset/net effect and configured finality",
@@ -1795,7 +1818,7 @@
         "Shared pool cannot double-promise protected funds"
       ],
       "dependencies": ["T029", "T030"],
-      "acs": "AC26,AC27,AC28,AC34,AC35",
+      "acs": "AC26,AC27,AC28,AC34,AC35; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1808,7 +1831,7 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "No commissioned work starts before verified funding binding and required resources.",
       "steps": [
         "Persist semantic binding intent after atomic acceptance",
@@ -1820,7 +1843,7 @@
         "Late binding cannot restart work or auto-grant code"
       ],
       "dependencies": ["T020", "T031"],
-      "acs": "AC18,AC31,AC39",
+      "acs": "AC18,AC31,AC39; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1833,7 +1856,7 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Each beneficiary and asset gets an exact claim that can settle once across new signatures.",
       "steps": [
         "Create authorized allocations under accepted terms/finality",
@@ -1845,7 +1868,7 @@
         "Retry only unpaid legs; frozen token obligation remains"
       ],
       "dependencies": ["T030", "T031", "T032"],
-      "acs": "AC32,AC33,AC36,AC37",
+      "acs": "AC32,AC33,AC36,AC37; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -1858,7 +1881,7 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "People can see exactly what is owed, pending, blocked or actually paid.",
       "steps": [
         "Build asset-specific obligations/fees/transaction status",
@@ -1870,7 +1893,7 @@
         "Discrepancy is visible and cannot be hidden with balance edit"
       ],
       "dependencies": ["T033"],
-      "acs": "AC36,AC37,AC49",
+      "acs": "AC36,AC37,AC49; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1883,7 +1906,7 @@
       "role": "AG04/AG03/AG09",
       "phase": "M4",
       "sections": "16–17,28–30",
-      "requirements": "I04,I07,I08,I10,I11",
+      "requirements": "I04,I07,I08,I10,I11; R15,R16,I13",
       "outcome": "A contested award cannot become claimable while its timely appeal is held.",
       "steps": [
         "Store versioned case/evidence access, mediator/conflicts and notice",
@@ -1895,7 +1918,7 @@
         "Silence closes duties but does not decide money/fault"
       ],
       "dependencies": ["T023", "T030", "T033", "O06"],
-      "acs": "AC10,AC21,AC38,AC49",
+      "acs": "AC10,AC21,AC38,AC49; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1908,7 +1931,7 @@
       "role": "AG04/AG03/AG09",
       "phase": "M4",
       "sections": "16–17,28–30",
-      "requirements": "I04,I07,I08,I10,I11",
+      "requirements": "I04,I07,I08,I10,I11; R15,R16,I13",
       "outcome": "Wallet recovery and account restriction cannot confiscate an earned entitlement.",
       "steps": [
         "Require proof and supported beneficiary-change authority",
@@ -1920,7 +1943,7 @@
         "Database-only edit cannot change a bound on-chain beneficiary"
       ],
       "dependencies": ["T006", "T033", "T035"],
-      "acs": "AC40,AC49",
+      "acs": "AC40,AC49; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1933,7 +1956,7 @@
       "role": "AG09/AG03",
       "phase": "M0–M5",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Sample assets or missing authorities cannot accidentally enable real operations.",
       "steps": [
         "Separate local/staging/pilot/production credentials and networks",
@@ -1945,7 +1968,7 @@
         "Flag change cannot rewrite accepted contracts or undo transfers"
       ],
       "dependencies": ["T029", "T030", "O18"],
-      "acs": "AC41,AC72",
+      "acs": "AC41,AC72; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -1958,7 +1981,7 @@
       "role": "AG09/AG03",
       "phase": "M0–M5",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Late jobs and provider outages are recoverable without repeated external action.",
       "steps": [
         "Keep outbox/inbox receipts and generation checks",
@@ -1970,7 +1993,7 @@
         "Crash after external success is reconciled before safe retry"
       ],
       "dependencies": ["T019", "T024", "T033"],
-      "acs": "AC23,AC47,AC67",
+      "acs": "AC23,AC47,AC67; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -1983,7 +2006,7 @@
       "role": "AG09/AG03",
       "phase": "M0–M5",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "A restore can recover original terms, consent and semantic IDs before writing again.",
       "steps": [
         "Choose durability mechanism/failure model under O18",
@@ -1995,7 +2018,7 @@
         "Recovered state recognizes effects newer than snapshot"
       ],
       "dependencies": ["T003", "T019", "T038", "O18"],
-      "acs": "AC68",
+      "acs": "AC68; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -2008,7 +2031,7 @@
       "role": "AG09/AG03",
       "phase": "M0–M5",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Operators know who can contain, investigate and resolve each supported failure.",
       "steps": [
         "Name treasury/security/access/mediation/support/release responsibilities and hours",
@@ -2020,7 +2043,7 @@
         "No playbook implies a code rollback reverses a chain transfer"
       ],
       "dependencies": ["T034", "T035", "T037", "T039", "O19"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2033,7 +2056,7 @@
       "role": "AG05/AG03/AG04",
       "phase": "M5/M8",
       "sections": "08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "History shows actual useful work rather than wealth or repeated webhook ratings.",
       "steps": [
         "Append canonical outcome events with evidence/denominators/policy",
@@ -2045,7 +2068,7 @@
         "Pending allegation and valid nonwinner are not permanent failure"
       ],
       "dependencies": ["T023", "T035"],
-      "acs": "AC09,AC10,AC51",
+      "acs": "AC09,AC10,AC51; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2058,7 +2081,7 @@
       "role": "AG07/AG02/AG09",
       "phase": "M1/M5/M6",
       "sections": "18,23,27,31",
-      "requirements": "R08,R10; I06,I07",
+      "requirements": "R08,R10; I06,I07; R15,R16,I13",
       "outcome": "People know the next required action without exposing private briefs in previews.",
       "steps": [
         "Notify acceptance/readiness/deadline/submission/review/payment/dispute state",
@@ -2070,7 +2093,7 @@
         "Confidential subject stays inside authorized surface"
       ],
       "dependencies": ["T019", "T024"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2083,7 +2106,7 @@
       "role": "AG07/AG02/AG09",
       "phase": "M1/M5/M6",
       "sections": "18,23,27,31",
-      "requirements": "R08,R10; I06,I07",
+      "requirements": "R08,R10; I06,I07; R15,R16,I13",
       "outcome": "Operators understand activation/completion/settlement without counting fake traffic or fabricated dollars.",
       "steps": [
         "Measure verified Guild, participant, review delay and due claims",
@@ -2095,7 +2118,7 @@
         "Unpriced project tokens are not aggregated as paid dollars"
       ],
       "dependencies": ["T034", "T041"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2108,7 +2131,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Internal testers prove founder, beginner and specialist can complete supported core paths.",
       "steps": [
         "Prepare isolated synthetic/test-network cohort and candidate SHA",
@@ -2120,7 +2143,7 @@
         "Synthetic activity never becomes public success evidence"
       ],
       "dependencies": ["T008", "T014", "T028", "T034", "T040"],
-      "acs": "AC03,AC06,AC66,AC71",
+      "acs": "AC03,AC06,AC66,AC71; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2133,7 +2156,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Keyboard/mobile users can complete core actions safely even when a wallet rejects.",
       "steps": [
         "Test focus/labels/status announcements/contrast/reflow/reduced motion",
@@ -2145,7 +2168,7 @@
         "No hidden private payload or color-only warning"
       ],
       "dependencies": ["T022", "T027", "T034"],
-      "acs": "AC42,AC43,AC70",
+      "acs": "AC42,AC43,AC70; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2158,7 +2181,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "The candidate survives real transaction races and recovery rather than only happy-path demos.",
       "steps": [
         "Synchronize database accept/closure races",
@@ -2170,7 +2193,7 @@
         "Unrecoverable authorization keeps affected commands disabled"
       ],
       "dependencies": ["T032", "T035", "T039", "T044"],
-      "acs": "AC11,AC12,AC23,AC26,AC31,AC33,AC38,AC67,AC68,AC69",
+      "acs": "AC11,AC12,AC23,AC26,AC31,AC33,AC38,AC67,AC68,AC69; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2183,7 +2206,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Invite outside testers only after core security/money/capacity/recovery blockers are verified fixed.",
       "steps": [
         "Triage each observed defect with owner and blueprint IDs",
@@ -2195,7 +2218,7 @@
         "Every closed blocker has reproduction and fix/retest evidence"
       ],
       "dependencies": ["T044", "T045", "T046"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2208,7 +2231,7 @@
       "role": "AG01/AG08/AG09",
       "phase": "M5 beta",
       "sections": "30–35,38–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Outside testers receive accurate environment, terms, budget/cap and support information.",
       "steps": [
         "Choose test-network or live-funded beta under applicable gates",
@@ -2220,7 +2243,7 @@
         "Test-asset beta does not promise real payout"
       ],
       "dependencies": ["T047", "O08", "O11", "O12", "O18", "O19"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2233,7 +2256,7 @@
       "role": "AG01/AG08/AG09",
       "phase": "M5 beta",
       "sections": "30–35,38–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Real testers expose workflow confusion and support needs before broader access.",
       "steps": [
         "Admit cohort in small approved batches",
@@ -2245,7 +2268,7 @@
         "Funded/accepted/paid volumes stay distinct"
       ],
       "dependencies": ["T048"],
-      "acs": "AC66,AC71,AC70",
+      "acs": "AC66,AC71,AC70; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2258,7 +2281,7 @@
       "role": "AG01/AG08/AG09",
       "phase": "M5 beta",
       "sections": "30–35,38–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "A clean second beta week verifies fixes instead of adding new functionality.",
       "steps": [
         "Prioritize core blockers and safe usability improvements",
@@ -2270,7 +2293,7 @@
         "Existing claims survive fixes and rollout pauses"
       ],
       "dependencies": ["T049"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2283,7 +2306,7 @@
       "role": "AG01/AG08/AG09",
       "phase": "M5 beta",
       "sections": "30–35,38–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "A named owner decides which tested capabilities can open to wider users.",
       "steps": [
         "Review G01–G05/G10 and actual beta evidence",
@@ -2295,7 +2318,7 @@
         "No automatic release merely because a sprint date arrived"
       ],
       "dependencies": ["T050"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2308,7 +2331,7 @@
       "role": "AG07/AG02/AG09",
       "phase": "M1/M5/M6",
       "sections": "18,23,27,31",
-      "requirements": "R08,R10; I06,I07",
+      "requirements": "R08,R10; I06,I07; R15,R16,I13",
       "outcome": "More eligible users can join without forcing incomplete feature contracts.",
       "steps": [
         "Publish beta limits/network/assets/support status",
@@ -2320,7 +2343,7 @@
         "Expansion pauses when required state or support is unsafe"
       ],
       "dependencies": ["T051"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2333,7 +2356,7 @@
       "role": "AG05/AG03",
       "phase": "M6",
       "sections": "09–10,13,25–30",
-      "requirements": "R11; I06,I07,I09–I11",
+      "requirements": "R11; I06,I07,I09–I11; R15,R16,I13",
       "outcome": "Discovery and skill scores do not reveal confidential work or grant repositories.",
       "steps": [
         "Implement PUBLIC/TRUSTED/CONFIDENTIAL/INVITE_ONLY projections",
@@ -2345,7 +2368,7 @@
         "All public rendering/search/preview paths stay clean"
       ],
       "dependencies": ["T014", "T032", "T045", "O13"],
-      "acs": "AC42,AC43,AC44",
+      "acs": "AC42,AC43,AC44; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2358,7 +2381,7 @@
       "role": "AG05/AG03",
       "phase": "M6",
       "sections": "09–10,13,25–30",
-      "requirements": "R11; I06,I07,I09–I11",
+      "requirements": "R11; I06,I07,I09–I11; R15,R16,I13",
       "outcome": "A grant represents what the provider really allows, not imaginary folder secrecy.",
       "steps": [
         "Record exact resource/scope/purpose/approver/expiry/generation",
@@ -2370,7 +2393,7 @@
         "Effective scope and provider limits are documented"
       ],
       "dependencies": ["T053", "O13"],
-      "acs": "AC44,AC45,AC46",
+      "acs": "AC44,AC45,AC46; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2383,7 +2406,7 @@
       "role": "AG05/AG03",
       "phase": "M6",
       "sections": "09–10,13,25–30",
-      "requirements": "R11; I06,I07,I09–I11",
+      "requirements": "R11; I06,I07,I09–I11; R15,R16,I13",
       "outcome": "Closed work ends task-derived credentials even when the provider fails.",
       "steps": [
         "Revoke secrets and reconcile desired/effective access",
@@ -2395,7 +2418,7 @@
         "Failed provider revoke stays visible; copied data is not claimed recalled"
       ],
       "dependencies": ["T024", "T054"],
-      "acs": "AC47,AC48",
+      "acs": "AC47,AC48; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2408,7 +2431,7 @@
       "role": "AG03/AG04/AG02",
       "phase": "M6",
       "sections": "08,13–14,16–17",
-      "requirements": "P02; I01–I05,I08",
+      "requirements": "P02; I01–I05,I08; R15,R16,I13",
       "outcome": "Every team member understands their responsibility, terms and payout before commitment.",
       "steps": [
         "Create reusable roster/contact roles and per-engagement snapshot",
@@ -2420,7 +2443,7 @@
         "Party label cannot manufacture every member’s skill"
       ],
       "dependencies": ["T014", "T025", "T029"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2433,7 +2456,7 @@
       "role": "AG03/AG04/AG02",
       "phase": "M6",
       "sections": "08,13–14,16–17",
-      "requirements": "P02; I01–I05,I08",
+      "requirements": "P02; I01–I05,I08; R15,R16,I13",
       "outcome": "A team with one busy member cannot partially reserve others or bypass capacity.",
       "steps": [
         "Acquire participant/operator commitments with stable lock order",
@@ -2445,7 +2468,7 @@
         "Outgoing history/claim survives; leader cannot redirect reward"
       ],
       "dependencies": ["T020", "T033", "T056"],
-      "acs": "AC13,AC50",
+      "acs": "AC13,AC50; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2458,7 +2481,7 @@
       "role": "AG03/AG04/AG05",
       "phase": "M6/M8",
       "sections": "13,15–17",
-      "requirements": "R14; P03; I01–I05,I08,I11",
+      "requirements": "R14; P03; I01–I05,I08,I11; R15,R16,I13",
       "outcome": "Participants know whether they are applying or accepting bounded paid prototype work.",
       "steps": [
         "Model SELECTION separately from PRIZE",
@@ -2470,7 +2493,7 @@
         "Accepted entry holds duty; nonwinner qualification/payment survives"
       ],
       "dependencies": ["T021", "T031", "T035", "O10"],
-      "acs": "AC14,AC51,AC52,AC53,AC57",
+      "acs": "AC14,AC51,AC52,AC53,AC57; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2483,7 +2506,7 @@
       "role": "AG03/AG04/AG05",
       "phase": "M6/M8",
       "sections": "13,15–17",
-      "requirements": "R14; P03; I01–I05,I08,I11",
+      "requirements": "R14; P03; I01–I05,I08,I11; R15,R16,I13",
       "outcome": "Winning selection never silently commits someone to the larger job.",
       "steps": [
         "Offer new terms/roster and separate funded main reward",
@@ -2495,7 +2518,7 @@
         "Race cannot reserve both jobs; failed target keeps source payment"
       ],
       "dependencies": ["T032", "T057", "T058"],
-      "acs": "AC54,AC55,AC56",
+      "acs": "AC54,AC55,AC56; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2508,7 +2531,7 @@
       "role": "AG07/AG04",
       "phase": "M6/M8",
       "sections": "18,22,26–31",
-      "requirements": "R09; D10; I03–I05,I10",
+      "requirements": "R09; D10; I03–I05,I10; R15,R16,I13",
       "outcome": "Founders buy defined visibility without buying trust, rank or judgment.",
       "steps": [
         "Record inventory/cap/audience/time/price/delivery/refund policy",
@@ -2520,7 +2543,7 @@
         "Failed delivery follows purchased refund/make-good terms"
       ],
       "dependencies": ["T015", "T031", "T043", "O08"],
-      "acs": "AC58,AC59",
+      "acs": "AC58,AC59; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2533,7 +2556,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "An AI worker has stable identity and evidence rather than a model-price rank.",
       "steps": [
         "Store accountable operator, authenticated runtime and versioned capability evidence",
@@ -2545,7 +2568,7 @@
         "Model swap does not reset history/capacity"
       ],
       "dependencies": ["T006", "T012", "T019", "O14"],
-      "acs": "AC63",
+      "acs": "AC63; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2558,7 +2581,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "One operator cannot create aliases to bypass the managed-agent pilot cap.",
       "steps": [
         "Count distinct engagements for individual pilot operator",
@@ -2570,7 +2593,7 @@
         "Same allowed Party members share one operator reservation"
       ],
       "dependencies": ["T020", "T057", "T061"],
-      "acs": "AC15,AC16",
+      "acs": "AC15,AC16; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2583,7 +2606,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "Untrusted task material cannot steal secrets or authorize outside actions.",
       "steps": [
         "Implement filesystem/network/tool boundaries and artifact validation",
@@ -2595,7 +2618,7 @@
         "Denied private-provider/tool action is blocked at service boundary"
       ],
       "dependencies": ["T054", "T055", "T061", "O14"],
-      "acs": "AC48",
+      "acs": "AC48; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -2608,7 +2631,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "A retry or parallel subcall cannot spend beyond the owner’s authorized cap.",
       "steps": [
         "Track actual/estimated cost with currency/rate-card version",
@@ -2620,7 +2643,7 @@
         "Compute budget cannot consume contributor reward reserves"
       ],
       "dependencies": ["T029", "T061", "T063", "O08", "O14"],
-      "acs": "AC61",
+      "acs": "AC61; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2633,7 +2656,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "A failed AI process does not leave indefinite work locks or undo external effects by assumption.",
       "steps": [
         "Track run/duty state separately with heartbeat",
@@ -2645,7 +2668,7 @@
         "Dead run cannot lock participant indefinitely"
       ],
       "dependencies": ["T024", "T038", "T062", "T063", "T064"],
-      "acs": "AC64,AC67",
+      "acs": "AC64,AC67; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2658,7 +2681,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "A permitted task completes under limits and its output is reviewed by authorized people.",
       "steps": [
         "Explain bounded recommendation/capability/cost assumptions",
@@ -2670,7 +2693,7 @@
         "One pilot task reaches review with costs/failures visible"
       ],
       "dependencies": ["T023", "T062", "T063", "T064", "T065"],
-      "acs": "AC62,AC63,AC64",
+      "acs": "AC62,AC63,AC64; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2683,7 +2706,7 @@
       "role": "AG03/AG04/AG05",
       "phase": "M6/M8",
       "sections": "13,15–17",
-      "requirements": "R14; P03; I01–I05,I08,I11",
+      "requirements": "R14; P03; I01–I05,I08,I11; R15,R16,I13",
       "outcome": "All promised prizes/stipends are reserved and awarded under declared rules.",
       "steps": [
         "Model PRIZE ties/no-qualifier/cancellation and maximum liability",
@@ -2695,7 +2718,7 @@
         "Nonwinning private code cannot be used without granted rights"
       ],
       "dependencies": ["T035", "T058", "O10"],
-      "acs": "AC51,AC52,AC53,AC57",
+      "acs": "AC51,AC52,AC53,AC57; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2708,7 +2731,7 @@
       "role": "AG07/AG04",
       "phase": "M6/M8",
       "sections": "18,22,26–31",
-      "requirements": "R09; D10; I03–I05,I10",
+      "requirements": "R09; D10; I03–I05,I10; R15,R16,I13",
       "outcome": "A bidder knows the maximum charge and gets protected release/refund if not delivered.",
       "steps": [
         "Adopt O17 mechanism and deterministic tie-break",
@@ -2720,7 +2743,7 @@
         "Late/duplicate job cannot double charge; invalid confidential card not exposed"
       ],
       "dependencies": ["T019", "T031", "T060", "O17"],
-      "acs": "AC59",
+      "acs": "AC59; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2733,7 +2756,7 @@
       "role": "AG04/AG03",
       "phase": "M4",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Adding SOL/project-token/RAID support is tested behavior rather than a ticker entry.",
       "steps": [
         "Review actual network/mint/program/extensions/authorities",
@@ -2745,7 +2768,7 @@
         "Unsupported extension remains disabled"
       ],
       "dependencies": ["T029", "T033", "O07"],
-      "acs": "AC28,AC29,AC30,AC36,AC37,AC41",
+      "acs": "AC28,AC29,AC30,AC36,AC37,AC41; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2758,7 +2781,7 @@
       "role": "AG07/AG06",
       "phase": "M8",
       "sections": "20,27–31",
-      "requirements": "P01; I05,I06,I09–I11",
+      "requirements": "P01; I05,I06,I09–I11; R15,R16,I13",
       "outcome": "The exact approved content is published once through a controlled account.",
       "steps": [
         "Verify account control/API support and scoped credentials under O16",
@@ -2770,7 +2793,7 @@
         "Retried publish after success does not duplicate content"
       ],
       "dependencies": ["T019", "T038", "T063", "O16"],
-      "acs": "AC60",
+      "acs": "AC60; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2783,7 +2806,7 @@
       "role": "AG07/AG06",
       "phase": "M8",
       "sections": "20,27–31",
-      "requirements": "P01; I05,I06,I09–I11",
+      "requirements": "P01; I05,I06,I09–I11; R15,R16,I13",
       "outcome": "Draft creation, publication and performance bonuses remain separate obligations.",
       "steps": [
         "Define fixed fee and optional capped bonus/data source/window",
@@ -2795,7 +2818,7 @@
         "Fabricated engagement or undisclosed performance guarantee is not accepted"
       ],
       "dependencies": ["T070", "O08", "O16"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2808,7 +2831,7 @@
       "role": "AG05/AG03/AG04",
       "phase": "M5/M8",
       "sections": "08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Numerical scoring uses reviewed evidence and preserves newcomer opportunity.",
       "steps": [
         "Adopt O09 formula/rubric and sample-confidence policy",
@@ -2820,7 +2843,7 @@
         "Nonwinner and unresolved allegation are not automatic failure"
       ],
       "dependencies": ["T013", "T041", "O09"],
-      "acs": "AC04,AC09,AC10,AC51",
+      "acs": "AC04,AC09,AC10,AC51; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2833,7 +2856,7 @@
       "role": "AG05/AG03/AG04",
       "phase": "M5/M8",
       "sections": "08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Ongoing responsibility uses the same one-active rule and paid consent as normal work.",
       "steps": [
         "Define period duties/access/payment/notice under O19",
@@ -2845,7 +2868,7 @@
         "Honorary title does not hide another active job"
       ],
       "dependencies": ["T020", "T025", "T033", "T055", "O19"],
-      "acs": "AC65",
+      "acs": "AC65; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -2858,7 +2881,7 @@
       "role": "AG05/AG03/AG04",
       "phase": "M5/M8",
       "sections": "08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Unapproved tokenomics and access licenses stay disabled while independent work proceeds.",
       "steps": [
         "Record O03/O04 utility/entitlement choices",
@@ -2870,7 +2893,7 @@
         "Missing decision produces controlled not-configured state, not invented supply/fees"
       ],
       "dependencies": ["O03", "O04", "T029"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P2",
       "estimate": 3
     },
@@ -2883,7 +2906,7 @@
       "role": "AG04/AG02",
       "phase": "M3",
       "sections": "05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "Actual token issuance has its own economics, authority and assurance work beyond the sprint target.",
       "steps": [
         "Specify chosen supply/allocation/distribution/controls/market route under owner decision",
@@ -2895,7 +2918,7 @@
         "No issue completion is a transaction or authority to spend"
       ],
       "dependencies": ["O03", "T026", "T069"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P2",
       "estimate": 5
     },
@@ -2908,7 +2931,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "A larger operator model is explicit instead of silently increasing individual capacity.",
       "steps": [
         "Decide O15 organization registration/accountability",
@@ -2920,7 +2943,7 @@
         "Organization policy does not silently replace strict pilot limit"
       ],
       "dependencies": ["O15", "T062"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P2",
       "estimate": 3
     },
@@ -2933,7 +2956,7 @@
       "role": "AG01/AG08/AG09",
       "phase": "M5 beta",
       "sections": "30–35,38–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "The project leaves beta only when the enabled scope is actually supported and proven.",
       "steps": [
         "Repeat core journey/security/recovery on candidate SHA",
@@ -2945,7 +2968,7 @@
         "Delivered/test-verified/live-enabled scope remains distinct"
       ],
       "dependencies": ["T051", "T052", "T066", "T067", "T068", "T070", "T071", "T072", "T073"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -2958,7 +2981,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Prove identity, skills and fair admission against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -2970,7 +2993,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T006", "T007", "T008", "T009", "T010", "T011", "T012", "T013", "T014"],
-      "acs": "AC01,AC02,AC03,AC04,AC05,AC06,AC07,AC08",
+      "acs": "AC01,AC02,AC03,AC04,AC05,AC06,AC07,AC08; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -2983,7 +3006,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Prove canonical capacity and bounded work closure against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -2995,7 +3018,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T020", "T021", "T023", "T024", "T025"],
-      "acs": "AC11,AC12,AC17,AC18,AC19,AC20,AC21,AC22,AC23,AC24,AC25",
+      "acs": "AC11,AC12,AC17,AC18,AC19,AC20,AC21,AC22,AC23,AC24,AC25; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -3008,7 +3031,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Prove funding, exact assets and settlement boundaries against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3020,7 +3043,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T029", "T030", "T031", "T032", "T033", "T034", "T035", "T036", "T037"],
-      "acs": "AC26,AC27,AC28,AC29,AC30,AC31,AC32,AC33,AC34,AC35,AC36,AC37,AC38,AC39,AC40,AC41",
+      "acs": "AC26,AC27,AC28,AC29,AC30,AC31,AC32,AC33,AC34,AC35,AC36,AC37,AC38,AC39,AC40,AC41; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -3033,7 +3056,7 @@
       "role": "AG05/AG03",
       "phase": "M6",
       "sections": "09–10,13,25–30",
-      "requirements": "R11; I06,I07,I09–I11",
+      "requirements": "R11; I06,I07,I09–I11; R15,R16,I13",
       "outcome": "Prove private visibility, provider scopes and malicious artifacts against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3045,7 +3068,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T053", "T054", "T055", "T036"],
-      "acs": "AC42,AC43,AC44,AC45,AC46,AC47,AC48,AC49",
+      "acs": "AC42,AC43,AC44,AC45,AC46,AC47,AC48,AC49; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -3058,7 +3081,7 @@
       "role": "AG03/AG04/AG02",
       "phase": "M6",
       "sections": "08,13–14,16–17",
-      "requirements": "P02; I01–I05,I08",
+      "requirements": "P02; I01–I05,I08; R15,R16,I13",
       "outcome": "Prove party and challenge atomicity/rights against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3070,7 +3093,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T057", "T058", "T059"],
-      "acs": "AC13,AC14,AC50,AC51,AC52,AC53,AC54,AC55,AC56,AC57",
+      "acs": "AC13,AC14,AC50,AC51,AC52,AC53,AC54,AC55,AC56,AC57; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 5
     },
@@ -3083,7 +3106,7 @@
       "role": "AG07/AG04",
       "phase": "M6/M8",
       "sections": "18,22,26–31",
-      "requirements": "R09; D10; I03–I05,I10",
+      "requirements": "R09; D10; I03–I05,I10; R15,R16,I13",
       "outcome": "Prove promotion labels, auction release and delivery recovery against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3095,7 +3118,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T060", "T068"],
-      "acs": "AC58,AC59",
+      "acs": "AC58,AC59; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 5
     },
@@ -3108,7 +3131,7 @@
       "role": "AG06/AG03/AG05",
       "phase": "M7",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "Prove ai operator capacity, spend, tools and closure against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3120,7 +3143,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T061", "T062", "T063", "T064", "T065", "T066"],
-      "acs": "AC15,AC16,AC61,AC62,AC63,AC64",
+      "acs": "AC15,AC16,AC61,AC62,AC63,AC64; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -3133,7 +3156,7 @@
       "role": "AG07/AG06",
       "phase": "M8",
       "sections": "20,27–31",
-      "requirements": "P01; I05,I06,I09–I11",
+      "requirements": "P01; I05,I06,I09–I11; R15,R16,I13",
       "outcome": "Prove automatic channel publication recovery against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3145,7 +3168,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T070", "T071"],
-      "acs": "AC60",
+      "acs": "AC60; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 5
     },
@@ -3158,7 +3181,7 @@
       "role": "AG05/AG03/AG04",
       "phase": "M5/M8",
       "sections": "08–09,21–22,31",
-      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08; R15,R16,I13",
       "outcome": "Prove role capacity and renewal against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3170,7 +3193,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T073"],
-      "acs": "AC65",
+      "acs": "AC65; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 5
     },
@@ -3183,7 +3206,7 @@
       "role": "AG08/AG02/AG09",
       "phase": "M5 alpha",
       "sections": "32,34–36,39–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Prove core end-to-end, restore, replay and accessibility against the actual boundary, with reproducible negative and recovery evidence.",
       "steps": [
         "Read each listed AC required result",
@@ -3195,7 +3218,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T044", "T045", "T046"],
-      "acs": "AC66,AC67,AC68,AC69,AC70,AC71,AC72",
+      "acs": "AC66,AC67,AC68,AC69,AC70,AC71,AC72; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -3208,7 +3231,7 @@
       "role": "AG08/AG05",
       "phase": "M5 alpha",
       "sections": "09,17,31–32,35",
-      "requirements": "R06,R10; I05,I07,I11",
+      "requirements": "R06,R10; I05,I07,I11; R15,R16,I13",
       "outcome": "Prove suspect reciprocal activity is reviewed fairly and appeal corrections preserve evidence rather than erase history.",
       "steps": [
         "Read each listed AC required result",
@@ -3220,7 +3243,7 @@
         "Mocks cannot replace concurrency/program/effective-access/restore evidence"
       ],
       "dependencies": ["T035", "T041"],
-      "acs": "AC09,AC10",
+      "acs": "AC09,AC10; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 5
     },
@@ -3233,7 +3256,7 @@
       "phase": "M0",
       "role": "AG01/AG03/AG10",
       "sections": "00–04,24–29,33–41",
-      "requirements": "R01–R14; I01–I12",
+      "requirements": "R01–R14; I01–I12; R15,R16,I13",
       "outcome": "Web and service callers use one validated command model, rather than a second set of hidden state edits.",
       "steps": [
         "Implement runtime validated /api/v1 contracts or record approved compatibility representation",
@@ -3247,7 +3270,7 @@
         "Client eligibility or hidden buttons never grant authority"
       ],
       "dependencies": ["T002", "T007", "T019"],
-      "acs": "AC02,AC07,AC42,AC69,AC72",
+      "acs": "AC02,AC07,AC42,AC69,AC72; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -3260,7 +3283,7 @@
       "phase": "M1",
       "role": "AG03/AG05",
       "sections": "07,13,25–28",
-      "requirements": "R04,R12,R13; I01,I07,I10",
+      "requirements": "R04,R12,R13; I01,I07,I10; R15,R16,I13",
       "outcome": "Linked GitHub/social credentials prove the specific account controlled, without pretending they prove unique humanity or skill.",
       "steps": [
         "Verify stable provider subject ownership before linking evidence",
@@ -3273,7 +3296,7 @@
         "Linking/recovery cannot grant another slot, erase claims or silently expose private evidence"
       ],
       "dependencies": ["T006", "T007", "T012", "O11"],
-      "acs": "AC01,AC02,AC06,AC49",
+      "acs": "AC01,AC02,AC06,AC49; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -3286,7 +3309,7 @@
       "phase": "M0–M5",
       "role": "AG09/AG03",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Malicious inputs cannot expose secrets, trigger unauthorized network access or execute trusted code.",
       "steps": [
         "Review configured CSP/HSTS/session/CSRF and scoped admin/service permissions",
@@ -3300,7 +3323,7 @@
         "Untrusted code uses the approved isolated boundary"
       ],
       "dependencies": ["T007", "T019", "T002"],
-      "acs": "AC02,AC40,AC42,AC48",
+      "acs": "AC02,AC40,AC42,AC48; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -3313,7 +3336,7 @@
       "phase": "M0–M5",
       "role": "AG09/AG03",
       "sections": "24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Users can exercise the chosen privacy policy while required financial/access/work evidence remains recoverable and restricted.",
       "steps": [
         "Implement accepted O11 retention/deletion/attestation policy and access controls",
@@ -3326,7 +3349,7 @@
         "Required audit retention is scoped and disclosed rather than indefinite default storage"
       ],
       "dependencies": ["O11", "O12", "T036", "T039"],
-      "acs": "AC01,AC49,AC68",
+      "acs": "AC01,AC49,AC68; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -3339,7 +3362,7 @@
       "phase": "M4",
       "role": "AG04/AG03",
       "sections": "13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Launch, contributor reward, platform fee, AI compute and promotion funds are never silently spent on each other.",
       "steps": [
         "Model explicit owner/authorization/category and refund terms for each of the five budgets",
@@ -3353,7 +3376,7 @@
         "Treasury analytics never treat unrelated holder wallets as project funds"
       ],
       "dependencies": ["T029", "T031", "T033", "O08"],
-      "acs": "AC28,AC30,AC34,AC35,AC37",
+      "acs": "AC28,AC30,AC34,AC35,AC37; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -3366,7 +3389,7 @@
       "phase": "M7",
       "role": "AG06/AG03/AG05",
       "sections": "07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "A founder can understand what was spent and what is returned after a capped partial or failed run.",
       "steps": [
         "Adopt precise charging/refund/credit terms from O08/O14",
@@ -3380,7 +3403,7 @@
         "No implicit RAID-token conversion or fabricated provider cost"
       ],
       "dependencies": ["T064", "T065", "O08", "O14"],
-      "acs": "AC61,AC62,AC64",
+      "acs": "AC61,AC62,AC64; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -3393,7 +3416,7 @@
       "phase": "M8",
       "role": "AG07/AG06",
       "sections": "20,27–31",
-      "requirements": "P01; I05,I06,I09–I11",
+      "requirements": "P01; I05,I06,I09–I11; R15,R16,I13",
       "outcome": "Content participants can submit verifiable agreed work before automated social publishing is enabled.",
       "steps": [
         "Identify human AI-assisted versus registered AI-influencer operating model and accountable account/operator",
@@ -3407,7 +3430,7 @@
         "Scheduled ongoing duties continue consuming capacity until bounded closure"
       ],
       "dependencies": ["T023", "T090", "O08"],
-      "acs": "AC19,AC51,AC60",
+      "acs": "AC19,AC51,AC60; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -3420,7 +3443,7 @@
       "phase": "M0–M8",
       "role": "AG01/AG10/AG08 + all domain owners",
       "sections": "00–41; all subsections",
-      "requirements": "R01–R14; P01–P08; D01–D13; I01–I12; AC01–AC72; O01–O19; G01–G10",
+      "requirements": "R01–R14; P01–P08; D01–D13; I01–I12; AC01–AC72; O01–O19; G01–G10; R15,R16,I13",
       "outcome": "A new developer can locate concrete work for every blueprint section without guessing missing scope.",
       "steps": [
         "Map all numbered sections/subsections to epics/tasks/verification/decisions/gates",
@@ -3434,7 +3457,7 @@
         "Board membership, hierarchy and field values match the checked-in planning register"
       ],
       "dependencies": ["T001", "T002", "T004"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 3
     },
@@ -3447,7 +3470,7 @@
       "role": "AG07/AG02/AG09",
       "phase": "M2",
       "sections": "18.1–18.2,23,26,31",
-      "requirements": "R08; I03,I06,I07,I10",
+      "requirements": "R08; I03,I06,I07,I10; R15,R16,I13",
       "outcome": "A Raider can find current permitted funded work by actual skill and reward fit without misleading asset values or paid credibility.",
       "steps": [
         "Filter structured category/skill/rank/participant/format/asset/funding/deadline and allowed visibility.",
@@ -3461,7 +3484,7 @@
         "Filters and unknown/stale/empty states are understandable on keyboard/mobile."
       ],
       "dependencies": ["T014", "T015", "T016", "T021"],
-      "acs": "AC05,AC42,AC58,AC70",
+      "acs": "AC05,AC42,AC58,AC70; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 3
     },
@@ -3474,7 +3497,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Visitor representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A visitor representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Open the homepage on mobile and desktop",
@@ -3492,7 +3515,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T015", "T044"],
-      "acs": "AC42,AC70",
+      "acs": "AC42,AC70; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3506,7 +3529,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Raider representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A raider representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Filter by relevant skill/rank/funding/asset",
@@ -3524,7 +3547,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T018", "T021", "T097"],
-      "acs": "AC05,AC42,AC70",
+      "acs": "AC05,AC42,AC70; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3538,7 +3561,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Visitor representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A visitor representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Find a verified project",
@@ -3556,7 +3579,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T009", "T015"],
-      "acs": "AC07,AC08",
+      "acs": "AC07,AC08; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3570,7 +3593,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Founder and token holder representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A founder and token holder representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Verify/link an existing project with approved control evidence",
@@ -3588,7 +3611,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T009", "T010", "T011", "T041"],
-      "acs": "AC07,AC08,AC71",
+      "acs": "AC07,AC08,AC71; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3602,7 +3625,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Founder representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A founder representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Prepare selected test-network launch",
@@ -3620,7 +3643,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T027", "T028"],
-      "acs": "AC26,AC27,AC66,AC70",
+      "acs": "AC26,AC27,AC66,AC70; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3634,7 +3657,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Founder representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A founder representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Describe outcome/criteria and inspect recommendation assumptions",
@@ -3652,7 +3675,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T016", "T017", "T018", "T031"],
-      "acs": "AC28,AC72",
+      "acs": "AC28,AC72; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3666,7 +3689,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Beginner and experienced Raider representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A beginner and experienced raider representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Read terms and skill/capacity checklist",
@@ -3684,7 +3707,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T020", "T021", "T022", "T032"],
-      "acs": "AC03,AC05,AC06,AC11,AC12,AC18",
+      "acs": "AC03,AC05,AC06,AC11,AC12,AC18; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3698,7 +3721,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Newcomer and experienced builder representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A newcomer and experienced builder representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Complete orientation and find a starter task",
@@ -3716,7 +3739,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T008", "T012", "T013", "T014"],
-      "acs": "AC01,AC03,AC04,AC06",
+      "acs": "AC01,AC03,AC04,AC06; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3730,7 +3753,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Raider representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A raider representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Open accepted terms and resources",
@@ -3748,7 +3771,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T022", "T023", "T024", "T034"],
-      "acs": "AC19,AC20,AC21,AC23",
+      "acs": "AC19,AC20,AC21,AC23; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3762,7 +3785,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Founder representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A founder representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Compare relevant assessed skill/evidence and current capacity",
@@ -3780,7 +3803,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T014", "T021", "T022"],
-      "acs": "AC05,AC17",
+      "acs": "AC05,AC17; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3794,7 +3817,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Founder reviewer and Raider representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A founder reviewer and raider representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Review a specific submitted version against original checklist",
@@ -3812,7 +3835,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T023", "T025", "T035"],
-      "acs": "AC10,AC19,AC21,AC38,AC72",
+      "acs": "AC10,AC19,AC21,AC38,AC72; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3826,7 +3849,7 @@
       "phase": "M5 beta",
       "role": "Product owner + Contributor and founder representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A contributor and founder representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Inspect exact asset obligations/net fees",
@@ -3844,7 +3867,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T033", "T034", "T036"],
-      "acs": "AC33,AC36,AC37,AC40,AC49",
+      "acs": "AC33,AC36,AC37,AC40,AC49; AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3858,7 +3881,7 @@
       "phase": "M6/M8",
       "role": "Product owner + Party leader and individual members representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A party leader and individual members representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Choose roles and relevant skill coverage",
@@ -3876,7 +3899,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T056", "T057"],
-      "acs": "AC13,AC50",
+      "acs": "AC13,AC50; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3890,7 +3913,7 @@
       "phase": "M6/M8",
       "role": "Product owner + Challenge entrant and founder representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A challenge entrant and founder representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Read selection terms, rubric, rights and compensation",
@@ -3908,7 +3931,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T058", "T059"],
-      "acs": "AC51,AC52,AC53,AC54,AC55,AC56,AC57",
+      "acs": "AC51,AC52,AC53,AC54,AC55,AC56,AC57; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3922,7 +3945,7 @@
       "phase": "M6/M8",
       "role": "Product owner + Sponsor representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A sponsor representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Read fixed slot/bid price, inventory, maximum charge and delivery terms",
@@ -3940,7 +3963,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T060", "T068"],
-      "acs": "AC58,AC59",
+      "acs": "AC58,AC59; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3954,7 +3977,7 @@
       "phase": "M6/M8",
       "role": "Product owner + Operator, product owner and representatives representative + AG08 facilitator",
       "sections": "23.2,23.4–23.8,32,35,39–40",
-      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries; R15,R16,I13",
       "outcome": "A operator, product owner and representatives representative can complete and explain this user journey without relying on developer implementation details.",
       "steps": [
         "Investigate unknown payment/access/AI/provider incident from correlated state",
@@ -3972,7 +3995,7 @@
         "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
       ],
       "dependencies": ["T040", "T046", "T066", "T070", "T073"],
-      "acs": "AC60,AC61,AC62,AC63,AC64,AC65,AC67,AC68",
+      "acs": "AC60,AC61,AC62,AC63,AC64,AC65,AC67,AC68; AC73,AC74,AC75",
       "priority": "P1",
       "estimate": 2,
       "test_stage": "UAT"
@@ -3986,7 +4009,7 @@
       "role": "AG04/AG02 / AG08 / AG09",
       "phase": "M3",
       "sections": "34.4,39–40; 05,16,22,25–30",
-      "requirements": "R01,R02; I03,I05,I09,I12",
+      "requirements": "R01,R02; I03,I05,I09,I12; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Approved protocol, parameters, verified IDs, authority/fee behavior, recovery.",
@@ -4000,7 +4023,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O01", "O02", "T028", "T087"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Real launches/trading."
@@ -4014,7 +4037,7 @@
       "role": "AG04/AG03 / AG08 / AG09",
       "phase": "M4",
       "sections": "34.4,39–40; 13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Defined authority, program/provider capability, reserves/claims/refunds, recovery, relevant assurance.",
@@ -4028,7 +4051,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O05", "T030", "T033", "T080"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Real reward funding and payouts."
@@ -4042,7 +4065,7 @@
       "role": "AG04/AG03/AG09 / AG08 / AG09",
       "phase": "M4",
       "sections": "34.4,39–40; 16–17,28–30",
-      "requirements": "I04,I07,I08,I10,I11",
+      "requirements": "I04,I07,I08,I10,I11; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Notice, ordinary acceptance finality, objection/appeal, final decision, hold/claim race behavior.",
@@ -4056,7 +4079,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O06", "T035", "T080"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "All live settlement claimability, including ordinary acceptance, disputes, and Challenge awards."
@@ -4070,7 +4093,7 @@
       "role": "AG04/AG03 / AG08 / AG09",
       "phase": "M4",
       "sections": "34.4,39–40; 13–16,22,25–30",
-      "requirements": "P05; I03–I05,I08–I12",
+      "requirements": "P05; I03–I05,I08–I12; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Exact registry, decimals/program checks, extension policy, complete tested paths.",
@@ -4084,7 +4107,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O07", "T029", "T080"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Each added payment asset."
@@ -4098,7 +4121,7 @@
       "role": "AG01/AG08/AG09 / AG08 / AG09",
       "phase": "M5 beta",
       "sections": "34.4,39–40; 30–35,38–40",
-      "requirements": "R01–R13; I01–I12",
+      "requirements": "R01–R13; I01–I12; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Supported jurisdictions/users, rights, fees, dispute operator and service scope.",
@@ -4112,7 +4135,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O08", "O11", "O12", "T040"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Public paid launch/work operations."
@@ -4126,7 +4149,7 @@
       "role": "AG05/AG03 / AG08 / AG09",
       "phase": "M6",
       "sections": "34.4,39–40; 09–10,13,25–30",
-      "requirements": "R11; I06,I07,I09–I11",
+      "requirements": "R11; I06,I07,I09–I11; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Real authorization, effective provider grants, isolation, revocation and incident handling.",
@@ -4140,7 +4163,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O13", "T053", "T054", "T055", "T081"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Confidential Raids and private trials."
@@ -4154,7 +4177,7 @@
       "role": "AG06/AG03/AG05 / AG08 / AG09",
       "phase": "M7",
       "sections": "34.4,39–40; 07–08,13–14,19,24–30",
-      "requirements": "P01,P08; R06,R13; I01–I12",
+      "requirements": "P01,P08; R06,R13; I01–I12; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Operator identity, sandbox, tool authority, spend controls, provider data policy.",
@@ -4168,7 +4191,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O14", "T061", "T062", "T063", "T064", "T065", "T066", "T084"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Managed AI workers."
@@ -4182,7 +4205,7 @@
       "role": "AG07/AG06 / AG08 / AG09",
       "phase": "M8",
       "sections": "34.4,39–40; 20,27–31",
-      "requirements": "P01; I05,I06,I09–I11",
+      "requirements": "P01; I05,I06,I09–I11; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Account control, current API capability, content approval, retry/takedown/metrics rules.",
@@ -4196,7 +4219,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O16", "T070", "T071", "T085"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Automated influencer posting."
@@ -4210,7 +4233,7 @@
       "role": "AG07/AG04 / AG08 / AG09",
       "phase": "M6/M8",
       "sections": "34.4,39–40; 18,22,26–31",
-      "requirements": "R09; D10; I03–I05,I10",
+      "requirements": "R09; D10; I03–I05,I10; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Funded inventory/bids, charge/delivery/refund reconciliation.",
@@ -4224,7 +4247,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O08", "T060"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Paid placements and auctions."
@@ -4238,7 +4261,7 @@
       "role": "AG09/AG03 / AG08 / AG09",
       "phase": "M0–M5",
       "sections": "34.4,39–40; 24,27–32,39–40",
-      "requirements": "D01,D12; I05,I06,I09–I12",
+      "requirements": "D01,D12; I05,I06,I09–I12; R15,R16,I13",
       "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
       "steps": [
         "Collect the canonical gate evidence: Monitoring, staffed case ownership, backups/restore, release/incident playbooks.",
@@ -4252,7 +4275,7 @@
         "Unpassed dependent feature remains disabled."
       ],
       "dependencies": ["O18", "O19", "T005", "T037", "T038", "T039", "T040", "T046", "T087"],
-      "acs": "",
+      "acs": "AC73,AC74,AC75",
       "priority": "P0",
       "estimate": 2,
       "affected_features": "Any supported live release."

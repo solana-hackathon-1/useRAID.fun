@@ -2,7 +2,7 @@
 
 [Organization Project](https://github.com/orgs/solana-hackathon-1/projects/1) · [Repository Projects](https://github.com/solana-hackathon-1/useRAID.fun/projects) · [Board field/workflow guide](raid-project-guide.md) · [Weekly sprint plan](raid-sprint-plan.md) · [Every blueprint subsection](raid-blueprint-project-map.md) · [UAT scripts](raid-uat-plan.md)
 
-The backlog has **165 linked issues: 23 epics, 97 development/independent verification tasks, 16 UAT journeys, 19 unresolved owner decisions and 10 feature-specific release gates**. Every item has a human-readable outcome and developer instructions in its GitHub body. All 72 acceptance scenarios are assigned; no scenario is marked passed by planning it.
+The backlog has **165 linked issues: 23 epics, 97 development/independent verification tasks, 16 UAT journeys, 19 unresolved owner decisions and 10 feature-specific release gates**. Every item has a human-readable outcome and developer instructions in its GitHub body. All 75 acceptance scenarios are assigned; no scenario is marked passed by planning it.
 
 ## Epics
 

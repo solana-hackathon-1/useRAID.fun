@@ -7,966 +7,644 @@
   "repository_link_status": "LINKED",
   "fields": {
     "Title": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWJw",
       "name": "Title"
     },
     "Assignees": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWJ0",
       "name": "Assignees"
     },
     "Status": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWJ4",
       "name": "Status",
       "options": [
         {
           "id": "8dd84bcc",
-          "name": "Backlog",
-          "color": "GRAY",
-          "description": "Planned; not yet selected as ready"
+          "name": "Backlog"
         },
         {
           "id": "cbd35dd5",
-          "name": "Ready",
-          "color": "BLUE",
-          "description": "Prerequisites met and bounded scope can start"
+          "name": "Ready"
         },
         {
           "id": "54b8f1dd",
-          "name": "Needs decision",
-          "color": "ORANGE",
-          "description": "Owner policy/provider choice required"
+          "name": "Needs decision"
         },
         {
           "id": "e7f4c76b",
-          "name": "Blocked",
-          "color": "RED",
-          "description": "Unfinished hard dependency or live gate"
+          "name": "Blocked"
         },
         {
           "id": "1175e14d",
-          "name": "In Progress",
-          "color": "YELLOW",
-          "description": "Actively being implemented or tested"
+          "name": "In Progress"
         },
         {
           "id": "ac2f47d7",
-          "name": "In Review",
-          "color": "PURPLE",
-          "description": "Awaiting meaningful review or acceptance evidence"
+          "name": "In Review"
         },
         {
           "id": "2f647a80",
-          "name": "Done",
-          "color": "GREEN",
-          "description": "Outcome verified and handoff recorded"
+          "name": "Done"
         }
       ]
     },
     "Labels": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWJ8",
       "name": "Labels"
     },
     "Linked pull requests": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKA",
       "name": "Linked pull requests"
     },
     "Milestone": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKE",
       "name": "Milestone"
     },
     "Repository": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKI",
       "name": "Repository"
     },
     "Reviewers": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKQ",
       "name": "Reviewers"
     },
     "Parent issue": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKU",
       "name": "Parent issue"
     },
     "Sub-issues progress": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKY",
       "name": "Sub-issues progress"
     },
     "Created": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKc",
       "name": "Created"
     },
     "Updated": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKg",
       "name": "Updated"
     },
     "Closed": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWKk",
       "name": "Closed"
     },
     "Sprint": {
-      "__typename": "ProjectV2IterationField",
       "id": "PVTIF_lADOFC4ies4Bl6XMzhklWlE",
-      "name": "Sprint",
-      "configuration": {
-        "iterations": [
-          {
-            "id": "3955c6dd",
-            "title": "S01 — Contract and canonical identity foundation",
-            "startDate": "2026-10-07",
-            "duration": 7
-          },
-          {
-            "id": "0ab9bec9",
-            "title": "S02 — Verified Guilds, skills and public discovery",
-            "startDate": "2026-10-14",
-            "duration": 7
-          },
-          {
-            "id": "c745c4f5",
-            "title": "S03 — Work terms, creation and atomic acceptance",
-            "startDate": "2026-10-21",
-            "duration": 7
-          },
-          {
-            "id": "685dbc81",
-            "title": "S04 — Submission, review and synthetic work completion",
-            "startDate": "2026-10-28",
-            "duration": 7
-          },
-          {
-            "id": "38b0a488",
-            "title": "S05 — Verified launch and protected funding",
-            "startDate": "2026-11-04",
-            "duration": 7
-          },
-          {
-            "id": "7490008e",
-            "title": "S06 — Claims, disputes and financial recovery",
-            "startDate": "2026-11-11",
-            "duration": 7
-          },
-          {
-            "id": "7a38e55e",
-            "title": "S07 — Internal alpha: core journeys and usability",
-            "startDate": "2026-11-18",
-            "duration": 7
-          },
-          {
-            "id": "3211f0f2",
-            "title": "S08 — Internal alpha: recovery and exit review",
-            "startDate": "2026-11-25",
-            "duration": 7
-          },
-          {
-            "id": "ee7877ca",
-            "title": "S09 — Closed beta: invited cohort and feedback",
-            "startDate": "2026-12-02",
-            "duration": 7
-          },
-          {
-            "id": "261b9edc",
-            "title": "S10 — Closed beta: stabilization and V1 gate",
-            "startDate": "2026-12-09",
-            "duration": 7
-          },
-          {
-            "id": "4c888a69",
-            "title": "S11 — Public beta and scoped private work",
-            "startDate": "2026-12-16",
-            "duration": 7
-          },
-          {
-            "id": "3188d7de",
-            "title": "S12 — Parties, paid selection and fixed sponsorship",
-            "startDate": "2026-12-23",
-            "duration": 7
-          },
-          {
-            "id": "3830f0c2",
-            "title": "S13 — Managed AI: identity, capacity and isolation",
-            "startDate": "2026-12-30",
-            "duration": 7
-          },
-          {
-            "id": "f204ca0a",
-            "title": "S14 — Managed AI: capped task, cancellation and pilot",
-            "startDate": "2027-01-06",
-            "duration": 7
-          },
-          {
-            "id": "6a2c1740",
-            "title": "S15 — Advanced economy: prize and bid modules",
-            "startDate": "2027-01-13",
-            "duration": 7
-          },
-          {
-            "id": "2de9c6a9",
-            "title": "S16 — Approved channels, Roles and beta exit",
-            "startDate": "2027-01-20",
-            "duration": 7
-          }
-        ],
-        "completedIterations": []
-      }
+      "name": "Sprint"
     },
     "Kind": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWmA",
       "name": "Kind",
       "options": [
         {
           "id": "daa4560b",
-          "name": "Epic",
-          "color": "BLUE",
-          "description": "Epic delivery item"
+          "name": "Epic"
         },
         {
           "id": "b10aee4f",
-          "name": "Task",
-          "color": "BLUE",
-          "description": "Task delivery item"
+          "name": "Task"
         },
         {
           "id": "7e8f099d",
-          "name": "Verification",
-          "color": "BLUE",
-          "description": "Verification delivery item"
+          "name": "Verification"
         },
         {
           "id": "a61b2e67",
-          "name": "UAT",
-          "color": "BLUE",
-          "description": "UAT delivery item"
+          "name": "UAT"
         },
         {
           "id": "8337b4c5",
-          "name": "Decision",
-          "color": "BLUE",
-          "description": "Decision delivery item"
+          "name": "Decision"
         },
         {
           "id": "0a863d6e",
-          "name": "Release gate",
-          "color": "BLUE",
-          "description": "Release gate delivery item"
+          "name": "Release gate"
         }
       ]
     },
     "Epic": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWnU",
       "name": "Epic",
       "options": [
         {
           "id": "928fc6cb",
-          "name": "E01 — Shared contracts and engineering foundation",
-          "color": "PURPLE",
-          "description": "Give every developer one reliable set of IDs, types, state transitions and implementation evidence."
+          "name": "E01 — Shared contracts and engineering foundation"
         },
         {
           "id": "40d73e6b",
-          "name": "E02 — Canonical identity and secure onboarding",
-          "color": "PURPLE",
-          "description": "Keep one work identity and history when a person changes wallets or login methods."
+          "name": "E02 — Canonical identity and secure onboarding"
         },
         {
           "id": "cb04bdf9",
-          "name": "E03 — Guilds, founder authority and holder membership",
-          "color": "PURPLE",
-          "description": "Let verified projects manage work while keeping holder membership separate from ownership and permissions."
+          "name": "E03 — Guilds, founder authority and holder membership"
         },
         {
           "id": "f2735584",
-          "name": "E04 — Skill evidence, assessment and fair admission",
-          "color": "PURPLE",
-          "description": "Help beginners find starter work and experienced builders demonstrate the relevant ability without buying a rank."
+          "name": "E04 — Skill evidence, assessment and fair admission"
         },
         {
           "id": "99f07e1d",
-          "name": "E05 — Raid creation, terms and recommendations",
-          "color": "PURPLE",
-          "description": "Give founders a clear task contract and useful bounded difficulty/reward guidance."
+          "name": "E05 — Raid creation, terms and recommendations"
         },
         {
           "id": "c462d393",
-          "name": "E06 — One active engagement and reliable commands",
-          "color": "PURPLE",
-          "description": "Make double acceptance impossible at the database boundary across every admission path."
+          "name": "E06 — One active engagement and reliable commands"
         },
         {
           "id": "210560dc",
-          "name": "E07 — Deliverables, review, closure and workspaces",
-          "color": "PURPLE",
-          "description": "Let contributors deliver versioned proof and get bounded review without losing unpaid claims."
+          "name": "E07 — Deliverables, review, closure and workspaces"
         },
         {
           "id": "ce22dae4",
-          "name": "E08 — Selected token launch and verified Guild linkage",
-          "color": "PURPLE",
-          "description": "Create and independently verify one supported launch instead of treating a returned signature as success."
+          "name": "E08 — Selected token launch and verified Guild linkage"
         },
         {
           "id": "ff096c8b",
-          "name": "E09 — Exact assets, funding, escrow and settlement",
-          "color": "PURPLE",
-          "description": "Protect the exact reward promised to every contributor and pay each immutable claim once."
+          "name": "E09 — Exact assets, funding, escrow and settlement"
         },
         {
           "id": "1fe8a8f3",
-          "name": "E10 — Disputes, finality, appeals and beneficiary recovery",
-          "color": "PURPLE",
-          "description": "Resolve contested work through explicit authority and preserve claims while duties close."
+          "name": "E10 — Disputes, finality, appeals and beneficiary recovery"
         },
         {
           "id": "db3def86",
-          "name": "E11 — Configuration, durability and supported operations",
-          "color": "PURPLE",
-          "description": "Make the web/worker system observable, recoverable and supportable without losing acknowledged obligations."
+          "name": "E11 — Configuration, durability and supported operations"
         },
         {
           "id": "e8930593",
-          "name": "E12 — Internal alpha and core acceptance evidence",
-          "color": "PURPLE",
-          "description": "Prove the integrated core internally before inviting outside testers."
+          "name": "E12 — Internal alpha and core acceptance evidence"
         },
         {
           "id": "cf9ef70e",
-          "name": "E13 — Closed beta and controlled V1 release",
-          "color": "PURPLE",
-          "description": "Validate real founder/Raider behavior in a small supported cohort before public beta."
+          "name": "E13 — Closed beta and controlled V1 release"
         },
         {
           "id": "ee9e8ec3",
-          "name": "E14 — Public discovery, notifications, metrics and beta",
-          "color": "PURPLE",
-          "description": "Help people discover appropriate work and see truthful progress without leaking private material."
+          "name": "E14 — Public discovery, notifications, metrics and beta"
         },
         {
           "id": "1dc4ddd1",
-          "name": "E15 — Private briefs, repositories and explicit access",
-          "color": "PURPLE",
-          "description": "Give only approved people scoped resources and verify effective removal without deleting unrelated rights."
+          "name": "E15 — Private briefs, repositories and explicit access"
         },
         {
           "id": "71194208",
-          "name": "E16 — Parties, consent and exact team rewards",
-          "color": "PURPLE",
-          "description": "Let a real consenting team deliver one assignment with individually protected capacity and payouts."
+          "name": "E16 — Parties, consent and exact team rewards"
         },
         {
           "id": "b1d1f9bc",
-          "name": "E17 — Selection Challenges and prize competitions",
-          "color": "PURPLE",
-          "description": "Pay promised selection work, choose a builder fairly, and offer main work through a separate funded agreement."
+          "name": "E17 — Selection Challenges and prize competitions"
         },
         {
           "id": "df11978b",
-          "name": "E18 — Sponsored placement and funded auctions",
-          "color": "PURPLE",
-          "description": "Sell visibly labeled inventory and reconcile delivery, charge and refund without buying credibility."
+          "name": "E18 — Sponsored placement and funded auctions"
         },
         {
           "id": "4e81b3e8",
-          "name": "E19 — Accountable managed AI workers",
-          "color": "PURPLE",
-          "description": "Run evaluated AI work under real identity, permission, capacity and total-spend limits."
+          "name": "E19 — Accountable managed AI workers"
         },
         {
           "id": "66efc904",
-          "name": "E20 — Approved influencer channels and attribution",
-          "color": "PURPLE",
-          "description": "Separate content creation from approved publication and verify honest delivered evidence."
+          "name": "E20 — Approved influencer channels and attribution"
         },
         {
           "id": "bd8c8849",
-          "name": "E21 — Versioned reputation and advanced Guild economy",
-          "color": "PURPLE",
-          "description": "Build attributable fair reputation and consented funded Roles; keep unapproved token policy disabled."
+          "name": "E21 — Versioned reputation and advanced Guild economy"
         },
         {
           "id": "bea6840f",
-          "name": "E22 — User acceptance testing and business sign-off",
-          "color": "PURPLE",
-          "description": "Confirm that real users understand and can complete the promised workflow, separately from developers proving technical correctness."
+          "name": "E22 — User acceptance testing and business sign-off"
         },
         {
           "id": "0dc1a37f",
-          "name": "E23 — Master RAID blueprint and complete delivery coverage",
-          "color": "PURPLE",
-          "description": "Keep the entire canonical RAID blueprint visible on the board, with every domain/subsection traced to concrete developer work and the evidence needed for delivery."
+          "name": "E23 — Master RAID blueprint and complete delivery coverage"
         }
       ]
     },
     "Priority": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWnw",
       "name": "Priority",
       "options": [
         {
           "id": "6ca63f48",
-          "name": "P0",
-          "color": "RED",
-          "description": "Core invariant or release blocker"
+          "name": "P0"
         },
         {
           "id": "9ff556d0",
-          "name": "P1",
-          "color": "ORANGE",
-          "description": "Primary delivery scope"
+          "name": "P1"
         },
         {
           "id": "131166e2",
-          "name": "P2",
-          "color": "GRAY",
-          "description": "Conditional later scope"
+          "name": "P2"
         }
       ]
     },
     "Phase": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWn0",
       "name": "Phase"
     },
     "Owner role": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWn4",
       "name": "Owner role"
     },
     "Estimate": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWn8",
       "name": "Estimate"
     },
     "Start date": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWo4",
       "name": "Start date"
     },
     "Target date": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWo8",
       "name": "Target date"
     },
     "Dependencies": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWqw",
       "name": "Dependencies"
     },
     "Blueprint": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWq0",
       "name": "Blueprint"
     },
     "Requirement IDs": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWso",
       "name": "Requirement IDs"
     },
     "UAT owner": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWuc",
       "name": "UAT owner"
     },
     "Evidence": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWvY",
       "name": "Evidence"
     },
     "Release gates": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklWvc",
       "name": "Release gates"
     },
     "Stage": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWwY",
       "name": "Stage",
       "options": [
         {
           "id": "e7014fad",
-          "name": "Foundation",
-          "color": "BLUE",
-          "description": "Foundation stage; dates do not imply enablement"
+          "name": "Foundation"
         },
         {
           "id": "a6ba17bf",
-          "name": "Core build",
-          "color": "BLUE",
-          "description": "Core build stage; dates do not imply enablement"
+          "name": "Core build"
         },
         {
           "id": "b9b56475",
-          "name": "Internal alpha",
-          "color": "BLUE",
-          "description": "Internal alpha stage; dates do not imply enablement"
+          "name": "Internal alpha"
         },
         {
           "id": "63f8b20b",
-          "name": "Closed beta",
-          "color": "BLUE",
-          "description": "Closed beta stage; dates do not imply enablement"
+          "name": "Closed beta"
         },
         {
           "id": "4d0f6652",
-          "name": "Public beta",
-          "color": "BLUE",
-          "description": "Public beta stage; dates do not imply enablement"
+          "name": "Public beta"
         },
         {
           "id": "4a3f9ed8",
-          "name": "AI pilot",
-          "color": "BLUE",
-          "description": "AI pilot stage; dates do not imply enablement"
+          "name": "AI pilot"
         },
         {
           "id": "eba23b06",
-          "name": "Advanced modules",
-          "color": "BLUE",
-          "description": "Advanced modules stage; dates do not imply enablement"
+          "name": "Advanced modules"
         },
         {
           "id": "11f8beae",
-          "name": "Conditional backlog",
-          "color": "BLUE",
-          "description": "Conditional backlog stage; dates do not imply enablement"
+          "name": "Conditional backlog"
         },
         {
           "id": "11c3a75d",
-          "name": "Spanning epic",
-          "color": "BLUE",
-          "description": "Spanning epic stage; dates do not imply enablement"
+          "name": "Spanning epic"
         },
         {
           "id": "49be638a",
-          "name": "UAT",
-          "color": "BLUE",
-          "description": "UAT stage; dates do not imply enablement"
+          "name": "UAT"
         }
       ]
     },
     "UAT status": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWwc",
       "name": "UAT status",
       "options": [
         {
           "id": "42ae1ab5",
-          "name": "Not required",
-          "color": "BLUE",
-          "description": "Not required; recorded evidence is required for Passed"
+          "name": "Not required"
         },
         {
           "id": "1e783d77",
-          "name": "Not started",
-          "color": "BLUE",
-          "description": "Not started; recorded evidence is required for Passed"
+          "name": "Not started"
         },
         {
           "id": "51941199",
-          "name": "Ready for UAT",
-          "color": "BLUE",
-          "description": "Ready for UAT; recorded evidence is required for Passed"
+          "name": "Ready for UAT"
         },
         {
           "id": "f2311e01",
-          "name": "In UAT",
-          "color": "BLUE",
-          "description": "In UAT; recorded evidence is required for Passed"
+          "name": "In UAT"
         },
         {
           "id": "ad939a2d",
-          "name": "Passed",
-          "color": "BLUE",
-          "description": "Passed; recorded evidence is required for Passed"
+          "name": "Passed"
         },
         {
           "id": "cf7b4588",
-          "name": "Failed",
-          "color": "BLUE",
-          "description": "Failed; recorded evidence is required for Passed"
+          "name": "Failed"
         },
         {
           "id": "67edbfde",
-          "name": "Blocked",
-          "color": "BLUE",
-          "description": "Blocked; recorded evidence is required for Passed"
+          "name": "Blocked"
         },
         {
           "id": "fb9c76d8",
-          "name": "Awaiting sign-off",
-          "color": "BLUE",
-          "description": "Awaiting sign-off; recorded evidence is required for Passed"
+          "name": "Awaiting sign-off"
         }
       ]
     },
     "QA status": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWw0",
       "name": "QA status",
       "options": [
         {
           "id": "ff9b08fd",
-          "name": "Not started",
-          "color": "BLUE",
-          "description": "Not started verification state"
+          "name": "Not started"
         },
         {
           "id": "9396ae37",
-          "name": "In progress",
-          "color": "BLUE",
-          "description": "In progress verification state"
+          "name": "In progress"
         },
         {
           "id": "0d6e7f06",
-          "name": "Passed",
-          "color": "BLUE",
-          "description": "Passed verification state"
+          "name": "Passed"
         },
         {
           "id": "bb4dc274",
-          "name": "Failed",
-          "color": "BLUE",
-          "description": "Failed verification state"
+          "name": "Failed"
         },
         {
           "id": "dafb5b9e",
-          "name": "Blocked",
-          "color": "BLUE",
-          "description": "Blocked verification state"
+          "name": "Blocked"
         }
       ]
     },
     "Environment": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWyI",
       "name": "Environment",
       "options": [
         {
           "id": "d085fedf",
-          "name": "Not selected",
-          "color": "GRAY",
-          "description": "Not selected test/release environment"
+          "name": "Not selected"
         },
         {
           "id": "6593dde0",
-          "name": "Local test",
-          "color": "GRAY",
-          "description": "Local test test/release environment"
+          "name": "Local test"
         },
         {
           "id": "bde46389",
-          "name": "Staging",
-          "color": "GRAY",
-          "description": "Staging test/release environment"
+          "name": "Staging"
         },
         {
           "id": "5ee0d298",
-          "name": "Test network",
-          "color": "GRAY",
-          "description": "Test network test/release environment"
+          "name": "Test network"
         },
         {
           "id": "33699366",
-          "name": "Pilot",
-          "color": "GRAY",
-          "description": "Pilot test/release environment"
+          "name": "Pilot"
         },
         {
           "id": "9ad5be08",
-          "name": "Production",
-          "color": "GRAY",
-          "description": "Production test/release environment"
+          "name": "Production"
         }
       ]
     },
     "Release readiness": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWyM",
       "name": "Release readiness",
       "options": [
         {
           "id": "02807ca8",
-          "name": "Not assessed",
-          "color": "BLUE",
-          "description": "Not assessed; never inferred from code compilation"
+          "name": "Not assessed"
         },
         {
           "id": "7feb18a8",
-          "name": "Blocked",
-          "color": "BLUE",
-          "description": "Blocked; never inferred from code compilation"
+          "name": "Blocked"
         },
         {
           "id": "f9febb56",
-          "name": "Ready for review",
-          "color": "BLUE",
-          "description": "Ready for review; never inferred from code compilation"
+          "name": "Ready for review"
         },
         {
           "id": "5277405c",
-          "name": "Approved",
-          "color": "BLUE",
-          "description": "Approved; never inferred from code compilation"
+          "name": "Approved"
         },
         {
           "id": "e1d0b98c",
-          "name": "Not applicable",
-          "color": "BLUE",
-          "description": "Not applicable; never inferred from code compilation"
+          "name": "Not applicable"
         }
       ]
     },
     "Severity": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWzI",
       "name": "Severity",
       "options": [
         {
           "id": "123e632a",
-          "name": "Not assessed",
-          "color": "GRAY",
-          "description": "Not assessed impact; distinct from task priority"
+          "name": "Not assessed"
         },
         {
           "id": "dc3236bf",
-          "name": "Critical",
-          "color": "RED",
-          "description": "Critical impact; distinct from task priority"
+          "name": "Critical"
         },
         {
           "id": "fd1b0aeb",
-          "name": "High",
-          "color": "RED",
-          "description": "High impact; distinct from task priority"
+          "name": "High"
         },
         {
           "id": "8fa2b84c",
-          "name": "Medium",
-          "color": "GRAY",
-          "description": "Medium impact; distinct from task priority"
+          "name": "Medium"
         },
         {
           "id": "181ed4c6",
-          "name": "Low",
-          "color": "GRAY",
-          "description": "Low impact; distinct from task priority"
+          "name": "Low"
         }
       ]
     },
     "Sprint commitment": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklXm0",
       "name": "Sprint commitment",
       "options": [
         {
           "id": "9223574b",
-          "name": "Forecast",
-          "color": "GRAY",
-          "description": "Forecast; forecasts require refinement at planning"
+          "name": "Forecast"
         },
         {
           "id": "7b2a0ee5",
-          "name": "Committed",
-          "color": "GRAY",
-          "description": "Committed; forecasts require refinement at planning"
+          "name": "Committed"
         },
         {
           "id": "8935f0f5",
-          "name": "Stretch",
-          "color": "GRAY",
-          "description": "Stretch; forecasts require refinement at planning"
+          "name": "Stretch"
         },
         {
           "id": "16d72340",
-          "name": "Conditional backlog",
-          "color": "GRAY",
-          "description": "Conditional backlog; forecasts require refinement at planning"
+          "name": "Conditional backlog"
         }
       ]
     },
     "Target release": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklXoo",
       "name": "Target release",
       "options": [
         {
           "id": "f8937cdb",
-          "name": "Foundation",
-          "color": "BLUE",
-          "description": "Foundation target, not enablement evidence"
+          "name": "Foundation"
         },
         {
           "id": "959745e4",
-          "name": "Prototype",
-          "color": "BLUE",
-          "description": "Prototype target, not enablement evidence"
+          "name": "Prototype"
         },
         {
           "id": "72e07b6c",
-          "name": "Alpha",
-          "color": "BLUE",
-          "description": "Alpha target, not enablement evidence"
+          "name": "Alpha"
         },
         {
           "id": "e3ac5af6",
-          "name": "Closed beta",
-          "color": "BLUE",
-          "description": "Closed beta target, not enablement evidence"
+          "name": "Closed beta"
         },
         {
           "id": "d4676125",
-          "name": "Public beta / V1",
-          "color": "BLUE",
-          "description": "Public beta / V1 target, not enablement evidence"
+          "name": "Public beta / V1"
         },
         {
           "id": "be049d6b",
-          "name": "V1.5",
-          "color": "BLUE",
-          "description": "V1.5 target, not enablement evidence"
+          "name": "V1.5"
         },
         {
           "id": "146fae7e",
-          "name": "Managed AI pilot",
-          "color": "BLUE",
-          "description": "Managed AI pilot target, not enablement evidence"
+          "name": "Managed AI pilot"
         },
         {
           "id": "9481c669",
-          "name": "Selected V2",
-          "color": "BLUE",
-          "description": "Selected V2 target, not enablement evidence"
+          "name": "Selected V2"
         },
         {
           "id": "fb244d77",
-          "name": "Conditional later",
-          "color": "BLUE",
-          "description": "Conditional later target, not enablement evidence"
+          "name": "Conditional later"
         }
       ]
     },
     "Actual start": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklXos",
       "name": "Actual start"
     },
     "Actual finish": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklXpo",
       "name": "Actual finish"
     },
     "Blocked reason": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklXps",
       "name": "Blocked reason"
     },
     "Workstream": {
-      "__typename": "ProjectV2SingleSelectField",
       "id": "PVTSSF_lADOFC4ies4Bl6XMzhklXpw",
       "name": "Workstream",
       "options": [
         {
           "id": "a9013c80",
-          "name": "Product and architecture",
-          "color": "BLUE",
-          "description": "Product and architecture responsibility"
+          "name": "Product and architecture"
         },
         {
           "id": "7fea695d",
-          "name": "Identity and trust",
-          "color": "BLUE",
-          "description": "Identity and trust responsibility"
+          "name": "Identity and trust"
         },
         {
           "id": "b1004609",
-          "name": "Guilds",
-          "color": "BLUE",
-          "description": "Guilds responsibility"
+          "name": "Guilds"
         },
         {
           "id": "4026eb95",
-          "name": "Frontend and work",
-          "color": "BLUE",
-          "description": "Frontend and work responsibility"
+          "name": "Frontend and work"
         },
         {
           "id": "ca34601d",
-          "name": "Backend and capacity",
-          "color": "BLUE",
-          "description": "Backend and capacity responsibility"
+          "name": "Backend and capacity"
         },
         {
           "id": "50b04b5e",
-          "name": "Solana and finance",
-          "color": "BLUE",
-          "description": "Solana and finance responsibility"
+          "name": "Solana and finance"
         },
         {
           "id": "80033cc8",
-          "name": "Quality and UAT",
-          "color": "BLUE",
-          "description": "Quality and UAT responsibility"
+          "name": "Quality and UAT"
         },
         {
           "id": "0f3fc974",
-          "name": "Operations and release",
-          "color": "BLUE",
-          "description": "Operations and release responsibility"
+          "name": "Operations and release"
         },
         {
           "id": "8ca07ab1",
-          "name": "Private access",
-          "color": "BLUE",
-          "description": "Private access responsibility"
+          "name": "Private access"
         },
         {
           "id": "475b704a",
-          "name": "Parties and Challenges",
-          "color": "BLUE",
-          "description": "Parties and Challenges responsibility"
+          "name": "Parties and Challenges"
         },
         {
           "id": "f1a5552f",
-          "name": "Discovery and promotions",
-          "color": "BLUE",
-          "description": "Discovery and promotions responsibility"
+          "name": "Discovery and promotions"
         },
         {
           "id": "d43374ef",
-          "name": "AI runtime",
-          "color": "BLUE",
-          "description": "AI runtime responsibility"
+          "name": "AI runtime"
         },
         {
           "id": "59af12c8",
-          "name": "Channels and attribution",
-          "color": "BLUE",
-          "description": "Channels and attribution responsibility"
+          "name": "Channels and attribution"
         },
         {
           "id": "f6c7f8f7",
-          "name": "Advanced economy",
-          "color": "BLUE",
-          "description": "Advanced economy responsibility"
+          "name": "Advanced economy"
         }
       ]
     },
     "Acceptance scenarios": {
-      "__typename": "ProjectV2Field",
       "id": "PVTF_lADOFC4ies4Bl6XMzhklcC4",
       "name": "Acceptance scenarios"
+    },
+    "Criteria coverage": {
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklmoc",
+      "name": "Criteria coverage"
+    },
+    "Completion review": {
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklmog",
+      "name": "Completion review",
+      "options": [
+        {
+          "id": "f6715e66",
+          "name": "Not reviewed"
+        },
+        {
+          "id": "3403eae1",
+          "name": "Needs changes"
+        },
+        {
+          "id": "c066898d",
+          "name": "Accepted"
+        },
+        {
+          "id": "c56e39b0",
+          "name": "Blocked"
+        }
+      ]
+    },
+    "Task contract": {
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklmrI",
+      "name": "Task contract"
     }
   },
   "items": {

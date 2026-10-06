@@ -1,6 +1,6 @@
 {
   "section_count": 42,
-  "subsection_count": 216,
+  "subsection_count": 219,
   "mapping": [
     {
       "section": "00",
@@ -90,6 +90,12 @@
       "section": "02.4",
       "title": "Non-negotiable engineering invariants",
       "anchor": "024-non-negotiable-engineering-invariants",
+      "items": ["E23", "T096"]
+    },
+    {
+      "section": "02.5",
+      "title": "Accepted owner changes — 6 October 2026",
+      "anchor": "025-accepted-owner-changes--6-october-2026",
       "items": ["E23", "T096"]
     },
     {
@@ -1126,6 +1132,18 @@
       "section": "24.5",
       "title": "Suggested repository boundaries",
       "anchor": "245-suggested-repository-boundaries",
+      "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
+    },
+    {
+      "section": "24.6",
+      "title": "Replaceable integration contract",
+      "anchor": "246-replaceable-integration-contract",
+      "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
+    },
+    {
+      "section": "24.7",
+      "title": "Reusable module and documentation contract",
+      "anchor": "247-reusable-module-and-documentation-contract",
       "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
     },
     {

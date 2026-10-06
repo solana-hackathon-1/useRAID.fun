@@ -10,6 +10,12 @@ Preserve LOCKED requirements. Apply DEFAULT choices unless a recorded decision r
 
 Use section 39 for completion and section 40 for task/handoff/decision records. Report actual verification and remaining gaps. When the owner changes a requirement, update the canonical blueprint's decision register and affected contracts/tests together. Agent-folder blueprint files are links to the canonical source; do not create divergent copies.
 
+Every delivered internal feature (including auth) and external integration must satisfy R15/R16: stable replaceable contracts, explicit host dependencies, same-change documentation and a verified consuming example. Read [module reuse contracts](docs/raid-module-reuse.md).
+
+Implementation changes require test-driven development: write a meaningful failing behavior test first, implement to green, then refactor with regression checks. Record genuine RED/GREEN/REFACTOR evidence in the task; do not weaken tests to bypass a contract.
+
+Before claiming a project task complete, use its numbered criteria in [raid-agent-task-contracts.md](docs/raid-agent-task-contracts.md) and [planning/raid-task-contracts.json](planning/raid-task-contracts.json). Supply actual evidence and independent review for every applicable criterion; report missing evidence as unverified. Run the completion packet validator described in that guide. The canonical blueprint and active instructions retain precedence.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

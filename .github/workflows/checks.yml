@@ -1,6 +1,16 @@
 name: Checks
 on: [push, pull_request]
 jobs:
+  planning-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify requirement and completion contracts
+        run: python3 -m unittest discover -s tests -p 'test_raid_*.py'
+
   static:
     runs-on: ubuntu-latest
     steps:
