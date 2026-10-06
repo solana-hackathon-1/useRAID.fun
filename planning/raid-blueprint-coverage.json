@@ -1,0 +1,2015 @@
+{
+  "section_count": 42,
+  "subsection_count": 216,
+  "mapping": [
+    {
+      "section": "00",
+      "title": "Agent entry point",
+      "anchor": "00-agent-entry-point",
+      "items": ["T001", "T002", "T096"]
+    },
+    {
+      "section": "00.1",
+      "title": "What this file is for",
+      "anchor": "001-what-this-file-is-for",
+      "items": ["T001", "T002", "T096"]
+    },
+    {
+      "section": "00.2",
+      "title": "First actions for every development agent",
+      "anchor": "002-first-actions-for-every-development-agent",
+      "items": ["T001", "T002", "T096"]
+    },
+    {
+      "section": "00.3",
+      "title": "If your context window is small",
+      "anchor": "003-if-your-context-window-is-small",
+      "items": ["T001", "T002", "T096"]
+    },
+    {
+      "section": "00.4",
+      "title": "How to make decisions",
+      "anchor": "004-how-to-make-decisions",
+      "items": ["T001", "T002", "T096"]
+    },
+    {
+      "section": "00.5",
+      "title": "Ten implementation rules to remember",
+      "anchor": "005-ten-implementation-rules-to-remember",
+      "items": ["T001", "T002", "T096"]
+    },
+    {
+      "section": "01",
+      "title": "Evidence and authority",
+      "anchor": "01-evidence-and-authority",
+      "items": ["T001", "T096"]
+    },
+    {
+      "section": "01.1",
+      "title": "What was actually available",
+      "anchor": "011-what-was-actually-available",
+      "items": ["T001", "T096"]
+    },
+    {
+      "section": "01.2",
+      "title": "Product evidence register",
+      "anchor": "012-product-evidence-register",
+      "items": ["T001", "T096"]
+    },
+    {
+      "section": "01.3",
+      "title": "Corrections to earlier suggestions",
+      "anchor": "013-corrections-to-earlier-suggestions",
+      "items": ["T001", "T096"]
+    },
+    {
+      "section": "02",
+      "title": "Decision register",
+      "anchor": "02-decision-register",
+      "items": ["E23", "T096"]
+    },
+    {
+      "section": "02.1",
+      "title": "Locked product requirements",
+      "anchor": "021-locked-product-requirements",
+      "items": ["E23", "T096"]
+    },
+    {
+      "section": "02.2",
+      "title": "Carried-forward product direction",
+      "anchor": "022-carried-forward-product-direction",
+      "items": ["E23", "T096"]
+    },
+    {
+      "section": "02.3",
+      "title": "Defaults adopted for the initial engineering specification",
+      "anchor": "023-defaults-adopted-for-the-initial-engineering-specification",
+      "items": ["E23", "T096"]
+    },
+    {
+      "section": "02.4",
+      "title": "Non-negotiable engineering invariants",
+      "anchor": "024-non-negotiable-engineering-invariants",
+      "items": ["E23", "T096"]
+    },
+    {
+      "section": "03",
+      "title": "Vocabulary",
+      "anchor": "03-vocabulary",
+      "items": ["T002"]
+    },
+    {
+      "section": "04",
+      "title": "Product map",
+      "anchor": "04-product-map",
+      "items": ["T044", "T049", "T087"]
+    },
+    {
+      "section": "04.1",
+      "title": "Core promise",
+      "anchor": "041-core-promise",
+      "items": ["T044", "T049", "T087"]
+    },
+    {
+      "section": "04.2",
+      "title": "End-to-end loop",
+      "anchor": "042-end-to-end-loop",
+      "items": ["T044", "T049", "T087"]
+    },
+    {
+      "section": "04.3",
+      "title": "Separate dimensions in the model",
+      "anchor": "043-separate-dimensions-in-the-model",
+      "items": ["T044", "T049", "T087"]
+    },
+    {
+      "section": "04.4",
+      "title": "What the first useful product must prove",
+      "anchor": "044-what-the-first-useful-product-must-prove",
+      "items": ["T044", "T049", "T087"]
+    },
+    {
+      "section": "05",
+      "title": "Launchpad",
+      "anchor": "05-launchpad",
+      "items": ["T010", "T026", "T027", "T028", "G01", "O01", "O02"]
+    },
+    {
+      "section": "05.1",
+      "title": "Scope",
+      "anchor": "051-scope",
+      "items": ["T010", "T026", "T027", "T028", "G01", "O01", "O02"]
+    },
+    {
+      "section": "05.2",
+      "title": "Founder launch flow",
+      "anchor": "052-founder-launch-flow",
+      "items": ["T010", "T026", "T027", "T028", "G01", "O01", "O02"]
+    },
+    {
+      "section": "05.3",
+      "title": "Launch state model",
+      "anchor": "053-launch-state-model",
+      "items": ["T010", "T026", "T027", "T028", "G01", "O01", "O02"]
+    },
+    {
+      "section": "05.4",
+      "title": "Launch adapter contract",
+      "anchor": "054-launch-adapter-contract",
+      "items": ["T010", "T026", "T027", "T028", "G01", "O01", "O02"]
+    },
+    {
+      "section": "05.5",
+      "title": "Existing project onboarding",
+      "anchor": "055-existing-project-onboarding",
+      "items": ["T010", "T009"]
+    },
+    {
+      "section": "05.6",
+      "title": "Mainnet release gate",
+      "anchor": "056-mainnet-release-gate",
+      "items": ["G01", "G05"]
+    },
+    {
+      "section": "06",
+      "title": "Guilds and membership",
+      "anchor": "06-guilds-and-membership",
+      "items": ["T009", "T010", "T011"]
+    },
+    {
+      "section": "06.1",
+      "title": "Guild profile",
+      "anchor": "061-guild-profile",
+      "items": ["T009", "T010", "T011"]
+    },
+    {
+      "section": "06.2",
+      "title": "Founder authority",
+      "anchor": "062-founder-authority",
+      "items": ["T009", "T010", "T011"]
+    },
+    {
+      "section": "06.3",
+      "title": "Holder membership",
+      "anchor": "063-holder-membership",
+      "items": ["T011"]
+    },
+    {
+      "section": "06.4",
+      "title": "Membership is separate from work permissions",
+      "anchor": "064-membership-is-separate-from-work-permissions",
+      "items": ["T009", "T010", "T011"]
+    },
+    {
+      "section": "07",
+      "title": "Identity and onboarding",
+      "anchor": "07-identity-and-onboarding",
+      "items": ["T006", "T007", "T008", "T014", "T061", "T090"]
+    },
+    {
+      "section": "07.1",
+      "title": "Account model",
+      "anchor": "071-account-model",
+      "items": ["T006", "T007", "T008", "T014", "T061", "T090"]
+    },
+    {
+      "section": "07.2",
+      "title": "Wallet authentication",
+      "anchor": "072-wallet-authentication",
+      "items": ["T007"]
+    },
+    {
+      "section": "07.3",
+      "title": "New human onboarding",
+      "anchor": "073-new-human-onboarding",
+      "items": ["T006", "T007", "T008", "T014", "T061", "T090"]
+    },
+    {
+      "section": "07.4",
+      "title": "Evidence types",
+      "anchor": "074-evidence-types",
+      "items": ["T090", "T013"]
+    },
+    {
+      "section": "07.5",
+      "title": "Anti-spam and duplicate accounts",
+      "anchor": "075-anti-spam-and-duplicate-accounts",
+      "items": ["T014", "T090"]
+    },
+    {
+      "section": "08",
+      "title": "Skills and ranks",
+      "anchor": "08-skills-and-ranks",
+      "items": ["T012", "T013", "T014", "T061", "T072"]
+    },
+    {
+      "section": "08.1",
+      "title": "Rank ladder",
+      "anchor": "081-rank-ladder",
+      "items": ["T012", "T013", "T014", "T061", "T072"]
+    },
+    {
+      "section": "08.2",
+      "title": "Canonical skill record",
+      "anchor": "082-canonical-skill-record",
+      "items": ["T012", "T013", "T014", "T061", "T072"]
+    },
+    {
+      "section": "08.3",
+      "title": "Trial design",
+      "anchor": "083-trial-design",
+      "items": ["T013"]
+    },
+    {
+      "section": "08.4",
+      "title": "Example skill trials",
+      "anchor": "084-example-skill-trials",
+      "items": ["T012", "T013", "T014", "T061", "T072"]
+    },
+    {
+      "section": "08.5",
+      "title": "Admission by skill",
+      "anchor": "085-admission-by-skill",
+      "items": ["T012", "T013", "T014", "T061", "T072"]
+    },
+    {
+      "section": "08.6",
+      "title": "Progression and reassessment",
+      "anchor": "086-progression-and-reassessment",
+      "items": ["T012", "T013", "T014", "T061", "T072"]
+    },
+    {
+      "section": "09",
+      "title": "Reputation and Guild Trust",
+      "anchor": "09-reputation-and-guild-trust",
+      "items": ["T041", "T072", "T088"]
+    },
+    {
+      "section": "09.1",
+      "title": "Three records, three questions",
+      "anchor": "091-three-records-three-questions",
+      "items": ["T041", "T072", "T088"]
+    },
+    {
+      "section": "09.2",
+      "title": "Display facts before a precise score",
+      "anchor": "092-display-facts-before-a-precise-score",
+      "items": ["T041", "T072", "T088"]
+    },
+    {
+      "section": "09.3",
+      "title": "Metric definitions",
+      "anchor": "093-metric-definitions",
+      "items": ["T041", "T072", "T088"]
+    },
+    {
+      "section": "09.4",
+      "title": "Reputation events",
+      "anchor": "094-reputation-events",
+      "items": ["T041", "T072", "T088"]
+    },
+    {
+      "section": "09.5",
+      "title": "Guild reputation",
+      "anchor": "095-guild-reputation",
+      "items": ["T041", "T072", "T088"]
+    },
+    {
+      "section": "09.6",
+      "title": "Guild Trust",
+      "anchor": "096-guild-trust",
+      "items": ["T041", "T072", "T088"]
+    },
+    {
+      "section": "09.7",
+      "title": "Gaming, fairness, and appeals",
+      "anchor": "097-gaming-fairness-and-appeals",
+      "items": ["T072", "T088"]
+    },
+    {
+      "section": "10",
+      "title": "Visibility and code access",
+      "anchor": "10-visibility-and-code-access",
+      "items": ["T053", "T054", "T055", "T091", "G06"]
+    },
+    {
+      "section": "10.1",
+      "title": "Four visibility choices",
+      "anchor": "101-four-visibility-choices",
+      "items": ["T053", "T054", "T055", "T091", "G06"]
+    },
+    {
+      "section": "10.2",
+      "title": "Confidential admission",
+      "anchor": "102-confidential-admission",
+      "items": ["T053", "T054", "T055", "T091", "G06"]
+    },
+    {
+      "section": "10.3",
+      "title": "Access grant record",
+      "anchor": "103-access-grant-record",
+      "items": ["T053", "T054", "T055", "T091", "G06"]
+    },
+    {
+      "section": "10.4",
+      "title": "GitHub boundaries",
+      "anchor": "104-github-boundaries",
+      "items": ["T054", "G06"]
+    },
+    {
+      "section": "10.5",
+      "title": "Revocation is a workflow",
+      "anchor": "105-revocation-is-a-workflow",
+      "items": ["T055", "T081"]
+    },
+    {
+      "section": "10.6",
+      "title": "Safe code execution and CI",
+      "anchor": "106-safe-code-execution-and-ci",
+      "items": ["T055", "T091", "T063"]
+    },
+    {
+      "section": "11",
+      "title": "Creating and recommending a Raid",
+      "anchor": "11-creating-and-recommending-a-raid",
+      "items": ["T016", "T017", "T018", "T025"]
+    },
+    {
+      "section": "11.1",
+      "title": "Founder creation flow",
+      "anchor": "111-founder-creation-flow",
+      "items": ["T016", "T017", "T018", "T025"]
+    },
+    {
+      "section": "11.2",
+      "title": "Required publication fields",
+      "anchor": "112-required-publication-fields",
+      "items": ["T016", "T017", "T018", "T025"]
+    },
+    {
+      "section": "11.3",
+      "title": "Recommendation engine",
+      "anchor": "113-recommendation-engine",
+      "items": ["T017"]
+    },
+    {
+      "section": "11.4",
+      "title": "Recommendation behavior",
+      "anchor": "114-recommendation-behavior",
+      "items": ["T016", "T017", "T018", "T025"]
+    },
+    {
+      "section": "11.5",
+      "title": "Terms changes",
+      "anchor": "115-terms-changes",
+      "items": ["T025"]
+    },
+    {
+      "section": "12",
+      "title": "Normal Raid lifecycle",
+      "anchor": "12-normal-raid-lifecycle",
+      "items": ["T020", "T021", "T023", "T024", "T025"]
+    },
+    {
+      "section": "12.1",
+      "title": "Work state machine",
+      "anchor": "121-work-state-machine",
+      "items": ["T020", "T021", "T023", "T024", "T025"]
+    },
+    {
+      "section": "12.2",
+      "title": "Canonical states and effects",
+      "anchor": "122-canonical-states-and-effects",
+      "items": ["T020", "T021", "T023", "T024", "T025"]
+    },
+    {
+      "section": "12.3",
+      "title": "Acceptance command",
+      "anchor": "123-acceptance-command",
+      "items": ["T020", "T021", "T023", "T024", "T025"]
+    },
+    {
+      "section": "12.4",
+      "title": "Submission",
+      "anchor": "124-submission",
+      "items": ["T020", "T021", "T023", "T024", "T025"]
+    },
+    {
+      "section": "12.5",
+      "title": "Withdrawal, timeout, and closure",
+      "anchor": "125-withdrawal-timeout-and-closure",
+      "items": ["T020", "T021", "T023", "T024", "T025"]
+    },
+    {
+      "section": "13",
+      "title": "One active Raid",
+      "anchor": "13-one-active-raid",
+      "items": ["T020", "T024", "T032", "T057", "T059", "T062"]
+    },
+    {
+      "section": "13.1",
+      "title": "Exact product rule",
+      "anchor": "131-exact-product-rule",
+      "items": ["T020", "T024", "T032", "T057", "T059", "T062"]
+    },
+    {
+      "section": "13.2",
+      "title": "Database enforcement",
+      "anchor": "132-database-enforcement",
+      "items": ["T020", "T079"]
+    },
+    {
+      "section": "13.3",
+      "title": "Atomic acceptance algorithm",
+      "anchor": "133-atomic-acceptance-algorithm",
+      "items": ["T020", "T021"]
+    },
+    {
+      "section": "13.4",
+      "title": "Required race behavior",
+      "anchor": "134-required-race-behavior",
+      "items": ["T079", "T082", "T084"]
+    },
+    {
+      "section": "13.5",
+      "title": "Closure and stale workers",
+      "anchor": "135-closure-and-stale-workers",
+      "items": ["T024", "T038"]
+    },
+    {
+      "section": "13.6",
+      "title": "AI and operator limits",
+      "anchor": "136-ai-and-operator-limits",
+      "items": ["T062", "T084", "O15"]
+    },
+    {
+      "section": "14",
+      "title": "Parties",
+      "anchor": "14-parties",
+      "items": ["T056", "T057", "T082"]
+    },
+    {
+      "section": "14.1",
+      "title": "Why Parties exist",
+      "anchor": "141-why-parties-exist",
+      "items": ["T056", "T057", "T082"]
+    },
+    {
+      "section": "14.2",
+      "title": "Party record",
+      "anchor": "142-party-record",
+      "items": ["T056", "T057", "T082"]
+    },
+    {
+      "section": "14.3",
+      "title": "Acceptance and reward allocation",
+      "anchor": "143-acceptance-and-reward-allocation",
+      "items": ["T056", "T057", "T033"]
+    },
+    {
+      "section": "14.4",
+      "title": "Skill coverage and evaluation",
+      "anchor": "144-skill-coverage-and-evaluation",
+      "items": ["T056", "T057", "T082"]
+    },
+    {
+      "section": "14.5",
+      "title": "Member changes and conflicts",
+      "anchor": "145-member-changes-and-conflicts",
+      "items": ["T056", "T057", "T082"]
+    },
+    {
+      "section": "15",
+      "title": "Guild Challenges",
+      "anchor": "15-guild-challenges",
+      "items": ["T058", "T059", "T067", "T082", "O10"]
+    },
+    {
+      "section": "15.1",
+      "title": "Two explicit formats",
+      "anchor": "151-two-explicit-formats",
+      "items": ["T058", "T059", "T067", "T082", "O10"]
+    },
+    {
+      "section": "15.2",
+      "title": "Selection Challenge flow",
+      "anchor": "152-selection-challenge-flow",
+      "items": ["T058", "T059", "T067", "T082", "O10"]
+    },
+    {
+      "section": "15.3",
+      "title": "Selection-to-main Raid handoff",
+      "anchor": "153-selection-to-main-raid-handoff",
+      "items": ["T059", "T082"]
+    },
+    {
+      "section": "15.4",
+      "title": "Prize Competition",
+      "anchor": "154-prize-competition",
+      "items": ["T067", "O10"]
+    },
+    {
+      "section": "15.5",
+      "title": "Judging",
+      "anchor": "155-judging",
+      "items": ["T058", "T059", "T067", "T082", "O10"]
+    },
+    {
+      "section": "15.6",
+      "title": "Confidential competitions and rights",
+      "anchor": "156-confidential-competitions-and-rights",
+      "items": ["T054", "T058", "T067"]
+    },
+    {
+      "section": "15.7",
+      "title": "Capacity and reputation",
+      "anchor": "157-capacity-and-reputation",
+      "items": ["T058", "T059", "T067", "T082", "O10"]
+    },
+    {
+      "section": "16",
+      "title": "Rewards and escrow",
+      "anchor": "16-rewards-and-escrow",
+      "items": ["T029", "T030", "T031", "T032", "T033", "T034", "T036", "T080", "T093"]
+    },
+    {
+      "section": "16.1",
+      "title": "Five independent budgets",
+      "anchor": "161-five-independent-budgets",
+      "items": ["T093", "T094"]
+    },
+    {
+      "section": "16.2",
+      "title": "Exact asset identity",
+      "anchor": "162-exact-asset-identity",
+      "items": ["T029"]
+    },
+    {
+      "section": "16.3",
+      "title": "Amount representation",
+      "anchor": "163-amount-representation",
+      "items": ["T029", "T080"]
+    },
+    {
+      "section": "16.4",
+      "title": "Reward bundles and net amounts",
+      "anchor": "164-reward-bundles-and-net-amounts",
+      "items": ["T029", "T030", "T031", "T032", "T033", "T034", "T036", "T080", "T093"]
+    },
+    {
+      "section": "16.5",
+      "title": "Supported asset policy",
+      "anchor": "165-supported-asset-policy",
+      "items": ["T029", "T069", "O07", "G04"]
+    },
+    {
+      "section": "16.6",
+      "title": "Custody and authority decision",
+      "anchor": "166-custody-and-authority-decision",
+      "items": ["T030", "O05", "G02"]
+    },
+    {
+      "section": "16.7",
+      "title": "Agreement and program sketch",
+      "anchor": "167-agreement-and-program-sketch",
+      "items": ["T029", "T030", "T031", "T032", "T033", "T034", "T036", "T080", "T093"]
+    },
+    {
+      "section": "16.8",
+      "title": "Acceptance/refund race",
+      "anchor": "168-acceptancerefund-race",
+      "items": ["T032", "T080"]
+    },
+    {
+      "section": "16.9",
+      "title": "Separate state dimensions",
+      "anchor": "169-separate-state-dimensions",
+      "items": ["T029", "T030", "T031", "T032", "T033", "T034", "T036", "T080", "T093"]
+    },
+    {
+      "section": "16.10",
+      "title": "Conservation rules",
+      "anchor": "1610-conservation-rules",
+      "items": ["T031", "T033", "T080", "T093"]
+    },
+    {
+      "section": "16.11",
+      "title": "Funding verification",
+      "anchor": "1611-funding-verification",
+      "items": ["T031"]
+    },
+    {
+      "section": "16.12",
+      "title": "Retries and partial settlement",
+      "anchor": "1612-retries-and-partial-settlement",
+      "items": ["T033", "T038", "T080"]
+    },
+    {
+      "section": "16.13",
+      "title": "Wallet rotation and payout recovery",
+      "anchor": "1613-wallet-rotation-and-payout-recovery",
+      "items": ["T036"]
+    },
+    {
+      "section": "17",
+      "title": "Reviews and disputes",
+      "anchor": "17-reviews-and-disputes",
+      "items": ["T023", "T024", "T035", "T036", "O06", "G03"]
+    },
+    {
+      "section": "17.1",
+      "title": "Review contract",
+      "anchor": "171-review-contract",
+      "items": ["T023", "T024", "T035", "T036", "O06", "G03"]
+    },
+    {
+      "section": "17.2",
+      "title": "What starts a dispute",
+      "anchor": "172-what-starts-a-dispute",
+      "items": ["T023", "T024", "T035", "T036", "O06", "G03"]
+    },
+    {
+      "section": "17.3",
+      "title": "Resolution outcomes",
+      "anchor": "173-resolution-outcomes",
+      "items": ["T023", "T024", "T035", "T036", "O06", "G03"]
+    },
+    {
+      "section": "17.4",
+      "title": "Appeals and reputation",
+      "anchor": "174-appeals-and-reputation",
+      "items": ["T035", "T088", "G03"]
+    },
+    {
+      "section": "17.5",
+      "title": "Prevent indefinite work locks",
+      "anchor": "175-prevent-indefinite-work-locks",
+      "items": ["T024", "T040"]
+    },
+    {
+      "section": "18",
+      "title": "Feed and sponsored placement",
+      "anchor": "18-feed-and-sponsored-placement",
+      "items": ["T042", "T060", "T068", "T097", "G09"]
+    },
+    {
+      "section": "18.1",
+      "title": "Homepage and discovery",
+      "anchor": "181-homepage-and-discovery",
+      "items": ["T097", "T015"]
+    },
+    {
+      "section": "18.2",
+      "title": "Organic ordering",
+      "anchor": "182-organic-ordering",
+      "items": ["T097"]
+    },
+    {
+      "section": "18.3",
+      "title": "Sponsored inventory",
+      "anchor": "183-sponsored-inventory",
+      "items": ["T060", "G09"]
+    },
+    {
+      "section": "18.4",
+      "title": "Bidding mode",
+      "anchor": "184-bidding-mode",
+      "items": ["T068", "O17"]
+    },
+    {
+      "section": "18.5",
+      "title": "Promotion lifecycle",
+      "anchor": "185-promotion-lifecycle",
+      "items": ["T042", "T060", "T068", "T097", "G09"]
+    },
+    {
+      "section": "18.6",
+      "title": "Notification behavior",
+      "anchor": "186-notification-behavior",
+      "items": ["T042"]
+    },
+    {
+      "section": "19",
+      "title": "AI agents",
+      "anchor": "19-ai-agents",
+      "items": ["T061", "T062", "T063", "T064", "T065", "T066", "T084", "T094", "G07"]
+    },
+    {
+      "section": "19.1",
+      "title": "Product role",
+      "anchor": "191-product-role",
+      "items": ["T061", "T062", "T063", "T064", "T065", "T066", "T084", "T094", "G07"]
+    },
+    {
+      "section": "19.2",
+      "title": "Agent registration",
+      "anchor": "192-agent-registration",
+      "items": ["T061"]
+    },
+    {
+      "section": "19.3",
+      "title": "Rank and routing",
+      "anchor": "193-rank-and-routing",
+      "items": ["T061", "T066"]
+    },
+    {
+      "section": "19.4",
+      "title": "Runtime state machine",
+      "anchor": "194-runtime-state-machine",
+      "items": ["T061", "T062", "T063", "T064", "T065", "T066", "T084", "T094", "G07"]
+    },
+    {
+      "section": "19.5",
+      "title": "Tool authority",
+      "anchor": "195-tool-authority",
+      "items": ["T063"]
+    },
+    {
+      "section": "19.6",
+      "title": "Confidential material and prompt injection",
+      "anchor": "196-confidential-material-and-prompt-injection",
+      "items": ["T063", "T091"]
+    },
+    {
+      "section": "19.7",
+      "title": "Spend control and economics",
+      "anchor": "197-spend-control-and-economics",
+      "items": ["T064", "T094"]
+    },
+    {
+      "section": "19.8",
+      "title": "Verification and failure",
+      "anchor": "198-verification-and-failure",
+      "items": ["T065", "T066"]
+    },
+    {
+      "section": "19.9",
+      "title": "Initial build boundary",
+      "anchor": "199-initial-build-boundary",
+      "items": ["T061", "T062", "T063", "T064", "T065", "T066", "T084", "T094", "G07"]
+    },
+    {
+      "section": "20",
+      "title": "AI influencers",
+      "anchor": "20-ai-influencers",
+      "items": ["T070", "T071", "T085", "T095", "O16", "G08"]
+    },
+    {
+      "section": "20.1",
+      "title": "What this participant is",
+      "anchor": "201-what-this-participant-is",
+      "items": ["T070", "T071", "T085", "T095", "O16", "G08"]
+    },
+    {
+      "section": "20.2",
+      "title": "Credibility and scope",
+      "anchor": "202-credibility-and-scope",
+      "items": ["T070", "T071", "T085", "T095", "O16", "G08"]
+    },
+    {
+      "section": "20.3",
+      "title": "Recommended reward structure",
+      "anchor": "203-recommended-reward-structure",
+      "items": ["T070", "T071", "T085", "T095", "O16", "G08"]
+    },
+    {
+      "section": "20.4",
+      "title": "Publishing workflow",
+      "anchor": "204-publishing-workflow",
+      "items": ["T070", "T085"]
+    },
+    {
+      "section": "20.5",
+      "title": "Capacity and product staging",
+      "anchor": "205-capacity-and-product-staging",
+      "items": ["T095", "T024"]
+    },
+    {
+      "section": "21",
+      "title": "Ongoing Roles",
+      "anchor": "21-ongoing-roles",
+      "items": ["T073", "T086", "O19"]
+    },
+    {
+      "section": "21.1",
+      "title": "Purpose",
+      "anchor": "211-purpose",
+      "items": ["T073", "T086", "O19"]
+    },
+    {
+      "section": "21.2",
+      "title": "Respect capacity",
+      "anchor": "212-respect-capacity",
+      "items": ["T073", "T086"]
+    },
+    {
+      "section": "21.3",
+      "title": "Renewal and closure",
+      "anchor": "213-renewal-and-closure",
+      "items": ["T073", "T086", "O19"]
+    },
+    {
+      "section": "22",
+      "title": "Token economy",
+      "anchor": "22-token-economy",
+      "items": ["T074", "T075", "T093", "O03", "O04"]
+    },
+    {
+      "section": "22.1",
+      "title": "Three asset relationships",
+      "anchor": "221-three-asset-relationships",
+      "items": ["T074", "T075", "T093", "O03", "O04"]
+    },
+    {
+      "section": "22.2",
+      "title": "Rank and license policy",
+      "anchor": "222-rank-and-license-policy",
+      "items": ["T074", "O04"]
+    },
+    {
+      "section": "22.3",
+      "title": "Prospective revenue",
+      "anchor": "223-prospective-revenue",
+      "items": ["T074", "T075", "T093", "O03", "O04"]
+    },
+    {
+      "section": "22.4",
+      "title": "Beta and token launch",
+      "anchor": "224-beta-and-token-launch",
+      "items": ["T075", "O03"]
+    },
+    {
+      "section": "22.5",
+      "title": "Project treasury behavior",
+      "anchor": "225-project-treasury-behavior",
+      "items": ["T093"]
+    },
+    {
+      "section": "23",
+      "title": "Screens and user experience",
+      "anchor": "23-screens-and-user-experience",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.1",
+      "title": "Design direction",
+      "anchor": "231-design-direction",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.2",
+      "title": "Screen contract",
+      "anchor": "232-screen-contract",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.3",
+      "title": "Suggested navigation",
+      "anchor": "233-suggested-navigation",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.4",
+      "title": "Eligibility presentation",
+      "anchor": "234-eligibility-presentation",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.5",
+      "title": "Financial interaction",
+      "anchor": "235-financial-interaction",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.6",
+      "title": "Private information",
+      "anchor": "236-private-information",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.7",
+      "title": "Accessibility and scanning",
+      "anchor": "237-accessibility-and-scanning",
+      "items": [
+        "T045",
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "23.8",
+      "title": "Mandatory non-happy states",
+      "anchor": "238-mandatory-non-happy-states",
+      "items": [
+        "U001",
+        "U002",
+        "U003",
+        "U004",
+        "U005",
+        "U006",
+        "U007",
+        "U008",
+        "U009",
+        "U010",
+        "U011",
+        "U012",
+        "U013",
+        "U014",
+        "U015",
+        "U016"
+      ]
+    },
+    {
+      "section": "24",
+      "title": "System architecture",
+      "anchor": "24-system-architecture",
+      "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
+    },
+    {
+      "section": "24.1",
+      "title": "Recommended stack and why",
+      "anchor": "241-recommended-stack-and-why",
+      "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
+    },
+    {
+      "section": "24.2",
+      "title": "Topology",
+      "anchor": "242-topology",
+      "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
+    },
+    {
+      "section": "24.3",
+      "title": "Domain ownership",
+      "anchor": "243-domain-ownership",
+      "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
+    },
+    {
+      "section": "24.4",
+      "title": "Source of truth",
+      "anchor": "244-source-of-truth",
+      "items": ["T002", "T039"]
+    },
+    {
+      "section": "24.5",
+      "title": "Suggested repository boundaries",
+      "anchor": "245-suggested-repository-boundaries",
+      "items": ["T002", "T005", "T037", "T039", "T063", "O18"]
+    },
+    {
+      "section": "25",
+      "title": "Domain and data model",
+      "anchor": "25-domain-and-data-model",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.1",
+      "title": "Modeling conventions",
+      "anchor": "251-modeling-conventions",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.2",
+      "title": "Identity and Guild entities",
+      "anchor": "252-identity-and-guild-entities",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.3",
+      "title": "Skills and trust entities",
+      "anchor": "253-skills-and-trust-entities",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.4",
+      "title": "Work entities",
+      "anchor": "254-work-entities",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.5",
+      "title": "Challenge, finance, and access entities",
+      "anchor": "255-challenge-finance-and-access-entities",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.6",
+      "title": "Discovery, execution, and operational entities",
+      "anchor": "256-discovery-execution-and-operational-entities",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.7",
+      "title": "Separate state machines",
+      "anchor": "257-separate-state-machines",
+      "items": [
+        "T002",
+        "T003",
+        "T009",
+        "T012",
+        "T016",
+        "T020",
+        "T029",
+        "T053",
+        "T056",
+        "T058",
+        "T061",
+        "T092"
+      ]
+    },
+    {
+      "section": "25.8",
+      "title": "Constraints and deletion",
+      "anchor": "258-constraints-and-deletion",
+      "items": ["T003", "T092"]
+    },
+    {
+      "section": "26",
+      "title": "API contracts",
+      "anchor": "26-api-contracts",
+      "items": ["T002", "T019", "T089"]
+    },
+    {
+      "section": "26.1",
+      "title": "Common conventions",
+      "anchor": "261-common-conventions",
+      "items": ["T089"]
+    },
+    {
+      "section": "26.2",
+      "title": "Endpoint families",
+      "anchor": "262-endpoint-families",
+      "items": ["T089", "E23"]
+    },
+    {
+      "section": "26.3",
+      "title": "Eligibility response example",
+      "anchor": "263-eligibility-response-example",
+      "items": ["T002", "T019", "T089"]
+    },
+    {
+      "section": "26.4",
+      "title": "Error envelope and statuses",
+      "anchor": "264-error-envelope-and-statuses",
+      "items": ["T002", "T019", "T089"]
+    },
+    {
+      "section": "26.5",
+      "title": "Public and private API shapes",
+      "anchor": "265-public-and-private-api-shapes",
+      "items": ["T015", "T053", "T089"]
+    },
+    {
+      "section": "27",
+      "title": "Events and background jobs",
+      "anchor": "27-events-and-background-jobs",
+      "items": ["T019", "T024", "T028", "T033", "T038", "T042", "T054", "T070"]
+    },
+    {
+      "section": "27.1",
+      "title": "Event envelope",
+      "anchor": "271-event-envelope",
+      "items": ["T019", "T024", "T028", "T033", "T038", "T042", "T054", "T070"]
+    },
+    {
+      "section": "27.2",
+      "title": "Event families",
+      "anchor": "272-event-families",
+      "items": ["T019", "T024", "T028", "T033", "T038", "T042", "T054", "T070"]
+    },
+    {
+      "section": "27.3",
+      "title": "Outbox/inbox behavior",
+      "anchor": "273-outboxinbox-behavior",
+      "items": ["T019", "T038"]
+    },
+    {
+      "section": "27.4",
+      "title": "Essential jobs",
+      "anchor": "274-essential-jobs",
+      "items": ["T019", "T024", "T028", "T033", "T038", "T042", "T054", "T070"]
+    },
+    {
+      "section": "27.5",
+      "title": "Deduplication keys",
+      "anchor": "275-deduplication-keys",
+      "items": ["T019", "T038"]
+    },
+    {
+      "section": "28",
+      "title": "Permissions and security",
+      "anchor": "28-permissions-and-security",
+      "items": ["T007", "T014", "T035", "T053", "T055", "T063", "T090", "T091"]
+    },
+    {
+      "section": "28.1",
+      "title": "Authorization model",
+      "anchor": "281-authorization-model",
+      "items": ["T007", "T014", "T035", "T053", "T055", "T063", "T090", "T091"]
+    },
+    {
+      "section": "28.2",
+      "title": "High-risk boundaries",
+      "anchor": "282-high-risk-boundaries",
+      "items": ["T007", "T014", "T035", "T053", "T055", "T063", "T090", "T091"]
+    },
+    {
+      "section": "28.3",
+      "title": "Web and integration security",
+      "anchor": "283-web-and-integration-security",
+      "items": ["T091"]
+    },
+    {
+      "section": "28.4",
+      "title": "Threat containment versus final judgment",
+      "anchor": "284-threat-containment-versus-final-judgment",
+      "items": ["T035", "T040"]
+    },
+    {
+      "section": "28.5",
+      "title": "Confidentiality limits",
+      "anchor": "285-confidentiality-limits",
+      "items": ["T007", "T014", "T035", "T053", "T055", "T063", "T090", "T091"]
+    },
+    {
+      "section": "29",
+      "title": "Configuration and administration",
+      "anchor": "29-configuration-and-administration",
+      "items": ["T037", "T093", "O08"]
+    },
+    {
+      "section": "29.1",
+      "title": "Editable business configuration",
+      "anchor": "291-editable-business-configuration",
+      "items": ["T037", "T093", "O08"]
+    },
+    {
+      "section": "29.2",
+      "title": "Configuration boundaries",
+      "anchor": "292-configuration-boundaries",
+      "items": ["T037", "T093", "O08"]
+    },
+    {
+      "section": "29.3",
+      "title": "Feature flags",
+      "anchor": "293-feature-flags",
+      "items": ["T037", "T093", "O08"]
+    },
+    {
+      "section": "29.4",
+      "title": "Admin audit and safe changes",
+      "anchor": "294-admin-audit-and-safe-changes",
+      "items": ["T037"]
+    },
+    {
+      "section": "30",
+      "title": "Operations and recovery",
+      "anchor": "30-operations-and-recovery",
+      "items": ["T005", "T034", "T038", "T039", "T040", "T046", "T092", "G10"]
+    },
+    {
+      "section": "30.1",
+      "title": "Environments",
+      "anchor": "301-environments",
+      "items": ["T005", "T034", "T038", "T039", "T040", "T046", "T092", "G10"]
+    },
+    {
+      "section": "30.2",
+      "title": "Operational ownership",
+      "anchor": "302-operational-ownership",
+      "items": ["T005", "T034", "T038", "T039", "T040", "T046", "T092", "G10"]
+    },
+    {
+      "section": "30.3",
+      "title": "Monitored signals",
+      "anchor": "303-monitored-signals",
+      "items": ["T005", "T034", "T038", "T039", "T040", "T046", "T092", "G10"]
+    },
+    {
+      "section": "30.4",
+      "title": "Incident playbooks",
+      "anchor": "304-incident-playbooks",
+      "items": ["T005", "T034", "T038", "T039", "T040", "T046", "T092", "G10"]
+    },
+    {
+      "section": "30.5",
+      "title": "Backups and restore",
+      "anchor": "305-backups-and-restore",
+      "items": ["T039", "T046", "T087"]
+    },
+    {
+      "section": "30.6",
+      "title": "Deployment and rollback",
+      "anchor": "306-deployment-and-rollback",
+      "items": ["T003", "T040"]
+    },
+    {
+      "section": "31",
+      "title": "Metrics",
+      "anchor": "31-metrics",
+      "items": ["T041", "T043", "T071", "T072"]
+    },
+    {
+      "section": "31.1",
+      "title": "Product success",
+      "anchor": "311-product-success",
+      "items": ["T041", "T043", "T071", "T072"]
+    },
+    {
+      "section": "31.2",
+      "title": "Reporting integrity",
+      "anchor": "312-reporting-integrity",
+      "items": ["T043", "T071"]
+    },
+    {
+      "section": "31.3",
+      "title": "Quality and fairness checks",
+      "anchor": "313-quality-and-fairness-checks",
+      "items": ["T041", "T043", "T071", "T072"]
+    },
+    {
+      "section": "32",
+      "title": "Testing strategy",
+      "anchor": "32-testing-strategy",
+      "items": [
+        "T004",
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "32.1",
+      "title": "Test what can fail materially",
+      "anchor": "321-test-what-can-fail-materially",
+      "items": [
+        "T004",
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "32.2",
+      "title": "Real concurrency tests",
+      "anchor": "322-real-concurrency-tests",
+      "items": ["T079", "T082", "T084"]
+    },
+    {
+      "section": "32.3",
+      "title": "Financial property tests",
+      "anchor": "323-financial-property-tests",
+      "items": ["T080"]
+    },
+    {
+      "section": "32.4",
+      "title": "Fixture design",
+      "anchor": "324-fixture-design",
+      "items": ["T004"]
+    },
+    {
+      "section": "32.5",
+      "title": "Release evidence",
+      "anchor": "325-release-evidence",
+      "items": [
+        "T004",
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "33",
+      "title": "Agent work contracts",
+      "anchor": "33-agent-work-contracts",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.1",
+      "title": "Shared operating agreement",
+      "anchor": "331-shared-operating-agreement",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.2",
+      "title": "Agent roster",
+      "anchor": "332-agent-roster",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.3",
+      "title": "AG01 — Product and orchestration",
+      "anchor": "333-ag01--product-and-orchestration",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.4",
+      "title": "AG02 — Frontend and experience",
+      "anchor": "334-ag02--frontend-and-experience",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.5",
+      "title": "AG03 — Backend and domain",
+      "anchor": "335-ag03--backend-and-domain",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.6",
+      "title": "AG04 — Solana and treasury",
+      "anchor": "336-ag04--solana-and-treasury",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.7",
+      "title": "AG05 — Trust and private access",
+      "anchor": "337-ag05--trust-and-private-access",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.8",
+      "title": "AG06 — AI execution",
+      "anchor": "338-ag06--ai-execution",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.9",
+      "title": "AG07 — Discovery and distribution",
+      "anchor": "339-ag07--discovery-and-distribution",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.10",
+      "title": "AG08 — QA and security",
+      "anchor": "3310-ag08--qa-and-security",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.11",
+      "title": "AG09 — Operations and release",
+      "anchor": "3311-ag09--operations-and-release",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "33.12",
+      "title": "AG10 — Documentation and integration",
+      "anchor": "3312-ag10--documentation-and-integration",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "34",
+      "title": "Build sequence",
+      "anchor": "34-build-sequence",
+      "items": [
+        "T096",
+        "T047",
+        "T051",
+        "T077",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10"
+      ]
+    },
+    {
+      "section": "34.1",
+      "title": "Delivery principle",
+      "anchor": "341-delivery-principle",
+      "items": [
+        "T096",
+        "T047",
+        "T051",
+        "T077",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10"
+      ]
+    },
+    {
+      "section": "34.2",
+      "title": "Version labels",
+      "anchor": "342-version-labels",
+      "items": [
+        "T096",
+        "T047",
+        "T051",
+        "T077",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10"
+      ]
+    },
+    {
+      "section": "34.3",
+      "title": "First implementation assignment",
+      "anchor": "343-first-implementation-assignment",
+      "items": [
+        "T096",
+        "T047",
+        "T051",
+        "T077",
+        "G01",
+        "G02",
+        "G03",
+        "G04",
+        "G05",
+        "G06",
+        "G07",
+        "G08",
+        "G09",
+        "G10"
+      ]
+    },
+    {
+      "section": "34.4",
+      "title": "Required production gates",
+      "anchor": "344-required-production-gates",
+      "items": ["G01", "G02", "G03", "G04", "G05", "G06", "G07", "G08", "G09", "G10"]
+    },
+    {
+      "section": "35",
+      "title": "Acceptance scenarios",
+      "anchor": "35-acceptance-scenarios",
+      "items": [
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "35.1",
+      "title": "Identity, skills, and trust",
+      "anchor": "351-identity-skills-and-trust",
+      "items": [
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "35.2",
+      "title": "Capacity and work lifecycle",
+      "anchor": "352-capacity-and-work-lifecycle",
+      "items": [
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "35.3",
+      "title": "Money and chain",
+      "anchor": "353-money-and-chain",
+      "items": [
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "35.4",
+      "title": "Privacy and code",
+      "anchor": "354-privacy-and-code",
+      "items": [
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "35.5",
+      "title": "Challenges, Parties, sponsorship, and AI",
+      "anchor": "355-challenges-parties-sponsorship-and-ai",
+      "items": [
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "35.6",
+      "title": "End-to-end and recovery",
+      "anchor": "356-end-to-end-and-recovery",
+      "items": [
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088"
+      ]
+    },
+    {
+      "section": "36",
+      "title": "Worked examples",
+      "anchor": "36-worked-examples",
+      "items": ["T044", "T054", "T059", "T069", "T066"]
+    },
+    {
+      "section": "36.1",
+      "title": "Beginner completes a first public Raid",
+      "anchor": "361-beginner-completes-a-first-public-raid",
+      "items": ["T044", "T054", "T059", "T069", "T066"]
+    },
+    {
+      "section": "36.2",
+      "title": "Experienced developer joins a confidential Guild task",
+      "anchor": "362-experienced-developer-joins-a-confidential-guild-task",
+      "items": ["T044", "T054", "T059", "T069", "T066"]
+    },
+    {
+      "section": "36.3",
+      "title": "Selection Challenge chooses a Party",
+      "anchor": "363-selection-challenge-chooses-a-party",
+      "items": ["T044", "T054", "T059", "T069", "T066"]
+    },
+    {
+      "section": "36.4",
+      "title": "Mixed reward with a blocked leg",
+      "anchor": "364-mixed-reward-with-a-blocked-leg",
+      "items": ["T044", "T054", "T059", "T069", "T066"]
+    },
+    {
+      "section": "36.5",
+      "title": "Managed AI task reaches its cap",
+      "anchor": "365-managed-ai-task-reaches-its-cap",
+      "items": ["T044", "T054", "T059", "T069", "T066"]
+    },
+    {
+      "section": "37",
+      "title": "What agents must not infer",
+      "anchor": "37-what-agents-must-not-infer",
+      "items": ["T096", "T001", "E23"]
+    },
+    {
+      "section": "38",
+      "title": "Open decisions",
+      "anchor": "38-open-decisions",
+      "items": [
+        "O01",
+        "O02",
+        "O03",
+        "O04",
+        "O05",
+        "O06",
+        "O07",
+        "O08",
+        "O09",
+        "O10",
+        "O11",
+        "O12",
+        "O13",
+        "O14",
+        "O15",
+        "O16",
+        "O17",
+        "O18",
+        "O19"
+      ]
+    },
+    {
+      "section": "39",
+      "title": "Definition of done",
+      "anchor": "39-definition-of-done",
+      "items": ["T096", "T047", "T051", "T077"]
+    },
+    {
+      "section": "39.1",
+      "title": "A feature is complete when",
+      "anchor": "391-a-feature-is-complete-when",
+      "items": ["T096", "T047", "T051", "T077"]
+    },
+    {
+      "section": "39.2",
+      "title": "A task handoff is complete when",
+      "anchor": "392-a-task-handoff-is-complete-when",
+      "items": ["T096", "T047", "T051", "T077"]
+    },
+    {
+      "section": "39.3",
+      "title": "Whole-product implementation status",
+      "anchor": "393-whole-product-implementation-status",
+      "items": ["T096"]
+    },
+    {
+      "section": "40",
+      "title": "Handoff templates",
+      "anchor": "40-handoff-templates",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "40.1",
+      "title": "Starter instruction for a new development agent",
+      "anchor": "401-starter-instruction-for-a-new-development-agent",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "40.2",
+      "title": "Bounded task packet",
+      "anchor": "402-bounded-task-packet",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "40.3",
+      "title": "Completion report",
+      "anchor": "403-completion-report",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "40.4",
+      "title": "Decision record",
+      "anchor": "404-decision-record",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "40.5",
+      "title": "Change-management rule",
+      "anchor": "405-change-management-rule",
+      "items": ["T002", "T004", "T096"]
+    },
+    {
+      "section": "41",
+      "title": "Sources",
+      "anchor": "41-sources",
+      "items": ["T001", "T096", "T026", "T030", "T090"]
+    },
+    {
+      "section": "41.1",
+      "title": "Product source",
+      "anchor": "411-product-source",
+      "items": ["T001", "T096", "T026", "T030", "T090"]
+    },
+    {
+      "section": "41.2",
+      "title": "Primary technical references",
+      "anchor": "412-primary-technical-references",
+      "items": ["T001", "T096", "T026", "T030", "T090"]
+    },
+    {
+      "section": "41.3",
+      "title": "Final implementation reminder",
+      "anchor": "413-final-implementation-reminder",
+      "items": ["T001", "T096", "T026", "T030", "T090"]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # RAID delivery coverage register
 
-[Two-week sprint and alpha/beta plan](raid-sprint-plan.md) · [Master timeline](raid-delivery-timeline.md) · [Phase development and testing checklists](raid-development-phases.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md)
+[One-week sprint and alpha/beta plan](raid-sprint-plan.md) · [Master timeline](raid-delivery-timeline.md) · [Phase development and testing checklists](raid-development-phases.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md)
 
 **Prepared:** 6 October 2026. **Evidence state:** planning map only; all scenario results are PENDING until executed against a named commit/environment. This register maps every numbered blueprint section, R/P/D/I requirement, AC scenario, OPEN decision, production gate and screen. It schedules work; it does not replace canonical policy. Section references and IDs resolve in the [complete blueprint index](../RAID_BLUEPRINT_MAP.md).
 
@@ -58,7 +58,7 @@ Every section has an owning milestone or recurring use. Implementation follows t
 | [31](../RAID_AGENT_BLUEPRINT.md#31-metrics)                          | Metrics                          | M5 useful-loop metrics; M6 delivery metrics; M7 costs; M8 attribution/fairness                                                     |
 | [32](../RAID_AGENT_BLUEPRINT.md#32-testing-strategy)                 | Testing strategy                 | M0 fixture/evidence plan; testing in every phase                                                                                   |
 | [33](../RAID_AGENT_BLUEPRINT.md#33-agent-work-contracts)             | Agent work contracts             | M0 task/role ownership; all phases use bounded work contracts                                                                      |
-| [34](../RAID_AGENT_BLUEPRINT.md#34-build-sequence)                   | Build sequence                   | M0–M8 dependency order; S1–S8 two-week alpha/beta gates and feature-specific live gates                                            |
+| [34](../RAID_AGENT_BLUEPRINT.md#34-build-sequence)                   | Build sequence                   | M0–M8 dependency order; S01–S16 two-week alpha/beta gates and feature-specific live gates                                          |
 | [35](../RAID_AGENT_BLUEPRINT.md#35-acceptance-scenarios)             | Acceptance scenarios             | Exact scenario mapping below; execute with phase ownership                                                                         |
 | [36](../RAID_AGENT_BLUEPRINT.md#36-worked-examples)                  | Worked examples                  | M2 beginner; M6 confidential/selection; M4 mixed blocked reward; M7 budget-cap worked flows                                        |
 | [37](../RAID_AGENT_BLUEPRINT.md#37-what-agents-must-not-infer)       | What agents must not infer       | M0 conflict review; no inferred authority/economics throughout                                                                     |

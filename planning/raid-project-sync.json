@@ -1,0 +1,1734 @@
+{
+  "id": "PVT_kwDOFC4ies4Bl6XM",
+  "number": 1,
+  "owner": "solana-hackathon-1",
+  "url": "https://github.com/orgs/solana-hackathon-1/projects/1",
+  "public": false,
+  "repository_link_status": "LINKED",
+  "fields": {
+    "Title": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWJw",
+      "name": "Title"
+    },
+    "Assignees": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWJ0",
+      "name": "Assignees"
+    },
+    "Status": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWJ4",
+      "name": "Status",
+      "options": [
+        {
+          "id": "8dd84bcc",
+          "name": "Backlog",
+          "color": "GRAY",
+          "description": "Planned; not yet selected as ready"
+        },
+        {
+          "id": "cbd35dd5",
+          "name": "Ready",
+          "color": "BLUE",
+          "description": "Prerequisites met and bounded scope can start"
+        },
+        {
+          "id": "54b8f1dd",
+          "name": "Needs decision",
+          "color": "ORANGE",
+          "description": "Owner policy/provider choice required"
+        },
+        {
+          "id": "e7f4c76b",
+          "name": "Blocked",
+          "color": "RED",
+          "description": "Unfinished hard dependency or live gate"
+        },
+        {
+          "id": "1175e14d",
+          "name": "In Progress",
+          "color": "YELLOW",
+          "description": "Actively being implemented or tested"
+        },
+        {
+          "id": "ac2f47d7",
+          "name": "In Review",
+          "color": "PURPLE",
+          "description": "Awaiting meaningful review or acceptance evidence"
+        },
+        {
+          "id": "2f647a80",
+          "name": "Done",
+          "color": "GREEN",
+          "description": "Outcome verified and handoff recorded"
+        }
+      ]
+    },
+    "Labels": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWJ8",
+      "name": "Labels"
+    },
+    "Linked pull requests": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKA",
+      "name": "Linked pull requests"
+    },
+    "Milestone": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKE",
+      "name": "Milestone"
+    },
+    "Repository": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKI",
+      "name": "Repository"
+    },
+    "Reviewers": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKQ",
+      "name": "Reviewers"
+    },
+    "Parent issue": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKU",
+      "name": "Parent issue"
+    },
+    "Sub-issues progress": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKY",
+      "name": "Sub-issues progress"
+    },
+    "Created": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKc",
+      "name": "Created"
+    },
+    "Updated": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKg",
+      "name": "Updated"
+    },
+    "Closed": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWKk",
+      "name": "Closed"
+    },
+    "Sprint": {
+      "__typename": "ProjectV2IterationField",
+      "id": "PVTIF_lADOFC4ies4Bl6XMzhklWlE",
+      "name": "Sprint",
+      "configuration": {
+        "iterations": [
+          {
+            "id": "3955c6dd",
+            "title": "S01 — Contract and canonical identity foundation",
+            "startDate": "2026-10-07",
+            "duration": 7
+          },
+          {
+            "id": "0ab9bec9",
+            "title": "S02 — Verified Guilds, skills and public discovery",
+            "startDate": "2026-10-14",
+            "duration": 7
+          },
+          {
+            "id": "c745c4f5",
+            "title": "S03 — Work terms, creation and atomic acceptance",
+            "startDate": "2026-10-21",
+            "duration": 7
+          },
+          {
+            "id": "685dbc81",
+            "title": "S04 — Submission, review and synthetic work completion",
+            "startDate": "2026-10-28",
+            "duration": 7
+          },
+          {
+            "id": "38b0a488",
+            "title": "S05 — Verified launch and protected funding",
+            "startDate": "2026-11-04",
+            "duration": 7
+          },
+          {
+            "id": "7490008e",
+            "title": "S06 — Claims, disputes and financial recovery",
+            "startDate": "2026-11-11",
+            "duration": 7
+          },
+          {
+            "id": "7a38e55e",
+            "title": "S07 — Internal alpha: core journeys and usability",
+            "startDate": "2026-11-18",
+            "duration": 7
+          },
+          {
+            "id": "3211f0f2",
+            "title": "S08 — Internal alpha: recovery and exit review",
+            "startDate": "2026-11-25",
+            "duration": 7
+          },
+          {
+            "id": "ee7877ca",
+            "title": "S09 — Closed beta: invited cohort and feedback",
+            "startDate": "2026-12-02",
+            "duration": 7
+          },
+          {
+            "id": "261b9edc",
+            "title": "S10 — Closed beta: stabilization and V1 gate",
+            "startDate": "2026-12-09",
+            "duration": 7
+          },
+          {
+            "id": "4c888a69",
+            "title": "S11 — Public beta and scoped private work",
+            "startDate": "2026-12-16",
+            "duration": 7
+          },
+          {
+            "id": "3188d7de",
+            "title": "S12 — Parties, paid selection and fixed sponsorship",
+            "startDate": "2026-12-23",
+            "duration": 7
+          },
+          {
+            "id": "3830f0c2",
+            "title": "S13 — Managed AI: identity, capacity and isolation",
+            "startDate": "2026-12-30",
+            "duration": 7
+          },
+          {
+            "id": "f204ca0a",
+            "title": "S14 — Managed AI: capped task, cancellation and pilot",
+            "startDate": "2027-01-06",
+            "duration": 7
+          },
+          {
+            "id": "6a2c1740",
+            "title": "S15 — Advanced economy: prize and bid modules",
+            "startDate": "2027-01-13",
+            "duration": 7
+          },
+          {
+            "id": "2de9c6a9",
+            "title": "S16 — Approved channels, Roles and beta exit",
+            "startDate": "2027-01-20",
+            "duration": 7
+          }
+        ],
+        "completedIterations": []
+      }
+    },
+    "Kind": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWmA",
+      "name": "Kind",
+      "options": [
+        {
+          "id": "daa4560b",
+          "name": "Epic",
+          "color": "BLUE",
+          "description": "Epic delivery item"
+        },
+        {
+          "id": "b10aee4f",
+          "name": "Task",
+          "color": "BLUE",
+          "description": "Task delivery item"
+        },
+        {
+          "id": "7e8f099d",
+          "name": "Verification",
+          "color": "BLUE",
+          "description": "Verification delivery item"
+        },
+        {
+          "id": "a61b2e67",
+          "name": "UAT",
+          "color": "BLUE",
+          "description": "UAT delivery item"
+        },
+        {
+          "id": "8337b4c5",
+          "name": "Decision",
+          "color": "BLUE",
+          "description": "Decision delivery item"
+        },
+        {
+          "id": "0a863d6e",
+          "name": "Release gate",
+          "color": "BLUE",
+          "description": "Release gate delivery item"
+        }
+      ]
+    },
+    "Epic": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWnU",
+      "name": "Epic",
+      "options": [
+        {
+          "id": "928fc6cb",
+          "name": "E01 — Shared contracts and engineering foundation",
+          "color": "PURPLE",
+          "description": "Give every developer one reliable set of IDs, types, state transitions and implementation evidence."
+        },
+        {
+          "id": "40d73e6b",
+          "name": "E02 — Canonical identity and secure onboarding",
+          "color": "PURPLE",
+          "description": "Keep one work identity and history when a person changes wallets or login methods."
+        },
+        {
+          "id": "cb04bdf9",
+          "name": "E03 — Guilds, founder authority and holder membership",
+          "color": "PURPLE",
+          "description": "Let verified projects manage work while keeping holder membership separate from ownership and permissions."
+        },
+        {
+          "id": "f2735584",
+          "name": "E04 — Skill evidence, assessment and fair admission",
+          "color": "PURPLE",
+          "description": "Help beginners find starter work and experienced builders demonstrate the relevant ability without buying a rank."
+        },
+        {
+          "id": "99f07e1d",
+          "name": "E05 — Raid creation, terms and recommendations",
+          "color": "PURPLE",
+          "description": "Give founders a clear task contract and useful bounded difficulty/reward guidance."
+        },
+        {
+          "id": "c462d393",
+          "name": "E06 — One active engagement and reliable commands",
+          "color": "PURPLE",
+          "description": "Make double acceptance impossible at the database boundary across every admission path."
+        },
+        {
+          "id": "210560dc",
+          "name": "E07 — Deliverables, review, closure and workspaces",
+          "color": "PURPLE",
+          "description": "Let contributors deliver versioned proof and get bounded review without losing unpaid claims."
+        },
+        {
+          "id": "ce22dae4",
+          "name": "E08 — Selected token launch and verified Guild linkage",
+          "color": "PURPLE",
+          "description": "Create and independently verify one supported launch instead of treating a returned signature as success."
+        },
+        {
+          "id": "ff096c8b",
+          "name": "E09 — Exact assets, funding, escrow and settlement",
+          "color": "PURPLE",
+          "description": "Protect the exact reward promised to every contributor and pay each immutable claim once."
+        },
+        {
+          "id": "1fe8a8f3",
+          "name": "E10 — Disputes, finality, appeals and beneficiary recovery",
+          "color": "PURPLE",
+          "description": "Resolve contested work through explicit authority and preserve claims while duties close."
+        },
+        {
+          "id": "db3def86",
+          "name": "E11 — Configuration, durability and supported operations",
+          "color": "PURPLE",
+          "description": "Make the web/worker system observable, recoverable and supportable without losing acknowledged obligations."
+        },
+        {
+          "id": "e8930593",
+          "name": "E12 — Internal alpha and core acceptance evidence",
+          "color": "PURPLE",
+          "description": "Prove the integrated core internally before inviting outside testers."
+        },
+        {
+          "id": "cf9ef70e",
+          "name": "E13 — Closed beta and controlled V1 release",
+          "color": "PURPLE",
+          "description": "Validate real founder/Raider behavior in a small supported cohort before public beta."
+        },
+        {
+          "id": "ee9e8ec3",
+          "name": "E14 — Public discovery, notifications, metrics and beta",
+          "color": "PURPLE",
+          "description": "Help people discover appropriate work and see truthful progress without leaking private material."
+        },
+        {
+          "id": "1dc4ddd1",
+          "name": "E15 — Private briefs, repositories and explicit access",
+          "color": "PURPLE",
+          "description": "Give only approved people scoped resources and verify effective removal without deleting unrelated rights."
+        },
+        {
+          "id": "71194208",
+          "name": "E16 — Parties, consent and exact team rewards",
+          "color": "PURPLE",
+          "description": "Let a real consenting team deliver one assignment with individually protected capacity and payouts."
+        },
+        {
+          "id": "b1d1f9bc",
+          "name": "E17 — Selection Challenges and prize competitions",
+          "color": "PURPLE",
+          "description": "Pay promised selection work, choose a builder fairly, and offer main work through a separate funded agreement."
+        },
+        {
+          "id": "df11978b",
+          "name": "E18 — Sponsored placement and funded auctions",
+          "color": "PURPLE",
+          "description": "Sell visibly labeled inventory and reconcile delivery, charge and refund without buying credibility."
+        },
+        {
+          "id": "4e81b3e8",
+          "name": "E19 — Accountable managed AI workers",
+          "color": "PURPLE",
+          "description": "Run evaluated AI work under real identity, permission, capacity and total-spend limits."
+        },
+        {
+          "id": "66efc904",
+          "name": "E20 — Approved influencer channels and attribution",
+          "color": "PURPLE",
+          "description": "Separate content creation from approved publication and verify honest delivered evidence."
+        },
+        {
+          "id": "bd8c8849",
+          "name": "E21 — Versioned reputation and advanced Guild economy",
+          "color": "PURPLE",
+          "description": "Build attributable fair reputation and consented funded Roles; keep unapproved token policy disabled."
+        },
+        {
+          "id": "bea6840f",
+          "name": "E22 — User acceptance testing and business sign-off",
+          "color": "PURPLE",
+          "description": "Confirm that real users understand and can complete the promised workflow, separately from developers proving technical correctness."
+        },
+        {
+          "id": "0dc1a37f",
+          "name": "E23 — Master RAID blueprint and complete delivery coverage",
+          "color": "PURPLE",
+          "description": "Keep the entire canonical RAID blueprint visible on the board, with every domain/subsection traced to concrete developer work and the evidence needed for delivery."
+        }
+      ]
+    },
+    "Priority": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWnw",
+      "name": "Priority",
+      "options": [
+        {
+          "id": "6ca63f48",
+          "name": "P0",
+          "color": "RED",
+          "description": "Core invariant or release blocker"
+        },
+        {
+          "id": "9ff556d0",
+          "name": "P1",
+          "color": "ORANGE",
+          "description": "Primary delivery scope"
+        },
+        {
+          "id": "131166e2",
+          "name": "P2",
+          "color": "GRAY",
+          "description": "Conditional later scope"
+        }
+      ]
+    },
+    "Phase": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWn0",
+      "name": "Phase"
+    },
+    "Owner role": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWn4",
+      "name": "Owner role"
+    },
+    "Estimate": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWn8",
+      "name": "Estimate"
+    },
+    "Start date": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWo4",
+      "name": "Start date"
+    },
+    "Target date": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWo8",
+      "name": "Target date"
+    },
+    "Dependencies": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWqw",
+      "name": "Dependencies"
+    },
+    "Blueprint": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWq0",
+      "name": "Blueprint"
+    },
+    "Requirement IDs": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWso",
+      "name": "Requirement IDs"
+    },
+    "UAT owner": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWuc",
+      "name": "UAT owner"
+    },
+    "Evidence": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWvY",
+      "name": "Evidence"
+    },
+    "Release gates": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklWvc",
+      "name": "Release gates"
+    },
+    "Stage": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWwY",
+      "name": "Stage",
+      "options": [
+        {
+          "id": "e7014fad",
+          "name": "Foundation",
+          "color": "BLUE",
+          "description": "Foundation stage; dates do not imply enablement"
+        },
+        {
+          "id": "a6ba17bf",
+          "name": "Core build",
+          "color": "BLUE",
+          "description": "Core build stage; dates do not imply enablement"
+        },
+        {
+          "id": "b9b56475",
+          "name": "Internal alpha",
+          "color": "BLUE",
+          "description": "Internal alpha stage; dates do not imply enablement"
+        },
+        {
+          "id": "63f8b20b",
+          "name": "Closed beta",
+          "color": "BLUE",
+          "description": "Closed beta stage; dates do not imply enablement"
+        },
+        {
+          "id": "4d0f6652",
+          "name": "Public beta",
+          "color": "BLUE",
+          "description": "Public beta stage; dates do not imply enablement"
+        },
+        {
+          "id": "4a3f9ed8",
+          "name": "AI pilot",
+          "color": "BLUE",
+          "description": "AI pilot stage; dates do not imply enablement"
+        },
+        {
+          "id": "eba23b06",
+          "name": "Advanced modules",
+          "color": "BLUE",
+          "description": "Advanced modules stage; dates do not imply enablement"
+        },
+        {
+          "id": "11f8beae",
+          "name": "Conditional backlog",
+          "color": "BLUE",
+          "description": "Conditional backlog stage; dates do not imply enablement"
+        },
+        {
+          "id": "11c3a75d",
+          "name": "Spanning epic",
+          "color": "BLUE",
+          "description": "Spanning epic stage; dates do not imply enablement"
+        },
+        {
+          "id": "49be638a",
+          "name": "UAT",
+          "color": "BLUE",
+          "description": "UAT stage; dates do not imply enablement"
+        }
+      ]
+    },
+    "UAT status": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWwc",
+      "name": "UAT status",
+      "options": [
+        {
+          "id": "42ae1ab5",
+          "name": "Not required",
+          "color": "BLUE",
+          "description": "Not required; recorded evidence is required for Passed"
+        },
+        {
+          "id": "1e783d77",
+          "name": "Not started",
+          "color": "BLUE",
+          "description": "Not started; recorded evidence is required for Passed"
+        },
+        {
+          "id": "51941199",
+          "name": "Ready for UAT",
+          "color": "BLUE",
+          "description": "Ready for UAT; recorded evidence is required for Passed"
+        },
+        {
+          "id": "f2311e01",
+          "name": "In UAT",
+          "color": "BLUE",
+          "description": "In UAT; recorded evidence is required for Passed"
+        },
+        {
+          "id": "ad939a2d",
+          "name": "Passed",
+          "color": "BLUE",
+          "description": "Passed; recorded evidence is required for Passed"
+        },
+        {
+          "id": "cf7b4588",
+          "name": "Failed",
+          "color": "BLUE",
+          "description": "Failed; recorded evidence is required for Passed"
+        },
+        {
+          "id": "67edbfde",
+          "name": "Blocked",
+          "color": "BLUE",
+          "description": "Blocked; recorded evidence is required for Passed"
+        },
+        {
+          "id": "fb9c76d8",
+          "name": "Awaiting sign-off",
+          "color": "BLUE",
+          "description": "Awaiting sign-off; recorded evidence is required for Passed"
+        }
+      ]
+    },
+    "QA status": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWw0",
+      "name": "QA status",
+      "options": [
+        {
+          "id": "ff9b08fd",
+          "name": "Not started",
+          "color": "BLUE",
+          "description": "Not started verification state"
+        },
+        {
+          "id": "9396ae37",
+          "name": "In progress",
+          "color": "BLUE",
+          "description": "In progress verification state"
+        },
+        {
+          "id": "0d6e7f06",
+          "name": "Passed",
+          "color": "BLUE",
+          "description": "Passed verification state"
+        },
+        {
+          "id": "bb4dc274",
+          "name": "Failed",
+          "color": "BLUE",
+          "description": "Failed verification state"
+        },
+        {
+          "id": "dafb5b9e",
+          "name": "Blocked",
+          "color": "BLUE",
+          "description": "Blocked verification state"
+        }
+      ]
+    },
+    "Environment": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWyI",
+      "name": "Environment",
+      "options": [
+        {
+          "id": "d085fedf",
+          "name": "Not selected",
+          "color": "GRAY",
+          "description": "Not selected test/release environment"
+        },
+        {
+          "id": "6593dde0",
+          "name": "Local test",
+          "color": "GRAY",
+          "description": "Local test test/release environment"
+        },
+        {
+          "id": "bde46389",
+          "name": "Staging",
+          "color": "GRAY",
+          "description": "Staging test/release environment"
+        },
+        {
+          "id": "5ee0d298",
+          "name": "Test network",
+          "color": "GRAY",
+          "description": "Test network test/release environment"
+        },
+        {
+          "id": "33699366",
+          "name": "Pilot",
+          "color": "GRAY",
+          "description": "Pilot test/release environment"
+        },
+        {
+          "id": "9ad5be08",
+          "name": "Production",
+          "color": "GRAY",
+          "description": "Production test/release environment"
+        }
+      ]
+    },
+    "Release readiness": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWyM",
+      "name": "Release readiness",
+      "options": [
+        {
+          "id": "02807ca8",
+          "name": "Not assessed",
+          "color": "BLUE",
+          "description": "Not assessed; never inferred from code compilation"
+        },
+        {
+          "id": "7feb18a8",
+          "name": "Blocked",
+          "color": "BLUE",
+          "description": "Blocked; never inferred from code compilation"
+        },
+        {
+          "id": "f9febb56",
+          "name": "Ready for review",
+          "color": "BLUE",
+          "description": "Ready for review; never inferred from code compilation"
+        },
+        {
+          "id": "5277405c",
+          "name": "Approved",
+          "color": "BLUE",
+          "description": "Approved; never inferred from code compilation"
+        },
+        {
+          "id": "e1d0b98c",
+          "name": "Not applicable",
+          "color": "BLUE",
+          "description": "Not applicable; never inferred from code compilation"
+        }
+      ]
+    },
+    "Severity": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklWzI",
+      "name": "Severity",
+      "options": [
+        {
+          "id": "123e632a",
+          "name": "Not assessed",
+          "color": "GRAY",
+          "description": "Not assessed impact; distinct from task priority"
+        },
+        {
+          "id": "dc3236bf",
+          "name": "Critical",
+          "color": "RED",
+          "description": "Critical impact; distinct from task priority"
+        },
+        {
+          "id": "fd1b0aeb",
+          "name": "High",
+          "color": "RED",
+          "description": "High impact; distinct from task priority"
+        },
+        {
+          "id": "8fa2b84c",
+          "name": "Medium",
+          "color": "GRAY",
+          "description": "Medium impact; distinct from task priority"
+        },
+        {
+          "id": "181ed4c6",
+          "name": "Low",
+          "color": "GRAY",
+          "description": "Low impact; distinct from task priority"
+        }
+      ]
+    },
+    "Sprint commitment": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklXm0",
+      "name": "Sprint commitment",
+      "options": [
+        {
+          "id": "9223574b",
+          "name": "Forecast",
+          "color": "GRAY",
+          "description": "Forecast; forecasts require refinement at planning"
+        },
+        {
+          "id": "7b2a0ee5",
+          "name": "Committed",
+          "color": "GRAY",
+          "description": "Committed; forecasts require refinement at planning"
+        },
+        {
+          "id": "8935f0f5",
+          "name": "Stretch",
+          "color": "GRAY",
+          "description": "Stretch; forecasts require refinement at planning"
+        },
+        {
+          "id": "16d72340",
+          "name": "Conditional backlog",
+          "color": "GRAY",
+          "description": "Conditional backlog; forecasts require refinement at planning"
+        }
+      ]
+    },
+    "Target release": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklXoo",
+      "name": "Target release",
+      "options": [
+        {
+          "id": "f8937cdb",
+          "name": "Foundation",
+          "color": "BLUE",
+          "description": "Foundation target, not enablement evidence"
+        },
+        {
+          "id": "959745e4",
+          "name": "Prototype",
+          "color": "BLUE",
+          "description": "Prototype target, not enablement evidence"
+        },
+        {
+          "id": "72e07b6c",
+          "name": "Alpha",
+          "color": "BLUE",
+          "description": "Alpha target, not enablement evidence"
+        },
+        {
+          "id": "e3ac5af6",
+          "name": "Closed beta",
+          "color": "BLUE",
+          "description": "Closed beta target, not enablement evidence"
+        },
+        {
+          "id": "d4676125",
+          "name": "Public beta / V1",
+          "color": "BLUE",
+          "description": "Public beta / V1 target, not enablement evidence"
+        },
+        {
+          "id": "be049d6b",
+          "name": "V1.5",
+          "color": "BLUE",
+          "description": "V1.5 target, not enablement evidence"
+        },
+        {
+          "id": "146fae7e",
+          "name": "Managed AI pilot",
+          "color": "BLUE",
+          "description": "Managed AI pilot target, not enablement evidence"
+        },
+        {
+          "id": "9481c669",
+          "name": "Selected V2",
+          "color": "BLUE",
+          "description": "Selected V2 target, not enablement evidence"
+        },
+        {
+          "id": "fb244d77",
+          "name": "Conditional later",
+          "color": "BLUE",
+          "description": "Conditional later target, not enablement evidence"
+        }
+      ]
+    },
+    "Actual start": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklXos",
+      "name": "Actual start"
+    },
+    "Actual finish": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklXpo",
+      "name": "Actual finish"
+    },
+    "Blocked reason": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklXps",
+      "name": "Blocked reason"
+    },
+    "Workstream": {
+      "__typename": "ProjectV2SingleSelectField",
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhklXpw",
+      "name": "Workstream",
+      "options": [
+        {
+          "id": "a9013c80",
+          "name": "Product and architecture",
+          "color": "BLUE",
+          "description": "Product and architecture responsibility"
+        },
+        {
+          "id": "7fea695d",
+          "name": "Identity and trust",
+          "color": "BLUE",
+          "description": "Identity and trust responsibility"
+        },
+        {
+          "id": "b1004609",
+          "name": "Guilds",
+          "color": "BLUE",
+          "description": "Guilds responsibility"
+        },
+        {
+          "id": "4026eb95",
+          "name": "Frontend and work",
+          "color": "BLUE",
+          "description": "Frontend and work responsibility"
+        },
+        {
+          "id": "ca34601d",
+          "name": "Backend and capacity",
+          "color": "BLUE",
+          "description": "Backend and capacity responsibility"
+        },
+        {
+          "id": "50b04b5e",
+          "name": "Solana and finance",
+          "color": "BLUE",
+          "description": "Solana and finance responsibility"
+        },
+        {
+          "id": "80033cc8",
+          "name": "Quality and UAT",
+          "color": "BLUE",
+          "description": "Quality and UAT responsibility"
+        },
+        {
+          "id": "0f3fc974",
+          "name": "Operations and release",
+          "color": "BLUE",
+          "description": "Operations and release responsibility"
+        },
+        {
+          "id": "8ca07ab1",
+          "name": "Private access",
+          "color": "BLUE",
+          "description": "Private access responsibility"
+        },
+        {
+          "id": "475b704a",
+          "name": "Parties and Challenges",
+          "color": "BLUE",
+          "description": "Parties and Challenges responsibility"
+        },
+        {
+          "id": "f1a5552f",
+          "name": "Discovery and promotions",
+          "color": "BLUE",
+          "description": "Discovery and promotions responsibility"
+        },
+        {
+          "id": "d43374ef",
+          "name": "AI runtime",
+          "color": "BLUE",
+          "description": "AI runtime responsibility"
+        },
+        {
+          "id": "59af12c8",
+          "name": "Channels and attribution",
+          "color": "BLUE",
+          "description": "Channels and attribution responsibility"
+        },
+        {
+          "id": "f6c7f8f7",
+          "name": "Advanced economy",
+          "color": "BLUE",
+          "description": "Advanced economy responsibility"
+        }
+      ]
+    },
+    "Acceptance scenarios": {
+      "__typename": "ProjectV2Field",
+      "id": "PVTF_lADOFC4ies4Bl6XMzhklcC4",
+      "name": "Acceptance scenarios"
+    }
+  },
+  "items": {
+    "E01": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ONw",
+      "fields_done": true
+    },
+    "E02": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OOE",
+      "fields_done": true
+    },
+    "E03": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OOo",
+      "fields_done": true
+    },
+    "E04": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OO4",
+      "fields_done": true
+    },
+    "E05": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OPI",
+      "fields_done": true
+    },
+    "E06": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OPs",
+      "fields_done": true
+    },
+    "E07": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OQI",
+      "fields_done": true
+    },
+    "E08": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OQY",
+      "fields_done": true
+    },
+    "E09": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OTg",
+      "fields_done": true
+    },
+    "E10": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OT8",
+      "fields_done": true
+    },
+    "E11": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OU8",
+      "fields_done": true
+    },
+    "E12": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OVM",
+      "fields_done": true
+    },
+    "E13": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OVc",
+      "fields_done": true
+    },
+    "E14": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OVg",
+      "fields_done": true
+    },
+    "E15": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OVk",
+      "fields_done": true
+    },
+    "E16": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OVs",
+      "fields_done": true
+    },
+    "E17": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXI",
+      "fields_done": true
+    },
+    "E18": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXc",
+      "fields_done": true
+    },
+    "E19": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OY8",
+      "fields_done": true
+    },
+    "E20": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZQ",
+      "fields_done": true
+    },
+    "E21": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZ0",
+      "fields_done": true
+    },
+    "T001": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ORo",
+      "fields_done": true
+    },
+    "T002": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OW4",
+      "fields_done": true
+    },
+    "T003": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXA",
+      "fields_done": true
+    },
+    "O01": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OU0",
+      "fields_done": true
+    },
+    "O02": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OVE",
+      "fields_done": true
+    },
+    "O03": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Of4",
+      "fields_done": true
+    },
+    "O04": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OgI",
+      "fields_done": true
+    },
+    "O05": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ogc",
+      "fields_done": true
+    },
+    "O06": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OeY",
+      "fields_done": true
+    },
+    "O07": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ogs",
+      "fields_done": true
+    },
+    "O08": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Og4",
+      "fields_done": true
+    },
+    "O09": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OUM",
+      "fields_done": true
+    },
+    "O10": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OgM",
+      "fields_done": true
+    },
+    "O11": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OdI",
+      "fields_done": true
+    },
+    "O12": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OdQ",
+      "fields_done": true
+    },
+    "O13": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Odc",
+      "fields_done": true
+    },
+    "O14": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OiE",
+      "fields_done": true
+    },
+    "O15": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OiM",
+      "fields_done": true
+    },
+    "O16": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OcQ",
+      "fields_done": true
+    },
+    "O17": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OcY",
+      "fields_done": true
+    },
+    "O18": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oes",
+      "fields_done": true
+    },
+    "O19": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OgY",
+      "fields_done": true
+    },
+    "T004": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oqk",
+      "fields_done": true
+    },
+    "T005": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ObU",
+      "fields_done": true
+    },
+    "T006": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ORY",
+      "fields_done": true
+    },
+    "T007": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ORg",
+      "fields_done": true
+    },
+    "T008": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OR4",
+      "fields_done": true
+    },
+    "T009": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXU",
+      "fields_done": true
+    },
+    "T010": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OrQ",
+      "fields_done": true
+    },
+    "T011": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OrY",
+      "fields_done": true
+    },
+    "T012": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OSE",
+      "fields_done": true
+    },
+    "T013": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OS8",
+      "fields_done": true
+    },
+    "T014": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OTM",
+      "fields_done": true
+    },
+    "T015": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXw",
+      "fields_done": true
+    },
+    "T016": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OSg",
+      "fields_done": true
+    },
+    "T017": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OTE",
+      "fields_done": true
+    },
+    "T018": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OTY",
+      "fields_done": true
+    },
+    "T019": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OR8",
+      "fields_done": true
+    },
+    "T020": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OSU",
+      "fields_done": true
+    },
+    "T021": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OS0",
+      "fields_done": true
+    },
+    "T022": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Op8",
+      "fields_done": true
+    },
+    "T023": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OqA",
+      "fields_done": true
+    },
+    "T024": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OqI",
+      "fields_done": true
+    },
+    "T025": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OqM",
+      "fields_done": true
+    },
+    "T026": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OSM",
+      "fields_done": true
+    },
+    "T027": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OT0",
+      "fields_done": true
+    },
+    "T028": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OUA",
+      "fields_done": true
+    },
+    "T029": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXY",
+      "fields_done": true
+    },
+    "T030": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OX0",
+      "fields_done": true
+    },
+    "T031": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OeU",
+      "fields_done": true
+    },
+    "T032": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oew",
+      "fields_done": true
+    },
+    "T033": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OfU",
+      "fields_done": true
+    },
+    "T034": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Of0",
+      "fields_done": true
+    },
+    "T035": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Od4",
+      "fields_done": true
+    },
+    "T036": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OeQ",
+      "fields_done": true
+    },
+    "T037": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ob4",
+      "fields_done": true
+    },
+    "T038": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OcM",
+      "fields_done": true
+    },
+    "T039": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ocg",
+      "fields_done": true
+    },
+    "T040": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oc4",
+      "fields_done": true
+    },
+    "T041": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Odo",
+      "fields_done": true
+    },
+    "T042": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Odg",
+      "fields_done": true
+    },
+    "T043": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OeA",
+      "fields_done": true
+    },
+    "T044": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXk",
+      "fields_done": true
+    },
+    "T045": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OYo",
+      "fields_done": true
+    },
+    "T046": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZM",
+      "fields_done": true
+    },
+    "T047": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZw",
+      "fields_done": true
+    },
+    "T048": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OX4",
+      "fields_done": true
+    },
+    "T049": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OYg",
+      "fields_done": true
+    },
+    "T050": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OYw",
+      "fields_done": true
+    },
+    "T051": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZU",
+      "fields_done": true
+    },
+    "T052": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OfE",
+      "fields_done": true
+    },
+    "T053": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OXo",
+      "fields_done": true
+    },
+    "T054": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OYM",
+      "fields_done": true
+    },
+    "T055": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OYk",
+      "fields_done": true
+    },
+    "T056": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OYU",
+      "fields_done": true
+    },
+    "T057": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZI",
+      "fields_done": true
+    },
+    "T058": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ObE",
+      "fields_done": true
+    },
+    "T059": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ofc",
+      "fields_done": true
+    },
+    "T060": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ObA",
+      "fields_done": true
+    },
+    "T061": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oa4",
+      "fields_done": true
+    },
+    "T062": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ObM",
+      "fields_done": true
+    },
+    "T063": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ObY",
+      "fields_done": true
+    },
+    "T064": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Obw",
+      "fields_done": true
+    },
+    "T065": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OcU",
+      "fields_done": true
+    },
+    "T066": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ohc",
+      "fields_done": true
+    },
+    "T067": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OgA",
+      "fields_done": true
+    },
+    "T068": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Obo",
+      "fields_done": true
+    },
+    "T069": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OgU",
+      "fields_done": true
+    },
+    "T070": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3ObI",
+      "fields_done": true
+    },
+    "T071": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Obc",
+      "fields_done": true
+    },
+    "T072": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oec",
+      "fields_done": true
+    },
+    "T073": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oe8",
+      "fields_done": true
+    },
+    "T074": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OfY",
+      "fields_done": true
+    },
+    "T075": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OUc",
+      "fields_done": true
+    },
+    "T076": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ohw",
+      "fields_done": true
+    },
+    "T077": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZg",
+      "fields_done": true
+    },
+    "T078": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZ4",
+      "fields_done": true
+    },
+    "T079": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OaI",
+      "fields_done": true
+    },
+    "T080": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OaU",
+      "fields_done": true
+    },
+    "T081": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OdM",
+      "fields_done": true
+    },
+    "T082": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OZc",
+      "fields_done": true
+    },
+    "T083": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OcI",
+      "fields_done": true
+    },
+    "T084": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oh4",
+      "fields_done": true
+    },
+    "T085": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OcA",
+      "fields_done": true
+    },
+    "T086": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ofs",
+      "fields_done": true
+    },
+    "T087": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oac",
+      "fields_done": true
+    },
+    "T088": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ogg",
+      "fields_done": true
+    },
+    "G01": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OVU",
+      "fields_done": true
+    },
+    "G02": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OhA",
+      "fields_done": true
+    },
+    "G03": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oek",
+      "fields_done": true
+    },
+    "G04": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OhQ",
+      "fields_done": true
+    },
+    "G05": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OaA",
+      "fields_done": true
+    },
+    "G06": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ods",
+      "fields_done": true
+    },
+    "G07": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OiU",
+      "fields_done": true
+    },
+    "G08": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ocw",
+      "fields_done": true
+    },
+    "G09": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Oco",
+      "fields_done": true
+    },
+    "G10": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3OfM",
+      "fields_done": true
+    },
+    "T089": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3SYw",
+      "fields_done": true
+    },
+    "T090": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3SZM",
+      "fields_done": true
+    },
+    "T091": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3SbQ",
+      "fields_done": true
+    },
+    "T092": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Sdw",
+      "fields_done": true
+    },
+    "T093": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Sds",
+      "fields_done": true
+    },
+    "T094": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3SgE",
+      "fields_done": true
+    },
+    "T095": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Sf8",
+      "fields_done": true
+    },
+    "T097": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3WLY",
+      "fields_done": true
+    },
+    "E22": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Ww8",
+      "fields_done": true
+    },
+    "E23": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3WxQ",
+      "fields_done": true
+    },
+    "T096": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3WzE",
+      "fields_done": true
+    },
+    "U001": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3Wzc",
+      "fields_done": true
+    },
+    "U002": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W0A",
+      "fields_done": true
+    },
+    "U003": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W0Y",
+      "fields_done": true
+    },
+    "U004": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W0k",
+      "fields_done": true
+    },
+    "U005": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W0s",
+      "fields_done": true
+    },
+    "U006": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W1E",
+      "fields_done": true
+    },
+    "U007": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W1Q",
+      "fields_done": true
+    },
+    "U008": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W1c",
+      "fields_done": true
+    },
+    "U009": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W1o",
+      "fields_done": true
+    },
+    "U010": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W14",
+      "fields_done": true
+    },
+    "U011": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W2E",
+      "fields_done": true
+    },
+    "U012": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W2Q",
+      "fields_done": true
+    },
+    "U013": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W2Y",
+      "fields_done": true
+    },
+    "U014": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W2k",
+      "fields_done": true
+    },
+    "U015": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W2w",
+      "fields_done": true
+    },
+    "U016": {
+      "id": "PVTI_lADOFC4ies4Bl6XMzg-3W3A",
+      "fields_done": true
+    }
+  },
+  "configured": true,
+  "views": [
+    {
+      "name": "All delivery work",
+      "number": 1,
+      "layout": "TABLE_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "Weekly sprint board",
+      "number": 2,
+      "layout": "BOARD_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "Weekly roadmap",
+      "number": 3,
+      "layout": "ROADMAP_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "Epics and outcomes",
+      "number": 4,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:Epic"
+    },
+    {
+      "name": "Decisions and release gates",
+      "number": 5,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:\"Decision\",\"Release gate\""
+    },
+    {
+      "name": "Alpha and beta",
+      "number": 6,
+      "layout": "TABLE_LAYOUT",
+      "filter": "stage:\"Internal alpha\",\"Closed beta\",\"Public beta\""
+    },
+    {
+      "name": "UAT and business acceptance",
+      "number": 7,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:UAT"
+    },
+    {
+      "name": "Quality and release readiness",
+      "number": 8,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:\"Verification\",\"Release gate\""
+    },
+    {
+      "name": "Conditional backlog",
+      "number": 9,
+      "layout": "TABLE_LAYOUT",
+      "filter": "stage:\"Conditional backlog\""
+    },
+    {
+      "name": "Priority board",
+      "number": 10,
+      "layout": "BOARD_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "P0 blockers",
+      "number": 11,
+      "layout": "TABLE_LAYOUT",
+      "filter": "priority:P0 -status:Done"
+    },
+    {
+      "name": "Release timeline",
+      "number": 12,
+      "layout": "ROADMAP_LAYOUT",
+      "filter": "-stage:\"Conditional backlog\""
+    },
+    {
+      "name": "UAT board",
+      "number": 13,
+      "layout": "BOARD_LAYOUT",
+      "filter": "kind:UAT"
+    },
+    {
+      "name": "P0 priority board",
+      "number": 14,
+      "layout": "BOARD_LAYOUT",
+      "filter": "priority:P0"
+    },
+    {
+      "name": "P1 priority board",
+      "number": 15,
+      "layout": "BOARD_LAYOUT",
+      "filter": "priority:P1"
+    },
+    {
+      "name": "P2 priority board",
+      "number": 16,
+      "layout": "BOARD_LAYOUT",
+      "filter": "priority:P2"
+    }
+  ],
+  "population_complete": true
+}
