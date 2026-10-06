@@ -23,7 +23,15 @@ class ReusableModuleContract(unittest.TestCase):
         self.assertEqual(set(registry['packets']), {x['id'] for x in manifest['items']})
         for ident, packet in registry['packets'].items():
             present = {c['id'] for c in packet['criteria']}
-            self.assertTrue({ident + '-C' + f'{i:02d}' for i in range(1, 22)} <= present, ident)
+            self.assertTrue({ident + '-C' + f'{i:02d}' for i in range(1, 23)} <= present, ident)
+
+    def test_ci_inventory_covers_every_current_test_file_and_epic(self):
+        matrix = json.loads((ROOT / 'planning/raid-ci-matrix.json').read_text())
+        files = {str(p.relative_to(ROOT)) for p in (ROOT / 'tests').rglob('*') if p.name.endswith(('.test.ts', '.spec.ts'))}
+        self.assertEqual(set(matrix['test_files']), files)
+        self.assertEqual({f for e in matrix['epics'] for f in e['existing_test_files']}, files)
+        manifest = json.loads((ROOT / 'planning/raid-backlog.json').read_text())
+        self.assertEqual({e['epic'] for e in matrix['epics']}, {e['id'] for e in manifest['items'] if e['kind'] == 'epic'})
 
     def test_every_task_keeps_tdd_adapter_and_reuse_criteria(self):
         registry = json.loads((ROOT / 'planning/raid-task-contracts.json').read_text())

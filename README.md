@@ -155,3 +155,7 @@ Swaps inside the app, reputation, paid discovery, and unrestricted public APIs r
 Detailed criteria and completion review: [agent task contracts](docs/raid-agent-task-contracts.md). All 165 issues have individually numbered criteria and canonical requirement statements; missing evidence prevents valid completion.
 
 All feature development follows [mandatory TDD and completion evidence](docs/raid-agent-task-contracts.md) and [reusable module/replaceable adapter contracts](docs/raid-module-reuse.md), including auth and shared UI.
+
+[CI requirements for every feature](docs/raid-ci-plan.md) · [Automatically refreshed epic/issue status](docs/raid-project-status.md).
+
+[AI suitability, Codex/Claude models, effort and staffing for every issue](docs/raid-agent-assignment.md).

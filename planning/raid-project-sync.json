@@ -645,6 +645,62 @@
     "Task contract": {
       "id": "PVTF_lADOFC4ies4Bl6XMzhklmrI",
       "name": "Task contract"
+    },
+    "Required CI": {
+      "id": "PVTF_lADOFC4ies4Bl6XMzhkl9YU",
+      "name": "Required CI"
+    },
+    "CI status": {
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhkl9ZQ",
+      "name": "CI status",
+      "options": [
+        {
+          "id": "7619bfb9",
+          "name": "Not run"
+        },
+        {
+          "id": "c926d142",
+          "name": "Pending"
+        },
+        {
+          "id": "76b9c933",
+          "name": "Passed"
+        },
+        {
+          "id": "89218e63",
+          "name": "Failed"
+        },
+        {
+          "id": "f93685c0",
+          "name": "Blocked"
+        }
+      ]
+    },
+    "CI evidence": {
+      "id": "PVTF_lADOFC4ies4Bl6XMzhkl9Zg",
+      "name": "CI evidence"
+    },
+    "AI suitability": {
+      "id": "PVTSSF_lADOFC4ies4Bl6XMzhkmBjU",
+      "name": "AI suitability",
+      "options": [
+        {
+          "id": "f65bf222",
+          "name": "AI-led"
+        },
+        {
+          "id": "6282ef93",
+          "name": "AI-assisted"
+        },
+        {
+          "id": "4b95e9b2",
+          "name": "Human-led"
+        }
+      ]
+    },
+    "Model recommendations": {
+      "id": "PVTF_lADOFC4ies4Bl6XMzhkmBjs",
+      "name": "Model recommendations"
     }
   },
   "items": {
@@ -1312,100 +1368,76 @@
   "configured": true,
   "views": [
     {
-      "name": "All delivery work",
-      "number": 1,
-      "layout": "TABLE_LAYOUT",
-      "filter": null
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-pQ",
+      "name": "All delivery work"
     },
     {
-      "name": "Weekly sprint board",
-      "number": 2,
-      "layout": "BOARD_LAYOUT",
-      "filter": null
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-uk",
+      "name": "Weekly sprint board"
     },
     {
-      "name": "Weekly roadmap",
-      "number": 3,
-      "layout": "ROADMAP_LAYOUT",
-      "filter": null
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-2A",
+      "name": "Weekly roadmap"
     },
     {
-      "name": "Epics and outcomes",
-      "number": 4,
-      "layout": "TABLE_LAYOUT",
-      "filter": "kind:Epic"
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-2U",
+      "name": "Epics and outcomes"
     },
     {
-      "name": "Decisions and release gates",
-      "number": 5,
-      "layout": "TABLE_LAYOUT",
-      "filter": "kind:\"Decision\",\"Release gate\""
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-2w",
+      "name": "Decisions and release gates"
     },
     {
-      "name": "Alpha and beta",
-      "number": 6,
-      "layout": "TABLE_LAYOUT",
-      "filter": "stage:\"Internal alpha\",\"Closed beta\",\"Public beta\""
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-24",
+      "name": "Alpha and beta"
     },
     {
-      "name": "UAT and business acceptance",
-      "number": 7,
-      "layout": "TABLE_LAYOUT",
-      "filter": "kind:UAT"
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-3E",
+      "name": "UAT and business acceptance"
     },
     {
-      "name": "Quality and release readiness",
-      "number": 8,
-      "layout": "TABLE_LAYOUT",
-      "filter": "kind:\"Verification\",\"Release gate\""
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-3I",
+      "name": "Quality and release readiness"
     },
     {
-      "name": "Conditional backlog",
-      "number": 9,
-      "layout": "TABLE_LAYOUT",
-      "filter": "stage:\"Conditional backlog\""
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7-3Q",
+      "name": "Conditional backlog"
     },
     {
-      "name": "Priority board",
-      "number": 10,
-      "layout": "BOARD_LAYOUT",
-      "filter": null
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7_o4",
+      "name": "Priority board"
     },
     {
-      "name": "P0 blockers",
-      "number": 11,
-      "layout": "TABLE_LAYOUT",
-      "filter": "priority:P0 -status:Done"
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7_o8",
+      "name": "P0 blockers"
     },
     {
-      "name": "Release timeline",
-      "number": 12,
-      "layout": "ROADMAP_LAYOUT",
-      "filter": "-stage:\"Conditional backlog\""
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7_pE",
+      "name": "Release timeline"
     },
     {
-      "name": "UAT board",
-      "number": 13,
-      "layout": "BOARD_LAYOUT",
-      "filter": "kind:UAT"
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7_pI",
+      "name": "UAT board"
     },
     {
-      "name": "P0 priority board",
-      "number": 14,
-      "layout": "BOARD_LAYOUT",
-      "filter": "priority:P0"
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7_yE",
+      "name": "P0 priority board"
     },
     {
-      "name": "P1 priority board",
-      "number": 15,
-      "layout": "BOARD_LAYOUT",
-      "filter": "priority:P1"
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7_yM",
+      "name": "P1 priority board"
     },
     {
-      "name": "P2 priority board",
-      "number": 16,
-      "layout": "BOARD_LAYOUT",
-      "filter": "priority:P2"
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL7_yQ",
+      "name": "P2 priority board"
+    },
+    {
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL8Ds0",
+      "name": "CI and test coverage"
+    },
+    {
+      "id": "PVTV_lADOFC4ies4Bl6XMzgL8Ebk",
+      "name": "AI assignments"
     }
   ],
   "population_complete": true

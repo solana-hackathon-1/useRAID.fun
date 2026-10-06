@@ -60,3 +60,15 @@ The complete `npm run format:check` passes after normalizing canonical blueprint
 These failures remain tracked under T005 baseline CI repair and prevent claiming repository-wide verification or live release readiness. No test, policy assertion or audit allowlist was weakened to manufacture a passing result.
 
 A further RED/GREEN regression proves the completion validator rejects deletion of a mandatory core contract even when the report also omits it. CI also checks that the registry covers the entire backlog and every packet retains C01–C21.
+
+## CI coverage and issue status automation
+
+C22 adds required CI coverage to every task: 4,493 total criteria. The Project has 49 visible fields and a CI/test coverage view. The CI feature matrix inventories 66 current test files across all 23 epics and explicitly records missing domain coverage. Dependency security runs independently; all database suites emit JUnit; Studio browser coverage is included; the final gate rejects failure, cancellation and skipped required jobs.
+
+The status generator tracks actual GitHub epic/issue states, remaining children, next candidates and unknown/deleted issues. Regression tests cover incomplete epic closure, full closure and reopening a predecessor. The issue-event/daily workflow updates only the status document; manual GitHub closure still does not prove acceptance or live readiness. Local checks: 45 documentation tests, 26 Python tests, meaningful RED/GREEN CI-evidence regressions, JUnit report generation and whole-repository formatting. Previously documented app typecheck/audit gaps remain T005 blockers.
+
+## AI model and capacity recommendations
+
+All 165 issues have a proposed AI suitability, Codex and Claude model/effort, relative story-point estimate, staffing recommendation and human responsibility. Decision/release authority and representative UAT acceptance remain human. The model/effort registry test ran RED before the registry existed, then GREEN after complete mapping. Model names/settings were checked against current official guidance and the local Codex catalogue. These recommendations do not prove task completion or reserve runtime capacity. The Project uses one combined model field because GitHub rejected an additional field at its 50-field limit (49 fields are exposed by the API).
+
+A RED/GREEN regression also rejects mixed CI candidate SHAs, preventing successful checks from different revisions being combined into one completion report.

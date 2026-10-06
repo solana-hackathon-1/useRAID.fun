@@ -3,7 +3,7 @@
   "issues": 165,
   "native_parent_links": 164,
   "native_blocked_by_links": 383,
-  "fields": 44,
+  "fields": 49,
   "views": [
     {
       "name": "All delivery work",
@@ -100,6 +100,18 @@
       "number": 16,
       "layout": "BOARD_LAYOUT",
       "filter": "priority:P2"
+    },
+    {
+      "name": "CI and test coverage",
+      "number": 17,
+      "layout": "TABLE_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "AI assignments",
+      "number": 18,
+      "layout": "TABLE_LAYOUT",
+      "filter": null
     }
   ],
   "weekly_iterations": 16,
@@ -110,8 +122,9 @@
   "actual_dates_empty": true,
   "roadmap_date_axis_api_supported": false,
   "criteria_contract_profiles_verified": 165,
-  "numbered_criteria": 4328,
+  "numbered_criteria": 4493,
   "completion_review": "Not reviewed",
   "tdd_required_for_implementation": true,
-  "acceptance_scenarios": 75
+  "acceptance_scenarios": 75,
+  "ai_profiles_verified": 165
 }

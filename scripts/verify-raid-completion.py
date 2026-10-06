@@ -18,7 +18,7 @@ def validate(task_id, report, registry):
     if not packet:
         return ['Unknown task ID']
     present = {c['id'] for c in packet['criteria']}
-    mandatory = {task_id + '-C' + f'{i:02d}' for i in range(1, 22)}
+    mandatory = {task_id + '-C' + f'{i:02d}' for i in range(1, 23)}
     if not mandatory <= present:
         errors.append('Task registry omits mandatory core contracts: ' + ', '.join(sorted(mandatory - present)))
     current = hashlib.sha256((ROOT / 'RAID_AGENT_BLUEPRINT.md').read_bytes()).hexdigest()
@@ -54,6 +54,24 @@ def validate(task_id, report, registry):
                     errors.append('TDD ' + phase + ': invalid commit SHA')
                 if stage.get('result') != ('FAIL' if phase == 'red' else 'PASS'):
                     errors.append('TDD ' + phase + ': incorrect or missing actual result')
+    if packet.get('tdd_required') and not report.get('tdd', {}).get('non_code_rationale'):
+        ci = report.get('ci', {})
+        if not isinstance(ci, dict):
+            errors.append('CI evidence must map required check names to results')
+        else:
+            for name in packet.get('ci_requirements', []):
+                check = ci.get(name, {})
+                if not isinstance(check, dict) or check.get('result') != 'SUCCESS':
+                    errors.append('Required CI check has no successful result: ' + name)
+                    continue
+                if not check.get('evidence_url'):
+                    errors.append('Missing CI evidence URL: ' + name)
+                sha = check.get('sha', '')
+                if not isinstance(sha, str) or len(sha) != 40 or any(c not in '0123456789abcdef' for c in sha):
+                    errors.append('Invalid CI candidate SHA: ' + name)
+            candidates = {check.get('sha') for name, check in ci.items() if name in packet.get('ci_requirements', []) and isinstance(check, dict) and isinstance(check.get('sha'), str)}
+            if len(candidates) > 1:
+                errors.append('Required CI checks must verify the same candidate SHA')
     evidence = report.get('criteria', {})
     expected_ids = {c['id'] for c in packet['criteria']}
     if not isinstance(evidence, dict):
