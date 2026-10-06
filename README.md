@@ -1,5 +1,9 @@
 # useRAID.fun
 
+## Blueprint and delivery plan
+
+[RAID blueprint](RAID_AGENT_BLUEPRINT.md) is the canonical product and engineering specification. Start with the [two-week sprint and alpha/beta plan](docs/raid-sprint-plan.md), the [accelerated delivery timeline](docs/raid-delivery-timeline.md), then the [development/testing phase checklists](docs/raid-development-phases.md) and [complete requirement coverage](docs/raid-delivery-coverage.md). The plan targets a controlled release after dedicated alpha/closed beta in 50 working days and broader selected delivery in 80, subject to staffing, decisions and verified release gates. It includes GitHub-rendered timeline and dependency diagrams.
+
 ## Current release
 
 Creator Studio supports X Campaigns and Existing Token Raids through one USDC-funded engine: target post previews, shared creator balance, impression calculator, duration, qualified contributors, review/disputes, manual payouts, and reports. Token Raids rank first. Legacy SOL Raids retain original rules. Run `npm run studio:preview` for isolated local testing at http://localhost:3007/studio-test. See [Studio setup, funding, CPA, and rollback](docs/creator-studio.md). Launchpads, trading, creator-fee payouts, and token creation are coming soon. The launchpad implementation below stays disabled by the release gate (`launchpadsAvailable` is `false` in `src/lib/release.ts`); only reconciliation of already-broadcast transactions keeps running. Studio launches and deposits need `X_TRACKING_V2_SETTLEMENT_ENABLED=true`; see the [operator checklist](docs/operations.md#operator-checklist) before deploying.
