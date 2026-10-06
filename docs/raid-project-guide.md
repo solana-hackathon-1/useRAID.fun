@@ -105,3 +105,11 @@ UAT does not authorize recruitment, funds, publication or deployment. A live bet
 [planning/raid-backlog.json](../planning/raid-backlog.json) holds stable IDs, developer scope, criteria and dependencies. [planning/raid-github-sync.json](../planning/raid-github-sync.json) maps them to actual issue/milestone numbers; [planning/raid-project-sync.json](../planning/raid-project-sync.json) records the actual Project and fields. These records contain no credentials. Use them to inspect/reconcile existing objects rather than duplicate issues.
 
 When requirements change, follow blueprint section 40: update the canonical decision register and contracts/tests together, then update issue descriptions and forecast. When a sprint is rebaselined, align milestone dates, iteration dates and item forecast dates. Preserve accepted customer terms and immutable money/access history.
+
+Detailed criteria and completion review: [agent task contracts](raid-agent-task-contracts.md). All 165 issues have individually numbered criteria and canonical requirement statements; missing evidence prevents valid completion.
+
+## Detailed criteria and TDD fields
+
+The Project now has 44 fields. **Criteria coverage** starts at zero reviewed criteria per task; update only from actual evidence. **Completion review** starts Not reviewed and becomes Needs changes, Blocked or Accepted through independent review. **Task contract** links to the numbered issue criteria. Every implementation change follows RED → GREEN → REFACTOR, with genuine failure/pass/regression evidence and full commit SHAs. Read [mandatory TDD and completion rules](raid-agent-task-contracts.md#mandatory-test-driven-development) before implementation.
+
+Every internal feature, including authentication and sessions, must satisfy [the module reuse and adapter matrix](raid-module-reuse.md). Criteria C20/C21 require shared adapter tests, safe provider switching, same-change documentation and an independent consuming example. These are required development outcomes; existing features are not claimed compliant until verified.

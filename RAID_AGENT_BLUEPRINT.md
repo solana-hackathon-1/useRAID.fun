@@ -1,6 +1,6 @@
 # RAID — Complete Product and Development Agent Blueprint
 
-**Version:** 1.0  
+**Version:** 1.1<br>
 **Prepared:** 6 October 2026  
 **Audience:** Every human and AI agent designing, building, reviewing, testing, or operating RAID  
 **Document type:** Shared product specification, engineering blueprint, and agent handoff contract  
@@ -14,18 +14,18 @@
 
 ## Navigation
 
-| Read this first | Product and participation | Work and money | Engineering and delivery |
-|---|---|---|---|
-| [00. Agent entry point](#00-agent-entry-point) | [04. Product map](#04-product-map) | [11. Creating and recommending a Raid](#11-creating-and-recommending-a-raid) | [24. System architecture](#24-system-architecture) |
-| [01. Evidence and authority](#01-evidence-and-authority) | [05. Launchpad](#05-launchpad) | [12. Normal Raid lifecycle](#12-normal-raid-lifecycle) | [25. Domain and data model](#25-domain-and-data-model) |
-| [02. Decision register](#02-decision-register) | [06. Guilds and membership](#06-guilds-and-membership) | [13. One active Raid](#13-one-active-raid) | [26. API contracts](#26-api-contracts) |
-| [03. Vocabulary](#03-vocabulary) | [07. Identity and onboarding](#07-identity-and-onboarding) | [14. Parties](#14-parties) | [27. Events and background jobs](#27-events-and-background-jobs) |
-| [33. Agent work contracts](#33-agent-work-contracts) | [08. Skills and ranks](#08-skills-and-ranks) | [15. Guild Challenges](#15-guild-challenges) | [28. Permissions and security](#28-permissions-and-security) |
-| [34. Build sequence](#34-build-sequence) | [09. Reputation and Guild Trust](#09-reputation-and-guild-trust) | [16. Rewards and escrow](#16-rewards-and-escrow) | [29. Configuration and administration](#29-configuration-and-administration) |
-| [35. Acceptance scenarios](#35-acceptance-scenarios) | [10. Visibility and code access](#10-visibility-and-code-access) | [17. Reviews and disputes](#17-reviews-and-disputes) | [30. Operations and recovery](#30-operations-and-recovery) |
-| [38. Open decisions](#38-open-decisions) | [19. AI agents](#19-ai-agents) | [18. Feed and sponsored placement](#18-feed-and-sponsored-placement) | [31. Metrics](#31-metrics) |
-| [40. Handoff templates](#40-handoff-templates) | [20. AI influencers](#20-ai-influencers) | [21. Ongoing Roles](#21-ongoing-roles) | [32. Testing strategy](#32-testing-strategy) |
-| [41. Sources](#41-sources) | [22. Token economy](#22-token-economy) | [23. Screens and user experience](#23-screens-and-user-experience) | [36. Worked examples](#36-worked-examples) |
+| Read this first                                          | Product and participation                                        | Work and money                                                               | Engineering and delivery                                                     |
+| -------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [00. Agent entry point](#00-agent-entry-point)           | [04. Product map](#04-product-map)                               | [11. Creating and recommending a Raid](#11-creating-and-recommending-a-raid) | [24. System architecture](#24-system-architecture)                           |
+| [01. Evidence and authority](#01-evidence-and-authority) | [05. Launchpad](#05-launchpad)                                   | [12. Normal Raid lifecycle](#12-normal-raid-lifecycle)                       | [25. Domain and data model](#25-domain-and-data-model)                       |
+| [02. Decision register](#02-decision-register)           | [06. Guilds and membership](#06-guilds-and-membership)           | [13. One active Raid](#13-one-active-raid)                                   | [26. API contracts](#26-api-contracts)                                       |
+| [03. Vocabulary](#03-vocabulary)                         | [07. Identity and onboarding](#07-identity-and-onboarding)       | [14. Parties](#14-parties)                                                   | [27. Events and background jobs](#27-events-and-background-jobs)             |
+| [33. Agent work contracts](#33-agent-work-contracts)     | [08. Skills and ranks](#08-skills-and-ranks)                     | [15. Guild Challenges](#15-guild-challenges)                                 | [28. Permissions and security](#28-permissions-and-security)                 |
+| [34. Build sequence](#34-build-sequence)                 | [09. Reputation and Guild Trust](#09-reputation-and-guild-trust) | [16. Rewards and escrow](#16-rewards-and-escrow)                             | [29. Configuration and administration](#29-configuration-and-administration) |
+| [35. Acceptance scenarios](#35-acceptance-scenarios)     | [10. Visibility and code access](#10-visibility-and-code-access) | [17. Reviews and disputes](#17-reviews-and-disputes)                         | [30. Operations and recovery](#30-operations-and-recovery)                   |
+| [38. Open decisions](#38-open-decisions)                 | [19. AI agents](#19-ai-agents)                                   | [18. Feed and sponsored placement](#18-feed-and-sponsored-placement)         | [31. Metrics](#31-metrics)                                                   |
+| [40. Handoff templates](#40-handoff-templates)           | [20. AI influencers](#20-ai-influencers)                         | [21. Ongoing Roles](#21-ongoing-roles)                                       | [32. Testing strategy](#32-testing-strategy)                                 |
+| [41. Sources](#41-sources)                               | [22. Token economy](#22-token-economy)                           | [23. Screens and user experience](#23-screens-and-user-experience)           | [36. Worked examples](#36-worked-examples)                                   |
 
 ---
 
@@ -37,10 +37,10 @@ Use this document as the common specification when implementing RAID. It provide
 
 Two different meanings of **agent** occur in this project:
 
-| Meaning | Role |
-|---|---|
-| Development agent | An AI assistant or human contributor building RAID itself. The instructions in this file guide its implementation work. |
-| Raider AI agent | A registered product participant that performs paid work inside RAID. It has an operator, capability evidence, permissions, a budget, and an activity record. |
+| Meaning           | Role                                                                                                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Development agent | An AI assistant or human contributor building RAID itself. The instructions in this file guide its implementation work.                                       |
+| Raider AI agent   | A registered product participant that performs paid work inside RAID. It has an operator, capability evidence, permissions, a budget, and an activity record. |
 
 A development agent is not automatically a registered Raider AI agent. Reading this file grants neither production credentials nor permission to spend funds, send messages, publish content, or run work for a customer.
 
@@ -100,36 +100,38 @@ Accordingly, this document does not claim to reproduce unseen PDF content or rec
 
 ### 01.2 Product evidence register
 
-| Evidence ID | Visible decision or context | Interpretation used here |
-|---|---|---|
-| C01 | Existing discussion describes RAID as a Solana launchpad with Guilds and an Adventure Guild economy. | Preserve launchpad identity and the project-to-work loop. |
-| C02 | User asks for recommended Raid rank and recommended funding/token/stablecoin reward. | Recommendation is a founder-facing product capability. |
-| C03 | User asks for a Raid feed at the front of the website and paid/bid placement. | Homepage discovery and paid visibility are in the product scope. |
-| C04 | User names Guild Founders and defines Guild Members as project-token holders. | Separate founder authority from holder membership. |
-| C05 | User agrees ranks represent capacity and says to scrap the token/rank part. | No rank-dependent token balance ladder; licensing remains unresolved. |
-| C06 | User asks that projects gain reputation through their Raid history. | Guild reputation is distinct from Raider skill rank. |
-| C07 | User asks for progressive access based on completed work and cooperation. | Public discovery plus explicit, limited access to sensitive work. |
-| C08 | User asks how to verify credibility, skills, spam, onboarding tests, and code delivery. | Evidence-based onboarding, trials, anti-abuse, and a controlled code workflow. |
-| C09 | User says: limit one Raider to one Raid at a moment. | A platform-wide concurrency invariant with no rank exceptions. |
-| C10 | User proposes a simple hackathon where participants submit and the eligible person does the Raid. | Default to a Challenge that selects a builder for a main Raid; retain prize hackathons as a separate mode from the expanded discussion. |
-| C11 | Existing discussion includes humans, AI agents, AI influencers, Parties, and later ongoing Roles. | Preserve the complete domain while staging implementation. |
-| C12 | User requests a complete Markdown blueprint that every agent can understand. | One self-contained master specification with domain-specific agent contracts. |
+| Evidence ID | Visible decision or context                                                                          | Interpretation used here                                                                                                                |
+| ----------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| C01         | Existing discussion describes RAID as a Solana launchpad with Guilds and an Adventure Guild economy. | Preserve launchpad identity and the project-to-work loop.                                                                               |
+| C02         | User asks for recommended Raid rank and recommended funding/token/stablecoin reward.                 | Recommendation is a founder-facing product capability.                                                                                  |
+| C03         | User asks for a Raid feed at the front of the website and paid/bid placement.                        | Homepage discovery and paid visibility are in the product scope.                                                                        |
+| C04         | User names Guild Founders and defines Guild Members as project-token holders.                        | Separate founder authority from holder membership.                                                                                      |
+| C05         | User agrees ranks represent capacity and says to scrap the token/rank part.                          | No rank-dependent token balance ladder; licensing remains unresolved.                                                                   |
+| C06         | User asks that projects gain reputation through their Raid history.                                  | Guild reputation is distinct from Raider skill rank.                                                                                    |
+| C07         | User asks for progressive access based on completed work and cooperation.                            | Public discovery plus explicit, limited access to sensitive work.                                                                       |
+| C08         | User asks how to verify credibility, skills, spam, onboarding tests, and code delivery.              | Evidence-based onboarding, trials, anti-abuse, and a controlled code workflow.                                                          |
+| C09         | User says: limit one Raider to one Raid at a moment.                                                 | A platform-wide concurrency invariant with no rank exceptions.                                                                          |
+| C10         | User proposes a simple hackathon where participants submit and the eligible person does the Raid.    | Default to a Challenge that selects a builder for a main Raid; retain prize hackathons as a separate mode from the expanded discussion. |
+| C11         | Existing discussion includes humans, AI agents, AI influencers, Parties, and later ongoing Roles.    | Preserve the complete domain while staging implementation.                                                                              |
+| C13         | Owner requires every implementation to use test-driven development.                                  | Genuine RED/GREEN/REFACTOR evidence; non-code acceptance defined first.                                                                 |
+| C14         | Owner requires replaceable integrations and documented reusable modules.                             | Stable adapters, safe provider replacement and independently usable module documentation/examples.                                      |
+| C12         | User requests a complete Markdown blueprint that every agent can understand.                         | One self-contained master specification with domain-specific agent contracts.                                                           |
 
 These are conversation references, not claims independently verified on the internet. Technical platform facts are linked to primary documentation in section 41. The architecture, product defaults, formulas, sample scenarios, and proposed controls are original design recommendations for RAID.
 
 ### 01.3 Corrections to earlier suggestions
 
-| Earlier suggestion | Canonical interpretation |
-|---|---|
-| A token holding ladder determines rank eligibility. | Removed. Capacity determines skill rank. No escalating rank stake is part of the baseline. |
-| A/B/S Raiders might get several active Raids later. | Not adopted. The user's one-active-Raid rule remains in force. |
-| Completing community posts unlocks the codebase. | Relevant skill evidence and explicit Guild permission determine access; posting volume is insufficient. |
-| GitHub “write / branch only” hides other code. | Branch rules restrict changes. They do not create folder or branch confidentiality. Use a separate scoped repository or an isolated workspace. |
-| A token-holder is a project owner. | Membership is a product relationship. It creates no automatic equity, treasury, governance, or intellectual-property rights. |
+| Earlier suggestion                                             | Canonical interpretation                                                                                                                                     |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| A token holding ladder determines rank eligibility.            | Removed. Capacity determines skill rank. No escalating rank stake is part of the baseline.                                                                   |
+| A/B/S Raiders might get several active Raids later.            | Not adopted. The user's one-active-Raid rule remains in force.                                                                                               |
+| Completing community posts unlocks the codebase.               | Relevant skill evidence and explicit Guild permission determine access; posting volume is insufficient.                                                      |
+| GitHub “write / branch only” hides other code.                 | Branch rules restrict changes. They do not create folder or branch confidentiality. Use a separate scoped repository or an isolated workspace.               |
+| A token-holder is a project owner.                             | Membership is a product relationship. It creates no automatic equity, treasury, governance, or intellectual-property rights.                                 |
 | Escrow alone proves work quality or guarantees a fair outcome. | Escrow reserves funds under a defined release/refund mechanism; quality, acceptance rules, deadlines, dispute authority, and recovery still need definition. |
-| Buying a more expensive AI model makes it an S-rank agent. | Model configuration is an execution choice. Capability rank requires evidence against a versioned evaluation. |
-| Clicking Submit immediately frees the Raider forever. | Under the default, review and agreed revisions remain active work until operational closure. Bounded timeouts prevent indefinite blocking. |
-| A hackathon always means winner-take-all unpaid work. | Selection challenges and prize competitions are separate formats with disclosed compensation. |
+| Buying a more expensive AI model makes it an S-rank agent.     | Model configuration is an execution choice. Capability rank requires evidence against a versioned evaluation.                                                |
+| Clicking Submit immediately frees the Raider forever.          | Under the default, review and agreed revisions remain active work until operational closure. Bounded timeouts prevent indefinite blocking.                   |
+| A hackathon always means winner-take-all unpaid work.          | Selection challenges and prize competitions are separate formats with disclosed compensation.                                                                |
 
 ---
 
@@ -137,105 +139,112 @@ These are conversation references, not claims independently verified on the inte
 
 ### 02.1 Locked product requirements
 
-| ID | Requirement | Evidence |
-|---|---|---|
-| R01 | RAID retains a project launchpad and Guild identity. | C01 |
-| R02 | A project launched through RAID becomes a Guild; its authorized creator becomes the Guild Founder. | C01, C04 |
-| R03 | Holding the recognized project token establishes holder eligibility for that Guild. | C04 |
-| R04 | A Raider can work across Guilds and can also be a Founder or Member. | C01, C04 |
-| R05 | Every published Raid has an E–S difficulty label and explicit skill requirements. | C01, C02, C05 |
-| R06 | Skill rank represents demonstrated capacity, not token wealth or paid placement. | C05 |
-| R07 | RAID recommends task difficulty and reward composition/range; participant routing and duration complete the proposed assistance flow. | C02 directly requests rank/reward; routing/duration are carried-forward additions |
-| R08 | The public website has a discoverable Raid feed. | C03 |
-| R09 | Paid placement exists as a clearly distinguishable visibility product. | C03; labeling is a trust-preserving implementation requirement |
-| R10 | Guilds accumulate a reputation based on funding, payment, requirements, and treatment of contributors. | C06 |
-| R11 | Sensitive work uses progressive trust and explicit access approval. | C07, C08 |
-| R12 | Skills can be claimed, evidenced, assessed, and verified independently. | C08 |
-| R13 | One Raider may hold only one active Raid/work engagement at a time. | C09 |
-| R14 | A high-trust Challenge may select a Raider or Party for a larger Raid. | C10 |
+| ID  | Requirement                                                                                                                                                                       | Evidence                                                                          |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| R01 | RAID retains a project launchpad and Guild identity.                                                                                                                              | C01                                                                               |
+| R02 | A project launched through RAID becomes a Guild; its authorized creator becomes the Guild Founder.                                                                                | C01, C04                                                                          |
+| R03 | Holding the recognized project token establishes holder eligibility for that Guild.                                                                                               | C04                                                                               |
+| R04 | A Raider can work across Guilds and can also be a Founder or Member.                                                                                                              | C01, C04                                                                          |
+| R05 | Every published Raid has an E–S difficulty label and explicit skill requirements.                                                                                                 | C01, C02, C05                                                                     |
+| R06 | Skill rank represents demonstrated capacity, not token wealth or paid placement.                                                                                                  | C05                                                                               |
+| R07 | RAID recommends task difficulty and reward composition/range; participant routing and duration complete the proposed assistance flow.                                             | C02 directly requests rank/reward; routing/duration are carried-forward additions |
+| R08 | The public website has a discoverable Raid feed.                                                                                                                                  | C03                                                                               |
+| R09 | Paid placement exists as a clearly distinguishable visibility product.                                                                                                            | C03; labeling is a trust-preserving implementation requirement                    |
+| R10 | Guilds accumulate a reputation based on funding, payment, requirements, and treatment of contributors.                                                                            | C06                                                                               |
+| R11 | Sensitive work uses progressive trust and explicit access approval.                                                                                                               | C07, C08                                                                          |
+| R12 | Skills can be claimed, evidenced, assessed, and verified independently.                                                                                                           | C08                                                                               |
+| R13 | One Raider may hold only one active Raid/work engagement at a time.                                                                                                               | C09                                                                               |
+| R14 | A high-trust Challenge may select a Raider or Party for a larger Raid.                                                                                                            | C10                                                                               |
+| R15 | Every external integration is isolated behind a stable, versioned, replaceable adapter contract; provider-specific SDKs, credentials and behavior do not leak into domain rules.  | C14                                                                               |
+| R16 | Every delivered module has complete current documentation, explicit dependency/host contracts and a verified consuming example so it can be reused in another authorized project. | C14                                                                               |
 
 ### 02.2 Carried-forward product direction
 
-| ID | Direction | Scope |
-|---|---|---|
-| P01 | Humans, registered AI agents, and AI influencers are distinct participant types. | Common work contracts; different proof and execution needs. |
-| P02 | Parties combine complementary contributors. | Every participant has consent, responsibility, capacity checks, and a payout allocation. |
-| P03 | Prize-based Guild Challenges can compare multiple solutions. | Separate from selection challenges. |
-| P04 | Ongoing Roles may follow later. | An ongoing responsibility must not bypass the one-active rule. |
-| P05 | Rewards can combine supported stablecoins, SOL, project tokens, and RAID. | Support follows tested adapters; “anything” is not unchecked arbitrary-token acceptance. |
-| P06 | RAID token utilities may include platform services, execution credits, and paid visibility. | No economics or launch allocation is finalized in the available source. |
-| P07 | Newcomers should have a low-risk path to earning and proving skill. | No forced token purchase in the proposed baseline. |
-| P08 | AI assistance should reduce founder configuration work. | Explanations and founder control remain visible. |
+| ID  | Direction                                                                                   | Scope                                                                                    |
+| --- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| P01 | Humans, registered AI agents, and AI influencers are distinct participant types.            | Common work contracts; different proof and execution needs.                              |
+| P02 | Parties combine complementary contributors.                                                 | Every participant has consent, responsibility, capacity checks, and a payout allocation. |
+| P03 | Prize-based Guild Challenges can compare multiple solutions.                                | Separate from selection challenges.                                                      |
+| P04 | Ongoing Roles may follow later.                                                             | An ongoing responsibility must not bypass the one-active rule.                           |
+| P05 | Rewards can combine supported stablecoins, SOL, project tokens, and RAID.                   | Support follows tested adapters; “anything” is not unchecked arbitrary-token acceptance. |
+| P06 | RAID token utilities may include platform services, execution credits, and paid visibility. | No economics or launch allocation is finalized in the available source.                  |
+| P07 | Newcomers should have a low-risk path to earning and proving skill.                         | No forced token purchase in the proposed baseline.                                       |
+| P08 | AI assistance should reduce founder configuration work.                                     | Explanations and founder control remain visible.                                         |
 
 ### 02.3 Defaults adopted for the initial engineering specification
 
-| ID | Default | Reason |
-|---|---|---|
-| D01 | One TypeScript modular monolith, PostgreSQL, web process, background worker, and separate untrusted execution environments. | Keeps transactions and ownership clear without early microservices. |
-| D02 | No mandatory RAID holding/staking requirement in the baseline. | The token/rank ladder was removed; remaining license policy is OPEN. |
-| D03 | Every paid execution slot, public or private, must have fully verified reward funding before accepting commitments and verified escrow binding before work starts. | Selection compensation and main-Raid funding are separate obligations. |
-| D04 | All confidential Raids and all B/A/S work require approval plus participant acceptance. | Rank alone cannot grant private access. |
-| D05 | A standard Raid has one selected Raider or one Party. | Group microtasks use separate execution slots, not several people competing for one promised payment. |
-| D06 | Build and review duties hold the active slot; a terminal work outcome releases it independently of settlement. | Preserves commitment without trapping workers during payment incidents. |
-| D07 | Skill-specific ranks and evidence are canonical; an optional profile headline cannot override them. | Community activity cannot manufacture a developer qualification. |
-| D08 | Use public or sanitized task material for initial onboarding and trial work. | Reduces required trust for first participation. |
-| D09 | Initial automated recommendations use a bounded rubric; an LLM can explain or propose a structured draft. | Avoids pretending an unevaluated model can price every job precisely. |
-| D10 | Initial sponsored placements use disclosed fixed slots; bidding is a later compatible mode. | Makes delivery, billing, and refunds easier to validate. |
-| D11 | Exact launch protocol, custody design, program authorities, fee schedule, and token economics remain OPEN. | The source discussion does not finalize them. |
-| D12 | Mainnet payments and trading remain disabled until their specific implementation and operating gates pass. | A mock or devnet flow is not a production payment system. |
-| D13 | Removing a wallet or losing a token balance cannot erase completed work, assessed skills, or financial claims. | Adopted preservation default; not a claim that C05 explicitly settled retention mechanics. |
+| ID  | Default                                                                                                                                                            | Reason                                                                                                |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| D01 | One TypeScript modular monolith, PostgreSQL, web process, background worker, and separate untrusted execution environments.                                        | Keeps transactions and ownership clear without early microservices.                                   |
+| D02 | No mandatory RAID holding/staking requirement in the baseline.                                                                                                     | The token/rank ladder was removed; remaining license policy is OPEN.                                  |
+| D03 | Every paid execution slot, public or private, must have fully verified reward funding before accepting commitments and verified escrow binding before work starts. | Selection compensation and main-Raid funding are separate obligations.                                |
+| D04 | All confidential Raids and all B/A/S work require approval plus participant acceptance.                                                                            | Rank alone cannot grant private access.                                                               |
+| D05 | A standard Raid has one selected Raider or one Party.                                                                                                              | Group microtasks use separate execution slots, not several people competing for one promised payment. |
+| D06 | Build and review duties hold the active slot; a terminal work outcome releases it independently of settlement.                                                     | Preserves commitment without trapping workers during payment incidents.                               |
+| D07 | Skill-specific ranks and evidence are canonical; an optional profile headline cannot override them.                                                                | Community activity cannot manufacture a developer qualification.                                      |
+| D08 | Use public or sanitized task material for initial onboarding and trial work.                                                                                       | Reduces required trust for first participation.                                                       |
+| D09 | Initial automated recommendations use a bounded rubric; an LLM can explain or propose a structured draft.                                                          | Avoids pretending an unevaluated model can price every job precisely.                                 |
+| D10 | Initial sponsored placements use disclosed fixed slots; bidding is a later compatible mode.                                                                        | Makes delivery, billing, and refunds easier to validate.                                              |
+| D11 | Exact launch protocol, custody design, program authorities, fee schedule, and token economics remain OPEN.                                                         | The source discussion does not finalize them.                                                         |
+| D12 | Mainnet payments and trading remain disabled until their specific implementation and operating gates pass.                                                         | A mock or devnet flow is not a production payment system.                                             |
+| D13 | Removing a wallet or losing a token balance cannot erase completed work, assessed skills, or financial claims.                                                     | Adopted preservation default; not a claim that C05 explicitly settled retention mechanics.            |
 
 ### 02.4 Non-negotiable engineering invariants
 
-| ID | Invariant |
-|---|---|
-| I01 | The database rejects a second active engagement for the same canonical participant. |
-| I02 | Party activation either reserves every participant or reserves none. |
-| I03 | Every financial obligation and transfer uses integer base units and a full asset identity. |
-| I04 | Cumulative paid, refunded, and remaining obligations never exceed verified credited funds for that asset. |
-| I05 | A duplicate command, webhook, retry, or reconciliation pass cannot create a duplicate business outcome. |
-| I06 | Private bytes never appear in public API fields, rendered page payloads, search indexes, previews, logs, or notification snippets. |
-| I07 | No background score change, token sale, or service outage grants code access or confiscates a reward. |
-| I08 | Every acceptance and financial decision refers to immutable terms and a specific submission/version. |
-| I09 | External effects are recorded, retried, and reconciled; a database transaction cannot pretend to atomically commit GitHub and Solana. |
-| I10 | Only authorized actors can change the underlying business state; hiding a button is not authorization. |
-| I11 | Payout, refund, access grant, and dispute decisions have an audit trail and explicit authority. |
-| I12 | Sample program IDs, fake mints, and fabricated performance data cannot pass production validation. |
+| ID  | Invariant                                                                                                                                                                                             |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I01 | The database rejects a second active engagement for the same canonical participant.                                                                                                                   |
+| I02 | Party activation either reserves every participant or reserves none.                                                                                                                                  |
+| I03 | Every financial obligation and transfer uses integer base units and a full asset identity.                                                                                                            |
+| I04 | Cumulative paid, refunded, and remaining obligations never exceed verified credited funds for that asset.                                                                                             |
+| I05 | A duplicate command, webhook, retry, or reconciliation pass cannot create a duplicate business outcome.                                                                                               |
+| I06 | Private bytes never appear in public API fields, rendered page payloads, search indexes, previews, logs, or notification snippets.                                                                    |
+| I07 | No background score change, token sale, or service outage grants code access or confiscates a reward.                                                                                                 |
+| I08 | Every acceptance and financial decision refers to immutable terms and a specific submission/version.                                                                                                  |
+| I09 | External effects are recorded, retried, and reconciled; a database transaction cannot pretend to atomically commit GitHub and Solana.                                                                 |
+| I10 | Only authorized actors can change the underlying business state; hiding a button is not authorization.                                                                                                |
+| I11 | Payout, refund, access grant, and dispute decisions have an audit trail and explicit authority.                                                                                                       |
+| I12 | Sample program IDs, fake mints, and fabricated performance data cannot pass production validation.                                                                                                    |
+| I13 | Implementation changes follow genuine failing-test-first RED, GREEN and REFACTOR evidence; tests cannot be weakened to bypass requirements. Non-code deliverables define acceptance before execution. |
+
+### 02.5 Accepted owner changes — 6 October 2026
+
+DEC-2026-10-06-01: project owner requires test-driven implementation; accepted, related I13/AC75. DEC-2026-10-06-02: project owner requires every integration to be replaceable and every delivered module documented and reusable; accepted, related R15/R16/AC73/AC74 and sections 24.6–24.7. These decisions preserve D01 modular-monolith transactions and do not select OPEN providers, authorize publishing packages or alter accepted customer terms. Existing code is not claimed compliant; inventory gaps, migrate in bounded tasks and verify them before completion.
 
 ---
 
 ## 03. Vocabulary
 
-| Term | Exact meaning |
-|---|---|
-| RAID | The platform brand. |
-| RAID token | A possible platform asset, identified by its actual mint and network when configured. Distinct from the brand and from service credits. |
-| Guild | A project workspace with a public profile, authorized administrators, work history, and contributor relationships. Its primary token is nullable while launch/verification is pending; holder membership starts only after verification. |
-| Guild Founder | The verified creator or authorized project representative for a Guild; authority comes from account permissions, not current token balance. |
-| Guild administrator | An explicitly delegated manager with a permission set. It is not necessarily a co-founder. |
-| Guild Member | A token-holder relationship to a Guild, subject to verified holder eligibility and display preferences. |
-| Raider | A canonical participant eligible to perform work. Human, AI agent, or AI influencer is a participant kind. |
-| Party | A roster of consenting Raiders organized for one engagement or reusable team identity. It does not create extra work capacity. |
-| Raid | A defined unit of paid work with immutable terms, requirements, reward, review process, and selected executor. |
-| Raid template/campaign | A definition that may create multiple separately funded execution slots, such as testing by 50 users. |
-| Engagement | The execution record tying one Raid slot or Challenge entry to its participants and active commitments. |
-| Guild Challenge | A structured multi-entry format. It is either selection for follow-on work or a prize competition. |
-| Selection Challenge | A bounded assessment/prototype round used to choose who is offered a separately funded main Raid. |
-| Prize Competition | A contest with a published prize pool, scoring rubric, deadlines, and award allocation. |
-| Role | An ongoing responsibility with its own renewal and payment cadence; a later product phase. |
-| Skill rank | E, D, C, B, A, or S capability level for one skill domain. |
-| Raid difficulty | The estimated complexity/capacity needed for a task, separate from confidentiality and reliability thresholds. |
-| Raider reputation | Evidence of a participant's reliability across Guilds. |
-| Guild reputation | Evidence of a Guild's reliability toward contributors. |
-| Guild Trust | A Raider–Guild relationship record. It is not transferable to another Guild. |
-| Access grant | Explicit permission to a particular resource, purpose, scope, and duration. |
-| Escrow | Funds controlled by a defined settlement mechanism and release/refund authority. A UI balance label is not escrow. |
-| Terms version | Immutable snapshot accepted by the funder and executor, including scope, reward, deadlines, review, and dispute policy. |
-| Submission | A versioned deliverable with evidence and a timestamp. |
-| Outcome | A reasoned work result, separate from a payment transaction. |
-| Settlement | Authorized allocation and transfer of funds according to the agreed outcome. |
-| Sponsor | The payer for clearly labeled placement. It need not be the executor or award judge. |
-| Service credits | Non-token usage units under explicit billing terms. They do not imply a transferable token or a guaranteed conversion rate. |
+| Term                   | Exact meaning                                                                                                                                                                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RAID                   | The platform brand.                                                                                                                                                                                                                      |
+| RAID token             | A possible platform asset, identified by its actual mint and network when configured. Distinct from the brand and from service credits.                                                                                                  |
+| Guild                  | A project workspace with a public profile, authorized administrators, work history, and contributor relationships. Its primary token is nullable while launch/verification is pending; holder membership starts only after verification. |
+| Guild Founder          | The verified creator or authorized project representative for a Guild; authority comes from account permissions, not current token balance.                                                                                              |
+| Guild administrator    | An explicitly delegated manager with a permission set. It is not necessarily a co-founder.                                                                                                                                               |
+| Guild Member           | A token-holder relationship to a Guild, subject to verified holder eligibility and display preferences.                                                                                                                                  |
+| Raider                 | A canonical participant eligible to perform work. Human, AI agent, or AI influencer is a participant kind.                                                                                                                               |
+| Party                  | A roster of consenting Raiders organized for one engagement or reusable team identity. It does not create extra work capacity.                                                                                                           |
+| Raid                   | A defined unit of paid work with immutable terms, requirements, reward, review process, and selected executor.                                                                                                                           |
+| Raid template/campaign | A definition that may create multiple separately funded execution slots, such as testing by 50 users.                                                                                                                                    |
+| Engagement             | The execution record tying one Raid slot or Challenge entry to its participants and active commitments.                                                                                                                                  |
+| Guild Challenge        | A structured multi-entry format. It is either selection for follow-on work or a prize competition.                                                                                                                                       |
+| Selection Challenge    | A bounded assessment/prototype round used to choose who is offered a separately funded main Raid.                                                                                                                                        |
+| Prize Competition      | A contest with a published prize pool, scoring rubric, deadlines, and award allocation.                                                                                                                                                  |
+| Role                   | An ongoing responsibility with its own renewal and payment cadence; a later product phase.                                                                                                                                               |
+| Skill rank             | E, D, C, B, A, or S capability level for one skill domain.                                                                                                                                                                               |
+| Raid difficulty        | The estimated complexity/capacity needed for a task, separate from confidentiality and reliability thresholds.                                                                                                                           |
+| Raider reputation      | Evidence of a participant's reliability across Guilds.                                                                                                                                                                                   |
+| Guild reputation       | Evidence of a Guild's reliability toward contributors.                                                                                                                                                                                   |
+| Guild Trust            | A Raider–Guild relationship record. It is not transferable to another Guild.                                                                                                                                                             |
+| Access grant           | Explicit permission to a particular resource, purpose, scope, and duration.                                                                                                                                                              |
+| Escrow                 | Funds controlled by a defined settlement mechanism and release/refund authority. A UI balance label is not escrow.                                                                                                                       |
+| Terms version          | Immutable snapshot accepted by the funder and executor, including scope, reward, deadlines, review, and dispute policy.                                                                                                                  |
+| Submission             | A versioned deliverable with evidence and a timestamp.                                                                                                                                                                                   |
+| Outcome                | A reasoned work result, separate from a payment transaction.                                                                                                                                                                             |
+| Settlement             | Authorized allocation and transfer of funds according to the agreed outcome.                                                                                                                                                             |
+| Sponsor                | The payer for clearly labeled placement. It need not be the executor or award judge.                                                                                                                                                     |
+| Service credits        | Non-token usage units under explicit billing terms. They do not imply a transferable token or a guaranteed conversion rate.                                                                                                              |
 
 ---
 
@@ -273,18 +282,18 @@ flowchart TD
 
 Do not compress different concepts into a single `type` or `rank` field.
 
-| Dimension | Examples |
-|---|---|
-| Work format | Standard Raid, selection Challenge, prize competition, later Role |
-| Participant kind | Human, AI agent, AI influencer |
-| Execution shape | Solo, Party, multiple separate slots |
-| Skill domain | Frontend, Solana, design, research, content, community |
-| Difficulty | E–S |
-| Visibility | Public, trusted listing, confidential listing, invite-only |
-| Admission | Instant acceptance, application and approval, invitation |
-| Reward composition | One supported asset or a supported asset bundle |
-| Funding status | Unfunded, funding pending, verified funded, partially settled, settled |
-| Work status | Draft, open, active, submitted, revision, terminal |
+| Dimension          | Examples                                                               |
+| ------------------ | ---------------------------------------------------------------------- |
+| Work format        | Standard Raid, selection Challenge, prize competition, later Role      |
+| Participant kind   | Human, AI agent, AI influencer                                         |
+| Execution shape    | Solo, Party, multiple separate slots                                   |
+| Skill domain       | Frontend, Solana, design, research, content, community                 |
+| Difficulty         | E–S                                                                    |
+| Visibility         | Public, trusted listing, confidential listing, invite-only             |
+| Admission          | Instant acceptance, application and approval, invitation               |
+| Reward composition | One supported asset or a supported asset bundle                        |
+| Funding status     | Unfunded, funding pending, verified funded, partially settled, settled |
+| Work status        | Draft, open, active, submitted, revision, terminal                     |
 
 An A-rank public design task is possible. A C-rank task can be confidential. Expensive work is not necessarily difficult. A high-trust developer can still lack the required skill.
 
@@ -321,16 +330,16 @@ Creating a token does not by itself establish a market, liquidity, holder rights
 
 ### 05.3 Launch state model
 
-| State | Meaning | Permitted next step |
-|---|---|---|
-| `DRAFT` | Metadata and launch parameters editable. | Validate and prepare. |
-| `READY_FOR_SIGNATURE` | A bounded launch intent and transaction description exist. | Sign or cancel the intent. |
-| `SUBMITTED` | A signature is known; success is not yet established. | Verify, expire, or report failure. |
-| `CONFIRMED_PENDING_FINALITY` | Result observed at an intermediate commitment. | Await finality; do not overstate completion. |
-| `LIVE` | Required launch artifacts verified at the configured finality. | Operate the Guild and supported market flow. |
-| `ACTION_REQUIRED` | Multi-step launch needs another authorized action or reconciliation. | Resume the exact intent. |
-| `FAILED` | Failure established with a recorded reason. | Create a new intent without duplicating successful steps. |
-| `CANCELLED` | No further launch action will be submitted. | Retain audit history. |
+| State                        | Meaning                                                              | Permitted next step                                       |
+| ---------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------- |
+| `DRAFT`                      | Metadata and launch parameters editable.                             | Validate and prepare.                                     |
+| `READY_FOR_SIGNATURE`        | A bounded launch intent and transaction description exist.           | Sign or cancel the intent.                                |
+| `SUBMITTED`                  | A signature is known; success is not yet established.                | Verify, expire, or report failure.                        |
+| `CONFIRMED_PENDING_FINALITY` | Result observed at an intermediate commitment.                       | Await finality; do not overstate completion.              |
+| `LIVE`                       | Required launch artifacts verified at the configured finality.       | Operate the Guild and supported market flow.              |
+| `ACTION_REQUIRED`            | Multi-step launch needs another authorized action or reconciliation. | Resume the exact intent.                                  |
+| `FAILED`                     | Failure established with a recorded reason.                          | Create a new intent without duplicating successful steps. |
+| `CANCELLED`                  | No further launch action will be submitted.                          | Retain audit history.                                     |
 
 If a route has curve trading or graduation, use separate provider-specific market states. A Guild is not “graduated” merely because a frontend progress bar reaches 100%.
 
@@ -420,15 +429,15 @@ An experienced builder may use portfolio review and a skill trial to demonstrate
 
 ### 07.4 Evidence types
 
-| Evidence | What it can support | What it cannot prove alone |
-|---|---|---|
-| GitHub account ownership | Control of an account and linked contribution history. | That every commit is original, strong engineering skill, or honesty. |
-| Portfolio/project | Relevant delivered work when ownership can be checked. | A right to use private client material or future reliability. |
-| Skill trial | Ability to meet a scoped rubric under declared conditions. | Permanent expertise in all tasks in that domain. |
-| Completed Raid | An attributable delivered outcome under recorded terms. | Expertise in unrelated skills. |
-| Social account control | Ability to act through that account. | Authentic followers, unique humanity, or guaranteed reach. |
-| Wallet signature | Control of an address at a moment. | Unique human identity, character, or business legitimacy. |
-| Optional identity attestation | The specific claim verified by that provider. | Skill, trustworthiness, or permission to confidential code. |
+| Evidence                      | What it can support                                        | What it cannot prove alone                                           |
+| ----------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------- |
+| GitHub account ownership      | Control of an account and linked contribution history.     | That every commit is original, strong engineering skill, or honesty. |
+| Portfolio/project             | Relevant delivered work when ownership can be checked.     | A right to use private client material or future reliability.        |
+| Skill trial                   | Ability to meet a scoped rubric under declared conditions. | Permanent expertise in all tasks in that domain.                     |
+| Completed Raid                | An attributable delivered outcome under recorded terms.    | Expertise in unrelated skills.                                       |
+| Social account control        | Ability to act through that account.                       | Authentic followers, unique humanity, or guaranteed reach.           |
+| Wallet signature              | Control of an address at a moment.                         | Unique human identity, character, or business legitimacy.            |
+| Optional identity attestation | The specific claim verified by that provider.              | Skill, trustworthiness, or permission to confidential code.          |
 
 ### 07.5 Anti-spam and duplicate accounts
 
@@ -446,14 +455,14 @@ The system can enforce one active engagement per known canonical participant. It
 
 **DEFAULT descriptive rubric; not a numerical score conversion:**
 
-| Rank | Demonstrated capacity | Example work shape |
-|---|---|---|
-| E | Can complete a small, explicit task with simple verification. | Follow an onboarding test and report reproducible results. |
-| D | Can complete a contained task with limited assistance. | Reproduce a bug or update a defined content item. |
-| C | Can independently deliver a bounded component with ordinary edge cases. | Implement a scoped UI component and tests. |
-| B | Can own a moderately complex integration and explain tradeoffs. | Integrate a service with error handling and evidence. |
-| A | Can lead a complex component or system area with substantial ambiguity. | Design and deliver a significant architecture slice. |
-| S | Has exceptional, repeatedly demonstrated capacity in a specific domain. | Lead highly demanding work with strong independent evaluation. |
+| Rank | Demonstrated capacity                                                   | Example work shape                                             |
+| ---- | ----------------------------------------------------------------------- | -------------------------------------------------------------- |
+| E    | Can complete a small, explicit task with simple verification.           | Follow an onboarding test and report reproducible results.     |
+| D    | Can complete a contained task with limited assistance.                  | Reproduce a bug or update a defined content item.              |
+| C    | Can independently deliver a bounded component with ordinary edge cases. | Implement a scoped UI component and tests.                     |
+| B    | Can own a moderately complex integration and explain tradeoffs.         | Integrate a service with error handling and evidence.          |
+| A    | Can lead a complex component or system area with substantial ambiguity. | Design and deliver a significant architecture slice.           |
+| S    | Has exceptional, repeatedly demonstrated capacity in a specific domain. | Lead highly demanding work with strong independent evaluation. |
 
 Difficulty and security sensitivity are separate. A short change in a treasury program may be small in code size and high in consequence; requirements should capture both.
 
@@ -475,14 +484,14 @@ Tests need hidden edge cases and varied tasks where helpful, with manual review 
 
 ### 08.4 Example skill trials
 
-| Skill | Example brief | Evidence |
-|---|---|---|
-| Frontend C | Implement an accessible wallet status panel from a mock provider. | Responsive UI, loading/error/disconnected states, explanation, test evidence. |
-| Backend B | Build an idempotent job endpoint with a concurrency edge case. | Working API, transactional behavior, recovery explanation. |
-| Solana | Complete a devnet token workflow with the intended program and confirmations. | Correct account validation and status handling; rank assigned by the complete rubric, not by this title. |
-| Research C | Answer a bounded question from a specified public dataset. | Source traceability, uncertainty, method, and useful conclusion. |
-| Community D | Resolve simulated support requests. | Accuracy, respectful communication, escalation judgment. |
-| Design B | Produce and explain a usable multi-state interaction. | Prototype, accessibility, coverage of failure and empty states. |
+| Skill       | Example brief                                                                 | Evidence                                                                                                 |
+| ----------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Frontend C  | Implement an accessible wallet status panel from a mock provider.             | Responsive UI, loading/error/disconnected states, explanation, test evidence.                            |
+| Backend B   | Build an idempotent job endpoint with a concurrency edge case.                | Working API, transactional behavior, recovery explanation.                                               |
+| Solana      | Complete a devnet token workflow with the intended program and confirmations. | Correct account validation and status handling; rank assigned by the complete rubric, not by this title. |
+| Research C  | Answer a bounded question from a specified public dataset.                    | Source traceability, uncertainty, method, and useful conclusion.                                         |
+| Community D | Resolve simulated support requests.                                           | Accuracy, respectful communication, escalation judgment.                                                 |
+| Design B    | Produce and explain a usable multi-state interaction.                         | Prototype, accessibility, coverage of failure and empty states.                                          |
 
 ### 08.5 Admission by skill
 
@@ -504,11 +513,11 @@ Reliability incidents affect reputation; they do not automatically prove skill h
 
 ### 09.1 Three records, three questions
 
-| Record | Question answered | Scope |
-|---|---|---|
-| Raider reputation | Does this participant reliably deliver what they accepted? | Across the platform, with category breakdowns. |
-| Guild reputation | Does this project fund, specify, review, and pay work fairly? | One Guild and its verified operating history. |
-| Guild Trust | How established is this Raider's working relationship with this Guild? | One participant–Guild pair. |
+| Record            | Question answered                                                      | Scope                                          |
+| ----------------- | ---------------------------------------------------------------------- | ---------------------------------------------- |
+| Raider reputation | Does this participant reliably deliver what they accepted?             | Across the platform, with category breakdowns. |
+| Guild reputation  | Does this project fund, specify, review, and pay work fairly?          | One Guild and its verified operating history.  |
+| Guild Trust       | How established is this Raider's working relationship with this Guild? | One participant–Guild pair.                    |
 
 The labels must remain distinct in screens, API names, tables, analytics, and documentation.
 
@@ -560,12 +569,12 @@ Participants can see a reason category for a restriction, provide evidence, and 
 
 ### 10.1 Four visibility choices
 
-| Visibility | Public surface | Full brief access | Code access |
-|---|---|---|---|
-| `PUBLIC` | Public title, description, commercial terms, skills, reward, and approved attachments. Exclude private annexes and participant-specific contract/payout data. | Public approved brief. | Separate grant if code is private. |
-| `TRUSTED` | Safe public summary or authenticated directory card. | Eligible authenticated participants under the configured policy. | Separate explicit grant. |
-| `CONFIDENTIAL` | Founder-approved teaser with skills, reward, and confidentiality label. | Approved applicants receive a scoped private brief. | Separate explicit grant after commitment. |
-| `INVITE_ONLY` | No public listing by default. | Named invitees as authorized. | Separate explicit grant after commitment. |
+| Visibility     | Public surface                                                                                                                                                | Full brief access                                                | Code access                               |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------- |
+| `PUBLIC`       | Public title, description, commercial terms, skills, reward, and approved attachments. Exclude private annexes and participant-specific contract/payout data. | Public approved brief.                                           | Separate grant if code is private.        |
+| `TRUSTED`      | Safe public summary or authenticated directory card.                                                                                                          | Eligible authenticated participants under the configured policy. | Separate explicit grant.                  |
+| `CONFIDENTIAL` | Founder-approved teaser with skills, reward, and confidentiality label.                                                                                       | Approved applicants receive a scoped private brief.              | Separate explicit grant after commitment. |
+| `INVITE_ONLY`  | No public listing by default.                                                                                                                                 | Named invitees as authorized.                                    | Separate explicit grant after commitment. |
 
 Discovery, private-brief disclosure, work acceptance, and repository access are separate decisions. Granting one does not grant the others.
 
@@ -630,16 +639,16 @@ Draft creation can be easy; commitment must be explicit. Save drafts, validate a
 
 ### 11.2 Required publication fields
 
-| Area | Required data |
-|---|---|
-| Identity | Guild, work format, title, safe public summary, category. |
-| Scope | Deliverables, acceptance criteria, exclusions, dependencies, allowed tools/AI policy. |
-| Fit | Required skills and levels, participant kinds, Party policy, admission mode. |
-| Privacy | Visibility, approved public fields, private attachments, access package if needed. |
-| Time | Application/commitment deadlines where relevant, start condition, delivery deadline or duration, review and revision windows. |
-| Money | Supported assets, raw amounts, fee payer/amount, funding source, settlement mechanism. |
-| Review | Reviewer, required evidence, maximum revision rounds, acceptance criteria and dispute process. |
-| Rights | Deliverable usage/license, pre-existing IP treatment, public portfolio permission, and confidentiality terms where chosen. |
+| Area     | Required data                                                                                                                 |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Identity | Guild, work format, title, safe public summary, category.                                                                     |
+| Scope    | Deliverables, acceptance criteria, exclusions, dependencies, allowed tools/AI policy.                                         |
+| Fit      | Required skills and levels, participant kinds, Party policy, admission mode.                                                  |
+| Privacy  | Visibility, approved public fields, private attachments, access package if needed.                                            |
+| Time     | Application/commitment deadlines where relevant, start condition, delivery deadline or duration, review and revision windows. |
+| Money    | Supported assets, raw amounts, fee payer/amount, funding source, settlement mechanism.                                        |
+| Review   | Reviewer, required evidence, maximum revision rounds, acceptance criteria and dispute process.                                |
+| Rights   | Deliverable usage/license, pre-existing IP treatment, public portfolio permission, and confidentiality terms where chosen.    |
 
 Reject vague acceptance such as “make it perfect” without measurable conditions. A founder can still commission creative work, but must specify the intended outputs and evaluation process.
 
@@ -653,9 +662,7 @@ Return a structured recommendation:
 {
   "status": "ESTIMATE",
   "difficulty": "B",
-  "requiredSkills": [
-    {"skill": "backend", "minimumRank": "B", "verificationRequired": true}
-  ],
+  "requiredSkills": [{ "skill": "backend", "minimumRank": "B", "verificationRequired": true }],
   "participantKinds": ["HUMAN", "AI_AGENT"],
   "rewardSuggestion": {
     "referenceCurrency": "USD",
@@ -663,7 +670,7 @@ Return a structured recommendation:
     "high": "400.00",
     "composition": "supported stablecoin plus optional project-token bonus"
   },
-  "estimatedDurationDays": {"low": 4, "high": 7},
+  "estimatedDurationDays": { "low": 4, "high": 7 },
   "confidence": "LOW",
   "assumptions": ["Public API is documented", "No production custody integration"],
   "missingInformation": ["Expected traffic", "Deployment responsibility"],
@@ -719,21 +726,21 @@ flowchart TD
 
 This is the end-to-end journey across several records, not one enum on every table. A listing, execution slot, offer, engagement, dispute, and payment each own their state. Section 25 defines those boundaries.
 
-| State | Owning record | Active capacity held? | Key behavior |
-|---|---|---|---|
-| `DRAFT` | Raid listing | No | Editable; no work commitments. |
-| `FUNDING_PENDING` | Raid listing/slot funding projection | No | No paid acceptance. |
-| `OPEN` | Raid listing and available slot | No | Eligible applications or instant acceptance allowed. |
-| `OFFERED` | Offer | No | A bounded offer; capacity is checked again on acceptance. |
-| `ACCESS_PENDING` | Engagement | Yes | Contract/roster accepted; escrow binding and access setup are verified before work starts. |
-| `IN_PROGRESS` | Engagement | Yes | Contributor owns the defined work. |
-| `SUBMITTED` | Engagement | Yes | Immutable submission recorded; review deadline runs. |
-| `UNDER_REVIEW` | Engagement | Yes | Reviewer actively evaluates the submission. |
-| `REVISION_REQUESTED` | Engagement | Yes | Only agreed, bounded revisions are required. |
-| `ACCEPTED` | Engagement | No | Work obligation ends; payout may still be pending. |
-| `WITHDRAWN` | Engagement | No | Work ends under the recorded withdrawal terms. |
-| `CANCELLED` | Engagement, or listing before assignments | No for a closed engagement | Valid cancellation; refund/compensation handled separately. |
-| `TERMINATED` | Engagement | No | Operational work ends with reason; financial resolution may remain open. |
+| State                | Owning record                             | Active capacity held?      | Key behavior                                                                               |
+| -------------------- | ----------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------ |
+| `DRAFT`              | Raid listing                              | No                         | Editable; no work commitments.                                                             |
+| `FUNDING_PENDING`    | Raid listing/slot funding projection      | No                         | No paid acceptance.                                                                        |
+| `OPEN`               | Raid listing and available slot           | No                         | Eligible applications or instant acceptance allowed.                                       |
+| `OFFERED`            | Offer                                     | No                         | A bounded offer; capacity is checked again on acceptance.                                  |
+| `ACCESS_PENDING`     | Engagement                                | Yes                        | Contract/roster accepted; escrow binding and access setup are verified before work starts. |
+| `IN_PROGRESS`        | Engagement                                | Yes                        | Contributor owns the defined work.                                                         |
+| `SUBMITTED`          | Engagement                                | Yes                        | Immutable submission recorded; review deadline runs.                                       |
+| `UNDER_REVIEW`       | Engagement                                | Yes                        | Reviewer actively evaluates the submission.                                                |
+| `REVISION_REQUESTED` | Engagement                                | Yes                        | Only agreed, bounded revisions are required.                                               |
+| `ACCEPTED`           | Engagement                                | No                         | Work obligation ends; payout may still be pending.                                         |
+| `WITHDRAWN`          | Engagement                                | No                         | Work ends under the recorded withdrawal terms.                                             |
+| `CANCELLED`          | Engagement, or listing before assignments | No for a closed engagement | Valid cancellation; refund/compensation handled separately.                                |
+| `TERMINATED`         | Engagement                                | No                         | Operational work ends with reason; financial resolution may remain open.                   |
 
 `DISPUTED` is a separate case state/flag, not an excuse to leave capacity locked forever. While a bounded remediation duty remains active, the engagement can stay active. Once operationally terminated, financial/evidence review continues without demanding new uncontracted work.
 
@@ -773,19 +780,19 @@ Reopening or extending terminal work requires new consent, current funding where
 
 **R13: One canonical Raider can have only one active work engagement at a time.** This applies across all Guilds, networks exposed by the application, devices, linked wallets, skills, ranks, and accepted Party/Challenge entries. A higher rank, paid subscription, RAID balance, or Founder role does not increase the limit.
 
-| Action/status | Consumes capacity? |
-|---|---|
-| Browsing, saving, applying, unaccepted invitation/offer | No |
-| Unpaid platform orientation or practice trial | No; independently rate-limited |
-| Accepted paid selection exercise | Yes |
-| Accepted standard Raid, access preparation, work, review, agreed revisions | Yes |
-| Accepted Party membership for a work engagement | Yes, for every member |
-| Active Challenge entry through its agreed judging/revision duty | Yes |
-| Paid review assignment offered as a Raid | Yes |
-| Terminal accepted, cancelled, withdrawn, or terminated work | No |
-| Pending payment for terminal work | No |
-| Evidence-only financial appeal after operational closure | No new work obligation |
-| New implementation Raid offered to a Challenge winner | Only after explicit acceptance and capacity acquisition/transfer |
+| Action/status                                                              | Consumes capacity?                                               |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Browsing, saving, applying, unaccepted invitation/offer                    | No                                                               |
+| Unpaid platform orientation or practice trial                              | No; independently rate-limited                                   |
+| Accepted paid selection exercise                                           | Yes                                                              |
+| Accepted standard Raid, access preparation, work, review, agreed revisions | Yes                                                              |
+| Accepted Party membership for a work engagement                            | Yes, for every member                                            |
+| Active Challenge entry through its agreed judging/revision duty            | Yes                                                              |
+| Paid review assignment offered as a Raid                                   | Yes                                                              |
+| Terminal accepted, cancelled, withdrawn, or terminated work                | No                                                               |
+| Pending payment for terminal work                                          | No                                                               |
+| Evidence-only financial appeal after operational closure                   | No new work obligation                                           |
+| New implementation Raid offered to a Challenge winner                      | Only after explicit acceptance and capacity acquisition/transfer |
 
 Application limits are separate from active capacity. **DEFAULT fixture:** at most five open applications and a configurable submission rate limit. These reduce application spam without reserving five jobs.
 
@@ -911,10 +918,10 @@ If the Party dissolves, terminal work and settlements follow the contract. The l
 
 ### 15.1 Two explicit formats
 
-| Format | Purpose | Reward structure | What happens after judging |
-|---|---|---|---|
-| `SELECTION` | Find the builder/Party for a larger Raid. | Disclosed participation/assessment compensation, if applicable, plus a separate main-Raid budget. | Selected participant receives an offer for the main Raid and may accept or decline. |
-| `PRIZE` | Compare independently submitted solutions and award prizes. | Pre-funded prize pool and any guaranteed qualifying-submission payments. | Winners receive the published awards; follow-on work requires a separate agreement. |
+| Format      | Purpose                                                     | Reward structure                                                                                  | What happens after judging                                                          |
+| ----------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `SELECTION` | Find the builder/Party for a larger Raid.                   | Disclosed participation/assessment compensation, if applicable, plus a separate main-Raid budget. | Selected participant receives an offer for the main Raid and may accept or decline. |
+| `PRIZE`     | Compare independently submitted solutions and award prizes. | Pre-funded prize pool and any guaranteed qualifying-submission payments.                          | Winners receive the published awards; follow-on work requires a separate agreement. |
 
 **DEFAULT:** Implement `SELECTION` first because it best preserves the user's requested sequence: submit a bounded project/prototype, then the eligible builder performs the Raid. This interpretation is stated openly; the prize mode retains the additional concept discussed later.
 
@@ -978,13 +985,13 @@ A valid nonwinning submission is not a failed Raid or evidence of unreliability.
 
 ### 16.1 Five independent budgets
 
-| Budget | Pays for | Must not be silently spent on |
-|---|---|---|
-| Project launch/liquidity funds | The chosen launch and market arrangement. | Contributor rewards unless explicitly allocated and transferred. |
-| Raid/Challenge reward | Contracted contributor and prize obligations. | Platform compute or sponsored placement. |
-| Platform fee | A disclosed service charge. | An undisclosed reduction of the advertised net reward. |
-| AI operational budget | Model, tool, and sandbox consumption under a cap. | Automatic approval of the work or its performance reward. |
-| Promotion budget | Purchased sponsored visibility. | Organic reputation, skill rank, or Challenge judging. |
+| Budget                         | Pays for                                          | Must not be silently spent on                                    |
+| ------------------------------ | ------------------------------------------------- | ---------------------------------------------------------------- |
+| Project launch/liquidity funds | The chosen launch and market arrangement.         | Contributor rewards unless explicitly allocated and transferred. |
+| Raid/Challenge reward          | Contracted contributor and prize obligations.     | Platform compute or sponsored placement.                         |
+| Platform fee                   | A disclosed service charge.                       | An undisclosed reduction of the advertised net reward.           |
+| AI operational budget          | Model, tool, and sandbox consumption under a cap. | Automatic approval of the work or its performance reward.        |
+| Promotion budget               | Purchased sponsored visibility.                   | Organic reputation, skill rank, or Challenge judging.            |
 
 Each budget has its own owner, payment authorization, terms, accounting category, and refund policy.
 
@@ -1062,13 +1069,13 @@ Before mainnet, choose the provider/program, mediated authority/quorum, signing 
 
 ### 16.7 Agreement and program sketch
 
-| Record | Required purpose |
-|---|---|
-| Escrow agreement | Agreement ID, funder/refund destination, terms commitment, permitted assets, authority policy. |
-| Asset vault | Program-controlled account for the specified instrument and credited reward funds. |
-| Work binding | Accepted engagement, roster/beneficiary constraints, agreed allocation rules, commitment time. |
-| Settlement allocation | Authorized distribution among contributors, permitted refund, and disclosed fees. |
-| Claim receipt | Single-use semantic claim identity for one beneficiary/asset/amount. |
+| Record                | Required purpose                                                                               |
+| --------------------- | ---------------------------------------------------------------------------------------------- |
+| Escrow agreement      | Agreement ID, funder/refund destination, terms commitment, permitted assets, authority policy. |
+| Asset vault           | Program-controlled account for the specified instrument and credited reward funds.             |
+| Work binding          | Accepted engagement, roster/beneficiary constraints, agreed allocation rules, commitment time. |
+| Settlement allocation | Authorized distribution among contributors, permitted refund, and disclosed fees.              |
+| Claim receipt         | Single-use semantic claim identity for one beneficiary/asset/amount.                           |
 
 An instruction family may include `create_agreement`, `fund_asset`, `commit_work`, `allocate_settlement`, `claim_asset`, `refund_uncommitted`, `refund_allocated`, and `close_empty_account`. These are interface names, not a completed safe program.
 
@@ -1084,12 +1091,12 @@ For multiple execution slots, reserve a distinct obligation/budget for each slot
 
 ### 16.9 Separate state dimensions
 
-| Dimension | Suggested states |
-|---|---|
-| Agreement phase | `OPEN`, `COMMITTED`, `ALLOCATING`, `SETTLING`, `CLOSED` |
-| Funding leg | `REQUIRED`, `PENDING`, `VERIFIED`, `SHORTFALL`, `BLOCKED` |
-| Claim | `ALLOCATED`, `READY`, `SUBMITTED`, `FINALIZED`, `BLOCKED` |
-| Dispute | `NONE`, `OPEN`, `EVIDENCE`, `DECIDED`, `APPEALED`, `CLOSED` |
+| Dimension           | Suggested states                                                                                                 |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Agreement phase     | `OPEN`, `COMMITTED`, `ALLOCATING`, `SETTLING`, `CLOSED`                                                          |
+| Funding leg         | `REQUIRED`, `PENDING`, `VERIFIED`, `SHORTFALL`, `BLOCKED`                                                        |
+| Claim               | `ALLOCATED`, `READY`, `SUBMITTED`, `FINALIZED`, `BLOCKED`                                                        |
+| Dispute             | `NONE`, `OPEN`, `EVIDENCE`, `DECIDED`, `APPEALED`, `CLOSED`                                                      |
 | Transaction attempt | `CREATED`, `AWAITING_SIGNATURE`, `SIGNED`, `SUBMITTED`, `CONFIRMED`, `FINALIZED`, `EXPIRED`, `FAILED`, `UNKNOWN` |
 
 Derived labels such as `Partially paid` must reflect every obligation, not just the most recent transaction.
@@ -1168,14 +1175,14 @@ Store the case category, parties, terms and submission versions, evidence access
 
 ### 17.3 Resolution outcomes
 
-| Finding | Work handling | Financial handling |
-|---|---|---|
-| Work satisfies terms | Close as accepted. | Allocate the contractual reward. |
-| Agreed bounded remediation | Keep/reacquire active capacity as appropriate with consent. | Preserve committed funds. |
-| Partial delivery merits compensation | Close or amend with reason. | Allocate documented partial reward and permitted refund. |
-| Contributor withdraws with no compensated work due | Close with attributable reason. | Follow agreed refund policy. |
-| Founder failed to provide required dependencies | Close or extend by agreement; no unsupported Raider fault. | Follow access-delay/cancellation terms. |
-| Evidence insufficient or conflict unresolved | Operationally close if duties expired. | Preserve disputed obligations for the authorized process. |
+| Finding                                            | Work handling                                               | Financial handling                                        |
+| -------------------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------- |
+| Work satisfies terms                               | Close as accepted.                                          | Allocate the contractual reward.                          |
+| Agreed bounded remediation                         | Keep/reacquire active capacity as appropriate with consent. | Preserve committed funds.                                 |
+| Partial delivery merits compensation               | Close or amend with reason.                                 | Allocate documented partial reward and permitted refund.  |
+| Contributor withdraws with no compensated work due | Close with attributable reason.                             | Follow agreed refund policy.                              |
+| Founder failed to provide required dependencies    | Close or extend by agreement; no unsupported Raider fault.  | Follow access-delay/cancellation terms.                   |
+| Evidence insufficient or conflict unresolved       | Operationally close if duties expired.                      | Preserve disputed obligations for the authorized process. |
 
 Every financial instruction must fit the escrow's permitted signers, beneficiaries, assets, amounts, and state. A support note is not an on-chain authority.
 
@@ -1253,11 +1260,11 @@ External email/social notifications require a configured provider and the user's
 
 An AI agent is an accountable, registered executor of a Raid. It can be operated by RAID or by an approved external operator. It has its own profile, relevant capability evidence, permissions, execution history, and one active engagement.
 
-| Execution model | Responsibility | Payment/cost model |
-|---|---|---|
-| Human with AI assistance | The human remains the contracted Raider. | Human reward; permitted tool use follows the accepted terms. |
+| Execution model               | Responsibility                                             | Payment/cost model                                                                                    |
+| ----------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Human with AI assistance      | The human remains the contracted Raider.                   | Human reward; permitted tool use follows the accepted terms.                                          |
 | External registered AI worker | Its operator is accountable for operation and submissions. | Contracted reward to the approved beneficiary; operator costs are their own unless separately agreed. |
-| RAID-managed AI execution | RAID runs a bounded configured service. | Disclosed execution budget/service fee, with any separate performance obligation defined. |
+| RAID-managed AI execution     | RAID runs a bounded configured service.                    | Disclosed execution budget/service fee, with any separate performance obligation defined.             |
 
 Do not blend these models into a hidden margin calculation. Every purchase must explain who executes, what completion means, what is charged on failure, and how unused budget is handled.
 
@@ -1381,11 +1388,11 @@ Long-term payroll, employment classifications, and contractual terms are outside
 
 ### 22.1 Three asset relationships
 
-| Instrument | Intended product role | What it does not automatically mean |
-|---|---|---|
-| RAID token | Possible platform services, promotional payment, or other adopted utility. | Skill, reliability, equity, a guaranteed return, or unrestricted platform authority. |
-| Project token | Guild holder membership and an optional reward asset. | Ownership of project IP, source access, administrative control, or reliable dollar compensation. |
-| Supported stablecoin/SOL | A settlement asset selected in the work contract. | Guaranteed value, recoverability, or permission to replace one asset with another. |
+| Instrument               | Intended product role                                                      | What it does not automatically mean                                                              |
+| ------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| RAID token               | Possible platform services, promotional payment, or other adopted utility. | Skill, reliability, equity, a guaranteed return, or unrestricted platform authority.             |
+| Project token            | Guild holder membership and an optional reward asset.                      | Ownership of project IP, source access, administrative control, or reliable dollar compensation. |
+| Supported stablecoin/SOL | A settlement asset selected in the work contract.                          | Guaranteed value, recoverability, or permission to replace one asset with another.               |
 
 Service credits are a separate billing concept. If they are denominated, redeemed, purchased, or converted using RAID tokens later, define exact rules instead of treating credits and on-chain RAID units as synonyms.
 
@@ -1427,24 +1434,24 @@ Use readable typography, consistent spacing, short sections, clear hierarchy, a 
 
 ### 23.2 Screen contract
 
-| Screen | Primary question | Required content | Main action |
-|---|---|---|---|
-| Homepage | What is RAID and what can I do now? | Launch/discover Guilds, live Raid feed, selected Challenges, short explanation. | Explore Raids / Launch a Guild. |
-| Raid feed | Which work fits me? | Filters, safe cards, funding/eligibility, separate Sponsored labels. | Open a Raid. |
-| Guild directory | Which projects are active? | Project identity, verified token/launch state, public work/reliability. | View Guild. |
-| Guild profile | Can I understand and trust this project? | Founder/control badge, work history, reputation evidence, token relationship. | View work / Follow / Founder management. |
-| Launch wizard | What am I creating and signing? | Supported route, token settings, controls, costs, signature/verification status. | Review and sign the chosen action. |
-| Create-Raid wizard | What am I commissioning and funding? | Outcome, criteria, recommendation, participant/visibility, terms, funds. | Fund and publish. |
-| Raid detail | Am I a fit, and what will I commit to? | Scope, reward legs, deadlines, Guild history, skills, review rules, eligibility. | Apply / Accept / Request access. |
-| Raider onboarding/profile | What can I prove and work on? | Claimed/verified skills, evidence, trial access, honest history, capacity. | Add proof / Take trial / Browse eligible work. |
-| My Raid workspace | What needs my attention now? | Terms snapshot, active status, resources, timeline, submission/revision, payment. | Contextual next step. |
-| Founder applicant review | Who fits the actual requirements? | Relevant skills, evidence, reliability, Guild Trust, capacity snapshot. | Offer work / Approve brief access. |
-| Submission review | Does this version meet the agreement? | Versioned deliverable, criterion checklist, evidence, deadlines, reviewer actions. | Accept / Request revision / Open dispute. |
-| Party builder | Who is responsible and paid? | Roster, roles, coverage, availability, per-asset split, individual consent. | Request/accept roster consent. |
-| Challenge detail/workspace | What is the competition and its consequence? | Selection/prize mode, criteria, eligibility, costs/rewards, dates, rights, entries. | Apply / Enter / Submit. |
-| Payments | What am I owed or paying? | Obligations by asset, fees, individual transfers, pending/blocked state. | Authorized claim/recovery action. |
-| Sponsor dashboard | What placement am I purchasing? | Inventory, price/bid, time, delivery, budget, refunds, honest metrics. | Reserve/bid under the terms. |
-| Operator console | What needs intervention? | Restricted audit view, cases, chain lag, access failures, configuration. | Scoped, audited repair. |
+| Screen                     | Primary question                             | Required content                                                                    | Main action                                    |
+| -------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Homepage                   | What is RAID and what can I do now?          | Launch/discover Guilds, live Raid feed, selected Challenges, short explanation.     | Explore Raids / Launch a Guild.                |
+| Raid feed                  | Which work fits me?                          | Filters, safe cards, funding/eligibility, separate Sponsored labels.                | Open a Raid.                                   |
+| Guild directory            | Which projects are active?                   | Project identity, verified token/launch state, public work/reliability.             | View Guild.                                    |
+| Guild profile              | Can I understand and trust this project?     | Founder/control badge, work history, reputation evidence, token relationship.       | View work / Follow / Founder management.       |
+| Launch wizard              | What am I creating and signing?              | Supported route, token settings, controls, costs, signature/verification status.    | Review and sign the chosen action.             |
+| Create-Raid wizard         | What am I commissioning and funding?         | Outcome, criteria, recommendation, participant/visibility, terms, funds.            | Fund and publish.                              |
+| Raid detail                | Am I a fit, and what will I commit to?       | Scope, reward legs, deadlines, Guild history, skills, review rules, eligibility.    | Apply / Accept / Request access.               |
+| Raider onboarding/profile  | What can I prove and work on?                | Claimed/verified skills, evidence, trial access, honest history, capacity.          | Add proof / Take trial / Browse eligible work. |
+| My Raid workspace          | What needs my attention now?                 | Terms snapshot, active status, resources, timeline, submission/revision, payment.   | Contextual next step.                          |
+| Founder applicant review   | Who fits the actual requirements?            | Relevant skills, evidence, reliability, Guild Trust, capacity snapshot.             | Offer work / Approve brief access.             |
+| Submission review          | Does this version meet the agreement?        | Versioned deliverable, criterion checklist, evidence, deadlines, reviewer actions.  | Accept / Request revision / Open dispute.      |
+| Party builder              | Who is responsible and paid?                 | Roster, roles, coverage, availability, per-asset split, individual consent.         | Request/accept roster consent.                 |
+| Challenge detail/workspace | What is the competition and its consequence? | Selection/prize mode, criteria, eligibility, costs/rewards, dates, rights, entries. | Apply / Enter / Submit.                        |
+| Payments                   | What am I owed or paying?                    | Obligations by asset, fees, individual transfers, pending/blocked state.            | Authorized claim/recovery action.              |
+| Sponsor dashboard          | What placement am I purchasing?              | Inventory, price/bid, time, delivery, budget, refunds, honest metrics.              | Reserve/bid under the terms.                   |
+| Operator console           | What needs intervention?                     | Restricted audit view, cases, chain lag, access failures, configuration.            | Scoped, audited repair.                        |
 
 ### 23.3 Suggested navigation
 
@@ -1498,17 +1505,17 @@ Empty history means “No completed Raids yet.” Unknown balance means “Unabl
 
 **DEFAULT architecture, not a recovered prior technology decision:**
 
-| Component | Choice | Purpose |
-|---|---|---|
-| Application language | TypeScript | Shared typed request/response and domain contracts. |
-| Web application | Next.js/React with server-side domain access | Public launchpad, authenticated workspaces, route handlers, and UI. |
-| Database | PostgreSQL | Transactions, relational constraints, audit/event records, and initial search. |
-| Data access | One chosen typed SQL/ORM layer | Migrations and query boundaries; use explicit SQL where locking/constraints require it. |
-| Background work | Worker from the same codebase; durable PostgreSQL jobs/outbox initially | Verification, integrations, deadlines, reconciliation, notifications. |
-| Private artifacts | Private object storage with authenticated access | Submissions, briefs, evidence, and generated artifacts. |
-| External boundaries | Typed adapters for Solana, launch provider, GitHub, models, and social channels | Provider-specific behavior isolated from domain rules. |
-| Untrusted execution | Separate disposable sandbox runner | Code/trial/AI execution without web-worker secrets. |
-| Deployment | Containerized web and worker processes with managed state where appropriate | Reproducible environments; hosting selected separately. |
+| Component            | Choice                                                                          | Purpose                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Application language | TypeScript                                                                      | Shared typed request/response and domain contracts.                                     |
+| Web application      | Next.js/React with server-side domain access                                    | Public launchpad, authenticated workspaces, route handlers, and UI.                     |
+| Database             | PostgreSQL                                                                      | Transactions, relational constraints, audit/event records, and initial search.          |
+| Data access          | One chosen typed SQL/ORM layer                                                  | Migrations and query boundaries; use explicit SQL where locking/constraints require it. |
+| Background work      | Worker from the same codebase; durable PostgreSQL jobs/outbox initially         | Verification, integrations, deadlines, reconciliation, notifications.                   |
+| Private artifacts    | Private object storage with authenticated access                                | Submissions, briefs, evidence, and generated artifacts.                                 |
+| External boundaries  | Typed adapters for Solana, launch provider, GitHub, models, and social channels | Provider-specific behavior isolated from domain rules.                                  |
+| Untrusted execution  | Separate disposable sandbox runner                                              | Code/trial/AI execution without web-worker secrets.                                     |
+| Deployment           | Containerized web and worker processes with managed state where appropriate     | Reproducible environments; hosting selected separately.                                 |
 
 Consult current official documentation and the actual repository before choosing package/runtime versions. The proposed Next.js structure is grounded in its App Router documentation, but exact versions and deployment capability must be verified during implementation. [S16](#41-sources)
 
@@ -1536,51 +1543,67 @@ flowchart TD
 
 ### 24.3 Domain ownership
 
-| Module | Owns | Boundary |
-|---|---|---|
-| `identity` | Accounts, linked credentials, sessions, canonical participants. | Does not create trust or financial claims. |
-| `guilds` | Project profiles, founder/admin roles, primary-token relationship, membership. | Holder status does not grant private resources. |
-| `launchpad` | Launch intents, provider configuration, verified results. | Does not invent token economics. |
-| `capabilities` | Skill taxonomy, evidence, trials, assessments. | Does not calculate payment reliability. |
-| `reputation` | Outcome events, metrics, Guild Trust projections. | Does not issue access grants. |
-| `work` | Raids, slots, applications, offers, engagements, submissions, reviews, capacity. | Requests settlement through Treasury contracts. |
-| `challenges` | Entries, rubrics, judging, selection, award proposals. | Cannot spend unreserved prize/implementation funds. |
-| `treasury` | Assets, obligations, funding, allocation, claims, chain reconciliation. | Model output and database edits alone cannot sign transfers. |
-| `access` | Resource grants, policy, provisioning, revocation. | External provider state must be observed. |
-| `discovery` | Public projections, search/filter, sponsorship inventory. | No private brief/index contamination. |
-| `execution` | Agent registry, runs, budgets, tool policies, result intake. | Uses Work and Access commands; no direct approval shortcut. |
-| `operations` | Case workflow, configuration, incident views, audit search. | Privileges are scoped and recorded. |
+| Module         | Owns                                                                             | Boundary                                                     |
+| -------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `identity`     | Accounts, linked credentials, sessions, canonical participants.                  | Does not create trust or financial claims.                   |
+| `guilds`       | Project profiles, founder/admin roles, primary-token relationship, membership.   | Holder status does not grant private resources.              |
+| `launchpad`    | Launch intents, provider configuration, verified results.                        | Does not invent token economics.                             |
+| `capabilities` | Skill taxonomy, evidence, trials, assessments.                                   | Does not calculate payment reliability.                      |
+| `reputation`   | Outcome events, metrics, Guild Trust projections.                                | Does not issue access grants.                                |
+| `work`         | Raids, slots, applications, offers, engagements, submissions, reviews, capacity. | Requests settlement through Treasury contracts.              |
+| `challenges`   | Entries, rubrics, judging, selection, award proposals.                           | Cannot spend unreserved prize/implementation funds.          |
+| `treasury`     | Assets, obligations, funding, allocation, claims, chain reconciliation.          | Model output and database edits alone cannot sign transfers. |
+| `access`       | Resource grants, policy, provisioning, revocation.                               | External provider state must be observed.                    |
+| `discovery`    | Public projections, search/filter, sponsorship inventory.                        | No private brief/index contamination.                        |
+| `execution`    | Agent registry, runs, budgets, tool policies, result intake.                     | Uses Work and Access commands; no direct approval shortcut.  |
+| `operations`   | Case workflow, configuration, incident views, audit search.                      | Privileges are scoped and recorded.                          |
 
 Route handlers call commands. Workers call the same commands or explicitly authorized internal handlers. Avoid direct cross-module table writes that bypass invariants. Domain modules are code ownership boundaries, not separate network services.
 
 ### 24.4 Source of truth
 
-| Data | Authority |
-|---|---|
-| Canonical identities, permissions, accepted work, terms and capacity | Transactional application database. |
-| On-chain custody, program claims, actual token transfers | Verified deployed program and chain state. |
-| Repository access/publication result | Provider state reconciled against authorized desired state. |
-| Model usage | Provider/runtime receipts with known estimates distinguished. |
-| Search cards, dashboards, reputation summaries | Derived projections; rebuildable from canonical records. |
+| Data                                                                 | Authority                                                     |
+| -------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Canonical identities, permissions, accepted work, terms and capacity | Transactional application database.                           |
+| On-chain custody, program claims, actual token transfers             | Verified deployed program and chain state.                    |
+| Repository access/publication result                                 | Provider state reconciled against authorized desired state.   |
+| Model usage                                                          | Provider/runtime receipts with known estimates distinguished. |
+| Search cards, dashboards, reputation summaries                       | Derived projections; rebuildable from canonical records.      |
 
 A projection can lag. Do not use a cached feed card as financial or access authority. No component is allowed to pretend all external systems committed atomically.
 
 ### 24.5 Suggested repository boundaries
 
-| Path | Intended contents |
-|---|---|
-| `apps/web` | Next.js application and route handlers. |
-| `apps/worker` | Durable job/outbox consumers and reconciliations. |
-| `packages/domain` | Command handlers, policies, lifecycle logic. |
-| `packages/contracts` | Shared validated DTOs, enums, event shapes, amount types. |
-| `packages/db` | Schema, migrations, explicit transactional queries. |
-| `packages/integrations` | Solana, launch protocol, GitHub, notifications, model/provider adapters. |
-| `packages/ui` | Accessible shared UI components and design tokens. |
-| `programs` | Selected custom on-chain program only if that route is adopted. |
-| `tests` | Integration, end-to-end, concurrency, program, security fixtures. |
-| `docs` | This blueprint, decision records, progress, runbooks, generated API contract. |
+| Path                    | Intended contents                                                             |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| `apps/web`              | Next.js application and route handlers.                                       |
+| `apps/worker`           | Durable job/outbox consumers and reconciliations.                             |
+| `packages/domain`       | Command handlers, policies, lifecycle logic.                                  |
+| `packages/contracts`    | Shared validated DTOs, enums, event shapes, amount types.                     |
+| `packages/db`           | Schema, migrations, explicit transactional queries.                           |
+| `packages/integrations` | Solana, launch protocol, GitHub, notifications, model/provider adapters.      |
+| `packages/ui`           | Accessible shared UI components and design tokens.                            |
+| `programs`              | Selected custom on-chain program only if that route is adopted.               |
+| `tests`                 | Integration, end-to-end, concurrency, program, security fixtures.             |
+| `docs`                  | This blueprint, decision records, progress, runbooks, generated API contract. |
 
 This is a proposed code organization, not a demand to restructure a functioning repository. Choose a simple workspace tool if the repo is new; respect the actual lockfile/package manager if it already exists.
+
+### 24.6 Replaceable integration contract
+
+R15 applies to chain/RPC, launch and escrow programs/providers, wallet/identity/social providers, code access, models/tools, sandbox runners, storage, notifications, search/observability and deployment integrations used by a delivered feature. Keep domain commands independent of vendor SDK objects, global clients and credentials. A composition root supplies a typed adapter through explicit configuration; domain code consumes stable contracts and capability declarations. Do not hide unsupported behavior behind success-shaped fallbacks.
+
+Each adapter declares supported operations, network/resource scope, request/response schema version, typed error/retry semantics, timeout/cancellation, rate limits, idempotency, semantic receipt identity, finality/observation rules, health signals, secret ownership and data-retention/egress behavior. Verify both permitted and denied paths through shared contract tests. A fake adapter is test-only and cannot pass a live feature gate. Implement a supported alternate or deterministic contract-compatible test adapter to demonstrate substitution; this does not imply funding or adopting a second commercial provider.
+
+A provider switch is a reviewed configuration/migration event. Existing signed/submitted operations remain pinned to the provider/program, network, asset, authority, terms and semantic identity that created them until reconciled. Switching an active operation cannot redirect funds, lose receipts, reissue claims, recreate grants or rewrite accepted terms. Record outstanding operations, capability differences, drain/reconciliation plan, rollback constraints and renewed affected G01–G10 evidence. A storage or deployment adapter must preserve actual durability/isolation needs; swapping a database abstraction cannot remove transactional constraints.
+
+### 24.7 Reusable module and documentation contract
+
+R16 applies to domain services, API/client contracts, integration adapters, workers, shared UI components and other delivered modules. Owned features include authentication, sessions, wallet linking, Guilds, skills, capacity, work/review, treasury, disputes, private access, discovery, sponsorship, notifications, AI, channels, Roles, configuration and shared UI. Authentication-provider substitution must preserve the same canonical account/participant, verified links, history, capacity and financial claims; login never grants a Guild role or private permission by itself. Define the public interface, ownership, dependency direction, injected host capabilities/configuration, version/compatibility policy and explicit side effects. Domain rules remain in their owning module; downstream consumers cannot bypass invariant-enforcing commands through direct cross-module table writes. Extract only bounded reusable code; a functioning repository need not be reorganized or split into microservices to satisfy this contract.
+
+Every module delivery includes purpose/non-goals, requirement IDs, architecture/dependency diagram, installation/use instructions, public API/schema/event/error contracts, entity and state ownership, permissions/tenant assumptions, configuration and secret names without values, example host wiring, meaningful tests/fixtures, limitations, migration/versioning, observability and failure/recovery runbook. UI modules also document accessibility, data/state props and host authorization responsibility. Include a minimal independently runnable consuming example or fixture that declares all dependencies and requires no hidden RAID singleton, production credential or unrecorded environment state.
+
+Use contract tests and a consuming-host check to prove the documented boundary, plus negative/retry/recovery tests where applicable. Record actual commands and environment. Documentation is delivered in the same change as behavior; missing/stale usage documentation, undeclared app imports or an example that cannot run is a completion gap. Package publication, licensing choices and external distribution require their actual authorized scope; documenting reuse does not authorize them.
 
 ---
 
@@ -1596,75 +1619,75 @@ Keep business catalog labels in data tables. Keep security-critical states and t
 
 ### 25.2 Identity and Guild entities
 
-| Entity | Key fields | Important constraints |
-|---|---|---|
-| `accounts` | ID, status, preferred timezone, recovery metadata. | Stable through wallet/name changes. |
-| `auth_sessions` | Account, challenge/session ID, expiry, revocation. | One-use challenges; no cleartext secret logging. |
-| `identity_links` | Account, provider, immutable provider subject, proof status/time. | Unique verified provider subject under linking policy. |
-| `wallet_links` | Account, network, address, verified/revoked times. | Proof required; cannot redirect another account's claims. |
-| `participants` | ID, kind, human account or operator reference, status. | One canonical human Raider per account; stable agent identity. |
-| `agent_profiles` | Participant, operator, config version, capability/runtime policy. | Does not own unrestricted signing keys. |
-| `guilds` | ID, slug, name, lifecycle, founder account, primary token relation nullable. | Holder eligibility unavailable before token verification. |
-| `guild_role_grants` | Guild, account, permission role, grantor, expiry. | Founder/admin/treasury/reviewer permissions distinct. |
-| `guild_tokens` | Guild, asset, status, proof, valid period. | One active primary token; uniqueness of recognized mint relationship. |
-| `membership_observations` | Account, Guild, balance, freshness, chain observation. | Unknown/stale distinct from verified ineligible. |
-| `guild_preferences` | Account, Guild, public badge/follow settings. | Holder eligibility does not imply marketing consent. |
-| `launch_intents` | Guild, provider, params hash, state, transaction operations. | No duplicate verified launches on a retry. |
+| Entity                    | Key fields                                                                   | Important constraints                                                 |
+| ------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `accounts`                | ID, status, preferred timezone, recovery metadata.                           | Stable through wallet/name changes.                                   |
+| `auth_sessions`           | Account, challenge/session ID, expiry, revocation.                           | One-use challenges; no cleartext secret logging.                      |
+| `identity_links`          | Account, provider, immutable provider subject, proof status/time.            | Unique verified provider subject under linking policy.                |
+| `wallet_links`            | Account, network, address, verified/revoked times.                           | Proof required; cannot redirect another account's claims.             |
+| `participants`            | ID, kind, human account or operator reference, status.                       | One canonical human Raider per account; stable agent identity.        |
+| `agent_profiles`          | Participant, operator, config version, capability/runtime policy.            | Does not own unrestricted signing keys.                               |
+| `guilds`                  | ID, slug, name, lifecycle, founder account, primary token relation nullable. | Holder eligibility unavailable before token verification.             |
+| `guild_role_grants`       | Guild, account, permission role, grantor, expiry.                            | Founder/admin/treasury/reviewer permissions distinct.                 |
+| `guild_tokens`            | Guild, asset, status, proof, valid period.                                   | One active primary token; uniqueness of recognized mint relationship. |
+| `membership_observations` | Account, Guild, balance, freshness, chain observation.                       | Unknown/stale distinct from verified ineligible.                      |
+| `guild_preferences`       | Account, Guild, public badge/follow settings.                                | Holder eligibility does not imply marketing consent.                  |
+| `launch_intents`          | Guild, provider, params hash, state, transaction operations.                 | No duplicate verified launches on a retry.                            |
 
 ### 25.3 Skills and trust entities
 
-| Entity | Key fields | Important constraints |
-|---|---|---|
-| `skills` | Stable ID, label, family, active status, aliases. | Retire without breaking prior assessments. |
-| `skill_claims` | Participant, skill, claimed level, evidence refs. | Claim is not verification. |
-| `skill_assessments` | Participant, skill, rank, rubric, reviewer, evidence, validity. | Immutable version/history; explicit revocation. |
-| `trial_definitions` | Skill/rank target, variant, rubric, tool rules, time expectations. | Versioned and separated from customer production tasks. |
-| `trial_attempts` | Definition version, participant, evidence, outcome, review. | Anti-replay/abuse controls; private answers where applicable. |
-| `reputation_events` | Subject, event type, outcome/version, attribution, policy, reversal. | Unique semantic event key. |
-| `reputation_projections` | Subject, metrics, denominator, confidence, policy version, as-of. | Rebuildable; not the only evidence store. |
-| `guild_relationships` | Guild, participant, relationship status, evidence. | Unique pair; no automatic global rank effect. |
-| `restriction_cases` | Subject, category, evidence, temporary/final action, appeal. | Limited access; suspicion distinguished from decision. |
+| Entity                   | Key fields                                                           | Important constraints                                         |
+| ------------------------ | -------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `skills`                 | Stable ID, label, family, active status, aliases.                    | Retire without breaking prior assessments.                    |
+| `skill_claims`           | Participant, skill, claimed level, evidence refs.                    | Claim is not verification.                                    |
+| `skill_assessments`      | Participant, skill, rank, rubric, reviewer, evidence, validity.      | Immutable version/history; explicit revocation.               |
+| `trial_definitions`      | Skill/rank target, variant, rubric, tool rules, time expectations.   | Versioned and separated from customer production tasks.       |
+| `trial_attempts`         | Definition version, participant, evidence, outcome, review.          | Anti-replay/abuse controls; private answers where applicable. |
+| `reputation_events`      | Subject, event type, outcome/version, attribution, policy, reversal. | Unique semantic event key.                                    |
+| `reputation_projections` | Subject, metrics, denominator, confidence, policy version, as-of.    | Rebuildable; not the only evidence store.                     |
+| `guild_relationships`    | Guild, participant, relationship status, evidence.                   | Unique pair; no automatic global rank effect.                 |
+| `restriction_cases`      | Subject, category, evidence, temporary/final action, appeal.         | Limited access; suspicion distinguished from decision.        |
 
 ### 25.4 Work entities
 
-| Entity | Key fields | Important constraints |
-|---|---|---|
-| `raids` | Guild, format, public fields, category, listing lifecycle, current terms. | Public DTO excludes confidential fields. |
-| `raid_private_briefs` | Raid, private scope/version, classification, artifact refs. | Separate authorized access path. |
-| `raid_slots` | Raid, slot number, availability, obligation set. | One selected engagement per filled slot. |
-| `terms_versions` | Raid/initiative, structured scope, reward, timing, rights, policy hash. | Immutable after creation/acceptance; amendment chain. |
-| `applications` | Target, applicant/Party, terms seen, evidence, decision. | Duplicate open application prevented for same applicant/target. |
-| `offers` | Target slot/entry, applicant, terms version, expiry, state. | Offer does not reserve capacity; stale acceptance rejected. |
-| `parties` | Stable Party profile, coordinator. | Profile roster not authoritative for old work. |
-| `party_members` | Party, participant, invitation/consent state. | Explicit individual consent. |
-| `engagements` | Source reference, work state, accepted terms, deadlines, outcome version. | Exactly one source: Raid slot, Challenge entry, or later Role period. |
-| `engagement_members` | Engagement, participant, role, consent, entitlement snapshot. | Immutable accepted roster with explicit amendments. |
-| `active_commitments` | Participant PK, engagement, terms version, acquisition time. | One row per active participant, globally. |
-| `operator_commitments` | Operator, engagement, applicable pilot policy. | One distinct active engagement under the selected pilot cap. |
-| `submissions` | Engagement, version, text/artifacts, commit/hash, submitted time. | Immutable versioned evidence. |
-| `reviews` | Submission, reviewer, criterion results, decision, reason. | Decision binds exact submission and terms. |
-| `disputes` | Engagement/claim, parties, evidence, policy, mediator, decisions. | Separate lifecycle from work and funds. |
+| Entity                 | Key fields                                                                | Important constraints                                                 |
+| ---------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `raids`                | Guild, format, public fields, category, listing lifecycle, current terms. | Public DTO excludes confidential fields.                              |
+| `raid_private_briefs`  | Raid, private scope/version, classification, artifact refs.               | Separate authorized access path.                                      |
+| `raid_slots`           | Raid, slot number, availability, obligation set.                          | One selected engagement per filled slot.                              |
+| `terms_versions`       | Raid/initiative, structured scope, reward, timing, rights, policy hash.   | Immutable after creation/acceptance; amendment chain.                 |
+| `applications`         | Target, applicant/Party, terms seen, evidence, decision.                  | Duplicate open application prevented for same applicant/target.       |
+| `offers`               | Target slot/entry, applicant, terms version, expiry, state.               | Offer does not reserve capacity; stale acceptance rejected.           |
+| `parties`              | Stable Party profile, coordinator.                                        | Profile roster not authoritative for old work.                        |
+| `party_members`        | Party, participant, invitation/consent state.                             | Explicit individual consent.                                          |
+| `engagements`          | Source reference, work state, accepted terms, deadlines, outcome version. | Exactly one source: Raid slot, Challenge entry, or later Role period. |
+| `engagement_members`   | Engagement, participant, role, consent, entitlement snapshot.             | Immutable accepted roster with explicit amendments.                   |
+| `active_commitments`   | Participant PK, engagement, terms version, acquisition time.              | One row per active participant, globally.                             |
+| `operator_commitments` | Operator, engagement, applicable pilot policy.                            | One distinct active engagement under the selected pilot cap.          |
+| `submissions`          | Engagement, version, text/artifacts, commit/hash, submitted time.         | Immutable versioned evidence.                                         |
+| `reviews`              | Submission, reviewer, criterion results, decision, reason.                | Decision binds exact submission and terms.                            |
+| `disputes`             | Engagement/claim, parties, evidence, policy, mediator, decisions.         | Separate lifecycle from work and funds.                               |
 
 ### 25.5 Challenge, finance, and access entities
 
-| Entity | Key fields | Important constraints |
-|---|---|---|
-| `challenges` | Parent Raid listing, mode, rubric version, dates, caps, follow-on link. | Selection versus prize explicit. |
-| `challenge_entries` | Challenge, solo/Party entrant, application/admission, engagement. | One accepted entry per participant/team under entry policy. |
-| `judge_assignments` | Challenge, reviewer, conflicts, scope. | Judges do not review their own submissions. |
-| `judging_scores` | Entry/submission, judge, rubric, scores, reasons. | Frozen rubric; one canonical result per judge/version. |
-| `award_allocations` | Challenge, qualified result, amount/asset/beneficiary, authority. | Total award liability bounded by funded pool. |
-| `assets` | Network, kind, mint/program, decimals, extension policy/version. | Full identity unique; production verification required. |
-| `reward_obligations` | Terms, scope, asset, raw amount, beneficiary rule. | Nonnegative exact units; no floating values. |
-| `escrow_agreements` | Terms commitment, provider/program, vaults, phase, authority. | Verified binding and permitted beneficiaries. |
-| `funding_observations` | Agreement/asset, amount, operation, slot, finality, receipt. | Dedupe and verified actual effect. |
-| `settlement_allocations` | Agreement, decision/version, obligations, refund/fees. | Conservation and explicit authorization. |
-| `claims` | Allocation, beneficiary, asset, amount, claim ID, state. | Single-use on-chain/provider claim identity. |
-| `chain_operations` | Semantic ID, purpose, request digest, desired outcome. | One business operation across transaction rebuilds. |
-| `transaction_attempts` | Operation, signature, blockhash validity, state, observations. | Multiple attempts cannot consume claim more than once. |
-| `ledger_entries` | Asset, account/category, operation, exact delta, evidence. | Append-only postings; balanced records per operation. |
-| `resources` | Guild, type, provider ID/storage key, classification. | Authorized owners and approved sharing boundaries. |
-| `access_grants` | Resource, subject, purpose, consent, expiry, desired/observed state. | Code access independent of scores/membership. |
+| Entity                   | Key fields                                                              | Important constraints                                       |
+| ------------------------ | ----------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `challenges`             | Parent Raid listing, mode, rubric version, dates, caps, follow-on link. | Selection versus prize explicit.                            |
+| `challenge_entries`      | Challenge, solo/Party entrant, application/admission, engagement.       | One accepted entry per participant/team under entry policy. |
+| `judge_assignments`      | Challenge, reviewer, conflicts, scope.                                  | Judges do not review their own submissions.                 |
+| `judging_scores`         | Entry/submission, judge, rubric, scores, reasons.                       | Frozen rubric; one canonical result per judge/version.      |
+| `award_allocations`      | Challenge, qualified result, amount/asset/beneficiary, authority.       | Total award liability bounded by funded pool.               |
+| `assets`                 | Network, kind, mint/program, decimals, extension policy/version.        | Full identity unique; production verification required.     |
+| `reward_obligations`     | Terms, scope, asset, raw amount, beneficiary rule.                      | Nonnegative exact units; no floating values.                |
+| `escrow_agreements`      | Terms commitment, provider/program, vaults, phase, authority.           | Verified binding and permitted beneficiaries.               |
+| `funding_observations`   | Agreement/asset, amount, operation, slot, finality, receipt.            | Dedupe and verified actual effect.                          |
+| `settlement_allocations` | Agreement, decision/version, obligations, refund/fees.                  | Conservation and explicit authorization.                    |
+| `claims`                 | Allocation, beneficiary, asset, amount, claim ID, state.                | Single-use on-chain/provider claim identity.                |
+| `chain_operations`       | Semantic ID, purpose, request digest, desired outcome.                  | One business operation across transaction rebuilds.         |
+| `transaction_attempts`   | Operation, signature, blockhash validity, state, observations.          | Multiple attempts cannot consume claim more than once.      |
+| `ledger_entries`         | Asset, account/category, operation, exact delta, evidence.              | Append-only postings; balanced records per operation.       |
+| `resources`              | Guild, type, provider ID/storage key, classification.                   | Authorized owners and approved sharing boundaries.          |
+| `access_grants`          | Resource, subject, purpose, consent, expiry, desired/observed state.    | Code access independent of scores/membership.               |
 
 ### 25.6 Discovery, execution, and operational entities
 
@@ -1674,14 +1697,14 @@ These names describe ownership, not a demand to create all tables in milestone o
 
 ### 25.7 Separate state machines
 
-| Aggregate | State vocabulary |
-|---|---|
-| Raid listing | `DRAFT`, `FUNDING_PENDING`, `OPEN`, `PAUSED`, `CLOSED`, `CANCELLED`, `ARCHIVED` |
-| Standard execution slot | `AVAILABLE`, `FILLED`, `CLOSED` |
-| Application | `SUBMITTED`, `SHORTLISTED`, `REJECTED`, `WITHDRAWN`, `CONVERTED_TO_OFFER`, `CLOSED` |
-| Offer | `OFFERED`, `ACCEPTED`, `DECLINED`, `EXPIRED`, `REVOKED` |
-| Engagement | `ACCESS_PENDING`, `IN_PROGRESS`, `SUBMITTED`, `UNDER_REVIEW`, `REVISION_REQUESTED`, `ACCEPTED`, `WITHDRAWN`, `CANCELLED`, `TERMINATED` |
-| Challenge | `DRAFT`, `APPLICATIONS_OPEN`, `BUILDING`, `JUDGING`, `DECIDED`, `CLOSED`, `CANCELLED` |
+| Aggregate               | State vocabulary                                                                                                                       |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Raid listing            | `DRAFT`, `FUNDING_PENDING`, `OPEN`, `PAUSED`, `CLOSED`, `CANCELLED`, `ARCHIVED`                                                        |
+| Standard execution slot | `AVAILABLE`, `FILLED`, `CLOSED`                                                                                                        |
+| Application             | `SUBMITTED`, `SHORTLISTED`, `REJECTED`, `WITHDRAWN`, `CONVERTED_TO_OFFER`, `CLOSED`                                                    |
+| Offer                   | `OFFERED`, `ACCEPTED`, `DECLINED`, `EXPIRED`, `REVOKED`                                                                                |
+| Engagement              | `ACCESS_PENDING`, `IN_PROGRESS`, `SUBMITTED`, `UNDER_REVIEW`, `REVISION_REQUESTED`, `ACCEPTED`, `WITHDRAWN`, `CANCELLED`, `TERMINATED` |
+| Challenge               | `DRAFT`, `APPLICATIONS_OPEN`, `BUILDING`, `JUDGING`, `DECIDED`, `CLOSED`, `CANCELLED`                                                  |
 
 Payment, access, agent run, and dispute states use their own tables. `Listing CLOSED` means no new admissions; it does not silently terminate active engagements or erase obligations. `Offer ACCEPTED` is not `Engagement ACCEPTED`: the former starts commitment, the latter is terminal accepted work.
 
@@ -1705,48 +1728,48 @@ For cookie sessions, protect state-changing requests against CSRF and validate a
 
 ### 26.2 Endpoint families
 
-| Method and path pattern | Purpose | Critical checks |
-|---|---|---|
-| `POST /auth/challenges`, `POST /auth/verify` | Issue/verify account or wallet challenge. | Domain, nonce, expiry, intent, signature, one-use consumption. |
-| `POST /me/wallet-links` | Link verified wallet to account. | Ownership and recovery/link conflict policy. |
-| `GET /me`, `GET /me/engagement` | Profile/capacity and active work. | Authenticated canonical account. |
-| `GET /guilds`, `GET /guilds/{id}` | Public project discovery. | Approved public fields only. |
-| `POST /guilds`, `PATCH /guilds/{id}` | Draft/manage Guild. | Founder or delegated field permission; version check. |
-| `POST /guilds/{id}/launch-intents` | Prepare selected launch route. | Approved provider/network/parameters and signer authority. |
-| `GET /launch-intents/{id}` | Reconciled launch status. | Owner/public status policy. |
-| `GET /skills`, `POST /me/skill-claims` | Taxonomy and claimed evidence. | Validation; no automatic verified rank. |
-| `POST /trials/{id}/attempts` | Begin a versioned trial. | Attempt limits and allowed evidence/tool policy. |
-| `POST /assessments/{id}/decisions` | Record assessed skill result. | Authorized evaluator, rubric, evidence, audit. |
-| `POST /raid-recommendations` | Draft structured task recommendation. | Input classification, privacy policy, budget/rate cap. |
-| `GET /raids`, `GET /raids/{id}` | Feed and permitted detail. | Visibility-filtered public projection. |
-| `POST /guilds/{id}/raids` | Create draft offering. | Authorized Guild role; typed format/scope. |
-| `POST /raids/{id}/terms-versions` | Propose draft/amendment. | Cannot overwrite accepted version. |
-| `POST /raids/{id}/funding-intents` | Prepare reward funding. | Actual asset/program/vault/amount and fee policy. |
-| `POST /raids/{id}/publish` | Publish a valid work offering. | Complete terms, funding/promotion/privacy checks. |
-| `GET /raids/{id}/eligibility` | Explain current fit. | Informational result with policy/as-of; no reusable authorization. |
-| `POST /raids/{id}/applications` | Apply to work. | Applicant, rate cap, scope, minimum application policy. |
-| `POST /applications/{id}/offers` | Offer a specific slot. | Authorized Founder; terms/version and target. |
-| `POST /offers/{id}/accept` | Commit to a slot/entry. | Atomic capacity, eligibility, consents, funding and state checks. |
-| `POST /raids/{id}/accept` | Instant-accept path where enabled. | Same canonical acceptance command; no shortcut. |
-| `POST /engagements/{id}/submissions` | Submit versioned evidence. | Member authority, active state, accepted terms, artifacts. |
-| `POST /submissions/{id}/reviews` | Accept/revise/raise issue. | Reviewer, specific version, bounded original criteria. |
-| `POST /engagements/{id}/withdrawals` | Request/record withdrawal. | State, terms, compensation process; no arbitrary refund. |
-| `POST /engagements/{id}/amendments` | Agree material changes. | All affected consents, additional funding, capacity if reopening. |
-| `POST /engagements/{id}/disputes` | Open a case. | Party rights, evidence limits, deadline/finality policy. |
-| `POST /disputes/{id}/decisions` | Record mediated resolution. | Declared authority, conflicts, allocation constraints. |
-| `GET /claims`, `POST /claims/{id}/intents` | Inspect/prepare authorized claim. | Beneficiary, finality, current program state, idempotency. |
-| `POST /parties`, `POST /parties/{id}/consents` | Build roster and record agreement. | Individual authority; exact roster/terms/split. |
-| `POST /challenges/{id}/applications` | Submit a nonbinding Challenge application. | Application eligibility, evidence, and rate limits; no capacity reserved. |
-| `POST /challenges/{id}/entries` | Founder creates approved entry/offer for a selected applicant. | Admission authority and current Challenge terms; no commitment yet. |
-| `POST /challenge-entries/{id}/accept` | Entrant accepts the offered Challenge work. | Delegates to `CommitEngagement` with entry reservation, consents, funding and capacity checks. |
-| `POST /challenges/{id}/judging-decisions` | Record selection/award proposal. | Rubric, judge authority, conflicts, maximum obligation. |
-| `POST /challenges/{id}/handoffs` | Accept follow-on main Raid. | Separate funded terms and atomic capacity transition. |
-| `POST /resources/{id}/access-requests` | Request private access. | Discoverability, task purpose, authorization. |
-| `POST /access-grants/{id}/decisions` | Approve/revoke resource grant. | Authorized grantor, scope, expiry, current work policy. |
-| `POST /promotion-orders`, `POST /promotion-bids` | Purchase/bid visibility. | Feature flag, inventory, budget, terms; no rank changes. |
-| `POST /agent-runs` | Start permitted managed execution. | Operator and participant capacity, budget, grant, runtime policy. |
-| `POST /agent-runs/{id}/cancel` | Stop a run safely. | Authorized operator/owner and external-effect reconciliation. |
-| `POST /webhooks/{provider}` | Receive signed provider event. | Provider verification and deduplicated inbox. |
+| Method and path pattern                          | Purpose                                                        | Critical checks                                                                                |
+| ------------------------------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `POST /auth/challenges`, `POST /auth/verify`     | Issue/verify account or wallet challenge.                      | Domain, nonce, expiry, intent, signature, one-use consumption.                                 |
+| `POST /me/wallet-links`                          | Link verified wallet to account.                               | Ownership and recovery/link conflict policy.                                                   |
+| `GET /me`, `GET /me/engagement`                  | Profile/capacity and active work.                              | Authenticated canonical account.                                                               |
+| `GET /guilds`, `GET /guilds/{id}`                | Public project discovery.                                      | Approved public fields only.                                                                   |
+| `POST /guilds`, `PATCH /guilds/{id}`             | Draft/manage Guild.                                            | Founder or delegated field permission; version check.                                          |
+| `POST /guilds/{id}/launch-intents`               | Prepare selected launch route.                                 | Approved provider/network/parameters and signer authority.                                     |
+| `GET /launch-intents/{id}`                       | Reconciled launch status.                                      | Owner/public status policy.                                                                    |
+| `GET /skills`, `POST /me/skill-claims`           | Taxonomy and claimed evidence.                                 | Validation; no automatic verified rank.                                                        |
+| `POST /trials/{id}/attempts`                     | Begin a versioned trial.                                       | Attempt limits and allowed evidence/tool policy.                                               |
+| `POST /assessments/{id}/decisions`               | Record assessed skill result.                                  | Authorized evaluator, rubric, evidence, audit.                                                 |
+| `POST /raid-recommendations`                     | Draft structured task recommendation.                          | Input classification, privacy policy, budget/rate cap.                                         |
+| `GET /raids`, `GET /raids/{id}`                  | Feed and permitted detail.                                     | Visibility-filtered public projection.                                                         |
+| `POST /guilds/{id}/raids`                        | Create draft offering.                                         | Authorized Guild role; typed format/scope.                                                     |
+| `POST /raids/{id}/terms-versions`                | Propose draft/amendment.                                       | Cannot overwrite accepted version.                                                             |
+| `POST /raids/{id}/funding-intents`               | Prepare reward funding.                                        | Actual asset/program/vault/amount and fee policy.                                              |
+| `POST /raids/{id}/publish`                       | Publish a valid work offering.                                 | Complete terms, funding/promotion/privacy checks.                                              |
+| `GET /raids/{id}/eligibility`                    | Explain current fit.                                           | Informational result with policy/as-of; no reusable authorization.                             |
+| `POST /raids/{id}/applications`                  | Apply to work.                                                 | Applicant, rate cap, scope, minimum application policy.                                        |
+| `POST /applications/{id}/offers`                 | Offer a specific slot.                                         | Authorized Founder; terms/version and target.                                                  |
+| `POST /offers/{id}/accept`                       | Commit to a slot/entry.                                        | Atomic capacity, eligibility, consents, funding and state checks.                              |
+| `POST /raids/{id}/accept`                        | Instant-accept path where enabled.                             | Same canonical acceptance command; no shortcut.                                                |
+| `POST /engagements/{id}/submissions`             | Submit versioned evidence.                                     | Member authority, active state, accepted terms, artifacts.                                     |
+| `POST /submissions/{id}/reviews`                 | Accept/revise/raise issue.                                     | Reviewer, specific version, bounded original criteria.                                         |
+| `POST /engagements/{id}/withdrawals`             | Request/record withdrawal.                                     | State, terms, compensation process; no arbitrary refund.                                       |
+| `POST /engagements/{id}/amendments`              | Agree material changes.                                        | All affected consents, additional funding, capacity if reopening.                              |
+| `POST /engagements/{id}/disputes`                | Open a case.                                                   | Party rights, evidence limits, deadline/finality policy.                                       |
+| `POST /disputes/{id}/decisions`                  | Record mediated resolution.                                    | Declared authority, conflicts, allocation constraints.                                         |
+| `GET /claims`, `POST /claims/{id}/intents`       | Inspect/prepare authorized claim.                              | Beneficiary, finality, current program state, idempotency.                                     |
+| `POST /parties`, `POST /parties/{id}/consents`   | Build roster and record agreement.                             | Individual authority; exact roster/terms/split.                                                |
+| `POST /challenges/{id}/applications`             | Submit a nonbinding Challenge application.                     | Application eligibility, evidence, and rate limits; no capacity reserved.                      |
+| `POST /challenges/{id}/entries`                  | Founder creates approved entry/offer for a selected applicant. | Admission authority and current Challenge terms; no commitment yet.                            |
+| `POST /challenge-entries/{id}/accept`            | Entrant accepts the offered Challenge work.                    | Delegates to `CommitEngagement` with entry reservation, consents, funding and capacity checks. |
+| `POST /challenges/{id}/judging-decisions`        | Record selection/award proposal.                               | Rubric, judge authority, conflicts, maximum obligation.                                        |
+| `POST /challenges/{id}/handoffs`                 | Accept follow-on main Raid.                                    | Separate funded terms and atomic capacity transition.                                          |
+| `POST /resources/{id}/access-requests`           | Request private access.                                        | Discoverability, task purpose, authorization.                                                  |
+| `POST /access-grants/{id}/decisions`             | Approve/revoke resource grant.                                 | Authorized grantor, scope, expiry, current work policy.                                        |
+| `POST /promotion-orders`, `POST /promotion-bids` | Purchase/bid visibility.                                       | Feature flag, inventory, budget, terms; no rank changes.                                       |
+| `POST /agent-runs`                               | Start permitted managed execution.                             | Operator and participant capacity, budget, grant, runtime policy.                              |
+| `POST /agent-runs/{id}/cancel`                   | Stop a run safely.                                             | Authorized operator/owner and external-effect reconciliation.                                  |
+| `POST /webhooks/{provider}`                      | Receive signed provider event.                                 | Provider verification and deduplicated inbox.                                                  |
 
 Do not expose generic public `PATCH /... {state: "PAID"}` or `setRank` endpoints. State changes happen through commands with reasoned authority and evidence.
 
@@ -1777,7 +1800,7 @@ Do not expose generic public `PATCH /... {state: "PAID"}` or `setRank` endpoints
     "message": "Review the current terms before accepting.",
     "retryable": false,
     "requestId": "request-example-001",
-    "details": {"currentTermsVersion": "terms-example-v3"}
+    "details": { "currentTermsVersion": "terms-example-v3" }
   }
 }
 ```
@@ -1808,7 +1831,7 @@ Return only permissions/data the caller needs. Enforce authorization before issu
   "actorId": "account-example-001",
   "guildId": "guild-example-001",
   "correlationId": "request-example-001",
-  "payload": {"termsVersionId": "terms-example-v2"}
+  "payload": { "termsVersionId": "terms-example-v2" }
 }
 ```
 
@@ -1816,15 +1839,15 @@ Events contain identifiers and minimal necessary metadata. Sensitive artifacts a
 
 ### 27.2 Event families
 
-| Family | Examples | Main consumers |
-|---|---|---|
-| Identity/Guild | `wallet_verified`, `guild_token_verified`, `holder_observation_updated` | Membership and public projection. |
-| Launch | `launch_submitted`, `launch_verified`, `launch_action_required` | Founder status and Guild activation. |
-| Work | `offered`, `engagement_committed`, `submission_received`, `revision_requested`, `work_closed` | Access, deadlines, notifications, reputation. |
-| Treasury | `funding_verified`, `binding_verified`, `allocation_finalized`, `claim_paid`, `settlement_blocked` | Work readiness, ledger, payment UI. |
-| Access | `grant_requested`, `grant_active`, `revocation_requested`, `revocation_verified`, `grant_failed` | Workspace and incident tracking. |
-| Challenge | `entry_committed`, `judging_completed`, `selection_offered`, `handoff_committed` | Awards, capacity, participant notifications. |
-| Execution | `run_started`, `budget_threshold`, `run_submitted`, `run_failed` | Cost accounting, work review, operations. |
+| Family         | Examples                                                                                           | Main consumers                                |
+| -------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Identity/Guild | `wallet_verified`, `guild_token_verified`, `holder_observation_updated`                            | Membership and public projection.             |
+| Launch         | `launch_submitted`, `launch_verified`, `launch_action_required`                                    | Founder status and Guild activation.          |
+| Work           | `offered`, `engagement_committed`, `submission_received`, `revision_requested`, `work_closed`      | Access, deadlines, notifications, reputation. |
+| Treasury       | `funding_verified`, `binding_verified`, `allocation_finalized`, `claim_paid`, `settlement_blocked` | Work readiness, ledger, payment UI.           |
+| Access         | `grant_requested`, `grant_active`, `revocation_requested`, `revocation_verified`, `grant_failed`   | Workspace and incident tracking.              |
+| Challenge      | `entry_committed`, `judging_completed`, `selection_offered`, `handoff_committed`                   | Awards, capacity, participant notifications.  |
+| Execution      | `run_started`, `budget_threshold`, `run_submitted`, `run_failed`                                   | Cost accounting, work review, operations.     |
 
 Use precise event names: `submission_received` is not `work_accepted`, and `transaction_submitted` is not `claim_paid`.
 
@@ -1838,30 +1861,30 @@ For each effect record desired state, generation/version, attempts, next retry, 
 
 ### 27.4 Essential jobs
 
-| Job | Trigger/behavior | Recovery |
-|---|---|---|
-| Chain verifier | Poll known transaction/operation intents; verify decoded effects. | Check operation receipt before rebuilding or resending. |
-| Escrow reconciler | Compare known obligations, claims, vaults, and finalized chain state. | Raise discrepancy; preserve funds/claims; repair projections. |
-| Access provision/revoke | Reconcile desired permissions with actual provider state. | Retry, verify, and escalate failure with resource context. |
-| Deadline processor | Handle offer, access, submission, review, operational and appeal deadlines. | Versioned deadline ID prevents stale timeout actions. |
-| Membership refresher | Update supported holder observations. | Stale/unknown state on outage; no destructive inferred zero. |
-| Reputation projector | Apply canonical outcome/reversal events. | Dedupe and rebuild from source events. |
-| Promotion scheduler | Start/stop funded inventory and track delivery. | Reconcile actual eligibility and refund/make-good state. |
-| AI runner supervisor | Enforce caps, cancellation, heartbeat and resource lifetime. | Stop/reconcile orphaned runs without repeating writes. |
-| Notification dispatcher | Deliver allowed in-app/external notifications. | Dedupe; respect preferences; keep confidential previews minimal. |
+| Job                     | Trigger/behavior                                                            | Recovery                                                         |
+| ----------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Chain verifier          | Poll known transaction/operation intents; verify decoded effects.           | Check operation receipt before rebuilding or resending.          |
+| Escrow reconciler       | Compare known obligations, claims, vaults, and finalized chain state.       | Raise discrepancy; preserve funds/claims; repair projections.    |
+| Access provision/revoke | Reconcile desired permissions with actual provider state.                   | Retry, verify, and escalate failure with resource context.       |
+| Deadline processor      | Handle offer, access, submission, review, operational and appeal deadlines. | Versioned deadline ID prevents stale timeout actions.            |
+| Membership refresher    | Update supported holder observations.                                       | Stale/unknown state on outage; no destructive inferred zero.     |
+| Reputation projector    | Apply canonical outcome/reversal events.                                    | Dedupe and rebuild from source events.                           |
+| Promotion scheduler     | Start/stop funded inventory and track delivery.                             | Reconcile actual eligibility and refund/make-good state.         |
+| AI runner supervisor    | Enforce caps, cancellation, heartbeat and resource lifetime.                | Stop/reconcile orphaned runs without repeating writes.           |
+| Notification dispatcher | Deliver allowed in-app/external notifications.                              | Dedupe; respect preferences; keep confidential previews minimal. |
 
 ### 27.5 Deduplication keys
 
-| Operation | Semantic key |
-|---|---|
-| User command | Actor + command kind + client idempotency key. |
-| Terms consent | Participant + engagement/offer + terms/roster version. |
-| Funding operation | Escrow agreement + asset + funding operation ID. |
-| Claim | Allocation version + beneficiary + asset + claim index/ID. |
-| Webhook | Provider + verified delivery ID. |
-| Reputation event | Outcome version + subject + event category. |
-| Access effect | Resource/subject grant + desired-state generation. |
-| Deadline | Aggregate + deadline kind + deadline version. |
+| Operation         | Semantic key                                               |
+| ----------------- | ---------------------------------------------------------- |
+| User command      | Actor + command kind + client idempotency key.             |
+| Terms consent     | Participant + engagement/offer + terms/roster version.     |
+| Funding operation | Escrow agreement + asset + funding operation ID.           |
+| Claim             | Allocation version + beneficiary + asset + claim index/ID. |
+| Webhook           | Provider + verified delivery ID.                           |
+| Reputation event  | Outcome version + subject + event category.                |
+| Access effect     | Resource/subject grant + desired-state generation.         |
+| Deadline          | Aggregate + deadline kind + deadline version.              |
 
 Do not use a transaction signature as the only business deduplication key when a transaction can be rebuilt with a different blockhash.
 
@@ -1873,35 +1896,35 @@ Do not use a transaction signature as the only business deduplication key when a
 
 Combine explicit roles with resource relationships and action-specific policies. Authorize each action using actor, Guild, target resource, work state, granted scope, current restrictions, and accepted terms. Deny by default when required context is missing.
 
-| Actor | Public discovery | Guild management | Private brief/code | Submit work | Accept work result | Settle disputed funds |
-|---|---|---|---|---|---|---|
-| Visitor | Yes | No | No | No | No | No |
-| Guild token holder | Yes | No by membership alone | No by membership alone | Only if assigned | No | No |
-| Raider/applicant | Yes | No unless separate role | Only specified grant | Own assigned work | No self-approval | No |
-| Party leader | Yes | No unless separate role | Own granted scope | As consented by engagement | No self-approval | No unilateral split changes |
-| Guild Founder/admin | Yes | Granted permissions | Authorized Guild resources | Only own assigned work if legitimate | Within assigned reviewer role and terms | Only if the escrow policy separately authorizes a permitted action |
-| Independent reviewer | Yes | No | Limited case/submission scope | Paid review deliverable if assigned | Within explicit review scope | Only declared mediator authority if separately granted |
-| Platform operations | Yes | Scoped support/admin permissions | Case-specific access with audit | No impersonated submission | No fabricated acceptance | No arbitrary withdrawal |
-| Product AI worker | Permitted task scope | No inherited admin | Explicit short-lived task grant | Own authenticated result | No self-approval | No |
+| Actor                | Public discovery     | Guild management                 | Private brief/code              | Submit work                          | Accept work result                      | Settle disputed funds                                              |
+| -------------------- | -------------------- | -------------------------------- | ------------------------------- | ------------------------------------ | --------------------------------------- | ------------------------------------------------------------------ |
+| Visitor              | Yes                  | No                               | No                              | No                                   | No                                      | No                                                                 |
+| Guild token holder   | Yes                  | No by membership alone           | No by membership alone          | Only if assigned                     | No                                      | No                                                                 |
+| Raider/applicant     | Yes                  | No unless separate role          | Only specified grant            | Own assigned work                    | No self-approval                        | No                                                                 |
+| Party leader         | Yes                  | No unless separate role          | Own granted scope               | As consented by engagement           | No self-approval                        | No unilateral split changes                                        |
+| Guild Founder/admin  | Yes                  | Granted permissions              | Authorized Guild resources      | Only own assigned work if legitimate | Within assigned reviewer role and terms | Only if the escrow policy separately authorizes a permitted action |
+| Independent reviewer | Yes                  | No                               | Limited case/submission scope   | Paid review deliverable if assigned  | Within explicit review scope            | Only declared mediator authority if separately granted             |
+| Platform operations  | Yes                  | Scoped support/admin permissions | Case-specific access with audit | No impersonated submission           | No fabricated acceptance                | No arbitrary withdrawal                                            |
+| Product AI worker    | Permitted task scope | No inherited admin               | Explicit short-lived task grant | Own authenticated result             | No self-approval                        | No                                                                 |
 
 Technical support should receive the smallest useful case view. A platform role that can investigate private records must be explicit, auditable, and limited; it is not implied by being a developer.
 
 ### 28.2 High-risk boundaries
 
-| Threat | Required design response |
-|---|---|
-| Two simultaneous accepts | Database-enforced unique active commitment and transactional slot/capacity checks. |
-| Private object ID guessed | Resource authorization before read/download; non-enumerable error where required. |
-| Forged funding signature | Verify chain/program/vault/mint/amount/effect; no client trust. |
-| Account/mint substitution | Strict on-chain and backend identifier validation. |
-| Duplicate payout | Semantic single-use claim, not only HTTP or signature deduplication. |
-| Malicious PR/build | Isolated execution; no privileged secrets; authenticated artifact flow. |
-| Prompt injection | Tool/runtime policy outside the model; scoped resources and egress. |
-| Stolen session/social token | Expiry, revocation, least privilege, high-risk action verification. |
-| Reused trial or fake portfolio | Attribution checks and proportional review. |
-| Reputation farming | Canonical events, related-party checks, confidence, appeal/correction. |
-| Paid placement masquerading as trust | Clear sponsorship and separate ranking inputs. |
-| Insider/admin misuse | Scoped permissions, auditable changes, separate fund authority. |
+| Threat                               | Required design response                                                           |
+| ------------------------------------ | ---------------------------------------------------------------------------------- |
+| Two simultaneous accepts             | Database-enforced unique active commitment and transactional slot/capacity checks. |
+| Private object ID guessed            | Resource authorization before read/download; non-enumerable error where required.  |
+| Forged funding signature             | Verify chain/program/vault/mint/amount/effect; no client trust.                    |
+| Account/mint substitution            | Strict on-chain and backend identifier validation.                                 |
+| Duplicate payout                     | Semantic single-use claim, not only HTTP or signature deduplication.               |
+| Malicious PR/build                   | Isolated execution; no privileged secrets; authenticated artifact flow.            |
+| Prompt injection                     | Tool/runtime policy outside the model; scoped resources and egress.                |
+| Stolen session/social token          | Expiry, revocation, least privilege, high-risk action verification.                |
+| Reused trial or fake portfolio       | Attribution checks and proportional review.                                        |
+| Reputation farming                   | Canonical events, related-party checks, confidence, appeal/correction.             |
+| Paid placement masquerading as trust | Clear sponsorship and separate ranking inputs.                                     |
+| Insider/admin misuse                 | Scoped permissions, auditable changes, separate fund authority.                    |
 
 ### 28.3 Web and integration security
 
@@ -1933,17 +1956,17 @@ Stable IDs outlive label changes. Retiring a category hides it from new creation
 
 ### 29.2 Configuration boundaries
 
-| Setting class | How it changes | Effect on accepted work |
-|---|---|---|
-| Catalog/display | Authorized runtime edit with version/history. | Existing snapshots retain agreed labels where needed. |
-| Default deadlines/recommendation rubrics | Versioned policy edit. | Applies to new terms; no retroactive deadline changes. |
-| Optional token entitlement | Explicit product decision and versioned policy. | No rank purchase, reward confiscation, or silent contract change. |
-| Promotion prices/bidding | Commercial policy plus tested financial flow. | Purchased placement terms remain intact. |
-| Reputation formula | Reviewed, versioned recomputation with explained changes. | Preserve source events and appeals. |
-| Accepted scope/rewards/judging/splits | Consent-based amendment. | Cannot be overwritten by global configuration. |
-| Security state machine/permission semantics | Reviewed code/schema change. | Migration and compatibility plan required. |
-| Asset/program allowlist | Technical verification and authorized change. | New deposits may be paused; existing claims remain recorded. |
-| Mainnet signers/program upgrades | Explicit authorized operational procedure. | Not editable as an ordinary dashboard field. |
+| Setting class                               | How it changes                                            | Effect on accepted work                                           |
+| ------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------- |
+| Catalog/display                             | Authorized runtime edit with version/history.             | Existing snapshots retain agreed labels where needed.             |
+| Default deadlines/recommendation rubrics    | Versioned policy edit.                                    | Applies to new terms; no retroactive deadline changes.            |
+| Optional token entitlement                  | Explicit product decision and versioned policy.           | No rank purchase, reward confiscation, or silent contract change. |
+| Promotion prices/bidding                    | Commercial policy plus tested financial flow.             | Purchased placement terms remain intact.                          |
+| Reputation formula                          | Reviewed, versioned recomputation with explained changes. | Preserve source events and appeals.                               |
+| Accepted scope/rewards/judging/splits       | Consent-based amendment.                                  | Cannot be overwritten by global configuration.                    |
+| Security state machine/permission semantics | Reviewed code/schema change.                              | Migration and compatibility plan required.                        |
+| Asset/program allowlist                     | Technical verification and authorized change.             | New deposits may be paused; existing claims remain recorded.      |
+| Mainnet signers/program upgrades            | Explicit authorized operational procedure.                | Not editable as an ordinary dashboard field.                      |
 
 ### 29.3 Feature flags
 
@@ -1981,18 +2004,18 @@ Logs and dashboards use correlation IDs from request → command → event → p
 
 ### 30.4 Incident playbooks
 
-| Incident | Immediate response | Recovery condition |
-|---|---|---|
-| RPC unavailable or inconsistent | Mark observations stale; pause affected new commitments/transactions as needed. | Reconciled authoritative state with lag inside the chosen target. |
-| Payment submission timed out | Keep status unknown/pending; inspect existing operation and signature. | Verified outcome or proven safe retry with the same semantic ID. |
-| Vault/accounting discrepancy | Stop unsafe new allocations; preserve records and notify finance/security owner. | Explained reconciliation with auditable repair; no fabricated balance. |
-| Contributor lacks required access | Pause effective work start; notify Founder; start bounded setup incident. | Correct access or operational closure with compensation path. |
-| Access removal fails | Revoke task secrets, retry provider reconciliation, alert access owner. | Actual effective access matches authorized desired state. |
-| Review abandoned | Send notice, escalate, apply finite operational deadline. | Review/consented extension or closed work with claims preserved. |
-| AI run loses heartbeat | Stop further budget dispatch, inspect actual external effects. | Safe resume or terminal run/engagement handling. |
-| Promotion not delivered | Stop further erroneous charging; preserve paid reservation. | Delivered replacement or authorized refund under purchased terms. |
-| Account compromise | Revoke credentials, contain new actions, preserve claims/evidence. | Account recovery and safe authorization restoration. |
-| Program/provider security incident | Apply predesigned pause/containment controls and user status. | Reviewed recovery route; never assume code rollback undoes transfers. |
+| Incident                           | Immediate response                                                               | Recovery condition                                                     |
+| ---------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| RPC unavailable or inconsistent    | Mark observations stale; pause affected new commitments/transactions as needed.  | Reconciled authoritative state with lag inside the chosen target.      |
+| Payment submission timed out       | Keep status unknown/pending; inspect existing operation and signature.           | Verified outcome or proven safe retry with the same semantic ID.       |
+| Vault/accounting discrepancy       | Stop unsafe new allocations; preserve records and notify finance/security owner. | Explained reconciliation with auditable repair; no fabricated balance. |
+| Contributor lacks required access  | Pause effective work start; notify Founder; start bounded setup incident.        | Correct access or operational closure with compensation path.          |
+| Access removal fails               | Revoke task secrets, retry provider reconciliation, alert access owner.          | Actual effective access matches authorized desired state.              |
+| Review abandoned                   | Send notice, escalate, apply finite operational deadline.                        | Review/consented extension or closed work with claims preserved.       |
+| AI run loses heartbeat             | Stop further budget dispatch, inspect actual external effects.                   | Safe resume or terminal run/engagement handling.                       |
+| Promotion not delivered            | Stop further erroneous charging; preserve paid reservation.                      | Delivered replacement or authorized refund under purchased terms.      |
+| Account compromise                 | Revoke credentials, contain new actions, preserve claims/evidence.               | Account recovery and safe authorization restoration.                   |
+| Program/provider security incident | Apply predesigned pause/containment controls and user status.                    | Reviewed recovery route; never assume code rollback undoes transfers.  |
 
 ### 30.5 Backups and restore
 
@@ -2020,21 +2043,21 @@ Prefer additive schema changes with explicit backfills and verification. Never e
 
 The useful loop is a legitimate project commissioning useful work that is completed and settled under clear terms. Measure that loop directly rather than treating raw wallet count or token trading volume as proof of work-market success.
 
-| Metric | Definition/interpretation |
-|---|---|
-| Guild activation | Verified project/Guild reaches its first valid funded work offering. |
-| Launch conversion | Draft launch intents that reach verified required launch state. |
-| First-Raid completion | Newly activated Guild reaches an accepted commissioned outcome. |
-| Settlement completion | Due obligations finalized, by asset and time to settlement. |
-| Raider activation | New participant accepts a suitable first engagement. |
-| Time to first useful outcome | Time from onboarding/creation to an accepted work result. |
-| Matching time | Time from funded open slot to accepted, activated engagement. |
-| Repeat Guilds/contributors | Distinct entities returning for another valid engagement. |
-| Review delay | Time from submission to substantive decision, excluding documented pauses. |
-| Dispute burden | Open/resolved cases by category and attributable finding. |
-| Private-access reliability | Grants/revocations reaching their intended verified state on time. |
-| AI task economics | Actual attributable execution cost, revenue, success, and rework by evaluated configuration. |
-| Promotion delivery | Purchased inventory actually delivered; separately measured clicks/outcomes. |
+| Metric                       | Definition/interpretation                                                                    |
+| ---------------------------- | -------------------------------------------------------------------------------------------- |
+| Guild activation             | Verified project/Guild reaches its first valid funded work offering.                         |
+| Launch conversion            | Draft launch intents that reach verified required launch state.                              |
+| First-Raid completion        | Newly activated Guild reaches an accepted commissioned outcome.                              |
+| Settlement completion        | Due obligations finalized, by asset and time to settlement.                                  |
+| Raider activation            | New participant accepts a suitable first engagement.                                         |
+| Time to first useful outcome | Time from onboarding/creation to an accepted work result.                                    |
+| Matching time                | Time from funded open slot to accepted, activated engagement.                                |
+| Repeat Guilds/contributors   | Distinct entities returning for another valid engagement.                                    |
+| Review delay                 | Time from submission to substantive decision, excluding documented pauses.                   |
+| Dispute burden               | Open/resolved cases by category and attributable finding.                                    |
+| Private-access reliability   | Grants/revocations reaching their intended verified state on time.                           |
+| AI task economics            | Actual attributable execution cost, revenue, success, and rework by evaluated configuration. |
+| Promotion delivery           | Purchased inventory actually delivered; separately measured clicks/outcomes.                 |
 
 ### 31.2 Reporting integrity
 
@@ -2056,16 +2079,16 @@ Collect feedback at natural milestones. Survey answers are not forced positive r
 
 Prioritize financial correctness, identity/permission boundaries, concurrency, external-effect recovery, and the end-to-end user journey. Avoid large suites that only repeat implementation details or count UI elements.
 
-| Test level | What it proves |
-|---|---|
-| Domain/unit | Amount parsing, policy predicates, valid/invalid transitions, per-asset allocation, deadline/version rules. |
-| Database integration | Uniqueness, locking, atomic Party/operator reservations, state/audit/outbox consistency. |
-| Adapter contract | Real provider request/response semantics using controlled fixtures and recorded schemas. |
-| Program/integration | Signer/account validation, funds conservation, commitment/refund race, replay, claimability, supported assets. |
-| End-to-end | User can launch/verify Guild, fund, match, work, review, claim, and inspect history. |
-| Security/adversarial | Cross-Guild access, forged events, guessed IDs, malicious code, prompt injection, secret handling. |
-| Recovery | Crash after external success, missing webhook, stale generation, restore/replay, provider outage. |
-| Accessibility | Keyboard/focus, semantic forms, non-color cues, reflow, errors and status announcements. |
+| Test level           | What it proves                                                                                                 |
+| -------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Domain/unit          | Amount parsing, policy predicates, valid/invalid transitions, per-asset allocation, deadline/version rules.    |
+| Database integration | Uniqueness, locking, atomic Party/operator reservations, state/audit/outbox consistency.                       |
+| Adapter contract     | Real provider request/response semantics using controlled fixtures and recorded schemas.                       |
+| Program/integration  | Signer/account validation, funds conservation, commitment/refund race, replay, claimability, supported assets. |
+| End-to-end           | User can launch/verify Guild, fund, match, work, review, claim, and inspect history.                           |
+| Security/adversarial | Cross-Guild access, forged events, guessed IDs, malicious code, prompt injection, secret handling.             |
+| Recovery             | Crash after external success, missing webhook, stale generation, restore/replay, provider outage.              |
+| Accessibility        | Keyboard/focus, semantic forms, non-color cues, reflow, errors and status announcements.                       |
 
 ### 32.2 Real concurrency tests
 
@@ -2118,18 +2141,18 @@ Do not rewrite another agent's contract by silently changing an enum, amount sha
 
 ### 33.2 Agent roster
 
-| Agent | Owns | Required reading |
-|---|---|---|
-| AG01 Product and orchestration | Decisions, scope, task dependencies, integration. | 00–05, 13, 34–40. |
-| AG02 Frontend and experience | Navigation, screens, interactions, accessibility. | 03–12, 15, 18, 23, 26, 35–36. |
-| AG03 Backend and domain | Work/identity, Party/Challenge lifecycle and handoff, policies, APIs, persistence. | 06–17, 24–29, 35. |
-| AG04 Solana and treasury | Launch adapter, funding, program/settlement, reconciliation. | 05, 13, 15–17, 22, 25–30, 35. |
-| AG05 Trust and private access | Skill proof, reputation, Guild Trust, grants, abuse review. | 07–10, 13–17, 25, 28–29, 35. |
-| AG06 AI execution | Registered worker runtime, routing, budgets, tools. | 00, 07–08, 13–14, 19–20, 24–30, 35. |
-| AG07 Discovery and distribution | Feed, sponsorship, influencer/channel adapters. | 18, 20, 22–29, 31, 35. |
-| AG08 QA and security | Independent scenario evidence and adversarial review. | 02, 10, 12–17, 19, 25–28, 30, 32, 35. |
-| AG09 Operations and release | Environments, workers, recovery, observability, deployment. | 16–17, 24–30, 32, 34–35, 38–40. |
-| AG10 Documentation and integration | Contract consistency, decision/progress records, agent onboarding. | Entire glossary/decision register; affected domains and 33–41. |
+| Agent                              | Owns                                                                               | Required reading                                               |
+| ---------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| AG01 Product and orchestration     | Decisions, scope, task dependencies, integration.                                  | 00–05, 13, 34–40.                                              |
+| AG02 Frontend and experience       | Navigation, screens, interactions, accessibility.                                  | 03–12, 15, 18, 23, 26, 35–36.                                  |
+| AG03 Backend and domain            | Work/identity, Party/Challenge lifecycle and handoff, policies, APIs, persistence. | 06–17, 24–29, 35.                                              |
+| AG04 Solana and treasury           | Launch adapter, funding, program/settlement, reconciliation.                       | 05, 13, 15–17, 22, 25–30, 35.                                  |
+| AG05 Trust and private access      | Skill proof, reputation, Guild Trust, grants, abuse review.                        | 07–10, 13–17, 25, 28–29, 35.                                   |
+| AG06 AI execution                  | Registered worker runtime, routing, budgets, tools.                                | 00, 07–08, 13–14, 19–20, 24–30, 35.                            |
+| AG07 Discovery and distribution    | Feed, sponsorship, influencer/channel adapters.                                    | 18, 20, 22–29, 31, 35.                                         |
+| AG08 QA and security               | Independent scenario evidence and adversarial review.                              | 02, 10, 12–17, 19, 25–28, 30, 32, 35.                          |
+| AG09 Operations and release        | Environments, workers, recovery, observability, deployment.                        | 16–17, 24–30, 32, 34–35, 38–40.                                |
+| AG10 Documentation and integration | Contract consistency, decision/progress records, agent onboarding.                 | Entire glossary/decision register; affected domains and 33–41. |
 
 All agents additionally read 00–04 and the one-active rule in 13. Required-reading references do not authorize ignoring adjacent rules affected by a task.
 
@@ -2261,17 +2284,17 @@ All agents additionally read 00–04 and the one-active rule in 13. Required-rea
 
 Build in dependency order, proving one usable vertical slice before adding complex automation. This is a proposed delivery sequence, not a claim that the user approved exact sprint durations or that every feature must launch on the same day.
 
-| Milestone | Scope | Depends on | Exit evidence |
-|---|---|---|---|
-| M0 — Contract and foundation | Repository inspection, decision register, shared types, schema conventions, state ownership, test fixtures. | This blueprint and actual repo facts. | Agents use one contract; OPEN production decisions have owners; no fake implementation status. |
-| M1 — Identity and Guild | Authentication, canonical Raider, wallet links, draft/verified Guild, roles, basic profiles and public discovery. | M0. | Wallet changes preserve identity; holder eligibility cannot grant admin access. |
-| M2 — Work lifecycle | Draft/recommendation rubric, published safe cards, applications/offers, atomic capacity, terms, submission/review/deadlines with simulated funds. | M1. | Complete synthetic work loop and real database race tests; simulation unmistakable. |
-| M3 — Launch integration | Selected protocol/provider adapter, review/sign flow, verification, Guild token linkage, recovery. | Launch protocol decision; M1. | Supported launch creates/verifies the intended artifact on the test network with accurate state. |
-| M4 — Funding and settlement | Chosen escrow, assets, reserves, binding, finality, claims/refunds, dispute authority, reconciliation. | Authority/asset/finality decisions; M2. | Program/provider and backend agree across funding, replay, race, partial payout and timeout cases. |
-| M5 — Controlled first release | Public human Raids, manual relevant assessments/review, honest reputation metrics, launchpad flow, monitoring/support. | M1–M4 and relevant release gates. | Real supported end-to-end operation under the approved operating model; no unsafe shortcuts. |
-| M6 — Trust and team execution | Private briefs/code grants, Party consents/splits, paid selection Challenges, fixed sponsored placements. | M5 plus access/judging/payment policies. | Scoped grants/revocation and Challenge handoffs pass; placement delivery/refunds reconcile. |
-| M7 — Managed intelligence | Evaluated AI workers, operator caps, isolated runtime, bounded spend, improved recommendations. | M5–M6 relevant contracts and runtime/provider decisions. | One permitted task runs under limits and reaches ordinary verification; prompt-injection/cancellation tests pass. |
-| M8 — Advanced Guild economy | Prize competitions, bid placement, approved automated influencer channels, sophisticated scoring, ongoing Roles. | Corresponding policy, financial, integration and operational gates. | Each feature's meaningful negative/recovery cases pass before enablement. |
+| Milestone                     | Scope                                                                                                                                             | Depends on                                                          | Exit evidence                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| M0 — Contract and foundation  | Repository inspection, decision register, shared types, schema conventions, state ownership, test fixtures.                                       | This blueprint and actual repo facts.                               | Agents use one contract; OPEN production decisions have owners; no fake implementation status.                    |
+| M1 — Identity and Guild       | Authentication, canonical Raider, wallet links, draft/verified Guild, roles, basic profiles and public discovery.                                 | M0.                                                                 | Wallet changes preserve identity; holder eligibility cannot grant admin access.                                   |
+| M2 — Work lifecycle           | Draft/recommendation rubric, published safe cards, applications/offers, atomic capacity, terms, submission/review/deadlines with simulated funds. | M1.                                                                 | Complete synthetic work loop and real database race tests; simulation unmistakable.                               |
+| M3 — Launch integration       | Selected protocol/provider adapter, review/sign flow, verification, Guild token linkage, recovery.                                                | Launch protocol decision; M1.                                       | Supported launch creates/verifies the intended artifact on the test network with accurate state.                  |
+| M4 — Funding and settlement   | Chosen escrow, assets, reserves, binding, finality, claims/refunds, dispute authority, reconciliation.                                            | Authority/asset/finality decisions; M2.                             | Program/provider and backend agree across funding, replay, race, partial payout and timeout cases.                |
+| M5 — Controlled first release | Public human Raids, manual relevant assessments/review, honest reputation metrics, launchpad flow, monitoring/support.                            | M1–M4 and relevant release gates.                                   | Real supported end-to-end operation under the approved operating model; no unsafe shortcuts.                      |
+| M6 — Trust and team execution | Private briefs/code grants, Party consents/splits, paid selection Challenges, fixed sponsored placements.                                         | M5 plus access/judging/payment policies.                            | Scoped grants/revocation and Challenge handoffs pass; placement delivery/refunds reconcile.                       |
+| M7 — Managed intelligence     | Evaluated AI workers, operator caps, isolated runtime, bounded spend, improved recommendations.                                                   | M5–M6 relevant contracts and runtime/provider decisions.            | One permitted task runs under limits and reaches ordinary verification; prompt-injection/cancellation tests pass. |
+| M8 — Advanced Guild economy   | Prize competitions, bid placement, approved automated influencer channels, sophisticated scoring, ongoing Roles.                                  | Corresponding policy, financial, integration and operational gates. | Each feature's meaningful negative/recovery cases pass before enablement.                                         |
 
 M3 and parts of M2/M4 can proceed in parallel once the shared identity/contract decisions are stable. M6 subfeatures can also be staged independently. Do not block reversible product/UI work on an unrelated tokenomics decision.
 
@@ -2287,18 +2310,18 @@ The first risky behavior to prove is simultaneous acceptance under real database
 
 ### 34.4 Required production gates
 
-| Gate | Evidence needed | Affected features |
-|---|---|---|
-| G01 — Launch route | Approved protocol, parameters, verified IDs, authority/fee behavior, recovery. | Real launches/trading. |
-| G02 — Custody and settlement | Defined authority, program/provider capability, reserves/claims/refunds, recovery, relevant assurance. | Real reward funding and payouts. |
-| G03 — Financial finality | Notice, ordinary acceptance finality, objection/appeal, final decision, hold/claim race behavior. | All live settlement claimability, including ordinary acceptance, disputes, and Challenge awards. |
-| G04 — Supported assets | Exact registry, decimals/program checks, extension policy, complete tested paths. | Each added payment asset. |
-| G05 — Operating terms | Supported jurisdictions/users, rights, fees, dispute operator and service scope. | Public paid launch/work operations. |
-| G06 — Private resources | Real authorization, effective provider grants, isolation, revocation and incident handling. | Confidential Raids and private trials. |
-| G07 — Managed execution | Operator identity, sandbox, tool authority, spend controls, provider data policy. | Managed AI workers. |
-| G08 — External publication | Account control, current API capability, content approval, retry/takedown/metrics rules. | Automated influencer posting. |
-| G09 — Promotions | Funded inventory/bids, charge/delivery/refund reconciliation. | Paid placements and auctions. |
-| G10 — Operations | Monitoring, staffed case ownership, backups/restore, release/incident playbooks. | Any supported live release. |
+| Gate                         | Evidence needed                                                                                        | Affected features                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| G01 — Launch route           | Approved protocol, parameters, verified IDs, authority/fee behavior, recovery.                         | Real launches/trading.                                                                           |
+| G02 — Custody and settlement | Defined authority, program/provider capability, reserves/claims/refunds, recovery, relevant assurance. | Real reward funding and payouts.                                                                 |
+| G03 — Financial finality     | Notice, ordinary acceptance finality, objection/appeal, final decision, hold/claim race behavior.      | All live settlement claimability, including ordinary acceptance, disputes, and Challenge awards. |
+| G04 — Supported assets       | Exact registry, decimals/program checks, extension policy, complete tested paths.                      | Each added payment asset.                                                                        |
+| G05 — Operating terms        | Supported jurisdictions/users, rights, fees, dispute operator and service scope.                       | Public paid launch/work operations.                                                              |
+| G06 — Private resources      | Real authorization, effective provider grants, isolation, revocation and incident handling.            | Confidential Raids and private trials.                                                           |
+| G07 — Managed execution      | Operator identity, sandbox, tool authority, spend controls, provider data policy.                      | Managed AI workers.                                                                              |
+| G08 — External publication   | Account control, current API capability, content approval, retry/takedown/metrics rules.               | Automated influencer posting.                                                                    |
+| G09 — Promotions             | Funded inventory/bids, charge/delivery/refund reconciliation.                                          | Paid placements and auctions.                                                                    |
+| G10 — Operations             | Monitoring, staffed case ownership, backups/restore, release/incident playbooks.                       | Any supported live release.                                                                      |
 
 Gates apply to their dependent feature. An unresolved prize-auction policy does not prevent a public profile screen from being completed. An unresolved escrow authority does prevent presenting a prototype as safely holding live rewards.
 
@@ -2308,105 +2331,108 @@ Gates apply to their dependent feature. An unresolved prize-auction policy does 
 
 ### 35.1 Identity, skills, and trust
 
-| ID | Scenario | Required result |
-|---|---|---|
-| AC01 | User connects a second wallet while holding an active Raid. | Same canonical participant, same history and capacity. |
-| AC02 | Reuse a wallet-login nonce or change its domain. | Authentication fails; no duplicate session/link. |
-| AC03 | New user completes orientation with no verified skill. | Can find explicit starter tasks; no fabricated verified rank. |
-| AC04 | E-ranked participant buys a large RAID balance. | Skill rank and high-rank eligibility do not change. |
-| AC05 | A-ranked frontend developer applies for B-ranked Solana work without that skill. | Required skill fails with an actionable explanation. |
-| AC06 | Experienced newcomer passes a relevant advanced assessment. | Relevant skill can qualify quickly; Guild Trust/private access are still separate. |
-| AC07 | Token holder attempts Guild administration or private download. | Denied unless separately granted. |
-| AC08 | RPC outage prevents refreshing holder balance. | Membership observation becomes stale/unknown; no destructive inference. |
-| AC09 | Related accounts farm reciprocal easy tasks. | Suspect events flagged under review policy; no automatic high technical rank. |
-| AC10 | Dispute finding is reversed on appeal. | Attributable reputation correction without erased evidence/history. |
+| ID   | Scenario                                                                         | Required result                                                                    |
+| ---- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| AC01 | User connects a second wallet while holding an active Raid.                      | Same canonical participant, same history and capacity.                             |
+| AC02 | Reuse a wallet-login nonce or change its domain.                                 | Authentication fails; no duplicate session/link.                                   |
+| AC03 | New user completes orientation with no verified skill.                           | Can find explicit starter tasks; no fabricated verified rank.                      |
+| AC04 | E-ranked participant buys a large RAID balance.                                  | Skill rank and high-rank eligibility do not change.                                |
+| AC05 | A-ranked frontend developer applies for B-ranked Solana work without that skill. | Required skill fails with an actionable explanation.                               |
+| AC06 | Experienced newcomer passes a relevant advanced assessment.                      | Relevant skill can qualify quickly; Guild Trust/private access are still separate. |
+| AC07 | Token holder attempts Guild administration or private download.                  | Denied unless separately granted.                                                  |
+| AC08 | RPC outage prevents refreshing holder balance.                                   | Membership observation becomes stale/unknown; no destructive inference.            |
+| AC09 | Related accounts farm reciprocal easy tasks.                                     | Suspect events flagged under review policy; no automatic high technical rank.      |
+| AC10 | Dispute finding is reversed on appeal.                                           | Attributable reputation correction without erased evidence/history.                |
 
 ### 35.2 Capacity and work lifecycle
 
-| ID | Scenario | Required result |
-|---|---|---|
-| AC11 | Same Raider accepts two different Raids concurrently. | Exactly one commitment; other request conflicts. |
-| AC12 | Two applicants accept the same available slot. | Exactly one selected engagement and one funded binding. |
-| AC13 | A Party contains one busy member. | Entire Party commitment rolls back; no orphan engagement or partial reservation. |
-| AC14 | Normal acceptance races with Challenge acceptance. | One active engagement across both entry paths. |
-| AC15 | Two registered agents under one capacity-limited operator accept different work. | Operator transaction permits only one engagement. |
-| AC16 | Human and AI members under one operator join the same allowed Party. | Individual commitments coexist under one same-engagement operator reservation. |
-| AC17 | An offer was generated while available, but the Raider later became busy. | Offer acceptance fails current capacity checks. |
-| AC18 | Public paid work has no private resources but binding is pending. | Remains in setup; cannot start commissioned work. |
-| AC19 | Worker submits and review/revision duty remains. | Active slot stays held until bounded operational closure. |
-| AC20 | Work is accepted but its payment is still pending. | Capacity is released; unpaid claim remains visible. |
-| AC21 | Reviewer never responds, or worker never submits. | Deadline process reaches finite closure; money/fault is not decided by silence. |
-| AC22 | Terminal work is reopened while the Raider has new work. | No silent reactivation; new consent/capacity required. |
-| AC23 | A delayed closure job arrives after the Raider starts another job. | Cannot release the newer commitment. |
-| AC24 | Five application targets close or offers expire. | Old applications no longer consume the cap; new applications possible. |
-| AC25 | A withdrawn worker is replaced. | New slot/terms/reservation; original history and protected claims remain intact. |
+| ID   | Scenario                                                                         | Required result                                                                  |
+| ---- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| AC11 | Same Raider accepts two different Raids concurrently.                            | Exactly one commitment; other request conflicts.                                 |
+| AC12 | Two applicants accept the same available slot.                                   | Exactly one selected engagement and one funded binding.                          |
+| AC13 | A Party contains one busy member.                                                | Entire Party commitment rolls back; no orphan engagement or partial reservation. |
+| AC14 | Normal acceptance races with Challenge acceptance.                               | One active engagement across both entry paths.                                   |
+| AC15 | Two registered agents under one capacity-limited operator accept different work. | Operator transaction permits only one engagement.                                |
+| AC16 | Human and AI members under one operator join the same allowed Party.             | Individual commitments coexist under one same-engagement operator reservation.   |
+| AC17 | An offer was generated while available, but the Raider later became busy.        | Offer acceptance fails current capacity checks.                                  |
+| AC18 | Public paid work has no private resources but binding is pending.                | Remains in setup; cannot start commissioned work.                                |
+| AC19 | Worker submits and review/revision duty remains.                                 | Active slot stays held until bounded operational closure.                        |
+| AC20 | Work is accepted but its payment is still pending.                               | Capacity is released; unpaid claim remains visible.                              |
+| AC21 | Reviewer never responds, or worker never submits.                                | Deadline process reaches finite closure; money/fault is not decided by silence.  |
+| AC22 | Terminal work is reopened while the Raider has new work.                         | No silent reactivation; new consent/capacity required.                           |
+| AC23 | A delayed closure job arrives after the Raider starts another job.               | Cannot release the newer commitment.                                             |
+| AC24 | Five application targets close or offers expire.                                 | Old applications no longer consume the cap; new applications possible.           |
+| AC25 | A withdrawn worker is replaced.                                                  | New slot/terms/reservation; original history and protected claims remain intact. |
 
 ### 35.3 Money and chain
 
-| ID | Scenario | Required result |
-|---|---|---|
-| AC26 | Client supplies unrelated successful transaction signature. | No funding credit without the correct program/vault/asset/effect. |
-| AC27 | RPC accepts a transaction but it never finalizes. | No verified-funded/paid label; status remains accurate. |
-| AC28 | Reward promises two assets; only one is deposited. | Full reward is not eligible for commitment. |
-| AC29 | Two mints share a ticker, or same mint address is presented on wrong network. | Identity validation rejects substitution. |
-| AC30 | Asset policy version changes for the same underlying asset. | Existing balance is not duplicated or split into spendable new funds. |
-| AC31 | Founder refunds while work binding is racing. | Program serializes outcomes; if refund wins, no work/access starts. |
-| AC32 | Funding/claim webhook is delivered repeatedly. | One ledger/business outcome. |
-| AC33 | Payout times out after success and is rebuilt with a new signature. | Same semantic claim cannot pay again. |
-| AC34 | A shared pool funds several slots. | Each reservation protected; no deposit promised twice. |
-| AC35 | Work is committed but not yet reviewed/allocated. | Founder cannot treat its reserve as refundable uncommitted cash. |
-| AC36 | Some Party/asset claims settle and another fails. | Correct partial status; only unpaid claims retried. |
-| AC37 | Token transfer becomes frozen after funding. | Obligation remains; blocked availability incident; no silent haircut. |
-| AC38 | Appeal arrives at claimability boundary. | Hold/finality/claim serialize under policy; no contradictory spend. |
-| AC39 | Operational work closes while a signed binding later finalizes. | Late-binding recovery; no reopened work or automatic code grant. |
-| AC40 | Unauthorized actor changes payout address or settlement beneficiaries. | Rejected; proof and permitted beneficiary process required. |
-| AC41 | Mainnet config contains test asset/program or mock provider. | Production action blocked at validation. |
+| ID   | Scenario                                                                      | Required result                                                       |
+| ---- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| AC26 | Client supplies unrelated successful transaction signature.                   | No funding credit without the correct program/vault/asset/effect.     |
+| AC27 | RPC accepts a transaction but it never finalizes.                             | No verified-funded/paid label; status remains accurate.               |
+| AC28 | Reward promises two assets; only one is deposited.                            | Full reward is not eligible for commitment.                           |
+| AC29 | Two mints share a ticker, or same mint address is presented on wrong network. | Identity validation rejects substitution.                             |
+| AC30 | Asset policy version changes for the same underlying asset.                   | Existing balance is not duplicated or split into spendable new funds. |
+| AC31 | Founder refunds while work binding is racing.                                 | Program serializes outcomes; if refund wins, no work/access starts.   |
+| AC32 | Funding/claim webhook is delivered repeatedly.                                | One ledger/business outcome.                                          |
+| AC33 | Payout times out after success and is rebuilt with a new signature.           | Same semantic claim cannot pay again.                                 |
+| AC34 | A shared pool funds several slots.                                            | Each reservation protected; no deposit promised twice.                |
+| AC35 | Work is committed but not yet reviewed/allocated.                             | Founder cannot treat its reserve as refundable uncommitted cash.      |
+| AC36 | Some Party/asset claims settle and another fails.                             | Correct partial status; only unpaid claims retried.                   |
+| AC37 | Token transfer becomes frozen after funding.                                  | Obligation remains; blocked availability incident; no silent haircut. |
+| AC38 | Appeal arrives at claimability boundary.                                      | Hold/finality/claim serialize under policy; no contradictory spend.   |
+| AC39 | Operational work closes while a signed binding later finalizes.               | Late-binding recovery; no reopened work or automatic code grant.      |
+| AC40 | Unauthorized actor changes payout address or settlement beneficiaries.        | Rejected; proof and permitted beneficiary process required.           |
+| AC41 | Mainnet config contains test asset/program or mock provider.                  | Production action blocked at validation.                              |
 
 ### 35.4 Privacy and code
 
-| ID | Scenario | Required result |
-|---|---|---|
-| AC42 | Visitor inspects private-Raid HTML, API data, search, metadata or preview. | Only approved teaser; no private bytes. |
-| AC43 | High-rank token holder requests a repo without approval. | No automatic grant. |
-| AC44 | Founder grants one repository expecting folder secrecy. | UI/config identifies actual scope; approved isolated resource required. |
-| AC45 | Source Challenge grant is revoked after main-Raid grant starts on same repo. | Effective reconciliation preserves the new valid access. |
-| AC46 | Contributor had independent repository rights before the Raid. | Removing RAID grant does not claim all access disappeared or delete unrelated rights. |
-| AC47 | Provider revocation fails or old grant job arrives late. | Incident/retry; stale grant cannot revive undesired access. |
-| AC48 | Submission includes a malicious build script, URL, or prompt instruction. | Isolation/input policy prevents unauthorized data or tool access. |
-| AC49 | Account is restricted with an unsettled claim. | Safe access to financial status and dispute evidence remains under policy. |
+| ID   | Scenario                                                                     | Required result                                                                       |
+| ---- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| AC42 | Visitor inspects private-Raid HTML, API data, search, metadata or preview.   | Only approved teaser; no private bytes.                                               |
+| AC43 | High-rank token holder requests a repo without approval.                     | No automatic grant.                                                                   |
+| AC44 | Founder grants one repository expecting folder secrecy.                      | UI/config identifies actual scope; approved isolated resource required.               |
+| AC45 | Source Challenge grant is revoked after main-Raid grant starts on same repo. | Effective reconciliation preserves the new valid access.                              |
+| AC46 | Contributor had independent repository rights before the Raid.               | Removing RAID grant does not claim all access disappeared or delete unrelated rights. |
+| AC47 | Provider revocation fails or old grant job arrives late.                     | Incident/retry; stale grant cannot revive undesired access.                           |
+| AC48 | Submission includes a malicious build script, URL, or prompt instruction.    | Isolation/input policy prevents unauthorized data or tool access.                     |
+| AC49 | Account is restricted with an unsettled claim.                               | Safe access to financial status and dispute evidence remains under policy.            |
 
 ### 35.5 Challenges, Parties, sponsorship, and AI
 
-| ID | Scenario | Required result |
-|---|---|---|
-| AC50 | Party leader changes accepted split without other members. | Amendment rejected until affected consents and valid funding. |
-| AC51 | Valid Challenge entry does not win. | Qualification/participation preserved; no automatic reliability failure. |
-| AC52 | Founder changes judging weights after commitments. | Rejected without accepted amendment. |
-| AC53 | Four guaranteed prototype payments plus a prize are promised. | Maximum qualifying liability funded before commitments. |
-| AC54 | Selected Challenge builder declines main Raid. | No main engagement, no penalty merely for declining, selection payment preserved. |
-| AC55 | Selection-to-main handoff races with another offer or operator job. | One atomic capacity outcome; no double reservation. |
-| AC56 | Main-Raid binding fails after handoff. | Target closes under recovery; source compensation/history remain intact. |
-| AC57 | Guild wants to use a nonwinner's private code. | Requires rights already granted or a separate authorized agreement. |
-| AC58 | Founder buys sponsored placement. | Clear Sponsored label; no skill/reputation/judging boost. |
-| AC59 | Bid loses or purchased placement cannot be delivered. | Funds/reservations follow published release/refund/make-good rules. |
-| AC60 | Social publish request times out after provider success. | Lookup/deduplication prevents duplicate publication. |
-| AC61 | AI reaches total budget across retries/subagents. | Further spend blocked; no autonomous budget expansion. |
-| AC62 | AI tries to approve its own output or withdraw reward. | Permission denied; ordinary authorized review required. |
-| AC63 | Agent changes model/version to evade failure history/capacity. | Canonical identity/commitment retained; evaluation policy applies. |
-| AC64 | Failed/cancelled AI run leaves an active engagement. | Bounded recovery or operational closure; no indefinite slot lock. |
-| AC65 | Role title is used to hide an ongoing second job. | Active duty is modeled and rejected if it violates capacity. |
+| ID   | Scenario                                                            | Required result                                                                   |
+| ---- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| AC50 | Party leader changes accepted split without other members.          | Amendment rejected until affected consents and valid funding.                     |
+| AC51 | Valid Challenge entry does not win.                                 | Qualification/participation preserved; no automatic reliability failure.          |
+| AC52 | Founder changes judging weights after commitments.                  | Rejected without accepted amendment.                                              |
+| AC53 | Four guaranteed prototype payments plus a prize are promised.       | Maximum qualifying liability funded before commitments.                           |
+| AC54 | Selected Challenge builder declines main Raid.                      | No main engagement, no penalty merely for declining, selection payment preserved. |
+| AC55 | Selection-to-main handoff races with another offer or operator job. | One atomic capacity outcome; no double reservation.                               |
+| AC56 | Main-Raid binding fails after handoff.                              | Target closes under recovery; source compensation/history remain intact.          |
+| AC57 | Guild wants to use a nonwinner's private code.                      | Requires rights already granted or a separate authorized agreement.               |
+| AC58 | Founder buys sponsored placement.                                   | Clear Sponsored label; no skill/reputation/judging boost.                         |
+| AC59 | Bid loses or purchased placement cannot be delivered.               | Funds/reservations follow published release/refund/make-good rules.               |
+| AC60 | Social publish request times out after provider success.            | Lookup/deduplication prevents duplicate publication.                              |
+| AC61 | AI reaches total budget across retries/subagents.                   | Further spend blocked; no autonomous budget expansion.                            |
+| AC62 | AI tries to approve its own output or withdraw reward.              | Permission denied; ordinary authorized review required.                           |
+| AC63 | Agent changes model/version to evade failure history/capacity.      | Canonical identity/commitment retained; evaluation policy applies.                |
+| AC64 | Failed/cancelled AI run leaves an active engagement.                | Bounded recovery or operational closure; no indefinite slot lock.                 |
+| AC65 | Role title is used to hide an ongoing second job.                   | Active duty is modeled and rejected if it violates capacity.                      |
 
 ### 35.6 End-to-end and recovery
 
-| ID | Scenario | Required result |
-|---|---|---|
-| AC66 | Founder launches a new project through the selected route, verifies its resulting mint, activates the Guild, funds a public Raid, and a Raider completes and claims it. | Verified launch artifacts and Guild linkage, correct accepted contract and funded binding, work outcome, verified transfer and attributable reputation evidence. |
-| AC67 | Process crashes after external success but before local receipt. | Reconciliation records existing effect; no duplicate action. |
-| AC68 | Restore after losing records newer than the last snapshot, including a new accepted engagement and completed external effect. | Recover original terms, consents, semantic IDs and capacity from approved durability; reconcile before writes. If recovery fails, affected operations stay safely unavailable. No repeated effects or revived old grants. |
-| AC69 | Same idempotency key is reused with a different payload. | Explicit conflict; cannot overwrite original command result. |
-| AC70 | Keyboard/mobile user completes the core flow with wallet rejection and retry. | Draft preserved, clear focus/error/status, no duplicate engagement or funding intent. |
-| AC71 | Authorized representative links an existing project/token and completes the supported funded-work flow. | Project authority and canonical token verified; labeled existing-project onboarding and not counted as a new token launch. |
-| AC72 | Founder/admin changes ordinary Raid reward, scope, deadline or global defaults after acceptance. | Original accepted version stays effective. Material amendment needs affected consent, required additional funding and a new audited version; unilateral overwrite is rejected. |
+| ID   | Scenario                                                                                                                                                                | Required result                                                                                                                                                                                                           |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AC66 | Founder launches a new project through the selected route, verifies its resulting mint, activates the Guild, funds a public Raid, and a Raider completes and claims it. | Verified launch artifacts and Guild linkage, correct accepted contract and funded binding, work outcome, verified transfer and attributable reputation evidence.                                                          |
+| AC67 | Process crashes after external success but before local receipt.                                                                                                        | Reconciliation records existing effect; no duplicate action.                                                                                                                                                              |
+| AC68 | Restore after losing records newer than the last snapshot, including a new accepted engagement and completed external effect.                                           | Recover original terms, consents, semantic IDs and capacity from approved durability; reconcile before writes. If recovery fails, affected operations stay safely unavailable. No repeated effects or revived old grants. |
+| AC69 | Same idempotency key is reused with a different payload.                                                                                                                | Explicit conflict; cannot overwrite original command result.                                                                                                                                                              |
+| AC70 | Keyboard/mobile user completes the core flow with wallet rejection and retry.                                                                                           | Draft preserved, clear focus/error/status, no duplicate engagement or funding intent.                                                                                                                                     |
+| AC71 | Authorized representative links an existing project/token and completes the supported funded-work flow.                                                                 | Project authority and canonical token verified; labeled existing-project onboarding and not counted as a new token launch.                                                                                                |
+| AC72 | Founder/admin changes ordinary Raid reward, scope, deadline or global defaults after acceptance.                                                                        | Original accepted version stays effective. Material amendment needs affected consent, required additional funding and a new audited version; unilateral overwrite is rejected.                                            |
+| AC73 | Replace a selected integration adapter with a contract-compatible alternate while work and external operations exist.                                                   | Same domain outcomes and typed errors; capability gaps fail closed; accepted asset/terms/authority and in-flight semantic operation/provider bindings remain intact; no duplicate effect.                                 |
+| AC74 | Consume a delivered module in an independent minimal host using its published interface and documentation.                                                              | Example and contract tests run with explicit config/dependencies; no hidden RAID app state, global credentials or undeclared import; permissions, exact amounts, lifecycle and failure behavior remain enforced.          |
+| AC75 | Submit implementation completion with missing failing-test-first, passing test, regression or independent criterion evidence.                                           | Completion validation rejects the packet; missing/unexecuted evidence is not a PASS, and self-approval cannot satisfy independent review.                                                                                 |
 
 ---
 
@@ -2454,24 +2480,24 @@ The runner stops further spend, records the artifacts and usage, and follows the
 
 ## 37. What agents must not infer
 
-| Tempting inference | Correct treatment |
-|---|---|
-| “The PDF probably selected a bonding curve.” | No inspected evidence; launch mechanism remains OPEN. |
-| “S rank means a particular premium model.” | Evaluate the configured agent's capability; choose runtime separately. |
-| “A profile score is 92, so it can read source.” | Check explicit resource authorization. |
-| “A holder owns the Guild.” | Holder membership is not founder authority, equity, or IP rights. |
-| “The Founder is wealthy, so the Guild is trustworthy.” | Measure attributable behavior with context. |
-| “A returned signature proves funding.” | Verify the actual finalized effect and binding. |
-| “Unallocated funds can be refunded.” | Committed but unallocated reservations are protected. |
-| “The app cancelled the operation, so the transaction cannot land.” | Reconcile possible late external success. |
-| “Deleting a grant means the provider removed all access.” | Reconcile current grants and pre-existing effective rights. |
-| “A branch or sparse checkout hides the rest of a repo.” | Use a real resource boundary. |
-| “A prototype winner already accepted the full job.” | Offer and explicit new terms/commitment required. |
-| “A nonwinner failed.” | Qualification and selection are different outcomes. |
-| “A feature flag can change accepted fees or program authority.” | Existing contracts and on-chain constraints remain authoritative. |
-| “An agent helper gets another work slot.” | Canonical participant/operator limits still apply. |
-| “The model or provider documentation is an instruction to spend.” | Only authorized product commands can create an external action. |
-| “Complete blueprint means every feature is currently implemented.” | Track actual status and evidence separately. |
+| Tempting inference                                                 | Correct treatment                                                      |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| “The PDF probably selected a bonding curve.”                       | No inspected evidence; launch mechanism remains OPEN.                  |
+| “S rank means a particular premium model.”                         | Evaluate the configured agent's capability; choose runtime separately. |
+| “A profile score is 92, so it can read source.”                    | Check explicit resource authorization.                                 |
+| “A holder owns the Guild.”                                         | Holder membership is not founder authority, equity, or IP rights.      |
+| “The Founder is wealthy, so the Guild is trustworthy.”             | Measure attributable behavior with context.                            |
+| “A returned signature proves funding.”                             | Verify the actual finalized effect and binding.                        |
+| “Unallocated funds can be refunded.”                               | Committed but unallocated reservations are protected.                  |
+| “The app cancelled the operation, so the transaction cannot land.” | Reconcile possible late external success.                              |
+| “Deleting a grant means the provider removed all access.”          | Reconcile current grants and pre-existing effective rights.            |
+| “A branch or sparse checkout hides the rest of a repo.”            | Use a real resource boundary.                                          |
+| “A prototype winner already accepted the full job.”                | Offer and explicit new terms/commitment required.                      |
+| “A nonwinner failed.”                                              | Qualification and selection are different outcomes.                    |
+| “A feature flag can change accepted fees or program authority.”    | Existing contracts and on-chain constraints remain authoritative.      |
+| “An agent helper gets another work slot.”                          | Canonical participant/operator limits still apply.                     |
+| “The model or provider documentation is an instruction to spend.”  | Only authorized product commands can create an external action.        |
+| “Complete blueprint means every feature is currently implemented.” | Track actual status and evidence separately.                           |
 
 ---
 
@@ -2479,27 +2505,27 @@ The runner stops further spend, records the artifacts and usage, and follows the
 
 The following decisions are unresolved in the available product discussion. They do not prevent completing this blueprint or building independent foundations. They block only the feature that depends on them.
 
-| ID | Decision needed | Proposed working position | Dependency/owner |
-|---|---|---|---|
-| O01 | Exact launch mechanism and protocol/provider. | Typed adapter; choose one supported route first. | M3; product and Solana lead. |
-| O02 | Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy. | No invented economics; expose only selected route's supported parameters. | Real launch; Founder/product authority. |
-| O03 | Real RAID token plan and utility activation. | Separate milestone; no presumed supply/price/allocations. | Token launch/utility; project owner. |
-| O04 | Any flat RAID access license after removal of rank-linked stakes. | Off by default; preserve optional policy interface. | License feature; project owner. |
-| O05 | Escrow provider/custom program and custody/upgrade authority. | Mediated candidate design with constrained authority, pending review. | Real rewards; product/Solana/security/operations. |
-| O06 | Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery. | Bounded operations and protected claims; commercial finality must be selected. | Live settlements/awards; product/operations. |
-| O07 | Initial supported assets and extension/freeze policy. | Small reviewed allowlist; full-identity asset model. | Each enabled payment asset; treasury/security. |
-| O08 | Platform fees, launch fees, promotion prices and AI charging/refunds. | Exact quotes and net rewards; examples not binding. | Monetized features; product/finance. |
-| O09 | Numeric skill/score thresholds and calibration. | Qualitative skill rubric, evidence metrics and confidence first. | Automated scoring/promotion; trust lead. |
-| O10 | Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy. | Paid bounded selection first; separate prize mode. | Challenge launch; product/legal-template owner. |
-| O11 | Formal privacy, retention, account deletion and identity-attestation policy. | Minimal necessary data; no automatic mandatory KYC assumption. | Public operations; product/security. |
-| O12 | Supported jurisdictions/users and contract/service terms. | Resolve for the actual launch/work/payment model. | Public paid operations; project owner with appropriate expertise. |
-| O13 | GitHub organization/provider plans and supported grant mechanism. | Verify actual capability; scoped resource and effective-access reconciliation. | Confidential work; access/integration lead. |
-| O14 | Model providers, data retention/training permissions, tool providers, price cards. | Provider-agnostic policy; explicit per-task permission. | Managed AI; execution/product lead. |
-| O15 | Organization AI-operator registration/concurrency policy. | Individual-operator pilot cap as specified; no silent scale-up. | Broader agent marketplace; product/trust. |
-| O16 | Social channels and allowed APIs/automation/metrics. | Manual evidence before approved automated publishing. | Influencer automation; integration/product. |
-| O17 | Sponsored auction mechanism and reserve/charge/refund rules. | Fixed slots first; first-price candidate remains disabled. | Bidding; product/treasury. |
-| O18 | Hosting, selected package/runtime versions, provider SLOs and budgets. | Simple web/worker/PostgreSQL topology; verify against deployment environment. | Production release; engineering/operations. |
-| O19 | Ongoing Role contracts/cadence and operator support hours. | One active duty period; no concurrency loophole. | Roles and live service; product/operations. |
+| ID  | Decision needed                                                                           | Proposed working position                                                      | Dependency/owner                                                  |
+| --- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| O01 | Exact launch mechanism and protocol/provider.                                             | Typed adapter; choose one supported route first.                               | M3; product and Solana lead.                                      |
+| O02 | Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy. | No invented economics; expose only selected route's supported parameters.      | Real launch; Founder/product authority.                           |
+| O03 | Real RAID token plan and utility activation.                                              | Separate milestone; no presumed supply/price/allocations.                      | Token launch/utility; project owner.                              |
+| O04 | Any flat RAID access license after removal of rank-linked stakes.                         | Off by default; preserve optional policy interface.                            | License feature; project owner.                                   |
+| O05 | Escrow provider/custom program and custody/upgrade authority.                             | Mediated candidate design with constrained authority, pending review.          | Real rewards; product/Solana/security/operations.                 |
+| O06 | Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery.             | Bounded operations and protected claims; commercial finality must be selected. | Live settlements/awards; product/operations.                      |
+| O07 | Initial supported assets and extension/freeze policy.                                     | Small reviewed allowlist; full-identity asset model.                           | Each enabled payment asset; treasury/security.                    |
+| O08 | Platform fees, launch fees, promotion prices and AI charging/refunds.                     | Exact quotes and net rewards; examples not binding.                            | Monetized features; product/finance.                              |
+| O09 | Numeric skill/score thresholds and calibration.                                           | Qualitative skill rubric, evidence metrics and confidence first.               | Automated scoring/promotion; trust lead.                          |
+| O10 | Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy.                | Paid bounded selection first; separate prize mode.                             | Challenge launch; product/legal-template owner.                   |
+| O11 | Formal privacy, retention, account deletion and identity-attestation policy.              | Minimal necessary data; no automatic mandatory KYC assumption.                 | Public operations; product/security.                              |
+| O12 | Supported jurisdictions/users and contract/service terms.                                 | Resolve for the actual launch/work/payment model.                              | Public paid operations; project owner with appropriate expertise. |
+| O13 | GitHub organization/provider plans and supported grant mechanism.                         | Verify actual capability; scoped resource and effective-access reconciliation. | Confidential work; access/integration lead.                       |
+| O14 | Model providers, data retention/training permissions, tool providers, price cards.        | Provider-agnostic policy; explicit per-task permission.                        | Managed AI; execution/product lead.                               |
+| O15 | Organization AI-operator registration/concurrency policy.                                 | Individual-operator pilot cap as specified; no silent scale-up.                | Broader agent marketplace; product/trust.                         |
+| O16 | Social channels and allowed APIs/automation/metrics.                                      | Manual evidence before approved automated publishing.                          | Influencer automation; integration/product.                       |
+| O17 | Sponsored auction mechanism and reserve/charge/refund rules.                              | Fixed slots first; first-price candidate remains disabled.                     | Bidding; product/treasury.                                        |
+| O18 | Hosting, selected package/runtime versions, provider SLOs and budgets.                    | Simple web/worker/PostgreSQL topology; verify against deployment environment.  | Production release; engineering/operations.                       |
+| O19 | Ongoing Role contracts/cadence and operator support hours.                                | One active duty period; no concurrency loophole.                               | Roles and live service; product/operations.                       |
 
 When resolving one item, create a decision record with exact chosen values, rationale, alternatives rejected, owner, date, affected requirements, migration effect, and tests. Update this table to point to that decision. Do not delete the fact that older examples differed.
 
@@ -2519,6 +2545,8 @@ When resolving one item, create a decision record with exact chosen values, rati
 8. Operational ownership, monitoring, and required gates exist for live use.
 9. Documentation and the implementation status record match what actually exists.
 10. Any remaining limitation is stated accurately and blocks only its dependent action.
+11. Implementation has genuine test-driven RED/GREEN/REFACTOR evidence under I13; non-code acceptance is defined before execution.
+12. Applicable integration substitution and independently usable module documentation/examples satisfy R15/R16 and AC73–AC74.
 
 ### 39.2 A task handoff is complete when
 
@@ -2634,24 +2662,24 @@ The product requirements come from the supplied conversation, mapped as C01–C1
 
 The following official references were inspected while preparing this blueprint on 6 October 2026. They support the narrow technical facts cited in the document. Recheck current documentation and exact installed/provider versions at implementation time; a documentation URL is not a pinned runtime dependency or a security audit.
 
-| ID | Primary source | Relevant fact or implementation reference |
-|---|---|---|
-| S01 | [Solana token, mint, and token-account concepts](https://solana.com/docs/tokens) | Mints identify tokens; decimals/authorities and ownership accounts matter; an owner can have multiple token accounts for a mint. |
-| S02 | [Solana transactions](https://solana.com/docs/core/transactions) | Instructions within one transaction succeed together or revert; separate systems/transactions need their own coordination. |
-| S03 | [Solana getSignatureStatuses](https://solana.com/docs/rpc/http/getsignaturestatuses) | Transaction status, error, and confirmation observation; historical lookup behavior. |
-| S04 | [GitHub repository roles](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization) | Repository-level permissions and role boundaries. |
-| S05 | [GitHub rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) | Controls on branch/tag/push interactions; they are not a folder-confidentiality mechanism. |
-| S06 | [Sign In With Solana specification and reference integration](https://github.com/phantom/sign-in-with-solana) | Standard signed-message fields and server-side verification. Application replay/expiry policy remains RAID's responsibility. |
-| S07 | [GitHub Actions secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use) | Risks of privileged execution and untrusted PR code. |
-| S08 | [PostgreSQL partial indexes](https://www.postgresql.org/docs/current/indexes-partial.html) | Unique constraints over a selected subset of rows as an alternative capacity enforcement pattern. |
-| S09 | [PostgreSQL transaction isolation](https://www.postgresql.org/docs/current/transaction-iso.html) and [explicit locking](https://www.postgresql.org/docs/current/explicit-locking.html) | Transaction/locking semantics and whole-transaction retry requirements. |
-| S10 | [Solana token extensions](https://solana.com/docs/tokens/extensions) | Extension-specific behavior and compatibility must be considered. |
-| S11 | [Solana sendTransaction](https://solana.com/docs/rpc/http/sendtransaction) | RPC submission success does not establish transaction processing/confirmation. |
-| S12 | [Solana transaction confirmation and expiration](https://solana.com/developers/cookbook/transactions/confirmation) | Blockhash validity, lastValidBlockHeight, commitment and retry considerations. |
-| S13 | [GitHub individual repository access management](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository) | Repository access management; removal does not recall already copied material. |
-| S14 | [GitHub App installation access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app) | Integration-token scope/lifetime is separate from human collaborator grants. |
-| S15 | [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) | Accessibility criteria used as a proposed implementation target. |
-| S16 | [Next.js App Router documentation](https://nextjs.org/docs/app) | Official reference for the proposed web framework; exact version/hosting is not predetermined. |
+| ID  | Primary source                                                                                                                                                                                                                            | Relevant fact or implementation reference                                                                                        |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| S01 | [Solana token, mint, and token-account concepts](https://solana.com/docs/tokens)                                                                                                                                                          | Mints identify tokens; decimals/authorities and ownership accounts matter; an owner can have multiple token accounts for a mint. |
+| S02 | [Solana transactions](https://solana.com/docs/core/transactions)                                                                                                                                                                          | Instructions within one transaction succeed together or revert; separate systems/transactions need their own coordination.       |
+| S03 | [Solana getSignatureStatuses](https://solana.com/docs/rpc/http/getsignaturestatuses)                                                                                                                                                      | Transaction status, error, and confirmation observation; historical lookup behavior.                                             |
+| S04 | [GitHub repository roles](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization)                                                | Repository-level permissions and role boundaries.                                                                                |
+| S05 | [GitHub rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)                                                                                            | Controls on branch/tag/push interactions; they are not a folder-confidentiality mechanism.                                       |
+| S06 | [Sign In With Solana specification and reference integration](https://github.com/phantom/sign-in-with-solana)                                                                                                                             | Standard signed-message fields and server-side verification. Application replay/expiry policy remains RAID's responsibility.     |
+| S07 | [GitHub Actions secure-use reference](https://docs.github.com/en/actions/reference/security/secure-use)                                                                                                                                   | Risks of privileged execution and untrusted PR code.                                                                             |
+| S08 | [PostgreSQL partial indexes](https://www.postgresql.org/docs/current/indexes-partial.html)                                                                                                                                                | Unique constraints over a selected subset of rows as an alternative capacity enforcement pattern.                                |
+| S09 | [PostgreSQL transaction isolation](https://www.postgresql.org/docs/current/transaction-iso.html) and [explicit locking](https://www.postgresql.org/docs/current/explicit-locking.html)                                                    | Transaction/locking semantics and whole-transaction retry requirements.                                                          |
+| S10 | [Solana token extensions](https://solana.com/docs/tokens/extensions)                                                                                                                                                                      | Extension-specific behavior and compatibility must be considered.                                                                |
+| S11 | [Solana sendTransaction](https://solana.com/docs/rpc/http/sendtransaction)                                                                                                                                                                | RPC submission success does not establish transaction processing/confirmation.                                                   |
+| S12 | [Solana transaction confirmation and expiration](https://solana.com/developers/cookbook/transactions/confirmation)                                                                                                                        | Blockhash validity, lastValidBlockHeight, commitment and retry considerations.                                                   |
+| S13 | [GitHub individual repository access management](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-an-individuals-access-to-an-organization-repository) | Repository access management; removal does not recall already copied material.                                                   |
+| S14 | [GitHub App installation access tokens](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app)                                                   | Integration-token scope/lifetime is separate from human collaborator grants.                                                     |
+| S15 | [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/)                                                                                                                                                                                             | Accessibility criteria used as a proposed implementation target.                                                                 |
+| S16 | [Next.js App Router documentation](https://nextjs.org/docs/app)                                                                                                                                                                           | Official reference for the proposed web framework; exact version/hosting is not predetermined.                                   |
 
 ### 41.3 Final implementation reminder
 

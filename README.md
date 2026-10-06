@@ -151,3 +151,7 @@ Usage accounting reserves the maximum possible response cost before each X call,
 This implementation is locally testable, not a launched pilot. Real X OAuth/search behavior, actual spend, X display and retention approval, the official account, and live Jupiter routing still require operator/provider validation. No deployment or external account was created. The deployment configs do not provision paid services by themselves.
 
 Swaps inside the app, reputation, paid discovery, and unrestricted public APIs remain out of scope.
+
+Detailed criteria and completion review: [agent task contracts](docs/raid-agent-task-contracts.md). All 165 issues have individually numbered criteria and canonical requirement statements; missing evidence prevents valid completion.
+
+All feature development follows [mandatory TDD and completion evidence](docs/raid-agent-task-contracts.md) and [reusable module/replaceable adapter contracts](docs/raid-module-reuse.md), including auth and shared UI.

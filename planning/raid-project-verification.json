@@ -3,7 +3,7 @@
   "issues": 165,
   "native_parent_links": 164,
   "native_blocked_by_links": 383,
-  "fields": 41,
+  "fields": 44,
   "views": [
     {
       "name": "All delivery work",
@@ -103,10 +103,15 @@
     }
   ],
   "weekly_iterations": 16,
-  "blueprint_headings": 258,
+  "blueprint_headings": 261,
   "field_profiles_verified": 165,
   "dated_weekly_items": 136,
   "qa_uat_results_untested": true,
   "actual_dates_empty": true,
-  "roadmap_date_axis_api_supported": false
+  "roadmap_date_axis_api_supported": false,
+  "criteria_contract_profiles_verified": 165,
+  "numbered_criteria": 4328,
+  "completion_review": "Not reviewed",
+  "tdd_required_for_implementation": true,
+  "acceptance_scenarios": 75
 }
