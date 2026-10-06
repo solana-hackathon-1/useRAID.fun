@@ -1,0 +1,112 @@
+{
+  "repository_link_verified": true,
+  "issues": 165,
+  "native_parent_links": 164,
+  "native_blocked_by_links": 383,
+  "fields": 41,
+  "views": [
+    {
+      "name": "All delivery work",
+      "number": 1,
+      "layout": "TABLE_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "Weekly sprint board",
+      "number": 2,
+      "layout": "BOARD_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "Weekly roadmap",
+      "number": 3,
+      "layout": "ROADMAP_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "Epics and outcomes",
+      "number": 4,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:Epic"
+    },
+    {
+      "name": "Decisions and release gates",
+      "number": 5,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:\"Decision\",\"Release gate\""
+    },
+    {
+      "name": "Alpha and beta",
+      "number": 6,
+      "layout": "TABLE_LAYOUT",
+      "filter": "stage:\"Internal alpha\",\"Closed beta\",\"Public beta\""
+    },
+    {
+      "name": "UAT and business acceptance",
+      "number": 7,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:UAT"
+    },
+    {
+      "name": "Quality and release readiness",
+      "number": 8,
+      "layout": "TABLE_LAYOUT",
+      "filter": "kind:\"Verification\",\"Release gate\""
+    },
+    {
+      "name": "Conditional backlog",
+      "number": 9,
+      "layout": "TABLE_LAYOUT",
+      "filter": "stage:\"Conditional backlog\""
+    },
+    {
+      "name": "Priority board",
+      "number": 10,
+      "layout": "BOARD_LAYOUT",
+      "filter": null
+    },
+    {
+      "name": "P0 blockers",
+      "number": 11,
+      "layout": "TABLE_LAYOUT",
+      "filter": "priority:P0 -status:Done"
+    },
+    {
+      "name": "Release timeline",
+      "number": 12,
+      "layout": "ROADMAP_LAYOUT",
+      "filter": "-stage:\"Conditional backlog\""
+    },
+    {
+      "name": "UAT board",
+      "number": 13,
+      "layout": "BOARD_LAYOUT",
+      "filter": "kind:UAT"
+    },
+    {
+      "name": "P0 priority board",
+      "number": 14,
+      "layout": "BOARD_LAYOUT",
+      "filter": "priority:P0"
+    },
+    {
+      "name": "P1 priority board",
+      "number": 15,
+      "layout": "BOARD_LAYOUT",
+      "filter": "priority:P1"
+    },
+    {
+      "name": "P2 priority board",
+      "number": 16,
+      "layout": "BOARD_LAYOUT",
+      "filter": "priority:P2"
+    }
+  ],
+  "weekly_iterations": 16,
+  "blueprint_headings": 258,
+  "field_profiles_verified": 165,
+  "dated_weekly_items": 136,
+  "qa_uat_results_untested": true,
+  "actual_dates_empty": true,
+  "roadmap_date_axis_api_supported": false
+}

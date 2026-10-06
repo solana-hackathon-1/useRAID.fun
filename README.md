@@ -2,7 +2,9 @@
 
 ## Blueprint and delivery plan
 
-[RAID blueprint](RAID_AGENT_BLUEPRINT.md) is the canonical product and engineering specification. Start with the [two-week sprint and alpha/beta plan](docs/raid-sprint-plan.md), the [accelerated delivery timeline](docs/raid-delivery-timeline.md), then the [development/testing phase checklists](docs/raid-development-phases.md) and [complete requirement coverage](docs/raid-delivery-coverage.md). The plan targets a controlled release after dedicated alpha/closed beta in 50 working days and broader selected delivery in 80, subject to staffing, decisions and verified release gates. It includes GitHub-rendered timeline and dependency diagrams.
+[RAID blueprint](RAID_AGENT_BLUEPRINT.md) is the canonical product and engineering specification. Start with the [one-week sprint and alpha/beta plan](docs/raid-sprint-plan.md), the [accelerated delivery timeline](docs/raid-delivery-timeline.md), then the [development/testing phase checklists](docs/raid-development-phases.md) and [complete requirement coverage](docs/raid-delivery-coverage.md). The plan targets a controlled release after dedicated alpha/closed beta in 50 working days and broader selected delivery in 80, subject to staffing, decisions and verified release gates. It includes GitHub-rendered timeline and dependency diagrams.
+
+[Full GitHub Project](https://github.com/orgs/solana-hackathon-1/projects/1) · [Project guide](docs/raid-project-guide.md) · [165-issue backlog](docs/raid-project-backlog.md) · [Every blueprint subsection](docs/raid-blueprint-project-map.md) · [UAT scripts](docs/raid-uat-plan.md)
 
 ## Current release
 

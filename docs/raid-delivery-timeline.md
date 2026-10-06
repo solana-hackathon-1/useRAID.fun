@@ -1,8 +1,8 @@
 # RAID accelerated delivery timeline
 
-**Two-week sprints: internal alpha in Sprint 4, closed beta in Sprint 5, public beta from Sprint 6. First controlled release target: 50 working days (10 weeks); broader selected feature target: 80 working days (16 weeks).** These are conditional planning estimates from the current repository, not a claim that the blueprint is implemented or a promise of mainnet readiness.
+**One-week sprints: internal alpha in S07–S08, closed beta in S09–S10, public beta from S11. First controlled release target: 50 working days (10 weeks); broader selected feature target: 80 working days (16 weeks).** These are conditional planning estimates from the current repository, not a claim that the blueprint is implemented or a promise of mainnet readiness.
 
-[Two-week sprint and alpha/beta plan](raid-sprint-plan.md) · [Development and testing phases](raid-development-phases.md) · [Requirement, scenario and decision coverage](raid-delivery-coverage.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md) · [Full blueprint index](../RAID_BLUEPRINT_MAP.md)
+[One-week sprint and alpha/beta plan](raid-sprint-plan.md) · [Development and testing phases](raid-development-phases.md) · [Requirement, scenario and decision coverage](raid-delivery-coverage.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md) · [Full blueprint index](../RAID_BLUEPRINT_MAP.md)
 
 ## Contents
 
@@ -24,7 +24,7 @@ The fastest credible path assumes **four full-time delivery contributors**, with
 
 Use the existing TypeScript/Next.js/PostgreSQL/worker foundation. Start with public human work, manual relevant skill assessments, one selected launch route, and one reviewed payment asset. Model reward bundles early; enable each additional asset only after its own adapter and financial gates. Begin fixed sponsored slots before auctions, selection Challenges before prize mode, and manual content evidence before automatic publication. Token issuance and token license activation have separate unresolved policy dependencies.
 
-M3 launch work overlaps M2 work lifecycle. M4 starts real funding integration after M2 exits at D20. M3 starts beside M2 and finishes by D25. Sprint 4 and Sprint 5 reserve two weeks each for internal alpha and invited closed beta, with no new feature expansion. Public beta starts in Sprint 6 if the closed-beta gate passes; M6–M8 expand only independently gated capabilities. M6 private access, Parties, selection and fixed sponsorship can be delivered in separate slices using stable common contracts. Serialize migrations and shared contracts; review independent work in parallel.
+M3 launch work overlaps M2 work lifecycle. M4 starts real funding integration after M2 exits at D20. M3 starts beside M2 and finishes by D25. S07–S08 and S09–S10 reserve two weeks each for internal alpha and invited closed beta, with no new feature expansion. Public beta starts in S11 if the closed-beta gate passes; M6–M8 expand only independently gated capabilities. M6 private access, Parties, selection and fixed sponsorship can be delivered in separate slices using stable common contracts. Serialize migrations and shared contracts; review independent work in parallel.
 
 **Re-estimation rule:** M0 confirms inventory and capacity; D10 confirms launch/provider feasibility; D10 confirms custody/finality/assets before adapter work; D20 reconfirms integration readiness. If these fail, move only the affected dependency chain, publish new dates and preserve earned obligations. Do not remove tests, make up commercial values, or weaken capacity/privacy/financial invariants to keep a date.
 
@@ -67,25 +67,25 @@ The Gantt chart is a planning view. The table remains the authoritative readable
 
 ```mermaid
 gantt
-    title RAID two-week sprints with alpha and beta - kickoff 7 Oct 2026
+    title RAID one-week sprints with alpha and beta - kickoff 7 Oct 2026
     dateFormat YYYY-MM-DD
     axisFormat %d %b
     excludes weekends
-    section Sprint 1 - Foundation
+    section S01-S02 - Foundation
     M0 Contract and inventory      :m0, 2026-10-07, 2d
     M1 Identity Guild and skills   :m1, 2026-10-09, 8d
-    section Sprints 2 and 3 - Core
+    section S03-S06 - Core
     M2 Public work lifecycle       :m2, 2026-10-21, 10d
     M3 Selected launch route       :m3, 2026-10-21, 15d
     M4 Funding and settlement      :m4, 2026-11-04, 10d
     section Dedicated alpha and closed beta
-    S4 Internal alpha and fixes    :alpha, 2026-11-18, 10d
-    S5 Invited closed beta         :beta, 2026-12-02, 10d
+    S07-S08 Internal alpha and fixes    :alpha, 2026-11-18, 10d
+    S09-S10 Invited closed beta         :beta, 2026-12-02, 10d
     Controlled V1 gate             :milestone, v1, 2026-12-15, 0d
     section Public beta with gated features
-    S6 Public beta and M6          :m6, 2026-12-16, 10d
-    S7 Public beta and M7 AI       :m7, 2026-12-30, 10d
-    S8 Public beta and M8 modules  :m8, 2027-01-13, 10d
+    S11-S12 Public beta and M6          :m6, 2026-12-16, 10d
+    S13-S14 Public beta and M7 AI       :m7, 2026-12-30, 10d
+    S15-S16 Public beta and M8 modules  :m8, 2027-01-13, 10d
     V2 and beta exit review        :milestone, v2, 2027-01-26, 0d
 ```
 
@@ -117,20 +117,28 @@ The earliest critical chain is M0 → M1 → M2 → M4 → M5. M3 runs beside it
 
 ## Sprint deliverables
 
-Each sprint is ten working days (two weeks). Each has one primary user outcome and its own development/test/demo gate. [The detailed sprint plan](raid-sprint-plan.md) defines day-by-day cadence, tester cohorts, feedback, alpha/beta entry and exit criteria, and go/no-go responsibility.
+Each sprint is five working days (one week), with one primary user outcome and its own development/test/demo review. The [weekly sprint plan](raid-sprint-plan.md) lists concrete tasks and preserves two weeks each for alpha and closed beta across paired weekly sprints.
 
-| Sprint | Days and dates                       | One primary outcome                             | Development and testing split                                                                                      |
-| ------ | ------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| S1     | D1–D10; 7–20 October 2026            | Verified participant and Guild foundation       | M0 contracts, M1 identity/skills/discovery; auth/holder/skill tests and demo.                                      |
-| S2     | D11–D20; 21 October–3 November       | Complete synthetic public work loop             | M2 capacity/terms/review; M3 launch adapter in parallel; real DB races and accessible journey.                     |
-| S3     | D21–D30; 4–17 November               | Verified test-network financial and launch loop | M4 funding/finality/recovery; M3 finishes D25; no live-money shortcut.                                             |
-| S4     | D31–D40; 18 November–1 December      | Internal alpha proves the core                  | M5 alpha only: scripted/exploratory testing, usability, restore/incident drills, fixes and retests.                |
-| S5     | D41–D50; 2–15 December               | Invited closed beta validates real workflows    | M5 beta only: staffed cohort, controlled configuration, feedback, support and release decision.                    |
-| S6     | D51–D60; 16–29 December              | Public beta of the stable core                  | Gradual eligible-user intake and monitoring; M6 team/private/sponsor features only behind their independent gates. |
-| S7     | D61–D70; 30 December–12 January 2027 | One bounded AI task reaches ordinary review     | M7 managed-agent pilot and dedicated adversarial testing; core public beta continues.                              |
-| S8     | D71–D80; 13–26 January               | Selected advanced modules and beta exit review  | M8 optional module gates, public-beta recovery/regression, V2/go-no-go evidence.                                   |
+| Sprint | Days and dates                    | One primary outcome                                                                                                                            | Phase    |
+| ------ | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| S01    | D1–D5; 2026-10-07 to 2026-10-13   | Agree the shared contracts and preserve one canonical person across linked wallets.                                                            | M0/M1    |
+| S02    | D6–D10; 2026-10-14 to 2026-10-20  | Show verified project relationships and relevant skill evidence without granting token holders administration.                                 | M1       |
+| S03    | D11–D15; 2026-10-21 to 2026-10-27 | A founder publishes clear work and a Raider can accept exactly one funded/simulated assignment; launch adapter preparation runs independently. | M2/M3    |
+| S04    | D16–D20; 2026-10-28 to 2026-11-03 | A Raider submits evidence, receives bounded review, and closes the synthetic work loop with truthful state.                                    | M2/M3    |
+| S05    | D21–D25; 2026-11-04 to 2026-11-10 | Verify the selected launch artifacts and protect exact per-asset work reserves on the selected test path.                                      | M3/M4    |
+| S06    | D26–D30; 2026-11-11 to 2026-11-17 | Prove authorized claims/refunds/finality and reconcile late/duplicate financial effects.                                                       | M4       |
+| S07    | D31–D35; 2026-11-18 to 2026-11-24 | Run the integrated core with internal fixtures; identify real journey and accessibility failures.                                              | M5 alpha |
+| S08    | D36–D40; 2026-11-25 to 2026-12-01 | Retest fixes, rehearse restore/incidents, and decide if outside testers can enter.                                                             | M5 alpha |
+| S09    | D41–D45; 2026-12-02 to 2026-12-08 | Observe invited founder/newcomer/experienced Raider workflows under a staffed approved beta model.                                             | M5 beta  |
+| S10    | D46–D50; 2026-12-09 to 2026-12-15 | Resolve blockers and decide whether the stable core is ready for public beta.                                                                  | M5 beta  |
+| S11    | D51–D55; 2026-12-16 to 2026-12-22 | Open the eligible core cohort conservatively and prove explicitly scoped confidential work.                                                    | M6       |
+| S12    | D56–D60; 2026-12-23 to 2026-12-29 | Introduce independent team/selection/placement slices with consent, funding and recovery evidence.                                             | M6       |
+| S13    | D61–D65; 2026-12-30 to 2027-01-05 | An accountable evaluated worker can be admitted under operator capacity and sandbox restrictions.                                              | M7       |
+| S14    | D66–D70; 2027-01-06 to 2027-01-12 | One permitted capped run submits useful evidence for ordinary authorized review.                                                               | M7       |
+| S15    | D71–D75; 2027-01-13 to 2027-01-19 | Implement only approved prize/auction/asset slices and prove liability, claim and delivery boundaries.                                         | M8       |
+| S16    | D76–D80; 2027-01-20 to 2027-01-26 | Verify selected channel/Role/scoring additions, repeat core beta evidence and record the release decision.                                     | M8       |
 
-Sprint 6–8 expansion is conditional on core beta stability and staffed support. Beta fixes take priority. If the cohort creates more work than available capacity, move expansion to a later sprint; do not reduce alpha/beta time or required testing. Actual RAID-token issuance has no promised sprint.
+S11–S16 expansion is conditional on core public-beta stability and staffed support. Move incomplete scopes into later weekly sprints when necessary; token issuance has no promised sprint.
 
 ## Development and testing cadence
 
@@ -171,8 +179,8 @@ Use test evidence at the boundary: real PostgreSQL for competing transactions, s
 | Foundation gate                   | D10, 20 October   | Canonical identity/Guild/skill paths; M1 tests                                                                                    | Staging.                                      |
 | Work prototype gate               | D20, 3 November   | Synthetic work journey and real capacity races; M2 tests                                                                          | Prototype with simulated money.               |
 | Launch proof                      | D25, 10 November  | Selected test-network artifacts and verified Guild linkage; M3 evidence                                                           | Test-network launch proof.                    |
-| Alpha entry                       | D30, 17 November  | M1–M4 integrated, no known blocking security/money/capacity defect, observable isolated test environment                          | Internal alpha starts S4.                     |
-| Alpha exit / beta entry           | D40, 1 December   | Core functional/adversarial/recovery/accessibility results; blocker fixes retested; applicable live gates if beta uses real funds | Closed beta starts S5 if approved.            |
+| Alpha entry                       | D30, 17 November  | M1–M4 integrated, no known blocking security/money/capacity defect, observable isolated test environment                          | Internal alpha starts S07.                    |
+| Alpha exit / beta entry           | D40, 1 December   | Core functional/adversarial/recovery/accessibility results; blocker fixes retested; applicable live gates if beta uses real funds | Closed beta starts S09 if approved.           |
 | Closed beta exit / V1 gate        | D50, 15 December  | Founder/novice/experienced Raider journeys, staffed support, feedback closure, G01–G05/G10 for enabled live paths                 | Controlled V1 / public beta eligible.         |
 | Public beta readiness review      | D60, 29 December  | Stable core public cohort evidence; M6 gates separately                                                                           | Public beta; gated V1.5 modules where proven. |
 | Managed AI pilot gate             | D70, 12 January   | M7 operator/sandbox/budget/review evidence and G07                                                                                | Small managed-agent pilot within beta.        |

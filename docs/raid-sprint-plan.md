@@ -1,80 +1,300 @@
-# RAID two-week sprints, alpha and beta plan
+# RAID one-week sprints, alpha and beta plan
 
-**Primary schedule: eight two-week sprints, 16 weeks total.** Internal alpha has its own two-week sprint. Invited closed beta has its own two-week sprint. Public beta starts only after the closed-beta gate passes, then continues while independently gated features are introduced.
+**Primary schedule: sixteen one-week sprints across 16 weeks.** Each sprint is five working days. Internal alpha uses S07–S08, closed beta uses S09–S10, and public beta begins in S11 only after the preceding gate passes. Weekly planning changes the review cadence; it does not remove required test time or change blueprint policy.
 
-[Master timeline and assumptions](raid-delivery-timeline.md) · [Development/testing checklists](raid-development-phases.md) · [Complete coverage](raid-delivery-coverage.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md)
+[Master timeline](raid-delivery-timeline.md) · [Phase development/testing checklists](raid-development-phases.md) · [Full requirement coverage](raid-delivery-coverage.md) · [GitHub backlog guide](raid-project-guide.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md)
 
-Prepared 6 October 2026. Illustrative kickoff: 7 October. Dates exclude weekends only; no holiday/leave adjustment. Staffing and OPEN-policy assumptions come from the master timeline. The schedule reserves S4 for alpha stabilization and S5 for invited closed beta. The canonical M0–M8 scope remains unchanged; M5 spans both S4 and S5.
+Prepared 6 October 2026. Dates assume an illustrative 7 October kickoff, four delivery contributors and Monday–Friday work only, with no holiday/leave adjustment. Re-estimate after the repository inventory and policy decisions. Actual token issuance, an optional license and unresolved provider/operator capabilities have a separate conditional backlog.
 
-## Contents
+## Weekly sprint board
 
-- [Sprint board](#sprint-board)
-- [Ten-day sprint rhythm](#ten-day-sprint-rhythm)
-- [S1 foundation](#s1-foundation)
-- [S2 public work prototype](#s2-public-work-prototype)
-- [S3 launch and financial proof](#s3-launch-and-financial-proof)
-- [S4 internal alpha](#s4-internal-alpha)
-- [S5 invited closed beta](#s5-invited-closed-beta)
-- [S6 public beta](#s6-public-beta)
-- [S7 managed AI pilot](#s7-managed-ai-pilot)
-- [S8 advanced modules and beta exit](#s8-advanced-modules-and-beta-exit)
-- [Alpha and beta gate matrix](#alpha-and-beta-gate-matrix)
-- [Bug and feedback process](#bug-and-feedback-process)
-- [Sprint review and release decision](#sprint-review-and-release-decision)
+| Sprint                                                      | Dates                    | Phase    | One user outcome                                                                                                                               |
+| ----------------------------------------------------------- | ------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| [S01](#s01-contract-and-canonical-identity-foundation)      | 2026-10-07 to 2026-10-13 | M0/M1    | Agree the shared contracts and preserve one canonical person across linked wallets.                                                            |
+| [S02](#s02-verified-guilds-skills-and-public-discovery)     | 2026-10-14 to 2026-10-20 | M1       | Show verified project relationships and relevant skill evidence without granting token holders administration.                                 |
+| [S03](#s03-work-terms-creation-and-atomic-acceptance)       | 2026-10-21 to 2026-10-27 | M2/M3    | A founder publishes clear work and a Raider can accept exactly one funded/simulated assignment; launch adapter preparation runs independently. |
+| [S04](#s04-submission-review-and-synthetic-work-completion) | 2026-10-28 to 2026-11-03 | M2/M3    | A Raider submits evidence, receives bounded review, and closes the synthetic work loop with truthful state.                                    |
+| [S05](#s05-verified-launch-and-protected-funding)           | 2026-11-04 to 2026-11-10 | M3/M4    | Verify the selected launch artifacts and protect exact per-asset work reserves on the selected test path.                                      |
+| [S06](#s06-claims-disputes-and-financial-recovery)          | 2026-11-11 to 2026-11-17 | M4       | Prove authorized claims/refunds/finality and reconcile late/duplicate financial effects.                                                       |
+| [S07](#s07-internal-alpha-core-journeys-and-usability)      | 2026-11-18 to 2026-11-24 | M5 alpha | Run the integrated core with internal fixtures; identify real journey and accessibility failures.                                              |
+| [S08](#s08-internal-alpha-recovery-and-exit-review)         | 2026-11-25 to 2026-12-01 | M5 alpha | Retest fixes, rehearse restore/incidents, and decide if outside testers can enter.                                                             |
+| [S09](#s09-closed-beta-invited-cohort-and-feedback)         | 2026-12-02 to 2026-12-08 | M5 beta  | Observe invited founder/newcomer/experienced Raider workflows under a staffed approved beta model.                                             |
+| [S10](#s10-closed-beta-stabilization-and-v1-gate)           | 2026-12-09 to 2026-12-15 | M5 beta  | Resolve blockers and decide whether the stable core is ready for public beta.                                                                  |
+| [S11](#s11-public-beta-and-scoped-private-work)             | 2026-12-16 to 2026-12-22 | M6       | Open the eligible core cohort conservatively and prove explicitly scoped confidential work.                                                    |
+| [S12](#s12-parties-paid-selection-and-fixed-sponsorship)    | 2026-12-23 to 2026-12-29 | M6       | Introduce independent team/selection/placement slices with consent, funding and recovery evidence.                                             |
+| [S13](#s13-managed-ai-identity-capacity-and-isolation)      | 2026-12-30 to 2027-01-05 | M7       | An accountable evaluated worker can be admitted under operator capacity and sandbox restrictions.                                              |
+| [S14](#s14-managed-ai-capped-task-cancellation-and-pilot)   | 2027-01-06 to 2027-01-12 | M7       | One permitted capped run submits useful evidence for ordinary authorized review.                                                               |
+| [S15](#s15-advanced-economy-prize-and-bid-modules)          | 2027-01-13 to 2027-01-19 | M8       | Implement only approved prize/auction/asset slices and prove liability, claim and delivery boundaries.                                         |
+| [S16](#s16-approved-channels-roles-and-beta-exit)           | 2027-01-20 to 2027-01-26 | M8       | Verify selected channel/Role/scoring additions, repeat core beta evidence and record the release decision.                                     |
 
-## Sprint board
+## Five-day sprint rhythm
 
-| Sprint | Dates              | One primary outcome                             | Development phase           | Testing/release stage                                            |
-| ------ | ------------------ | ----------------------------------------------- | --------------------------- | ---------------------------------------------------------------- |
-| S1     | 7–20 Oct 2026      | Verified participant/Guild foundation           | M0 + M1                     | Domain/auth/permission tests; staging demo.                      |
-| S2     | 21 Oct–3 Nov       | Public commissioned-work prototype              | M2; M3 starts independently | Synthetic money; real PostgreSQL capacity/terms tests.           |
-| S3     | 4–17 Nov           | Integrated verified launch/funding loop         | M3 completes; M4            | Test-network financial/program/recovery proof.                   |
-| S4     | 18 Nov–1 Dec       | Stable core proven by internal alpha            | M5 alpha integration/fixes  | Internal alpha, isolated test environment; no feature expansion. |
-| S5     | 2–15 Dec           | Core validated by invited users                 | M5 beta fixes/operations    | Closed beta, constrained intake; controlled V1 decision.         |
-| S6     | 16–29 Dec          | Stable core opened to a wider eligible cohort   | M6 conditional expansion    | Public beta; private/Party/selection/sponsor gates independent.  |
-| S7     | 30 Dec–12 Jan 2027 | One accountable AI task reaches ordinary review | M7                          | Managed-agent pilot inside continued core public beta.           |
-| S8     | 13–26 Jan          | Selected economy modules and beta exit evidence | M8 selected capabilities    | Module tests; public-beta regression/restore; V2/GA review.      |
+| Day                       | Development sprint                                                                                           | Alpha/beta sprint                                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Monday-equivalent / Day 1 | Agree one user outcome, ready tasks, dependencies, owner roles, contracts and test criteria.                 | Verify cohort/environment/support and stage-entry evidence; select the week’s journeys and defects.       |
+| Days 2–3                  | Build small complete slices; test meaningful behavior as it lands; integrate independent reviewed contracts. | Observe scripted/exploratory journeys, collect sanitized feedback, reproduce issues and fix blockers.     |
+| Day 4                     | Integrate server/UI/migrations, run adverse/recovery/accessibility checks and stabilize.                     | Retest fixes, inspect reconciliation/support incidents and run the planned recovery/adversarial evidence. |
+| Day 5                     | Demo actual outcome, review test evidence, update status/forecast and choose next ready backlog.             | Review feedback/blockers, record continue/go/limited-go/no-go and hand off the next one-week test scope.  |
 
-These dates are conditional targets. Core beta defects take precedence over S6–S8 expansion. Actual token issuance, an optional license, unsupported channel automation, custom program assurance, and unresolved organization operator scaling have separate gates and no guaranteed sprint.
+The illustrative kickoff is Wednesday, so sprint days here run Wednesday–Tuesday. If kickoff changes, rebase dates rather than pretending every sprint begins Monday. All tasks start in Backlog; a sprint assignment is a forecast, not a commitment or completion claim. The work exceeds some weekly capacities and must be sized after M0. Beta defects take priority over feature expansion.
 
-## Ten-day sprint rhythm
+## Weekly developer scope
 
-| Sprint day | Development sprints S1–S3/S6–S8                                                                    | Alpha/beta sprints S4–S5                                                                                               |
-| ---------- | -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Day 1      | Confirm one outcome, contracts, requirements, owners and test fixtures; freeze acceptance criteria | Verify stage entry, release SHA/configuration, tester consent/preferences and support readiness.                       |
-| Days 2–5   | Build small vertical slices; daily meaningful tests and review; integrate independent contracts    | Run scripted and exploratory journeys, observe usability, collect evidence and reproduce feedback; fix blockers daily. |
-| Days 6–7   | Complete user flow, adverse states, integration and migrations; no unbounded scope additions       | Retest fixes, cover hostile/concurrent/provider failure paths and inspect user support incidents.                      |
-| Day 8      | Execute full phase scenarios, accessibility and recovery relevant to the feature                   | Run restore/incident drill or full cohort journey; reconcile financial/access state and close evidence gaps.           |
-| Day 9      | Stabilize, targeted regression and documentation; prepare demo and release evidence                | Verify retests and feedback disposition; assemble alpha/beta stage decision.                                           |
-| Day 10     | Demo actual behavior, assess exit criteria, update register and next bounded backlog               | Hold explicit go/no-go review; promote only passed features; publish next stage/cohort plan.                           |
+## S01 Contract and canonical identity foundation
 
-Testing starts on the first delivered behavior. Days 8–10 are integration and gate time, not the first time anyone tests the code. Sprint reviews cite actual scenario results and environment; they cannot mark PENDING tests passed.
+**Dates:** 2026-10-07 to 2026-10-13 (D1–D5). **Phase:** M0/M1.
 
-## S1 foundation
+Agree the shared contracts and preserve one canonical person across linked wallets.
 
-**Milestones:** M0 and M1. **Requirements:** R01–R04, R06, R08, R10–R12; relevant I06–I12. **Evidence:** AC01–AC08 and safe projections AC42–AC43; full behavior appears in the phase and coverage docs.
+- `T001` — Inventory existing behavior and protect legacy obligations. Know what can be reused and what is still missing before altering production contracts.
+- `T002` — Freeze shared domain contracts and state ownership. Developers agree on the same IDs and boundaries before parallel implementation.
+- `T003` — Plan additive migrations, backfills and rollback. Move existing data safely into new contracts without editing applied migrations.
+- `T004` — Prepare realistic fixtures and evidence register. Every developer can reproduce important failure cases and record what really passed.
+- `T005` — Repair baseline CI and choose the web/worker staging path. A normal change gets meaningful checks and deploys into the correct application environment.
+- `T006` — Preserve canonical identity across verified wallet links. Changing a wallet or login method never gives another work slot or erases earned history.
+- `T007` — Verify one-use wallet sign-in and account-link intent. A relayed or replayed signature cannot authenticate the wrong account or origin.
 
-Deliver canonical identity and wallet links, verified existing-project/Guild relationship, holder freshness, founder permissions, beginner orientation and relevant skill assessment. Freeze identity/terms/work/asset/API contracts and migrations. Map all OPEN decisions and staffing; nominate launch and settlement options by D10.
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
 
-The demo shows a new person and an experienced builder taking appropriate paths, a token holder denied founder authority, and a wallet change preserving identity. No synthetic score becomes a verified capability. Exit with working staging foundation and documented gaps.
+## S02 Verified Guilds, skills and public discovery
 
-## S2 public work prototype
+**Dates:** 2026-10-14 to 2026-10-20 (D6–D10). **Phase:** M1.
 
-**Milestone:** M2; M3 starts in parallel after identity contracts. **Requirements:** R04–R08 and R11–R13. **Evidence:** AC11–AC12, AC17–AC25, AC69–AC70, AC72.
+Show verified project relationships and relevant skill evidence without granting token holders administration.
 
-Deliver create/recommend/publish, safe work cards, applications/offers, immutable accepted terms, one canonical active commitment, versioned submissions/review, bounded revision/closure and My Raid. Funding is explicitly simulated. Prove concurrent accepts against real PostgreSQL; no process-local mutex or mock busy check can pass the capacity gate.
+- `T008` — Build beginner and experienced Raider onboarding. Newcomers understand commitments; experienced builders can prove relevant ability directly.
+- `T009` — Create Guild profiles and scoped founder delegation. A verified project can administer its own workspace with explicit permissions.
+- `T010` — Verify an existing project and its canonical token. Linking an existing mint is clearly labeled and requires proof of project authority.
+- `T011` — Observe holder eligibility without permission shortcuts. Token holders see accurate membership freshness while private rights stay separately granted.
+- `T012` — Add stable skill taxonomy and evidence records. A profile separates claimed ability from assessed relevant skill.
+- `T013` — Deliver public trials and authorized assessment review. Builders can demonstrate skills with bounded fair exercises and explicit evidence.
+- `T014` — Explain structured skill eligibility and anti-spam review. People understand why a task fits while risk signals do not become arbitrary punishment.
+- `T015` — Build safe homepage, Guild directory and public profiles. A visitor understands RAID and sees only approved project/work information.
+- `T078` — Independently verify identity, skills and fair admission. Prove identity, skills and fair admission against the actual boundary, with reproducible negative and recovery evidence.
+- `T090` — Verify provider account ownership and privacy-safe recovery evidence. Linked GitHub/social credentials prove the specific account controlled, without pretending they prove unique humanity or skill.
+- `T096` — Independently audit every blueprint subsection and board linkage. A new developer can locate concrete work for every blueprint section without guessing missing scope.
 
-The demo ends with accepted work and freed capacity while a distinct synthetic payment status remains. Existing attention campaign rules and historical obligations stay versioned. M3 meanwhile builds the selected route adapter and signing/recovery contract without delaying the synthetic work loop.
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
 
-## S3 launch and financial proof
+## S03 Work terms, creation and atomic acceptance
 
-**Milestones:** M3 finishes by D25; M4 exits D30. **Requirements:** R01–R03/R13, P05, I03–I05/I08–I12. **Evidence:** AC26–AC41, AC49, AC67–AC69, AC72; integrated AC66/AC71 tested in alpha and beta.
+**Dates:** 2026-10-21 to 2026-10-27 (D11–D15). **Phase:** M2/M3.
 
-Complete the selected test-network launch, verified mint/Guild linkage, approved asset model, verified funding/binding, per-slot reserves, constrained claims/refunds, finality/appeals and reconciliation. Separate chain receipts, work state and financial state. Existing manual custody is reused only if the selected design supports the blueprint authority rules.
+A founder publishes clear work and a Raider can accept exactly one funded/simulated assignment; launch adapter preparation runs independently.
 
-The demo proves launch artifacts, the right escrow binding, no duplicate payout after timeout, no unilateral refund of committed work, and protected partial/blocked claims. Alpha entry requires no known critical failure in these boundaries. If selected provider/program capability or assurance is missing, continue a labeled test-only alpha; live beta cannot bypass G01–G05/G10.
+- `T016` — Define immutable Raid terms and publication checks. A published task says exactly what is required, rewarded and reviewed.
+- `T017` — Build bounded difficulty and reward recommendations. Founders get useful advice while keeping control of assumptions and the final contract.
+- `T018` — Create the founder Raid wizard and reward review. Founders can draft a clear task and understand all asset legs, net reward and fees.
+- `T019` — Implement idempotent commands with audit and outbox. Retrying a business action cannot silently create duplicate work, claims or history.
+- `T020` — Enforce atomic one-engagement capacity and slot vacancy. Two competing accepts cannot reserve the same Raider or work slot twice.
+- `T021` — Route applications, offers and instant acceptance through one command. Every entry path checks current eligibility, terms, funds, consent and capacity.
+- `T026` — Wrap the selected launch route behind a typed adapter. A founder follows one approved launch mechanism without silent protocol/fee switching.
+- `T089` — Implement versioned API contracts and scoped command authorization. Web and service callers use one validated command model, rather than a second set of hidden state edits.
 
-## S4 internal alpha
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S04 Submission, review and synthetic work completion
+
+**Dates:** 2026-10-28 to 2026-11-03 (D16–D20). **Phase:** M2/M3.
+
+A Raider submits evidence, receives bounded review, and closes the synthetic work loop with truthful state.
+
+- `T022` — Deliver My Raid and founder applicant workspaces. Workers and founders can see the accepted contract, next action and truthful current state.
+- `T023` — Accept versioned submissions and criterion-based review. A review always decides on a specific deliverable against agreed criteria.
+- `T024` — Close work finitely while preserving claims and newer capacity. An abandoned review cannot trap a Raider or erase money still owed.
+- `T025` — Support consented work amendments and member replacement contracts. Material changes require agreement rather than editing accepted promises.
+- `T027` — Build exact launch review, signature and resume UX. A founder sees what they sign and can safely recover an interrupted launch.
+- `T042` — Add safe lifecycle notifications and user preferences. People know the next required action without exposing private briefs in previews.
+- `T079` — Independently verify canonical capacity and bounded work closure. Prove canonical capacity and bounded work closure against the actual boundary, with reproducible negative and recovery evidence.
+- `T091` — Enforce web, upload, URL and integration security boundaries. Malicious inputs cannot expose secrets, trigger unauthorized network access or execute trusted code.
+- `T095` — Deliver manual influencer identity, draft and publication-evidence workflow. Content participants can submit verifiable agreed work before automated social publishing is enabled.
+- `T097` — Deliver funded discovery filters and comparable organic ordering. A Raider can find current permitted funded work by actual skill and reward fit without misleading asset values or paid credibility.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S05 Verified launch and protected funding
+
+**Dates:** 2026-11-04 to 2026-11-10 (D21–D25). **Phase:** M3/M4.
+
+Verify the selected launch artifacts and protect exact per-asset work reserves on the selected test path.
+
+- `T028` — Verify launch artifacts and activate the right Guild relationship. Launch success means the intended verified mint and authority facts exist.
+- `T029` — Implement exact asset registry and bounded amount arithmetic. The reward amount identifies the actual asset and never loses precision.
+- `T030` — Prove selected escrow authority and protocol capability. The payment mechanism protects committed rewards and constrains who may move them.
+- `T031` — Verify deposits and reserve each promised obligation once. A client signature cannot invent funds or promise the same deposit to several workers.
+- `T032` — Bind accepted terms before work and resource readiness. No commissioned work starts before verified funding binding and required resources.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S06 Claims, disputes and financial recovery
+
+**Dates:** 2026-11-11 to 2026-11-17 (D26–D30). **Phase:** M4.
+
+Prove authorized claims/refunds/finality and reconcile late/duplicate financial effects.
+
+- `T033` — Allocate immutable claims and reconcile payout retries. Each beneficiary and asset gets an exact claim that can settle once across new signatures.
+- `T034` — Expose payment progress and ledger-vault incidents. People can see exactly what is owed, pending, blocked or actually paid.
+- `T035` — Implement private disputes and snapshotted financial finality. A contested award cannot become claimable while its timely appeal is held.
+- `T036` — Recover payout destination safely and preserve restricted claims. Wallet recovery and account restriction cannot confiscate an earned entitlement.
+- `T037` — Validate environments, feature flags and audited configuration. Sample assets or missing authorities cannot accidentally enable real operations.
+- `T038` — Deliver durable worker generations, retries and health signals. Late jobs and provider outages are recoverable without repeated external action.
+- `T039` — Protect acknowledged authorizations outside the primary failure domain. A restore can recover original terms, consent and semantic IDs before writing again.
+- `T080` — Independently verify funding, exact assets and settlement boundaries. Prove funding, exact assets and settlement boundaries against the actual boundary, with reproducible negative and recovery evidence.
+- `T092` — Implement privacy, retention and account deletion without erasing obligations. Users can exercise the chosen privacy policy while required financial/access/work evidence remains recoverable and restricted.
+- `T093` — Separate five budgets and exact billing/receipt obligations. Launch, contributor reward, platform fee, AI compute and promotion funds are never silently spent on each other.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S07 Internal alpha: core journeys and usability
+
+**Dates:** 2026-11-18 to 2026-11-24 (D31–D35). **Phase:** M5 alpha.
+
+Run the integrated core with internal fixtures; identify real journey and accessibility failures.
+
+- `T040` — Publish incident, migration and staffed support runbooks. Operators know who can contain, investigate and resolve each supported failure.
+- `T041` — Record attributable reputation, Guild Trust and correction history. History shows actual useful work rather than wealth or repeated webhook ratings.
+- `T043` — Measure the useful work loop with honest asset-aware metrics. Operators understand activation/completion/settlement without counting fake traffic or fabricated dollars.
+- `T044` — Run internal alpha core journeys and capture usability evidence. Internal testers prove founder, beginner and specialist can complete supported core paths.
+- `T045` — Verify core accessibility, wallet rejection and private projections. Keyboard/mobile users can complete core actions safely even when a wallet rejects.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S08 Internal alpha: recovery and exit review
+
+**Dates:** 2026-11-25 to 2026-12-01 (D36–D40). **Phase:** M5 alpha.
+
+Retest fixes, rehearse restore/incidents, and decide if outside testers can enter.
+
+- `T046` — Rehearse alpha crash, restore and adversarial boundaries. The candidate survives real transaction races and recovery rather than only happy-path demos.
+- `T047` — Fix alpha blockers, retest and record the alpha exit. Invite outside testers only after core security/money/capacity/recovery blockers are verified fixed.
+- `T087` — Independently verify core end-to-end, restore, replay and accessibility. Prove core end-to-end, restore, replay and accessibility against the actual boundary, with reproducible negative and recovery evidence.
+- `T088` — Independently verify attributable reputation and appeal corrections. Prove suspect reciprocal activity is reviewed fairly and appeal corrections preserve evidence rather than erase history.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S09 Closed beta: invited cohort and feedback
+
+**Dates:** 2026-12-02 to 2026-12-08 (D41–D45). **Phase:** M5 beta.
+
+Observe invited founder/newcomer/experienced Raider workflows under a staffed approved beta model.
+
+- `T048` — Prepare a supported invited beta configuration and cohort. Outside testers receive accurate environment, terms, budget/cap and support information.
+- `T049` — Observe invited founder and Raider work journeys. Real testers expose workflow confusion and support needs before broader access.
+- `U001` — UAT: Homepage. A visitor representative can complete and explain this user journey without relying on developer implementation details.
+- `U002` — UAT: Raid feed. A raider representative can complete and explain this user journey without relying on developer implementation details.
+- `U003` — UAT: Guild directory. A visitor representative can complete and explain this user journey without relying on developer implementation details.
+- `U004` — UAT: Guild profile and founder management. A founder and token holder representative can complete and explain this user journey without relying on developer implementation details.
+- `U005` — UAT: Launch wizard. A founder representative can complete and explain this user journey without relying on developer implementation details.
+- `U006` — UAT: Create-Raid wizard. A founder representative can complete and explain this user journey without relying on developer implementation details.
+- `U007` — UAT: Raid detail and acceptance. A beginner and experienced raider representative can complete and explain this user journey without relying on developer implementation details.
+- `U008` — UAT: Raider onboarding and profile. A newcomer and experienced builder representative can complete and explain this user journey without relying on developer implementation details.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S10 Closed beta: stabilization and V1 gate
+
+**Dates:** 2026-12-09 to 2026-12-15 (D46–D50). **Phase:** M5 beta.
+
+Resolve blockers and decide whether the stable core is ready for public beta.
+
+- `T050` — Stabilize closed beta and retest cohort defects. A clean second beta week verifies fixes instead of adding new functionality.
+- `T051` — Hold V1 and public-beta entry review. A named owner decides which tested capabilities can open to wider users.
+- `U009` — UAT: My Raid workspace. A raider representative can complete and explain this user journey without relying on developer implementation details.
+- `U010` — UAT: Founder applicant review. A founder representative can complete and explain this user journey without relying on developer implementation details.
+- `U011` — UAT: Submission review and dispute. A founder reviewer and raider representative can complete and explain this user journey without relying on developer implementation details.
+- `U012` — UAT: Payments and recovery. A contributor and founder representative can complete and explain this user journey without relying on developer implementation details.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S11 Public beta and scoped private work
+
+**Dates:** 2026-12-16 to 2026-12-22 (D51–D55). **Phase:** M6.
+
+Open the eligible core cohort conservatively and prove explicitly scoped confidential work.
+
+- `T052` — Open conservative public beta and monitor the stable core. More eligible users can join without forcing incomplete feature contracts.
+- `T053` — Separate private teasers, brief disclosure and resource approval. Discovery and skill scores do not reveal confidential work or grant repositories.
+- `T054` — Provision isolated resources and reconcile effective access. A grant represents what the provider really allows, not imaginary folder secrecy.
+- `T056` — Create Party rosters, skill coverage and member consent. Every team member understands their responsibility, terms and payout before commitment.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S12 Parties, paid selection and fixed sponsorship
+
+**Dates:** 2026-12-23 to 2026-12-29 (D56–D60). **Phase:** M6.
+
+Introduce independent team/selection/placement slices with consent, funding and recovery evidence.
+
+- `T055` — Revoke task access and contain malicious artifacts safely. Closed work ends task-derived credentials even when the provider fails.
+- `T057` — Reserve Party capacity atomically and support valid replacement. A team with one busy member cannot partially reserve others or bypass capacity.
+- `T058` — Publish paid selection Challenges with frozen rights and rubric. Participants know whether they are applying or accepting bounded paid prototype work.
+- `T059` — Hand off selection winners through a separate funded main offer. Winning selection never silently commits someone to the larger job.
+- `T060` — Sell labeled fixed sponsorship with delivery and refund tracking. Founders buy defined visibility without buying trust, rank or judgment.
+- `T081` — Independently verify private visibility, provider scopes and malicious artifacts. Prove private visibility, provider scopes and malicious artifacts against the actual boundary, with reproducible negative and recovery evidence.
+- `T082` — Independently verify party and challenge atomicity/rights. Prove party and challenge atomicity/rights against the actual boundary, with reproducible negative and recovery evidence.
+- `U013` — UAT: Party builder. A party leader and individual members representative can complete and explain this user journey without relying on developer implementation details.
+- `U014` — UAT: Challenge detail, selection and follow-on work. A challenge entrant and founder representative can complete and explain this user journey without relying on developer implementation details.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S13 Managed AI: identity, capacity and isolation
+
+**Dates:** 2026-12-30 to 2027-01-05 (D61–D65). **Phase:** M7.
+
+An accountable evaluated worker can be admitted under operator capacity and sandbox restrictions.
+
+- `T061` — Register accountable AI workers and evaluated configurations. An AI worker has stable identity and evidence rather than a model-price rank.
+- `T062` — Enforce aggregate operator commitments alongside participant capacity. One operator cannot create aliases to bypass the managed-agent pilot cap.
+- `T063` — Deploy an actual isolated runner with explicit tool/data authority. Untrusted task material cannot steal secrets or authorize outside actions.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S14 Managed AI: capped task, cancellation and pilot
+
+**Dates:** 2027-01-06 to 2027-01-12 (D66–D70). **Phase:** M7.
+
+One permitted capped run submits useful evidence for ordinary authorized review.
+
+- `T064` — Reserve and enforce a total AI execution budget. A retry or parallel subcall cannot spend beyond the owner’s authorized cap.
+- `T065` — Handle cancel, provider failure and orphaned run recovery. A failed AI process does not leave indefinite work locks or undo external effects by assumption.
+- `T066` — Route one evaluated AI task through ordinary review. A permitted task completes under limits and its output is reviewed by authorized people.
+- `T084` — Independently verify ai operator capacity, spend, tools and closure. Prove ai operator capacity, spend, tools and closure against the actual boundary, with reproducible negative and recovery evidence.
+- `T094` — Reconcile AI prepaid service budget, unused credit and failure refunds. A founder can understand what was spent and what is returned after a capped partial or failed run.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S15 Advanced economy: prize and bid modules
+
+**Dates:** 2027-01-13 to 2027-01-19 (D71–D75). **Phase:** M8.
+
+Implement only approved prize/auction/asset slices and prove liability, claim and delivery boundaries.
+
+- `T067` — Add fully funded prize competitions with fair award finality. All promised prizes/stipends are reserved and awarded under declared rules.
+- `T068` — Implement approved single-asset auctions and losing-budget release. A bidder knows the maximum charge and gets protected release/refund if not delivered.
+- `T069` — Validate each additional reward asset end to end. Adding SOL/project-token/RAID support is tested behavior rather than a ticker entry.
+- `T083` — Independently verify promotion labels, auction release and delivery recovery. Prove promotion labels, auction release and delivery recovery against the actual boundary, with reproducible negative and recovery evidence.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## S16 Approved channels, Roles and beta exit
+
+**Dates:** 2027-01-20 to 2027-01-26 (D76–D80). **Phase:** M8.
+
+Verify selected channel/Role/scoring additions, repeat core beta evidence and record the release decision.
+
+- `T070` — Approve channel content and deduplicate automatic publication. The exact approved content is published once through a controlled account.
+- `T071` — Measure influencer delivery and capped attribution honestly. Draft creation, publication and performance bonuses remain separate obligations.
+- `T072` — Calibrate versioned reputation and skill scoring with appeals. Numerical scoring uses reviewed evidence and preserves newcomer opportunity.
+- `T073` — Model funded Role periods, renewal and finite closure. Ongoing responsibility uses the same one-active rule and paid consent as normal work.
+- `T077` — Review public beta stability and decide GA or extended weekly beta. The project leaves beta only when the enabled scope is actually supported and proven.
+- `T085` — Independently verify automatic channel publication recovery. Prove automatic channel publication recovery against the actual boundary, with reproducible negative and recovery evidence.
+- `T086` — Independently verify role capacity and renewal. Prove role capacity and renewal against the actual boundary, with reproducible negative and recovery evidence.
+- `U015` — UAT: Sponsor dashboard and bid clarity. A sponsor representative can complete and explain this user journey without relying on developer implementation details.
+- `U016` — UAT: Operator console and release sign-off. A operator, product owner and representatives representative can complete and explain this user journey without relying on developer implementation details.
+
+**Weekly exit:** demonstrate actual scenario results with SHA/environment/evidence, remaining blockers and the next bounded scope.
+
+## Internal alpha across S07 and S08
 
 **Milestone:** M5 alpha, D31–D40. **One outcome:** establish that the integrated core is ready for invited outside testers. **Development scope:** core integration, instrumentation and bug fixes only.
 
@@ -93,7 +313,7 @@ Run:
 
 Triage daily, attach evidence to every blocker, fix and retest. Finish with a fresh core regression on the candidate SHA, an operator drill, clear remaining issues and alpha exit review. Alpha exits only with no unresolved release-blocking security, money, privacy, canonical-capacity or data-loss defects, and enough usability evidence for both beginner and experienced paths.
 
-## S5 invited closed beta
+## Invited closed beta across S09 and S10
 
 **Milestone:** M5 closed beta, D41–D50. **One outcome:** validate real founder/Raider workflows with bounded intake and staffed support. **Development scope:** beta fixes, support and feedback improvements only.
 
@@ -112,7 +332,7 @@ During beta:
 
 Closed-beta exit requires complete observed founder/novice/experienced journeys, no unresolved release blockers, reconciled claims, staffed bounded case handling and disclosed remaining nonblocking issues. A small sample validates the tested paths; it does not establish scale, universal provider reliability or investment credibility.
 
-## S6 public beta
+## Public beta from S11
 
 **Milestone:** stable core public beta; M6 features are independent gated additions. **One outcome:** increase eligible-user access while keeping the core reliable. **Evidence:** repeated M5 journeys/recovery and relevant M6 AC13–AC14/AC42–AC59.
 
@@ -121,22 +341,6 @@ Start only after closed-beta exit and the project owner’s recorded release dec
 Prioritize live beta incidents and usability repairs. Build M6 private access, Parties, paid selection and fixed sponsorship behind separate flags with their own tests. A feature can enter a small invited cohort before public enablement. Public-beta core users must not be forced onto an incomplete new contract.
 
 The sprint demo shows stable core throughput and case resolution, then only those M6 features with actual consent, funds, scope and recovery evidence. If support consumes planned capacity, move M6 slices into another sprint rather than compressing beta verification.
-
-## S7 managed AI pilot
-
-**Milestone:** M7, while core public beta continues. **One outcome:** an evaluated registered worker completes one bounded task and enters ordinary authorized review. **Evidence:** AC15–AC16, AC48, AC61–AC64 plus replay/access checks.
-
-Register an accountable operator, evaluate the configuration, enforce participant/operator capacity and deploy a real isolation boundary. Verify task-scoped tools, callback authentication, approved provider data handling, total budget across retries and subcalls, cancellation, heartbeat recovery and finite operational closure. No model approval of its own output/reward.
-
-Enable the managed feature for a small opted-in cohort only after G07. Record execution costs separately from performance rewards and preserve model/configuration history. Beta findings or actual core incidents take precedence over widening the agent cohort.
-
-## S8 advanced modules and beta exit
-
-**Milestone:** selected M8 modules; remaining modules receive a dated backlog/decision owner. **One outcome:** release only evidenced additions and decide whether the core can leave beta. **Evidence:** relevant AC50–AC65 plus AC67–AC72 and all added-asset financial cases.
-
-Pick the sprint’s permitted prize/bid/channel/scoring/Role slices based on accepted decisions and available capacity. Test maximum reward liability, rights/finality, losing-bid release, approval-bound deduplicated publication, evidence calibration and Role capacity/renewal. Reuse existing verified contracts; do not invent O03/O04/O09/O16/O17/O19 policy to finish a board.
-
-Review public-beta core reliability, case handling, recurring journey defects, reconciliation and restore evidence across S6–S8. Re-run required scenarios at the release SHA. V2 or GA is a recorded feature-by-feature decision, not automatic on D80. If stability or a required gate is missing, extend beta by another two-week sprint focused on the unresolved outcomes. Actual RAID-token issuance retains its separately estimated economics/authority/assurance package.
 
 ## Alpha and beta gate matrix
 
@@ -173,10 +377,8 @@ Track beta observations and sprint defects as reviewable records. Repository iss
 
 These are planning severity categories, not promised customer response-time SLAs. The operating model must record supported hours and escalation duties before paid beta. Close defects only with evidence; keep suggestions distinct from failures and never require positive ratings.
 
-## Sprint review and release decision
+## Weekly review and release decision
 
-Every Day 10 review records the one user outcome, completed scope, observed test/demo results, beta feedback and defect disposition, OPEN/gate status, current forecast, migration/recovery effect and next ten-day task packets. Use blueprint section 40 for formal handoffs.
+Day 5 records completed scope, actual demo/scenario results, beta feedback, defect disposition, OPEN/gate status, dependency forecast, migration/recovery impact and the next five-day scope. Use blueprint section 40 task/decision/handoff templates.
 
-The project owner and accountable release roles choose **go**, **limited go** for passed independent features, or **no-go** for the affected stage. A no-go keeps the current safe stage or disables affected actions; it creates another bounded two-week stabilization sprint and a revised timeline. Existing claims and evidence survive a paused rollout.
-
-No new commercial policy is adopted by this schedule. Preserve one active work engagement, integer asset accounting, immutable terms, explicit grants, replay protection, and separate work/financial states throughout alpha and beta.
+The project owner and accountable release reviewers record **go**, **limited go** for independently passed features, or **no-go** for affected capability. A failed gate keeps the current safe stage or disables affected actions, with another one-week stabilization sprint and updated dates. Never erase existing claims, authorize outreach/spending from a planning issue, or bypass a required gate because the sprint has ended.

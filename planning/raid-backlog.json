@@ -1,0 +1,4263 @@
+{
+  "version": 1,
+  "repository": "solana-hackathon-1/useRAID.fun",
+  "title": "RAID — Full Product Delivery",
+  "blueprint": "https://github.com/solana-hackathon-1/useRAID.fun/blob/main/RAID_AGENT_BLUEPRINT.md",
+  "sprint_length_workdays": 5,
+  "planning_dates_are_conditional": true,
+  "project_status": "CONFIGURED",
+  "sprints": [
+    {
+      "id": "S01",
+      "title": "S01 — Contract and canonical identity foundation",
+      "name": "Contract and canonical identity foundation",
+      "phase": "M0/M1",
+      "goal": "Agree the shared contracts and preserve one canonical person across linked wallets.",
+      "start": "2026-10-07",
+      "end": "2026-10-13",
+      "days": "D1–D5"
+    },
+    {
+      "id": "S02",
+      "title": "S02 — Verified Guilds, skills and public discovery",
+      "name": "Verified Guilds, skills and public discovery",
+      "phase": "M1",
+      "goal": "Show verified project relationships and relevant skill evidence without granting token holders administration.",
+      "start": "2026-10-14",
+      "end": "2026-10-20",
+      "days": "D6–D10"
+    },
+    {
+      "id": "S03",
+      "title": "S03 — Work terms, creation and atomic acceptance",
+      "name": "Work terms, creation and atomic acceptance",
+      "phase": "M2/M3",
+      "goal": "A founder publishes clear work and a Raider can accept exactly one funded/simulated assignment; launch adapter preparation runs independently.",
+      "start": "2026-10-21",
+      "end": "2026-10-27",
+      "days": "D11–D15"
+    },
+    {
+      "id": "S04",
+      "title": "S04 — Submission, review and synthetic work completion",
+      "name": "Submission, review and synthetic work completion",
+      "phase": "M2/M3",
+      "goal": "A Raider submits evidence, receives bounded review, and closes the synthetic work loop with truthful state.",
+      "start": "2026-10-28",
+      "end": "2026-11-03",
+      "days": "D16–D20"
+    },
+    {
+      "id": "S05",
+      "title": "S05 — Verified launch and protected funding",
+      "name": "Verified launch and protected funding",
+      "phase": "M3/M4",
+      "goal": "Verify the selected launch artifacts and protect exact per-asset work reserves on the selected test path.",
+      "start": "2026-11-04",
+      "end": "2026-11-10",
+      "days": "D21–D25"
+    },
+    {
+      "id": "S06",
+      "title": "S06 — Claims, disputes and financial recovery",
+      "name": "Claims, disputes and financial recovery",
+      "phase": "M4",
+      "goal": "Prove authorized claims/refunds/finality and reconcile late/duplicate financial effects.",
+      "start": "2026-11-11",
+      "end": "2026-11-17",
+      "days": "D26–D30"
+    },
+    {
+      "id": "S07",
+      "title": "S07 — Internal alpha: core journeys and usability",
+      "name": "Internal alpha: core journeys and usability",
+      "phase": "M5 alpha",
+      "goal": "Run the integrated core with internal fixtures; identify real journey and accessibility failures.",
+      "start": "2026-11-18",
+      "end": "2026-11-24",
+      "days": "D31–D35"
+    },
+    {
+      "id": "S08",
+      "title": "S08 — Internal alpha: recovery and exit review",
+      "name": "Internal alpha: recovery and exit review",
+      "phase": "M5 alpha",
+      "goal": "Retest fixes, rehearse restore/incidents, and decide if outside testers can enter.",
+      "start": "2026-11-25",
+      "end": "2026-12-01",
+      "days": "D36–D40"
+    },
+    {
+      "id": "S09",
+      "title": "S09 — Closed beta: invited cohort and feedback",
+      "name": "Closed beta: invited cohort and feedback",
+      "phase": "M5 beta",
+      "goal": "Observe invited founder/newcomer/experienced Raider workflows under a staffed approved beta model.",
+      "start": "2026-12-02",
+      "end": "2026-12-08",
+      "days": "D41–D45"
+    },
+    {
+      "id": "S10",
+      "title": "S10 — Closed beta: stabilization and V1 gate",
+      "name": "Closed beta: stabilization and V1 gate",
+      "phase": "M5 beta",
+      "goal": "Resolve blockers and decide whether the stable core is ready for public beta.",
+      "start": "2026-12-09",
+      "end": "2026-12-15",
+      "days": "D46–D50"
+    },
+    {
+      "id": "S11",
+      "title": "S11 — Public beta and scoped private work",
+      "name": "Public beta and scoped private work",
+      "phase": "M6",
+      "goal": "Open the eligible core cohort conservatively and prove explicitly scoped confidential work.",
+      "start": "2026-12-16",
+      "end": "2026-12-22",
+      "days": "D51–D55"
+    },
+    {
+      "id": "S12",
+      "title": "S12 — Parties, paid selection and fixed sponsorship",
+      "name": "Parties, paid selection and fixed sponsorship",
+      "phase": "M6",
+      "goal": "Introduce independent team/selection/placement slices with consent, funding and recovery evidence.",
+      "start": "2026-12-23",
+      "end": "2026-12-29",
+      "days": "D56–D60"
+    },
+    {
+      "id": "S13",
+      "title": "S13 — Managed AI: identity, capacity and isolation",
+      "name": "Managed AI: identity, capacity and isolation",
+      "phase": "M7",
+      "goal": "An accountable evaluated worker can be admitted under operator capacity and sandbox restrictions.",
+      "start": "2026-12-30",
+      "end": "2027-01-05",
+      "days": "D61–D65"
+    },
+    {
+      "id": "S14",
+      "title": "S14 — Managed AI: capped task, cancellation and pilot",
+      "name": "Managed AI: capped task, cancellation and pilot",
+      "phase": "M7",
+      "goal": "One permitted capped run submits useful evidence for ordinary authorized review.",
+      "start": "2027-01-06",
+      "end": "2027-01-12",
+      "days": "D66–D70"
+    },
+    {
+      "id": "S15",
+      "title": "S15 — Advanced economy: prize and bid modules",
+      "name": "Advanced economy: prize and bid modules",
+      "phase": "M8",
+      "goal": "Implement only approved prize/auction/asset slices and prove liability, claim and delivery boundaries.",
+      "start": "2027-01-13",
+      "end": "2027-01-19",
+      "days": "D71–D75"
+    },
+    {
+      "id": "S16",
+      "title": "S16 — Approved channels, Roles and beta exit",
+      "name": "Approved channels, Roles and beta exit",
+      "phase": "M8",
+      "goal": "Verify selected channel/Role/scoring additions, repeat core beta evidence and record the release decision.",
+      "start": "2027-01-20",
+      "end": "2027-01-26",
+      "days": "D76–D80"
+    }
+  ],
+  "items": [
+    {
+      "id": "E01",
+      "title": "Shared contracts and engineering foundation",
+      "role": "AG01/AG03/AG10",
+      "phase": "M0",
+      "sections": "00–04,24–29,33–41",
+      "requirements": "R01–R14; I01–I12",
+      "outcome": "Give every developer one reliable set of IDs, types, state transitions and implementation evidence.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E02",
+      "title": "Canonical identity and secure onboarding",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "07,13,25–28",
+      "requirements": "R04,R12,R13; I01,I07,I10",
+      "outcome": "Keep one work identity and history when a person changes wallets or login methods.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E03",
+      "title": "Guilds, founder authority and holder membership",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "05–07,09,25,28",
+      "requirements": "R01–R04,R10; I06,I07,I10",
+      "outcome": "Let verified projects manage work while keeping holder membership separate from ownership and permissions.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E04",
+      "title": "Skill evidence, assessment and fair admission",
+      "role": "AG05/AG02",
+      "phase": "M1",
+      "sections": "07–09,11,23",
+      "requirements": "R05,R06,R12; P07; I07,I10",
+      "outcome": "Help beginners find starter work and experienced builders demonstrate the relevant ability without buying a rank.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E05",
+      "title": "Raid creation, terms and recommendations",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "08,11–12,16,23,26",
+      "requirements": "R05,R07; P08; I03,I08,I10",
+      "outcome": "Give founders a clear task contract and useful bounded difficulty/reward guidance.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E06",
+      "title": "One active engagement and reliable commands",
+      "role": "AG03",
+      "phase": "M2",
+      "sections": "12–15,25–27",
+      "requirements": "R13; I01,I02,I05,I08,I09",
+      "outcome": "Make double acceptance impossible at the database boundary across every admission path.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E07",
+      "title": "Deliverables, review, closure and workspaces",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "12–13,17,23,27",
+      "requirements": "R04,R13; I05,I08,I10",
+      "outcome": "Let contributors deliver versioned proof and get bounded review without losing unpaid claims.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E08",
+      "title": "Selected token launch and verified Guild linkage",
+      "role": "AG04/AG02",
+      "phase": "M3",
+      "sections": "05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "Create and independently verify one supported launch instead of treating a returned signature as success.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E09",
+      "title": "Exact assets, funding, escrow and settlement",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Protect the exact reward promised to every contributor and pay each immutable claim once.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E10",
+      "title": "Disputes, finality, appeals and beneficiary recovery",
+      "role": "AG04/AG03/AG09",
+      "phase": "M4",
+      "sections": "16–17,28–30",
+      "requirements": "I04,I07,I08,I10,I11",
+      "outcome": "Resolve contested work through explicit authority and preserve claims while duties close.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E11",
+      "title": "Configuration, durability and supported operations",
+      "role": "AG09/AG03",
+      "phase": "M0–M5",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Make the web/worker system observable, recoverable and supportable without losing acknowledged obligations.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E12",
+      "title": "Internal alpha and core acceptance evidence",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Prove the integrated core internally before inviting outside testers.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E13",
+      "title": "Closed beta and controlled V1 release",
+      "role": "AG01/AG08/AG09",
+      "phase": "M5 beta",
+      "sections": "30–35,38–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Validate real founder/Raider behavior in a small supported cohort before public beta.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E14",
+      "title": "Public discovery, notifications, metrics and beta",
+      "role": "AG07/AG02/AG09",
+      "phase": "M1/M5/M6",
+      "sections": "18,23,27,31",
+      "requirements": "R08,R10; I06,I07",
+      "outcome": "Help people discover appropriate work and see truthful progress without leaking private material.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E15",
+      "title": "Private briefs, repositories and explicit access",
+      "role": "AG05/AG03",
+      "phase": "M6",
+      "sections": "09–10,13,25–30",
+      "requirements": "R11; I06,I07,I09–I11",
+      "outcome": "Give only approved people scoped resources and verify effective removal without deleting unrelated rights.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E16",
+      "title": "Parties, consent and exact team rewards",
+      "role": "AG03/AG04/AG02",
+      "phase": "M6",
+      "sections": "08,13–14,16–17",
+      "requirements": "P02; I01–I05,I08",
+      "outcome": "Let a real consenting team deliver one assignment with individually protected capacity and payouts.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E17",
+      "title": "Selection Challenges and prize competitions",
+      "role": "AG03/AG04/AG05",
+      "phase": "M6/M8",
+      "sections": "13,15–17",
+      "requirements": "R14; P03; I01–I05,I08,I11",
+      "outcome": "Pay promised selection work, choose a builder fairly, and offer main work through a separate funded agreement.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E18",
+      "title": "Sponsored placement and funded auctions",
+      "role": "AG07/AG04",
+      "phase": "M6/M8",
+      "sections": "18,22,26–31",
+      "requirements": "R09; D10; I03–I05,I10",
+      "outcome": "Sell visibly labeled inventory and reconcile delivery, charge and refund without buying credibility.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E19",
+      "title": "Accountable managed AI workers",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "Run evaluated AI work under real identity, permission, capacity and total-spend limits.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E20",
+      "title": "Approved influencer channels and attribution",
+      "role": "AG07/AG06",
+      "phase": "M8",
+      "sections": "20,27–31",
+      "requirements": "P01; I05,I06,I09–I11",
+      "outcome": "Separate content creation from approved publication and verify honest delivered evidence.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E21",
+      "title": "Versioned reputation and advanced Guild economy",
+      "role": "AG05/AG03/AG04",
+      "phase": "M5/M8",
+      "sections": "08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Build attributable fair reputation and consented funded Roles; keep unapproved token policy disabled.",
+      "kind": "epic",
+      "sprint": null,
+      "priority": "P1",
+      "dependencies": [],
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E22",
+      "title": "User acceptance testing and business sign-off",
+      "kind": "epic",
+      "sprint": null,
+      "phase": "M5–M8",
+      "role": "AG01/AG08 + representative founder/Raider testers",
+      "sections": "04,23,31–35,39–40",
+      "requirements": "R01–R14; I01–I12",
+      "outcome": "Confirm that real users understand and can complete the promised workflow, separately from developers proving technical correctness.",
+      "dependencies": [],
+      "priority": "P0",
+      "parent_epic": "E23"
+    },
+    {
+      "id": "E23",
+      "title": "Master RAID blueprint and complete delivery coverage",
+      "kind": "epic",
+      "sprint": null,
+      "phase": "M0–M8",
+      "role": "AG01/AG10/AG08 + all domain owners",
+      "sections": "00–41; all subsections",
+      "requirements": "R01–R14; P01–P08; D01–D13; I01–I12; AC01–AC72; O01–O19; G01–G10",
+      "outcome": "Keep the entire canonical RAID blueprint visible on the board, with every domain/subsection traced to concrete developer work and the evidence needed for delivery.",
+      "dependencies": [],
+      "priority": "P0"
+    },
+    {
+      "id": "O01",
+      "title": "Exact launch mechanism and protocol/provider",
+      "kind": "decision",
+      "epic": "E08",
+      "sprint": "S02",
+      "role": "AG04/AG02 + project owner",
+      "phase": "M3",
+      "sections": "02,38,40; 05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O01 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "Typed adapter; choose one supported route first.",
+      "canonical_dependency": "M3; product and Solana lead."
+    },
+    {
+      "id": "O02",
+      "title": "Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy",
+      "kind": "decision",
+      "epic": "E08",
+      "sprint": "S02",
+      "role": "AG04/AG02 + project owner",
+      "phase": "M3",
+      "sections": "02,38,40; 05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O02 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "No invented economics; expose only selected route's supported parameters.",
+      "canonical_dependency": "Real launch; Founder/product authority."
+    },
+    {
+      "id": "O03",
+      "title": "Real RAID token plan and utility activation",
+      "kind": "decision",
+      "epic": "E21",
+      "sprint": null,
+      "role": "AG05/AG03/AG04 + project owner",
+      "phase": "M5/M8",
+      "sections": "02,38,40; 08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O03 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Separate milestone; no presumed supply/price/allocations.",
+      "canonical_dependency": "Token launch/utility; project owner."
+    },
+    {
+      "id": "O04",
+      "title": "Any flat RAID access license after removal of rank-linked stakes",
+      "kind": "decision",
+      "epic": "E21",
+      "sprint": null,
+      "role": "AG05/AG03/AG04 + project owner",
+      "phase": "M5/M8",
+      "sections": "02,38,40; 08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O04 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Off by default; preserve optional policy interface.",
+      "canonical_dependency": "License feature; project owner."
+    },
+    {
+      "id": "O05",
+      "title": "Escrow provider/custom program and custody/upgrade authority",
+      "kind": "decision",
+      "epic": "E09",
+      "sprint": "S02",
+      "role": "AG04/AG03 + project owner",
+      "phase": "M4",
+      "sections": "02,38,40; 13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O05 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "Mediated candidate design with constrained authority, pending review.",
+      "canonical_dependency": "Real rewards; product/Solana/security/operations."
+    },
+    {
+      "id": "O06",
+      "title": "Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery",
+      "kind": "decision",
+      "epic": "E10",
+      "sprint": "S02",
+      "role": "AG04/AG03/AG09 + project owner",
+      "phase": "M4",
+      "sections": "02,38,40; 16–17,28–30",
+      "requirements": "I04,I07,I08,I10,I11",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O06 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "Bounded operations and protected claims; commercial finality must be selected.",
+      "canonical_dependency": "Live settlements/awards; product/operations."
+    },
+    {
+      "id": "O07",
+      "title": "Initial supported assets and extension/freeze policy",
+      "kind": "decision",
+      "epic": "E09",
+      "sprint": "S02",
+      "role": "AG04/AG03 + project owner",
+      "phase": "M4",
+      "sections": "02,38,40; 13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O07 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "Small reviewed allowlist; full-identity asset model.",
+      "canonical_dependency": "Each enabled payment asset; treasury/security."
+    },
+    {
+      "id": "O08",
+      "title": "Platform fees, launch fees, promotion prices and AI charging/refunds",
+      "kind": "decision",
+      "epic": "E09",
+      "sprint": "S02",
+      "role": "AG04/AG03 + project owner",
+      "phase": "M4",
+      "sections": "02,38,40; 13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O08 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Exact quotes and net rewards; examples not binding.",
+      "canonical_dependency": "Monetized features; product/finance."
+    },
+    {
+      "id": "O09",
+      "title": "Numeric skill/score thresholds and calibration",
+      "kind": "decision",
+      "epic": "E04",
+      "sprint": "S14",
+      "role": "AG05/AG02 + project owner",
+      "phase": "M1",
+      "sections": "02,38,40; 07–09,11,23",
+      "requirements": "R05,R06,R12; P07; I07,I10",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O09 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Qualitative skill rubric, evidence metrics and confidence first.",
+      "canonical_dependency": "Automated scoring/promotion; trust lead."
+    },
+    {
+      "id": "O10",
+      "title": "Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy",
+      "kind": "decision",
+      "epic": "E17",
+      "sprint": "S10",
+      "role": "AG03/AG04/AG05 + project owner",
+      "phase": "M6/M8",
+      "sections": "02,38,40; 13,15–17",
+      "requirements": "R14; P03; I01–I05,I08,I11",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O10 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Paid bounded selection first; separate prize mode.",
+      "canonical_dependency": "Challenge launch; product/legal-template owner."
+    },
+    {
+      "id": "O11",
+      "title": "Formal privacy, retention, account deletion and identity-attestation policy",
+      "kind": "decision",
+      "epic": "E11",
+      "sprint": "S01",
+      "role": "AG09/AG03 + project owner",
+      "phase": "M0–M5",
+      "sections": "02,38,40; 24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O11 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "Minimal necessary data; no automatic mandatory KYC assumption.",
+      "canonical_dependency": "Public operations; product/security."
+    },
+    {
+      "id": "O12",
+      "title": "Supported jurisdictions/users and contract/service terms",
+      "kind": "decision",
+      "epic": "E11",
+      "sprint": "S06",
+      "role": "AG09/AG03 + project owner",
+      "phase": "M0–M5",
+      "sections": "02,38,40; 24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O12 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "Resolve for the actual launch/work/payment model.",
+      "canonical_dependency": "Public paid operations; project owner with appropriate expertise."
+    },
+    {
+      "id": "O13",
+      "title": "GitHub organization/provider plans and supported grant mechanism",
+      "kind": "decision",
+      "epic": "E15",
+      "sprint": "S10",
+      "role": "AG05/AG03 + project owner",
+      "phase": "M6",
+      "sections": "02,38,40; 09–10,13,25–30",
+      "requirements": "R11; I06,I07,I09–I11",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O13 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Verify actual capability; scoped resource and effective-access reconciliation.",
+      "canonical_dependency": "Confidential work; access/integration lead."
+    },
+    {
+      "id": "O14",
+      "title": "Model providers, data retention/training permissions, tool providers, price cards",
+      "kind": "decision",
+      "epic": "E19",
+      "sprint": "S12",
+      "role": "AG06/AG03/AG05 + project owner",
+      "phase": "M7",
+      "sections": "02,38,40; 07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O14 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Provider-agnostic policy; explicit per-task permission.",
+      "canonical_dependency": "Managed AI; execution/product lead."
+    },
+    {
+      "id": "O15",
+      "title": "Organization AI-operator registration/concurrency policy",
+      "kind": "decision",
+      "epic": "E19",
+      "sprint": null,
+      "role": "AG06/AG03/AG05 + project owner",
+      "phase": "M7",
+      "sections": "02,38,40; 07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O15 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Individual-operator pilot cap as specified; no silent scale-up.",
+      "canonical_dependency": "Broader agent marketplace; product/trust."
+    },
+    {
+      "id": "O16",
+      "title": "Social channels and allowed APIs/automation/metrics",
+      "kind": "decision",
+      "epic": "E20",
+      "sprint": "S14",
+      "role": "AG07/AG06 + project owner",
+      "phase": "M8",
+      "sections": "02,38,40; 20,27–31",
+      "requirements": "P01; I05,I06,I09–I11",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O16 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Manual evidence before approved automated publishing.",
+      "canonical_dependency": "Influencer automation; integration/product."
+    },
+    {
+      "id": "O17",
+      "title": "Sponsored auction mechanism and reserve/charge/refund rules",
+      "kind": "decision",
+      "epic": "E18",
+      "sprint": "S14",
+      "role": "AG07/AG04 + project owner",
+      "phase": "M6/M8",
+      "sections": "02,38,40; 18,22,26–31",
+      "requirements": "R09; D10; I03–I05,I10",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O17 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "Fixed slots first; first-price candidate remains disabled.",
+      "canonical_dependency": "Bidding; product/treasury."
+    },
+    {
+      "id": "O18",
+      "title": "Hosting, selected package/runtime versions, provider SLOs and budgets",
+      "kind": "decision",
+      "epic": "E11",
+      "sprint": "S01",
+      "role": "AG09/AG03 + project owner",
+      "phase": "M0–M5",
+      "sections": "02,38,40; 24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O18 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "working_position": "Simple web/worker/PostgreSQL topology; verify against deployment environment.",
+      "canonical_dependency": "Production release; engineering/operations."
+    },
+    {
+      "id": "O19",
+      "title": "Ongoing Role contracts/cadence and operator support hours",
+      "kind": "decision",
+      "epic": "E21",
+      "sprint": "S06",
+      "role": "AG05/AG03/AG04 + project owner",
+      "phase": "M5/M8",
+      "sections": "02,38,40; 08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Resolve this OPEN choice explicitly so its dependent feature can be enabled without invented policy.",
+      "steps": [
+        "Prepare concrete options and affected dependencies.",
+        "Evaluate authority, money, privacy, provider and migration consequences.",
+        "Record owner/date/status, exact adopted values, rationale and rejected alternatives using blueprint section 40.4.",
+        "Update O19 in the canonical blueprint and dependent contracts/tests together after the owner accepts a choice."
+      ],
+      "checks": [
+        "Accepted decision names exact policy/authority and evidence.",
+        "Dependent feature stays disabled while unresolved; independent interfaces may proceed."
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 2,
+      "working_position": "One active duty period; no concurrency loophole.",
+      "canonical_dependency": "Roles and live service; product/operations."
+    },
+    {
+      "id": "T001",
+      "title": "Inventory existing behavior and protect legacy obligations",
+      "kind": "task",
+      "epic": "E01",
+      "sprint": "S01",
+      "role": "AG01/AG03/AG10",
+      "phase": "M0",
+      "sections": "00–04,24–29,33–41",
+      "requirements": "R01–R14; I01–I12",
+      "outcome": "Know what can be reused and what is still missing before altering production contracts.",
+      "steps": [
+        "Inspect source, schema, migrations, CI, flags and prior results",
+        "Record equivalent implementations and gaps for participant/Guild/terms/work/money/access",
+        "Identify existing paid obligations and frozen campaign policy versions"
+      ],
+      "checks": [
+        "Inventory links to actual files and evidence, not assumed completion",
+        "New policies have a documented compatibility path for old commitments"
+      ],
+      "dependencies": [],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T002",
+      "title": "Freeze shared domain contracts and state ownership",
+      "kind": "task",
+      "epic": "E01",
+      "sprint": "S01",
+      "role": "AG01/AG03/AG10",
+      "phase": "M0",
+      "sections": "00–04,24–29,33–41",
+      "requirements": "R01–R14; I01–I12",
+      "outcome": "Developers agree on the same IDs and boundaries before parallel implementation.",
+      "steps": [
+        "Define canonical identity, Guild, terms, engagement, asset and exact amount contracts",
+        "Assign each state transition and authority to one command owner",
+        "Record API versioning, error envelopes and global lock order"
+      ],
+      "checks": [
+        "Consumers use one contract source",
+        "Work, money, access, dispute and transaction states remain distinct"
+      ],
+      "dependencies": ["T001"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T003",
+      "title": "Plan additive migrations, backfills and rollback",
+      "kind": "task",
+      "epic": "E01",
+      "sprint": "S01",
+      "role": "AG01/AG03/AG10",
+      "phase": "M0",
+      "sections": "00–04,24–29,33–41",
+      "requirements": "R01–R14; I01–I12",
+      "outcome": "Move existing data safely into new contracts without editing applied migrations.",
+      "steps": [
+        "List schema additions and backfills",
+        "Explain how accepted history and financial records remain valid",
+        "Define verification and honest rollback boundaries"
+      ],
+      "checks": [
+        "Migration plan names affected tables and checks",
+        "Applied migrations remain immutable"
+      ],
+      "dependencies": ["T001", "T002"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T004",
+      "title": "Prepare realistic fixtures and evidence register",
+      "kind": "task",
+      "epic": "E01",
+      "sprint": "S01",
+      "role": "AG01/AG03/AG10",
+      "phase": "M0",
+      "sections": "00–04,24–29,33–41",
+      "requirements": "R01–R14; I01–I12",
+      "outcome": "Every developer can reproduce important failure cases and record what really passed.",
+      "steps": [
+        "Create newcomer, assessed specialist, busy contributor and same-symbol assets",
+        "Include shared Party/operator, duplicate effect and private grant fixtures",
+        "Record SHA/environment/scenario/result in a single evidence format"
+      ],
+      "checks": [
+        "Fixtures are unmistakably test-only",
+        "All 72 scenarios have a planned owner and appropriate environment"
+      ],
+      "dependencies": ["T002"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T005",
+      "title": "Repair baseline CI and choose the web/worker staging path",
+      "kind": "task",
+      "epic": "E11",
+      "sprint": "S01",
+      "role": "AG09/AG03",
+      "phase": "M0–M5",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "A normal change gets meaningful checks and deploys into the correct application environment.",
+      "steps": [
+        "Investigate GitHub Actions startup failures and Cloudflare deployment failure",
+        "Distinguish static coming-soon hosting from full web/worker/PostgreSQL hosting",
+        "Record environment requirements and O18 options"
+      ],
+      "checks": [
+        "Root cause and fix or precise external blocker documented",
+        "Required checks can execute on the chosen path; no deployment claim from configuration alone"
+      ],
+      "dependencies": ["T001"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T006",
+      "title": "Preserve canonical identity across verified wallet links",
+      "kind": "task",
+      "epic": "E02",
+      "sprint": "S01",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "07,13,25–28",
+      "requirements": "R04,R12,R13; I01,I07,I10",
+      "outcome": "Changing a wallet or login method never gives another work slot or erases earned history.",
+      "steps": [
+        "Extend existing account and wallet-link services around a stable participant",
+        "Reject conflicting provider subjects",
+        "Require proof/review for recovery and merges, preserving claims and capacity"
+      ],
+      "checks": [
+        "Second wallet uses the same participant and history",
+        "Merge cannot hide two active engagements"
+      ],
+      "dependencies": ["T002", "T003"],
+      "acs": "AC01",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T007",
+      "title": "Verify one-use wallet sign-in and account-link intent",
+      "kind": "task",
+      "epic": "E02",
+      "sprint": "S01",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "07,13,25–28",
+      "requirements": "R04,R12,R13; I01,I07,I10",
+      "outcome": "A relayed or replayed signature cannot authenticate the wrong account or origin.",
+      "steps": [
+        "Bind nonce/domain/URI/network/expiry/link intent",
+        "Verify message and signature server-side",
+        "Atomically consume the challenge and rotate safe session credentials"
+      ],
+      "checks": [
+        "Replay, changed domain, expiry and wrong intent fail",
+        "No key/secret appears in logs"
+      ],
+      "dependencies": ["T006"],
+      "acs": "AC02",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T008",
+      "title": "Build beginner and experienced Raider onboarding",
+      "kind": "task",
+      "epic": "E02",
+      "sprint": "S02",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "07,13,25–28",
+      "requirements": "R04,R12,R13; I01,I07,I10",
+      "outcome": "Newcomers understand commitments; experienced builders can prove relevant ability directly.",
+      "steps": [
+        "Collect work interests and timezone",
+        "Explain evidence, confidentiality, review/payment and one-active rule",
+        "Provide starter tasks or relevant portfolio/trial path; verify payout destination before paid commitment"
+      ],
+      "checks": [
+        "Orientation creates no fabricated verified rank",
+        "Both user types reach an appropriate next action"
+      ],
+      "dependencies": ["T006", "T007"],
+      "acs": "AC03,AC06",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T009",
+      "title": "Create Guild profiles and scoped founder delegation",
+      "kind": "task",
+      "epic": "E03",
+      "sprint": "S02",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "05–07,09,25,28",
+      "requirements": "R01–R04,R10; I06,I07,I10",
+      "outcome": "A verified project can administer its own workspace with explicit permissions.",
+      "steps": [
+        "Add public/private Guild data boundaries and stable slugs",
+        "Implement founder and delegated field permissions",
+        "Add audited project-admin actions and ownership-change process",
+        "Support founder-approved public project/progress updates where selected, keeping private roadmap/configuration fields out of public projections."
+      ],
+      "checks": [
+        "Cross-Guild writes are denied",
+        "Treasury/dispute authority is separate from profile administration"
+      ],
+      "dependencies": ["T002", "T003", "T006"],
+      "acs": "AC07",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T010",
+      "title": "Verify an existing project and its canonical token",
+      "kind": "task",
+      "epic": "E03",
+      "sprint": "S02",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "05–07,09,25,28",
+      "requirements": "R01–R04,R10; I06,I07,I10",
+      "outcome": "Linking an existing mint is clearly labeled and requires proof of project authority.",
+      "steps": [
+        "Record control attestation and supporting evidence",
+        "Enforce one recognized Guild per network/program/mint",
+        "Handle revoked authority, conflicts and token migration without selling clean history"
+      ],
+      "checks": [
+        "Knowing a mint alone cannot create verified founder status",
+        "Existing-project onboarding differs from a new launch"
+      ],
+      "dependencies": ["T009"],
+      "acs": "AC71",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T011",
+      "title": "Observe holder eligibility without permission shortcuts",
+      "kind": "task",
+      "epic": "E03",
+      "sprint": "S02",
+      "role": "AG03/AG05",
+      "phase": "M1",
+      "sections": "05–07,09,25,28",
+      "requirements": "R01–R04,R10; I06,I07,I10",
+      "outcome": "Token holders see accurate membership freshness while private rights stay separately granted.",
+      "steps": [
+        "Aggregate supported token-account balances by exact asset",
+        "Store time/slot/finality/provider freshness",
+        "Keep public association opt-in and unknown/stale state on RPC failure"
+      ],
+      "checks": [
+        "Holder cannot administer Guild or download private code",
+        "Token sale cannot delete work or claims"
+      ],
+      "dependencies": ["T010"],
+      "acs": "AC07,AC08",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T012",
+      "title": "Add stable skill taxonomy and evidence records",
+      "kind": "task",
+      "epic": "E04",
+      "sprint": "S02",
+      "role": "AG05/AG02",
+      "phase": "M1",
+      "sections": "07–09,11,23",
+      "requirements": "R05,R06,R12; P07; I07,I10",
+      "outcome": "A profile separates claimed ability from assessed relevant skill.",
+      "steps": [
+        "Create stable skill IDs/aliases",
+        "Store claim, verification state, rubric/version, evidence, evaluator and confidence",
+        "Preserve reassessment/revocation history"
+      ],
+      "checks": [
+        "Wallet/token wealth never creates a verified rank",
+        "One verified frontend skill cannot satisfy Solana requirements"
+      ],
+      "dependencies": ["T002", "T006"],
+      "acs": "AC04,AC05",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T013",
+      "title": "Deliver public trials and authorized assessment review",
+      "kind": "task",
+      "epic": "E04",
+      "sprint": "S02",
+      "role": "AG05/AG02",
+      "phase": "M1",
+      "sections": "07–09,11,23",
+      "requirements": "R05,R06,R12; P07; I07,I10",
+      "outcome": "Builders can demonstrate skills with bounded fair exercises and explicit evidence.",
+      "steps": [
+        "Create public/synthetic trial variants and permitted-tool policy",
+        "Implement attempt limits/accommodations and criterion rubric",
+        "Give authorized evaluators review/reassessment commands"
+      ],
+      "checks": [
+        "Experienced entrant can qualify without irrelevant grinding",
+        "Trial is not unpaid founder production work"
+      ],
+      "dependencies": ["T012"],
+      "acs": "AC06",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T014",
+      "title": "Explain structured skill eligibility and anti-spam review",
+      "kind": "task",
+      "epic": "E04",
+      "sprint": "S02",
+      "role": "AG05/AG02",
+      "phase": "M1",
+      "sections": "07–09,11,23",
+      "requirements": "R05,R06,R12; P07; I07,I10",
+      "outcome": "People understand why a task fits while risk signals do not become arbitrary punishment.",
+      "steps": [
+        "Model explicit AND/OR skill predicates and Party coverage",
+        "Evaluate verified rank separately from reliability, Trust and access",
+        "Add proportional rate limits, duplicate evidence review and appeal reason categories"
+      ],
+      "checks": [
+        "Correct domain/rank evaluated server-side",
+        "Shared Wi-Fi or young wallet alone is not permanent fraud proof"
+      ],
+      "dependencies": ["T012", "T013"],
+      "acs": "AC04,AC05,AC09",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T015",
+      "title": "Build safe homepage, Guild directory and public profiles",
+      "kind": "task",
+      "epic": "E14",
+      "sprint": "S02",
+      "role": "AG07/AG02/AG09",
+      "phase": "M1/M5/M6",
+      "sections": "18,23,27,31",
+      "requirements": "R08,R10; I06,I07",
+      "outcome": "A visitor understands RAID and sees only approved project/work information.",
+      "steps": [
+        "Create public projections with no private annex/payout metadata",
+        "Add no-history, stale, empty and loading states",
+        "Keep launch/discover Guild and Raid paths visible on mobile"
+      ],
+      "checks": [
+        "HTML, metadata, hydration and API expose only approved fields",
+        "Keyboard and mobile visitor can navigate primary actions"
+      ],
+      "dependencies": ["T009", "T011", "T012"],
+      "acs": "AC42,AC43,AC70",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T016",
+      "title": "Define immutable Raid terms and publication checks",
+      "kind": "task",
+      "epic": "E05",
+      "sprint": "S03",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "08,11–12,16,23,26",
+      "requirements": "R05,R07; P08; I03,I08,I10",
+      "outcome": "A published task says exactly what is required, rewarded and reviewed.",
+      "steps": [
+        "Model outcome, acceptance criteria, E–S difficulty, structured skills, admission and visibility",
+        "Record deadline/start/review/dispute/reward policy in a terms version",
+        "Validate completeness and freeze accepted versions"
+      ],
+      "checks": [
+        "Every published work Raid has clear criteria/rank/skills",
+        "Founder cannot overwrite already accepted scope or reward"
+      ],
+      "dependencies": ["T002", "T009", "T014"],
+      "acs": "AC72",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T017",
+      "title": "Build bounded difficulty and reward recommendations",
+      "kind": "task",
+      "epic": "E05",
+      "sprint": "S03",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "08,11–12,16,23,26",
+      "requirements": "R05,R07; P08; I03,I08,I10",
+      "outcome": "Founders get useful advice while keeping control of assumptions and the final contract.",
+      "steps": [
+        "Use a versioned bounded rubric for complexity, skill, duration and supported reward ranges",
+        "Explain uncertainty, missing inputs and participant routing",
+        "Keep examples and unresolved prices out of production policy"
+      ],
+      "checks": [
+        "Suggestion can be accepted/edited before terms acceptance",
+        "Unevaluated model advice is not authoritative pricing"
+      ],
+      "dependencies": ["T016"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T018",
+      "title": "Create the founder Raid wizard and reward review",
+      "kind": "task",
+      "epic": "E05",
+      "sprint": "S03",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "08,11–12,16,23,26",
+      "requirements": "R05,R07; P08; I03,I08,I10",
+      "outcome": "Founders can draft a clear task and understand all asset legs, net reward and fees.",
+      "steps": [
+        "Build draft/criteria/recommendation/admission/visibility steps",
+        "Present full reward vector and separate fee/rent payer",
+        "Preserve draft on cancellation, expiry or provider failure"
+      ],
+      "checks": [
+        "Wizard uses server-derived validity/funding state",
+        "Private details are never preloaded into public cards"
+      ],
+      "dependencies": ["T016", "T017"],
+      "acs": "AC28,AC42,AC70",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T019",
+      "title": "Implement idempotent commands with audit and outbox",
+      "kind": "task",
+      "epic": "E06",
+      "sprint": "S03",
+      "role": "AG03",
+      "phase": "M2",
+      "sections": "12–15,25–27",
+      "requirements": "R13; I01,I02,I05,I08,I09",
+      "outcome": "Retrying a business action cannot silently create duplicate work, claims or history.",
+      "steps": [
+        "Persist actor+operation+key request digest and result",
+        "Reject same key with changed payload",
+        "Commit state, audit and outbox together; deduplicate incoming events"
+      ],
+      "checks": [
+        "Same logical command has one business outcome",
+        "Different payload returns an explicit conflict"
+      ],
+      "dependencies": ["T002", "T003"],
+      "acs": "AC32,AC69",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T020",
+      "title": "Enforce atomic one-engagement capacity and slot vacancy",
+      "kind": "task",
+      "epic": "E06",
+      "sprint": "S03",
+      "role": "AG03",
+      "phase": "M2",
+      "sections": "12–15,25–27",
+      "requirements": "R13; I01,I02,I05,I08,I09",
+      "outcome": "Two competing accepts cannot reserve the same Raider or work slot twice.",
+      "steps": [
+        "Create database-backed participant commitments and source vacancy constraints",
+        "Use stable locks and whole-transaction retry",
+        "Reserve engagement, accepted terms and audit/outbox atomically"
+      ],
+      "checks": [
+        "Exactly one competing accept succeeds",
+        "No orphan engagement, extra outbox effect or double-filled slot"
+      ],
+      "dependencies": ["T016", "T019"],
+      "acs": "AC11,AC12",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T021",
+      "title": "Route applications, offers and instant acceptance through one command",
+      "kind": "task",
+      "epic": "E06",
+      "sprint": "S03",
+      "role": "AG03",
+      "phase": "M2",
+      "sections": "12–15,25–27",
+      "requirements": "R13; I01,I02,I05,I08,I09",
+      "outcome": "Every entry path checks current eligibility, terms, funds, consent and capacity.",
+      "steps": [
+        "Add nonbinding applications and expiry/cap cleanup",
+        "Founder offers exact versioned slots",
+        "Recheck current state at acceptance and keep binding/resource setup pending"
+      ],
+      "checks": [
+        "Stale offer cannot acquire busy participant",
+        "Closed application paths stop consuming cap",
+        "Paid public work cannot start while binding is pending"
+      ],
+      "dependencies": ["T014", "T020"],
+      "acs": "AC17,AC18,AC24",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T022",
+      "title": "Deliver My Raid and founder applicant workspaces",
+      "kind": "task",
+      "epic": "E07",
+      "sprint": "S04",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "12–13,17,23,27",
+      "requirements": "R04,R13; I05,I08,I10",
+      "outcome": "Workers and founders can see the accepted contract, next action and truthful current state.",
+      "steps": [
+        "Show accepted terms, capacity and setup readiness",
+        "Display applicant evidence and scoped offer/review actions",
+        "Handle unauthenticated, denied, busy, expired, stale and retry states"
+      ],
+      "checks": [
+        "UI never grants authority from client eligibility boolean",
+        "My Raid remains obvious while review duties hold capacity"
+      ],
+      "dependencies": ["T018", "T021"],
+      "acs": "AC19,AC70",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T023",
+      "title": "Accept versioned submissions and criterion-based review",
+      "kind": "task",
+      "epic": "E07",
+      "sprint": "S04",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "12–13,17,23,27",
+      "requirements": "R04,R13; I05,I08,I10",
+      "outcome": "A review always decides on a specific deliverable against agreed criteria.",
+      "steps": [
+        "Store immutable artifact version and evidence references",
+        "Authorize member submit and reviewer accept/revise/dispute commands",
+        "Scope revision to original criteria and bounded deadlines"
+      ],
+      "checks": [
+        "Unknown or mismatched submission version cannot be approved",
+        "Review and work/payment states stay separate"
+      ],
+      "dependencies": ["T019", "T022"],
+      "acs": "AC19,AC72",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T024",
+      "title": "Close work finitely while preserving claims and newer capacity",
+      "kind": "task",
+      "epic": "E07",
+      "sprint": "S04",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "12–13,17,23,27",
+      "requirements": "R04,R13; I05,I08,I10",
+      "outcome": "An abandoned review cannot trap a Raider or erase money still owed.",
+      "steps": [
+        "Implement finite setup/build/review/revision deadlines",
+        "Close work and release matching participant+engagement atomically",
+        "Preserve unpaid claims/evidence and require consent/capacity to reopen"
+      ],
+      "checks": [
+        "Late cleanup cannot release a newer job",
+        "Payment pending does not consume terminal work capacity"
+      ],
+      "dependencies": ["T020", "T023"],
+      "acs": "AC20,AC21,AC22,AC23,AC25",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T025",
+      "title": "Support consented work amendments and member replacement contracts",
+      "kind": "task",
+      "epic": "E07",
+      "sprint": "S04",
+      "role": "AG03/AG02",
+      "phase": "M2",
+      "sections": "12–13,17,23,27",
+      "requirements": "R04,R13; I05,I08,I10",
+      "outcome": "Material changes require agreement rather than editing accepted promises.",
+      "steps": [
+        "Version scope/reward/deadline changes with affected consent",
+        "Verify additional funding and capacity when required",
+        "Retain original accepted history and clear amendment audit"
+      ],
+      "checks": [
+        "Unilateral founder/admin/default changes rejected",
+        "Replacement records new obligation rather than deleting old contribution"
+      ],
+      "dependencies": ["T016", "T024"],
+      "acs": "AC25,AC72",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T026",
+      "title": "Wrap the selected launch route behind a typed adapter",
+      "kind": "task",
+      "epic": "E08",
+      "sprint": "S03",
+      "role": "AG04/AG02",
+      "phase": "M3",
+      "sections": "05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "A founder follows one approved launch mechanism without silent protocol/fee switching.",
+      "steps": [
+        "Record O01/O02 choice and verified route parameters",
+        "Implement validate/quote/prepare/verify/reconcile interfaces",
+        "Reuse existing pump adapter only where compatible"
+      ],
+      "checks": [
+        "Unsupported parameters/network/program are explicit errors",
+        "Route and authorities match the recorded decision"
+      ],
+      "dependencies": ["T002", "T010", "O01", "O02"],
+      "acs": "AC29,AC41",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T027",
+      "title": "Build exact launch review, signature and resume UX",
+      "kind": "task",
+      "epic": "E08",
+      "sprint": "S04",
+      "role": "AG04/AG02",
+      "phase": "M3",
+      "sections": "05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "A founder sees what they sign and can safely recover an interrupted launch.",
+      "steps": [
+        "Show token controls, exact costs, recipient/program/network",
+        "Handle rejected signature, expired quote/transaction and partial completion",
+        "Resume same mint/semantic intent without duplicating successful steps"
+      ],
+      "checks": [
+        "Draft and intent survive wallet rejection",
+        "Submitted signature is not shown as verified LIVE"
+      ],
+      "dependencies": ["T026"],
+      "acs": "AC27,AC67,AC70",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T028",
+      "title": "Verify launch artifacts and activate the right Guild relationship",
+      "kind": "task",
+      "epic": "E08",
+      "sprint": "S05",
+      "role": "AG04/AG02",
+      "phase": "M3",
+      "sections": "05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "Launch success means the intended verified mint and authority facts exist.",
+      "steps": [
+        "Decode required finalized effects and expected account/program identities",
+        "Store observation references and exact Guild linkage",
+        "Reconcile late success and interrupted multi-step state"
+      ],
+      "checks": [
+        "Wrong mint/network/authority cannot activate Guild",
+        "Crash after broadcast does not create another launch"
+      ],
+      "dependencies": ["T026", "T027"],
+      "acs": "AC26,AC27,AC29,AC67",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T029",
+      "title": "Implement exact asset registry and bounded amount arithmetic",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S05",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "The reward amount identifies the actual asset and never loses precision.",
+      "steps": [
+        "Key assets by network/mint/program and native/token kind",
+        "Version supported decimals/extensions/authority policy separately",
+        "Use bounded integer parsing/allocation/rounding and JSON decimal strings"
+      ],
+      "checks": [
+        "Same ticker or wrong network cannot substitute",
+        "Policy version cannot duplicate spendable balance"
+      ],
+      "dependencies": ["T002", "O07"],
+      "acs": "AC28,AC29,AC30,AC41",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T030",
+      "title": "Prove selected escrow authority and protocol capability",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S05",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "The payment mechanism protects committed rewards and constrains who may move them.",
+      "steps": [
+        "Compare existing custody to O05 authority model",
+        "Record permitted signers/beneficiaries/upgrade and termination paths",
+        "Demonstrate binding/refund/claim replay protection in selected environment"
+      ],
+      "checks": [
+        "Founder cannot refund bound work unilaterally",
+        "No model/admin generic arbitrary-withdrawal power"
+      ],
+      "dependencies": ["T020", "T026", "O05", "O06"],
+      "acs": "AC31,AC35,AC38,AC39",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T031",
+      "title": "Verify deposits and reserve each promised obligation once",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S05",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "A client signature cannot invent funds or promise the same deposit to several workers.",
+      "steps": [
+        "Verify vault/program/asset/net effect and configured finality",
+        "Separate fee/rent/unexpected transfers from credited reward",
+        "Reserve distinct slot/entry/award liabilities and all bundle legs"
+      ],
+      "checks": [
+        "Only fully verified promised legs permit acceptance",
+        "Shared pool cannot double-promise protected funds"
+      ],
+      "dependencies": ["T029", "T030"],
+      "acs": "AC26,AC27,AC28,AC34,AC35",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T032",
+      "title": "Bind accepted terms before work and resource readiness",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S05",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "No commissioned work starts before verified funding binding and required resources.",
+      "steps": [
+        "Persist semantic binding intent after atomic acceptance",
+        "Verify chain/provider terms/roster/beneficiaries",
+        "Recheck generation and readiness before StartEngagement; compensate late success after closure"
+      ],
+      "checks": [
+        "Refund-winning race closes unstarted work cleanly",
+        "Late binding cannot restart work or auto-grant code"
+      ],
+      "dependencies": ["T020", "T031"],
+      "acs": "AC18,AC31,AC39",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T033",
+      "title": "Allocate immutable claims and reconcile payout retries",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S06",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Each beneficiary and asset gets an exact claim that can settle once across new signatures.",
+      "steps": [
+        "Create authorized allocations under accepted terms/finality",
+        "Persist semantic operation ID before dispatch",
+        "Check existing effect before rebroadcast/rebuild; expose partial/blocked claims"
+      ],
+      "checks": [
+        "Timeout after success cannot pay again",
+        "Retry only unpaid legs; frozen token obligation remains"
+      ],
+      "dependencies": ["T030", "T031", "T032"],
+      "acs": "AC32,AC33,AC36,AC37",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T034",
+      "title": "Expose payment progress and ledger-vault incidents",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S06",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "People can see exactly what is owed, pending, blocked or actually paid.",
+      "steps": [
+        "Build asset-specific obligations/fees/transaction status",
+        "Reconcile backing, encumbrances and availability without editing history",
+        "Pause unsafe new allocation and record reasoned incident repair"
+      ],
+      "checks": [
+        "No whole-bundle paid label after one transfer",
+        "Discrepancy is visible and cannot be hidden with balance edit"
+      ],
+      "dependencies": ["T033"],
+      "acs": "AC36,AC37,AC49",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T035",
+      "title": "Implement private disputes and snapshotted financial finality",
+      "kind": "task",
+      "epic": "E10",
+      "sprint": "S06",
+      "role": "AG04/AG03/AG09",
+      "phase": "M4",
+      "sections": "16–17,28–30",
+      "requirements": "I04,I07,I08,I10,I11",
+      "outcome": "A contested award cannot become claimable while its timely appeal is held.",
+      "steps": [
+        "Store versioned case/evidence access, mediator/conflicts and notice",
+        "Separate ordinary acceptance, appealable decision and final authorized outcome",
+        "Serialize hold/finality/claim and preserve undisputed portions only under policy"
+      ],
+      "checks": [
+        "Own-case judge cannot act as independent mediator",
+        "Silence closes duties but does not decide money/fault"
+      ],
+      "dependencies": ["T023", "T030", "T033", "O06"],
+      "acs": "AC10,AC21,AC38,AC49",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T036",
+      "title": "Recover payout destination safely and preserve restricted claims",
+      "kind": "task",
+      "epic": "E10",
+      "sprint": "S06",
+      "role": "AG04/AG03/AG09",
+      "phase": "M4",
+      "sections": "16–17,28–30",
+      "requirements": "I04,I07,I08,I10,I11",
+      "outcome": "Wallet recovery and account restriction cannot confiscate an earned entitlement.",
+      "steps": [
+        "Require proof and supported beneficiary-change authority",
+        "Keep claim amount and immutable audit",
+        "Support lost-key and restricted-account evidence/status under policy"
+      ],
+      "checks": [
+        "Unauthenticated address change rejected",
+        "Database-only edit cannot change a bound on-chain beneficiary"
+      ],
+      "dependencies": ["T006", "T033", "T035"],
+      "acs": "AC40,AC49",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T037",
+      "title": "Validate environments, feature flags and audited configuration",
+      "kind": "task",
+      "epic": "E11",
+      "sprint": "S06",
+      "role": "AG09/AG03",
+      "phase": "M0–M5",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Sample assets or missing authorities cannot accidentally enable real operations.",
+      "steps": [
+        "Separate local/staging/pilot/production credentials and networks",
+        "Validate config before privileged actions, with persistent nonproduction labeling",
+        "Audit defaults and accepted-policy snapshots; keep unresolved gates disabled"
+      ],
+      "checks": [
+        "Mock/test program cannot pass production validation",
+        "Flag change cannot rewrite accepted contracts or undo transfers"
+      ],
+      "dependencies": ["T029", "T030", "O18"],
+      "acs": "AC41,AC72",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T038",
+      "title": "Deliver durable worker generations, retries and health signals",
+      "kind": "task",
+      "epic": "E11",
+      "sprint": "S06",
+      "role": "AG09/AG03",
+      "phase": "M0–M5",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Late jobs and provider outages are recoverable without repeated external action.",
+      "steps": [
+        "Keep outbox/inbox receipts and generation checks",
+        "Monitor job/outbox age, commitment deadlines, unknown tx and provider freshness",
+        "Add correlated sanitized diagnostics and bounded dead-letter/recovery ownership"
+      ],
+      "checks": [
+        "Old job cannot revive work/access",
+        "Crash after external success is reconciled before safe retry"
+      ],
+      "dependencies": ["T019", "T024", "T033"],
+      "acs": "AC23,AC47,AC67",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T039",
+      "title": "Protect acknowledged authorizations outside the primary failure domain",
+      "kind": "task",
+      "epic": "E11",
+      "sprint": "S06",
+      "role": "AG09/AG03",
+      "phase": "M0–M5",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "A restore can recover original terms, consent and semantic IDs before writing again.",
+      "steps": [
+        "Choose durability mechanism/failure model under O18",
+        "Persist essential terms/consents/capacity/payment/access authorization before acknowledgment",
+        "Define recovery watermark and stop affected writes if authoritative recovery fails"
+      ],
+      "checks": [
+        "Outbox in same lost DB is not sole disaster recovery",
+        "Recovered state recognizes effects newer than snapshot"
+      ],
+      "dependencies": ["T003", "T019", "T038", "O18"],
+      "acs": "AC68",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T040",
+      "title": "Publish incident, migration and staffed support runbooks",
+      "kind": "task",
+      "epic": "E11",
+      "sprint": "S07",
+      "role": "AG09/AG03",
+      "phase": "M0–M5",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Operators know who can contain, investigate and resolve each supported failure.",
+      "steps": [
+        "Name treasury/security/access/mediation/support/release responsibilities and hours",
+        "Define RPC timeout, blocked payout, missing access, abandoned review and compromise playbooks",
+        "Rehearse additive migration/backfill and code/data/program rollback limits"
+      ],
+      "checks": [
+        "Every time-bound case has an owner",
+        "No playbook implies a code rollback reverses a chain transfer"
+      ],
+      "dependencies": ["T034", "T035", "T037", "T039", "O19"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T041",
+      "title": "Record attributable reputation, Guild Trust and correction history",
+      "kind": "task",
+      "epic": "E21",
+      "sprint": "S07",
+      "role": "AG05/AG03/AG04",
+      "phase": "M5/M8",
+      "sections": "08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "History shows actual useful work rather than wealth or repeated webhook ratings.",
+      "steps": [
+        "Append canonical outcome events with evidence/denominators/policy",
+        "Separate Raider reliability, Guild reliability and local Guild Trust",
+        "Add suspect related-party review and correction/supersession after appeal"
+      ],
+      "checks": [
+        "Duplicate event cannot double score",
+        "Pending allegation and valid nonwinner are not permanent failure"
+      ],
+      "dependencies": ["T023", "T035"],
+      "acs": "AC09,AC10,AC51",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T042",
+      "title": "Add safe lifecycle notifications and user preferences",
+      "kind": "task",
+      "epic": "E14",
+      "sprint": "S04",
+      "role": "AG07/AG02/AG09",
+      "phase": "M1/M5/M6",
+      "sections": "18,23,27,31",
+      "requirements": "R08,R10; I06,I07",
+      "outcome": "People know the next required action without exposing private briefs in previews.",
+      "steps": [
+        "Notify acceptance/readiness/deadline/submission/review/payment/dispute state",
+        "Deduplicate events and respect optional promotion preferences",
+        "Keep private content and long-lived bearer links out of previews"
+      ],
+      "checks": [
+        "Repeated job does not duplicate business notification",
+        "Confidential subject stays inside authorized surface"
+      ],
+      "dependencies": ["T019", "T024"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T043",
+      "title": "Measure the useful work loop with honest asset-aware metrics",
+      "kind": "task",
+      "epic": "E14",
+      "sprint": "S07",
+      "role": "AG07/AG02/AG09",
+      "phase": "M1/M5/M6",
+      "sections": "18,23,27,31",
+      "requirements": "R08,R10; I06,I07",
+      "outcome": "Operators understand activation/completion/settlement without counting fake traffic or fabricated dollars.",
+      "steps": [
+        "Measure verified Guild, participant, review delay and due claims",
+        "Separate drafted/funded/accepted/work-accepted/paid and Challenge outcomes",
+        "Exclude fixtures/duplicates/known abuse; value only with dated approved price methodology"
+      ],
+      "checks": [
+        "Each metric has denominator and exclusions",
+        "Unpriced project tokens are not aggregated as paid dollars"
+      ],
+      "dependencies": ["T034", "T041"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T044",
+      "title": "Run internal alpha core journeys and capture usability evidence",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S07",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Internal testers prove founder, beginner and specialist can complete supported core paths.",
+      "steps": [
+        "Prepare isolated synthetic/test-network cohort and candidate SHA",
+        "Run AC66 launch and AC71 existing-project journeys separately",
+        "Observe onboarding/acceptance/submission/review/payment and log reproducible defects"
+      ],
+      "checks": [
+        "Each role completes actual supported path",
+        "Synthetic activity never becomes public success evidence"
+      ],
+      "dependencies": ["T008", "T014", "T028", "T034", "T040"],
+      "acs": "AC03,AC06,AC66,AC71",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T045",
+      "title": "Verify core accessibility, wallet rejection and private projections",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S07",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Keyboard/mobile users can complete core actions safely even when a wallet rejects.",
+      "steps": [
+        "Test focus/labels/status announcements/contrast/reflow/reduced motion",
+        "Cover loading/empty/stale/denied/unsupported/retry/expired states",
+        "Inspect HTML/API/metadata/cache/log projections for private leakage"
+      ],
+      "checks": [
+        "Draft survives rejection and retry",
+        "No hidden private payload or color-only warning"
+      ],
+      "dependencies": ["T022", "T027", "T034"],
+      "acs": "AC42,AC43,AC70",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T046",
+      "title": "Rehearse alpha crash, restore and adversarial boundaries",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S08",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "The candidate survives real transaction races and recovery rather than only happy-path demos.",
+      "steps": [
+        "Synchronize database accept/closure races",
+        "Crash after provider/chain success and restore post-snapshot acknowledged commitments",
+        "Attempt forged assets, replayed claims and unauthorized state mutation"
+      ],
+      "checks": [
+        "One effect and one capacity outcome per semantic command",
+        "Unrecoverable authorization keeps affected commands disabled"
+      ],
+      "dependencies": ["T032", "T035", "T039", "T044"],
+      "acs": "AC11,AC12,AC23,AC26,AC31,AC33,AC38,AC67,AC68,AC69",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T047",
+      "title": "Fix alpha blockers, retest and record the alpha exit",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S08",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Invite outside testers only after core security/money/capacity/recovery blockers are verified fixed.",
+      "steps": [
+        "Triage each observed defect with owner and blueprint IDs",
+        "Ship bounded fixes and rerun relevant regression at candidate SHA",
+        "Record go/no-go, remaining nonblocking issues and beta readiness"
+      ],
+      "checks": [
+        "No open release-blocking financial/privacy/capacity/data-loss defect",
+        "Every closed blocker has reproduction and fix/retest evidence"
+      ],
+      "dependencies": ["T044", "T045", "T046"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T048",
+      "title": "Prepare a supported invited beta configuration and cohort",
+      "kind": "task",
+      "epic": "E13",
+      "sprint": "S09",
+      "role": "AG01/AG08/AG09",
+      "phase": "M5 beta",
+      "sections": "30–35,38–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Outside testers receive accurate environment, terms, budget/cap and support information.",
+      "steps": [
+        "Choose test-network or live-funded beta under applicable gates",
+        "Record cohort/intake/consent/retention/support and escalation",
+        "Prepare invitation content for authorized owner use; do not send without instructions"
+      ],
+      "checks": [
+        "Live beta cannot bypass custody/finality/asset/terms/operations gates",
+        "Test-asset beta does not promise real payout"
+      ],
+      "dependencies": ["T047", "O08", "O11", "O12", "O18", "O19"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T049",
+      "title": "Observe invited founder and Raider work journeys",
+      "kind": "task",
+      "epic": "E13",
+      "sprint": "S09",
+      "role": "AG01/AG08/AG09",
+      "phase": "M5 beta",
+      "sections": "30–35,38–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Real testers expose workflow confusion and support needs before broader access.",
+      "steps": [
+        "Admit cohort in small approved batches",
+        "Capture voluntary feedback at natural work milestones",
+        "Monitor oldest duties, unknown tx, disputes and support cases daily"
+      ],
+      "checks": [
+        "Newcomer and assessed entrant both complete supported work",
+        "Funded/accepted/paid volumes stay distinct"
+      ],
+      "dependencies": ["T048"],
+      "acs": "AC66,AC71,AC70",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T050",
+      "title": "Stabilize closed beta and retest cohort defects",
+      "kind": "task",
+      "epic": "E13",
+      "sprint": "S10",
+      "role": "AG01/AG08/AG09",
+      "phase": "M5 beta",
+      "sections": "30–35,38–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "A clean second beta week verifies fixes instead of adding new functionality.",
+      "steps": [
+        "Prioritize core blockers and safe usability improvements",
+        "Keep accepted terms/amendments/migrations valid",
+        "Repeat candidate journeys and recovery after each material fix"
+      ],
+      "checks": [
+        "Every beta blocker has owner and verified result",
+        "Existing claims survive fixes and rollout pauses"
+      ],
+      "dependencies": ["T049"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T051",
+      "title": "Hold V1 and public-beta entry review",
+      "kind": "task",
+      "epic": "E13",
+      "sprint": "S10",
+      "role": "AG01/AG08/AG09",
+      "phase": "M5 beta",
+      "sections": "30–35,38–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "A named owner decides which tested capabilities can open to wider users.",
+      "steps": [
+        "Review G01–G05/G10 and actual beta evidence",
+        "Verify staffed support, reconciliation and disclosed limitations",
+        "Record go/limited-go/no-go and next weekly scope"
+      ],
+      "checks": [
+        "Public beta starts only on approved passed paths",
+        "No automatic release merely because a sprint date arrived"
+      ],
+      "dependencies": ["T050"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T052",
+      "title": "Open conservative public beta and monitor the stable core",
+      "kind": "task",
+      "epic": "E14",
+      "sprint": "S11",
+      "role": "AG07/AG02/AG09",
+      "phase": "M1/M5/M6",
+      "sections": "18,23,27,31",
+      "requirements": "R08,R10; I06,I07",
+      "outcome": "More eligible users can join without forcing incomplete feature contracts.",
+      "steps": [
+        "Publish beta limits/network/assets/support status",
+        "Increase intake only with actual support/reconciliation evidence",
+        "Keep feature cohorts/flags separate and prioritize core incidents"
+      ],
+      "checks": [
+        "Blocked feature cannot leak into ordinary core work",
+        "Expansion pauses when required state or support is unsafe"
+      ],
+      "dependencies": ["T051"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T053",
+      "title": "Separate private teasers, brief disclosure and resource approval",
+      "kind": "task",
+      "epic": "E15",
+      "sprint": "S11",
+      "role": "AG05/AG03",
+      "phase": "M6",
+      "sections": "09–10,13,25–30",
+      "requirements": "R11; I06,I07,I09–I11",
+      "outcome": "Discovery and skill scores do not reveal confidential work or grant repositories.",
+      "steps": [
+        "Implement PUBLIC/TRUSTED/CONFIDENTIAL/INVITE_ONLY projections",
+        "Approve scoped private scoping brief for informed consent",
+        "Require separate code/resource permission after verified work binding"
+      ],
+      "checks": [
+        "Rank/holder status alone cannot read code",
+        "All public rendering/search/preview paths stay clean"
+      ],
+      "dependencies": ["T014", "T032", "T045", "O13"],
+      "acs": "AC42,AC43,AC44",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T054",
+      "title": "Provision isolated resources and reconcile effective access",
+      "kind": "task",
+      "epic": "E15",
+      "sprint": "S11",
+      "role": "AG05/AG03",
+      "phase": "M6",
+      "sections": "09–10,13,25–30",
+      "requirements": "R11; I06,I07,I09–I11",
+      "outcome": "A grant represents what the provider really allows, not imaginary folder secrecy.",
+      "steps": [
+        "Record exact resource/scope/purpose/approver/expiry/generation",
+        "Use isolated repo/workspace and task-scoped credentials",
+        "Reconcile overlapping task grants and pre-existing independent rights"
+      ],
+      "checks": [
+        "Removing source grant preserves valid target rights",
+        "Effective scope and provider limits are documented"
+      ],
+      "dependencies": ["T053", "O13"],
+      "acs": "AC44,AC45,AC46",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T055",
+      "title": "Revoke task access and contain malicious artifacts safely",
+      "kind": "task",
+      "epic": "E15",
+      "sprint": "S12",
+      "role": "AG05/AG03",
+      "phase": "M6",
+      "sections": "09–10,13,25–30",
+      "requirements": "R11; I06,I07,I09–I11",
+      "outcome": "Closed work ends task-derived credentials even when the provider fails.",
+      "steps": [
+        "Revoke secrets and reconcile desired/effective access",
+        "Retry failures with explicit incident owner",
+        "Execute untrusted code/URLs only inside approved boundary and reject prompt/tool authority injection"
+      ],
+      "checks": [
+        "Stale grant job cannot revive access",
+        "Failed provider revoke stays visible; copied data is not claimed recalled"
+      ],
+      "dependencies": ["T024", "T054"],
+      "acs": "AC47,AC48",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T056",
+      "title": "Create Party rosters, skill coverage and member consent",
+      "kind": "task",
+      "epic": "E16",
+      "sprint": "S11",
+      "role": "AG03/AG04/AG02",
+      "phase": "M6",
+      "sections": "08,13–14,16–17",
+      "requirements": "P02; I01–I05,I08",
+      "outcome": "Every team member understands their responsibility, terms and payout before commitment.",
+      "steps": [
+        "Create reusable roster/contact roles and per-engagement snapshot",
+        "Evaluate explicit individual/shared skill coverage",
+        "Record each human/operator consent for exact terms and per-asset split"
+      ],
+      "checks": [
+        "Leader cannot consent for other humans",
+        "Party label cannot manufacture every member’s skill"
+      ],
+      "dependencies": ["T014", "T025", "T029"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T057",
+      "title": "Reserve Party capacity atomically and support valid replacement",
+      "kind": "task",
+      "epic": "E16",
+      "sprint": "S12",
+      "role": "AG03/AG04/AG02",
+      "phase": "M6",
+      "sections": "08,13–14,16–17",
+      "requirements": "P02; I01–I05,I08",
+      "outcome": "A team with one busy member cannot partially reserve others or bypass capacity.",
+      "steps": [
+        "Acquire participant/operator commitments with stable lock order",
+        "Snapshot accepted beneficiaries and exact splits",
+        "Amend replacement/splits with affected consent, rights/payment and capacity checks"
+      ],
+      "checks": [
+        "Entire busy-member Party rolls back",
+        "Outgoing history/claim survives; leader cannot redirect reward"
+      ],
+      "dependencies": ["T020", "T033", "T056"],
+      "acs": "AC13,AC50",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T058",
+      "title": "Publish paid selection Challenges with frozen rights and rubric",
+      "kind": "task",
+      "epic": "E17",
+      "sprint": "S12",
+      "role": "AG03/AG04/AG05",
+      "phase": "M6/M8",
+      "sections": "13,15–17",
+      "requirements": "R14; P03; I01–I05,I08,I11",
+      "outcome": "Participants know whether they are applying or accepting bounded paid prototype work.",
+      "steps": [
+        "Model SELECTION separately from PRIZE",
+        "Fund maximum promised qualifying compensation",
+        "Freeze eligibility/rubric/rights/deadlines and record judge conflicts"
+      ],
+      "checks": [
+        "Application alone consumes no capacity",
+        "Accepted entry holds duty; nonwinner qualification/payment survives"
+      ],
+      "dependencies": ["T021", "T031", "T035", "O10"],
+      "acs": "AC14,AC51,AC52,AC53,AC57",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T059",
+      "title": "Hand off selection winners through a separate funded main offer",
+      "kind": "task",
+      "epic": "E17",
+      "sprint": "S12",
+      "role": "AG03/AG04/AG05",
+      "phase": "M6/M8",
+      "sections": "13,15–17",
+      "requirements": "R14; P03; I01–I05,I08,I11",
+      "outcome": "Winning selection never silently commits someone to the larger job.",
+      "steps": [
+        "Offer new terms/roster and separate funded main reward",
+        "Transfer or reacquire participant/operator capacity atomically",
+        "Recover failed target binding without reviving source duty or losing selection compensation"
+      ],
+      "checks": [
+        "Declining main offer incurs no invented penalty",
+        "Race cannot reserve both jobs; failed target keeps source payment"
+      ],
+      "dependencies": ["T032", "T057", "T058"],
+      "acs": "AC54,AC55,AC56",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T060",
+      "title": "Sell labeled fixed sponsorship with delivery and refund tracking",
+      "kind": "task",
+      "epic": "E18",
+      "sprint": "S12",
+      "role": "AG07/AG04",
+      "phase": "M6/M8",
+      "sections": "18,22,26–31",
+      "requirements": "R09; D10; I03–I05,I10",
+      "outcome": "Founders buy defined visibility without buying trust, rank or judgment.",
+      "steps": [
+        "Record inventory/cap/audience/time/price/delivery/refund policy",
+        "Preserve safe valid listing rules and Sponsored labeling",
+        "Reconcile charge/delivery/invalidated placement and deduplicate metrics"
+      ],
+      "checks": [
+        "Paid placement cannot grant eligibility or reputation",
+        "Failed delivery follows purchased refund/make-good terms"
+      ],
+      "dependencies": ["T015", "T031", "T043", "O08"],
+      "acs": "AC58,AC59",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T061",
+      "title": "Register accountable AI workers and evaluated configurations",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S13",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "An AI worker has stable identity and evidence rather than a model-price rank.",
+      "steps": [
+        "Store accountable operator, authenticated runtime and versioned capability evidence",
+        "Preserve performance across aliases/model changes",
+        "Issue authenticated short-lived task credentials and callback validation"
+      ],
+      "checks": [
+        "Forged familiar-name callback rejected",
+        "Model swap does not reset history/capacity"
+      ],
+      "dependencies": ["T006", "T012", "T019", "O14"],
+      "acs": "AC63",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T062",
+      "title": "Enforce aggregate operator commitments alongside participant capacity",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S13",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "One operator cannot create aliases to bypass the managed-agent pilot cap.",
+      "steps": [
+        "Count distinct engagements for individual pilot operator",
+        "Include own human duty and allow same-engagement Party sharing",
+        "Lock operator and participant reservations atomically in every accept/handoff path"
+      ],
+      "checks": [
+        "Two operator jobs conflict",
+        "Same allowed Party members share one operator reservation"
+      ],
+      "dependencies": ["T020", "T057", "T061"],
+      "acs": "AC15,AC16",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T063",
+      "title": "Deploy an actual isolated runner with explicit tool/data authority",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S13",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "Untrusted task material cannot steal secrets or authorize outside actions.",
+      "steps": [
+        "Implement filesystem/network/tool boundaries and artifact validation",
+        "Keep task credentials out of model context",
+        "Enforce accepted Guild provider-data policy and minimize sensitive retention"
+      ],
+      "checks": [
+        "Malicious scripts/URLs/prompts cannot expand authority",
+        "Denied private-provider/tool action is blocked at service boundary"
+      ],
+      "dependencies": ["T054", "T055", "T061", "O14"],
+      "acs": "AC48",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T064",
+      "title": "Reserve and enforce a total AI execution budget",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S14",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "A retry or parallel subcall cannot spend beyond the owner’s authorized cap.",
+      "steps": [
+        "Track actual/estimated cost with currency/rate-card version",
+        "Reserve total cap across model/tools/retries/subcalls",
+        "Stop/pause at cap and follow disclosed unused-budget/partial-result policy"
+      ],
+      "checks": [
+        "Model cannot raise its own cap",
+        "Compute budget cannot consume contributor reward reserves"
+      ],
+      "dependencies": ["T029", "T061", "T063", "O08", "O14"],
+      "acs": "AC61",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T065",
+      "title": "Handle cancel, provider failure and orphaned run recovery",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S14",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "A failed AI process does not leave indefinite work locks or undo external effects by assumption.",
+      "steps": [
+        "Track run/duty state separately with heartbeat",
+        "Stop further dispatch and reconcile attempted actions",
+        "Close/recover finite engagement and revoke credentials under current generation"
+      ],
+      "checks": [
+        "Cancellation does not lose already-completed effects",
+        "Dead run cannot lock participant indefinitely"
+      ],
+      "dependencies": ["T024", "T038", "T062", "T063", "T064"],
+      "acs": "AC64,AC67",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T066",
+      "title": "Route one evaluated AI task through ordinary review",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S14",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "A permitted task completes under limits and its output is reviewed by authorized people.",
+      "steps": [
+        "Explain bounded recommendation/capability/cost assumptions",
+        "Use human/Party fallback when skill/data/tool fit fails",
+        "Submit versioned artifacts and ordinary criterion-based review"
+      ],
+      "checks": [
+        "Worker cannot approve own reward or promote own rank",
+        "One pilot task reaches review with costs/failures visible"
+      ],
+      "dependencies": ["T023", "T062", "T063", "T064", "T065"],
+      "acs": "AC62,AC63,AC64",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T067",
+      "title": "Add fully funded prize competitions with fair award finality",
+      "kind": "task",
+      "epic": "E17",
+      "sprint": "S15",
+      "role": "AG03/AG04/AG05",
+      "phase": "M6/M8",
+      "sections": "13,15–17",
+      "requirements": "R14; P03; I01–I05,I08,I11",
+      "outcome": "All promised prizes/stipends are reserved and awarded under declared rules.",
+      "steps": [
+        "Model PRIZE ties/no-qualifier/cancellation and maximum liability",
+        "Record conflict-aware judges and nonwinner rights",
+        "Apply appealable/final award holds before claims"
+      ],
+      "checks": [
+        "Changed rubric after commitment rejected",
+        "Nonwinning private code cannot be used without granted rights"
+      ],
+      "dependencies": ["T035", "T058", "O10"],
+      "acs": "AC51,AC52,AC53,AC57",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T068",
+      "title": "Implement approved single-asset auctions and losing-budget release",
+      "kind": "task",
+      "epic": "E18",
+      "sprint": "S15",
+      "role": "AG07/AG04",
+      "phase": "M6/M8",
+      "sections": "18,22,26–31",
+      "requirements": "R09; D10; I03–I05,I10",
+      "outcome": "A bidder knows the maximum charge and gets protected release/refund if not delivered.",
+      "steps": [
+        "Adopt O17 mechanism and deterministic tie-break",
+        "Reserve exact bid funds, serialize winners and cap charges",
+        "Release losers and reconcile failed auction/delivery/late jobs"
+      ],
+      "checks": [
+        "Everyone cannot be charged as winner",
+        "Late/duplicate job cannot double charge; invalid confidential card not exposed"
+      ],
+      "dependencies": ["T019", "T031", "T060", "O17"],
+      "acs": "AC59",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T069",
+      "title": "Validate each additional reward asset end to end",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S15",
+      "role": "AG04/AG03",
+      "phase": "M4",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Adding SOL/project-token/RAID support is tested behavior rather than a ticker entry.",
+      "steps": [
+        "Review actual network/mint/program/extensions/authorities",
+        "Verify amount/escrow/deposit/claim/refund/blocked transfer behavior",
+        "Expose mixed reward legs and partial settlement accurately"
+      ],
+      "checks": [
+        "New asset cannot bypass same-symbol/conservation/finality gates",
+        "Unsupported extension remains disabled"
+      ],
+      "dependencies": ["T029", "T033", "O07"],
+      "acs": "AC28,AC29,AC30,AC36,AC37,AC41",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T070",
+      "title": "Approve channel content and deduplicate automatic publication",
+      "kind": "task",
+      "epic": "E20",
+      "sprint": "S16",
+      "role": "AG07/AG06",
+      "phase": "M8",
+      "sections": "20,27–31",
+      "requirements": "P01; I05,I06,I09–I11",
+      "outcome": "The exact approved content is published once through a controlled account.",
+      "steps": [
+        "Verify account control/API support and scoped credentials under O16",
+        "Bind text/media/channel/window approval before scheduling",
+        "Lookup/deduplicate timeout success, support takedown/revocation and retain dated evidence"
+      ],
+      "checks": [
+        "Edited approved payload needs reapproval",
+        "Retried publish after success does not duplicate content"
+      ],
+      "dependencies": ["T019", "T038", "T063", "O16"],
+      "acs": "AC60",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T071",
+      "title": "Measure influencer delivery and capped attribution honestly",
+      "kind": "task",
+      "epic": "E20",
+      "sprint": "S16",
+      "role": "AG07/AG06",
+      "phase": "M8",
+      "sections": "20,27–31",
+      "requirements": "P01; I05,I06,I09–I11",
+      "outcome": "Draft creation, publication and performance bonuses remain separate obligations.",
+      "steps": [
+        "Define fixed fee and optional capped bonus/data source/window",
+        "Filter duplicate/bot evidence and keep dated audience metrics",
+        "Record failed/cancelled channel actions and dispute evidence"
+      ],
+      "checks": [
+        "Follower count is not verified reach",
+        "Fabricated engagement or undisclosed performance guarantee is not accepted"
+      ],
+      "dependencies": ["T070", "O08", "O16"],
+      "acs": "",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T072",
+      "title": "Calibrate versioned reputation and skill scoring with appeals",
+      "kind": "task",
+      "epic": "E21",
+      "sprint": "S16",
+      "role": "AG05/AG03/AG04",
+      "phase": "M5/M8",
+      "sections": "08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Numerical scoring uses reviewed evidence and preserves newcomer opportunity.",
+      "steps": [
+        "Adopt O09 formula/rubric and sample-confidence policy",
+        "Review related-party and false-positive signals",
+        "Version corrections and reassessment without erasing attributable history"
+      ],
+      "checks": [
+        "Token wealth cannot change skill/reliability",
+        "Nonwinner and unresolved allegation are not automatic failure"
+      ],
+      "dependencies": ["T013", "T041", "O09"],
+      "acs": "AC04,AC09,AC10,AC51",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T073",
+      "title": "Model funded Role periods, renewal and finite closure",
+      "kind": "task",
+      "epic": "E21",
+      "sprint": "S16",
+      "role": "AG05/AG03/AG04",
+      "phase": "M5/M8",
+      "sections": "08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Ongoing responsibility uses the same one-active rule and paid consent as normal work.",
+      "steps": [
+        "Define period duties/access/payment/notice under O19",
+        "Fund and accept each renewal or bounded agreed schedule",
+        "Stop future duty/access if renewal fails while preserving earned claims"
+      ],
+      "checks": [
+        "Active Role cannot coexist with another engagement",
+        "Honorary title does not hide another active job"
+      ],
+      "dependencies": ["T020", "T025", "T033", "T055", "O19"],
+      "acs": "AC65",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T074",
+      "title": "Design optional RAID utility and license only after owner decisions",
+      "kind": "task",
+      "epic": "E21",
+      "sprint": null,
+      "role": "AG05/AG03/AG04",
+      "phase": "M5/M8",
+      "sections": "08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Unapproved tokenomics and access licenses stay disabled while independent work proceeds.",
+      "steps": [
+        "Record O03/O04 utility/entitlement choices",
+        "Separate service credits from exact on-chain token obligations",
+        "Define freshness/grace/newcomer handling and preservation of earned history"
+      ],
+      "checks": [
+        "No escalating token/rank ladder",
+        "Missing decision produces controlled not-configured state, not invented supply/fees"
+      ],
+      "dependencies": ["O03", "O04", "T029"],
+      "acs": "",
+      "priority": "P2",
+      "estimate": 3
+    },
+    {
+      "id": "T075",
+      "title": "Prepare separate real RAID token issuance release package",
+      "kind": "task",
+      "epic": "E08",
+      "sprint": null,
+      "role": "AG04/AG02",
+      "phase": "M3",
+      "sections": "05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "Actual token issuance has its own economics, authority and assurance work beyond the sprint target.",
+      "steps": [
+        "Specify chosen supply/allocation/distribution/controls/market route under owner decision",
+        "Verify program/asset/terms and reviewed launch flow",
+        "Record independent enablement/operating evidence and estimate"
+      ],
+      "checks": [
+        "No commercial example becomes accepted economics",
+        "No issue completion is a transaction or authority to spend"
+      ],
+      "dependencies": ["O03", "T026", "T069"],
+      "acs": "",
+      "priority": "P2",
+      "estimate": 5
+    },
+    {
+      "id": "T076",
+      "title": "Define organization operator registration and scaling limits",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": null,
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "A larger operator model is explicit instead of silently increasing individual capacity.",
+      "steps": [
+        "Decide O15 organization registration/accountability",
+        "Document concurrent distinct-engagement and employee/operator semantics",
+        "Test distributed capacity and global spend under chosen policy"
+      ],
+      "checks": [
+        "Individual Raider still has one slot",
+        "Organization policy does not silently replace strict pilot limit"
+      ],
+      "dependencies": ["O15", "T062"],
+      "acs": "",
+      "priority": "P2",
+      "estimate": 3
+    },
+    {
+      "id": "T077",
+      "title": "Review public beta stability and decide GA or extended weekly beta",
+      "kind": "task",
+      "epic": "E13",
+      "sprint": "S16",
+      "role": "AG01/AG08/AG09",
+      "phase": "M5 beta",
+      "sections": "30–35,38–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "The project leaves beta only when the enabled scope is actually supported and proven.",
+      "steps": [
+        "Repeat core journey/security/recovery on candidate SHA",
+        "Review public cohort incidents, cases, metrics and feature gates",
+        "Publish go/limited-go/no-go and next one-week backlog; retain unresolved optional work"
+      ],
+      "checks": [
+        "No unresolved release-blocking money/access/capacity/recovery issue",
+        "Delivered/test-verified/live-enabled scope remains distinct"
+      ],
+      "dependencies": ["T051", "T052", "T066", "T067", "T068", "T070", "T071", "T072", "T073"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T078",
+      "title": "Independently verify identity, skills and fair admission",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S02",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Prove identity, skills and fair admission against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T006", "T007", "T008", "T009", "T010", "T011", "T012", "T013", "T014"],
+      "acs": "AC01,AC02,AC03,AC04,AC05,AC06,AC07,AC08",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T079",
+      "title": "Independently verify canonical capacity and bounded work closure",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S04",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Prove canonical capacity and bounded work closure against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T020", "T021", "T023", "T024", "T025"],
+      "acs": "AC11,AC12,AC17,AC18,AC19,AC20,AC21,AC22,AC23,AC24,AC25",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T080",
+      "title": "Independently verify funding, exact assets and settlement boundaries",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S06",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Prove funding, exact assets and settlement boundaries against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T029", "T030", "T031", "T032", "T033", "T034", "T035", "T036", "T037"],
+      "acs": "AC26,AC27,AC28,AC29,AC30,AC31,AC32,AC33,AC34,AC35,AC36,AC37,AC38,AC39,AC40,AC41",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T081",
+      "title": "Independently verify private visibility, provider scopes and malicious artifacts",
+      "kind": "task",
+      "epic": "E15",
+      "sprint": "S12",
+      "role": "AG05/AG03",
+      "phase": "M6",
+      "sections": "09–10,13,25–30",
+      "requirements": "R11; I06,I07,I09–I11",
+      "outcome": "Prove private visibility, provider scopes and malicious artifacts against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T053", "T054", "T055", "T036"],
+      "acs": "AC42,AC43,AC44,AC45,AC46,AC47,AC48,AC49",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T082",
+      "title": "Independently verify party and challenge atomicity/rights",
+      "kind": "task",
+      "epic": "E16",
+      "sprint": "S12",
+      "role": "AG03/AG04/AG02",
+      "phase": "M6",
+      "sections": "08,13–14,16–17",
+      "requirements": "P02; I01–I05,I08",
+      "outcome": "Prove party and challenge atomicity/rights against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T057", "T058", "T059"],
+      "acs": "AC13,AC14,AC50,AC51,AC52,AC53,AC54,AC55,AC56,AC57",
+      "priority": "P1",
+      "estimate": 5
+    },
+    {
+      "id": "T083",
+      "title": "Independently verify promotion labels, auction release and delivery recovery",
+      "kind": "task",
+      "epic": "E18",
+      "sprint": "S15",
+      "role": "AG07/AG04",
+      "phase": "M6/M8",
+      "sections": "18,22,26–31",
+      "requirements": "R09; D10; I03–I05,I10",
+      "outcome": "Prove promotion labels, auction release and delivery recovery against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T060", "T068"],
+      "acs": "AC58,AC59",
+      "priority": "P1",
+      "estimate": 5
+    },
+    {
+      "id": "T084",
+      "title": "Independently verify ai operator capacity, spend, tools and closure",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S14",
+      "role": "AG06/AG03/AG05",
+      "phase": "M7",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "Prove ai operator capacity, spend, tools and closure against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T061", "T062", "T063", "T064", "T065", "T066"],
+      "acs": "AC15,AC16,AC61,AC62,AC63,AC64",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T085",
+      "title": "Independently verify automatic channel publication recovery",
+      "kind": "task",
+      "epic": "E20",
+      "sprint": "S16",
+      "role": "AG07/AG06",
+      "phase": "M8",
+      "sections": "20,27–31",
+      "requirements": "P01; I05,I06,I09–I11",
+      "outcome": "Prove automatic channel publication recovery against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T070", "T071"],
+      "acs": "AC60",
+      "priority": "P1",
+      "estimate": 5
+    },
+    {
+      "id": "T086",
+      "title": "Independently verify role capacity and renewal",
+      "kind": "task",
+      "epic": "E21",
+      "sprint": "S16",
+      "role": "AG05/AG03/AG04",
+      "phase": "M5/M8",
+      "sections": "08–09,21–22,31",
+      "requirements": "R06,R10,R13; P04,P06; I03,I07,I08",
+      "outcome": "Prove role capacity and renewal against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T073"],
+      "acs": "AC65",
+      "priority": "P1",
+      "estimate": 5
+    },
+    {
+      "id": "T087",
+      "title": "Independently verify core end-to-end, restore, replay and accessibility",
+      "kind": "task",
+      "epic": "E12",
+      "sprint": "S08",
+      "role": "AG08/AG02/AG09",
+      "phase": "M5 alpha",
+      "sections": "32,34–36,39–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Prove core end-to-end, restore, replay and accessibility against the actual boundary, with reproducible negative and recovery evidence.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T044", "T045", "T046"],
+      "acs": "AC66,AC67,AC68,AC69,AC70,AC71,AC72",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T088",
+      "title": "Independently verify attributable reputation and appeal corrections",
+      "kind": "task",
+      "epic": "E21",
+      "sprint": "S08",
+      "role": "AG08/AG05",
+      "phase": "M5 alpha",
+      "sections": "09,17,31–32,35",
+      "requirements": "R06,R10; I05,I07,I11",
+      "outcome": "Prove suspect reciprocal activity is reviewed fairly and appeal corrections preserve evidence rather than erase history.",
+      "steps": [
+        "Read each listed AC required result",
+        "Use real DB/program/provider/sandbox boundary where the scenario requires it",
+        "Record candidate SHA, fixture/network, command/result and fix/retest for failures"
+      ],
+      "checks": [
+        "Every listed scenario has actual result and artifact",
+        "Mocks cannot replace concurrency/program/effective-access/restore evidence"
+      ],
+      "dependencies": ["T035", "T041"],
+      "acs": "AC09,AC10",
+      "priority": "P0",
+      "estimate": 5
+    },
+    {
+      "id": "T089",
+      "title": "Implement versioned API contracts and scoped command authorization",
+      "kind": "task",
+      "epic": "E01",
+      "sprint": "S03",
+      "phase": "M0",
+      "role": "AG01/AG03/AG10",
+      "sections": "00–04,24–29,33–41",
+      "requirements": "R01–R14; I01–I12",
+      "outcome": "Web and service callers use one validated command model, rather than a second set of hidden state edits.",
+      "steps": [
+        "Implement runtime validated /api/v1 contracts or record approved compatibility representation",
+        "Use exact amount strings, UTC timestamps, cursor pagination, structured errors and revision/If-Match checks",
+        "Route server actions through domain commands; protect cookie writes against CSRF/origin and service credentials against replay",
+        "Prohibit generic setPaid/setRank/setState mutation routes"
+      ],
+      "checks": [
+        "Malformed/unauthorized or stale-version write is rejected consistently",
+        "Paginated public/private endpoints retain their actual field boundaries",
+        "Client eligibility or hidden buttons never grant authority"
+      ],
+      "dependencies": ["T002", "T007", "T019"],
+      "acs": "AC02,AC07,AC42,AC69,AC72",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T090",
+      "title": "Verify provider account ownership and privacy-safe recovery evidence",
+      "kind": "task",
+      "epic": "E02",
+      "sprint": "S02",
+      "phase": "M1",
+      "role": "AG03/AG05",
+      "sections": "07,13,25–28",
+      "requirements": "R04,R12,R13; I01,I07,I10",
+      "outcome": "Linked GitHub/social credentials prove the specific account controlled, without pretending they prove unique humanity or skill.",
+      "steps": [
+        "Verify stable provider subject ownership before linking evidence",
+        "Keep approved credential scopes and secret handling separate from model/user profile data",
+        "Review recovery/merge proofs, duplicate subject conflict and account restriction appeals",
+        "Preserve assessment/work/claim history when token or provider access lapses"
+      ],
+      "checks": [
+        "Unverified portfolio/social name is not authenticated account control",
+        "Linking/recovery cannot grant another slot, erase claims or silently expose private evidence"
+      ],
+      "dependencies": ["T006", "T007", "T012", "O11"],
+      "acs": "AC01,AC02,AC06,AC49",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T091",
+      "title": "Enforce web, upload, URL and integration security boundaries",
+      "kind": "task",
+      "epic": "E11",
+      "sprint": "S04",
+      "phase": "M0–M5",
+      "role": "AG09/AG03",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Malicious inputs cannot expose secrets, trigger unauthorized network access or execute trusted code.",
+      "steps": [
+        "Review configured CSP/HSTS/session/CSRF and scoped admin/service permissions",
+        "Validate upload type/size/content and provider callback authenticity",
+        "Validate outbound URLs/redirects against SSRF and resource policy",
+        "Keep secrets, private response bodies and auth query strings out of logs; define key rotation/recovery scope"
+      ],
+      "checks": [
+        "Forged callback, guessed tenant ID and unsafe upload/URL rejected",
+        "Private bytes and privileged credentials stay out of public/log/model boundaries",
+        "Untrusted code uses the approved isolated boundary"
+      ],
+      "dependencies": ["T007", "T019", "T002"],
+      "acs": "AC02,AC40,AC42,AC48",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T092",
+      "title": "Implement privacy, retention and account deletion without erasing obligations",
+      "kind": "task",
+      "epic": "E11",
+      "sprint": "S06",
+      "phase": "M0–M5",
+      "role": "AG09/AG03",
+      "sections": "24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Users can exercise the chosen privacy policy while required financial/access/work evidence remains recoverable and restricted.",
+      "steps": [
+        "Implement accepted O11 retention/deletion/attestation policy and access controls",
+        "Distinguish authoritative immutable contracts/claims from rebuildable projections and optional profile data",
+        "Minimize/anonymize permissible data, expire private artifacts under policy and audit deletion outcomes",
+        "Keep financial/dispute recovery access for restricted/deleted identities under accepted operating terms"
+      ],
+      "checks": [
+        "Deleting a wallet/profile never confiscates earned claim or loses acknowledged authorization",
+        "Required audit retention is scoped and disclosed rather than indefinite default storage"
+      ],
+      "dependencies": ["O11", "O12", "T036", "T039"],
+      "acs": "AC01,AC49,AC68",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T093",
+      "title": "Separate five budgets and exact billing/receipt obligations",
+      "kind": "task",
+      "epic": "E09",
+      "sprint": "S06",
+      "phase": "M4",
+      "role": "AG04/AG03",
+      "sections": "13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Launch, contributor reward, platform fee, AI compute and promotion funds are never silently spent on each other.",
+      "steps": [
+        "Model explicit owner/authorization/category and refund terms for each of the five budgets",
+        "Show contractual net reward with separate actual fee/rent payer and exact quote acceptance",
+        "Add supported billing/receipt handling under O08 without assumed prices, swaps or service-credit conversion",
+        "Reconcile unexpected transfer, shortfall, frozen backing and category-specific encumbrance"
+      ],
+      "checks": [
+        "Reward reserves cannot fund compute or promotion",
+        "Exact accepted quote/fees and receipts remain auditable per actual asset/currency",
+        "Treasury analytics never treat unrelated holder wallets as project funds"
+      ],
+      "dependencies": ["T029", "T031", "T033", "O08"],
+      "acs": "AC28,AC30,AC34,AC35,AC37",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T094",
+      "title": "Reconcile AI prepaid service budget, unused credit and failure refunds",
+      "kind": "task",
+      "epic": "E19",
+      "sprint": "S14",
+      "phase": "M7",
+      "role": "AG06/AG03/AG05",
+      "sections": "07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "A founder can understand what was spent and what is returned after a capped partial or failed run.",
+      "steps": [
+        "Adopt precise charging/refund/credit terms from O08/O14",
+        "Track reserved/actual/estimated provider-tool cost and rate-card version",
+        "Settle unused prepaid service funds separately from contributor performance reward",
+        "Handle unknown external charge and retries without double refund or autonomous budget increase"
+      ],
+      "checks": [
+        "Total service liability is conserved across attempts",
+        "Unused budget follows accepted terms; model cannot create credit/refund authority",
+        "No implicit RAID-token conversion or fabricated provider cost"
+      ],
+      "dependencies": ["T064", "T065", "O08", "O14"],
+      "acs": "AC61,AC62,AC64",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T095",
+      "title": "Deliver manual influencer identity, draft and publication-evidence workflow",
+      "kind": "task",
+      "epic": "E20",
+      "sprint": "S04",
+      "phase": "M8",
+      "role": "AG07/AG06",
+      "sections": "20,27–31",
+      "requirements": "P01; I05,I06,I09–I11",
+      "outcome": "Content participants can submit verifiable agreed work before automated social publishing is enabled.",
+      "steps": [
+        "Identify human AI-assisted versus registered AI-influencer operating model and accountable account/operator",
+        "Store dated account-control/audience evidence with limits on what it proves",
+        "Use exact content format, approval, publication window, disclosures and evidence requirements in the accepted Raid",
+        "Submit manual draft/publication evidence for ordinary authorized review; separate fixed fee from optional capped performance bonus"
+      ],
+      "checks": [
+        "Content creation does not grant social credentials or permission to publish",
+        "No fabricated reach, bot traffic or unsupported return claims accepted",
+        "Scheduled ongoing duties continue consuming capacity until bounded closure"
+      ],
+      "dependencies": ["T023", "T090", "O08"],
+      "acs": "AC19,AC51,AC60",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "T096",
+      "title": "Independently audit every blueprint subsection and board linkage",
+      "kind": "task",
+      "epic": "E23",
+      "sprint": "S02",
+      "phase": "M0–M8",
+      "role": "AG01/AG10/AG08 + all domain owners",
+      "sections": "00–41; all subsections",
+      "requirements": "R01–R14; P01–P08; D01–D13; I01–I12; AC01–AC72; O01–O19; G01–G10",
+      "outcome": "A new developer can locate concrete work for every blueprint section without guessing missing scope.",
+      "steps": [
+        "Map all numbered sections/subsections to epics/tasks/verification/decisions/gates",
+        "Verify all R/P/D/I/AC/O/G IDs are covered and developer descriptions preserve canonical meanings",
+        "Check native parents/blocked-by links, weekly milestone/iteration dates and UAT responsibilities",
+        "Record remaining gaps and update canonical decisions only through accepted owner instructions"
+      ],
+      "checks": [
+        "No numbered blueprint section/subsection is unmapped",
+        "All 72 acceptance scenarios have concrete verification tasks",
+        "Board membership, hierarchy and field values match the checked-in planning register"
+      ],
+      "dependencies": ["T001", "T002", "T004"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 3
+    },
+    {
+      "id": "T097",
+      "title": "Deliver funded discovery filters and comparable organic ordering",
+      "kind": "task",
+      "epic": "E14",
+      "sprint": "S04",
+      "role": "AG07/AG02/AG09",
+      "phase": "M2",
+      "sections": "18.1–18.2,23,26,31",
+      "requirements": "R08; I03,I06,I07,I10",
+      "outcome": "A Raider can find current permitted funded work by actual skill and reward fit without misleading asset values or paid credibility.",
+      "steps": [
+        "Filter structured category/skill/rank/participant/format/asset/funding/deadline and allowed visibility.",
+        "Evaluate Eligible for me on the server with current reasoned predicates; recheck at action time.",
+        "Order funded/open first with explicit newest/deadline and asset-comparable reward ordering.",
+        "Keep organic ordering separate from Sponsored inventory; unavailable prices do not become invented cross-asset valuations."
+      ],
+      "checks": [
+        "Public feed never leaks private policy/bytes or shows ineligible hidden listings.",
+        "Unpriced or incomparable tokens are not misleadingly sorted by raw reward quantity.",
+        "Filters and unknown/stale/empty states are understandable on keyboard/mobile."
+      ],
+      "dependencies": ["T014", "T015", "T016", "T021"],
+      "acs": "AC05,AC42,AC58,AC70",
+      "priority": "P1",
+      "estimate": 3
+    },
+    {
+      "id": "U001",
+      "title": "UAT: Homepage",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Visitor representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A visitor representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Open the homepage on mobile and desktop",
+        "Explain RAID’s project/work loop in your own words",
+        "Navigate to funded work and project discovery",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Main actions are visible and understandable",
+        "Only permitted safe cards appear; no fake activity or unmarked simulation",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T015", "T044"],
+      "acs": "AC42,AC70",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U002",
+      "title": "UAT: Raid feed",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Raider representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Filter by relevant skill/rank/funding/asset",
+        "Open a fitting task",
+        "Try an ineligible task and read the reason",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Filtering uses actual permitted fields",
+        "Unmet requirement is understandable without leaking private policy",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T018", "T021", "T097"],
+      "acs": "AC05,AC42,AC70",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U003",
+      "title": "UAT: Guild directory",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Visitor representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A visitor representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Find a verified project",
+        "Open a new Guild with no work history",
+        "Compare verification and unknown holder states",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "No-history is honest",
+        "Token/project labels and verification state are understandable",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T009", "T015"],
+      "acs": "AC07,AC08",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U004",
+      "title": "UAT: Guild profile and founder management",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Founder and token holder representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A founder and token holder representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Verify/link an existing project with approved control evidence",
+        "Inspect public history and founder permissions",
+        "Try holder-only administration without a grant",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Founder can manage only authorized fields",
+        "Holder membership does not give project ownership or private rights",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T009", "T010", "T011", "T041"],
+      "acs": "AC07,AC08,AC71",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U005",
+      "title": "UAT: Launch wizard",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Founder representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Prepare selected test-network launch",
+        "Review token controls, actions, network, recipient and costs",
+        "Reject a wallet request, retry and inspect final verified mint",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Draft and intent survive rejection",
+        "Final success reflects verified artifacts and correct Guild linkage",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T027", "T028"],
+      "acs": "AC26,AC27,AC66,AC70",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U006",
+      "title": "UAT: Create-Raid wizard",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Founder representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Describe outcome/criteria and inspect recommendation assumptions",
+        "Review rank/skills/full reward/net fees/deadlines",
+        "Save, fund on approved test path and publish; try changing accepted terms",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Founder understands what they commission and fund",
+        "Missing reward leg prevents full-funded claim; accepted terms cannot be overwritten",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T016", "T017", "T018", "T031"],
+      "acs": "AC28,AC72",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U007",
+      "title": "UAT: Raid detail and acceptance",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Beginner and experienced Raider representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A beginner and experienced raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Read terms and skill/capacity checklist",
+        "Apply or accept the permitted offer",
+        "From a second device attempt another work engagement",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Both appropriate entry routes are understandable",
+        "Exactly one engagement is committed, with honest binding readiness",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T020", "T021", "T022", "T032"],
+      "acs": "AC03,AC05,AC06,AC11,AC12,AC18",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U008",
+      "title": "UAT: Raider onboarding and profile",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S09",
+      "phase": "M5 beta",
+      "role": "Product owner + Newcomer and experienced builder representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A newcomer and experienced builder representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Complete orientation and find a starter task",
+        "Add portfolio/trial evidence for a relevant advanced skill",
+        "Link another wallet and inspect history/active work",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Registration/token purchase does not fabricate verified rank",
+        "Experienced builder can prove ability without irrelevant grinding; identity/history stay intact",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T008", "T012", "T013", "T014"],
+      "acs": "AC01,AC03,AC04,AC06",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U009",
+      "title": "UAT: My Raid workspace",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S10",
+      "phase": "M5 beta",
+      "role": "Product owner + Raider representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Open accepted terms and resources",
+        "Submit versioned work, handle review/revision and observe deadline",
+        "After operational acceptance inspect payment while starting eligible next work",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Next action and agreed version are clear",
+        "Review duty holds capacity; terminal unpaid work preserves claim and frees capacity",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T022", "T023", "T024", "T034"],
+      "acs": "AC19,AC20,AC21,AC23",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U010",
+      "title": "UAT: Founder applicant review",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S10",
+      "phase": "M5 beta",
+      "role": "Product owner + Founder representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Compare relevant assessed skill/evidence and current capacity",
+        "Offer specific versioned work",
+        "Try a stale offer after the candidate becomes busy",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Irrelevant skill cannot substitute",
+        "Founder understands current capacity; acceptance rechecks state",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T014", "T021", "T022"],
+      "acs": "AC05,AC17",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U011",
+      "title": "UAT: Submission review and dispute",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S10",
+      "phase": "M5 beta",
+      "role": "Product owner + Founder reviewer and Raider representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A founder reviewer and raider representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Review a specific submitted version against original checklist",
+        "Request permitted bounded revision or reasoned dispute",
+        "Inspect notice/appeal/claim state and try a unilateral scope change",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Decision is about the right version and original terms",
+        "Claim/finality and work closure remain clear and separate",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T023", "T025", "T035"],
+      "acs": "AC10,AC19,AC21,AC38,AC72",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U012",
+      "title": "UAT: Payments and recovery",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S10",
+      "phase": "M5 beta",
+      "role": "Product owner + Contributor and founder representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A contributor and founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Inspect exact asset obligations/net fees",
+        "Observe pending, partially paid, blocked and finalized transfer examples",
+        "Check restricted-account claim access and permitted destination recovery",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Displayed paid state matches actual evidence",
+        "Blocked/frozen claim remains owed; unauthorized payout address change is rejected",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T033", "T034", "T036"],
+      "acs": "AC33,AC36,AC37,AC40,AC49",
+      "priority": "P0",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U013",
+      "title": "UAT: Party builder",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S12",
+      "phase": "M6/M8",
+      "role": "Product owner + Party leader and individual members representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A party leader and individual members representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Choose roles and relevant skill coverage",
+        "Each member reviews exact per-asset split and consents",
+        "Try accepting with a busy member and changing another member’s split",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Members understand responsibility and payout",
+        "Busy member causes full rollback; leader cannot override another member’s consent",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T056", "T057"],
+      "acs": "AC13,AC50",
+      "priority": "P1",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U014",
+      "title": "UAT: Challenge detail, selection and follow-on work",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S12",
+      "phase": "M6/M8",
+      "role": "Product owner + Challenge entrant and founder representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A challenge entrant and founder representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Read selection terms, rubric, rights and compensation",
+        "Submit qualifying prototype and inspect nonwinning outcome",
+        "As selected builder decline or accept separately funded main offer",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Nonwinner qualification/payment and rights are preserved",
+        "Winning does not automatically reserve main work or punish decline",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T058", "T059"],
+      "acs": "AC51,AC52,AC53,AC54,AC55,AC56,AC57",
+      "priority": "P1",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U015",
+      "title": "UAT: Sponsor dashboard and bid clarity",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S16",
+      "phase": "M6/M8",
+      "role": "Product owner + Sponsor representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A sponsor representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Read fixed slot/bid price, inventory, maximum charge and delivery terms",
+        "Inspect Sponsored display versus organic work",
+        "Review losing bid or undelivered placement refund example",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Buyer understands visibility product without rank/reputation benefit",
+        "Losing/undelivered purchase follows exact published release/refund rules",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T060", "T068"],
+      "acs": "AC58,AC59",
+      "priority": "P1",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "U016",
+      "title": "UAT: Operator console and release sign-off",
+      "kind": "uat",
+      "epic": "E22",
+      "sprint": "S16",
+      "phase": "M6/M8",
+      "role": "Product owner + Operator, product owner and representatives representative + AG08 facilitator",
+      "sections": "23.2,23.4–23.8,32,35,39–40",
+      "requirements": "R01–R14 as relevant to this journey; I01–I12 at affected boundaries",
+      "outcome": "A operator, product owner and representatives representative can complete and explain this user journey without relying on developer implementation details.",
+      "steps": [
+        "Investigate unknown payment/access/AI/provider incident from correlated state",
+        "Use scoped permitted repair or escalation and inspect audit",
+        "Review beta evidence, optional features and go/limited-go/no-go; verify approved publication and Role capacity examples",
+        "Record tester identity/role, environment/network, release SHA and test data before starting.",
+        "Record observed results, sanitized screenshots, feedback and defect links.",
+        "Have the product owner or designated business reviewer record acceptance or rejection; keep technical QA and live gate approval separate."
+      ],
+      "checks": [
+        "Operator understands authority and honest recovery limits",
+        "QA results, UAT sign-off and production gates are separate; unsafe rollout stays disabled",
+        "Each expected result has pass/fail and observable evidence.",
+        "Failed critical/high-impact journey blocks dependent feature/stage until fixed and retested.",
+        "Business sign-off identifies reviewer/date/scope and remaining accepted limitations."
+      ],
+      "dependencies": ["T040", "T046", "T066", "T070", "T073"],
+      "acs": "AC60,AC61,AC62,AC63,AC64,AC65,AC67,AC68",
+      "priority": "P1",
+      "estimate": 2,
+      "test_stage": "UAT"
+    },
+    {
+      "id": "G01",
+      "title": "Launch route release evidence",
+      "kind": "release-gate",
+      "epic": "E08",
+      "sprint": "S08",
+      "role": "AG04/AG02 / AG08 / AG09",
+      "phase": "M3",
+      "sections": "34.4,39–40; 05,16,22,25–30",
+      "requirements": "R01,R02; I03,I05,I09,I12",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Approved protocol, parameters, verified IDs, authority/fee behavior, recovery.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O01", "O02", "T028", "T087"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Real launches/trading."
+    },
+    {
+      "id": "G02",
+      "title": "Custody and settlement release evidence",
+      "kind": "release-gate",
+      "epic": "E09",
+      "sprint": "S08",
+      "role": "AG04/AG03 / AG08 / AG09",
+      "phase": "M4",
+      "sections": "34.4,39–40; 13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Defined authority, program/provider capability, reserves/claims/refunds, recovery, relevant assurance.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O05", "T030", "T033", "T080"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Real reward funding and payouts."
+    },
+    {
+      "id": "G03",
+      "title": "Financial finality release evidence",
+      "kind": "release-gate",
+      "epic": "E10",
+      "sprint": "S08",
+      "role": "AG04/AG03/AG09 / AG08 / AG09",
+      "phase": "M4",
+      "sections": "34.4,39–40; 16–17,28–30",
+      "requirements": "I04,I07,I08,I10,I11",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Notice, ordinary acceptance finality, objection/appeal, final decision, hold/claim race behavior.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O06", "T035", "T080"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "All live settlement claimability, including ordinary acceptance, disputes, and Challenge awards."
+    },
+    {
+      "id": "G04",
+      "title": "Supported assets release evidence",
+      "kind": "release-gate",
+      "epic": "E09",
+      "sprint": "S08",
+      "role": "AG04/AG03 / AG08 / AG09",
+      "phase": "M4",
+      "sections": "34.4,39–40; 13–16,22,25–30",
+      "requirements": "P05; I03–I05,I08–I12",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Exact registry, decimals/program checks, extension policy, complete tested paths.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O07", "T029", "T080"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Each added payment asset."
+    },
+    {
+      "id": "G05",
+      "title": "Operating terms release evidence",
+      "kind": "release-gate",
+      "epic": "E13",
+      "sprint": "S08",
+      "role": "AG01/AG08/AG09 / AG08 / AG09",
+      "phase": "M5 beta",
+      "sections": "34.4,39–40; 30–35,38–40",
+      "requirements": "R01–R13; I01–I12",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Supported jurisdictions/users, rights, fees, dispute operator and service scope.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O08", "O11", "O12", "T040"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Public paid launch/work operations."
+    },
+    {
+      "id": "G06",
+      "title": "Private resources release evidence",
+      "kind": "release-gate",
+      "epic": "E15",
+      "sprint": "S12",
+      "role": "AG05/AG03 / AG08 / AG09",
+      "phase": "M6",
+      "sections": "34.4,39–40; 09–10,13,25–30",
+      "requirements": "R11; I06,I07,I09–I11",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Real authorization, effective provider grants, isolation, revocation and incident handling.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O13", "T053", "T054", "T055", "T081"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Confidential Raids and private trials."
+    },
+    {
+      "id": "G07",
+      "title": "Managed execution release evidence",
+      "kind": "release-gate",
+      "epic": "E19",
+      "sprint": "S14",
+      "role": "AG06/AG03/AG05 / AG08 / AG09",
+      "phase": "M7",
+      "sections": "34.4,39–40; 07–08,13–14,19,24–30",
+      "requirements": "P01,P08; R06,R13; I01–I12",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Operator identity, sandbox, tool authority, spend controls, provider data policy.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O14", "T061", "T062", "T063", "T064", "T065", "T066", "T084"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Managed AI workers."
+    },
+    {
+      "id": "G08",
+      "title": "External publication release evidence",
+      "kind": "release-gate",
+      "epic": "E20",
+      "sprint": "S16",
+      "role": "AG07/AG06 / AG08 / AG09",
+      "phase": "M8",
+      "sections": "34.4,39–40; 20,27–31",
+      "requirements": "P01; I05,I06,I09–I11",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Account control, current API capability, content approval, retry/takedown/metrics rules.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O16", "T070", "T071", "T085"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Automated influencer posting."
+    },
+    {
+      "id": "G09",
+      "title": "Promotions release evidence",
+      "kind": "release-gate",
+      "epic": "E18",
+      "sprint": "S12",
+      "role": "AG07/AG04 / AG08 / AG09",
+      "phase": "M6/M8",
+      "sections": "34.4,39–40; 18,22,26–31",
+      "requirements": "R09; D10; I03–I05,I10",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Funded inventory/bids, charge/delivery/refund reconciliation.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O08", "T060"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Paid placements and auctions."
+    },
+    {
+      "id": "G10",
+      "title": "Operations release evidence",
+      "kind": "release-gate",
+      "epic": "E11",
+      "sprint": "S08",
+      "role": "AG09/AG03 / AG08 / AG09",
+      "phase": "M0–M5",
+      "sections": "34.4,39–40; 24,27–32,39–40",
+      "requirements": "D01,D12; I05,I06,I09–I12",
+      "outcome": "Record whether the affected live feature is actually safe and supported to enable.",
+      "steps": [
+        "Collect the canonical gate evidence: Monitoring, staffed case ownership, backups/restore, release/incident playbooks.",
+        "Name tested/deployed SHA, environment/network, provider/program version and operating owner.",
+        "Review meaningful adverse/recovery results and outstanding decisions.",
+        "Record go/limited-go/no-go; update the evidence register and exact feature flag scope."
+      ],
+      "checks": [
+        "All required gate evidence is linked and reviewed.",
+        "No mock/unit-only/merge result is claimed as production assurance.",
+        "Unpassed dependent feature remains disabled."
+      ],
+      "dependencies": ["O18", "O19", "T005", "T037", "T038", "T039", "T040", "T046", "T087"],
+      "acs": "",
+      "priority": "P0",
+      "estimate": 2,
+      "affected_features": "Any supported live release."
+    }
+  ],
+  "project_owner": "solana-hackathon-1",
+  "project_url": "https://github.com/orgs/solana-hackathon-1/projects/1"
+}

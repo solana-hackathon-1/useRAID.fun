@@ -1,6 +1,6 @@
 # RAID development and testing phases
 
-[Two-week sprint and alpha/beta plan](raid-sprint-plan.md) · [Timeline and delivery assumptions](raid-delivery-timeline.md) · [Complete requirement and acceptance coverage](raid-delivery-coverage.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md)
+[One-week sprint and alpha/beta plan](raid-sprint-plan.md) · [Timeline and delivery assumptions](raid-delivery-timeline.md) · [Complete requirement and acceptance coverage](raid-delivery-coverage.md) · [Canonical blueprint](../RAID_AGENT_BLUEPRINT.md)
 
 **Prepared:** 6 October 2026. **Status:** proposed delivery schedule; phase completion requires evidence. **Canonical milestone IDs:** M0–M8 from blueprint section 34. Roles AG01–AG10 refer to section 33 responsibilities, not ten required hires or active agents. D1–D80 are working days from the illustrative 7 October kickoff, excluding weekends only. Each phase includes development and testing; test windows overlap development deliberately.
 
@@ -257,8 +257,8 @@ Attach the commit SHA, environment/network, scenario IDs, actual result, outstan
 - [ ] Implement audited reputation corrections and related-party review, useful completion/settlement metrics, safe notification preferences and accessible empty/error screens.
 - [ ] Assign support/mediation/on-call hours, test alerts, define production flags and caps through recorded operating decisions, and repair the actual deployment path.
 - [ ] Rehearse migrations, backup/restore with later external effects, incident pause/resume and code/data rollback; archive release evidence and known limitations.
-- [ ] Sprint 4 (D31–D40): run internal alpha on synthetic/test-network assets; triage daily, repair core journeys and perform restore/incident rehearsals before inviting external testers.
-- [ ] Sprint 5 (D41–D50): run invited closed beta only after alpha and applicable live gates pass; collect founder/Raider feedback, stabilize the same core flow, and document go/no-go for public beta.
+- [ ] Sprints S07–S08 (D31–D40): run internal alpha on synthetic/test-network assets; triage daily, repair core journeys and perform restore/incident rehearsals before inviting external testers.
+- [ ] Sprints S09–S10 (D41–D50): run invited closed beta only after alpha and applicable live gates pass; collect founder/Raider feedback, stabilize the same core flow, and document go/no-go for public beta.
 
 ### Testing work
 

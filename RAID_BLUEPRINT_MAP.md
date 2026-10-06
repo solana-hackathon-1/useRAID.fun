@@ -55,4 +55,8 @@ A completion handoff must identify the outcome, blueprint IDs/sections, files ch
 
 ## Delivery planning
 
-[Two-week sprints and alpha/beta](docs/raid-sprint-plan.md) · [Accelerated timeline](docs/raid-delivery-timeline.md) · [Development/testing phases](docs/raid-development-phases.md) · [Full delivery coverage](docs/raid-delivery-coverage.md). These documents map the canonical blueprint to scheduling and evidence; they do not replace its requirements or resolve OPEN decisions.
+[One-week sprints and alpha/beta](docs/raid-sprint-plan.md) · [Accelerated timeline](docs/raid-delivery-timeline.md) · [Development/testing phases](docs/raid-development-phases.md) · [Full delivery coverage](docs/raid-delivery-coverage.md). These documents map the canonical blueprint to scheduling and evidence; they do not replace its requirements or resolve OPEN decisions.
+
+## GitHub delivery ownership
+
+Use the [organization Project](https://github.com/orgs/solana-hackathon-1/projects/1), [complete subsection-to-issue map](docs/raid-blueprint-project-map.md), [issue catalogue](docs/raid-project-backlog.md) and [UAT scripts](docs/raid-uat-plan.md) for weekly execution. The canonical blueprint remains authoritative.
