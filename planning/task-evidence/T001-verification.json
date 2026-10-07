@@ -1,0 +1,438 @@
+{
+  "task_id": "T001",
+  "date": "2026-10-07",
+  "timezone": "Asia/Kathmandu",
+  "source_sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+  "unchanged_application_baseline": "9fd686207da5e20d1e233b863dc736c28a55062d",
+  "environment": {
+    "host": "local macOS arm64",
+    "node": "26.0.0",
+    "npm": "11.12.1",
+    "python": "3.12.4",
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "prisma": "6.19.3",
+    "vitest": "4.1.11",
+    "typescript": "5.9.3",
+    "database": "not connected; RUN_DB_TESTS=false; dedicated synthetic localhost URL"
+  },
+  "checks": [
+    {
+      "command": "npm ci",
+      "result": "PASS",
+      "observed": "518 packages installed; no tracked lockfile change"
+    },
+    {
+      "command": "npm run db:generate",
+      "result": "PASS",
+      "observed": "Prisma Client 6.19.3 generated; no database connection or migration"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "result": "PASS",
+      "observed": "27 tests passed"
+    },
+    {
+      "command": "npm test -- --reporter=json --outputFile=/private/tmp/raid-t001-vitest.json",
+      "configuration": "RUN_DB_TESTS=false DEMO_MODE=false DATABASE_URL=dedicated localhost useraid_test",
+      "result": "PASS_WITH_SKIPS",
+      "observed": {
+        "files": 53,
+        "passed": 280,
+        "skipped": 241,
+        "failed": 0
+      },
+      "scope": "existing unit/mock/document suites; no proof of real DB or external provider behavior"
+    },
+    {
+      "command": "docker version --format server-version",
+      "result": "BLOCKED",
+      "observed": "Cannot connect to local Docker daemon"
+    },
+    {
+      "command": "npm run audit:check",
+      "result": "FAIL",
+      "observed": [
+        "high braces GHSA-vfj7-8cjw-p6xm",
+        "high sharp GHSA-wq5f-xc86-pv6w",
+        "high source-map-js GHSA-68fv-2mgg-jv7q",
+        "moderate stream-json GHSA-hqr4-qq8f-hg3x",
+        "moderate stream-json GHSA-mjw6-4jj6-33hc"
+      ],
+      "follow_up": "T005 #47; no allowlist or dependency change"
+    },
+    {
+      "command": "npx prettier --check docs/tasks/T001-plan.md docs/tasks/T001-inventory.md planning/task-evidence/T001.json planning/task-evidence/T001-verification.json",
+      "result": "PASS",
+      "observed": "All four prepared files formatted"
+    },
+    {
+      "command": "Python local relative-link and anchor verification for docs/tasks/T001-*.md",
+      "result": "PASS",
+      "observed": "Two nested documents checked; no broken relative links or anchors; existing root docs test does not discover nested docs"
+    },
+    {
+      "command": "python3 scripts/verify-raid-completion.py T001 planning/task-evidence/T001.json",
+      "result": "REJECTED_PENDING_REVIEW",
+      "exit_code": 1,
+      "observed": "Missing independent reviewer/non-code approval and all 27 criterion dispositions remain NOT VERIFIED; packet cannot complete",
+      "qualification": "Expected accurate pending status, not a passing completion packet or implementation RED test"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "observed": "No whitespace errors in tracked diff; application/schema/tests/lockfile unchanged"
+    },
+    {
+      "command": "RUN_DB_TESTS=false DEMO_MODE=false DATABASE_URL=dedicated localhost test URL npx vitest run tests/docs-links.test.ts tests/env-example.test.ts",
+      "result": "PASS",
+      "observed": "52 tests passed across 2 files after adding docs/raid-task-progress.md; nested task docs additionally checked separately"
+    },
+    {
+      "command": "npx prettier --check docs/raid-task-progress.md docs/tasks/T001-plan.md docs/tasks/T001-inventory.md planning/task-evidence/T001.json planning/task-evidence/T001-verification.json",
+      "result": "PASS",
+      "observed": "All five delivered files formatted"
+    }
+  ],
+  "initial_attempt": {
+    "command": "npm test",
+    "result": "NOT_RUN",
+    "observed": "vitest missing before npm ci; subsequent execution listed above"
+  },
+  "files": [
+    {
+      "file": "tests/admin-db.test.ts",
+      "passed": 0,
+      "skipped": 5,
+      "failed": 0
+    },
+    {
+      "file": "tests/admin-lists.test.ts",
+      "passed": 5,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/admins.test.ts",
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/audit-check.test.ts",
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/audit-db.test.ts",
+      "passed": 0,
+      "skipped": 3,
+      "failed": 0
+    },
+    {
+      "file": "tests/auth-routes.test.ts",
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/auth.test.ts",
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/creator-route.test.ts",
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/db-guard.test.ts",
+      "passed": 6,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/deploy.test.ts",
+      "passed": 5,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/discovery-rows.test.ts",
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/docs-links.test.ts",
+      "passed": 45,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/domain.test.ts",
+      "passed": 15,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/env-example.test.ts",
+      "passed": 5,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/fake-solana.test.ts",
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/format.test.ts",
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/http.test.ts",
+      "passed": 11,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/image-hosts.test.ts",
+      "passed": 11,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/integration.test.ts",
+      "passed": 0,
+      "skipped": 28,
+      "failed": 0
+    },
+    {
+      "file": "tests/launch-crypto.test.ts",
+      "passed": 8,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/launch-db.test.ts",
+      "passed": 0,
+      "skipped": 11,
+      "failed": 0
+    },
+    {
+      "file": "tests/launch-gate.test.ts",
+      "passed": 10,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/launch-ipfs.test.ts",
+      "passed": 11,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/local-db.test.ts",
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/media-db.test.ts",
+      "passed": 0,
+      "skipped": 6,
+      "failed": 0
+    },
+    {
+      "file": "tests/money-integrity-db.test.ts",
+      "passed": 0,
+      "skipped": 23,
+      "failed": 0
+    },
+    {
+      "file": "tests/public-load-db.test.ts",
+      "passed": 0,
+      "skipped": 6,
+      "failed": 0
+    },
+    {
+      "file": "tests/pump-launch.test.ts",
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/refresh.test.ts",
+      "passed": 6,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/report-route.test.ts",
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/rewards-finance.test.ts",
+      "passed": 0,
+      "skipped": 34,
+      "failed": 0
+    },
+    {
+      "file": "tests/rewards.test.ts",
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/security-headers.test.ts",
+      "passed": 5,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/shell-account.test.ts",
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/standalone-db.test.ts",
+      "passed": 0,
+      "skipped": 5,
+      "failed": 0
+    },
+    {
+      "file": "tests/standalone-raids.test.ts",
+      "passed": 11,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/states.test.ts",
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/studio-db.test.ts",
+      "passed": 0,
+      "skipped": 14,
+      "failed": 0
+    },
+    {
+      "file": "tests/studio-preview-route.test.ts",
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/studio.test.ts",
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/submit-route.test.ts",
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/token-data.test.ts",
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/tracking-db.test.ts",
+      "passed": 0,
+      "skipped": 48,
+      "failed": 0
+    },
+    {
+      "file": "tests/tracking.test.ts",
+      "passed": 17,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/usdc-chain.test.ts",
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/usdc-ops-db.test.ts",
+      "passed": 0,
+      "skipped": 9,
+      "failed": 0
+    },
+    {
+      "file": "tests/usdc-receipt.test.ts",
+      "passed": 6,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/wallet-auth-db.test.ts",
+      "passed": 0,
+      "skipped": 18,
+      "failed": 0
+    },
+    {
+      "file": "tests/wallet-routes.test.ts",
+      "passed": 11,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/worker-db.test.ts",
+      "passed": 0,
+      "skipped": 15,
+      "failed": 0
+    },
+    {
+      "file": "tests/x-oauth-db.test.ts",
+      "passed": 0,
+      "skipped": 16,
+      "failed": 0
+    },
+    {
+      "file": "tests/x-oauth-routes.test.ts",
+      "passed": 12,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "file": "tests/x-oauth.test.ts",
+      "passed": 12,
+      "skipped": 0,
+      "failed": 0
+    }
+  ],
+  "historical_ci": {
+    "sha": "4b8c50577646387c546f5ca361a0aa409b1e9fed",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37468131569",
+    "success": ["planning-contracts", "static", "test", "docker", "browser"],
+    "failure": ["dependency-security", "ci-gate"],
+    "qualification": "different SHA; does not verify this candidate"
+  },
+  "not_executed": [
+    "real DB suites/migrations/schema drift",
+    "browser/accessibility suites",
+    "production build/Docker smoke",
+    "backup/restore",
+    "authorized deployed-data policy/obligation audit",
+    "real provider/chain/live gates"
+  ],
+  "independent_review": null
+}
