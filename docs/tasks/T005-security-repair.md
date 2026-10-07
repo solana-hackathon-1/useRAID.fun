@@ -1,6 +1,6 @@
 # T005 security repair — bounded implementation evidence
 
-Status: bounded dependency behavior VERIFIED_IN_TEST locally; T005 and T001 are not complete. Baseline: `21f901b`. Owner: Codex, AG08/AG09/AG10. Independent review: [separate review accepted the bounded repair](T005-review.md), with full T005 criteria still pending. No release approval is claimed.
+Status: bounded dependency behavior VERIFIED_IN_TEST locally; T005 and T001 are not complete. Baseline: `21f901b`. Owner: Codex, AG08/AG09/AG10. Independent review: [separate review accepted the bounded repair](T005-review.md), with all 27 technical criteria reviewed (15 PASS / 12 NOT APPLICABLE); the T001 prerequisite still prevents project Done. No release approval is claimed.
 
 The owner's 7 October follow-up authorizes starting fixes after the repository assessment. This permits the bounded security repair using T001's technically accepted inventory; it does not mark T001 Done, waive C22, change the backlog dependency graph, or approve staging/release policy. The T001/T005 sequencing conflict remains recorded in the inventory.
 
