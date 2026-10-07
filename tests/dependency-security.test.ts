@@ -96,6 +96,13 @@ describe('installed dependency security boundaries', () => {
   });
 });
 
+function rpcResponse(id: unknown, fields: Record<string, unknown>) {
+  return new Response(JSON.stringify({ jsonrpc: '2.0', id, ...fields }), {
+    status: 200,
+    headers: { 'content-type': 'application/json' },
+  });
+}
+
 describe('Web3.js consuming the installed JSON-RPC client', () => {
   it('preserves endpoint, finality parameters, correlation and a single HTTP dispatch', async () => {
     const requests: Array<{ endpoint: string; body: Record<string, unknown> }> = [];
@@ -105,14 +112,7 @@ describe('Web3.js consuming the installed JSON-RPC client', () => {
       fetch: async (endpoint, options) => {
         const body = JSON.parse(options?.body as string) as Record<string, unknown>;
         requests.push({ endpoint: String(endpoint), body });
-        return new Response(
-          JSON.stringify({
-            jsonrpc: '2.0',
-            id: body.id,
-            result: { context: { slot: 8 }, value: 500 },
-          }),
-          { status: 200, headers: { 'content-type': 'application/json' } },
-        );
+        return rpcResponse(body.id, { result: { context: { slot: 8 }, value: 500 } });
       },
     });
     expect(await connection.getBalance(new PublicKey('11111111111111111111111111111111'))).toBe(
@@ -133,14 +133,7 @@ describe('Web3.js consuming the installed JSON-RPC client', () => {
       httpAgent: false,
       fetch: async (_endpoint, options) => {
         const body = JSON.parse(options?.body as string) as Record<string, unknown>;
-        return new Response(
-          JSON.stringify({
-            jsonrpc: '2.0',
-            id: body.id,
-            error: { code: -32000, message: 'fixture denied' },
-          }),
-          { status: 200 },
-        );
+        return rpcResponse(body.id, { error: { code: -32000, message: 'fixture denied' } });
       },
     });
     await expect(
