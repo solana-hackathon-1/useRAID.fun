@@ -512,8 +512,11 @@
     "epic": 3,
     "independently_reviewed_criteria": 0,
     "total_criteria": 27,
-    "board_update": "FAILED: GitHub token lacks project/read:project scope; no status change claimed",
-    "completion_review": "NOT REVIEWED"
+    "board_update": "SUCCESS: 2026-10-07 status set to In Progress; GraphQL read-back verified issue #43 and Status. Initial missing project/read:project permission failure resolved after owner fix.",
+    "completion_review": "NOT REVIEWED",
+    "project_url": "https://github.com/orgs/solana-hackathon-1/projects/1",
+    "project_item_id": "PVTI_lADOFC4ies4Bl6XMzg-3ORo",
+    "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/172"
   },
   "verification_evidence": "planning/task-evidence/T001-verification.json",
   "ci": {
