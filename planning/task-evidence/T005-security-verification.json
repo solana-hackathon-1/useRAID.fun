@@ -185,13 +185,13 @@
   },
   "tdd_evidence": "docs/tasks/T005-security-repair.md",
   "reviewer": "/root/t005_independent_review; docs/tasks/T005-review.md and planning/task-evidence/T005-review.json",
-  "full_task_completion": "NOT DONE; technical preparation criteria/evidence reviewed, T001 prerequisite and actual deployment/OPEN requirements retained",
+  "full_task_completion": "Technical delivered repair/preparation accepted on reviewed source candidate; final evidence-only head CI separate; no board/merge/release or full-product completion claim",
   "remaining": [
-    "T001 dependency completion reconciliation",
     "O18 owner adoption before actual provider deployment",
     "Cloudflare build-log access and historical startup diagnostic",
     "Full G01-G10/live-data/operating assurance for dependent live features"
   ],
   "no_production_effects": "No live-data migration, policy change, financial operation, provider publication, issue closure or deployment",
-  "staging_preparation": "docs/tasks/T005-staging-path.md; independently reviewed options and precise blockers; no accepted O18 provider/budget/SLO or deploy"
+  "staging_preparation": "docs/tasks/T005-staging-path.md; independently reviewed options and precise blockers; no accepted O18 provider/budget/SLO or deploy",
+  "dependency_retest": "T001-C22-retest addendum independently accepts exact composite candidate29fc44e and preserves all26prior inventory dispositions and original failed snapshots; T001 bounded13PASS/14NOT APPLICABLE. Original PR172 head itself not certified green."
 }

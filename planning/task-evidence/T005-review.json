@@ -3,12 +3,12 @@
   "review_date": "2026-10-07",
   "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
   "independence": "Human explicitly authorized separate reviewer; reviewer did not implement application/source/test changes.",
-  "review_status": "ALL 27 TECHNICAL PREPARATION CRITERIA ACCEPTED; PROJECT DONE BLOCKED BY T001 PREREQUISITE",
+  "review_status": "ALL 27 TECHNICAL PREPARATION CRITERIA ACCEPTED; T001 PREREQUISITE TECHNICALLY RECONCILED BY INDEPENDENT RETEST",
   "baseline_sha": "21f901b6815207c55fa461d7173177ede2788a2f",
   "candidate": "Committed candidate 29fc44e737a49b26b6043e945f0ea51373fe466c on codex/t005-ci-security-staging. Final evidence-only working-tree additions are separately hashed; CI is not attributed to their future commit.",
   "scope": "Independent security implementation and full T005 staging preparation review. Actual adoption/deployment/root-cause access remains explicitly separate.",
   "candidate_publication_blocking_source_defects": [],
-  "full_task_status": "TECHNICAL PREPARATION VERIFIED; NOT DONE because T001 prerequisite completion is unresolved",
+  "full_task_status": "TECHNICALLY ACCEPTED ON REVIEWED SOURCE CANDIDATE; final evidence-head CI separate; no board/merge/release change",
   "source_sha256": {
     ".npmrc": "0ed44e7d606cd7a9eba915a10f13a13a09ea85e4b2bb4415bb0c481dbdcded51",
     ".prettierignore": "1c2cb1d631392a6b4e7fd971532776b9c355ee511d99a8f1b3c8a5943d1fd459",
@@ -389,10 +389,10 @@
     "NOT VERIFIED": 0
   },
   "remaining": [
-    "T001 hard prerequisite completion/board sequencing and historical C22 reconciliation require separately reviewed evidence; no silent waiver",
+    "Final evidence-only head CI is separate from verified29fc44e; no earlier CI promoted to later SHA",
     "O18 provider/region/budget/SLO/operator decision and actual deployment/recovery gates remain OPEN",
     "Authenticated historical startup diagnostic and Cloudflare build log/root-cause/fix remain unavailable",
-    "No production, UAT/business, custody or financial gate approval supplied; report-only follow-up not covered by29fc44e CI"
+    "No production, UAT/business, custody or financial gate approval supplied; actual board/merge/issue actions not performed by this review"
   ],
   "report": "docs/tasks/T005-review.md",
   "bounded_security_criteria": [
@@ -712,19 +712,74 @@
   "supplemental_evidence_qualification": "Independent final packet/doc review snapshot before implementer replaces pending-review wording. Such wording-only replacement is authorized by this confirmation; subsequent commit requires its own SHA qualification.",
   "completion_packet_review": {
     "path": "planning/task-evidence/T005.json",
-    "result": "ACCEPTED FOR TECHNICAL PREPARATION; OVERALL NOT DONE",
+    "result": "ACCEPTED FOR DELIVERED TECHNICAL PREPARATION; PREREQUISITE EVIDENCE RECONCILED",
     "criteria_agree": true,
     "counts": {
       "PASS": 15,
       "NOT APPLICABLE": 12
     },
-    "validator": "python3 scripts/verify-raid-completion.py T005 planning/task-evidence/T005.json exits0; structural pass only, not prerequisite or production authority",
+    "validator": "Both python3 scripts/verify-raid-completion.py T001/T005 actual packets exit0; structural pass only, not production authority",
     "qualifications": [
-      "T001 hard prerequisite and historical C22 completion remain unresolved; parent must not mark T001/T005 Done or rewrite sequencing.",
-      "O18 is OPEN; actual adoption/deployment/operations/recovery approval remains separate.",
-      "Historical startup cause and Cloudflare build failure diagnostics inaccessible; exact external blockers satisfy investigation acceptance, not a fabricated repair.",
-      "Corrected RED original output truncation retained; reviewer negative control is not historical RED.",
-      "Pending final-review statements may now be replaced with this independent confirmation; exact future evidence-only commit CI must remain separate."
+      "OriginalT001 source review26dispositions preserved; current C22 independently retested with source/code ownership and exactSHA qualifications.",
+      "Original blockedT005 dependency review snapshot retained in historical_before_T001_retest_integration; current readiness supplement supersedes only missing prerequisite evidence.",
+      "O18/deployment/operations/recovery approvals and T003 authorized deployed-data pre-migration gate remain separate.",
+      "No earlier29fc44eCI promoted to subsequent metadata commit; final evidence-headCI requires own result."
     ]
+  },
+  "historical_before_T001_retest_integration": {
+    "review_status": "ALL 27 TECHNICAL PREPARATION CRITERIA ACCEPTED; PROJECT DONE BLOCKED BY T001 PREREQUISITE",
+    "full_task_status": "TECHNICAL PREPARATION VERIFIED; NOT DONE because T001 prerequisite completion is unresolved",
+    "remaining": [
+      "T001 hard prerequisite completion/board sequencing and historical C22 reconciliation require separately reviewed evidence; no silent waiver",
+      "O18 provider/region/budget/SLO/operator decision and actual deployment/recovery gates remain OPEN",
+      "Authenticated historical startup diagnostic and Cloudflare build log/root-cause/fix remain unavailable",
+      "No production, UAT/business, custody or financial gate approval supplied; report-only follow-up not covered by29fc44e CI"
+    ],
+    "completion_packet_review": {
+      "path": "planning/task-evidence/T005.json",
+      "result": "ACCEPTED FOR TECHNICAL PREPARATION; OVERALL NOT DONE",
+      "criteria_agree": true,
+      "counts": {
+        "PASS": 15,
+        "NOT APPLICABLE": 12
+      },
+      "validator": "python3 scripts/verify-raid-completion.py T005 planning/task-evidence/T005.json exits0; structural pass only, not prerequisite or production authority",
+      "qualifications": [
+        "T001 hard prerequisite and historical C22 completion remain unresolved; parent must not mark T001/T005 Done or rewrite sequencing.",
+        "O18 is OPEN; actual adoption/deployment/operations/recovery approval remains separate.",
+        "Historical startup cause and Cloudflare build failure diagnostics inaccessible; exact external blockers satisfy investigation acceptance, not a fabricated repair.",
+        "Corrected RED original output truncation retained; reviewer negative control is not historical RED.",
+        "Pending final-review statements may now be replaced with this independent confirmation; exact future evidence-only commit CI must remain separate."
+      ]
+    }
+  },
+  "T001_reconciliation_supplement": {
+    "date": "2026-10-07",
+    "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+    "result": "ACCEPTED",
+    "source_candidate_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "retest": "docs/tasks/T001-C22-retest.md; planning/task-evidence/T001-C22-retest.json",
+    "metadata_review": "Independent semantic equality check confirms other26T001 criterion objects exactly unchanged, with original reviewer/SHA and exclusions. Saved historicalC22/CI/status/tracking/sequencing fields exactly match original packet. Only currentT001-C22 disposition changes from historicalFAIL to independently reviewed descendantPASS. NewC22 attributions/CI SHA and actual counts match independent addendum. T005 criteria remain15PASS/12NA with readiness wording only; no new source/test/config change or policy claim.",
+    "T001_counts": {
+      "PASS": 13,
+      "NOT APPLICABLE": 14
+    },
+    "T005_counts": {
+      "PASS": 15,
+      "NOT APPLICABLE": 12
+    },
+    "validators": "Both actual T001 and T005 current packets exit0. Structural pass only; independent review verifies evidence.",
+    "working_tree_snapshot_sha256": {
+      "planning/task-evidence/T001.json": "7707eee3d78a906059d20d9236e20c139d67abdfeaa441ba70a9bde6ae634662",
+      "planning/task-evidence/T005.json": "58e08d5ea8544288111bf4ff444ef8d7b08587e5b036f05196c4ef24f37e668f",
+      "planning/task-evidence/T005-security-verification.json": "47c6248eeb19a3d974b553e03b660f092d9aa4897ff001182b0803f72849caa6",
+      "docs/raid-task-progress.md": "4a250de5d57501e117cc569cb5b4c8fbd883447342543084b981cc59e47eb6e1",
+      "docs/tasks/T005-security-repair.md": "c216868d0fa88f00cf92627b2349c2678e220942ccb50bee755c8c56ace0e43e",
+      "docs/tasks/T005-staging-path.md": "0a34803467a4695a79b9a6bc9a220a4e70b43794db05a9358c401c19afe3e9b1",
+      "docs/tasks/T001-C22-retest.md": "2b17170da390e19286d0a9a46bea548f20672a512a896cc69f33380afaa47bce",
+      "planning/task-evidence/T001-C22-retest.json": "db228509b1b99a099a21eaeab35605c597ece6647f06e3e7607c8e86ac1a47d8"
+    },
+    "snapshot_qualification": "Evidence-only working-tree integration before final commit; pending metadata-review wording may now be replaced by this exact independent confirmation. Future final-head CI remains separate.",
+    "authority": "Technical hard predecessor evidence reconciled without removing task graph edge. OriginalT001 review/history and originalPR172 failedhead not recertified. No board mutation/closure/merge/release/UAT/deploy/paid resource or custody authority. T003 authorized live-data gate and O18 remain retained."
   }
 }

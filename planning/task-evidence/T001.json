@@ -1,24 +1,25 @@
 {
   "task_id": "T001",
-  "status": "BLOCKED",
+  "status": "TECHNICALLY ACCEPTED ON COMPOSITE CANDIDATE; board/merge/release not changed",
   "prepared_at": "2026-10-07",
   "implementer": "Codex (AG01/AG03/AG10 preparation)",
-  "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+  "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent); current C22 retest: /root/t005_independent_review (separate human-selected AG08/AG10 retest reviewer)",
   "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
   "acceptance_plan": "docs/tasks/T001-plan.md",
   "acceptance_plan_sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
-  "handoff": "T002: distinguish legacy campaign/new engagement contracts and propose shared ownership/IDs/ports; T003: compatibility and authorized deployed-obligation/policy audit before migration; T004: fixtures/evidence. Independent acceptance pending.",
+  "handoff": "T001 bounded source inventory technically accepted: original26 reviewed dispositions retained, sole C22 defect retested on the independently reviewed T005 composite candidate. T002 shared contracts/T004 fixtures can use accepted inventory; T003 still requires authorized deployed-obligation/policy audit before migration. Original PR172 is not certified green; composite PR174 carries inventory plus separately reviewed repair. No board/merge/release approval.",
   "migration_rollback": "No schema/API/events/behavior changed. Do not edit old migrations, drop obligations/history, replay unknown effects or retroactively change terms.",
-  "dependency_evidence": "T001 has no hard predecessor; source inventory and canonical packet inspected. Review/actual deployed obligation audit remain unverified.",
+  "dependency_evidence": "No hard predecessor for T001. Original acceptance-first inventory and26criterion reviews remain intact. Owner repair/continue authorized bounded T005 repairs using accepted inventory; fresh independent same-seven-check retest supplies actual missing C22 evidence, not a graph waiver. See T001-C22-retest addendum. Deployed-obligation/restore assurance remains unverified outside inventory boundary.",
   "open_decisions": "O01\u2013O19 remain unresolved absent accepted owner records; existing runtime/provider/policy facts are not approvals.",
   "release_gate_disposition": "No G01\u2013G10 approvals or live enablement; no UAT or external funds/providers operated.",
   "tdd": {
-    "non_code_rationale": "Only inventory/plan/evidence documents are delivered; source/schema/commands/tests/provider behavior unchanged.",
+    "non_code_rationale": "T001 original inventory/plan/evidence diff is documentation only; current retest adds docs/evidence. Composite candidate includes separately assigned T005 dependency code, genuine RED/GREEN/regression and independent source review; the entire composite is not claimed non-code.",
     "acceptance_defined_before_execution": true,
     "acceptance_evidence_url": "docs/tasks/T001-plan.md",
     "acceptance_sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
     "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
-    "independent_boundary_evidence": "planning/task-evidence/T001-review.json#non_code_boundary"
+    "independent_boundary_evidence": "planning/task-evidence/T001-review.json#non_code_boundary",
+    "supplemental_boundary_evidence": "docs/tasks/T001-C22-retest.md; planning/task-evidence/T001-C22-retest.json; docs/tasks/T005-security-repair.md"
   },
   "criteria": {
     "T001-C01": {
@@ -556,6 +557,202 @@
       "rationale": "No module is delivered. Explicit legacy host dependencies and missing independent examples are recorded. Auth and every later feature still require same-change docs, host contracts and a verified consuming example."
     },
     "T001-C22": {
+      "result": "PASS",
+      "required_evidence": "Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; task guide C22; T001 ci_requirements",
+      "repository_facts": "T001 inventory/plan unchanged on descendant composite29fc44e; original review/other26dispositions preserved. Same7required checks unchanged. T005 owns dependency patch/tests/Docker changes and genuine TDD.",
+      "entities": "Inspection only: User/credentials, campaigns/enrollments/results, SOL/USDC obligations, jobs/audit; no records mutated",
+      "permissions": "Read-only source/local synthetic tests; no customer, treasury, private-resource or release authority",
+      "state_transitions": "Task preparation only; no application transition",
+      "setup": "Original T001 acceptance-first plan and independently accepted inventory at acc0250; fresh exact composite head with disposable PostgreSQL16, actual CI jobs and fresh XML artifact.",
+      "action": "Separate reviewer inspects ancestry/source preservation, exact checkout and seven job outcomes, downloaded unit artifact/browser logs and separately reviewed T005 security implementation.",
+      "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
+      "observed": "All7required jobs SUCCESS on exact29fc44e push run37651984851;542unit/DB cases55suites0fail/skip/error;131browser pass7existinggatedskips; Linuxamd64 Docker/runtime pass. Original failed snapshots remain historical; no original PR172 branch pass or deployed assurance inferred.",
+      "evidence_url": "docs/tasks/T001-C22-retest.md; planning/task-evidence/T001-C22-retest.json; https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Ubuntu GitHub runner; Node22; PostgreSQL16; Linuxamd64 Docker; synthetic provider/chain/browser fixtures; no production rows/signers/operations.",
+      "reviewer": "/root/t005_independent_review (separate human-selected AG08/AG10 retest reviewer)",
+      "disposition": "Original C22FAIL remains attributed historical defect. Fresh independently verified descendant retest now PASS for bounded source inventory. Other26accepted original dispositions and invariants remain unchanged; no branch, policy, deployment or business approval invented.",
+      "independent_review_evidence": "planning/task-evidence/T001-C22-retest.json",
+      "review_repository_evidence": "git ancestry and original five-doc diff; unchanged source/inventory/plan; fresh GH jobs/logs/XML; T005 code/TDD review"
+    }
+  },
+  "tracking": {
+    "issue": 43,
+    "epic": 3,
+    "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/172",
+    "composite_retest_pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+    "reviewed_criteria": 27,
+    "accepted_or_excluded_criteria": 27,
+    "failed_criteria": [],
+    "review_counts": {
+      "PASS": 13,
+      "NOT APPLICABLE": 14
+    },
+    "board_update": "NOT PERFORMED by retest; historical last observed board snapshot preserved above. Technical acceptance does not claim board Done or issue closure."
+  },
+  "verification_evidence": "planning/task-evidence/T001-verification.json",
+  "ci": {
+    "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "checkout_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "event": "push",
+    "run_id": 37651984851,
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851",
+    "result": "SUCCESS",
+    "qualification": "Exact composite head includes unchanged T001-owned inventory source and separately reviewed/TDD T005 dependency repair. Original T001 branch/head CI remains historically failed. Later evidence-only updates are separate candidates.",
+    "static": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362350"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362671"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362800"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362821"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362864"
+    },
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362896"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112900637737"
+    },
+    "unit_database": {
+      "files": 55,
+      "passed": 542,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "artifact_id": 11496229697,
+      "sha256": "bb5fb1c5f7af8b28815f0437bad59d9f522aef4e15f9286f7d8ea8bd7ac1aca0"
+    },
+    "browser_counts": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio_desktop_mobile": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live_fixture_suite": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "qualification": "Independent job-log evidence; upload found no remote report files. Existing7skips do not prove gated scenarios, live providers or production safety."
+    }
+  },
+  "inventory_candidate_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+  "inspected_application_sha": "9fd686207da5e20d1e233b863dc736c28a55062d",
+  "independent_review": "planning/task-evidence/T001-review.json",
+  "reviewed_inventory_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+  "review_scope": "Original source inventory and26unchanged dispositions at acc0250 remain reviewed by original independent agent; current C22 retest reviewed separately on actual composite29fc44e by T005 review agent. Boundaries and production obligations preserved.",
+  "sequencing_conflict": "Reconciled technically with actual retest evidence: owner-authorized bounded T005 repair preserves T001 inventory inputs; fresh current C22 passes after separate independent code/source/criterion reviews. T001 source-inventory readiness no longer lacks security-check evidence. Hard dependency graph unchanged; original PR172 own head remains historically failed, actual board/merge/deployment decisions separate.",
+  "latest_reviewed_candidate_ci_snapshot": {
+    "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "checkout_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "event": "push",
+    "run_id": 37651984851,
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851",
+    "result": "SUCCESS",
+    "qualification": "Exact composite head includes unchanged T001-owned inventory source and separately reviewed/TDD T005 dependency repair. Original T001 branch/head CI remains historically failed. Later evidence-only updates are separate candidates.",
+    "static": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362350"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362671"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362800"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362821"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362864"
+    },
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362896"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "candidate_head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112900637737"
+    },
+    "unit_database": {
+      "files": 55,
+      "passed": 542,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "artifact_id": 11496229697,
+      "sha256": "bb5fb1c5f7af8b28815f0437bad59d9f522aef4e15f9286f7d8ea8bd7ac1aca0"
+    },
+    "browser_counts": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio_desktop_mobile": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live_fixture_suite": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "qualification": "Independent job-log evidence; upload found no remote report files. Existing7skips do not prove gated scenarios, live providers or production safety."
+    }
+  },
+  "metadata_integration_review": "Separate human-selected reviewer independently ACCEPTED actual metadata integration: all26unchangedcriterion objects semantically equal to originalpacket; original C22/CI/status/tracking/sequence snapshots exactly retained; correct new C22 attribution/exact29fc44e CI; both validators exit0; no originalbranch/board/merge/policy/deploy/live authority inferred. Evidence: T001-C22-retest.json and T005 review reconciliation supplement.",
+  "historical_before_security_retest": {
+    "record_commit": "21f901b6815207c55fa461d7173177ede2788a2f",
+    "qualification": "Unchanged historical failed snapshots; no claim original PR172 head or earlier source candidate passed. Original review retains12PASS/14NOT APPLICABLE/1FAIL.",
+    "criteria_C22": {
       "result": "FAIL",
       "required_evidence": "Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
       "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; task guide C22; T001 ci_requirements",
@@ -574,125 +771,125 @@
       "disposition": "FAIL completion disposition retained. Prior head bec32c5/full merge d0831669 failed dependency-security and ci-gate; JUnit 523 passed/0 skipped, browser 131 passed/7 skipped. At corrected reviewed acc0250 PR run 37595545285, independently verified dependency-security failure (job112707163396), planning/static/test/docker success, browser still running; aggregate not yet returned and fresh counts unverified. No required check is waived. Repair sequence needs owner review because T005 hard-depends on T001.",
       "independent_review_evidence": "planning/task-evidence/T001-review.json#T001-C22",
       "review_repository_evidence": "checks.yml ci-gate; GitHub run 37594062183 API/log; JUnit artifact 11469549503"
-    }
-  },
-  "tracking": {
-    "issue": 43,
-    "epic": 3,
-    "independently_reviewed_criteria": 0,
-    "total_criteria": 27,
-    "board_update": "SUCCESS: 2026-10-07 GraphQL mutations and read-back verify issue #43 OPEN, Status Blocked, Completion review Blocked, CI status Failed, 27/27 assessed coverage and review evidence.",
-    "completion_review": "Blocked",
-    "project_url": "https://github.com/orgs/solana-hackathon-1/projects/1",
-    "project_item_id": "PVTI_lADOFC4ies4Bl6XMzg-3ORo",
-    "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/172",
-    "reviewed_criteria": 27,
-    "accepted_or_excluded_criteria": 26,
-    "failed_criteria": ["T001-C22"],
-    "review_counts": {
-      "PASS": 12,
-      "NOT APPLICABLE": 14,
-      "FAIL": 1
     },
-    "project_status": "Blocked",
-    "ci_status": "Failed"
-  },
-  "verification_evidence": "planning/task-evidence/T001-verification.json",
-  "ci": {
-    "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-    "checkout_sha": "d0831669c2631ce244f228a3594631f0ac367099",
-    "event": "pull_request",
-    "run_id": 37594062183,
-    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183",
-    "result": "FAILURE",
-    "qualification": "Run tests the synthetic PR merge of the recorded head into unchanged baseline. Later documentation commits require their own checks; this run cannot verify them.",
-    "planning-contracts": {
-      "result": "SUCCESS",
-      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+    "status": "BLOCKED",
+    "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+    "handoff": "T002: distinguish legacy campaign/new engagement contracts and propose shared ownership/IDs/ports; T003: compatibility and authorized deployed-obligation/policy audit before migration; T004: fixtures/evidence. Independent acceptance pending.",
+    "dependency_evidence": "T001 has no hard predecessor; source inventory and canonical packet inspected. Review/actual deployed obligation audit remain unverified.",
+    "ci": {
       "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551632"
-    },
-    "static": {
-      "result": "SUCCESS",
-      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
-      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551914"
-    },
-    "dependency-security": {
+      "checkout_sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "event": "pull_request",
+      "run_id": 37594062183,
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183",
       "result": "FAILURE",
-      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
-      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551850"
-    },
-    "test": {
-      "result": "SUCCESS",
-      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
-      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551917"
-    },
-    "docker": {
-      "result": "SUCCESS",
-      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
-      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702552271"
-    },
-    "browser": {
-      "result": "SUCCESS",
-      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
-      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551888"
-    },
-    "ci-gate": {
-      "result": "FAILURE",
-      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
-      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112704732620"
-    },
-    "unit_database": {
-      "files": 53,
-      "passed": 523,
-      "skipped": 0,
-      "failed": 0,
-      "errors": 0,
-      "artifact_name": "vitest-database-results",
-      "artifact_id": 11469549503,
-      "artifact_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/artifacts/11469549503",
-      "sha256": "570fa719927ac1490ca2d3df6d944eb8fcf170d6eac3abc74cb480134ab29720"
-    },
-    "browser_counts": {
-      "demo": {
-        "passed": 49,
-        "skipped": 1
+      "qualification": "Run tests the synthetic PR merge of the recorded head into unchanged baseline. Later documentation commits require their own checks; this run cannot verify them.",
+      "planning-contracts": {
+        "result": "SUCCESS",
+        "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+        "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551632"
       },
-      "studio_desktop_mobile": {
-        "passed": 44,
-        "skipped": 0
+      "static": {
+        "result": "SUCCESS",
+        "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+        "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551914"
       },
-      "live_fixture_suite": {
-        "passed": 38,
-        "skipped": 6
+      "dependency-security": {
+        "result": "FAILURE",
+        "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+        "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551850"
       },
-      "qualification": "Job log counts. Seven browser skips remain; job success does not prove skipped scenarios or actual external live-provider release gates. Only unit/database XML was available in the run artifact API."
-    }
+      "test": {
+        "result": "SUCCESS",
+        "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+        "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551917"
+      },
+      "docker": {
+        "result": "SUCCESS",
+        "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+        "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702552271"
+      },
+      "browser": {
+        "result": "SUCCESS",
+        "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+        "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551888"
+      },
+      "ci-gate": {
+        "result": "FAILURE",
+        "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+        "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112704732620"
+      },
+      "unit_database": {
+        "files": 53,
+        "passed": 523,
+        "skipped": 0,
+        "failed": 0,
+        "errors": 0,
+        "artifact_name": "vitest-database-results",
+        "artifact_id": 11469549503,
+        "artifact_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/artifacts/11469549503",
+        "sha256": "570fa719927ac1490ca2d3df6d944eb8fcf170d6eac3abc74cb480134ab29720"
+      },
+      "browser_counts": {
+        "demo": {
+          "passed": 49,
+          "skipped": 1
+        },
+        "studio_desktop_mobile": {
+          "passed": 44,
+          "skipped": 0
+        },
+        "live_fixture_suite": {
+          "passed": 38,
+          "skipped": 6
+        },
+        "qualification": "Job log counts. Seven browser skips remain; job success does not prove skipped scenarios or actual external live-provider release gates. Only unit/database XML was available in the run artifact API."
+      }
+    },
+    "tracking": {
+      "issue": 43,
+      "epic": 3,
+      "independently_reviewed_criteria": 0,
+      "total_criteria": 27,
+      "board_update": "SUCCESS: 2026-10-07 GraphQL mutations and read-back verify issue #43 OPEN, Status Blocked, Completion review Blocked, CI status Failed, 27/27 assessed coverage and review evidence.",
+      "completion_review": "Blocked",
+      "project_url": "https://github.com/orgs/solana-hackathon-1/projects/1",
+      "project_item_id": "PVTI_lADOFC4ies4Bl6XMzg-3ORo",
+      "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/172",
+      "reviewed_criteria": 27,
+      "accepted_or_excluded_criteria": 26,
+      "failed_criteria": ["T001-C22"],
+      "review_counts": {
+        "PASS": 12,
+        "NOT APPLICABLE": 14,
+        "FAIL": 1
+      },
+      "project_status": "Blocked",
+      "ci_status": "Failed"
+    },
+    "review_scope": "Independent technical inventory review at acc025085dda867bdd21c570a6825fefe8bc5088. This later report-integration commit is not claimed tested by prior CI or endorsed as production/human UAT.",
+    "sequencing_conflict": "T001 C22 completion fails baseline security; repair is owned by T005 #47, whose current issue declares T001 as a hard predecessor. Accepted source inventory is available as dependency evidence, but this record neither makes T001 Done nor silently changes T005 readiness or the dependency graph. Owner/domain sequencing must resolve this before dependent execution.",
+    "latest_reviewed_candidate_ci_snapshot": {
+      "candidate_head_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "run_id": 37595545285,
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37595545285",
+      "run_status": "in_progress",
+      "planning-contracts": "SUCCESS",
+      "static": "SUCCESS",
+      "dependency-security": "FAILURE",
+      "test": "SUCCESS",
+      "docker": "SUCCESS",
+      "browser": "IN_PROGRESS",
+      "qualification": "Independent reviewer final read-only snapshot corroborates security FAILURE and planning/static/test/docker SUCCESS; browser/aggregate unfinished. Later results and the report-integration candidate require their own checks."
+    },
+    "metadata_integration_review": "Separate agent read-only parity check: all27 criterion results/reviewers/refs/SHAs and all14 exclusion rationales match; validator rejects only C22; no false final-head CI, invariant waiver or dependency change. CI snapshot chronology corrected to reviewer final snapshot."
   },
-  "inventory_candidate_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
-  "inspected_application_sha": "9fd686207da5e20d1e233b863dc736c28a55062d",
-  "independent_review": "planning/task-evidence/T001-review.json",
-  "reviewed_inventory_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
-  "review_scope": "Independent technical inventory review at acc025085dda867bdd21c570a6825fefe8bc5088. This later report-integration commit is not claimed tested by prior CI or endorsed as production/human UAT.",
-  "sequencing_conflict": "T001 C22 completion fails baseline security; repair is owned by T005 #47, whose current issue declares T001 as a hard predecessor. Accepted source inventory is available as dependency evidence, but this record neither makes T001 Done nor silently changes T005 readiness or the dependency graph. Owner/domain sequencing must resolve this before dependent execution.",
-  "latest_reviewed_candidate_ci_snapshot": {
-    "candidate_head_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
-    "run_id": 37595545285,
-    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37595545285",
-    "run_status": "in_progress",
-    "planning-contracts": "SUCCESS",
-    "static": "SUCCESS",
-    "dependency-security": "FAILURE",
-    "test": "SUCCESS",
-    "docker": "SUCCESS",
-    "browser": "IN_PROGRESS",
-    "qualification": "Independent reviewer final read-only snapshot corroborates security FAILURE and planning/static/test/docker SUCCESS; browser/aggregate unfinished. Later results and the report-integration candidate require their own checks."
-  },
-  "metadata_integration_review": "Separate agent read-only parity check: all27 criterion results/reviewers/refs/SHAs and all14 exclusion rationales match; validator rejects only C22; no false final-head CI, invariant waiver or dependency change. CI snapshot chronology corrected to reviewer final snapshot."
+  "supplemental_independent_review": "planning/task-evidence/T001-C22-retest.json"
 }

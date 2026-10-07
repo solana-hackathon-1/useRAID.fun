@@ -1,0 +1,360 @@
+{
+  "task_id": "T001",
+  "criterion_id": "T001-C22",
+  "review_date": "2026-10-07",
+  "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 review agent; not T001/T005 implementer)",
+  "independence": "Independently reviewed source/ancestry and fresh GitHub metadata/logs/artifact; authored this addendum only. Did not implement T001 inventory or T005 security repair.",
+  "scope": "Retest addendum for sole failed T001-C22 at exact descendant composite candidate; original source inventory and other26 independently accepted dispositions retained with original attribution.",
+  "acceptance_defined_before_writing": true,
+  "acceptance": "Legitimate descendant retest; preserve original12PASS14NA1FAIL and attribution; unchanged26criteria/source ancestry; separate genuine T005 code TDD; same7checks and actual counts/evidence; current13PASS14NA bounded inventory acceptance; no original-branch pass, waiver or board/merge/UAT/live approval.",
+  "result": "PASS",
+  "technical_inventory_disposition": "13 PASS / 14 NOT APPLICABLE on composite candidate; no board/issue lifecycle or merge action supplied",
+  "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections32,39,40; I13/AC75; T001-C22; docs/raid-agent-task-contracts.md and docs/raid-ci-plan.md",
+  "baseline_sha": "9fd686207da5e20d1e233b863dc736c28a55062d",
+  "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+  "review_integration_sha": "21f901b6815207c55fa461d7173177ede2788a2f",
+  "candidate_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+  "original_review": {
+    "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+    "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+    "counts": {
+      "PASS": 12,
+      "NOT APPLICABLE": 14,
+      "FAIL": 1
+    },
+    "criterion": {
+      "result": "FAIL",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; task guide C22; T001 ci_requirements",
+      "repository_evidence": "checks.yml ci-gate; GitHub run 37594062183 API/log; JUnit artifact 11469549503",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "FAIL completion disposition retained. Prior head bec32c5/full merge d0831669 failed dependency-security and ci-gate; JUnit 523 passed/0 skipped, browser 131 passed/7 skipped. At corrected reviewed acc0250 PR run 37595545285, independently verified dependency-security failure (job112707163396), planning/static/test/docker success, browser still running; aggregate not yet returned and fresh counts unverified. No required check is waived. Repair sequence needs owner review because T005 hard-depends on T001.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "report": "docs/tasks/T001-review.md",
+    "register": "planning/task-evidence/T001-review.json",
+    "qualification": "HistoricalFAIL preserved without rewriting original reviewer opinion or claiming original candidate passed."
+  },
+  "ancestry": {
+    "original_is_ancestor": true,
+    "original_t001_diff": [
+      "docs/raid-task-progress.md",
+      "docs/tasks/T001-inventory.md",
+      "docs/tasks/T001-plan.md",
+      "planning/task-evidence/T001-verification.json",
+      "planning/task-evidence/T001.json"
+    ],
+    "changed_source_prisma_workflow_plan_since_original": [],
+    "changed_t001_inventory_plan_review_packet_since_integration": [],
+    "qualification": "T001 delivered change remains five docs/evidence files. Composite candidate additionally contains genuine-TDD T005 code/dependency/test/config changes; whole composite is not represented as non-code."
+  },
+  "inherited_criteria": [
+    {
+      "id": "T001-C01",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C01"
+    },
+    {
+      "id": "T001-C02",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C02"
+    },
+    {
+      "id": "T001-C03",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C03"
+    },
+    {
+      "id": "T001-C04",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C04"
+    },
+    {
+      "id": "T001-C05",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C05"
+    },
+    {
+      "id": "T001-C06",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C06"
+    },
+    {
+      "id": "T001-C07",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C07"
+    },
+    {
+      "id": "T001-C08",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C08"
+    },
+    {
+      "id": "T001-C09",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C09"
+    },
+    {
+      "id": "T001-C10",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C10"
+    },
+    {
+      "id": "T001-C11",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C11"
+    },
+    {
+      "id": "T001-C12",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C12"
+    },
+    {
+      "id": "T001-C13",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C13"
+    },
+    {
+      "id": "T001-C14",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C14"
+    },
+    {
+      "id": "T001-C15",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C15"
+    },
+    {
+      "id": "T001-C16",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C16"
+    },
+    {
+      "id": "T001-C17",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C17"
+    },
+    {
+      "id": "T001-C18",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C18"
+    },
+    {
+      "id": "T001-A01",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-A01"
+    },
+    {
+      "id": "T001-A02",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-A02"
+    },
+    {
+      "id": "T001-W01",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-W01"
+    },
+    {
+      "id": "T001-W02",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-W02"
+    },
+    {
+      "id": "T001-W03",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-W03"
+    },
+    {
+      "id": "T001-C19",
+      "result": "PASS",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C19"
+    },
+    {
+      "id": "T001-C20",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C20"
+    },
+    {
+      "id": "T001-C21",
+      "result": "NOT APPLICABLE",
+      "original_reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "original_reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "original_review_evidence": "planning/task-evidence/T001-review.json#T001-C21"
+    }
+  ],
+  "inherited_qualification": "Other26 records remain original separate-reviewer acceptance atacc0250; not newly self-approved or promoted to a different source inventory. Report-integration additions inspected as historical review/board metadata only.",
+  "candidate_file_sha256": {
+    "docs/tasks/T001-plan.md": "80741d0a347325d505f23036446f3960d78967ecd8248b0a9121c7860a7a971e",
+    "docs/tasks/T001-inventory.md": "cf2f973b33516bcc93a900e6cfa35072f7dc1ae0304afe7d04f59415ee8f59bd",
+    "docs/tasks/T001-review.md": "aaf5a1f3ccb6c115a30bfe240cfbe6d52c170c1149de427ea38e389465e879dc",
+    "planning/task-evidence/T001-review.json": "503ed387192a93c3afbe733a26d7affa121d25d44cd0c09637b9ee8f6cc51d80",
+    "planning/task-evidence/T001.json": "a36481dbc0c56395bfc4918f4417181cc45f35e68652a2286e93500c5b63db72",
+    "planning/task-evidence/T001-verification.json": "fabee06411f1b4867ecc3ed22cf63e59bce282dfa412b58698a5d8565b81325e",
+    "docs/tasks/T005-review.md": "463b9af8fd16b43489fb0339455e4906b529558306de027404124abe67dfc04e",
+    "planning/task-evidence/T005-review.json": "f74f09474c3064ab5208518febc16ae75943d9be74dabe9a0e8cc341e5ee9598",
+    "RAID_AGENT_BLUEPRINT.md": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+    ".github/workflows/checks.yml": "c177119ecd0127a143cebd37d4633f9203a6e6e95f256d8ce23e843120121c46"
+  },
+  "t005_dependency_repair": {
+    "owner_task": "T005",
+    "report": "docs/tasks/T005-security-repair.md",
+    "independent_review": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json",
+    "scope": "Five previously rejected advisories repaired; required audit/allowlist and jobs unchanged. Local braces source/license/provenance/API/packing separately reviewed. TDD original transcript verified; corrected RED output truncation remains qualified; retrospective negative control not historicalRED.",
+    "qualification": "Security implementation belongs to T005, not T001 docs-only exception. No task dependency removed and no required security gate suppressed."
+  },
+  "ci": {
+    "run_id": 37651984851,
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851",
+    "event": "push",
+    "head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "checkout_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "result": "SUCCESS",
+    "checks": {
+      "static": {
+        "result": "SUCCESS",
+        "job_id": 112897362350,
+        "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362350"
+      },
+      "test": {
+        "result": "SUCCESS",
+        "job_id": 112897362671,
+        "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362671"
+      },
+      "docker": {
+        "result": "SUCCESS",
+        "job_id": 112897362800,
+        "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362800"
+      },
+      "browser": {
+        "result": "SUCCESS",
+        "job_id": 112897362821,
+        "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362821"
+      },
+      "dependency-security": {
+        "result": "SUCCESS",
+        "job_id": 112897362864,
+        "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362864"
+      },
+      "planning-contracts": {
+        "result": "SUCCESS",
+        "job_id": 112897362896,
+        "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362896"
+      },
+      "ci-gate": {
+        "result": "SUCCESS",
+        "job_id": 112900637737,
+        "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112900637737"
+      }
+    },
+    "checkout_qualification": "Fresh independent logs show all six source-consuming jobs check out exact29fc44e; aggregate validates those jobs without checkout. Original T001 branch/PR172 own failed head is not certified by this run."
+  },
+  "executed_evidence": {
+    "unit_database": {
+      "passed": 542,
+      "suites": 55,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "artifact_id": 11496229697,
+      "artifact_name": "vitest-database-results",
+      "downloaded_xml_sha256": "bb5fb1c5f7af8b28815f0437bad59d9f522aef4e15f9286f7d8ea8bd7ac1aca0",
+      "archive_digest": "sha256:de446d8e70376015fa3b429b5f882c42f82924223965691dd452dd46fda40e44",
+      "qualification": "Fresh independent download/parse; includes14braces/5compatibility cases."
+    },
+    "browser": {
+      "demo_passed": 49,
+      "demo_skipped": 1,
+      "studio_passed": 44,
+      "studio_skipped": 0,
+      "live_passed": 38,
+      "live_skipped": 6,
+      "failed": 0,
+      "evidence": "Retained GitHub job logs independently inspected; no remote Playwright artifact because upload found no files. Local implementation reports are separately hashed. Seven existing gated skips supply no deferred live-provider evidence."
+    },
+    "docker": "Linuxamd64 image build/runtimePASS; sha256:ec57c6e65ddf011b17048f0733bab8332c34c149b63478e3440bc2bedef7aceb",
+    "planning": "27planning-contract tests pass",
+    "audit": "Required unchanged allowlist auditPASS",
+    "static": "Required formatting/TypeScript/lint jobPASS; existing warnings retained"
+  },
+  "artifact_sha256": {
+    "/private/tmp/t005-review-ci-independent.log": "44d44d604ea0cc2df2ee81349b6478bb95e2637c8796935d51b24938d1145140",
+    "/private/tmp/t005-review-ci-run.json": "6b8641f4a1b1ac1d850e3a656e46e0f0087b9ed395b8240617d96eb1e59df478",
+    "/private/tmp/t005-review-ci-jobs.json": "8f99852fbd75515bf5b9848dcf1796d08ebb5ff71fbb666bae8d8c256aa33632",
+    "/private/tmp/t005-review-ci-artifacts.json": "919061cf7c5ce22996312d62acf9625b52eac46babf5976ea6894137318d25d7",
+    "/private/tmp/t005-review-ci-independent/vitest.xml": "bb5fb1c5f7af8b28815f0437bad59d9f522aef4e15f9286f7d8ea8bd7ac1aca0"
+  },
+  "setup": "Accepted inventory atacc0250 plus attributed metadata integration21f901b; separately reviewed T005 security repair; exact descendant candidate and unchanged workflow; isolated synthetic PostgreSQL/provider fixtures.",
+  "action": "Verify original26independent dispositions and ancestry; inspect changed paths/source preservation; fetch actual seven named GitHub checks, checkout logs and fresh unit artifact; retain observed failure history.",
+  "expected": "Every required CI job executes successfully on same exact candidate with actual executed/skipped counts, independent evidence, no suppressed audit or invented old-head passing result.",
+  "observed": "All seven required jobsSUCCESS on exact29fc44e;542unit/database0skip/fail;131browserpasses7existinggatedskips;Linuxamd64build/runtimePASS. T001-C22 nowPASS as descendant retest; originalFAIL retained.",
+  "entities": "Source inventory/documentation only; no persisted entity, tenant identifier, financial obligation or resource grant changed by T001 addendum.",
+  "permissions": "Reviewer read-only repository/GitHub inspection and addendum authorship; no customer/data/spending or release authority.",
+  "state_transitions": "Technical criterion historicalFAIL becomes current retestPASS at distinct candidate; no business state, board lifecycle, issue closure or deployment changed.",
+  "environment": "GitHub Linux/Node22/PostgreSQL synthetic fixtures; independent local review Node26/npm11macOS; no live provider or deployed-data audit.",
+  "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851; docs/tasks/T001-C22-retest.md; planning/task-evidence/T001-C22-retest.json",
+  "required_next_record": "Implementer may integrate this newC22 with its own attribution and exactSHA into current T001 packet, retain historical CI/C22 and original26records, run validator, and obtain independent metadata review. Technical hard dependency can then be reconciled from reviewed evidence; no graph waiver is needed.",
+  "boundaries": [
+    "Original12PASS14NA1FAIL review preserved historically; this is current13PASS14NA bounded inventory retest, not original branch pass.",
+    "T003 authorized deployed-code/config/policy/obligation/custody audit remains mandatory before migration/backfill; no live counts, absence or restore guarantee proved.",
+    "O18 and all applicable live-provider/financial/release/operating gates remain OPEN/separate; no UAT/business decision or custody authority.",
+    "Board/issue/merge actions require actual current-record and policy handling; this addendum performs none.",
+    "Evidence-only follow-up and final-head CI are separately qualified;29fc44eCI is not promoted to any later commit."
+  ]
+}
