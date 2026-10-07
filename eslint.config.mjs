@@ -23,6 +23,7 @@ export default defineConfig([
   ...warnOnly(nextVitals),
   ...warnOnly(nextTypescript),
   globalIgnores([
+    'vendor/**',
     '.next/**',
     '.next-*/**',
     'out/**',
