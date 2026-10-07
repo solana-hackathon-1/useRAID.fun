@@ -3,7 +3,7 @@
   "scope": "Local dependency-security repair, not full task completion",
   "date": "2026-10-07",
   "baseline_sha": "21f901b6815207c55fa461d7173177ede2788a2f",
-  "candidate": "uncommitted working tree; source hashes below; no GitHub CI claim",
+  "candidate": "29fc44e737a49b26b6043e945f0ea51373fe466c; exact push-head CI, reviewed implementation sources unchanged in evidence-only follow-up",
   "source_sha256": {
     ".npmrc": "0ed44e7d606cd7a9eba915a10f13a13a09ea85e4b2bb4415bb0c481dbdcded51",
     ".prettierignore": "1c2cb1d631392a6b4e7fd971532776b9c355ee511d99a8f1b3c8a5943d1fd459",
@@ -126,17 +126,72 @@
       },
       "report_sha256": "efc6fddbd9def431c9f3aa6aa883f575561081e903368d4c33403a26eb120f39",
       "qualification": "Local production build; synthetic provider/chain fixtures, not live-provider or mainnet assurance; six gated tests remain skipped"
+    },
+    "github_ci": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "event": "push",
+      "run_id": 37651984851,
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851",
+      "checks": {
+        "static": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362350"
+        },
+        "test": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362671"
+        },
+        "docker": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362800"
+        },
+        "browser": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362821"
+        },
+        "dependency-security": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362864"
+        },
+        "planning-contracts": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362896"
+        },
+        "ci-gate": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112900637737"
+        }
+      },
+      "unit_database": {
+        "passed": 542,
+        "files": 55,
+        "skipped": 0,
+        "failed": 0,
+        "artifact_id": 11496229697,
+        "artifact_sha256": "bb5fb1c5f7af8b28815f0437bad59d9f522aef4e15f9286f7d8ea8bd7ac1aca0",
+        "independent_reviewer_download": "PASS"
+      },
+      "browser": {
+        "demo_passed": 49,
+        "studio_passed": 44,
+        "live_passed": 38,
+        "existing_skipped": 7
+      },
+      "docker_linux_amd64": "PASS; sha256:ec57c6e65ddf011b17048f0733bab8332c34c149b63478e3440bc2bedef7aceb",
+      "qualification": "No skipped scenario, live provider, restore, UAT or deployment assurance inferred",
+      "browser_evidence": "Job logs independently read; upload found no files, so no remote Playwright report artifact exists. Local JSON report hashes separately retained. Passed job/log evidence does not prove skipped scenarios."
     }
   },
   "tdd_evidence": "docs/tasks/T005-security-repair.md",
   "reviewer": "/root/t005_independent_review; docs/tasks/T005-review.md and planning/task-evidence/T005-review.json",
-  "full_task_completion": "NOT VERIFIED",
+  "full_task_completion": "NOT DONE; technical preparation criteria/evidence reviewed, T001 prerequisite and actual deployment/OPEN requirements retained",
   "remaining": [
-    "Committed-candidate required GitHub CI including Linux amd64 build",
-    "Full T005 staging/criterion review and completion validator",
-    "O18 owner decision and inaccessible provider failure logs",
-    "T001/T005 completion sequence"
+    "T001 dependency completion reconciliation",
+    "O18 owner adoption before actual provider deployment",
+    "Cloudflare build-log access and historical startup diagnostic",
+    "Full G01-G10/live-data/operating assurance for dependent live features"
   ],
   "no_production_effects": "No live-data migration, policy change, financial operation, provider publication, issue closure or deployment",
-  "staging_preparation": "docs/tasks/T005-staging-path.md; independent review pending; no provider deployment or accepted O18 choice"
+  "staging_preparation": "docs/tasks/T005-staging-path.md; independently reviewed options and precise blockers; no accepted O18 provider/budget/SLO or deploy"
 }

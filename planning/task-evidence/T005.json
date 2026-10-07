@@ -1,0 +1,420 @@
+{
+  "task_id": "T005",
+  "implementer": "Codex /root (implementation agent)",
+  "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+  "candidate_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+  "status": "TECHNICAL PREPARATION VERIFIED; NOT DONE because T001 prerequisite completion is unresolved",
+  "handoff": "Security patch and staging preparation in draft PR #174 stacked on T001 PR #172. Full independent criterion review records A02/C22 pending. Provider diagnostic access and O18 adoption are separate owner actions; no deploy/merge/issue closure.",
+  "migration_rollback": "No schema or applied migration changes. Eighteen existing migrations only applied to disposable local PostgreSQL16. Revert package/fork/lock/config as one unit if needed, recognizing original advisory exposure; code rollback does not undo live DB or external operations. No production effects occurred.",
+  "dependency_evidence": "T001 inventory technically independently accepted at acc025085dda867bdd21c570a6825fefe8bc5088; its historical C22 FAIL remains. Owner repair/continue authorizes bounded fixes using that inventory, not silent dependency removal or Done. T001 completion packet/board sequence requires separately reviewed current evidence.",
+  "open_decisions": "O18 hosting/runtime/SLO/budget adoption OPEN, issue41; Railway and portable container options prepared. No custody/finality/asset authority adopted. Cloudflare provider build log and historical startup diagnostic unavailable in this session; precise blockers independently verified.",
+  "release_gate_disposition": "D12 and G01-G10 remain mandatory for their dependent live features. No new release or mainnet gate is granted by install/build/fixtures. Initial staging evaluation configuration is a proposal; actual deployment, backup/restore, staffed operations and business sign-off not established.",
+  "tdd": {
+    "red": {
+      "command": "npx vitest run tests/dependency-compatibility.test.ts; npx vitest run tests/braces-security.test.ts (before edits)",
+      "sha": "21f901b6815207c55fa461d7173177ede2788a2f",
+      "result": "FAIL",
+      "expected_failure": "Reject advisory-affected installed graph and unsafe deep recursive patterns/ASTs",
+      "observed_failure": "Dependency RED: 3 failed/2 passed. Corrected braces RED shows a 12-failure heading; tool output is truncated and its pass footer is not claimed. Earlier oversized-fixture run had 12 fail / 2 pass footer. Original corrected under-length fixture failures precede vendor extraction/guards, independently confirmed by transcript. Baseline plus new tests uncommitted; no fabricated RED commit or JSON.",
+      "evidence_url": "docs/tasks/T005-security-repair.md; planning/task-evidence/T005-review.json#tdd_chronology"
+    },
+    "green": {
+      "command": "npx vitest run tests/dependency-compatibility.test.ts tests/braces-security.test.ts; npm run audit:check",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "result": "PASS",
+      "observed": "19 targeted tests pass and unchanged audit passes; independent reviewer reproduced19 and archive/consumer/differential checks",
+      "evidence_url": "planning/task-evidence/T005-security-verification.json; planning/task-evidence/T005-review.json"
+    },
+    "refactor": {
+      "command": "Clean npm ci; RUN_DB_TESTS=true DEMO_MODE=false npm test; planning/static/format; Docker build/runtime; serial browser suites; production build/journey",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "result": "PASS",
+      "observed": "542 tests / 55 files / 0 skips; planning: 27; lint: 24 warnings / 0 errors; demo: 49 pass / 1 skip; Studio: 44 pass / 0 skips; live: 38 pass / 6 existing gated skips; source/report hashes independently match candidate. No original assertion/gate weakened.",
+      "evidence_url": "planning/task-evidence/T005-security-verification.json; planning/task-evidence/T005-review.json"
+    },
+    "documentation_acceptance": "Staging-document acceptance explicitly defined before writing. No invented coding RED for read-only investigation/docs; independent source-backed validation in staging review."
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362896",
+      "observed": "Completed success; exact push head checked out",
+      "run_id": 37651984851,
+      "event": "push"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362350",
+      "observed": "Completed success; exact push head checked out",
+      "run_id": 37651984851,
+      "event": "push"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362864",
+      "observed": "Completed success; exact push head checked out",
+      "run_id": 37651984851,
+      "event": "push"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362671",
+      "observed": "Completed success; exact push head checked out",
+      "run_id": 37651984851,
+      "event": "push"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362800",
+      "observed": "Completed success; exact push head checked out",
+      "run_id": 37651984851,
+      "event": "push"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362821",
+      "observed": "Completed success; exact push head checked out",
+      "run_id": 37651984851,
+      "event": "push"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112900637737",
+      "observed": "Completed success; exact push head checked out",
+      "run_id": 37651984851,
+      "event": "push"
+    }
+  },
+  "criteria": {
+    "T005-C01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C01",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "State the observable user outcome, assigned milestone, in-scope commands and explicit adjacent work excluded. Compare the actual baseline to the desired behavior; identify existing working behavior that must survive.",
+      "observed": "Observable outcome and bounded repair scope are explicit; full staging/CI outcome remains separate.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C02",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "List every applicable LOCKED, DIRECTION, DEFAULT, OPEN and EXAMPLE reference separately. Keep unresolved dependent production actions disabled. A recorded owner decision must identify who accepted it, date, changed contract and effect on old accepted work.",
+      "observed": "LOCKED R15/R16, I13, DEFAULT D01/D12 and OPEN O18/custody are distinguished. No production policy changes.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C03": {
+      "result": "NOT APPLICABLE",
+      "rationale": "Package graph and pure helper only; no schema/entity/table/tenant identifier is changed.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C03",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C04": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No new application read/write authority or actor/resource permission boundary.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C04",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C05": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No application lifecycle, deadline or business transition changes.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C05",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C06": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No identity/linking/capacity command or reservation change; review consumes no work slot.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C06",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C07": {
+      "result": "NOT APPLICABLE",
+      "rationale": "Accepted terms, roster, allocation and rubric are unchanged.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C07",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C08": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C08",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Declare whether financial obligations are touched. If so specify network/kind/mint/program/decimals, integer base units, verified funds, reserves, allocations, fees, claims, refunds and conservation per asset. Verify actual effects/finality and beneficiary authority; transaction submission and ticker text prove nothing.",
+      "observed": "No financial obligation/accounting mutation; RPC compatibility tests do not establish live financial safety.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C09": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No public/private DTO, storage grant or log field change; fork consumes no secrets.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C09",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C10": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No semantic command receipt, outbox or external payment retry change.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C10",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C11": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No competing business command, lock or transaction boundary is changed.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C11",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C12": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No new provider effect/recovery operation; only consumed JSON-RPC library compatibility is checked.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C12",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C13": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No UI flow or state is implemented in this dependency slice; browser compatibility remains an overall CI obligation.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C13",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C14": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C14",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Identify applicable input validation, session/nonce/CSRF/origin, rate limit, upload quarantine, SSRF/redirect, secrets, malicious build and prompt-injection boundaries. Untrusted code and model output cannot inherit credentials, grant permissions, self-approve or expand spending.",
+      "observed": "Targeted brace recursion source protection, provenance, install graph, unchanged audit and adversarial regression reviewed independently. Not universal DoS protection.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C15": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C15",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Record feature flags at server and UI, monitoring, named case owner, incident/runbook and feature-specific G01\u2013G10 evidence. Disabling new work must preserve old claims, cancellation, dispute and access cleanup. Define migration/backfill, verified backup/restore and rollback constraints.",
+      "observed": "Preparation documents source-backed evaluation flags, separate DB/provider/key boundaries, worker/migration/health behavior, private connectivity requirements, monitoring/recovery/rollback limits and unexecuted production G10. No live deployment, data migration or backup/restore acceptance is claimed.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C16": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C16",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "For each requirement and criterion provide setup/fixtures, exact action, expected result, observed result, command/test, SHA, environment/network/provider version and sanitized evidence. Record failed, blocked or not-run checks accurately; compiler success is insufficient.",
+      "observed": "Security evidence plus independently inspected demo49/skip1, Studio44/no skips and live38/skip6 artifacts; GH candidate/failure observations independently queried. Committed candidate remote CI remains separately unverified under C22/A02.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C17": {
+      "result": "NOT APPLICABLE",
+      "rationale": "No new user-facing release behavior in this slice; no representative UAT/business sign-off inferred or waived for full T005.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C17",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C18": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C18",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Record actual files, schema/API/event changes, tests executed/results, unresolved risks, authority/privacy/money effects, migration/rollback limits, reviewer and exact next bounded task. Unimplemented criteria cannot disappear through issue closure or epic roll-up.",
+      "observed": "Security and staging preparation have exact files, authority/effects, original test chronology, failure/unknown evidence, environment requirements, reviewer and next bounded steps; no production effects hidden.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C19": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C19",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "For every implementation change, define behavior from canonical requirements and write a meaningful failing test BEFORE implementation. Record RED command, actual failure and unchanged baseline; implement the smallest complete behavior; record GREEN result; refactor without changing the contract and record relevant regression results. Use real database/program/provider boundaries for material races and financial/access effects. Tests cannot be weakened, deleted or replaced with mocks merely to obtain green. For existing verified behavior, run and record the baseline and add a failing test for each changed/missing behavior; do not fabricate a red result. For decisions/docs/UAT-only work, define expected acceptance results before execution, record why a coding cycle is not applicable, and validate the actual deliverable.",
+      "observed": "Genuine implementation RED/GREEN/regression independently read from original transcript. Documentation acceptance defined before writing staging document; source/provider evidence reviewed without inventing code RED for investigation.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C20": {
+      "result": "NOT APPLICABLE",
+      "rationale": "Delivered scope upgrades libraries/pure helper and prepares hosting options; creates no live deployment integration, provider port or in-flight switching command. AC73 remains mandatory for future actual adapter replacement; legacy port gaps are not waived.",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C20",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C21": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C21",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Deliver module purpose/non-goals, public API/schema/event/error contracts, dependencies/host wiring, configuration, permissions, entity/state ownership, architecture, installation, runnable consuming example, tests/fixtures, limitations, migration/versioning and operations/recovery notes in the implementation change. Run the independently declared consuming host and negative/contract tests; no hidden RAID singleton/global secret or undeclared app import. Document UI accessibility and host authority when relevant. See R16, AC74 and section 24.7.",
+      "observed": "Packed independent helper host verified; source-backed portable Docker web/worker/migration/runtime host contract and consuming image evidence documented. No assertion that all legacy modules are reusable.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-C22": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C22",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "observed": "All seven required jobs succeeded in exact push head run 37651984851. Remote unit/database: 542 cases, 55 suites, zero skips/failures; browser: 49 demo, 44 Studio, 38 live passes, 7 existing gated skips. Docker build/runtime passed Linux amd64. No deployment inferred. Separate human-selected reviewer independently verified exact-head jobs, checkout SHAs, fresh unit artifact and browser logs; final technical packet accepted with 15 PASS / 12 NOT APPLICABLE. T001 prerequisite still blocks project Done.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851; planning/task-evidence/T005-review.json",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-A01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-A01",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Root cause and fix or precise external blocker documented",
+      "observed": "Root-cause-or-blocker contract satisfied for preparation: independently confirmed five-advisory baseline failure and local repair, startup_failure before jobs with no diagnostic/log404, and provider check failure lacking build detail. Actual Cloudflare log/root cause remains inaccessible; no cause invented.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-A02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-A02",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Required checks can execute on the chosen path; no deployment claim from configuration alone",
+      "observed": "All seven required jobs succeeded in exact push head run 37651984851. Remote unit/database: 542 cases, 55 suites, zero skips/failures; browser: 49 demo, 44 Studio, 38 live passes, 7 existing gated skips. Docker build/runtime passed Linux amd64. No deployment inferred. Separate human-selected reviewer independently verified exact-head jobs, checkout SHAs, fresh unit artifact and browser logs; final technical packet accepted with 15 PASS / 12 NOT APPLICABLE. T001 prerequisite still blocks project Done.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851; planning/task-evidence/T005-review.json",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-W01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-W01",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Investigate GitHub Actions startup failures and Cloudflare deployment failure",
+      "observed": "Investigated actual Actions and Cloudflare candidates. Independently reproduced REST observations, source commits and precise missing diagnostics/provider login evidence. Investigation acceptance is met; Cloudflare repair itself remains blocked pending provider log.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-W02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-W02",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Distinguish static coming-soon hosting from full web/worker/PostgreSQL hosting",
+      "observed": "Source-inspected static HTML folder and buildless guide are distinguished from existing Docker web/worker/PostgreSQL image, manifests, durable jobs and DB-aware health endpoint.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    },
+    "T005-W03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-W03",
+      "repository_facts": "Source/lock/fork/tests/Docker/docs listed in docs/tasks/T005-security-repair.md and docs/tasks/T005-staging-path.md; independent review hashes bind committed bytes. Required checks unchanged.",
+      "entities": "Install graph/pure brace AST only; no persisted table/entity/tenant key or business obligation mutated; host preparation is documentation.",
+      "permissions": "Maintainer build/test authority; no new actor/resource read-write or production spending authority. No secrets or production rows used.",
+      "state_transitions": "Affected vulnerable install graph becomes tested patched graph; startup/provider investigation records observed failures and precise access blockers. No product state transition changed.",
+      "setup": "Recorded baseline 21f901b, clean package install, explicit synthetic fixtures and isolated PostgreSQL 16 / 18 existing migrations; independent minimal consuming host.",
+      "action": "Meaningful failing-first tests, patch, unchanged regression and independent source/artifact review; inspect actual GH/provider/configuration sources for staging preparation.",
+      "expected": "Record environment requirements and O18 options",
+      "observed": "Actual config/admin/origin/collection/runtime dependencies and Railway/portable-container O18 options documented. Independently verified issue41 OPEN and relevant official docs; no provider, budget or SLO adoption fabricated.",
+      "evidence_url": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; planning/task-evidence/T005-security-verification.json; docs/tasks/T005-staging-path.md; https://github.com/solana-hackathon-1/useRAID.fun/pull/174",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "environment": "Local macOS Node26/npm11, Linux arm64 Node 22.23.3 Docker, PostgreSQL16; versions/fixture and skip qualifications in verification register. Remote CI separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)"
+    }
+  },
+  "ci_qualification": "All required results use one push run, checkout29fc44e737a49b26b6043e945f0ea51373fe466c. Additional PRrun37652011700 tests its own synthetic merge and is separately qualified. Final report-only changes are not promoted to this candidate.",
+  "overall_completion_blockers": [
+    "T001 hard prerequisite historical C22/dependency/board completion not reconciled; no silent waiver",
+    "Actual provider adoption/deployment requires O18 and separate operating gates; this is not a deployed staging system"
+  ],
+  "independent_review_evidence": "docs/tasks/T005-review.md; planning/task-evidence/T005-review.json; final review separately confirms packet with exact push-head CI",
+  "completion_validator": {
+    "command": "python3 scripts/verify-raid-completion.py T005 planning/task-evidence/T005.json",
+    "exit_code": 0,
+    "observed": "Completion packet structure passes; independent evidence review accepted; validator does not enforce hard dependency graph or grant production authority"
+  }
+}
