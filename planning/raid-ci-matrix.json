@@ -24,6 +24,7 @@
     "tests/browser/security.spec.ts",
     "tests/creator-route.test.ts",
     "tests/db-guard.test.ts",
+    "tests/dependency-security.test.ts",
     "tests/deploy.test.ts",
     "tests/discovery-rows.test.ts",
     "tests/docs-links.test.ts",
@@ -569,6 +570,7 @@
       "existing_test_files": [
         "tests/browser-live/standalone.spec.ts",
         "tests/db-guard.test.ts",
+        "tests/dependency-security.test.ts",
         "tests/deploy.test.ts",
         "tests/env-example.test.ts",
         "tests/local-db.test.ts",

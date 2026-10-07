@@ -1,0 +1,136 @@
+{
+  "task_id": "T005",
+  "date": "2026-10-07",
+  "timezone": "Asia/Katmandu",
+  "base_sha": "21f901b6815207c55fa461d7173177ede2788a2f",
+  "source_candidate_sha": "36d99cfdd7755ac9c75d1007ff0b6c586c55ce00",
+  "acceptance_sha": "e035410aa835da8f3a1f302ddff4faf31855dba5",
+  "environment": {
+    "node": "26.0.0",
+    "npm": "11.12.1",
+    "host": "macOS arm64",
+    "CI": "Linux/Node22/PostgreSQL16 (candidate results pending)"
+  },
+  "tdd": {
+    "red": {
+      "sha": "44561a771b84041a0f054472371136b13f452dc8",
+      "command": "npx vitest run tests/dependency-security.test.ts --reporter=json",
+      "result": "FAIL",
+      "observed": {
+        "files": 1,
+        "passed": 4,
+        "failed": 7,
+        "skipped": 0,
+        "total": 11
+      },
+      "failures": "Five invalid offsets accepted; native SVG rsvg2.62.91 below fixed2.63.2; parsed prototype inherits isAdmin. Lockfile unchanged at RED."
+    },
+    "green": {
+      "sha": "f75fcecdd087cfcf822a3f2cb729f941fcd73109",
+      "command": "npx vitest run tests/dependency-security.test.ts tests/audit-check.test.ts --reporter=json",
+      "result": "PASS",
+      "observed": {
+        "files": 2,
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0,
+        "total": 14
+      }
+    },
+    "refactor": {
+      "sha": "36d99cfdd7755ac9c75d1007ff0b6c586c55ce00",
+      "command": "npx vitest run tests/dependency-security.test.ts tests/audit-check.test.ts --reporter=json",
+      "result": "PASS",
+      "observed": {
+        "files": 2,
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0,
+        "total": 14
+      },
+      "change": "Share JSON-RPC envelope fixture; assertions unchanged."
+    }
+  },
+  "regression": {
+    "sha": "f75fcecdd087cfcf822a3f2cb729f941fcd73109",
+    "command": "RUN_DB_TESTS=false DEMO_MODE=false DATABASE_URL=dedicated synthetic localhost npm test -- --reporter=json",
+    "result": "PASS_WITH_SKIPS",
+    "observed": {
+      "files": 54,
+      "passed": 293,
+      "failed": 0,
+      "skipped": 241,
+      "total": 534
+    },
+    "qualification": "54 actual test-result files; Vitest counts describe blocks separately.241 DB tests skipped; no local DB proof."
+  },
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "result": "PASS",
+      "qualification": "Initial new-test type check failed TS18048 optional rsvg; explicit fail-closed guard added without weakening behavioral assertion; subsequent type check passed."
+    },
+    {
+      "command": "npm run lint",
+      "result": "PASS",
+      "observed": "0 errors,24 preexisting warnings"
+    },
+    {
+      "command": "DEMO_MODE=true DATABASE_URL=synthetic localhost npm run build",
+      "result": "PASS",
+      "qualification": "Next demo build only; not a production DB/provider journey"
+    },
+    {
+      "command": "npm run audit:check",
+      "result": "FAIL",
+      "exit_code": 1,
+      "observed": ["high braces GHSA-vfj7-8cjw-p6xm: not allowlisted"],
+      "qualification": "Four of five original unallowlisted IDs removed; existing allowlist and gate unchanged."
+    }
+  ],
+  "versions": {
+    "next": "16.3.6 (unchanged)",
+    "web3": "1.99.0 (unchanged)",
+    "sharp": "0.35.5",
+    "sharp_native_libvips": "1.3.4",
+    "source-map-js": "1.2.2",
+    "jayson": "5.0.0 (scoped Web3 override)",
+    "stream-json": "removed from lockfile",
+    "braces": "3.0.3 (latest/no published patch)"
+  },
+  "source_integrity": {
+    "unchanged": "application/schema/migrations/allowlist/workflow/flags/SDK major/financialpolicy",
+    "library_only": "parseStream prototype regression does not establish prior Web3 HTTP exposure; consumed browser entry already usesJSON.parse"
+  },
+  "historical_startup": {
+    "run_id": 37451295316,
+    "sha": "c1fd87dde6420e4dba94086b4c676d20c992f7a9",
+    "result": "startup_failure",
+    "path": "BuildFailed",
+    "check_suite_id": 101442604495,
+    "jobs": 0,
+    "checks": 0,
+    "observed": "CLI suggests likely workflow-file issue; no exact compiler annotation/root cause available",
+    "qualification": "Current jobs execute; do not claim historical cause proven"
+  },
+  "cloudflare": {
+    "result": "NOT VERIFIED",
+    "observed": "No failure log/current Pages settings from inspected main status/check-runs endpoints; repo guides require moved root/watchpath and contain older personal connection",
+    "next": "Authorized operator inspects actual Pages build settings/logs and retests; no account/settings/DNS mutation"
+  },
+  "hosting": "O18 OPEN; only existing static/container/Railway configurations inventoried; no provider/budget/SLO/deployment adopted",
+  "ci": "Candidate workflow run and actual jobs pending publication",
+  "independent_review": "Bounded repair review pending; whole-task27criteria not accepted",
+  "planning_inventory_correction": {
+    "source_sha": "36d99cfdd7755ac9c75d1007ff0b6c586c55ce00",
+    "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+    "before": {
+      "passed": 26,
+      "failed": 1,
+      "observed": "test_ci_inventory_covers_every_current_test_file_and_epic: new dependency suite missing from matrix"
+    },
+    "change": "Add new suite to top-level test_files, E11 existing_test_files and corresponding CI guide; assertion unchanged.",
+    "after": "27 passed"
+  },
+  "initial_typecheck_log": "Initial TS18048 failure log only; it is not passing evidence. Later direct owner typecheck and independent source-candidate typecheck passed."
+}
