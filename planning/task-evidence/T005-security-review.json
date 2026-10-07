@@ -1,0 +1,319 @@
+{
+  "task_id": "T005",
+  "scope": "Independent bounded dependency security/consumed HTTP API review; not all-criterion completion review",
+  "reviewer": "/root/t001_independent_review (distinct Codex AG08 technical security/compatibility reviewer)",
+  "review_date": "2026-10-07",
+  "reviewed_source_sha": "36d99cfdd7755ac9c75d1007ff0b6c586c55ce00",
+  "baseline_sha": "21f901b6815207c55fa461d7173177ede2788a2f",
+  "reviewed_documentation_sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+  "bounded_change_verdict": "ACCEPT",
+  "whole_task_completion": "BLOCKED",
+  "completion_approval": false,
+  "t001_completion": "BLOCKED; T001 PR #172 remains docs-only; no dependency-graph policy edit authorized",
+  "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "requirements": [
+    "R15",
+    "R16",
+    "D01",
+    "D12",
+    "I05",
+    "I06",
+    "I09",
+    "I10",
+    "I11",
+    "I12",
+    "I13",
+    "AC67",
+    "AC68",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "authority": "AGENTS.md; unchanged canonical 00\u201304/13 plus adjacent identity 07/access 10/money 16, architecture 24/security 28/operations 30/testing 32, role 33/milestone 34/acceptance 35/completion 39/handoff 40 and task/reuse guide. Review grants no deployment, signer, treasury, UAT, business or release authority.",
+  "changes_observed": {
+    "source_map_js": "1.2.1\u21921.2.2",
+    "sharp": "0.35.4\u21920.35.5",
+    "sharp_prebuilt_libvips": "1.3.3\u21921.3.4",
+    "jayson": "4.3.0\u21925.0.0 scoped override under @solana/web3.js",
+    "removed": [
+      "stream-json 1.9.1",
+      "stream-chain 2.2.5",
+      "eyes",
+      "uuid 8.3.2",
+      "optional utf-8-validate"
+    ],
+    "unchanged": [
+      "Web3.js 1.99.0",
+      "Next 16.3.6",
+      "src application commands",
+      "Prisma schema/migrations",
+      "financial policy",
+      "audit allowlist/evaluator",
+      "checks.yml gate"
+    ]
+  },
+  "compatibility": {
+    "consumed_api": "Web3.js index.cjs.js imports jayson/lib/client/browser; createRpcClient supplies JSON string HTTP callback; actual app Connection consumers are server-side and use HTTP/RPC endpoints. No direct Jayson TCP/TLS production consumer found.",
+    "transport_identity": "JSON-RPC IDs are request-response correlation only; FinancialTx and claim/ledger semantic identities remain authoritative and unchanged. Native UUID source substitution supplies no payout-idempotency or asset/provider-authority proof.",
+    "HTTP_results": "Targeted Connection getBalance positive/error fixtures prove endpoint/finalized params/string correlation/single successful dispatch and RPC rejection. Reviewer-only raw HTTP malformed response and batch/custom/supplied ID checks passed. Single-dispatch assertion applies to successful fixture, not every retry; Web3.js unchanged 429 retry loop remains.",
+    "framing_change": "Jayson 5 TCP/TLS parseStream now requires configured delimiter (newline default); unframed concatenated JSON no longer works. Unterminated frame errors explicitly. This is a major breaking change outside current consumed HTTP path, not a universal compatible substitute.",
+    "host_contract": "Jayson 5 Node>=20; repository engines>=22.12, CI/Docker Node 22 and reviewer Node 26 satisfy it. Browser client needs native crypto.randomUUID/getRandomValues or injected generator; missing crypto fails. Unsupported hosts not certified.",
+    "stream_limit": "parseStream accumulates buffer/re-scans until delimiter and adds no maximum frame/input length; do not expose arbitrary untrusted TCP/TLS streams without host limits. No new server integration is delivered.",
+    "native_limit": "Local macOS arm64 rsvg 2.63.2/Sharp 0.35.5 and valid rasterization verified. Exact 6d118c7 Linux CI dependency suite 11 PASS also verifies its installed patched native decoder/fixture; Docker build/runtime smoke passes. These are not exploit execution or assurance of deployed/global-library hosts.",
+    "swap_and_recovery_limit": "Same endpoints/network/SDK kept. No production provider swap, chain effect, pending-operation drain, semantic payout replay, capacity, restore or G01\u2013G10 proof. Existing R15/R16 global coupling remains unverified."
+  },
+  "tddevidence": {
+    "red": {
+      "file": "/private/tmp/raid-t005-behavior-red.json",
+      "sha256": "562c860f799cb5307196f912bc9f4d52107563ad13deffd0081e4a18c1c526cd",
+      "reported_commit": "44561a771b84041a0f054472371136b13f452dc8",
+      "passed": 4,
+      "failed": 7,
+      "skipped": 0,
+      "total": 11,
+      "qualification": "Provided sanitized local raw result inspected independently; historical RED not rerun by reviewer or equated to CI."
+    },
+    "green": {
+      "file": "/private/tmp/raid-t005-behavior-green.json",
+      "sha256": "663e4e9c3fdeff8afde52a0e51bcc2e2e9b10e9dc5cbf7ed54301e6b9c093ca5",
+      "reported_commit": "f75fcecdd087cfcf822a3f2cb729f941fcd73109",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "total": 14,
+      "qualification": "Provided sanitized local raw result inspected independently; historical RED not rerun by reviewer or equated to CI."
+    },
+    "refactor": {
+      "file": "/private/tmp/raid-t005-refactor.json",
+      "sha256": "7f997d8ffbfc288435452ba0c123c0ed7baeb4b66ac71cc1cd0ce358e9969d42",
+      "reported_commit": "36d99cfdd7755ac9c75d1007ff0b6c586c55ce00",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "total": 14,
+      "qualification": "Provided sanitized local raw result inspected independently; historical RED not rerun by reviewer or equated to CI."
+    },
+    "regression": {
+      "file": "/private/tmp/raid-t005-regression.json",
+      "sha256": "47afeb6b3ac10306bced34c6cf150173ee432d4bd58076eb28a5850bfb092851",
+      "reported_commit": "f75fcecdd087cfcf822a3f2cb729f941fcd73109",
+      "passed": 293,
+      "failed": 0,
+      "skipped": 241,
+      "total": 534,
+      "qualification": "Provided sanitized local raw result/counts/digest inspected independently; GREEN execution SHA is owner attribution, not rerun by reviewer or equated to CI. 241 database tests were skipped locally; the later exact-candidate CI result is recorded separately."
+    }
+  },
+  "test_review": "Acceptance plan e035410 precedes RED 44561a7; RED adds tests only before lock override. Seven failures are intended offset validation (5), native decoder version (1), and inherited prototype (1); four baseline checks pass. GREEN leaves assertions intact, adding explicit missing-rsvg failure to satisfy typing. Refactor extracts response helper only. No expected financial/security outcome weakened. GREEN/REFACTOR 14=11 dependency tests + 3 audit-evaluator tests.",
+  "findings": [
+    {
+      "id": "T005-R01",
+      "status": "RESOLVED",
+      "priority": "P1",
+      "criterion": "C22/C16",
+      "observation": "At source 36d99cf new dependency-security test runs under Vitest but missing from CI matrix.test_files and epic ownership union. Independent Python planning 27 returns 26 pass/1 fail.",
+      "action": "Preserve E11 ownership and unchanged CI/test assertions.",
+      "resolution": "At documentation 6d118c7 new test is present in matrix.test_files and E11 existing_test_files; CI guide explicitly assigns E11/T005. Unchanged Python planning suite now 27 PASS."
+    },
+    {
+      "id": "T005-R02",
+      "status": "BLOCKED",
+      "priority": "P1",
+      "criterion": "C14/C22/A01",
+      "observation": "Fresh audit check exits 1 solely braces GHSA-vfj7-8cjw-p6xm. npm registry latest 3.0.3 and official advisory patched=None. Path is eslint-config-next\u2192Next ESLint plugin\u2192fast-glob\u2192micromatch\u2192braces.",
+      "action": "Keep security/aggregate gate failed; compatible reviewed patch/replacement or precise upstream blocker is still required. Dev-only path is no waiver."
+    },
+    {
+      "id": "T005-R03",
+      "status": "RESOLVED",
+      "criterion": "C16",
+      "observation": "Provided /private/tmp/raid-t005-typecheck.log contains old TS18048; fresh reviewer typecheck at source 36d99cf passes with explicit rsvg guard.",
+      "action": "Keep initial failure and later PASS provenance separate.",
+      "resolution": "At documentation 6d118c7 owner verification explicitly calls the initial log failure-only and documents the later guarded typecheck PASS. Reviewer independently observed current-source PASS."
+    }
+  ],
+  "core_criterion_observations": {
+    "C01": "Bounded prerequisite security repair plan is distinct from wider T005 hosting/history/options assignment; full scope incomplete.",
+    "C02": "No mainnet/gate/authority policy change; remaining security blocker retained, O18 unresolved.",
+    "C08/C10/C12": "No monetary/schema/permission command edits; RPC IDs are not semantic payout/claim IDs. Exact CI existing isolated real-DB suite passes; this is not full domain/program/provider/recovery or whole-criterion acceptance.",
+    "C14": "Patch behavior/consumed-API tests pass locally; security audit still fails, so entire criterion not accepted.",
+    "C16": "Historical raw results checked with digests; local DB skips retained as historical local evidence. Exact 6d118c7 CI artifact independently downloaded: 54 suites534 PASS0 SKIP0 FAIL; browser 131 PASS7 SKIP. Final documentation reviewed; later metadata commit CI not inferred.",
+    "C19": "Genuine local failing-first evidence supports this changed dependency slice; this is implementation work, not a non-code exception.",
+    "C20": "Consumed SDK replacement tested at deterministic HTTP boundary with explicit major limits; not full stable domain-port/provider substitution or live gate compliance.",
+    "C21": "No reusable new module extracted. Same-change dependency/host/limitations and runnable deterministic consumer documentation reviewed; no independent RAID host/whole feature R16 compliance claimed.",
+    "C22": "Inventory resolved with E11/T005 registration. Exact 6d118c7 planning/static/test/docker/browser SUCCESS; dependency-security FAIL and ci-gate FAIL solely braces. Browser 7 skips remain explicit and unverified; completion still blocked.",
+    "A01": "Four original nonallowlisted issues reduced through patches/removal; precise braces upstream blocker remains. Wider Actions/Cloudflare root-cause evidence belongs to owner full packet.",
+    "A02/W01/W02/W03": "Whole T005 hosting path/history/environment/O18 acceptance is not assessed or approved by this scoped security review."
+  },
+  "verification": [
+    {
+      "command": "npx vitest run tests/dependency-security.test.ts tests/audit-check.test.ts",
+      "result": "PASS",
+      "observed": "14 tests across 2 files; no network/provider dispatch."
+    },
+    {
+      "command": "npm run audit:check",
+      "result": "FAIL",
+      "exit_code": 1,
+      "observed": "Only high braces GHSA-vfj7-8cjw-p6xm remains unallowlisted."
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS",
+      "observed": "Fresh current candidate; provided earlier raw log remains failure."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "result": "INITIAL FAIL; CORRECTED PASS",
+      "observed": "At source 36d99cf27 tests/1 fail (inventory omission); final documentation 6d118c7 independent rerun 27 PASS without assertion/gate changes."
+    },
+    {
+      "command": "npm ls @solana/web3.js jayson source-map-js sharp stream-json --all; npm ls braces --all; npm view braces version --json",
+      "result": "PASS",
+      "observed": "Installed tree/candidate versions; braces latest 3.0.3. No installation or lockfile change."
+    },
+    {
+      "command": "Reviewer-only Node supplemental Jayson browser/stream/native-generator fixtures",
+      "result": "PASS",
+      "observed": "7 no-network checks: missing crypto failure, custom generator, provided ID, malformed HTTP error, one batch dispatch, unterminated frame rejection, two newline frames."
+    },
+    {
+      "command": "git diff --quiet base..candidate -- audit-allowlist.json scripts/audit-check.ts .github/workflows/checks.yml prisma src; git diff --check",
+      "result": "PASS",
+      "observed": "No application/schema/financial/audit/gate changes; whitespace clean."
+    },
+    {
+      "command": "Python raw TDD/regression JSON inspection/hash and historical git show/diff",
+      "result": "PASS",
+      "observed": "RED 11(7fail4 pass), GREEN/REFACTOR 14 pass, regression 293pass241skip0 fail; genuine test-first history and no assertion weakening."
+    },
+    {
+      "command": "Read final owner docs/evidence and git diff 36d99cf..6d118c7; JSON criterion/CI coverage inspection",
+      "result": "PASS",
+      "observed": "26 NOT VERIFIED+1 C22 FAIL across 27 criteria; no whole criterion reviewers; seven required CI checks NOT RUN at that historical documentation snapshot. E11/T005 matrix/docs registration verified. Source/test/dependencies/gate/allowlist unchanged; no invariant waiver or live/R15/R16 completion claim."
+    },
+    {
+      "command": "python3 scripts/verify-raid-completion.py T005 planning/task-evidence/T005.json",
+      "result": "EXPECTED REJECTION",
+      "exit_code": 1,
+      "observed": "Missing whole-task reviewer, seven unsuccessful/unverified CI checks,26 NOT VERIFIED criteria andC22 FAIL prevent completion."
+    },
+    {
+      "command": "npx vitest run tests/docs-links.test.ts tests/env-example.test.ts; npx prettier --check docs/tasks/T005-security-review.md planning/task-evidence/T005-security-review.json; Python nested-relative-link inspection",
+      "result": "PASS",
+      "observed": "52 documentation/environment tests passed; both reviewer files formatted; reviewer nested relative link resolves."
+    },
+    {
+      "command": "gh run view 37598806670 --json metadata/jobs; gh run view 37598806670 --log; gh api actions/artifacts/11471179360; gh run download 37598806670 -n vitest-database-results; Python XML/digest/count/checkout-log inspection",
+      "result": "VERIFIED MIXED CI",
+      "observed": "Exact push head/checkouts 6d118c7;5 required jobs SUCCESS/security+aggregate FAIL; independent XML 534 PASS0 SKIP0 FAIL; browser 131 PASS7 SKIP; artifact/contents digests verified."
+    },
+    {
+      "command": "Read-only owner four-file integration diff/JSON parity and nested-link inspection; gh pr view 173; GraphQL Project item readback; completion validator rerun",
+      "result": "PASS WITH EXPECTED COMPLETION REJECTION",
+      "observed": "Integration working tree retains all 27 dispositions (26 NOT VERIFIED + C22 FAIL), null whole reviewer, exact 6d118c7 CI links/counts/digests and bounded review attribution; later commit qualification explicit. All 24 checked owner Markdown relative links resolve. PR 173 OPEN/draft/stacked on T001; issue 47 OPEN, Project Blocked/CI Failed/coverage and evidence readback confirmed. Validator rejects missing whole reviewer, security/aggregate failure and pending/failing criteria only; no source changes or reruns."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+      "claim": "source-map-js 1.2.2 patched malformed indexed section offsets."
+    },
+    {
+      "url": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w",
+      "claim": "sharp 0.35.5 prebuilt supplies librsvg 2.63.2; global libraries require independent check."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/tedeh/jayson/v5.0.0/README.md",
+      "claim": "Official major release documents native crypto generator and TCP/TLS newline delimiter change."
+    },
+    {
+      "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+      "claim": "braces through 3.0.3 affected; no patched release listed."
+    },
+    {
+      "url": "https://github.com/advisories/GHSA-hqr4-qq8f-hg3x",
+      "claim": "JSONC parser path advisory; removal eliminates installed package without claiming actual HTTP path exploitation."
+    },
+    {
+      "url": "https://github.com/advisories/GHSA-mjw6-4jj6-33hc",
+      "claim": "Stream assembler prototype issue; bounded own-key regression supports replacement library parser behavior."
+    }
+  ],
+  "not_verified": [
+    "Acceptance of all 27 whole-task criteria (owner has 26 NOT VERIFIED+1 FAIL; scoped review does not promote them)",
+    "Whole Actions/Cloudflare/O18 hosting decision",
+    "Live provider/escrow/payout/restore/global capacity proof",
+    "UAT/business/owner release approval",
+    "Exact required CI on any subsequent metadata/review commit",
+    "Seven skipped browser paths and deployed/global native-library hosts"
+  ],
+  "next_actions": [
+    "Preserve all 27 whole-task pending/failing dispositions; link this review only as bounded dependency repair evidence.",
+    "Keep braces security blocker/T001 C22/T005 completion visible; resolve through a compatible independently reviewed patch/replacement or record precise upstream block.",
+    "Keep exact 6d118c7 CI evidence separate from later metadata candidates and retain browser 7 skips; new candidates require their own checks.",
+    "Complete Actions/Pages/hosting/O18 and owner-led sequencing evidence before whole-task review."
+  ],
+  "verdict_boundary": "ACCEPT applies only to the compatible partial dependency repair and accurate final documentation; it does not mean the security audit passed, certify all vulnerabilities resolved, or approve any complete T005/T001 criterion or release.",
+  "ci_review": {
+    "run_id": 37598806670,
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670",
+    "event": "push",
+    "head_sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+    "checkout_sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+    "checkout_confirmed_jobs": [
+      "planning-contracts",
+      "static",
+      "dependency-security",
+      "test",
+      "docker",
+      "browser"
+    ],
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": {
+      "planning-contracts": "SUCCESS",
+      "static": "SUCCESS",
+      "test": "SUCCESS",
+      "docker": "SUCCESS",
+      "browser": "SUCCESS",
+      "dependency-security": "FAILURE",
+      "ci-gate": "FAILURE"
+    },
+    "failure": "Audit reports only unallowlisted braces GHSA-vfj7-8cjw-p6xm; aggregate correctly rejects that required job.",
+    "database_tests": {
+      "suites": 54,
+      "passed": 534,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "new_dependency_suite": 11,
+      "artifact_id": 11471179360,
+      "artifact_digest": "sha256:9fbc3a16fef690a7d87b7bf29a0be7f4799041d8a1312a8a22ab71cb8aad2974",
+      "xml_sha256": "320bd9d79a5a4aeb4cf63de04cb4b55482154b5ef2a9e98a50ad731b95ad7f8d",
+      "independent_download_path": "/private/tmp/raid-t005-review-artifact-independent/vitest.xml"
+    },
+    "browser": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live_fixture_suite": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "total_passed": 131,
+      "total_skipped": 7,
+      "qualification": "Browser job success does not certify skipped paths or real external-provider/chain gates. Synthetic and isolated DB fixtures are not release or UAT authority."
+    },
+    "independent_log": {
+      "path": "/private/tmp/raid-t005-review-ci-independent.log",
+      "sha256": "4d3135aacbd439eaa029bf93a229bf630dea48ca4bf722a58ff879a4aa27123c"
+    },
+    "scope": "Only 6d118c7 exact-SHA CI is recorded; subsequent evidence/review metadata commits do not inherit these checks. Whole 27 criterion disposition/release approval remains untouched."
+  }
+}

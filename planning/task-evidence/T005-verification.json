@@ -9,7 +9,7 @@
     "node": "26.0.0",
     "npm": "11.12.1",
     "host": "macOS arm64",
-    "CI": "Linux/Node22/PostgreSQL16 (candidate results pending)"
+    "CI": "Exact 6d118c7 push: Linux/Node22/PostgreSQL16; five jobs SUCCESS, security/aggregate FAILURE"
   },
   "tdd": {
     "red": {
@@ -62,7 +62,7 @@
       "skipped": 241,
       "total": 534
     },
-    "qualification": "54 actual test-result files; Vitest counts describe blocks separately.241 DB tests skipped; no local DB proof."
+    "qualification": "54 actual test-result files; Vitest counts describe blocks separately. 241 local DB tests skipped; no local DB proof. Later exact 6d118c7 CI executes all 534 without skips."
   },
   "checks": [
     {
@@ -100,7 +100,7 @@
   },
   "source_integrity": {
     "unchanged": "application/schema/migrations/allowlist/workflow/flags/SDK major/financialpolicy",
-    "library_only": "parseStream prototype regression does not establish prior Web3 HTTP exposure; consumed browser entry already usesJSON.parse"
+    "library_only": "parseStream prototype regression does not establish prior Web3 HTTP exposure; consumed browser entry already uses JSON.parse"
   },
   "historical_startup": {
     "run_id": 37451295316,
@@ -119,8 +119,101 @@
     "next": "Authorized operator inspects actual Pages build settings/logs and retests; no account/settings/DNS mutation"
   },
   "hosting": "O18 OPEN; only existing static/container/Railway configurations inventoried; no provider/budget/SLO/deployment adopted",
-  "ci": "Candidate workflow run and actual jobs pending publication",
-  "independent_review": "Bounded repair review pending; whole-task27criteria not accepted",
+  "ci": {
+    "run_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670",
+    "run_id": 37598806670,
+    "event": "push",
+    "head_sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+    "checkout_sha_verified": true,
+    "conclusion": "FAILURE",
+    "jobs": {
+      "planning-contracts": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670/job/112717838995",
+        "sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66"
+      },
+      "static": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670/job/112717838978",
+        "sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66"
+      },
+      "dependency-security": {
+        "result": "FAILURE",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670/job/112717838621",
+        "sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+        "observed": "Only unallowlisted braces GHSA-vfj7-8cjw-p6xm remains; no added exception."
+      },
+      "test": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670/job/112717838981",
+        "sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+        "observed": {
+          "files": 54,
+          "passed": 534,
+          "failed": 0,
+          "skipped": 0,
+          "total": 534
+        }
+      },
+      "docker": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670/job/112717838939",
+        "sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66"
+      },
+      "browser": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670/job/112717839000",
+        "sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+        "observed": {
+          "passed": 131,
+          "skipped": 7,
+          "failed": 0,
+          "suites": {
+            "demo": {
+              "passed": 49,
+              "skipped": 1
+            },
+            "studio": {
+              "passed": 44,
+              "skipped": 0
+            },
+            "live": {
+              "passed": 38,
+              "skipped": 6
+            }
+          }
+        }
+      },
+      "ci-gate": {
+        "result": "FAILURE",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670/job/112720374485",
+        "sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+        "observed": "Correctly rejected dependency-security failure; no skipped jobs."
+      }
+    },
+    "artifact": {
+      "id": 11471179360,
+      "name": "vitest-database-results",
+      "archive_sha256": "9fbc3a16fef690a7d87b7bf29a0be7f4799041d8a1312a8a22ab71cb8aad2974",
+      "vitest_xml_sha256": "320bd9d79a5a4aeb4cf63de04cb4b55482154b5ef2a9e98a50ad731b95ad7f8d",
+      "files": 54,
+      "tests": 534,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "qualification": "All six checkout logs match head SHA. Later evidence/report integration commits need their own CI; this run is not a deployed host or live-provider gate. Seven browser skips remain visible."
+  },
+  "independent_review": {
+    "reviewer": "/root/t001_independent_review",
+    "verdict": "ACCEPT",
+    "scope": "Bounded four-advisory dependency repair and consumed HTTP compatibility only; no whole-task criterion or release acceptance",
+    "reviewed_source_sha": "36d99cfdd7755ac9c75d1007ff0b6c586c55ce00",
+    "reviewed_documentation_sha": "6d118c7d79104671e0ef266a26ddf9e52f22aa66",
+    "report": "docs/tasks/T005-security-review.md",
+    "machine_report": "planning/task-evidence/T005-security-review.json",
+    "whole_task": "BLOCKED"
+  },
   "planning_inventory_correction": {
     "source_sha": "36d99cfdd7755ac9c75d1007ff0b6c586c55ce00",
     "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
@@ -132,5 +225,50 @@
     "change": "Add new suite to top-level test_files, E11 existing_test_files and corresponding CI guide; assertion unchanged.",
     "after": "27 passed"
   },
-  "initial_typecheck_log": "Initial TS18048 failure log only; it is not passing evidence. Later direct owner typecheck and independent source-candidate typecheck passed."
+  "initial_typecheck_log": "Initial TS18048 failure log only; it is not passing evidence. Later direct owner typecheck and independent source-candidate typecheck passed.",
+  "project_readback": {
+    "url": "https://github.com/orgs/solana-hackathon-1/projects/1",
+    "item_id": "PVTI_lADOFC4ies4Bl6XMzg-3ObU",
+    "readback_issue_state": "OPEN",
+    "fields": {
+      "Status": "Blocked",
+      "Completion review": "Blocked",
+      "CI status": "Failed",
+      "Criteria coverage": "27 criteria recorded; 0 whole-task accepted, 26 NOT VERIFIED, C22 FAIL. Bounded four-advisory repair independently ACCEPTED; whole task BLOCKED.",
+      "Evidence": "Draft PR https://github.com/solana-hackathon-1/useRAID.fun/pull/173; scoped review docs/tasks/T005-security-review.md; exact 6d118c7 CI https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670: 534 tests passed, browser 131 passed/7 skipped, security/aggregate FAIL solely braces. T001 dependency, historical startup/Pages, O18/operator evidence remain open.",
+      "Blocked reason": "T001 #43 completion/C22 remains blocked; scoped repair removes four original advisories, braces GHSA-vfj7-8cjw-p6xm has no patch. Whole-task criteria, historical startup/Pages logs and O18 hosting/operator evidence remain pending; native dependency unchanged.",
+      "CI evidence": "Exact push candidate 6d118c7d79104671e0ef266a26ddf9e52f22aa66: planning/static/test/docker/browser SUCCESS; 534 unit/DB passed, 131 browser passed/7 skipped; dependency-security FAIL solely braces and ci-gate FAIL. https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37598806670 . Later evidence commits need their own checks; no deployment/whole-task acceptance.",
+      "Actual start": "2026-10-07"
+    }
+  },
+  "completion_validator": {
+    "command": "python3 scripts/verify-raid-completion.py T005 planning/task-evidence/T005.json",
+    "expected": "REJECTION: missing whole-task reviewer, 26 NOT VERIFIED criteria, C22 FAIL, dependency-security and ci-gate FAILURE",
+    "result": "EXPECTED REJECTION (exit 1): missing whole-task reviewer; security/aggregate failure; 26 NOT VERIFIED and C22 FAIL"
+  },
+  "integration_checks": {
+    "scope": "Later evidence integration working tree only; no inherited exact-SHA remote result",
+    "planning": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "passed": 27,
+      "failed": 0
+    },
+    "documentation_environment": {
+      "command": "npx vitest run tests/docs-links.test.ts tests/env-example.test.ts",
+      "passed": 52,
+      "failed": 0,
+      "skipped": 0
+    },
+    "nested_document_file_targets": {
+      "files": [
+        "docs/tasks/T005-plan.md",
+        "docs/tasks/T005-security.md",
+        "docs/tasks/T005-security-review.md"
+      ],
+      "checked": 17,
+      "result": "PASS",
+      "qualification": "File existence only; no remote URL or anchor assertion"
+    },
+    "formatting": "Prettier passed for owner evidence/docs and independently authored reviewer files; git diff --check passed"
+  }
 }
