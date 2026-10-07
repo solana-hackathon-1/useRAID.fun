@@ -434,5 +434,83 @@
     "authorized deployed-data policy/obligation audit",
     "real provider/chain/live gates"
   ],
-  "independent_review": null
+  "independent_review": null,
+  "source_sha_qualification": "Original local checks at acceptance-plan commit; application source equals unchanged baseline. Current PR CI is separately qualified below.",
+  "candidate_ci": {
+    "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+    "checkout_sha": "d0831669c2631ce244f228a3594631f0ac367099",
+    "event": "pull_request",
+    "run_id": 37594062183,
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183",
+    "result": "FAILURE",
+    "qualification": "Run tests the synthetic PR merge of the recorded head into unchanged baseline. Later documentation commits require their own checks; this run cannot verify them.",
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551632"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551914"
+    },
+    "dependency-security": {
+      "result": "FAILURE",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551850"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551917"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702552271"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551888"
+    },
+    "ci-gate": {
+      "result": "FAILURE",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112704732620"
+    },
+    "unit_database": {
+      "files": 53,
+      "passed": 523,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "artifact_name": "vitest-database-results",
+      "artifact_id": 11469549503,
+      "artifact_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/artifacts/11469549503",
+      "sha256": "570fa719927ac1490ca2d3df6d944eb8fcf170d6eac3abc74cb480134ab29720"
+    },
+    "browser_counts": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio_desktop_mobile": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live_fixture_suite": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "qualification": "Job log counts. Seven browser skips remain; job success does not prove skipped scenarios or actual external live-provider release gates. Only unit/database XML was available in the run artifact API."
+    }
+  }
 }

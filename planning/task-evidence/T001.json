@@ -33,7 +33,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "M0 inventory only; source and compatibility register delivered; no behavior changed.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -51,7 +51,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Classifications retained separately; source choices do not settle O01\u2013O19.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -69,7 +69,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "35 actual models, 18 migrations; IDs/FKs/uniques/history and absent canonical models recorded.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -87,7 +87,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Actor/resource/state map and missing scoped permissions recorded; no changed read/write.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -105,7 +105,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Campaign/funding/tracking/transfer states kept distinct; new work states absent.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -123,7 +123,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Per-campaign enrollment does not enforce canonical participant capacity; no reservations changed.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -141,7 +141,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Financial freeze is partial; no full work terms/amendment model; historical policy must be audited.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -159,7 +159,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Exact legacy SOL/USDC amounts, asset/network and payout snapshots identified; no money changed; live totals unavailable.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -177,7 +177,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Public media boundary and own-record filters identified; no confidential subsystem claimed.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -195,7 +195,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Semantic keys and missing changed-payload digest conflict documented.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -213,7 +213,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Lock domains and race targets identified; 241 DB tests explicitly skipped; no in-memory race proof.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -231,7 +231,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Signed bytes/validity/reconcile paths and missing generic generation/restore evidence recorded.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -249,7 +249,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "No UI change; baseline contains UI/helper tests; browser/mobile/accessibility not executed.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -267,7 +267,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Origin/nonce/allowlist/input/image boundaries identified; dependency audit failure retained.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -285,7 +285,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Flags/runbooks/constraints and absent live/restore/operator evidence recorded; no live gate granted.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -301,9 +301,9 @@
       "setup": "T001-plan.md acceptance-first commit c36e21fc8fc8ca88fa93cab85febd274f7c86697; unchanged source baseline; dependency install from lockfile",
       "action": "Inspect named source/migrations and record actual verification within T001 boundary",
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
-      "observed": "Actual source SHA, environment, executed/skipped counts, audit failures and historical distinct-SHA CI recorded.",
+      "observed": "Actual source SHA, environment, executed/skipped counts, audit failures and historical distinct-SHA CI recorded. Candidate CI run 37594062183 tests synthetic merge d083166 of head bec32c5: 523 unit/DB tests pass, browser 131 pass/7 skip; security and aggregate gate fail.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -321,7 +321,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "No user-facing release delivered; UAT/sign-off exclusion proposed for this documentation boundary, not approved.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -339,7 +339,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Changed docs/evidence, gaps, no schema/API/events, rollback limits and exact T002/T003/T004 next steps recorded.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -355,9 +355,9 @@
       "setup": "T001-plan.md acceptance-first commit c36e21fc8fc8ca88fa93cab85febd274f7c86697; unchanged source baseline; dependency install from lockfile",
       "action": "Inspect named source/migrations and record actual verification within T001 boundary",
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
-      "observed": "Inventory links inspected files and observed test results, distinguishes intended/actual/live behavior.",
+      "observed": "Inventory links inspected files and observed test results, distinguishes intended/actual/live behavior. Candidate CI run 37594062183 tests synthetic merge d083166 of head bec32c5: 523 unit/DB tests pass, browser 131 pass/7 skip; security and aggregate gate fail.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -375,7 +375,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Additive mapping/drain/freeze/preserved amounts/receipts/consents; no invented historical data.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -393,7 +393,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Schema, migration families, source, CI, flags and prior docs/run inspected.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -411,7 +411,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Participant/Guild/terms/work/money/access equivalents, reuse candidates and absent contracts listed.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -429,7 +429,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Persisted obligation fields/policy versions identified. Deployed amounts and version distributions NOT VERIFIED; authorized audit required before migration.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -447,7 +447,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Acceptance committed before inventory; documentation-only exception proposed, independent reviewer unassigned; no fabricated coding RED/GREEN.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -465,7 +465,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Concrete global/vendor coupling and pinned-operation preservation documented; no module/adapter delivered or substitution claimed.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -483,7 +483,7 @@
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
       "observed": "Host dependencies and absent independent consuming examples recorded; feature documentation/reuse remains future task duty.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -499,9 +499,9 @@
       "setup": "T001-plan.md acceptance-first commit c36e21fc8fc8ca88fa93cab85febd274f7c86697; unchanged source baseline; dependency install from lockfile",
       "action": "Inspect named source/migrations and record actual verification within T001 boundary",
       "expected": "Evidence-backed inventory and preservation path; gaps remain explicit",
-      "observed": "Existing checks/results/discovery and missing DB/provider/browser evidence recorded; candidate CI/independent boundary review pending.",
+      "observed": "Run 37594062183: planning/static/test/docker/browser jobs SUCCESS at recorded synthetic merge; 523 unit/DB tests pass, 131 browser pass/7 skip. dependency-security and ci-gate FAILURE; C22 cannot pass. Security repair remains T005; later evidence commits have no result from this run.",
       "evidence_url": "docs/tasks/T001-inventory.md; planning/task-evidence/T001-verification.json",
-      "sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+      "sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
       "environment": "local macOS; Node 26/Python 3.12; no deployed-data audit",
       "reviewer": null,
       "disposition": "Await independent review; any non-code exclusion requires reviewer acceptance"
@@ -520,15 +520,82 @@
   },
   "verification_evidence": "planning/task-evidence/T001-verification.json",
   "ci": {
-    "candidate": "NOT RUN YET; historical CI is not this candidate",
-    "required_checks": [
-      "planning-contracts",
-      "static",
-      "dependency-security",
-      "test",
-      "docker",
-      "browser",
-      "ci-gate"
-    ]
-  }
+    "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+    "checkout_sha": "d0831669c2631ce244f228a3594631f0ac367099",
+    "event": "pull_request",
+    "run_id": 37594062183,
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183",
+    "result": "FAILURE",
+    "qualification": "Run tests the synthetic PR merge of the recorded head into unchanged baseline. Later documentation commits require their own checks; this run cannot verify them.",
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551632"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551914"
+    },
+    "dependency-security": {
+      "result": "FAILURE",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551850"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551917"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702552271"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112702551888"
+    },
+    "ci-gate": {
+      "result": "FAILURE",
+      "sha": "d0831669c2631ce244f228a3594631f0ac367099",
+      "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/job/112704732620"
+    },
+    "unit_database": {
+      "files": 53,
+      "passed": 523,
+      "skipped": 0,
+      "failed": 0,
+      "errors": 0,
+      "artifact_name": "vitest-database-results",
+      "artifact_id": 11469549503,
+      "artifact_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183/artifacts/11469549503",
+      "sha256": "570fa719927ac1490ca2d3df6d944eb8fcf170d6eac3abc74cb480134ab29720"
+    },
+    "browser_counts": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio_desktop_mobile": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live_fixture_suite": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "qualification": "Job log counts. Seven browser skips remain; job success does not prove skipped scenarios or actual external live-provider release gates. Only unit/database XML was available in the run artifact API."
+    }
+  },
+  "inventory_candidate_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+  "inspected_application_sha": "9fd686207da5e20d1e233b863dc736c28a55062d"
 }
