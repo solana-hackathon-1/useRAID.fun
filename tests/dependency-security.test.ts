@@ -55,7 +55,9 @@ describe('installed dependency security boundaries', () => {
   });
 
   it('ships the native SVG security patch and rasterizes a valid fixture', async () => {
-    const native = sharp.versions.rsvg.split('.').map(Number);
+    const version = sharp.versions.rsvg;
+    if (!version) throw new Error('Required native SVG decoder is unavailable');
+    const native = version.split('.').map(Number);
     const minimum = [2, 63, 2];
     const difference = native.findIndex((part, index) => part !== minimum[index]);
     expect(difference === -1 || native[difference] > minimum[difference]).toBe(true);

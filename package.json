@@ -61,7 +61,10 @@
     "vitest": "^4.1.11"
   },
   "overrides": {
-    "deepmerge-ts": "^8.0.0"
+    "deepmerge-ts": "^8.0.0",
+    "@solana/web3.js": {
+      "jayson": "5.0.0"
+    }
   },
   "type": "module",
   "engines": {
