@@ -434,7 +434,7 @@
     "authorized deployed-data policy/obligation audit",
     "real provider/chain/live gates"
   ],
-  "independent_review": null,
+  "independent_review": "planning/task-evidence/T001-review.json",
   "source_sha_qualification": "Original local checks at acceptance-plan commit; application source equals unchanged baseline. Current PR CI is separately qualified below.",
   "candidate_ci": {
     "candidate_head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
@@ -511,6 +511,55 @@
         "skipped": 6
       },
       "qualification": "Job log counts. Seven browser skips remain; job success does not prove skipped scenarios or actual external live-provider release gates. Only unit/database XML was available in the run artifact API."
+    }
+  },
+  "post_review_completion_validation": {
+    "command": "python3 scripts/verify-raid-completion.py T001 planning/task-evidence/T001.json",
+    "exit_code": 1,
+    "result": "REJECTED_BLOCKED",
+    "observed": "T001-C22: FAIL prevents completion",
+    "qualification": "All27 dispositions independently reviewed at acc0250 and attributed; rejected only remaining failure, not task completion or a fabricated TDD RED."
+  },
+  "project_sync": {
+    "result": "PASS",
+    "date": "2026-10-07",
+    "issue": 43,
+    "issue_state": "OPEN",
+    "fields": {
+      "Status": "Blocked",
+      "Completion review": "Blocked",
+      "CI status": "Failed",
+      "Criteria coverage": "27/27 independently assessed at acc025085dda867bdd21c570a6825fefe8bc5088: 12 PASS, 14 bounded NOT APPLICABLE, 1 FAIL (C22). Not Done.",
+      "Evidence": "Draft PR https://github.com/solana-hackathon-1/useRAID.fun/pull/172; review docs/tasks/T001-review.md and planning/task-evidence/T001-review.json; required-security failure https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37595545285/job/112707163396. Static inventory accepted; T001/T005 sequencing unresolved; T003 deployed-data pre-migration gate retained."
+    },
+    "observed": "GraphQL update responses and subsequent read-back verify exact issue and all five fields."
+  },
+  "review_integration_verification": {
+    "base_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+    "scope": "Local report-integration working tree, including reviewer-authored files; not remote CI for final commit",
+    "docs_environment_tests": {
+      "passed": 52,
+      "files": 2,
+      "skipped": 0
+    },
+    "independent_criterion_parity": {
+      "criteria": 27,
+      "exclusion_rationales": 14,
+      "result": "PASS"
+    },
+    "nested_task_document_paths": {
+      "documents": 3,
+      "result": "PASS",
+      "qualification": "Relative paths only; no new anchor/remote availability claim"
+    },
+    "formatting": {
+      "files": 7,
+      "result": "PASS"
+    },
+    "whitespace": "PASS",
+    "completion_validator": {
+      "exit_code": 1,
+      "observed": "T001-C22: FAIL prevents completion"
     }
   }
 }
