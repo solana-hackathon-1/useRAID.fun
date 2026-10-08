@@ -285,5 +285,12 @@
     "forward_t006_migration_executed": false,
     "pre_review_checkpoint": "TEST_BASELINE_PREPARED; independent target acceptance NOT REVIEWED",
     "independent_review_evidence": "planning/task-evidence/T006-target-review.json"
+  },
+  "storage_proposal": {
+    "result": "PROPOSED / NOT REVIEWED; 2 expected unit guard failures / 11 passes; GREEN absent",
+    "evidence_url": "docs/tasks/T006-storage-handoff.md",
+    "verification_record": "planning/task-evidence/T006-storage-plan-verification.json",
+    "proposed_ddl_executed": false,
+    "runtime_changed": false
   }
 }

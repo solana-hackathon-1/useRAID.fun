@@ -1,0 +1,126 @@
+{
+  "task_id": "T006",
+  "scope": "Proposed HUMAN mapping/legacy guard foundation; no implementation or DDL activation",
+  "status": "CONTRACT_PROPOSED / INDEPENDENT REVIEW PENDING",
+  "baseline_sha": "71fe95a4db69d8991ae394eda9fde8c05bc77575",
+  "acceptance_and_red_test_sha": "49ee01ad4a0556d452851ccbff643a89ae20e0c3",
+  "implementer": "Codex AG03, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+  "reviewer": "NOT ASSIGNED; explicit delegation authorization pending",
+  "acceptance_plan": "docs/tasks/T006-storage-plan.md",
+  "migration_proposal": "planning/migration-proposals/T006-participant.sql",
+  "proposal_executed": false,
+  "runtime_changed": false,
+  "prisma_schema_or_applied_migrations_changed": false,
+  "test_proposal": "planning/migration-proposals/T006-account-merge.red.test.ts",
+  "test_proposal_sha256": "af6c21d6ab0e7435fe391007ad6bbc1a512194d37235de35d5efc140655bf299",
+  "red": {
+    "command": "npm exec -- vitest run --config /tmp/raid-t006-storage-plan/vitest.red.config.mjs --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-storage-plan/red.xml",
+    "sha": "49ee01ad4a0556d452851ccbff643a89ae20e0c3",
+    "result": "FAIL",
+    "exit": 1,
+    "passed": 11,
+    "failed": 2,
+    "errors": 0,
+    "skips": 0,
+    "expected_failure": "Mapped otherwise-empty account is considered empty, and old absorption fails to reject before mutations",
+    "observed_failures": [
+      "T006 planned canonical references protect legacy absorption decisions > a canonical HUMAN mapping makes an otherwise legacy-empty account nonempty",
+      "T006 planned canonical references protect legacy absorption decisions > refuses mapped-account absorption before any credential/session/account/event mutation"
+    ],
+    "evidence_url": "planning/migration-proposals/T006-account-merge.red.test.ts",
+    "log_sha256": "9e825d4eb987f4cca3777214314481d892cdadecfdebd2efbf70fae7c0c43c20",
+    "junit_sha256": "ad68b7943a6f2970eeb738f8e3060237f9d7b662ce80e806a08ca5ce20aecf0d",
+    "environment": "Vitest 4.1.11 / node v26.0.0; UNIT trusted synthetic future-reference observation; no DB or provider called",
+    "assurance_limit": "Only existing legacy guard/absorption decisions reproduced; does not prove new FK, persisted identity, actual financial preservation or DB races"
+  },
+  "green": {
+    "result": "NOT VERIFIED",
+    "reason": "Implementation and proposed DDL await independent contract/migration review"
+  },
+  "refactor": {
+    "result": "NOT VERIFIED",
+    "reason": "No GREEN implementation delivered"
+  },
+  "draft_suite_execution": "Explicit proposed RED suite outside normal tests/ discovery until reviewed GREEN; unchanged assertions must be promoted into product CI with implementation. No full-task PASS/exclusion follows normal CI passing.",
+  "migration_sha256": "2a795d1e97c1b76ea5fe6bce45821ad56127a0c0dd619956107443b08b1f0a36",
+  "full_task_criteria": {
+    "T006-C01": "NOT VERIFIED",
+    "T006-C02": "NOT VERIFIED",
+    "T006-C03": "NOT VERIFIED",
+    "T006-C04": "NOT VERIFIED",
+    "T006-C05": "NOT VERIFIED",
+    "T006-C06": "NOT VERIFIED",
+    "T006-C07": "NOT VERIFIED",
+    "T006-C08": "NOT VERIFIED",
+    "T006-C09": "NOT VERIFIED",
+    "T006-C10": "NOT VERIFIED",
+    "T006-C11": "NOT VERIFIED",
+    "T006-C12": "NOT VERIFIED",
+    "T006-C13": "NOT VERIFIED",
+    "T006-C14": "NOT VERIFIED",
+    "T006-C15": "NOT VERIFIED",
+    "T006-C16": "NOT VERIFIED",
+    "T006-C17": "NOT VERIFIED",
+    "T006-C18": "NOT VERIFIED",
+    "T006-A01": "NOT VERIFIED",
+    "T006-A02": "NOT VERIFIED",
+    "T006-W01": "NOT VERIFIED",
+    "T006-W02": "NOT VERIFIED",
+    "T006-W03": "NOT VERIFIED",
+    "T006-C19": "NOT VERIFIED",
+    "T006-C20": "NOT VERIFIED",
+    "T006-C21": "NOT VERIFIED",
+    "T006-C22": "NOT VERIFIED"
+  },
+  "remaining_requirements": [
+    "Named independent proposed contract/actual SQL review before DDL",
+    "Verify same reviewed synthetic baseline in any disposable test copy",
+    "Real DB RED/GREEN for FK/uniqueness/immutable provenance/creation-vs-deletion-or-merge races",
+    "Stable public store plus host transaction adapter, minimal installed DB consumer and regression evidence",
+    "Full second-wallet/auth/capacity/claims-preservation scope, all 27 criteria and applicable operating/UAT gates"
+  ],
+  "recorded_at": "2026-10-08T14:38:29.902757+00:00",
+  "handoff": "docs/tasks/T006-storage-handoff.md",
+  "storage_acceptance_points": {
+    "P01": "NOT VERIFIED",
+    "P02": "NOT VERIFIED",
+    "P03": "NOT VERIFIED",
+    "P04": "NOT VERIFIED",
+    "P05": "NOT VERIFIED",
+    "P06": "NOT VERIFIED",
+    "P07": "NOT VERIFIED",
+    "P08": "NOT VERIFIED"
+  },
+  "preparation_regression": {
+    "unit_preflight_documentation_consumer_tests": {
+      "command": "npm test -- tests/raid-evidence.test.ts tests/docs-links.test.ts tests/identity-preflight.test.ts tests/identity-preflight-boundary.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-storage-plan/regression.xml",
+      "passed": 123,
+      "suites": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "planning_tests": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "passed": 27
+    },
+    "typecheck": "PASS",
+    "format_check": "PASS",
+    "changed_file_links": "PASS",
+    "original_schema_and_18_sql_hashes": "UNCHANGED",
+    "full_task_completion_validator": {
+      "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+      "exit": 1,
+      "diagnostics": 27,
+      "all_full_criteria_unverified": true
+    },
+    "log_sha256": {
+      "regression.xml": "d14c6acbdea5f1b43d5c07ec575f72934fb693a38008d2fe0f64797a987b93a1",
+      "regression.log": "6396652c7da1b7788824170cbb60fa68cb79316448916c23edf6b3637ae8c912",
+      "planning.log": "c34c9f6f3f7303702def3c593f220cb84ff6a897c913fcc8ca8121b9ac0e2222",
+      "typecheck.log": "835b274db8452ebea4e6ff39051074f58874736c2105d60f4e0fe89d1554fac9",
+      "format.log": "90d7aedd45dcf8886a952057501828c717a146ab5b1235a8a8337e7131f716b0",
+      "completion.log": "44bd125b82f57251819ebde7b3eca33c9a609a5ef10d22d90bf8bd5b0e50d228"
+    }
+  }
+}
