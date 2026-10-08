@@ -1,0 +1,224 @@
+{
+  "task_id": "T006",
+  "scope": "Pure identity preflight and runtime observation schemas only; not integrated authentication or persistence",
+  "status": "IN_PROGRESS / NOT VERIFIED",
+  "implementer": "Codex primary readiness author",
+  "reviewer": null,
+  "baseline_sha": "54c9c5555e56ffce3da7e350744e036c46707c08",
+  "code_source_sha": "eb9ffb5cbcf33575c67ed99008754dcdaebd00e3",
+  "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "handoff": "docs/tasks/T006-contract-evidence.md#scope-retained-gaps-and-next-step",
+  "migration_rollback": "No schema/migration, storage execution or app wiring. Remove unused pure module/example/tests/docs/inventory; no external-state reversal implied.",
+  "dependency_evidence": [
+    "T002 shared contract source reused unchanged",
+    "T003 target-specific execution gate remains required",
+    "T004 synthetic support and T006 original independently reviewed readiness/rehearsal only"
+  ],
+  "open_decisions": [
+    "O11 identity/recovery/deletion retention remains unresolved",
+    "O05/O06/O07 treasury/custody authority remains separate",
+    "O18/O19 actual target durability and operating ownership not supplied"
+  ],
+  "release_gate_disposition": "No live gate passed; no new auth/persistence/deployment enabled. App not deployed per owner.",
+  "tdd": {
+    "red": {
+      "command": "npm test -- tests/identity-preflight.test.ts",
+      "sha": "1f92fd3513daa203f7f0af83e8c0d42f0a8bbcf8",
+      "expected_failure": "Behavior shell lacks canonical-preserving proposal and required denial reasons.",
+      "observed_failure": "47 executed assertion failures.",
+      "result": "FAIL",
+      "evidence_url": "docs/tasks/T006-contract-evidence.md#actual-test-first-evidence"
+    },
+    "green": {
+      "command": "npm test -- tests/identity-preflight.test.ts tests/identity-preflight-boundary.test.ts",
+      "sha": "659b8ff4843f02297e6b46ef49036787d5894a4d",
+      "observed": "49 pass, zero skips; exact subject-bound ownership and synthetic consuming host.",
+      "result": "PASS",
+      "evidence_url": "docs/tasks/T006-contract-evidence.md#actual-test-first-evidence"
+    },
+    "refactor": {
+      "command": "npm test -- tests/identity-preflight.test.ts tests/identity-preflight-boundary.test.ts; selected existing regression suites",
+      "sha": "eb9ffb5cbcf33575c67ed99008754dcdaebd00e3",
+      "observed": "49 new tests pass, zero skips; mixed regression run 209 pass/34 existing real-DB finance cases skipped; no storage verification inferred.",
+      "result": "PASS",
+      "evidence_url": "docs/tasks/T006-contract-evidence.md#actual-test-first-evidence"
+    }
+  },
+  "environment": {
+    "kind": "LOCAL_SYNTHETIC",
+    "node": "v26.0.0",
+    "vitest": "4.1.11",
+    "typescript": "5.9.3",
+    "zod": "4.6.5",
+    "bs58": "6.0.0",
+    "tsx": "4.23.15"
+  },
+  "criteria": {
+    "T006-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    },
+    "T006-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task storage/auth/permission/race/operations/review evidence remains absent. Bounded preflight evidence does not complete this criterion."
+    }
+  },
+  "bounded_verification": {
+    "preflight_tests": {
+      "passed": 49,
+      "failed": 0,
+      "skipped": 0
+    },
+    "mixed_regressions": {
+      "passed": 209,
+      "skipped": 34,
+      "skip_boundary": "Existing real-DB rewards-finance suite; no local DB execution claimed"
+    },
+    "planning": {
+      "passed": 27
+    },
+    "typecheck": "PASS",
+    "lint": {
+      "exit": 0,
+      "errors": 0,
+      "existing_warnings": 24
+    },
+    "independently_installed_host": "PASS with explicit pinned dependencies and minimal environment; not independent review",
+    "final_docs_links": "PASS; existing top-level documentation suite; separate 3 changed document local paths also resolve"
+  },
+  "log_sha256": {
+    "independent-install.log": "2c13a071504f7024639631b7713ed13d9f324f1fb02fcf7f6eab1532265067e9",
+    "refactor-regression.log": "8dd22dbb5f528e1ed5b3cb73c0fa99410090966b85773c4370927e69b3eed4dc",
+    "ownership-red.log": "5927124469a4f1a0b8d6a0c13b7be4a9bca44940d3a499a8bc6638651e6ed60c",
+    "independent-host-output.log": "0725c91dadf87fdcce509a495fc6211f44500a56942256841ab0adfcfc4969e3",
+    "planning.log": "f23065611433518f1b757d2207f6591a013cfe375b5a1ba755ea2d651189136d",
+    "red.log": "80f2b47b41674f7a5a2cecd3a354adda718455de0d0e8d6508f4d0df5228269b",
+    "lint.log": "41af9e79c7d37f38f5ebfed5562601c6e0e779f9dd4d90665ed0fd4fe473176e",
+    "host-red.log": "9213bc6d093aa807edaafe3d1a69744e7491f150f18f7635628c493973e03ffd",
+    "green.log": "aa4966ac20b60ebdcc515bd1cdfaba22f45121c497d7ff40af77c74762f955cc",
+    "typecheck.log": "835b274db8452ebea4e6ff39051074f58874736c2105d60f4e0fe89d1554fac9",
+    "host-ownership-green.log": "e7e0cdb6675afe1f616db411340f6637f7406da3b644985326bf4561f7426e33",
+    "planning-green.log": "33abc81953b754022d201dd87c5b37bb020e22515d7a2775683d353e27414611",
+    "preflight.xml": "90d86c8b91fbda94b26b719c65cd91754d287b8e27fe74e0dc05ecf99e14c6e6",
+    "final-preflight.log": "27aaa2458dd11ea0d2aa8b8bf35633273ac35f46b32449db80283417d8bd2ea9",
+    "completion.log": "ada5b74cdc819e606596ead090e1833cfc8e24ef125918b390c8f626c981fbba",
+    "final-docs-links.log": "a8e1999b690bfc2d8a0611658c3025745d0464c62725c37a165ee86981e9b06a"
+  },
+  "independent_review": {
+    "result": "NOT REVIEWED",
+    "scope_note": "Original readiness/rehearsal review does not accept this new code"
+  },
+  "ci": {
+    "result": "NOT VERIFIED",
+    "note": "Exact final-head seven-check result will be tracked on the draft PR; previous PR CI does not verify this code"
+  },
+  "completion_validator": {
+    "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+    "exit": 1,
+    "diagnostics": 35,
+    "unverified_criterion_diagnostics": 27,
+    "missing_independent_reviewer": true,
+    "unverified_required_ci_checks": 7,
+    "observed": "Rejected full task: all 27 criteria, independent reviewer and 7 exact-head CI checks absent."
+  }
+}
