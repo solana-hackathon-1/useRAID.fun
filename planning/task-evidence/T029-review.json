@@ -1,0 +1,785 @@
+{
+  "task_id": "T029",
+  "review_status": "ACCEPTED WITH CONDITIONS",
+  "review_date": "2026-10-09",
+  "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+  "independence": "Separate agent that did not write or modify the implementation; reviewed the exact PR files, re-ran all verification on its own disposable database and applied its own mutations (all restored byte-for-byte). Technical source/evidence review only; no UAT, business, release or production authority; no merge, issue or board change.",
+  "reviewed_sha": "86a5b8ded064fc038a25b1e2b11de4983db68598",
+  "source_candidate_sha": "01845840af6292b31f50d9e0eafa981194986931",
+  "baseline_sha": "101348a0e65454ec705be17b54c3ecc29801eede",
+  "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/181",
+  "scope": "M4 foundation: exact asset identity, separately versioned policy snapshots, bounded bigint amount arithmetic, reward-bundle funding predicate, fail-closed production gate. 27 criteria: 20 PASS, 4 bounded NOT APPLICABLE accepted (C04, C06, C13, C17), 3 NOT VERIFIED (C02, C08, C15; O07/G04/G10/T031-dependent), 0 FAIL.",
+  "summary_counts": {
+    "PASS": 20,
+    "NOT APPLICABLE": 4,
+    "NOT VERIFIED": 3,
+    "FAIL": 0
+  },
+  "blocking_findings": [],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "Info",
+      "criterion": "T029-C19",
+      "finding": "Pure-suite RED is genuine (semantic). DB-suite RED is a missing-table failure (42P01), weaker by the implementer's own statement.",
+      "disposition": "Accepted: compensated by reviewer mutation evidence D01-D11 (each protection removal fails a specific DB test). Not a blocker."
+    },
+    {
+      "id": "F2",
+      "severity": "Low",
+      "criterion": "T029-C19/C16",
+      "finding": "RED states were uncommitted working trees on the baseline SHA and the JUnit files are recorded by hash only; they are not stored in the repository, so RED cannot be reproduced from a commit.",
+      "disposition": "Condition K4: attach the RED/GREEN JUnit files (or a CI artifact) to the PR; hashes alone are not re-verifiable."
+    },
+    {
+      "id": "F3",
+      "severity": "Low",
+      "criterion": "T029-W02",
+      "finding": "observedAuthorities is an untyped address list inherited from the T002 contract; mint, freeze and upgrade authority roles are not distinguished, but 16.5 requires retained issuer freeze powers to be recorded for any recognized asset.",
+      "disposition": "Documented limitation. Condition K3: add a typed authority extension before any asset is approved under O07/G04 (T069)."
+    },
+    {
+      "id": "F4",
+      "severity": "Low",
+      "criterion": "T029-C14/C16",
+      "finding": "Three reviewer mutations survived: M24 (extensions on a native asset), M26 (token program must be declared chain-verified in a production profile) and M30 (1024 split-recipient cap). The documented behavior exists but is not asserted by any test.",
+      "disposition": "Condition K2: add three assertions. Not exploitable today because the production allowlist is empty and fails closed regardless."
+    },
+    {
+      "id": "F5",
+      "severity": "Info",
+      "criterion": "T029-C03",
+      "finding": "TRUNCATE (statement-level) is not stopped by the row-level immutability triggers; ON DELETE RESTRICT only blocks it while snapshots reference the asset. This is a privileged-operator action, not an application path.",
+      "disposition": "Documentation already states a privileged database owner is out of scope; consider naming TRUNCATE explicitly. No change required."
+    },
+    {
+      "id": "F6",
+      "severity": "Info",
+      "criterion": "T029-A02/C08",
+      "finding": "AC28 \"not eligible for commitment\" and AC30 \"no duplicate spendable balance\" are delivered as pure predicates and a keying rule. No commitment command or balance table consumes them yet.",
+      "disposition": "Owed by the commitment command and ledger tasks (T031-T033, T080): they must gate on evaluateRewardFunding().fullyFunded and key balances by assetKey, never by registryVersion or symbol."
+    },
+    {
+      "id": "F7",
+      "severity": "Info",
+      "criterion": "T029-C18",
+      "finding": "The PR does not update docs/ai-handoff/CURRENT.md (checkpoint obligation in AGENTS.md).",
+      "disposition": "Orchestrator should record the T029 checkpoint; not a code finding."
+    },
+    {
+      "id": "F8",
+      "severity": "Low",
+      "criterion": "T029-C14",
+      "finding": "parseAmount maps T002 helper errors by exact message text. Changing that text would silently degrade EXCESS_PRECISION/AMOUNT_OVERFLOW to INVALID_AMOUNT (still fail-closed).",
+      "disposition": "Reviewer mutation M22 shows the amounts test fails loudly, so drift is caught. Prefer exporting typed error codes from the shared contract in a later change."
+    },
+    {
+      "id": "F9",
+      "severity": "Info",
+      "criterion": "T029-C02/C08",
+      "finding": "validateProductionConfig takes an overridable allowlist parameter and trusts host-declared cluster/origin/approval. The module cannot authenticate them or tie a networkIdentity to a genesis hash.",
+      "disposition": "Documented. Production wiring must read the allowlist only from a recorded O07/G04 decision, never from request or environment input."
+    },
+    {
+      "id": "F10",
+      "severity": "Info",
+      "criterion": "T029-W03",
+      "finding": "parseAmount rejects numerically exact trailing zeros beyond the asset decimals (for example 1.50 at 1 decimal).",
+      "disposition": "Conservative and consistent with \"reject excess precision\"; documented behavior, no change."
+    }
+  ],
+  "conditions": [
+    {
+      "id": "K1",
+      "text": "T029-C02, C08 and C15 remain NOT VERIFIED and block Done: they need the O07 supported-asset decision record, G04/G10 evidence and the chain/escrow slices (T031-T033, T080). The completion validator therefore cannot pass for T029 today. Keep T029 open, or split the remainder per docs/raid-agent-task-contracts.md (record the original criterion, the moved child issue, dependency and remaining parent gap)."
+    },
+    {
+      "id": "K2",
+      "text": "Add tests for the three surviving mutants: extensions on a NATIVE_SOL asset are unsupported, a TOKEN asset whose token program is not declared CHAIN_VERIFIED yields PROGRAM_NOT_CHAIN_VERIFIED, and more than MAX_SPLIT_RECIPIENTS weights are rejected. Do not alter source."
+    },
+    {
+      "id": "K3",
+      "text": "Before any asset is approved under O07/G04, extend the shared contract with typed authority roles (mint, freeze, upgrade, permanent delegate) and record retained freeze powers (16.5, T069)."
+    },
+    {
+      "id": "K4",
+      "text": "Store the RED-pure, RED-db, GREEN and REFACTOR JUnit files (or a retrievable CI artifact) with the PR so RED is verifiable beyond hashes."
+    },
+    {
+      "id": "K5",
+      "text": "Merge this review into the completion packet (top-level reviewer, the 27 criterion records in the packet shape with reviewer and 40-hex sha, NOT APPLICABLE records with rationale/canonical_reference/reviewer), update the stale status wording in docs/raid-asset-registry.md after merge, and record final-head CI for the commit that contains the review (new run, not yet observed)."
+    },
+    {
+      "id": "K6",
+      "text": "Downstream binding: commitment and acceptance commands must gate on evaluateRewardFunding().fullyFunded; balances/claims key on assetKey only; the production allowlist comes only from a recorded decision. Record these as obligations on the next tasks."
+    }
+  ],
+  "mutation_testing": {
+    "source_mutations_total": 36,
+    "killed": 33,
+    "survived": 3,
+    "survivors": ["M24", "M26", "M30"],
+    "database_mutations_total": 11,
+    "database_killed": 11,
+    "restoration": "Every source file restored from saved bytes and asserted identical; contract file restored with cmp; database reset by dropping the schema and re-running all migrations; trigger inventory and prisma migrate diff (exit 0) confirmed afterwards; git status clean.",
+    "source": [
+      {
+        "id": "M01",
+        "file": "registry.ts",
+        "mutation": "Identity key ignores network and token program",
+        "result": "KILLED (26 failures)"
+      },
+      {
+        "id": "M02",
+        "file": "registry.ts",
+        "mutation": "Lookup falls back to ticker symbol",
+        "result": "KILLED"
+      },
+      {
+        "id": "M03",
+        "file": "registry.ts",
+        "mutation": "Policy decimals change accepted",
+        "result": "KILLED"
+      },
+      {
+        "id": "M04",
+        "file": "registry.ts",
+        "mutation": "Conflicting snapshot under same version accepted",
+        "result": "KILLED"
+      },
+      {
+        "id": "M05",
+        "file": "registry.ts",
+        "mutation": "Observed slot may move backwards",
+        "result": "KILLED"
+      },
+      {
+        "id": "M06",
+        "file": "registry.ts",
+        "mutation": "Rejected Token-2022 extensions no longer reject",
+        "result": "KILLED"
+      },
+      {
+        "id": "M07",
+        "file": "amounts.ts",
+        "mutation": "parseAmount truncates (rounds) excess precision",
+        "result": "KILLED"
+      },
+      {
+        "id": "M08",
+        "file": "amounts.ts",
+        "mutation": "Default bound widened beyond u64",
+        "result": "KILLED"
+      },
+      {
+        "id": "M09",
+        "file": "amounts.ts",
+        "mutation": "checkedAdd without overflow check",
+        "result": "KILLED"
+      },
+      {
+        "id": "M10",
+        "file": "amounts.ts",
+        "mutation": "Split drops remainder (shares do not sum)",
+        "result": "KILLED"
+      },
+      {
+        "id": "M11",
+        "file": "amounts.ts",
+        "mutation": "Fee CEIL behaves as FLOOR",
+        "result": "KILLED"
+      },
+      {
+        "id": "M12",
+        "file": "amounts.ts",
+        "mutation": "fromJsonAmount accepts JSON numbers",
+        "result": "KILLED"
+      },
+      {
+        "id": "M13",
+        "file": "bundle.ts",
+        "mutation": "Funded when ANY leg verified (AC28)",
+        "result": "KILLED"
+      },
+      {
+        "id": "M14",
+        "file": "bundle.ts",
+        "mutation": "Unverified observation counted as verified",
+        "result": "KILLED"
+      },
+      {
+        "id": "M15",
+        "file": "bundle.ts",
+        "mutation": "Dedupe keyed with policy version (AC30 double count)",
+        "result": "KILLED"
+      },
+      {
+        "id": "M16",
+        "file": "bundle.ts",
+        "mutation": "Unsupported asset leg no longer BLOCKED",
+        "result": "KILLED"
+      },
+      {
+        "id": "M17",
+        "file": "bundle.ts",
+        "mutation": "All observations summed under one key",
+        "result": "KILLED (11 failures)"
+      },
+      {
+        "id": "M18",
+        "file": "production.ts",
+        "mutation": "Non-mainnet network allowed (AC41)",
+        "result": "KILLED"
+      },
+      {
+        "id": "M19",
+        "file": "production.ts",
+        "mutation": "Allowlist ignored",
+        "result": "KILLED"
+      },
+      {
+        "id": "M20",
+        "file": "production.ts",
+        "mutation": "Mock/simulated provider allowed",
+        "result": "KILLED"
+      },
+      {
+        "id": "M21",
+        "file": "production.ts",
+        "mutation": "Non-chain-verified asset allowed",
+        "result": "KILLED"
+      },
+      {
+        "id": "M22",
+        "file": "contracts/assets.ts",
+        "mutation": "T002 helper error message changed (coupling check)",
+        "result": "KILLED by amounts test (loud, fail-closed)"
+      },
+      {
+        "id": "M23",
+        "file": "registry.ts",
+        "mutation": "Unreviewed Token-2022 extension allowed",
+        "result": "KILLED"
+      },
+      {
+        "id": "M24",
+        "file": "registry.ts",
+        "mutation": "Extensions on native asset allowed",
+        "result": "SURVIVED (test gap)"
+      },
+      {
+        "id": "M25",
+        "file": "bundle.ts",
+        "mutation": "Conflicting operation redelivery accepted",
+        "result": "KILLED"
+      },
+      {
+        "id": "M26",
+        "file": "production.ts",
+        "mutation": "Token program not required to be chain-verified",
+        "result": "SURVIVED (test gap)"
+      },
+      {
+        "id": "M27",
+        "file": "production.ts",
+        "mutation": "Approval decision reference ignored",
+        "result": "KILLED"
+      },
+      {
+        "id": "M28",
+        "file": "amounts.ts",
+        "mutation": "Fee basis points above 100% allowed",
+        "result": "KILLED"
+      },
+      {
+        "id": "M29",
+        "file": "bundle.ts",
+        "mutation": "Zero-amount reward leg allowed",
+        "result": "KILLED"
+      },
+      {
+        "id": "M30",
+        "file": "amounts.ts",
+        "mutation": "Split recipient cap removed",
+        "result": "SURVIVED (test gap)"
+      },
+      {
+        "id": "M31",
+        "file": "bundle.ts",
+        "mutation": "Empty bundle counts as funded",
+        "result": "KILLED"
+      },
+      {
+        "id": "M32",
+        "file": "production.ts",
+        "mutation": "Empty providers list allowed",
+        "result": "KILLED"
+      },
+      {
+        "id": "M33",
+        "file": "production.ts",
+        "mutation": "Empty asset list allowed",
+        "result": "KILLED"
+      },
+      {
+        "id": "M34",
+        "file": "registry.ts",
+        "mutation": "requireSame never mismatches",
+        "result": "KILLED"
+      },
+      {
+        "id": "M35",
+        "file": "registry.ts",
+        "mutation": "withPolicy accepts unregistered asset",
+        "result": "KILLED"
+      },
+      {
+        "id": "M36",
+        "file": "registry.ts",
+        "mutation": "Unknown pinned policy version falls back to newest",
+        "result": "KILLED"
+      }
+    ],
+    "database": [
+      {
+        "id": "D01",
+        "mutation": "Drop Asset immutability trigger",
+        "result": "KILLED"
+      },
+      {
+        "id": "D02",
+        "mutation": "Drop AssetPolicySnapshot immutability trigger",
+        "result": "KILLED"
+      },
+      {
+        "id": "D03",
+        "mutation": "Drop policy guard trigger (decimals and slot)",
+        "result": "KILLED (2 failures)"
+      },
+      {
+        "id": "D04",
+        "mutation": "Drop identity unique index",
+        "result": "KILLED (3 failures)"
+      },
+      {
+        "id": "D05",
+        "mutation": "Drop (assetId, registryVersion) unique index",
+        "result": "KILLED"
+      },
+      {
+        "id": "D06",
+        "mutation": "Drop identity CHECK",
+        "result": "KILLED"
+      },
+      {
+        "id": "D07",
+        "mutation": "Drop decimals CHECK",
+        "result": "KILLED"
+      },
+      {
+        "id": "D08",
+        "mutation": "Drop observed-slot CHECK",
+        "result": "KILLED"
+      },
+      {
+        "id": "D09",
+        "mutation": "Drop AssetPolicySnapshot FK",
+        "result": "KILLED"
+      },
+      {
+        "id": "D10",
+        "mutation": "Policy guard without FOR UPDATE row lock",
+        "result": "KILLED (concurrency test)"
+      },
+      {
+        "id": "D11",
+        "mutation": "Policy guard without decimals check",
+        "result": "KILLED (2 failures)"
+      }
+    ]
+  },
+  "verification": [
+    {
+      "command": "docker run raid-t029-review-db postgres:16 (tmpfs, 127.0.0.1:56905); npx prisma migrate deploy (empty DB, fresh bootstrap)",
+      "result": "PASS",
+      "observed": "All 21 migrations applied incl. 202610090002_asset_registry."
+    },
+    {
+      "command": "npx prisma migrate deploy (second run)",
+      "result": "PASS",
+      "observed": "No pending migrations to apply."
+    },
+    {
+      "command": "npx prisma migrate diff --from-url <review db> --to-schema-datamodel prisma/schema.prisma --exit-code",
+      "result": "PASS",
+      "observed": "No difference detected; exit 0 (also after DB mutation restore)."
+    },
+    {
+      "command": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false npx vitest run tests/asset-registry",
+      "result": "PASS",
+      "observed": "6 files, 107 tests passed, 0 failed, 0 skipped."
+    },
+    {
+      "command": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false npm test",
+      "result": "PASS",
+      "observed": "73 files, 840 tests passed, 0 failed, 0 skipped."
+    },
+    {
+      "command": "npx tsc --noEmit; npx eslint (module, tests, example); npx prettier --check (module, tests, docs, evidence)",
+      "result": "PASS",
+      "observed": "tsc exit 0; eslint no output; prettier clean."
+    },
+    {
+      "command": "cp -RL examples/asset-registry <empty dir outside repo>; npm install; unset DATABASE_URL; npm start",
+      "result": "PASS",
+      "observed": "Printed JSON, all 13 checks true, synthetic true."
+    },
+    {
+      "command": "npx tsx probe (reviewer): 1M-digit amount, NaN/256 decimals, u64 and u64+1, leading zero, unicode digits, JSON number",
+      "result": "PASS",
+      "observed": "Typed codes only; 1M digits rejected in 49 ms; u64 max accepted, +1 AMOUNT_OVERFLOW."
+    },
+    {
+      "command": "python3 scripts/verify-raid-completion.py T029 planning/task-evidence/T029.json",
+      "result": "FAIL (expected)",
+      "observed": "Exit 1: Missing report field: reviewer; all 27 criteria NOT VERIFIED. After merging this review the only remaining errors are the three NOT VERIFIED criteria (C02, C08, C15)."
+    }
+  ],
+  "completion_validator": {
+    "command": "python3 scripts/verify-raid-completion.py T029 planning/task-evidence/T029.json",
+    "result": "FAIL (expected, unchanged packet)",
+    "with_review_merged_simulation": "Merging this review into a copy of the packet leaves exactly T029-C02, T029-C08 and T029-C15 reported as NOT VERIFIED and no other error (see docs/tasks/T029-review.md)."
+  },
+  "authority": "Technical source/evidence acceptance of the bounded foundation only. No merge, issue closure, UAT, business, O07/G04/G10 or production approval; no asset is supported for production.",
+  "criteria": {
+    "T029-C01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.2; 34.1 M4; 16.2-16.5; 22.2",
+      "repository_evidence": "docs/tasks/T029-plan.md; git diff origin/main...HEAD",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Outcome, M4 foundation role, exclusions (T030-T038, legacy USDC, chain verification, escrow, UI) are stated before code. Diff touches only src/asset-registry, one additive migration, prisma/schema.prisma additions, tests, docs, example and CI matrix; src/lib, rewards.ts, usdc-amount.ts, raid-funding.ts and tests/money-integrity-db.test.ts are byte-unchanged (diff stat empty for those paths). Full suite 840/840 including the existing money suites.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.4; 02.1-02.3; 38 O07; 34.4 G04",
+      "repository_evidence": "docs/tasks/T029-plan.md authority map; src/asset-registry/production.ts; tests/asset-registry-production.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Reviewer confirms LOCKED/DEFAULT/OPEN/EXAMPLE are separated and that the implementation fails closed: PRODUCTION_ASSET_ALLOWLIST is empty and frozen, mutations M18-M21,M27,M32,M33 are killed. The criterion stays NOT VERIFIED only because it requires a recorded owner decision (who/date/changed contract) for the O07 supported-asset policy and no such record exists. Not a defect of this task; closes with the O07 decision record.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 25.1; 25.5; 16.2",
+      "repository_evidence": "prisma/migrations/202610090002_asset_registry/migration.sql; prisma/schema.prisma; src/contracts/assets.ts; tests/asset-registry-db.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Asset (UNIQUE chain,networkIdentity,kind,mint,tokenProgram; native stores empty strings so one plain unique index covers it) and AssetPolicySnapshot (UNIQUE assetId,registryVersion; FK RESTRICT; decimals 0-255; slot 0..2^64-1). Immutability triggers and policy guard exist and each is proven necessary (D01-D11 killed). Identifier regexes match InternalId. Fresh bootstrap (21 migrations on empty DB), second deploy \"no pending\", and prisma migrate diff exit 0. Shared contract (T002) reused, not redefined. Legacy USDC tables untouched. Note TRUNCATE bypasses row triggers (privileged operation, see F5).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C04": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.1; 10.1; I10",
+      "repository_evidence": "src/asset-registry public exports; docs/raid-asset-registry.md Permissions and trust boundary",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Accepted. The module has no actor-bearing command, route, resource read or download; it grants nothing and the new tables have no application access path. Authorization of registration, policy recording and the decision that an observation is verified belongs to the future composing command (documented). Excludes enforcement testing only; the permission matrix is owed by those commands.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md",
+      "rationale": "Accepted. The module has no actor-bearing command, route, resource read or download; it grants nothing and the new tables have no application access path. Authorization of registration, policy recording and the decision that an observation is verified belongs to the future composing command (documented). Excludes enforcement testing only; the permission matrix is owed by those commands."
+    },
+    "T029-C05": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 12; 16.9; 25.7",
+      "repository_evidence": "src/asset-registry/registry.ts recordPolicy; src/asset-registry/bundle.ts; tests/asset-registry-registry.test.ts, -bundle.test.ts, -db.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Policy transitions (append, idempotent repeat, rejected conflicting repeat, decimals change, backwards slot) and funding-leg states REQUIRED/PENDING/VERIFIED/SHORTFALL/BLOCKED are exercised; mutations M03-M05,M13,M14,M16,M35,M36 killed. No work/offer/access/settlement state is touched; funding-leg state is a pure function of host observations (no persisted state).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C06": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 13; I01; I02",
+      "repository_evidence": "git diff stat; docs/tasks/T029-plan.md",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Accepted. No participant, engagement, commitment or operator code or table is read or written; nothing consumes capacity. Excludes only this bounded task; capacity remains owned by the work/capacity tasks.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md",
+      "rationale": "Accepted. No participant, engagement, commitment or operator code or table is read or written; nothing consumes capacity. Excludes only this bounded task; capacity remains owned by the work/capacity tasks."
+    },
+    "T029-C07": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 11.5; 16.2; I08",
+      "repository_evidence": "src/asset-registry/registry.ts policy/withPolicy; migration policy guard; tests/asset-registry-db.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Scoped to the part this slice owns: the immutable policy snapshot that accepted terms must pin (snapshot immutable, decimals fixed per asset, no backwards observation, pinned lookup errors instead of guessing). Terms, roster, consent and amendment flows are not part of this slice (no stale-terms or amendment test applies) and remain with terms/work tasks.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.2-16.5; AC28/29/30/41; I03; I04",
+      "repository_evidence": "src/asset-registry/*; tests/asset-registry-*.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Delivered and independently verified: network/kind/mint/program identity, integer base units with u64 bound, per-asset funding legs, no ticker substitution, policy version cannot split or double count, fail-closed production gate. NOT VERIFIED remains because the criterion also requires verified funds/finality, reserves, allocations, claims, refunds and conservation per asset and beneficiary authority; those belong to T030-T033/T080 and the O07/G04 decision, none delivered here.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C09": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.3; I06",
+      "repository_evidence": "src/asset-registry/errors.ts; tests/asset-registry-amounts.test.ts error shape; tests/asset-registry-boundary.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "No DTO, route, page, log or index is added. AssetRegistryError message equals the code only and production violations carry code and positional subject only; reviewer probes with hostile text confirmed no input echo. Boundary test forbids env/global/app imports.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C10": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 27.3; 27.5; I05; AC69",
+      "repository_evidence": "src/asset-registry/bundle.ts dedupe; tests/asset-registry-bundle.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Scoped. Semantic funding operations are de-duplicated by operationId across policy-version tags, a conflicting redelivery is CONFLICTING_OBSERVATION, and a late verified delivery upgrades rather than adds. Mutations M15 and M25 killed. Command receipts, request digests and outbox/inbox are T038 and not part of this slice.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C11": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 13.4; 32.2; 32.3",
+      "repository_evidence": "tests/asset-registry-db.test.ts (two interactive transactions, pg_blocking_pids)",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Real PostgreSQL competition: concurrent creation of the same instrument gives one winner (23505) and competing policy versions cannot diverge decimals (23000). The FOR UPDATE row lock in the policy guard is proven necessary: removing it (D10) fails the concurrency test; removing the unique index (D04) fails three tests. Blocking is observed through the lock graph, not sleeps.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C12": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.11; 16.12; 24.6; I09",
+      "repository_evidence": "src/asset-registry/bundle.ts; docs/raid-asset-registry.md",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Scoped. No provider, program or wallet effect exists in this slice. Unknown/unverified data stays PENDING and is never credited or read as zero; observations for unregistered assets are not credited to a look-alike. Provider adapters, pinning and reconciliation are T031/T033.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C13": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 23.5; 23.8; AC70",
+      "repository_evidence": "git diff stat (no src/app or components change)",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Accepted for UI items. No screen, hydration payload or browser journey is added. Exact display strings and typed error codes exist for a future UI and are tested; keyboard/mobile/draft/wallet-rejection obligations stay with the consuming screens.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md",
+      "rationale": "Accepted for UI items. No screen, hydration payload or browser journey is added. Exact display strings and typed error codes exist for a future UI and are tested; keyboard/mobile/draft/wallet-rejection obligations stay with the consuming screens."
+    },
+    "T029-C14": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.2; 28.3; I12",
+      "repository_evidence": "src/asset-registry/amounts.ts; tests/asset-registry-amounts.test.ts; reviewer probe",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Hostile amount inputs rejected with typed codes: signs, exponents, whitespace, leading zeros, unicode digits, JSON numbers, NaN/256 decimals, 1M-digit string (49 ms, no resource blow-up), u64+1. Split recipient cap 1024. No eval, env or secret. Gap: recipient cap itself is untested (M30 survived, F4).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 29.3; 30; 34.4 G04/G10",
+      "repository_evidence": "docs/raid-asset-registry.md runbook/rollback; migration",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Migration is additive, inert, deployed twice with no drift, rollback limits documented, runbook present. NOT VERIFIED because feature flags, monitoring, named case owner, verified backup/restore and the G04/G10 evidence do not exist; the implementer states the same.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C16": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; 39.1",
+      "repository_evidence": "planning/task-evidence/T029-verification.json; reviewer commands in docs/tasks/T029-review.md",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Reviewer re-ran everything independently on a fresh disposable database: 6 feature suites 107/107, full suite 840/840 (73 files, 0 skipped, DB enabled), tsc 0, eslint 0, prettier clean, migration x2 + drift 0, standalone example from a clean cp -RL copy, 47 reviewer mutations (36 source, 11 database). Counts match the packet.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C17": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 39.1; task guide C17/E22",
+      "repository_evidence": "docs/tasks/T029-plan.md",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Accepted. Internal developer foundation with no user-facing release scope. Human UAT and business sign-off are not claimed and remain gates for the screens that will consume it.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md",
+      "rationale": "Accepted. Internal developer foundation with no user-facing release scope. Human UAT and business sign-off are not claimed and remain gates for the screens that will consume it."
+    },
+    "T029-C18": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 39.2; 40.3",
+      "repository_evidence": "planning/task-evidence/T029.json handoff; docs/raid-asset-registry.md; docs/tasks/T029-plan.md",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Files, schema additions, tests, risks, authority/money effects, migration/rollback limits and next task (T031, blocked on O05/O07/G04) are recorded. The reviewer field becomes accurate with this review. docs/ai-handoff/CURRENT.md was not updated by the PR (orchestrator checkpoint obligation, F7).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-A01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.2; AC29",
+      "repository_evidence": "src/asset-registry/registry.ts; tests/asset-registry-registry.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Same ticker, same mint on another network and same mint under another token program are distinct instruments; ticker/name/smuggled display fields are INVALID_ASSET_ID and a ticker fallback mutation (M02), identity weakening (M01, 26 failures) and requireSame removal (M34) are killed.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-A02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.2; AC30; I04",
+      "repository_evidence": "src/asset-registry/bundle.ts; migration; tests/asset-registry-bundle.test.ts, -db.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Balance is aggregated by asset key only; registryVersion is informational. Repeated operation counted once across versions (M15 killed); DB keeps one Asset row for many versions and refuses decimals divergence (D03, D11 killed). No stored balance exists here to duplicate; ledger keying is T033/T080 (F6).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-W01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.2; 25.5",
+      "repository_evidence": "src/asset-registry/registry.ts; migration",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Assets keyed by chain, network identity, kind, mint and token program; native vs token separated; DB unique index and checks enforce it.",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-W02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.2; 16.5; 25.5",
+      "repository_evidence": "registry.ts policies/evaluateSupport; AssetPolicySnapshot table",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Decimals, extension profile and observation versioned separately from identity; rejected-extension list cannot be overridden (M06 killed). Gap: observedAuthorities is an untyped address list (shared T002 contract), so mint/freeze authority roles are not distinguished; documented limitation (F3).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-W03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.3; 14.3",
+      "repository_evidence": "src/asset-registry/amounts.ts; tests/asset-registry-amounts.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "bigint-only parse/format/add/sub/split/fee with explicit u64 bound; excess precision rejected not rounded (M07 killed); bound enforced (M08, M09 killed); deterministic largest-remainder split with disclosed UNALLOCATED alternative (M10 killed); fee FLOOR/CEIL explicit (M11, M28); JSON decimal strings only, numbers rejected (M12). No Number()/parseFloat/Math in the module (grep-confirmed).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C19": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I13; AC75; 39.1.11",
+      "repository_evidence": "planning/task-evidence/T029-verification.json (RED-pure, RED-db, green, refactor); reviewer mutation tables",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Pure suites: genuine semantic RED (81 behavior failures against deliberately naive float/ticker/always-funded/always-allowed stubs, missing-module errors not counted). DB suite: RED was relation does not exist (42P01), the implementer discloses it as weaker; reviewer treats it as acceptable only because independent mutation testing shows every DB assertion discriminates (11/11 protections, D01-D11, each fail when removed). RED states were uncommitted working trees on the baseline SHA and the JUnit files are not stored in the repo (hashes only), so RED cannot be re-run from a SHA (F2).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C20": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R15; AC73; 24.6",
+      "repository_evidence": "docs/raid-asset-registry.md Substitution; examples/asset-registry/host.ts; tests/asset-registry-db.test.ts adapter substitution",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Scoped. The registry consumes plain data via a stable v1 interface, so static object and database rows (and the example host builds two registries from different sources) give identical decisions and typed errors; unsupported capability (unknown program/profile/policy) fails closed. No provider or in-flight operation exists, so pin/drain rules are deferred to T031/T033 (documented).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C21": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R16; AC74; 24.7",
+      "repository_evidence": "docs/raid-asset-registry.md; examples/asset-registry/*; tests/asset-registry-boundary.test.ts",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "Reviewer copied examples/asset-registry with cp -RL into an empty directory outside the repo, ran npm install (6 packages, own manifest), unset DATABASE_URL, ran npm start: JSON with all 13 checks true. Boundary test forbids env/global/app/Next/Prisma imports. Docs cover purpose, non-goals, API, errors, ownership, config, limits, migration, runbook. Docs still say \"no independent review\"; update after merge (K2).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    },
+    "T029-C22": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; task guide C22",
+      "repository_evidence": "planning/raid-ci-matrix.json; gh runs 37811517116 (0184584) and 37812863986 (86a5b8d)",
+      "verification": "Reviewer-run commands and mutation tables in docs/tasks/T029-review.md",
+      "observed_and_rationale": "All six new suites are registered in the owned CI lane and discovered (73 files); PR and push runs on the source SHA and on the evidence-only head are success with 7/7 jobs, including the DB-enabled test job. No new browser tests; none required. Final-head CI after this review commit is a new run and must be recorded by the implementer (K5).",
+      "reviewed_sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "sha": "01845840af6292b31f50d9e0eafa981194986931",
+      "environment": "Reviewer-run: macOS arm64, Node 26.0.0, npm 11.12.1, vitest 4.1.11, Prisma 6.19.3, PostgreSQL 16.15 disposable container raid-t029-review-db (tmpfs, 127.0.0.1:56905, 21 migrations incl. 202610090002_asset_registry); zod 4.6.5, bs58 6.0.0; synthetic fixtures only; no network wallet, RPC, credential or funds. Remote CI (implementer-triggered): Ubuntu, runs 37811517116 (source) and 37812863986 (head), 7/7 jobs success.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/01845840af6292b31f50d9e0eafa981194986931/docs/raid-asset-registry.md"
+    }
+  }
+}
