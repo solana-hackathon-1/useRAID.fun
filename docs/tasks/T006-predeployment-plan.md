@@ -1,0 +1,22 @@
+# T006 undeployed baseline and restore acceptance
+
+Defined before rehearsal execution on 8 October 2026, after the owner clarified: **“the app is not yt deployed”** (not yet deployed). This is current-state evidence, not a requirement change, custody appointment or approval to waive T003. No deployed audit target has been supplied. Read-only GitHub environment/deployment listings returned no records; that proves only absence of GitHub records, not absence of separately provisioned databases or external effects.
+
+## Bounded authorized outcome
+
+Obtain independent review of the existing readiness source `bbbc53cfa351b0d6031e5ee4856514b2cce28391` and rehearse backup/restore of an explicitly disposable local, synthetic **legacy** database. Reuse unchanged schema/migrations and existing auth/identity PostgreSQL tests as test setup. No new T006 migration/backfill, deployed database, customer data, real provider operation, funded claim or live credential is involved. This is preparation for predeployment work; the [T003 execution gate](T003-migration-plan.md#3-audit-gate-before-any-migration-execution) remains applicable to the actual target and proposed persistence rollout.
+
+## Acceptance defined before execution
+
+1. Record owner undeployed clarification separately from verified infrastructure facts. No named live custodian, chosen hosting/durability policy or zero-obligation assertion is inferred.
+2. Independent reviewer checks all six original readiness acceptance points, source parity, all 27 retained full-task criteria and actual verification. Their review accepts only the bounded non-code readiness artifact; full T006/AC01/AC73/AC74 and live gates remain NOT VERIFIED.
+3. Create two separately named disposable local PostgreSQL containers with test-only credentials, no persistent/shared volume and a localhost-only source port. Verify the source URL uses the dedicated `useraid_test` database and restore has a separate empty database/container. No undisclosed environment variables are printed or used as database targets.
+4. Bootstrap only the unchanged legacy migration chain into the fresh source as regression setup; run the existing wallet/X DB suites against synthetic input. Record actual count/failures/skips and database/runtime/source versions. This does not execute proposed T006 persistence or prove its absent canonical records.
+5. Dump the consistent legacy source, restore into the separate empty database, and compare per-table row counts/content digests plus migration/catalog constraints, indexes and functions. Produce only safe summaries/digests. Exercise existing proof replay and original synthetic monetary/history snapshots where available without provider calls. Preserve genuine failures and retest evidence rather than weakening checks.
+6. Remove the disposable containers and synthetic dump after recording evidence. Record exact exercised boundaries and limitations: no canonical terms/consents/commitments or production failure-domain mechanism exists yet; no actual post-snapshot chain/provider success is reconciled. Therefore this rehearsal cannot certify AC68, zero loss of acknowledged authorizations, G10 or deployed custody/financial recovery.
+
+## Requirement and authority map
+
+I01/R13/AC01: existing account tests are regression only; canonical participant/capacity invariants remain future implementation. I03–I05/I08/I11/D13: compare original synthetic legacy ledger/transfer/history references, never redirect actual claims. I06/I10: no live data/export or new permission. I09/AC67/AC68/§30.5: separate restore target and exact catalog/content parity provide local restore mechanics only, not external-effect reconciliation/durability. I13/AC75: this non-code operating rehearsal uses acceptance-first records and unchanged tests; no implementation RED/GREEN is invented. R15/R16: no feature/adapter is delivered, and future identity delivery still needs same-change ports/docs/independent host.
+
+Owned outputs: this plan and a sanitized baseline/restore verification record plus continuation handoff. Independent reviewer owns their review files. No applied SQL, schema, application/API/event/dependency/CI behavior or canonical blueprint requirement changes. Local cleanup is reversible and has no customer-state rollback. The next actual rollout needs a selected isolated target, named authorized owners, audited current obligations/configuration, durable authorization recovery and reviewed forward migration evidence.
