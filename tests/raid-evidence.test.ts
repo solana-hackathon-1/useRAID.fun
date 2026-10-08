@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { EvidenceRecordSchema, validateScenarioPlan } from './fixtures/raid';
 import plan from '../planning/raid-scenarios.json';
 
@@ -101,6 +102,14 @@ describe('T004 evidence cannot promote fixtures into actual scenario assurance',
       }).success,
     ).toBe(false);
   });
+  it('cannot attach external assurance layers to a fixture-only check', () => {
+    expect(
+      EvidenceRecordSchema.safeParse({
+        ...record,
+        environment: { ...record.environment, coveredKinds: ['PROGRAM'] },
+      }).success,
+    ).toBe(false);
+  });
 });
 
 describe('T004 canonical scenario responsibility and environment plan', () => {
@@ -110,6 +119,7 @@ describe('T004 canonical scenario responsibility and environment plan', () => {
   );
   it('covers all 75 current canonical scenarios including the three reuse/TDD additions', () => {
     expect(canonical).toHaveLength(75);
+    expect(plan.blueprintSha256).toBe(createHash('sha256').update(blueprint).digest('hex'));
     expect(
       plan.scenarios.map(({ id, scenario, expected }) => ({ id, scenario, expected })),
     ).toEqual(canonical);
