@@ -1,0 +1,927 @@
+{
+  "task_id": "T006",
+  "candidate_sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+  "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+  "implementation_author_task": "01a11ba0-7a30-7733-8540-fd8670f45eb0",
+  "reviewed_source_sha": "e90fa5ff9ab798191fea35e8a63ecd30e9d3d6bf",
+  "review_started_at": "2026-10-08T14:10:06.934269+00:00",
+  "scope": "Disposable synthetic target entry review only; no forward migration or full feature acceptance",
+  "resources": [
+    {
+      "name": "raid-t006-dev-e90fa5f",
+      "created": "2026-10-08T13:27:39.206277875Z",
+      "started": "2026-10-08T13:27:39.232878917Z",
+      "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+      "network": "bridge",
+      "ports": {
+        "5432/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "54292"
+          }
+        ]
+      },
+      "tmpfs": {
+        "/var/lib/postgresql/data": "rw,nosuid,size=512m"
+      },
+      "no_persistent_mounts": true
+    },
+    {
+      "name": "raid-t006-dev-restore-e90fa5f",
+      "created": "2026-10-08T13:27:39.341883917Z",
+      "started": "2026-10-08T13:27:39.362654375Z",
+      "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+      "network": "none",
+      "ports": {},
+      "tmpfs": {
+        "/var/lib/postgresql/data": "rw,nosuid,size=512m"
+      },
+      "no_persistent_mounts": true
+    }
+  ],
+  "acceptance_defined_before_execution": "dc264b392ebe0c2125d65f55c9ec146cef2e8d63:docs/tasks/T006-target-plan.md",
+  "schema_migration_manifest": {
+    "prisma/schema.prisma": "36dee67b6be0f2536400ad6cdfc677f23f5a95390ad7bf5c5934efeae98c94b4",
+    "prisma/migrations/202609270001_init/migration.sql": "6097b1b9b32535a9e8dfb2a4694fc48c9d26a7ae749fc0986b1b8ed12bbb821f",
+    "prisma/migrations/202610020007_media_assets/migration.sql": "1747bf415b9e1ccdc6e3d24e2d0ae54caf2eaa76ec0ab1b0bd1fd7f6052cd46d",
+    "prisma/migrations/202609290002_standalone_raids/migration.sql": "a68b159e961c563092bcb95290c4fa6feb9cc557d2fb29abe9daaaa9ee2eea0b",
+    "prisma/migrations/202610020003_x_budget_controls/migration.sql": "f46c859300bb0b4bf34bda5e6874b9b808175ef0565f0a70edac0bdf586e71b9",
+    "prisma/migrations/202610020001_studio_fk_alignment/migration.sql": "0e3254751a38d9224aa25ad3bcd9c22dc18d8d324b18c0f33224aa3a484fa7f4",
+    "prisma/migrations/202609300001_creator_studio/migration.sql": "5d9896bcd2f706c769c42eb0a67639bbaac0f2d5ceb1d84f9c8e4ca6b8e2f7de",
+    "prisma/migrations/202609280001_x_connection/migration.sql": "846ffa673555539710687f9265ceaa10ee6c4d8a0d2cc57b8f81fd839afa2603",
+    "prisma/migrations/202610020010_hot_path_indexes/migration.sql": "4f73dba4ae3f5805b3a718942fff9cad4482c95830c0b33f2f9b5ed54fa77f8c",
+    "prisma/migrations/202610020002_job_dead_letter/migration.sql": "f80f7bd422d3fd391ec4cc30b3f7105466161109c675e7b368ca1756fa5ec3e8",
+    "prisma/migrations/202609290001_x_tracking/migration.sql": "2ecd1549904bc3ee9fd4eba19cf75935540ea04380607b27b5cd364a9fb0032f",
+    "prisma/migrations/202610020006_auth_hardening/migration.sql": "2291eae6911d4e097dd2f403a1f26de0935d69c53d7c7563e8be6cc3de62e63e",
+    "prisma/migrations/202610020012_state_checks/migration.sql": "950310190fd896aab69ceef02a9a012c9e958754f7e05dba6e9a3d203a0535b1",
+    "prisma/migrations/202610020005_token_metadata_source/migration.sql": "d63b30ad51030236405279c3d6a09b29d020ca1bc7f83dc01fc2b33fde9b1d07",
+    "prisma/migrations/202610020008_wallet_rotation/migration.sql": "a65464300afc8ff5e9a304b02603f14c876e8ddd92b276ad7d462de1f47047b6",
+    "prisma/migrations/202609280002_pump_launch/migration.sql": "15c34a12f5effed2d20dad6848b955ff444defb33365797480f7d1a11f7bf020",
+    "prisma/migrations/202610020004_raid_money_policies/migration.sql": "abb5f5e5eecdbaf6eef1549f60db1735be44a8ae14c5de6cc6cfb46eec261854",
+    "prisma/migrations/202610020011_ledger_integrity/migration.sql": "8b94c4b55ac388f72eedc9ebafdcd19736cba4c9e7b74da5ff989ae46a56b0af",
+    "prisma/migrations/202610020009_launch_finance_hardening/migration.sql": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027"
+  },
+  "source_archive_exact_tracked_files": 438,
+  "tracked_env_templates_only": [".env.example"],
+  "explicit_dependency_runtime": "/Users/dushyant/Documents/useRAID.fun/node_modules",
+  "historical_tests": [
+    {
+      "suite": "x-db",
+      "passed": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "eab5c8151748fa1b8011503bae14a14ae76f6d711f898117a253212f915018a1"
+    },
+    {
+      "suite": "wallet-db",
+      "passed": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "16755330093245609901f07b2718dd4989d725e207ced6c543bf1d53f35b9a72"
+    }
+  ],
+  "historical_artifact_hashes": {
+    "target-run.py": "51d0df4af360860a5578a46b60c7b92b73825a3fa6d42ad74e7c3b6ac8405768",
+    "wallet-db.log": "d795aec340bf70f4ee53455951d048f78b503035be55107edaa9e6301831d061",
+    "x-db.log": "a965f02c124baed82a8e842cb538dc5763b8d395dcf9fb982f44a3249f1c5f20",
+    "legacy-bootstrap.log": "1712199bfa56006da737969548b8aab3292beaa898995b849ee280ee6a1d1233",
+    "snapshot-corrected.log": "ac009f7d31f19ba47140a630b8e92cbddc4cec8d739ecf2c3793ebe143bb7e99",
+    "wallet-db.xml": "16755330093245609901f07b2718dd4989d725e207ced6c543bf1d53f35b9a72",
+    "x-db.xml": "eab5c8151748fa1b8011503bae14a14ae76f6d711f898117a253212f915018a1",
+    "target-snapshot.py": "75526ab4bdc01cb05b01aaa75b583fce560062175d92103892def95c559fb55b",
+    "final-planning.log": "38404eea57ce1e20603a1056962969dbb1d8511da30d88170585f69030967dce",
+    "final-docs-tests.log": "b808fa1d9a2ca68884ed206ae3772eaf488adf95906c86bc21949b99fd4714d0",
+    "final-completion.log": "44bd125b82f57251819ebde7b3eca33c9a609a5ef10d22d90bf8bd5b0e50d228"
+  },
+  "source_watermark": {
+    "as_of": "2026-10-08T14:10:09.645968+00:00",
+    "wal_lsn": "0/2083690",
+    "snapshot": "1119:1119:",
+    "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+    "other_clients": 0
+  },
+  "prior_restore_watermark": {
+    "as_of": "2026-10-08T14:10:09.799812+00:00",
+    "wal_lsn": "0/1AF4B68",
+    "snapshot": "754:754:",
+    "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+    "other_clients": 0
+  },
+  "baseline": {
+    "tables": {
+      "BalanceEntry": {
+        "rows": 4,
+        "sorted_json_sha256": "21b4dd15ebfe99081834d3d16c37563773bc0d3508d2902b6b0a2ec3345cc52a"
+      },
+      "CampaignResult": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ContributionDecision": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Event": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "FeeClaim": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "FinancialTx": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Job": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "MediaAsset": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "MetricObservation": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ModerationEvent": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "OAuthAttempt": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Post": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "PostSubmission": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ProviderUsage": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Raid": {
+        "rows": 2,
+        "sorted_json_sha256": "eba8c02c17f1fbdbcbe72aa6fc21b37660c966f94c5896f5ed825878619ffab3"
+      },
+      "RaidAllocation": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RaidBriefPost": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RaidDispute": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RaidEnrollment": {
+        "rows": 2,
+        "sorted_json_sha256": "3a7dd5803eb524a147a7586b98312c489bef0c7345af258f7994110f3a5c0bb8"
+      },
+      "RateLimit": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RewardEnrollment": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RewardPayout": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RewardRound": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Session": {
+        "rows": 1,
+        "sorted_json_sha256": "e75adc295629f2c852b961f924747d405de7357e5dddfb740afaf899dcc4c228"
+      },
+      "Settings": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Snapshot": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Token": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "TokenLaunch": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "UsdcAllocation": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "UsdcTransfer": {
+        "rows": 6,
+        "sorted_json_sha256": "b16924740ae536768d8937f5619f8dd9d35a4823495fd46ea2892ea1bfd9e925"
+      },
+      "User": {
+        "rows": 20,
+        "sorted_json_sha256": "f4698018e5010bbe417d98fb0f7b2deb7c3d6bda567f7d29f243eddec52c867f"
+      },
+      "WalletChallenge": {
+        "rows": 2,
+        "sorted_json_sha256": "268d686bf241f9c13fb7789cf72381b49e45257307fbda85b0864c68b13785d2"
+      },
+      "WalletIdentity": {
+        "rows": 15,
+        "sorted_json_sha256": "6a49ddd9d86c9ec97980621dd44dc06bfe01ad77ebdf3d0d00d540a818667293"
+      },
+      "XAccount": {
+        "rows": 15,
+        "sorted_json_sha256": "ad912801e9dcebb500ef92d219fa8625a924421fc08b24d1e38f4a11b224176f"
+      },
+      "XEndpointState": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "_prisma_migrations": {
+        "rows": 18,
+        "sorted_json_sha256": "b293f59cffb2e51eda44d2b24396346e6375e9fe27a15530ff6346bd3413f878"
+      }
+    },
+    "catalog_sha256": {
+      "constraints": "b5e31da9c3574e96dd60c20990fcec4c9863f1664e5afb8c14f12f4e61d8f0ee",
+      "indexes": "b9ea4f60b7af8c63b2f447c568a505e85c69a63c8789b8fee094d1142cb37c33",
+      "triggers": "1379ba62c00b6d826c0399e242871a4bf15ed7aff526442dba2213b33194979b",
+      "functions": "30bd3566548d9d345e86697625e313bcefcaa007f335811057b2c254f03d35a6",
+      "columns": "b162b6c327b0cab7b7eb2650b6445cdb0dc7c66f15539c41eb33e9e1ac5f2e36"
+    }
+  },
+  "migration_checksums": [
+    {
+      "migration_name": "202609270001_init",
+      "checksum": "6097b1b9b32535a9e8dfb2a4694fc48c9d26a7ae749fc0986b1b8ed12bbb821f",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609280001_x_connection",
+      "checksum": "846ffa673555539710687f9265ceaa10ee6c4d8a0d2cc57b8f81fd839afa2603",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609280002_pump_launch",
+      "checksum": "15c34a12f5effed2d20dad6848b955ff444defb33365797480f7d1a11f7bf020",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609290001_x_tracking",
+      "checksum": "2ecd1549904bc3ee9fd4eba19cf75935540ea04380607b27b5cd364a9fb0032f",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609290002_standalone_raids",
+      "checksum": "a68b159e961c563092bcb95290c4fa6feb9cc557d2fb29abe9daaaa9ee2eea0b",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609300001_creator_studio",
+      "checksum": "5d9896bcd2f706c769c42eb0a67639bbaac0f2d5ceb1d84f9c8e4ca6b8e2f7de",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020001_studio_fk_alignment",
+      "checksum": "0e3254751a38d9224aa25ad3bcd9c22dc18d8d324b18c0f33224aa3a484fa7f4",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020002_job_dead_letter",
+      "checksum": "f80f7bd422d3fd391ec4cc30b3f7105466161109c675e7b368ca1756fa5ec3e8",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020003_x_budget_controls",
+      "checksum": "f46c859300bb0b4bf34bda5e6874b9b808175ef0565f0a70edac0bdf586e71b9",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020004_raid_money_policies",
+      "checksum": "abb5f5e5eecdbaf6eef1549f60db1735be44a8ae14c5de6cc6cfb46eec261854",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020005_token_metadata_source",
+      "checksum": "d63b30ad51030236405279c3d6a09b29d020ca1bc7f83dc01fc2b33fde9b1d07",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020006_auth_hardening",
+      "checksum": "2291eae6911d4e097dd2f403a1f26de0935d69c53d7c7563e8be6cc3de62e63e",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020007_media_assets",
+      "checksum": "1747bf415b9e1ccdc6e3d24e2d0ae54caf2eaa76ec0ab1b0bd1fd7f6052cd46d",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020008_wallet_rotation",
+      "checksum": "a65464300afc8ff5e9a304b02603f14c876e8ddd92b276ad7d462de1f47047b6",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020009_launch_finance_hardening",
+      "checksum": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020010_hot_path_indexes",
+      "checksum": "4f73dba4ae3f5805b3a718942fff9cad4482c95830c0b33f2f9b5ed54fa77f8c",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020011_ledger_integrity",
+      "checksum": "8b94c4b55ac388f72eedc9ebafdcd19736cba4c9e7b74da5ff989ae46a56b0af",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020012_state_checks",
+      "checksum": "950310190fd896aab69ceef02a9a012c9e958754f7e05dba6e9a3d203a0535b1",
+      "finished": true,
+      "rolled_back": false
+    }
+  ],
+  "backup": {
+    "path": "/tmp/raid-t006-target/synthetic-target-baseline.dump",
+    "bytes": 112648,
+    "sha256": "429d5f484f1113b7f08074304ffd9dc89aa03f07de303b59808c8fa19243a716",
+    "failure_model": "Container loss while same-host scratch backup survives; excludes host loss/post-snapshot external effects/AC68/G10"
+  },
+  "review_restore_resource": {
+    "name": "raid-t006-review-de7df7a",
+    "created": "2026-10-08T14:10:09.925781375Z",
+    "started": "2026-10-08T14:10:09.946448833Z",
+    "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+    "network": "none",
+    "ports": {},
+    "tmpfs": {
+      "/var/lib/postgresql/data": "rw,nosuid,size=512m"
+    },
+    "no_persistent_mounts": true
+  },
+  "review_restore_watermark": {
+    "as_of": "2026-10-08T14:10:11.179112+00:00",
+    "wal_lsn": "0/1A80670",
+    "snapshot": "733:733:",
+    "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+    "other_clients": 0
+  },
+  "independent_restore_contents_catalog_match": true,
+  "rollback_probes": [
+    {
+      "table": "BalanceEntry",
+      "field": "availableDelta",
+      "expected": "append-only",
+      "exit": 3,
+      "observed": "ERROR:  P0001: Balance entries are append-only"
+    },
+    {
+      "table": "RaidEnrollment",
+      "field": "walletAddress",
+      "expected": "append-only",
+      "exit": 3,
+      "observed": "ERROR:  23000: RaidEnrollment is append-only"
+    },
+    {
+      "table": "UsdcTransfer",
+      "field": "walletAddress",
+      "expected": "immutable",
+      "exit": 3,
+      "observed": "ERROR:  23000: UsdcTransfer identity and settled state are immutable"
+    }
+  ],
+  "consumed_challenges": 1,
+  "reconsume_changes": 0,
+  "all_three_targets_unchanged_after_probes": true,
+  "unused_default_database_tables": 0,
+  "review_finished_at": "2026-10-08T14:10:11.998969+00:00",
+  "reviewer_container_removed": true,
+  "full_task_criteria": {
+    "T006-C01": "NOT VERIFIED",
+    "T006-C02": "NOT VERIFIED",
+    "T006-C03": "NOT VERIFIED",
+    "T006-C04": "NOT VERIFIED",
+    "T006-C05": "NOT VERIFIED",
+    "T006-C06": "NOT VERIFIED",
+    "T006-C07": "NOT VERIFIED",
+    "T006-C08": "NOT VERIFIED",
+    "T006-C09": "NOT VERIFIED",
+    "T006-C10": "NOT VERIFIED",
+    "T006-C11": "NOT VERIFIED",
+    "T006-C12": "NOT VERIFIED",
+    "T006-C13": "NOT VERIFIED",
+    "T006-C14": "NOT VERIFIED",
+    "T006-C15": "NOT VERIFIED",
+    "T006-C16": "NOT VERIFIED",
+    "T006-C17": "NOT VERIFIED",
+    "T006-C18": "NOT VERIFIED",
+    "T006-A01": "NOT VERIFIED",
+    "T006-A02": "NOT VERIFIED",
+    "T006-W01": "NOT VERIFIED",
+    "T006-W02": "NOT VERIFIED",
+    "T006-W03": "NOT VERIFIED",
+    "T006-C19": "NOT VERIFIED",
+    "T006-C20": "NOT VERIFIED",
+    "T006-C21": "NOT VERIFIED",
+    "T006-C22": "NOT VERIFIED"
+  },
+  "synthetic_inventory": {
+    "ledger_by_network": [
+      {
+        "network": "mainnet",
+        "rows": 4,
+        "available_delta": "20",
+        "reserved_delta": "0"
+      }
+    ],
+    "transfer_by_instrument_status": [
+      {
+        "network": "mainnet",
+        "mint": "fixture-mint",
+        "kind": "DEPOSIT",
+        "status": "PAID",
+        "rows": 4,
+        "units": "20"
+      },
+      {
+        "network": "sandbox",
+        "mint": "m",
+        "kind": "DEPOSIT",
+        "status": "AWAITING_TRANSFER",
+        "rows": 1,
+        "units": "1"
+      },
+      {
+        "network": "sandbox",
+        "mint": "m",
+        "kind": "WITHDRAWAL",
+        "status": "PAID",
+        "rows": 1,
+        "units": "1"
+      }
+    ],
+    "native_reward_rounds": [],
+    "native_reward_payouts": [],
+    "financial_transaction_states": [],
+    "legacy_raid_states": [
+      {
+        "status": "DRAFT",
+        "fundingAsset": "SOL",
+        "fundingNetwork": "mainnet",
+        "fundingStatus": "NOT_REQUIRED",
+        "rows": 2
+      }
+    ],
+    "restrictions": [
+      {
+        "role": "ADMIN",
+        "suspended": false,
+        "rows": 1
+      },
+      {
+        "role": "CREATOR",
+        "suspended": false,
+        "rows": 18
+      },
+      {
+        "role": "CREATOR",
+        "suspended": true,
+        "rows": 1
+      }
+    ],
+    "unvalidated_constraints": [
+      {
+        "table_name": "Post",
+        "conname": "Post_availability_check"
+      },
+      {
+        "table_name": "Post",
+        "conname": "Post_qualification_check"
+      },
+      {
+        "table_name": "Post",
+        "conname": "Post_reviewStatus_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_fundingAsset_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_fundingStatus_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_status_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_trackingPhase_check"
+      }
+    ]
+  },
+  "synthetic_inventory_independently_reproduced": true,
+  "version_note": "node v26.0.0 / npm 11.12.1 available; historical JS tests inspected by hashes/JUnit, not rerun in this review",
+  "source_archive_no_operational_env_files": true,
+  "status": "TECHNICALLY ACCEPTED: six bounded target-preparation points only; full T006 IN_PROGRESS / NOT VERIFIED",
+  "requirements": [
+    "R04",
+    "R13",
+    "R15",
+    "R16",
+    "I01",
+    "I03",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I09",
+    "I10",
+    "I11",
+    "I12",
+    "I13",
+    "D13"
+  ],
+  "handoff": "docs/tasks/T006-target-handoff.md",
+  "review_report": "docs/tasks/T006-target-review.md",
+  "commands": [
+    "python3 /tmp/raid-t006-target-review/review.py",
+    "python3 /tmp/raid-t006-target-review/inventory.py"
+  ],
+  "review_artifact_sha256": {
+    "review.py": "f51d0342a42062b491a4819e357698818173c1edfc5e38352526a2593ca20a5b",
+    "review.log": "3f9afbcd2546b5bde4773966c72d4ef6b7aad3b2cdb2c94665dea7922aa2a226",
+    "inventory.py": "7ca881601a8e5bc24fc41d4d03cefafca3e36514ee853b207d871183d91280da",
+    "inventory.log": "891ce3aede6120d5d0a43add7df12741766d43e1ba70e41abcf2606813acfddf"
+  },
+  "historical_test_review": "16 X + 18 wallet cases independently checked through exact JUnit/log hashes; JS database suites not rerun in this review",
+  "tdd": {
+    "non_code_rationale": "Only independent assessment/documentation/evidence changed. Candidate plan defined all six acceptance points before original target creation; no new product implementation or fabricated behavioral RED/GREEN.",
+    "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+    "acceptance_defined_before_execution": "dc264b392ebe0c2125d65f55c9ec146cef2e8d63:docs/tasks/T006-target-plan.md"
+  },
+  "acceptance_points": {
+    "P01": {
+      "result": "PASS",
+      "boundary": "Six-point disposable synthetic target preparation only",
+      "related_full_task_criteria": ["T006-C01", "T006-C02", "T006-C03", "T006-C15"],
+      "canonical_reference": "I06/I10/I12; \u00a7\u00a730.1/30.6",
+      "action": "Inspect exact ownership/image/storage/isolation before reads or reviewer creation",
+      "expected": "Matches acceptance-first T006-target-plan.md point 01",
+      "observed": "Names/labels/image/live tmpfs and localhost source/network-none restores verified; no persistent mounts",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+      "environment": "PostgreSQL 16.15, task-owned Docker tmpfs; explicit synthetic databases only",
+      "evidence_url": "docs/tasks/T006-target-review.md"
+    },
+    "P02": {
+      "result": "PASS",
+      "boundary": "Six-point disposable synthetic target preparation only",
+      "related_full_task_criteria": ["T006-C03", "T006-C16", "T006-C19", "T006-C22"],
+      "canonical_reference": "I07/I13/D13; \u00a7\u00a707/25.8/32",
+      "action": "Compare archive/source/schema/applied SQL and recorded DB tests",
+      "expected": "Matches acceptance-first T006-target-plan.md point 02",
+      "observed": "438 tracked files, 19 schema/migration fingerprints, 18 applied checksums and 34 historical JUnit cases match; no operational env file",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+      "environment": "PostgreSQL 16.15, task-owned Docker tmpfs; explicit synthetic databases only",
+      "evidence_url": "docs/tasks/T006-target-review.md"
+    },
+    "P03": {
+      "result": "PASS",
+      "boundary": "Six-point disposable synthetic target preparation only",
+      "related_full_task_criteria": ["T006-C08", "T006-C15", "T006-C16"],
+      "canonical_reference": "I03/I06/I07/I08/I11; \u00a7\u00a716/25/30.5",
+      "action": "Capture fresh consistent read-only data/catalog snapshots and synthetic inventories",
+      "expected": "Matches acceptance-first T006-target-plan.md point 03",
+      "observed": "36 table hashes/counts and five catalog groups match both existing targets; eight inventory groups match; seven NOT VALID checks retained; zero other client backends",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+      "environment": "PostgreSQL 16.15, task-owned Docker tmpfs; explicit synthetic databases only",
+      "evidence_url": "docs/tasks/T006-target-review.md"
+    },
+    "P04": {
+      "result": "PASS",
+      "boundary": "Six-point disposable synthetic target preparation only",
+      "related_full_task_criteria": ["T006-C08", "T006-C12", "T006-C15", "T006-C16"],
+      "canonical_reference": "I05/I09; \u00a7\u00a707.2/16.12/30.5\u201330.6",
+      "action": "Restore exact retained dump into independent empty target and probe guards",
+      "expected": "Matches acceptance-first T006-target-plan.md point 04",
+      "observed": "Independent restore matches all 36 tables/five catalogs; consumed nonce changes zero rows; three guard denials; originals/reviewer data remain identical",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+      "environment": "PostgreSQL 16.15, task-owned Docker tmpfs; explicit synthetic databases only",
+      "evidence_url": "docs/tasks/T006-target-review.md"
+    },
+    "P05": {
+      "result": "PASS",
+      "boundary": "Six-point disposable synthetic target preparation only",
+      "related_full_task_criteria": ["T006-C15", "T006-C18"],
+      "canonical_reference": "\u00a7\u00a730.6/39\u201340",
+      "action": "Retain original baseline and verify cleanup of reviewer resource",
+      "expected": "Matches acceptance-first T006-target-plan.md point 05",
+      "observed": "Reviewer-only container removed and absence verified; originals/dump retained",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+      "environment": "PostgreSQL 16.15, task-owned Docker tmpfs; explicit synthetic databases only",
+      "evidence_url": "docs/tasks/T006-target-review.md"
+    },
+    "P06": {
+      "result": "PASS",
+      "boundary": "Six-point disposable synthetic target preparation only",
+      "related_full_task_criteria": [
+        "T006-C06",
+        "T006-A01",
+        "T006-A02",
+        "T006-W01",
+        "T006-W02",
+        "T006-W03",
+        "T006-C19",
+        "T006-C20",
+        "T006-C21",
+        "T006-C22"
+      ],
+      "canonical_reference": "R04/R13/R15/R16/I01/I10/I13; \u00a7\u00a713/24.6\u201324.7/25.8/39\u201340",
+      "action": "Assess actual bounded result without promoting full feature evidence",
+      "expected": "Matches acceptance-first T006-target-plan.md point 06",
+      "observed": "All 27 full T006 criteria remain NOT VERIFIED; no forward DDL/new identity/auth/provider action; reviewed storage/lock/compatibility contract still required",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+      "environment": "PostgreSQL 16.15, task-owned Docker tmpfs; explicit synthetic databases only",
+      "evidence_url": "docs/tasks/T006-target-review.md"
+    }
+  },
+  "full_task_criterion_assessment": {
+    "T006-C01": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "State the observable user outcome, assigned milestone, in-scope commands and explicit adjacent work excluded. Compare the actual baseline to the desired behavior; identify existing working behavior that must survive.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C02": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "List every applicable LOCKED, DIRECTION, DEFAULT, OPEN and EXAMPLE reference separately. Keep unresolved dependent production actions disabled. A recorded owner decision must identify who accepted it, date, changed contract and effect on old accepted work.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C03": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "List affected canonical entities, concrete tables/models, identifiers, foreign keys, tenant scope, uniqueness and immutable fields. Identify the shared contract owner and reuse existing contracts. Do not assert the intended blueprint tables already exist.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C04": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Provide an actor \u00d7 action \u00d7 resource \u00d7 state matrix for every changed read/write. Cover unauthenticated, wrong Guild, token-holder-only, self-review, expired/revoked grant and restricted account cases. Deny at the server/resource boundary; include direct API/download tests.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C05": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Provide before-state, command, authorized actor, terms/submission version, precondition, atomic mutation, after-state and rejected alternatives. Keep listing, offer, work, access, funding, settlement, dispute and run states separate. Specify finite deadlines and material cancellation/timeout paths.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C06": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Use canonical participant identity across linked wallets and Guilds. Identify whether this action consumes capacity under section 13. Prove database uniqueness, all-or-none Party reservations, same-engagement operator accounting, current eligibility rechecks, lock order and engagement-scoped release where touched.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C07": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Identify exact immutable terms, roster, payout split, beneficiary, rubric and submission version. Test stale version and unauthorized amendment. Material accepted-work changes require affected consent, valid additional funding and audit; defaults cannot rewrite old agreements.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C08": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Declare whether financial obligations are touched. If so specify network/kind/mint/program/decimals, integer base units, verified funds, reserves, allocations, fees, claims, refunds and conservation per asset. Verify actual effects/finality and beneficiary authority; transaction submission and ticker text prove nothing.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C09": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Enumerate public and private DTOs, HTML hydration, metadata, search, previews, artifacts, logs and notification fields. Test absence of private bytes and effective scoped provider access. Distinguish desired from observed grants; preserve independent rights and surface failed revocation.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C10": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Specify command identity, request digest, immutable receipt, semantic external operation and outbox/inbox deduplication. Same key plus different payload must conflict. Retry or rebuilt transaction cannot repeat business effects. Preserve intent across process crashes.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C11": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Name every competing command and linearization boundary. Exercise meaningful independent transactions/provider boundaries for applicable acceptance, refund, claim/appeal, Party, Challenge handoff, delayed cleanup and stale job races. Record winning state and losing response; in-memory mocks do not prove database/program races.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C12": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "List every provider/program effect, authority, generation, timeout, partial success, stale success and compensation path. Do not hold database locks during provider/LLM/wallet/finality waits. Reconcile before retrying an unknown outcome; stale success cannot reopen work or grant access.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C13": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Cover loading, empty, unknown/stale, validation failure, conflict, permission denied, rejected signature, pending/failed/partial effect, cancellation and recovery states where applicable. Verify keyboard/focus, mobile, draft preservation, exact amounts and intelligible eligibility reasons.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C14": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Identify applicable input validation, session/nonce/CSRF/origin, rate limit, upload quarantine, SSRF/redirect, secrets, malicious build and prompt-injection boundaries. Untrusted code and model output cannot inherit credentials, grant permissions, self-approve or expand spending.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C15": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Record feature flags at server and UI, monitoring, named case owner, incident/runbook and feature-specific G01\u2013G10 evidence. Disabling new work must preserve old claims, cancellation, dispute and access cleanup. Define migration/backfill, verified backup/restore and rollback constraints.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C16": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "For each requirement and criterion provide setup/fixtures, exact action, expected result, observed result, command/test, SHA, environment/network/provider version and sanitized evidence. Record failed, blocked or not-run checks accurately; compiler success is insufficient.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C17": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "For affected user-facing release scope identify representative journey, tester, candidate environment/SHA, expected results, defect disposition/retest and separate business sign-off. QA, UAT and release approval cannot be inferred from each other.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C18": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Record actual files, schema/API/event changes, tests executed/results, unresolved risks, authority/privacy/money effects, migration/rollback limits, reviewer and exact next bounded task. Unimplemented criteria cannot disappear through issue closure or epic roll-up.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-A01": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Second wallet uses the same participant and history",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-A02": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Merge cannot hide two active engagements",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-W01": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Extend existing account and wallet-link services around a stable participant",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-W02": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Reject conflicting provider subjects",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-W03": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Require proof/review for recovery and merges, preserving claims and capacity",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C19": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "For every implementation change, define behavior from canonical requirements and write a meaningful failing test BEFORE implementation. Record RED command, actual failure and unchanged baseline; implement the smallest complete behavior; record GREEN result; refactor without changing the contract and record relevant regression results. Use real database/program/provider boundaries for material races and financial/access effects. Tests cannot be weakened, deleted or replaced with mocks merely to obtain green. For existing verified behavior, run and record the baseline and add a failing test for each changed/missing behavior; do not fabricate a red result. For decisions/docs/UAT-only work, define expected acceptance results before execution, record why a coding cycle is not applicable, and validate the actual deliverable.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C20": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Declare the stable versioned port, operations/capabilities, injected configuration, typed errors, cancellation/retry/idempotency, secrets, observations and provider-specific adapter boundary. Write shared contract tests first and demonstrate an alternate/test adapter without changing domain commands. Negative capability tests fail closed. Pin/reconcile in-flight operations before switching; verify no duplicate effects, asset/authority/terms drift or lost receipts. Document switch/drain/rollback and repeat affected live gates. See R15, AC73 and section 24.6.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C21": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Deliver module purpose/non-goals, public API/schema/event/error contracts, dependencies/host wiring, configuration, permissions, entity/state ownership, architecture, installation, runnable consuming example, tests/fixtures, limitations, migration/versioning and operations/recovery notes in the implementation change. Run the independently declared consuming host and negative/contract tests; no hidden RAID singleton/global secret or undeclared app import. Document UI accessibility and host authority when relevant. See R16, AC74 and section 24.7.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    },
+    "T006-C22": {
+      "result": "NOT VERIFIED",
+      "required_evidence": "Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "reviewer": "Codex independent AG08/AG09 reviewer, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+      "disposition": "Target preparation evidence cannot prove full implemented feature; original requirement remains due"
+    }
+  },
+  "initial_harness_failures": [
+    "Archive comparison read Git symlink as file bytes; corrected to compare link target, retaining all 438 files.",
+    "Operational-env absence check initially matched tracked .env.example; corrected to allow exact tracked template only.",
+    "Inventory parser initially read multiline json_agg per line; corrected complete-value JSON decoding; expected inventory unchanged."
+  ],
+  "remaining_gates": [
+    "Independently reviewed forward identity migration/compatibility before execution",
+    "Restrictive participant/account references and merge/deletion guard before first linked canonical row",
+    "Shared identity/work/treasury lock contract plus real database collision/merge/delete/capacity races",
+    "Stable storage module host/substitution/consumer documentation and tests under R15/R16",
+    "Full auth/canonical capacity/claims preservation and all 27 full T006 criteria",
+    "Production/deployed audit, actual custody/asset/obligation/consent reconciliation and live operating owners",
+    "Host-disaster durability, post-snapshot external-effect reconciliation, AC68/G10, UAT/business/release"
+  ],
+  "source_candidate_ci": {
+    "sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37788011478",
+    "checks": "All seven required jobs SUCCESS, read back from draft PR #179; metadata follow-up checks are separate"
+  },
+  "final_local_verification": {
+    "documentation_evidence_tests": {
+      "command": "npm test -- tests/raid-evidence.test.ts tests/docs-links.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-target-review/docs-tests.xml",
+      "passed": 74,
+      "suites": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "planning_tests": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "passed": 27
+    },
+    "full_task_completion_validator": {
+      "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+      "exit": 1,
+      "diagnostics": 27,
+      "expected": "All 27 unverified full-feature criteria continue to prevent completion",
+      "observed": [
+        "T006-C01: NOT VERIFIED prevents completion",
+        "T006-C02: NOT VERIFIED prevents completion",
+        "T006-C03: NOT VERIFIED prevents completion",
+        "T006-C04: NOT VERIFIED prevents completion",
+        "T006-C05: NOT VERIFIED prevents completion",
+        "T006-C06: NOT VERIFIED prevents completion",
+        "T006-C07: NOT VERIFIED prevents completion",
+        "T006-C08: NOT VERIFIED prevents completion",
+        "T006-C09: NOT VERIFIED prevents completion",
+        "T006-C10: NOT VERIFIED prevents completion",
+        "T006-C11: NOT VERIFIED prevents completion",
+        "T006-C12: NOT VERIFIED prevents completion",
+        "T006-C13: NOT VERIFIED prevents completion",
+        "T006-C14: NOT VERIFIED prevents completion",
+        "T006-C15: NOT VERIFIED prevents completion",
+        "T006-C16: NOT VERIFIED prevents completion",
+        "T006-C17: NOT VERIFIED prevents completion",
+        "T006-C18: NOT VERIFIED prevents completion",
+        "T006-A01: NOT VERIFIED prevents completion",
+        "T006-A02: NOT VERIFIED prevents completion",
+        "T006-W01: NOT VERIFIED prevents completion",
+        "T006-W02: NOT VERIFIED prevents completion",
+        "T006-W03: NOT VERIFIED prevents completion",
+        "T006-C19: NOT VERIFIED prevents completion",
+        "T006-C20: NOT VERIFIED prevents completion",
+        "T006-C21: NOT VERIFIED prevents completion",
+        "T006-C22: NOT VERIFIED prevents completion"
+      ]
+    },
+    "node": "v26.0.0",
+    "npm": "11.12.1",
+    "log_sha256": {
+      "docs-tests.xml": "4124ed5a248c7b51673a1272c238f25a0f7e45636cc5a82067761f867039faf9",
+      "docs-tests.log": "ed2bcb11675a941880dfe31c02e7f61e5b7da5e9235285dbb7bd287ab92af449",
+      "planning-tests.log": "d7830fb22b6a505d56bc0ee80b9473e72cd0dc116d9cb8514bbbbf77d2dfca2e",
+      "completion.log": "44bd125b82f57251819ebde7b3eca33c9a609a5ef10d22d90bf8bd5b0e50d228"
+    }
+  }
+}

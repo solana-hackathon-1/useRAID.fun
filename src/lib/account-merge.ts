@@ -1,12 +1,16 @@
 import type { Prisma } from '@prisma/client';
+import { hasHumanParticipant } from '../identity-storage';
+import { createPrismaIdentityTransaction } from './identity-storage-adapter';
 
 export async function lockIdentity(tx: Prisma.TransactionClient, xId: string) {
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`x-auth:${xId}`}, 0))`;
 }
-// Every table keyed to a user account; an account with none of these rows has nothing to lose.
+// Existing activity categories plus canonical identity protection. Media retention
+// remains governed by its existing uploader policy; this is not a rights inventory.
 export async function isEmptyAccount(tx: Prisma.TransactionClient, userId: string) {
   const user = await tx.user.findUnique({ where: { id: userId } });
   if (!user || user.role === 'ADMIN' || user.suspended) return false;
+  if (await hasHumanParticipant(createPrismaIdentityTransaction(tx), userId)) return false;
   const where = { userId };
   const counts = await Promise.all([
     tx.raid.count({ where: { creatorId: userId } }),

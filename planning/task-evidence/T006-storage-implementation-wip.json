@@ -1,0 +1,142 @@
+{
+  "task_id": "T006",
+  "status": "IMPLEMENTATION_WIP / NOT VERIFIED (delivery checks run; independent implementation review due)",
+  "recorded_at": "2026-10-08T21:35:00+05:45 (Claude Sonnet 5.5 continuation)",
+  "base_head": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+  "source_state": "uncommitted working tree; no commit or push authorization inferred",
+  "scope": "Bounded HUMAN mapping and legacy merge guard; no live deployment or full task acceptance",
+  "owner_authorization": "Continue and use existing independent reviewer; proposal/source-copy entry accepted before DDL",
+  "proposal_review": "docs/tasks/T006-storage-review.md",
+  "implementation_review": "Claude owner-directed substitute review: docs/tasks/T006-storage-implementation-review.md \u2014 no blocking findings; 5 mutations killed; NOT an independent review, independence-dependent criteria remain NOT VERIFIED",
+  "current_source_sha256": {
+    "src/identity-storage/index.ts": "6f5c097627c1236d6d22b9977c88e0494dadcc1448b2275167fbb20a0a3b4a12",
+    "src/identity-storage/contracts.ts": "d68d0049b3d43fc52b5fa09fbe10b48f673982d8430e8db31ec204c6fedaf940",
+    "src/lib/identity-storage-adapter.ts": "16b4d577e4f7cb7abc812e8021ec49c7aa3bbb184f312ffc6f7decebda7caf4a",
+    "src/lib/account-merge.ts": "87cdd0cfbe61269c1097cef72664eebf8db7d8184cf121e5552c968e4741e04b",
+    "prisma/schema.prisma": "cb41a995ffc654beef6cd3569797c7904a1dbf24783ccbad3631f2d2ff0a3a25",
+    "prisma/migrations/202610080001_participant_mapping/migration.sql": "495f5086553af2b9d64121d0fcd555e18bb1e1c693acfc0cd6aca9544922f259",
+    "tests/account-merge-canonical.test.ts": "2c9fb951415866a31bc7743ebd1d2b6f18bd939d1053ab256e6c7eac731becf0",
+    "tests/identity-storage.test.ts": "d73bc63340ea5d4e0422d463e41dac76b07ab0d3525ffe66676a3045a490aa99",
+    "tests/identity-storage-db.test.ts": "db8cba34e6debdc71da2bfbebdc69756fff48774847567d6f80352cf0da49c22",
+    "tests/identity-storage-boundary.test.ts": "aa5e92a9179a98b5db7c8da5c86c129eec68b79a3cb772fe060cda39a7feea5d",
+    "tests/helpers/legacy-account-merge.ts": "0a8e0876fd6649c29ca49e07fb53fd1dc5c5800654902f586123556f5ee2bfb1",
+    "examples/identity-storage/host.ts": "d3d55e07e0d758cf1dc1003e9e27885dff787d3cfdc84a3df816af3e3ebdb2c5",
+    "examples/identity-storage/package.json": "0cf8656087b9b8f691307c0b6ae7d99c62c95914a4d2bde6876cc8d372661eb8",
+    "planning/raid-ci-matrix.json": "059cc6cc99bd7e3b6f8ef72e5b8216ea97afa9ab072ffcdde23b7e094af6f86a",
+    "docs/raid-identity-storage.md": "83494f9fbab3212c0185f2925bc5edd76fad3b71d33fa90029fc0e2736ce21b3",
+    "examples/identity-storage/README.md": "980a60d5846029e9b8fc14064f8a6c5fcf4b4f3cffe48d36424075c59c7ae78f"
+  },
+  "tdd_snapshots": {
+    "red": "/tmp/raid-t006-storage-implementation/red-source",
+    "green": "/tmp/raid-t006-storage-implementation/green-source"
+  },
+  "junit_reports": [
+    {
+      "local_junit": "/tmp/raid-t006-storage-implementation/consumer-red.xml",
+      "sha256": "e80150c0ca55d43d8d8aabb4291992083d803718193da82e7faf5636b6dfc805",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "local_junit": "/tmp/raid-t006-storage-implementation/green-attempt.xml",
+      "sha256": "efb25db6bca3720aa645d403e953a3bc40add2b5ca86590df59c66ef04518840",
+      "tests": 59,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "local_junit": "/tmp/raid-t006-storage-implementation/green.xml",
+      "sha256": "91aac95a835d04489e0e3aaec255c64777906e2d1d56028a4a9f9ce8f3d0eb3a",
+      "tests": 59,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "local_junit": "/tmp/raid-t006-storage-implementation/provision-red.xml",
+      "sha256": "c62c244817a5985237828612d136b76e4ac07c56c7f0c24711f700d5a01419ed",
+      "tests": 11,
+      "failures": 1,
+      "errors": 0,
+      "skips": 10
+    },
+    {
+      "local_junit": "/tmp/raid-t006-storage-implementation/refactor.xml",
+      "sha256": "83ec92e1a17b62728e6105ffdcdadf507e368f897a31c2f4a902f2aa12fcedef",
+      "tests": 249,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "local_junit": "/tmp/raid-t006-storage-implementation/schema-red.xml",
+      "sha256": "4f8abe74d819e3fa8f8e1edc556bd895cb9e759bb608e2c9bd22778c15c096ca",
+      "tests": 11,
+      "failures": 1,
+      "errors": 0,
+      "skips": 10
+    },
+    {
+      "local_junit": "/tmp/raid-t006-storage-implementation/unit-red.xml",
+      "sha256": "fddbd26d1c2680dd943c041800732d8204a8eb61ef1b1b6a007cd98037edc8fd",
+      "tests": 46,
+      "failures": 32,
+      "errors": 0,
+      "skips": 0
+    }
+  ],
+  "last_regression_command": "npm test -- tests/identity-storage.test.ts tests/identity-storage-db.test.ts tests/identity-storage-boundary.test.ts tests/account-merge-canonical.test.ts tests/wallet-auth-db.test.ts tests/x-oauth-db.test.ts tests/money-integrity-db.test.ts tests/usdc-ops-db.test.ts tests/raid-evidence.test.ts tests/docs-links.test.ts tests/identity-preflight.test.ts tests/identity-preflight-boundary.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-storage-implementation/refactor.xml",
+  "environment": "explicit disposable local DATABASE_URL; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false; fixture credential intentionally omitted",
+  "observed_races": [
+    "provision blocks legacy final User DELETE; failed transaction restores complete auth fixture",
+    "User deletion blocks provision FOR KEY SHARE then missing-account denial",
+    "two provisions block at unique account mapping then same identity/provenance"
+  ],
+  "retained_original_18_migrations_match_head": true,
+  "original_dump_sha256": "429d5f484f1113b7f08074304ffd9dc89aa03f07de303b59808c8fa19243a716",
+  "tool_and_fixture_corrections": [
+    "Vitest it.each nested arrays were wrapped to avoid argument spreading; assertions unchanged",
+    "Promoted old merge mock now answers SHOW transaction_isolation; original 13 behavioral assertions unchanged",
+    "First GREEN attempt failed fixture setup because Raid.startsAt/endsAt missing; added required synthetic dates; not counted as semantic RED"
+  ],
+  "standalone_install": "Independent copy installed (43 packages), own Prisma client generated v6.19.3, its two host migrations applied from scratch to a recreated useraid_identity_host_test in the storage-test container, host executed: {\"version\":\"v1\",\"synthetic\":true,\"realDatabase\":true,\"stableIdentity\":true,\"alternatePort\":true,\"wrongActorDenied\":true,\"sanitizedFailure\":true}; repeat deploy reported no pending migrations. The documented cp -RL procedure in docs/raid-identity-storage.md was also executed literally in a fresh mktemp directory with the same result.",
+  "full_task_criteria": "All27 remain NOT VERIFIED",
+  "not_run": [
+    "current-feature browser/build/docker/remote CI (no commit/push authority; build would rewrite generated next-env.d.ts)",
+    "read-only fingerprint of original baseline tables after tests (identity/start/dump hash only rechecked)",
+    "Docs link check beyond the full suite docs-links test (passed within full suite)",
+    "full task completion beyond expected validator rejection",
+    "independent (non-author) implementation review: only the Claude substitute review exists"
+  ],
+  "handoff_reason": "Claude delivery checks complete; independent implementation review is the next gate",
+  "claude_delivery_checks": {
+    "docs_test": {
+      "phase": "RED then GREEN",
+      "red": "tests/identity-storage-boundary.test.ts module documentation test failed ENOENT docs/raid-identity-storage.md before the doc existed (missing-file RED; acceptance of headings/terms/no-secret/README link defined first)",
+      "green": "tests/identity-storage-boundary.test.ts 2 passed/1 DB-skipped without RUN_DB_TESTS"
+    },
+    "migration_checks": {
+      "repeat_deploy_accepted_copy": "No pending migrations to apply (19 migrations); migrate status: Database schema is up to date",
+      "drift_accepted_copy": "prisma migrate diff --exit-code: No difference detected",
+      "fresh_bootstrap": "new database useraid_t006_bootstrap_check in storage-test container: all 19 migrations applied; second deploy no pending; drift vs prisma/schema.prisma: No difference detected",
+      "catalog_comparison": "Participant constraints, indexes, trigger, columns/defaults, guard function md5 and finished migration count (19) identical between fresh bootstrap and accepted copy",
+      "proposal_sql": "migration body (after truthful 2-line header) identical to planning/migration-proposals/T006-participant.sql minus comments",
+      "old_migrations": "git diff HEAD -- prisma/migrations shows no modified tracked file; only new 202610080001 directory"
+    },
+    "static": "tsc --noEmit passed; eslint on owned files clean; prettier --check on owned files passed",
+    "final_full_suite": {
+      "command": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL=<useraid_test on storage-test container> npm test --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-storage-implementation/final-full.xml",
+      "result": "67 files, 731 passed, 0 failed, 0 errors, 0 skips",
+      "junit_sha256": "037ef0fea882dc5f2c15c9641bb45ea6b60aab16783f4c120c8ef6e1cac03268"
+    },
+    "validator": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json exit 1 with 27 NOT VERIFIED diagnostics (expected)",
+    "resources_created_by_claude": [
+      "useraid_t006_bootstrap_check (fresh bootstrap db, retained for review)",
+      "useraid_identity_host_test recreated empty then migrated by host procedure; temporary doc_check database created and dropped"
+    ],
+    "originals": "raid-t006-dev-e90fa5f, raid-t006-dev-restore-e90fa5f and dump (hash 429d5f48\u2026) identities rechecked at takeover; not executed against"
+  }
+}

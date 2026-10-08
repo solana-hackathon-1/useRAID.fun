@@ -1,0 +1,21 @@
+generator client {
+ provider = "prisma-client-js"
+}
+datasource db {
+ provider = "postgresql"
+ url = env("DATABASE_URL")
+}
+model User {
+ id String @id
+ handle String
+ participant Participant?
+}
+model Participant {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  kind String @default("HUMAN")
+  accountId String @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  provisionActorAccountId String
+  provisionRequestId String
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}

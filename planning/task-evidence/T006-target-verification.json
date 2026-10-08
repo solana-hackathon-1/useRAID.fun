@@ -1,0 +1,560 @@
+{
+  "scope": "Actual disposable local synthetic legacy target baseline/restore only",
+  "source_sha": "e90fa5ff9ab798191fea35e8a63ecd30e9d3d6bf",
+  "acceptance_sha": "dc264b392ebe0c2125d65f55c9ec146cef2e8d63",
+  "owner_authorization": "Active project owner in task 01a11ba0-7a30-7733-8540-fd8670f45eb0: Do what is needed",
+  "operator": "Codex, bounded synthetic test operator only",
+  "target": {
+    "container": "raid-t006-dev-e90fa5f",
+    "database": "useraid_test",
+    "host": "127.0.0.1",
+    "port": 54292,
+    "image_id": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+    "storage": "tmpfs",
+    "credentials": "Synthetic test-only; no live credentials",
+    "unused_default_database": "useraid_t006_test (empty, not bootstrapped)"
+  },
+  "restore_target": {
+    "container": "raid-t006-dev-restore-e90fa5f",
+    "database": "useraid_t006_restore_test",
+    "network": "none",
+    "storage": "tmpfs"
+  },
+  "watermark": {
+    "as_of": "2026-10-08T13:48:45.72313+00:00",
+    "wal_lsn": "0/2071F48",
+    "transaction_snapshot": "1119:1119:",
+    "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)"
+  },
+  "migration_checksums": [
+    {
+      "migration_name": "202609270001_init",
+      "checksum": "6097b1b9b32535a9e8dfb2a4694fc48c9d26a7ae749fc0986b1b8ed12bbb821f",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609280001_x_connection",
+      "checksum": "846ffa673555539710687f9265ceaa10ee6c4d8a0d2cc57b8f81fd839afa2603",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609280002_pump_launch",
+      "checksum": "15c34a12f5effed2d20dad6848b955ff444defb33365797480f7d1a11f7bf020",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609290001_x_tracking",
+      "checksum": "2ecd1549904bc3ee9fd4eba19cf75935540ea04380607b27b5cd364a9fb0032f",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609290002_standalone_raids",
+      "checksum": "a68b159e961c563092bcb95290c4fa6feb9cc557d2fb29abe9daaaa9ee2eea0b",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202609300001_creator_studio",
+      "checksum": "5d9896bcd2f706c769c42eb0a67639bbaac0f2d5ceb1d84f9c8e4ca6b8e2f7de",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020001_studio_fk_alignment",
+      "checksum": "0e3254751a38d9224aa25ad3bcd9c22dc18d8d324b18c0f33224aa3a484fa7f4",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020002_job_dead_letter",
+      "checksum": "f80f7bd422d3fd391ec4cc30b3f7105466161109c675e7b368ca1756fa5ec3e8",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020003_x_budget_controls",
+      "checksum": "f46c859300bb0b4bf34bda5e6874b9b808175ef0565f0a70edac0bdf586e71b9",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020004_raid_money_policies",
+      "checksum": "abb5f5e5eecdbaf6eef1549f60db1735be44a8ae14c5de6cc6cfb46eec261854",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020005_token_metadata_source",
+      "checksum": "d63b30ad51030236405279c3d6a09b29d020ca1bc7f83dc01fc2b33fde9b1d07",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020006_auth_hardening",
+      "checksum": "2291eae6911d4e097dd2f403a1f26de0935d69c53d7c7563e8be6cc3de62e63e",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020007_media_assets",
+      "checksum": "1747bf415b9e1ccdc6e3d24e2d0ae54caf2eaa76ec0ab1b0bd1fd7f6052cd46d",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020008_wallet_rotation",
+      "checksum": "a65464300afc8ff5e9a304b02603f14c876e8ddd92b276ad7d462de1f47047b6",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020009_launch_finance_hardening",
+      "checksum": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020010_hot_path_indexes",
+      "checksum": "4f73dba4ae3f5805b3a718942fff9cad4482c95830c0b33f2f9b5ed54fa77f8c",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020011_ledger_integrity",
+      "checksum": "8b94c4b55ac388f72eedc9ebafdcd19736cba4c9e7b74da5ff989ae46a56b0af",
+      "finished": true,
+      "rolled_back": false
+    },
+    {
+      "migration_name": "202610020012_state_checks",
+      "checksum": "950310190fd896aab69ceef02a9a012c9e958754f7e05dba6e9a3d203a0535b1",
+      "finished": true,
+      "rolled_back": false
+    }
+  ],
+  "tests": [
+    {
+      "suite": "x-db",
+      "passed": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "eab5c8151748fa1b8011503bae14a14ae76f6d711f898117a253212f915018a1"
+    },
+    {
+      "suite": "wallet-db",
+      "passed": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_sha256": "16755330093245609901f07b2718dd4989d725e207ced6c543bf1d53f35b9a72"
+    }
+  ],
+  "baseline": {
+    "tables": {
+      "BalanceEntry": {
+        "rows": 4,
+        "sorted_json_sha256": "21b4dd15ebfe99081834d3d16c37563773bc0d3508d2902b6b0a2ec3345cc52a"
+      },
+      "CampaignResult": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ContributionDecision": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Event": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "FeeClaim": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "FinancialTx": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Job": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "MediaAsset": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "MetricObservation": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ModerationEvent": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "OAuthAttempt": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Post": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "PostSubmission": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ProviderUsage": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Raid": {
+        "rows": 2,
+        "sorted_json_sha256": "eba8c02c17f1fbdbcbe72aa6fc21b37660c966f94c5896f5ed825878619ffab3"
+      },
+      "RaidAllocation": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RaidBriefPost": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RaidDispute": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RaidEnrollment": {
+        "rows": 2,
+        "sorted_json_sha256": "3a7dd5803eb524a147a7586b98312c489bef0c7345af258f7994110f3a5c0bb8"
+      },
+      "RateLimit": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RewardEnrollment": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RewardPayout": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "RewardRound": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Session": {
+        "rows": 1,
+        "sorted_json_sha256": "e75adc295629f2c852b961f924747d405de7357e5dddfb740afaf899dcc4c228"
+      },
+      "Settings": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Snapshot": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "Token": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "TokenLaunch": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "UsdcAllocation": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "UsdcTransfer": {
+        "rows": 6,
+        "sorted_json_sha256": "b16924740ae536768d8937f5619f8dd9d35a4823495fd46ea2892ea1bfd9e925"
+      },
+      "User": {
+        "rows": 20,
+        "sorted_json_sha256": "f4698018e5010bbe417d98fb0f7b2deb7c3d6bda567f7d29f243eddec52c867f"
+      },
+      "WalletChallenge": {
+        "rows": 2,
+        "sorted_json_sha256": "268d686bf241f9c13fb7789cf72381b49e45257307fbda85b0864c68b13785d2"
+      },
+      "WalletIdentity": {
+        "rows": 15,
+        "sorted_json_sha256": "6a49ddd9d86c9ec97980621dd44dc06bfe01ad77ebdf3d0d00d540a818667293"
+      },
+      "XAccount": {
+        "rows": 15,
+        "sorted_json_sha256": "ad912801e9dcebb500ef92d219fa8625a924421fc08b24d1e38f4a11b224176f"
+      },
+      "XEndpointState": {
+        "rows": 0,
+        "sorted_json_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "_prisma_migrations": {
+        "rows": 18,
+        "sorted_json_sha256": "b293f59cffb2e51eda44d2b24396346e6375e9fe27a15530ff6346bd3413f878"
+      }
+    },
+    "catalog_sha256": {
+      "constraints": "b5e31da9c3574e96dd60c20990fcec4c9863f1664e5afb8c14f12f4e61d8f0ee",
+      "indexes": "b9ea4f60b7af8c63b2f447c568a505e85c69a63c8789b8fee094d1142cb37c33",
+      "triggers": "1379ba62c00b6d826c0399e242871a4bf15ed7aff526442dba2213b33194979b",
+      "functions": "30bd3566548d9d345e86697625e313bcefcaa007f335811057b2c254f03d35a6",
+      "columns": "b162b6c327b0cab7b7eb2650b6445cdb0dc7c66f15539c41eb33e9e1ac5f2e36"
+    }
+  },
+  "synthetic_inventory": {
+    "ledger_by_network": [
+      {
+        "network": "mainnet",
+        "rows": 4,
+        "available_delta": "20",
+        "reserved_delta": "0"
+      }
+    ],
+    "transfer_by_instrument_status": [
+      {
+        "network": "mainnet",
+        "mint": "fixture-mint",
+        "kind": "DEPOSIT",
+        "status": "PAID",
+        "rows": 4,
+        "units": "20"
+      },
+      {
+        "network": "sandbox",
+        "mint": "m",
+        "kind": "DEPOSIT",
+        "status": "AWAITING_TRANSFER",
+        "rows": 1,
+        "units": "1"
+      },
+      {
+        "network": "sandbox",
+        "mint": "m",
+        "kind": "WITHDRAWAL",
+        "status": "PAID",
+        "rows": 1,
+        "units": "1"
+      }
+    ],
+    "native_reward_rounds": [],
+    "native_reward_payouts": [],
+    "financial_transaction_states": [],
+    "legacy_raid_states": [
+      {
+        "status": "DRAFT",
+        "fundingAsset": "SOL",
+        "fundingNetwork": "mainnet",
+        "fundingStatus": "NOT_REQUIRED",
+        "rows": 2
+      }
+    ],
+    "restrictions": [
+      {
+        "role": "ADMIN",
+        "suspended": false,
+        "rows": 1
+      },
+      {
+        "role": "CREATOR",
+        "suspended": false,
+        "rows": 18
+      },
+      {
+        "role": "CREATOR",
+        "suspended": true,
+        "rows": 1
+      }
+    ],
+    "unvalidated_constraints": [
+      {
+        "table_name": "Post",
+        "conname": "Post_availability_check"
+      },
+      {
+        "table_name": "Post",
+        "conname": "Post_qualification_check"
+      },
+      {
+        "table_name": "Post",
+        "conname": "Post_reviewStatus_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_fundingAsset_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_fundingStatus_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_status_check"
+      },
+      {
+        "table_name": "Raid",
+        "conname": "Raid_trackingPhase_check"
+      }
+    ]
+  },
+  "source_quiescent_before_after_dump_match": true,
+  "isolated_restore_contents_catalog_match": true,
+  "consumed_challenges": 1,
+  "restored_reconsume_changes": 0,
+  "rollback_guard_probes": [
+    {
+      "case": "ledger_update",
+      "result": "PASS",
+      "expected_category": "append-only",
+      "exit": 3
+    },
+    {
+      "case": "enrollment_destination_change",
+      "result": "PASS",
+      "expected_category": "append-only",
+      "exit": 3
+    },
+    {
+      "case": "transfer_destination_change",
+      "result": "PASS",
+      "expected_category": "immutable",
+      "exit": 3
+    }
+  ],
+  "source_restore_unchanged_after_probes": true,
+  "backup": {
+    "path": "/tmp/raid-t006-target/synthetic-target-baseline.dump",
+    "bytes": 112648,
+    "sha256": "429d5f484f1113b7f08074304ffd9dc89aa03f07de303b59808c8fa19243a716",
+    "failure_model": "Container loss while same-host scratch backup survives; excludes host loss/post-snapshot external effects/AC68/G10"
+  },
+  "forward_t006_migration_executed": false,
+  "independent_target_review": "Six bounded points accepted at de7df7a353d390f3d8b7c05c017f6d04ff5c0efc by independent task 01a11bd5-25c2-7371-ac50-6d667ad0762c; see T006-target-review.json",
+  "full_t006": "IN_PROGRESS / NOT VERIFIED",
+  "limitations": [
+    "Synthetic ledger/transfer/test-state rows are not actual custody, owed customer funds or verified external finality. No zero-obligation inference for another target.",
+    "Legacy ledger lacks full canonical asset identity and new canonical participant/terms/consents/capacity records are absent.",
+    "Independent target entry accepted for this synthetic baseline; reviewed restrictive references/shared merge-deletion locks remain required before proposed persistence execution.",
+    "No production deployment/durability/custodian/case authority/UAT/release approval."
+  ],
+  "task_id": "T006",
+  "status": "TEST_BASELINE_TECHNICALLY_ACCEPTED; full T006 IN_PROGRESS / NOT VERIFIED",
+  "handoff": "docs/tasks/T006-target-handoff.md",
+  "full_task_criteria": {
+    "T006-C01": "NOT VERIFIED",
+    "T006-C02": "NOT VERIFIED",
+    "T006-C03": "NOT VERIFIED",
+    "T006-C04": "NOT VERIFIED",
+    "T006-C05": "NOT VERIFIED",
+    "T006-C06": "NOT VERIFIED",
+    "T006-C07": "NOT VERIFIED",
+    "T006-C08": "NOT VERIFIED",
+    "T006-C09": "NOT VERIFIED",
+    "T006-C10": "NOT VERIFIED",
+    "T006-C11": "NOT VERIFIED",
+    "T006-C12": "NOT VERIFIED",
+    "T006-C13": "NOT VERIFIED",
+    "T006-C14": "NOT VERIFIED",
+    "T006-C15": "NOT VERIFIED",
+    "T006-C16": "NOT VERIFIED",
+    "T006-C17": "NOT VERIFIED",
+    "T006-C18": "NOT VERIFIED",
+    "T006-A01": "NOT VERIFIED",
+    "T006-A02": "NOT VERIFIED",
+    "T006-W01": "NOT VERIFIED",
+    "T006-W02": "NOT VERIFIED",
+    "T006-W03": "NOT VERIFIED",
+    "T006-C19": "NOT VERIFIED",
+    "T006-C20": "NOT VERIFIED",
+    "T006-C21": "NOT VERIFIED",
+    "T006-C22": "NOT VERIFIED"
+  },
+  "owner_decision": {
+    "id": "T006-LOCAL-TARGET-2026-10-08",
+    "owner": "Active project owner, identified by task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+    "authorization": "Do what is needed",
+    "response_to": "Which isolated predeployment PostgreSQL target and authorized owner should I record for the next T006 storage step?",
+    "status": "AUTHORIZED for disposable synthetic local preparation only",
+    "requirement_change": false,
+    "live_financial_custodian": false
+  },
+  "remaining_gate_requirements": [
+    "Independent target entry review satisfied for this exact synthetic baseline only; reviewed forward compatibility remains required before proposed T006 DDL.",
+    "No proposed T006 migration/guard/backfill has been independently reviewed or executed.",
+    "Canonical terms/consents/identity/capacity recovery and reviewed cross-domain lock contract remain absent.",
+    "All-asset financial/provider/customer authority for any other or live target remains unverified."
+  ],
+  "scope_notes": [
+    "The actual selected synthetic target is now supplied. Earlier no-target observations remain historical; this does not supply a production environment/custodian.",
+    "Initial requested DB name useraid_t006_test did not match unchanged useraid_test safety guard; it remains empty/unused, and guarded DB was created before bootstrap.",
+    "Tag inspect returned No such image twice despite list showing postgres:16; immutable image-ID inspect succeeded and that exact image ID was used.",
+    "First snapshot scratch script had a Python quoting SyntaxError before any SQL/backup action. Corrected script parsed and all same parity/guard checks passed. No source/test/assertion changes."
+  ],
+  "artifact_fingerprints": {
+    "target-run.py": "51d0df4af360860a5578a46b60c7b92b73825a3fa6d42ad74e7c3b6ac8405768",
+    "wallet-db.log": "d795aec340bf70f4ee53455951d048f78b503035be55107edaa9e6301831d061",
+    "x-db.log": "a965f02c124baed82a8e842cb538dc5763b8d395dcf9fb982f44a3249f1c5f20",
+    "legacy-bootstrap.log": "1712199bfa56006da737969548b8aab3292beaa898995b849ee280ee6a1d1233",
+    "snapshot-corrected.log": "ac009f7d31f19ba47140a630b8e92cbddc4cec8d739ecf2c3793ebe143bb7e99",
+    "wallet-db.xml": "16755330093245609901f07b2718dd4989d725e207ced6c543bf1d53f35b9a72",
+    "x-db.xml": "eab5c8151748fa1b8011503bae14a14ae76f6d711f898117a253212f915018a1",
+    "target-snapshot.py": "75526ab4bdc01cb05b01aaa75b583fce560062175d92103892def95c559fb55b",
+    "final-planning.log": "38404eea57ce1e20603a1056962969dbb1d8511da30d88170585f69030967dce",
+    "final-docs-tests.log": "b808fa1d9a2ca68884ed206ae3772eaf488adf95906c86bc21949b99fd4714d0",
+    "final-completion.log": "44bd125b82f57251819ebde7b3eca33c9a609a5ef10d22d90bf8bd5b0e50d228"
+  },
+  "source_schema_migration_manifest": {
+    "prisma/schema.prisma": "36dee67b6be0f2536400ad6cdfc677f23f5a95390ad7bf5c5934efeae98c94b4",
+    "prisma/migrations/202609270001_init/migration.sql": "6097b1b9b32535a9e8dfb2a4694fc48c9d26a7ae749fc0986b1b8ed12bbb821f",
+    "prisma/migrations/202610020007_media_assets/migration.sql": "1747bf415b9e1ccdc6e3d24e2d0ae54caf2eaa76ec0ab1b0bd1fd7f6052cd46d",
+    "prisma/migrations/202609290002_standalone_raids/migration.sql": "a68b159e961c563092bcb95290c4fa6feb9cc557d2fb29abe9daaaa9ee2eea0b",
+    "prisma/migrations/202610020003_x_budget_controls/migration.sql": "f46c859300bb0b4bf34bda5e6874b9b808175ef0565f0a70edac0bdf586e71b9",
+    "prisma/migrations/202610020001_studio_fk_alignment/migration.sql": "0e3254751a38d9224aa25ad3bcd9c22dc18d8d324b18c0f33224aa3a484fa7f4",
+    "prisma/migrations/202609300001_creator_studio/migration.sql": "5d9896bcd2f706c769c42eb0a67639bbaac0f2d5ceb1d84f9c8e4ca6b8e2f7de",
+    "prisma/migrations/202609280001_x_connection/migration.sql": "846ffa673555539710687f9265ceaa10ee6c4d8a0d2cc57b8f81fd839afa2603",
+    "prisma/migrations/202610020010_hot_path_indexes/migration.sql": "4f73dba4ae3f5805b3a718942fff9cad4482c95830c0b33f2f9b5ed54fa77f8c",
+    "prisma/migrations/202610020002_job_dead_letter/migration.sql": "f80f7bd422d3fd391ec4cc30b3f7105466161109c675e7b368ca1756fa5ec3e8",
+    "prisma/migrations/202609290001_x_tracking/migration.sql": "2ecd1549904bc3ee9fd4eba19cf75935540ea04380607b27b5cd364a9fb0032f",
+    "prisma/migrations/202610020006_auth_hardening/migration.sql": "2291eae6911d4e097dd2f403a1f26de0935d69c53d7c7563e8be6cc3de62e63e",
+    "prisma/migrations/202610020012_state_checks/migration.sql": "950310190fd896aab69ceef02a9a012c9e958754f7e05dba6e9a3d203a0535b1",
+    "prisma/migrations/202610020005_token_metadata_source/migration.sql": "d63b30ad51030236405279c3d6a09b29d020ca1bc7f83dc01fc2b33fde9b1d07",
+    "prisma/migrations/202610020008_wallet_rotation/migration.sql": "a65464300afc8ff5e9a304b02603f14c876e8ddd92b276ad7d462de1f47047b6",
+    "prisma/migrations/202609280002_pump_launch/migration.sql": "15c34a12f5effed2d20dad6848b955ff444defb33365797480f7d1a11f7bf020",
+    "prisma/migrations/202610020004_raid_money_policies/migration.sql": "abb5f5e5eecdbaf6eef1549f60db1735be44a8ae14c5de6cc6cfb46eec261854",
+    "prisma/migrations/202610020011_ledger_integrity/migration.sql": "8b94c4b55ac388f72eedc9ebafdcd19736cba4c9e7b74da5ff989ae46a56b0af",
+    "prisma/migrations/202610020009_launch_finance_hardening/migration.sql": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027"
+  },
+  "current_resources": {
+    "source": "RUNNING, reviewed synthetic baseline; reserved for later authorized tests",
+    "restore": "RUNNING, network none; reviewed preserved baseline",
+    "dump": "Retained verified synthetic backup; fixture data only",
+    "persistent_or_shared_volume_used": false,
+    "cleanup_owner": "Codex bounded task operator under active owner authorization",
+    "cleanup_precondition": "Review or superseding baseline evidence recorded; verify exact names/labels/hash before removing only these task-owned resources"
+  },
+  "final_local_verification": {
+    "documentation_evidence_tests": "74 pass across 2 suites, no skips",
+    "planning_tests": "27 pass",
+    "changed_document_local_paths": "PASS",
+    "git_diff_check": "PASS",
+    "full_task_completion_validator": {
+      "exit": 1,
+      "diagnostics": 27,
+      "all_full_criteria_unverified": true
+    },
+    "unused_default_public_tables": 0
+  },
+  "pre_review_checkpoint": {
+    "status": "TEST_BASELINE_PREPARED / INDEPENDENT TARGET REVIEW PENDING",
+    "independent_target_review": "NOT REVIEWED; new entry evidence cannot self-approve",
+    "candidate_sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc"
+  },
+  "independent_review_evidence": "planning/task-evidence/T006-target-review.json"
+}
