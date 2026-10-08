@@ -159,3 +159,5 @@ All feature development follows [mandatory TDD and completion evidence](docs/rai
 [CI requirements for every feature](docs/raid-ci-plan.md) · [Automatically refreshed epic/issue status](docs/raid-project-status.md).
 
 [AI suitability, Codex/Claude models, effort and staffing for every issue](docs/raid-agent-assignment.md).
+
+[Shared contracts v1](docs/raid-shared-contracts.md) documents the framework-independent T002 boundary, host responsibilities and independently runnable synthetic example.

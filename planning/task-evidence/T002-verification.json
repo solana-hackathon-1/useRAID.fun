@@ -156,5 +156,38 @@
     "skipped": 0,
     "observed": "Full real-database legacy regression plus all new contract and consumer suites; disposable DB migrated and removed after test",
     "report_sha256": "b3c6fef2248016112573e1957f2d8f81c9dd85e8eb69f5b39b3d74e31e9a89eb"
+  },
+  "historical_candidate_ci": {
+    "sha": "e2942c471ea61dfa352d7797d0c14ee210554287",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709161741",
+    "dependency_security": "FAIL",
+    "observed": "Five Next16.3.6 advisories require16.3.8; source/test/static/planning/docker pass so far; browser/aggregate pending at observation",
+    "qualification": "Historical failure retained; not accepted as passing completion"
+  },
+  "next_prerequisite_repair": {
+    "red": {
+      "sha": "a13ea0e202950eb2142da0dbdf40df2756195a31",
+      "command": "npx vitest run tests/dependency-compatibility.test.ts; npm run audit:check",
+      "observed": "1 dependency regression FAIL / 5 PASS; audit FAIL for 5 nonallowlisted Next advisories",
+      "log_sha256": "65f38850c8d9c6086162867695a817ad995f3af8a3ad54206c8d54bfbd29c380"
+    },
+    "green": {
+      "command": "npm run audit:check; npx vitest run tests/dependency-compatibility.test.ts tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts",
+      "observed": "Audit PASS under unchanged existing allowlist; all44 targeted tests PASS",
+      "log_sha256": "ccf3d345dac187a5dca15cf42758c10e90bc1f9be232758a3df8bd7bf709d1a0"
+    },
+    "bounded_change": "next16.3.6\u219216.3.8 same-minor security patch; package-lock next, @next/env and platform @next/swc packages updated; no audit policy/weakened gate",
+    "advisories": [
+      "GHSA-3w37-wq28-93x7",
+      "GHSA-4jqv-mc3x-m676",
+      "GHSA-f87g-xv8r-7p7x",
+      "GHSA-mcj8-r9mp-w47p",
+      "GHSA-cjq9-62q9-8jv4"
+    ],
+    "primary_sources": [
+      "https://github.com/advisories/GHSA-cjq9-62q9-8jv4",
+      "https://github.com/advisories/GHSA-3w37-wq28-93x7"
+    ],
+    "remaining": "Exact repaired candidate CI and regression after dependency repair pending"
   }
 }
