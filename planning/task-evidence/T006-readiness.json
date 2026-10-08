@@ -62,8 +62,22 @@
     },
     {
       "command": "npm exec -- prettier --check docs/tasks/T006-plan.md docs/tasks/T006-readiness.md docs/tasks/T006-handoff.md planning/task-evidence/T006-readiness.json",
-      "result": "FAIL_THEN_CORRECTED",
-      "observed": "After a wording correction, readiness-table formatting differed. Prettier write corrects formatting; final recheck required."
+      "result": "PASS_AFTER_CORRECTION",
+      "observed": "Initial readiness-table format mismatch corrected; final check passes all four readiness files. No requirement/source/test behavior changed."
+    },
+    {
+      "command": "env -u DATABASE_URL -u RUN_DB_TESTS NODE_ENV=test npm test -- tests/docs-links.test.ts",
+      "sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+      "result": "PASS",
+      "tests_passed": 51,
+      "suites_passed": 1,
+      "tests_skipped": 0
+    },
+    {
+      "command": "Committed-source nested-doc links and source manifest parity check",
+      "sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+      "result": "PASS",
+      "observed": "All links and anchors in three T006 documents resolve; 36 inspected baseline hashes unchanged."
     }
   ],
   "source_manifest_sha256": {
@@ -305,5 +319,19 @@
     "planning.log": "82ff2716d6381ddd4d2547998da1b3290c78db71826ff691f06319a6e00a45de",
     "typecheck.log": "835b274db8452ebea4e6ff39051074f58874736c2105d60f4e0fe89d1554fac9",
     "completion.log": "7b8fa25cb19893b9190a1d6fc96a3aac9dbd4ad8e77279a8afc0a21b95f7ae54"
-  }
+  },
+  "readiness_source_sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+  "documentation_source_sha256": {
+    "docs/tasks/T006-plan.md": "09dfb1a993186984d9c0c1a83e4694819678aa60afc05563395e2b24a02b8775",
+    "docs/tasks/T006-handoff.md": "1de7422eae2f5313b57a10157a714e67688bd9ba4d80202d076ee91ab1fa8760",
+    "docs/tasks/T006-readiness.md": "ae2c362ce9a2a8c99c6db683ac8181b1021975905bd04b41b707f158b6dfc662"
+  },
+  "ci_tracking": {
+    "status": "IN_PROGRESS when recorded; inspect linked exact-source runs for later result",
+    "source_sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+    "push_run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745118249",
+    "pull_request_run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745155403",
+    "assurance": "Unchanged legacy/synthetic regression only; not canonical T006 feature execution."
+  },
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/178"
 }
