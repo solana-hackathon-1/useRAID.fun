@@ -56,3 +56,5 @@ Next after accepted independent preflight review: select the actual isolated per
 Rollback removes unused module/example/tests/docs and inventory entries; no state rollback is required. No merge, deployment, issue closure, UAT or release approval is requested or claimed.
 
 Current review checkpoint: full-task completion validator rejects with 27 criterion diagnostics after independently reviewed source CI/reviewer metadata are supplied. Original pre-review rejection is preserved in the JSON historical checkpoint. This does not claim T006 completion.
+
+Owner-authorized target follow-up: [a disposable local PostgreSQL baseline](T006-target-handoff.md) is now supplied and exercised after acceptance-first planning. Its independent target gate remains NOT REVIEWED; this does not supply the absent canonical storage or live authority. The earlier no-target observation describes the original source checkpoint. The preflight review metadata commit `e90fa5f` passed all seven required CI jobs in [run 37783311579](https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37783311579); later target-record head checks are separate.

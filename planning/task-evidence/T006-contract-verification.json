@@ -17,7 +17,7 @@
   "open_decisions": [
     "O11 identity/recovery/deletion retention remains unresolved",
     "O05/O06/O07 treasury/custody authority remains separate",
-    "O18/O19 actual target durability and operating ownership not supplied"
+    "O18/O19 live durability/operating ownership remain unresolved; disposable local target supplied, fresh independent entry acceptance pending"
   ],
   "release_gate_disposition": "No live gate passed; no new auth/persistence/deployment enabled. App not deployed per owner.",
   "tdd": {
@@ -277,5 +277,11 @@
       "observed": "Rejected full task: all 27 criteria, independent reviewer and 7 exact-head CI checks absent."
     }
   },
-  "reviewed_candidate_sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041"
+  "reviewed_candidate_sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+  "target_preparation": {
+    "scope": "Owner-authorized disposable local legacy target only",
+    "result": "TEST_BASELINE_PREPARED; independent target acceptance NOT REVIEWED",
+    "evidence_url": "docs/tasks/T006-target-handoff.md",
+    "forward_t006_migration_executed": false
+  }
 }
