@@ -1,0 +1,247 @@
+{
+  "task_id": "T003",
+  "date": "2026-10-08",
+  "timezone": "Asia/Kathmandu",
+  "source_baseline": "13dd7ff6b0d097270c1d9a3b2ee8c3c8b99404eb",
+  "acceptance_plan_sha": "149e4651497bfa26827b8148648f6a9dc26723a2",
+  "environment": {
+    "os": "macOS-27.0-arm64-arm-64bit",
+    "node": "v26.0.0",
+    "npm": "11.12.1",
+    "python": "3.12.4"
+  },
+  "acceptance_first": {
+    "command": "git commit -m docs: define T003 planning acceptance before execution",
+    "result": "PASS",
+    "sha": "149e4651497bfa26827b8148648f6a9dc26723a2",
+    "rationale": "Documentation/evidence plan only; no implementation/module/schema/API behavior. Acceptance committed before plan deliverable under I13. Future implementation needs real RED/GREEN/REFACTOR."
+  },
+  "schema_migration_manifest": {
+    "prisma/schema.prisma": "36dee67b6be0f2536400ad6cdfc677f23f5a95390ad7bf5c5934efeae98c94b4",
+    "prisma/migrations/202609270001_init/migration.sql": "6097b1b9b32535a9e8dfb2a4694fc48c9d26a7ae749fc0986b1b8ed12bbb821f",
+    "prisma/migrations/202609280001_x_connection/migration.sql": "846ffa673555539710687f9265ceaa10ee6c4d8a0d2cc57b8f81fd839afa2603",
+    "prisma/migrations/202609280002_pump_launch/migration.sql": "15c34a12f5effed2d20dad6848b955ff444defb33365797480f7d1a11f7bf020",
+    "prisma/migrations/202609290001_x_tracking/migration.sql": "2ecd1549904bc3ee9fd4eba19cf75935540ea04380607b27b5cd364a9fb0032f",
+    "prisma/migrations/202609290002_standalone_raids/migration.sql": "a68b159e961c563092bcb95290c4fa6feb9cc557d2fb29abe9daaaa9ee2eea0b",
+    "prisma/migrations/202609300001_creator_studio/migration.sql": "5d9896bcd2f706c769c42eb0a67639bbaac0f2d5ceb1d84f9c8e4ca6b8e2f7de",
+    "prisma/migrations/202610020001_studio_fk_alignment/migration.sql": "0e3254751a38d9224aa25ad3bcd9c22dc18d8d324b18c0f33224aa3a484fa7f4",
+    "prisma/migrations/202610020002_job_dead_letter/migration.sql": "f80f7bd422d3fd391ec4cc30b3f7105466161109c675e7b368ca1756fa5ec3e8",
+    "prisma/migrations/202610020003_x_budget_controls/migration.sql": "f46c859300bb0b4bf34bda5e6874b9b808175ef0565f0a70edac0bdf586e71b9",
+    "prisma/migrations/202610020004_raid_money_policies/migration.sql": "abb5f5e5eecdbaf6eef1549f60db1735be44a8ae14c5de6cc6cfb46eec261854",
+    "prisma/migrations/202610020005_token_metadata_source/migration.sql": "d63b30ad51030236405279c3d6a09b29d020ca1bc7f83dc01fc2b33fde9b1d07",
+    "prisma/migrations/202610020006_auth_hardening/migration.sql": "2291eae6911d4e097dd2f403a1f26de0935d69c53d7c7563e8be6cc3de62e63e",
+    "prisma/migrations/202610020007_media_assets/migration.sql": "1747bf415b9e1ccdc6e3d24e2d0ae54caf2eaa76ec0ab1b0bd1fd7f6052cd46d",
+    "prisma/migrations/202610020008_wallet_rotation/migration.sql": "a65464300afc8ff5e9a304b02603f14c876e8ddd92b276ad7d462de1f47047b6",
+    "prisma/migrations/202610020009_launch_finance_hardening/migration.sql": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027",
+    "prisma/migrations/202610020010_hot_path_indexes/migration.sql": "4f73dba4ae3f5805b3a718942fff9cad4482c95830c0b33f2f9b5ed54fa77f8c",
+    "prisma/migrations/202610020011_ledger_integrity/migration.sql": "8b94c4b55ac388f72eedc9ebafdcd19736cba4c9e7b74da5ff989ae46a56b0af",
+    "prisma/migrations/202610020012_state_checks/migration.sql": "950310190fd896aab69ceef02a9a012c9e958754f7e05dba6e9a3d203a0535b1",
+    "prisma/migrations/migration_lock.toml": "1db17a8d051aa136110736752c5e1f8b7ed92b6ea8e803112fbbe2497047c210"
+  },
+  "source_observed": {
+    "prisma_models": 35,
+    "migration_sql_files": 18,
+    "not_valid_state_checks": 7,
+    "unchanged_manifest_files": 20
+  },
+  "checks": {
+    "planning_contracts": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "result": "PASS",
+      "tests": 27,
+      "failures": 0
+    },
+    "schema_migration_immutability": {
+      "result": "PASS",
+      "observed": "All20 baseline schema/migration files hash-identical; no new DDL."
+    },
+    "nested_links": {
+      "result": "PASS",
+      "observed": "All31 local links across3 T003 task documents exist; applicable anchors checked by explicit local link inspection."
+    },
+    "targeted_existing_regression": {
+      "command": "npx vitest run tests/docs-links.test.ts tests/states.test.ts tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts --reporter=json",
+      "result": "PASS",
+      "tests": 90,
+      "passed": 90,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "e13ae51375d890c3b7302e9003cdc746ff9ce51ea93129749fecdb3fb19f26fc",
+      "scope": "Existing pure contract/state/documentation tests; no DB/provider/migration execution."
+    },
+    "documentation_final": {
+      "command": "npx vitest run tests/docs-links.test.ts --reporter=json",
+      "result": "PASS",
+      "tests": 49,
+      "passed": 49,
+      "failed": 0,
+      "skipped": 0
+    },
+    "formatting": {
+      "command": "npm run format:check",
+      "result": "PASS",
+      "observed": "All matched repository files use Prettier code style."
+    },
+    "completion_validator_initial": {
+      "command": "python3 scripts/verify-raid-completion.py T003 planning/task-evidence/T003.json",
+      "exit_code": 1,
+      "result": "REJECTED AS EXPECTED",
+      "observed": "Missing independent non-code review and27 pending criteria prevent completion. Genuine output retained below. No validator/test weakened.",
+      "output": "Non-code exception requires independent review and acceptance-first evidence\nT003-C01: NOT VERIFIED prevents completion\nT003-C02: NOT VERIFIED prevents completion\nT003-C03: NOT VERIFIED prevents completion\nT003-C04: NOT VERIFIED prevents completion\nT003-C05: NOT VERIFIED prevents completion\nT003-C06: NOT VERIFIED prevents completion\nT003-C07: NOT VERIFIED prevents completion\nT003-C08: NOT VERIFIED prevents completion\nT003-C09: NOT VERIFIED prevents completion\nT003-C10: NOT VERIFIED prevents completion\nT003-C11: NOT VERIFIED prevents completion\nT003-C12: NOT VERIFIED prevents completion\nT003-C13: NOT VERIFIED prevents completion\nT003-C14: NOT VERIFIED prevents completion\nT003-C15: NOT VERIFIED prevents completion\nT003-C16: NOT VERIFIED prevents completion\nT003-C17: NOT VERIFIED prevents completion\nT003-C18: NOT VERIFIED prevents completion\nT003-A01: NOT VERIFIED prevents completion\nT003-A02: NOT VERIFIED prevents completion\nT003-W01: NOT VERIFIED prevents completion\nT003-W02: NOT VERIFIED prevents completion\nT003-W03: NOT VERIFIED prevents completion\nT003-C19: NOT VERIFIED prevents completion\nT003-C20: NOT VERIFIED prevents completion\nT003-C21: NOT VERIFIED prevents completion\nT003-C22: NOT VERIFIED prevents completion\n"
+    },
+    "documentation_corrected": {
+      "command": "npx vitest run tests/docs-links.test.ts --reporter=json",
+      "result": "PASS",
+      "tests": 49,
+      "passed": 49,
+      "failed": 0,
+      "skipped": 0
+    },
+    "completion_validator_partial": {
+      "command": "python3 scripts/verify-raid-completion.py T003 planning/task-evidence/T003.json",
+      "exit_code": 1,
+      "result": "REJECTED AS EXPECTED",
+      "observed": "After independent26 criterion integration the sole missing completion criterion is C22 exact source CI. No pending job treated as success.",
+      "output": "T003-C22: NOT VERIFIED prevents completion\n"
+    },
+    "final_metadata_integration": {
+      "result": "PASS",
+      "observed": "49 documentation tests pass without skips;33 nested local task links resolve;all20 schema/migration hashes unchanged;27 criterion records match distinct reviewer verbatim;full repository formatting and git diff whitespace checks pass. Only docs/evidence changed since reviewed source; migration-plan body has only status metadata changed.",
+      "tests": 49,
+      "source_review_sha": "6865af50a00144f0870d0642d487f43c7027aa12"
+    },
+    "completion_validator_final": {
+      "command": "python3 scripts/verify-raid-completion.py T003 planning/task-evidence/T003.json",
+      "result": "PASS",
+      "exit_code": 0,
+      "observed": "Completion packet structure passes; all27 independent criterion records integrated. Does not grant production authority or prove truth of deployed audit/restore.",
+      "source_candidate": "6865af50a00144f0870d0642d487f43c7027aa12"
+    }
+  },
+  "not_executed": [
+    "deployed read-only audit",
+    "actual policy/consent/obligation/custody reconciliation",
+    "migration/backfill/constraint validation",
+    "database restore/durability rehearsal",
+    "live provider/chain effects",
+    "UAT/business/release approval"
+  ],
+  "ci": {
+    "result": "PASS",
+    "source_candidate": "6865af50a00144f0870d0642d487f43c7027aa12",
+    "event": "push",
+    "run_id": 37712893644,
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644",
+    "checks": {
+      "browser": {
+        "result": "SUCCESS",
+        "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/job/113103012954"
+      },
+      "test": {
+        "result": "SUCCESS",
+        "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/job/113103013151"
+      },
+      "docker": {
+        "result": "SUCCESS",
+        "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/job/113103013192"
+      },
+      "planning-contracts": {
+        "result": "SUCCESS",
+        "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/job/113103013194"
+      },
+      "dependency-security": {
+        "result": "SUCCESS",
+        "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/job/113103013400"
+      },
+      "static": {
+        "result": "SUCCESS",
+        "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/job/113103013776"
+      },
+      "ci-gate": {
+        "result": "SUCCESS",
+        "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/job/113104872385"
+      }
+    },
+    "checkout": "Completed push-run logs explicitly show6865af50a00144f0870d0642d487f43c7027aa12 for all6 source checkouts. Aggregate depends on those jobs.",
+    "executed_counts": {
+      "planning_tests": 27,
+      "unit_database": {
+        "suites": 58,
+        "passed": 583,
+        "failed": 0,
+        "skipped": 0
+      },
+      "browser": {
+        "demo": {
+          "passed": 49,
+          "skipped": 1
+        },
+        "studio_desktop_mobile": {
+          "passed": 44,
+          "skipped": 0
+        },
+        "live": {
+          "passed": 38,
+          "skipped": 6
+        },
+        "total_passed": 131,
+        "total_skipped": 7
+      }
+    },
+    "browser_exclusions": "Existing one desktop guard for mobile-only demo test and six disabled launchpad/reward paths; no new tests skipped. Synthetic provider fixtures are not live release gates.",
+    "unit_artifact": {
+      "id": 11522527252,
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712893644/artifacts/11522527252",
+      "xml_sha256": "af9422ede8b8e9592f683e8441db062575bf597d479c06b52f4b8ac12bf96030",
+      "independent_observation": "Reviewer downloaded actual XML and counted583 cases,0 failures/errors/skips."
+    },
+    "logs_sha256": "fcb89d4ff59572341393035b08037f31abb2443020564fc18a85fd23ec35341d",
+    "metadata_integration": "Evidence-only integration head checks are separate; source counts/checks apply to the named6865af5 candidate, not an unspecified later commit."
+  },
+  "independent_review": {
+    "result": "ACCEPTED:14 PASS/13 bounded NOT APPLICABLE,all27 criteria",
+    "reviewer": "/root/t003_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+    "sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+    "counts": {
+      "pass": 14,
+      "bounded_not_applicable": 13,
+      "not_verified": 0,
+      "total": 27
+    },
+    "evidence": "docs/tasks/T003-review.md; planning/task-evidence/T003-review.json",
+    "scope": "Planning only; bounded exclusions waive no future implementation invariant or pre-migration execution gate. Reviewer authored actual final C22 results before its turn ended with a usage-limit error; the written evidence was inspected and retained."
+  },
+  "source_candidate": "6865af50a00144f0870d0642d487f43c7027aa12",
+  "source_correction": {
+    "from_sha": "e456e8c1b790e6471610ea06d404dff6309bdefc",
+    "to_sha": "6865af50a00144f0870d0642d487f43c7027aa12",
+    "observed": "Initial P5 wording incorrectly required positive obligation/claim amounts. Canonical16.3/25.5 and T002 AmountSchema permit zero. Corrected to nonnegative exact integers and feature-owned zero handling; independent reviewer confirmed the issue and correction.",
+    "scope": "Non-code specification correction; no behavior/schema changes or fabricated RED/GREEN."
+  },
+  "draft_pr": "https://github.com/solana-hackathon-1/useRAID.fun/pull/176",
+  "historical_ci": [
+    {
+      "sha": "e456e8c1b790e6471610ea06d404dff6309bdefc",
+      "event": "push",
+      "run_id": 37712646233,
+      "result": "CANCELLED",
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712646233",
+      "observed": "Superseded by necessary nonnegative amount wording correction; no earlier result verifies corrected source."
+    },
+    {
+      "sha": "e456e8c1b790e6471610ea06d404dff6309bdefc",
+      "event": "pull_request",
+      "run_id": 37712670046,
+      "result": "CANCELLED",
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37712670046",
+      "observed": "Historical superseded source retained; not a passing completion run."
+    }
+  ]
+}
