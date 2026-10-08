@@ -1,0 +1,924 @@
+{
+  "schemaVersion": "v1",
+  "simulation": true,
+  "blueprintSha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "planningCountConflict": "T004-A02/backlog retain historical 72; canonical section 35 now has 75. All 75 planned; none executed by this plan.",
+  "scenarios": [
+    {
+      "id": "AC01",
+      "scenario": "User connects a second wallet while holding an active Raid.",
+      "expected": "Same canonical participant, same history and capacity.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC02",
+      "scenario": "Reuse a wallet-login nonce or change its domain.",
+      "expected": "Authentication fails; no duplicate session/link.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC03",
+      "scenario": "New user completes orientation with no verified skill.",
+      "expected": "Can find explicit starter tasks; no fabricated verified rank.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "BROWSER"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC04",
+      "scenario": "E-ranked participant buys a large RAID balance.",
+      "expected": "Skill rank and high-rank eligibility do not change.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC05",
+      "scenario": "A-ranked frontend developer applies for B-ranked Solana work without that skill.",
+      "expected": "Required skill fails with an actionable explanation.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC06",
+      "scenario": "Experienced newcomer passes a relevant advanced assessment.",
+      "expected": "Relevant skill can qualify quickly; Guild Trust/private access are still separate.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC07",
+      "scenario": "Token holder attempts Guild administration or private download.",
+      "expected": "Denied unless separately granted.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROVIDER_CONTRACT"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC08",
+      "scenario": "RPC outage prevents refreshing holder balance.",
+      "expected": "Membership observation becomes stale/unknown; no destructive inference.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["PROVIDER_CONTRACT", "REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC09",
+      "scenario": "Related accounts farm reciprocal easy tasks.",
+      "expected": "Suspect events flagged under review policy; no automatic high technical rank.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC10",
+      "scenario": "Dispute finding is reversed on appeal.",
+      "expected": "Attributable reputation correction without erased evidence/history.",
+      "owners": ["AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "walletLinks", "guilds"],
+      "prerequisites": [
+        "T006\u2013T018 identity/Guild/capability/reputation contracts; no DTO-only assurance"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC11",
+      "scenario": "Same Raider accepts two different Raids concurrently.",
+      "expected": "Exactly one commitment; other request conflicts.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC12",
+      "scenario": "Two applicants accept the same available slot.",
+      "expected": "Exactly one selected engagement and one funded binding.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROGRAM"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC13",
+      "scenario": "A Party contains one busy member.",
+      "expected": "Entire Party commitment rolls back; no orphan engagement or partial reservation.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC14",
+      "scenario": "Normal acceptance races with Challenge acceptance.",
+      "expected": "One active engagement across both entry paths.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC15",
+      "scenario": "Two registered agents under one capacity-limited operator accept different work.",
+      "expected": "Operator transaction permits only one engagement.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC16",
+      "scenario": "Human and AI members under one operator join the same allowed Party.",
+      "expected": "Individual commitments coexist under one same-engagement operator reservation.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC17",
+      "scenario": "An offer was generated while available, but the Raider later became busy.",
+      "expected": "Offer acceptance fails current capacity checks.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC18",
+      "scenario": "Public paid work has no private resources but binding is pending.",
+      "expected": "Remains in setup; cannot start commissioned work.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROGRAM"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC19",
+      "scenario": "Worker submits and review/revision duty remains.",
+      "expected": "Active slot stays held until bounded operational closure.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC20",
+      "scenario": "Work is accepted but its payment is still pending.",
+      "expected": "Capacity is released; unpaid claim remains visible.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC21",
+      "scenario": "Reviewer never responds, or worker never submits.",
+      "expected": "Deadline process reaches finite closure; money/fault is not decided by silence.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC22",
+      "scenario": "Terminal work is reopened while the Raider has new work.",
+      "expected": "No silent reactivation; new consent/capacity required.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC23",
+      "scenario": "A delayed closure job arrives after the Raider starts another job.",
+      "expected": "Cannot release the newer commitment.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC24",
+      "scenario": "Five application targets close or offers expire.",
+      "expected": "Old applications no longer consume the cap; new applications possible.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC25",
+      "scenario": "A withdrawn worker is replaced.",
+      "expected": "New slot/terms/reservation; original history and protected claims remain intact.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["engagement", "commitments", "parties", "operator", "agents", "operatorParty"],
+      "prerequisites": ["T019\u2013T025 canonical work commands and real PostgreSQL constraints"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC26",
+      "scenario": "Client supplies unrelated successful transaction signature.",
+      "expected": "No funding credit without the correct program/vault/asset/effect.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "PROVIDER_CONTRACT"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC27",
+      "scenario": "RPC accepts a transaction but it never finalizes.",
+      "expected": "No verified-funded/paid label; status remains accurate.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROVIDER_CONTRACT", "REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC28",
+      "scenario": "Reward promises two assets; only one is deposited.",
+      "expected": "Full reward is not eligible for commitment.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROGRAM"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC29",
+      "scenario": "Two mints share a ticker, or same mint address is presented on wrong network.",
+      "expected": "Identity validation rejects substitution.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["UNIT", "PROGRAM"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC30",
+      "scenario": "Asset policy version changes for the same underlying asset.",
+      "expected": "Existing balance is not duplicated or split into spendable new funds.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC31",
+      "scenario": "Founder refunds while work binding is racing.",
+      "expected": "Program serializes outcomes; if refund wins, no work/access starts.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC32",
+      "scenario": "Funding/claim webhook is delivered repeatedly.",
+      "expected": "One ledger/business outcome.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROGRAM"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC33",
+      "scenario": "Payout times out after success and is rebuilt with a new signature.",
+      "expected": "Same semantic claim cannot pay again.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "PROVIDER_CONTRACT", "REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC34",
+      "scenario": "A shared pool funds several slots.",
+      "expected": "Each reservation protected; no deposit promised twice.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC35",
+      "scenario": "Work is committed but not yet reviewed/allocated.",
+      "expected": "Founder cannot treat its reserve as refundable uncommitted cash.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC36",
+      "scenario": "Some Party/asset claims settle and another fails.",
+      "expected": "Correct partial status; only unpaid claims retried.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC37",
+      "scenario": "Token transfer becomes frozen after funding.",
+      "expected": "Obligation remains; blocked availability incident; no silent haircut.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "PROVIDER_CONTRACT"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC38",
+      "scenario": "Appeal arrives at claimability boundary.",
+      "expected": "Hold/finality/claim serialize under policy; no contradictory spend.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC39",
+      "scenario": "Operational work closes while a signed binding later finalizes.",
+      "expected": "Late-binding recovery; no reopened work or automatic code grant.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB", "PROVIDER_CONTRACT"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC40",
+      "scenario": "Unauthorized actor changes payout address or settlement beneficiaries.",
+      "expected": "Rejected; proof and permitted beneficiary process required.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROGRAM"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC41",
+      "scenario": "Mainnet config contains test asset/program or mock provider.",
+      "expected": "Production action blocked at validation.",
+      "owners": ["AG04", "AG03", "AG08"],
+      "requiredEnvironments": ["UNIT", "REAL_DB"],
+      "fixtures": ["assets", "rewardLegs", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G02/G03/G04 selected custody/finality/assets; approved program test environment; no live funds"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC42",
+      "scenario": "Visitor inspects private-Raid HTML, API data, search, metadata or preview.",
+      "expected": "Only approved teaser; no private bytes.",
+      "owners": ["AG02", "AG03", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "BROWSER"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC43",
+      "scenario": "High-rank token holder requests a repo without approval.",
+      "expected": "No automatic grant.",
+      "owners": ["AG05", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROVIDER_CONTRACT"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC44",
+      "scenario": "Founder grants one repository expecting folder secrecy.",
+      "expected": "UI/config identifies actual scope; approved isolated resource required.",
+      "owners": ["AG02", "AG05", "AG03", "AG08"],
+      "requiredEnvironments": ["BROWSER", "PROVIDER_CONTRACT"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC45",
+      "scenario": "Source Challenge grant is revoked after main-Raid grant starts on same repo.",
+      "expected": "Effective reconciliation preserves the new valid access.",
+      "owners": ["AG05", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROVIDER_CONTRACT"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC46",
+      "scenario": "Contributor had independent repository rights before the Raid.",
+      "expected": "Removing RAID grant does not claim all access disappeared or delete unrelated rights.",
+      "owners": ["AG05", "AG03", "AG08"],
+      "requiredEnvironments": ["PROVIDER_CONTRACT"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC47",
+      "scenario": "Provider revocation fails or old grant job arrives late.",
+      "expected": "Incident/retry; stale grant cannot revive undesired access.",
+      "owners": ["AG05", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROVIDER_CONTRACT"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC48",
+      "scenario": "Submission includes a malicious build script, URL, or prompt instruction.",
+      "expected": "Isolation/input policy prevents unauthorized data or tool access.",
+      "owners": ["AG05", "AG03", "AG08"],
+      "requiredEnvironments": ["SANDBOX"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC49",
+      "scenario": "Account is restricted with an unsettled claim.",
+      "expected": "Safe access to financial status and dispute evidence remains under policy.",
+      "owners": ["AG05", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["access", "providerScripts", "people"],
+      "prerequisites": [
+        "G06 scoped resources and provider effective-rights contract; G07 isolated untrusted execution for AC48"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC50",
+      "scenario": "Party leader changes accepted split without other members.",
+      "expected": "Amendment rejected until affected consents and valid funding.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC51",
+      "scenario": "Valid Challenge entry does not win.",
+      "expected": "Qualification/participation preserved; no automatic reliability failure.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC52",
+      "scenario": "Founder changes judging weights after commitments.",
+      "expected": "Rejected without accepted amendment.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC53",
+      "scenario": "Four guaranteed prototype payments plus a prize are promised.",
+      "expected": "Maximum qualifying liability funded before commitments.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC54",
+      "scenario": "Selected Challenge builder declines main Raid.",
+      "expected": "No main engagement, no penalty merely for declining, selection payment preserved.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC55",
+      "scenario": "Selection-to-main handoff races with another offer or operator job.",
+      "expected": "One atomic capacity outcome; no double reservation.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC56",
+      "scenario": "Main-Raid binding fails after handoff.",
+      "expected": "Target closes under recovery; source compensation/history remain intact.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC57",
+      "scenario": "Guild wants to use a nonwinner's private code.",
+      "expected": "Requires rights already granted or a separate authorized agreement.",
+      "owners": ["AG03", "AG04", "AG05", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "PROVIDER_CONTRACT"],
+      "fixtures": ["parties", "challengeEntry", "engagement", "rewardLegs", "operatorParty"],
+      "prerequisites": [
+        "T037\u2013T047 Party/Challenge/rights contracts; G02/G03 adopted finance policy"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC58",
+      "scenario": "Founder buys sponsored placement.",
+      "expected": "Clear Sponsored label; no skill/reputation/judging boost.",
+      "owners": ["AG02", "AG07", "AG04", "AG08"],
+      "requiredEnvironments": ["BROWSER", "REAL_DB"],
+      "fixtures": ["guilds", "assets", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G09 promotions or G08 approved publication capability; policy-specific enablement"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC59",
+      "scenario": "Bid loses or purchased placement cannot be delivered.",
+      "expected": "Funds/reservations follow published release/refund/make-good rules.",
+      "owners": ["AG07", "AG04", "AG08"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB"],
+      "fixtures": ["guilds", "assets", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G09 promotions or G08 approved publication capability; policy-specific enablement"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC60",
+      "scenario": "Social publish request times out after provider success.",
+      "expected": "Lookup/deduplication prevents duplicate publication.",
+      "owners": ["AG07", "AG04", "AG08"],
+      "requiredEnvironments": ["PROVIDER_CONTRACT", "REAL_DB"],
+      "fixtures": ["guilds", "assets", "duplicateEffects", "providerScripts"],
+      "prerequisites": [
+        "G09 promotions or G08 approved publication capability; policy-specific enablement"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC61",
+      "scenario": "AI reaches total budget across retries/subagents.",
+      "expected": "Further spend blocked; no autonomous budget expansion.",
+      "owners": ["AG06", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "SANDBOX", "PROVIDER_CONTRACT"],
+      "fixtures": ["operator", "agents", "operatorParty", "providerScripts"],
+      "prerequisites": ["G07 operator/runtime/budget/isolation contract"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC62",
+      "scenario": "AI tries to approve its own output or withdraw reward.",
+      "expected": "Permission denied; ordinary authorized review required.",
+      "owners": ["AG06", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "SANDBOX"],
+      "fixtures": ["operator", "agents", "operatorParty", "providerScripts"],
+      "prerequisites": ["G07 operator/runtime/budget/isolation contract"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC63",
+      "scenario": "Agent changes model/version to evade failure history/capacity.",
+      "expected": "Canonical identity/commitment retained; evaluation policy applies.",
+      "owners": ["AG06", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["operator", "agents", "operatorParty", "providerScripts"],
+      "prerequisites": ["G07 operator/runtime/budget/isolation contract"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC64",
+      "scenario": "Failed/cancelled AI run leaves an active engagement.",
+      "expected": "Bounded recovery or operational closure; no indefinite slot lock.",
+      "owners": ["AG06", "AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB", "RECOVERY"],
+      "fixtures": ["operator", "agents", "operatorParty", "providerScripts"],
+      "prerequisites": ["G07 operator/runtime/budget/isolation contract"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC65",
+      "scenario": "Role title is used to hide an ongoing second job.",
+      "expected": "Active duty is modeled and rejected if it violates capacity.",
+      "owners": ["AG03", "AG08"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": ["people", "engagement", "commitments"],
+      "prerequisites": ["Ongoing Role capacity/renewal contract; no title-based exception"],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC66",
+      "scenario": "Founder launches a new project through the selected route, verifies its resulting mint, activates the Guild, funds a public Raid, and a Raider completes and claims it.",
+      "expected": "Verified launch artifacts and Guild linkage, correct accepted contract and funded binding, work outcome, verified transfer and attributable reputation evidence.",
+      "owners": ["AG02", "AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB", "PROVIDER_CONTRACT", "BROWSER"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Applicable G01\u2013G10 approved for actual release feature; synthetic run proves only tested path"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC67",
+      "scenario": "Process crashes after external success but before local receipt.",
+      "expected": "Reconciliation records existing effect; no duplicate action.",
+      "owners": ["AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["RECOVERY", "PROVIDER_CONTRACT", "REAL_DB"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Applicable G01\u2013G10 approved for actual release feature; synthetic run proves only tested path"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC68",
+      "scenario": "Restore after losing records newer than the last snapshot, including a new accepted engagement and completed external effect.",
+      "expected": "Recover original terms, consents, semantic IDs and capacity from approved durability; reconcile before writes. If recovery fails, affected operations stay safely unavailable. No repeated effects or revived old grants.",
+      "owners": ["AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["RECOVERY", "REAL_DB", "PROVIDER_CONTRACT"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Approved isolated durability/restore exercise; authorized deployed audit remains separate and NOT VERIFIED"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC69",
+      "scenario": "Same idempotency key is reused with a different payload.",
+      "expected": "Explicit conflict; cannot overwrite original command result.",
+      "owners": ["AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Applicable G01\u2013G10 approved for actual release feature; synthetic run proves only tested path"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC70",
+      "scenario": "Keyboard/mobile user completes the core flow with wallet rejection and retry.",
+      "expected": "Draft preserved, clear focus/error/status, no duplicate engagement or funding intent.",
+      "owners": ["AG02", "AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["BROWSER", "REAL_DB"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Applicable G01\u2013G10 approved for actual release feature; synthetic run proves only tested path"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC71",
+      "scenario": "Authorized representative links an existing project/token and completes the supported funded-work flow.",
+      "expected": "Project authority and canonical token verified; labeled existing-project onboarding and not counted as a new token launch.",
+      "owners": ["AG02", "AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["PROGRAM", "REAL_DB", "PROVIDER_CONTRACT", "BROWSER"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Applicable G01\u2013G10 approved for actual release feature; synthetic run proves only tested path"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC72",
+      "scenario": "Founder/admin changes ordinary Raid reward, scope, deadline or global defaults after acceptance.",
+      "expected": "Original accepted version stays effective. Material amendment needs affected consent, required additional funding and a new audited version; unilateral overwrite is rejected.",
+      "owners": ["AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["REAL_DB"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Applicable G01\u2013G10 approved for actual release feature; synthetic run proves only tested path"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC73",
+      "scenario": "Replace a selected integration adapter with a contract-compatible alternate while work and external operations exist.",
+      "expected": "Same domain outcomes and typed errors; capability gaps fail closed; accepted asset/terms/authority and in-flight semantic operation/provider bindings remain intact; no duplicate effect.",
+      "owners": ["AG03", "AG04", "AG08", "AG09"],
+      "requiredEnvironments": ["PROVIDER_CONTRACT", "REAL_DB"],
+      "fixtures": [
+        "people",
+        "guilds",
+        "engagement",
+        "assets",
+        "duplicateEffects",
+        "providerScripts"
+      ],
+      "prerequisites": [
+        "Each feature-owned versioned adapter contract plus original in-flight bindings/receipts; no live switch in T004"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC74",
+      "scenario": "Consume a delivered module in an independent minimal host using its published interface and documentation.",
+      "expected": "Example and contract tests run with explicit config/dependencies; no hidden RAID app state, global credentials or undeclared import; permissions, exact amounts, lifecycle and failure behavior remain enforced.",
+      "owners": ["AG10", "AG03", "AG08"],
+      "requiredEnvironments": ["INDEPENDENT_HOST"],
+      "fixtures": ["assets", "engagement", "people"],
+      "prerequisites": [
+        "Delivered module public interface, declared dependencies, independently installed host; no global app state"
+      ],
+      "result": "NOT VERIFIED"
+    },
+    {
+      "id": "AC75",
+      "scenario": "Submit implementation completion with missing failing-test-first, passing test, regression or independent criterion evidence.",
+      "expected": "Completion validation rejects the packet; missing/unexecuted evidence is not a PASS, and self-approval cannot satisfy independent review.",
+      "owners": ["AG01", "AG08", "AG10"],
+      "requiredEnvironments": ["COMPLETION_VALIDATOR"],
+      "fixtures": ["providerScripts"],
+      "prerequisites": [
+        "Task criterion packet, genuine RED/GREEN/regression and distinct reviewer; validator rejects incomplete evidence"
+      ],
+      "result": "NOT VERIFIED"
+    }
+  ]
+}

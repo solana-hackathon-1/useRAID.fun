@@ -86,6 +86,21 @@ describe('T004 evidence cannot promote fixtures into actual scenario assurance',
       }).success,
     ).toBe(true);
   });
+  it('requires every assurance layer before a combined money scenario can PASS', () => {
+    const combined = {
+      ...record,
+      assurance: 'SCENARIO_BEHAVIOR',
+      scenarioId: 'AC31',
+      environment: { ...record.environment, kind: 'PROGRAM', coveredKinds: ['REAL_DB'] },
+    };
+    expect(EvidenceRecordSchema.safeParse(combined).success).toBe(true);
+    expect(
+      EvidenceRecordSchema.safeParse({
+        ...combined,
+        environment: { ...combined.environment, coveredKinds: [] },
+      }).success,
+    ).toBe(false);
+  });
 });
 
 describe('T004 canonical scenario responsibility and environment plan', () => {
