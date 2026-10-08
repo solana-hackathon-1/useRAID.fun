@@ -1,6 +1,6 @@
 {
   "task_id": "T002",
-  "status": "IN_PROGRESS",
+  "status": "TECHNICALLY_ACCEPTED source candidate798f64f; independent19PASS/8NA",
   "baseline_sha": "27bfa3aca4894067017a5cb21c4df6eb527959db",
   "environment": {
     "local_runtime": "Node 26.0.0",
@@ -142,12 +142,12 @@
   },
   "consumer": {
     "ci_fixture": "PASS; copied module and separate host to temp directory, explicit installed dependency runtime, no app config/credentials",
-    "independent_review": "Reviewer reports clean separate dependency install and host PASS; final report pending"
+    "independent_review": "PASS: separate reviewer independently installed declared dependencies and ran copied host, recorded in T002-review.json"
   },
   "remaining": [
-    "Exact candidate GitHub checks",
-    "Independent criterion review and completion validator",
-    "No new DB/domain/provider/live implementation or UAT verified"
+    "Metadata-only final head CI to be tracked separately",
+    "Review/merge remains owner action; no issue/board closure, UAT or release approval",
+    "Real domain/provider/live capabilities remain owned by dependent feature tasks"
   ],
   "refactor": {
     "command": "DATABASE_URL=<isolated disposable PostgreSQL16 useraid_test> RUN_DB_TESTS=true DEMO_MODE=false npm test -- --reporter=json --outputFile=/private/tmp/raid-t002-db-regression.json",
@@ -161,7 +161,7 @@
     "sha": "e2942c471ea61dfa352d7797d0c14ee210554287",
     "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709161741",
     "dependency_security": "FAIL",
-    "observed": "Five Next16.3.6 advisories require16.3.8; source/test/static/planning/docker pass so far; browser/aggregate pending at observation",
+    "observed": "Historical exact-source dependency-security FAIL; planning/static/test/docker success before cancellation. Browser/aggregate unverified; superseded runs cancelled to free repaired candidate runners.",
     "qualification": "Historical failure retained; not accepted as passing completion"
   },
   "next_prerequisite_repair": {
@@ -174,7 +174,8 @@
     "green": {
       "command": "npm run audit:check; npx vitest run tests/dependency-compatibility.test.ts tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts",
       "observed": "Audit PASS under unchanged existing allowlist; all44 targeted tests PASS",
-      "log_sha256": "ccf3d345dac187a5dca15cf42758c10e90bc1f9be232758a3df8bd7bf709d1a0"
+      "log_sha256": "ccf3d345dac187a5dca15cf42758c10e90bc1f9be232758a3df8bd7bf709d1a0",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
     },
     "bounded_change": "next16.3.6\u219216.3.8 same-minor security patch; package-lock next, @next/env and platform @next/swc packages updated; no audit policy/weakened gate",
     "advisories": [
@@ -188,6 +189,80 @@
       "https://github.com/advisories/GHSA-cjq9-62q9-8jv4",
       "https://github.com/advisories/GHSA-3w37-wq28-93x7"
     ],
-    "remaining": "Exact repaired candidate CI and regression after dependency repair pending"
+    "remaining": "No source check pending; metadata-only integration head checked separately",
+    "refactor": {
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "command": "npm ci --no-audit --no-fund; npm run db:generate; DATABASE_URL=<isolated disposable PostgreSQL16 useraid_test> npm run db:migrate; RUN_DB_TESTS=true DEMO_MODE=false npm test -- --reporter=json",
+      "passed": 583,
+      "failed": 0,
+      "skipped": 0,
+      "observed": "Clean locked install and all new/legacy unit/database tests; client generated, migrations deployed, DB removed. Typecheck and formatting PASS.",
+      "report_sha256": "df78982fe1eae1c28e93fbfc689436d9410a9117d9fea0b51574ef1167f6d438"
+    }
+  },
+  "source_candidate": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+  "source_ci_observation": {
+    "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612",
+    "completed_checks": {
+      "planning-contracts": "SUCCESS",
+      "dependency-security": "SUCCESS",
+      "static": "SUCCESS",
+      "test": "SUCCESS",
+      "docker": "SUCCESS",
+      "browser": "SUCCESS",
+      "ci-gate": "SUCCESS"
+    },
+    "pending_checks": [],
+    "junit": {
+      "artifact": "vitest-database-results",
+      "tests": 583,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "c6f706bf39f9cf785719c1bdd5e61f38f5cebd2edd3834cf3bb9a4f93131016f"
+    },
+    "result": "SUCCESS",
+    "event": "push",
+    "browser": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "total_passed": 131,
+      "total_skipped": 7,
+      "qualification": "One existing desktop guard for a mobile-only test and six disabled launchpad/reward scenarios; no new contract tests skipped. Synthetic provider/chain fixtures; not live-provider/mainnet assurance. Actual step logs; no browser artifact claimed."
+    },
+    "artifacts": [
+      {
+        "name": "vitest-database-results",
+        "id": 11521027890,
+        "tests": 583,
+        "skipped": 0
+      }
+    ],
+    "log_sha256": "b2c67f6a282318690993cf0d9175a3c0e5d5d08d236b8e7873f8d22d7fce162f",
+    "pr_merge_run": {
+      "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709426081",
+      "source_head_sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "result": "SUCCESS",
+      "qualification": "Separate synthetic merge run; source acceptance uses exact push head above."
+    }
+  },
+  "independent_review": {
+    "result": "ACCEPTED",
+    "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+    "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+    "passed_criteria": 19,
+    "bounded_exclusions": 8,
+    "evidence": "docs/tasks/T002-review.md; planning/task-evidence/T002-review.json"
   }
 }
