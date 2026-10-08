@@ -2,7 +2,7 @@
 
 [Idempotency conventions](../RAID_AGENT_BLUEPRINT.md#261-common-conventions) · [Outbox/inbox behavior](../RAID_AGENT_BLUEPRINT.md#273-outboxinbox-behavior) · [Deduplication keys](../RAID_AGENT_BLUEPRINT.md#275-deduplication-keys) · [Module reuse](raid-module-reuse.md) · [Task plan](tasks/T019-plan.md) · [Shared contracts](raid-shared-contracts.md) · [Migration plan phase P3](tasks/T003-migration-plan.md)
 
-**Status: IMPLEMENTED_UNVERIFIED, disposable-database tested only. Independent implementation review has not happened; all 27 T019 completion criteria remain NOT VERIFIED.** Nothing here is wired into an existing route or business flow, deployed, migrated on a live database or backfilled.
+**Status: IMPLEMENTED, disposable-database tested only; independently reviewed (accepted with conditions, docs/tasks/T019-review.md). UAT, business sign-off and release approval have not happened.** Nothing here is wired into an existing route or business flow, deployed, migrated on a live database or backfilled.
 
 ## Purpose and non-goals
 
@@ -114,7 +114,31 @@ Retention and deletion of receipts and audit events is OPEN (O11). There is no d
 - Isolation is fixed at READ COMMITTED; a handler that needs SERIALIZABLE semantics must enforce them with its own constraints or locks.
 - A command rejected by business rules leaves no record, by design.
 - Digest stability depends on the canonical JSON rules above; requests containing floats are digested by their JSON text, so send exact amounts as strings.
-- Full-suite status and criteria C01 to C22 remain NOT VERIFIED until independent review.
+- Independent technical review (`docs/tasks/T019-review.md`): accepted with conditions for the source at 5ea2867. It is not UAT, business sign-off or release approval; later source changes need re-review.
+
+### Obligations for the first consumer (review COND-02)
+
+The first command that uses this module (T020, canonical engagement acceptance) must:
+
+- claim the receipt first (call `executeIdempotentCommand` before any other locks, matching the shared lock plan);
+- set a bounded transaction timeout and a `lock_timeout` or per-actor rate limit, because a duplicate of a slow in-flight command waits on the unique index while holding a pooled connection (F02);
+- map `IDEMPOTENCY_KEY_REUSED` to HTTP 409 via the shared error contract and map `DELIVERY_PAYLOAD_CONFLICT` deliberately (it is non-retryable);
+- never expose receipts, audit rows or delivery records in public or participant responses;
+- authenticate `actorId` in the host and never forward a client-supplied actor.
+
+### Still NOT VERIFIED (review COND-03)
+
+Restore rehearsal with watermark reconciliation (AC68), the retention and deletion policy (O11) and the outbox dispatcher/reconciler are not verified and block live enablement. Gates G01 to G10 are not granted.
+
+### Carried-forward review findings (no code change)
+
+- F01: no retention or delete path; tables grow without bound and `TRUNCATE` bypasses row triggers.
+- F04: the "same identity on retry" property is structural (the closure supplies the same command); commit-then-connection-loss retry is untested.
+- F05: only one real adapter exists; substitution is shown by a scripted port.
+- F06: canonicalization ignores symbol and non-enumerable keys, and a throwing getter surfaces the raw error.
+- F07: `retryWholeTransaction` has no backoff or jitter; revisit under measured contention.
+- F08: `OutboxEvent` has no ordering column beyond `createdAt` and no delivery state; the worker task adds them.
+- F03 is closed by a real-database test that two distinct delivery ids with identical payloads both process.
 
 ## Run the standalone consuming host
 

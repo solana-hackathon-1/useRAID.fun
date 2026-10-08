@@ -613,6 +613,19 @@ integration('command receipts on real PostgreSQL', { timeout: 30_000 }, () => {
       expect(await deliveryBusiness()).toBe(1);
     });
 
+    it('processes two distinct delivery ids that carry identical payloads (no dedupe by content)', async () => {
+      const runs = { count: 0 };
+      const first = await deliver(delivery({ verifiedDeliveryId: 'delivery-a' }), runs);
+      const second = await deliver(delivery({ verifiedDeliveryId: 'delivery-b' }), runs);
+      expect([first.status, second.status]).toEqual(['PROCESSED', 'PROCESSED']);
+      expect(first.deliveryRecordId).not.toBe(second.deliveryRecordId);
+      expect(runs.count).toBe(2);
+      expect(await deliveryBusiness()).toBe(2);
+      const rows = await db.inboxDelivery.findMany({ orderBy: { deliveryId: 'asc' } });
+      expect(rows.map((r) => r.deliveryId)).toEqual(['delivery-a', 'delivery-b']);
+      expect(rows[0].payloadDigest).toBe(rows[1].payloadDigest);
+    });
+
     it('conflicts on a changed payload, keeps the original and separates providers', async () => {
       await deliver();
       const before = await snapshot();

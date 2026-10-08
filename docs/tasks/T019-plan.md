@@ -48,3 +48,5 @@ C01–C03, C05, C10–C12, C14–C16, C18–C22, A01–A02, W01–W03: implement
 Rollback: before any consumer writes, the migration can be reverted by dropping the four tables and three functions. After acknowledged receipts exist, retain the tables and triggers: dropping them loses idempotency memory and audit history (T003 rule: never drop receipt tables after acknowledged commitments).
 
 Independent review remains required; this packet never marks C-level review criteria PASS.
+
+Update 2026-10-09: an independent non-author review (`docs/tasks/T019-review.md`, `planning/task-evidence/T019-review.json`) accepted the work with conditions, 19 PASS and 8 NOT APPLICABLE; its disposition is merged into `planning/task-evidence/T019.json`. The statements above describe the implementer view before that review.
