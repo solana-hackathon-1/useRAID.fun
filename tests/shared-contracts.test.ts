@@ -32,7 +32,11 @@ const asset = {
   mint: address,
   tokenProgram: address,
 };
-const native = { chain: 'SOLANA', networkIdentity: 'synthetic-genesis', kind: 'NATIVE_SOL' };
+const native = {
+  chain: 'SOLANA',
+  networkIdentity: 'synthetic-genesis',
+  kind: 'NATIVE_SOL',
+} as const;
 const at = '2026-10-08T00:00:00Z';
 const policy = {
   assetId: asset,
@@ -82,9 +86,10 @@ describe('T002 canonical identity and public boundary', () => {
     expect(() => AccountId.parse(' padded ')).toThrow();
   });
   it('requires the accountable identity appropriate to each participant kind', () => {
-    expect(ParticipantSchema.parse({ id: 'p-1', kind: 'HUMAN', accountId: 'a-1' }).accountId).toBe(
-      'a-1',
-    );
+    const human = ParticipantSchema.parse({ id: 'p-1', kind: 'HUMAN', accountId: 'a-1' });
+    expect(human.kind).toBe('HUMAN');
+    if (human.kind !== 'HUMAN') throw new Error('Expected human identity');
+    expect(human.accountId).toBe('a-1');
     expect(() =>
       ParticipantSchema.parse({ id: 'p-1', kind: 'HUMAN', operatorId: 'o-1' }),
     ).toThrow();
