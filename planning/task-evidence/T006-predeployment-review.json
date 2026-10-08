@@ -1,0 +1,379 @@
+{
+  "task_id": "T006",
+  "scope": "Independent review of disposable synthetic legacy backup/restore rehearsal; no canonical implementation or live gate acceptance",
+  "status": "VERIFIED_IN_TEST: bounded synthetic legacy restore mechanics and cleanup",
+  "rehearsal_disposition": "TECHNICALLY ACCEPTED: all six bounded non-code rehearsal points; full T006 remains NOT VERIFIED",
+  "full_task_disposition": "NOT VERIFIED",
+  "acceptance_sha": "9f32153e399119d68e9dae1017fbac8de7455498",
+  "readiness_source_sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+  "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)",
+  "recorded_at": "2026-10-08T14:19:03.620824+05:45",
+  "independence": "Separate from primary executor; inspected labeled live containers, read original acceptance/result/logs/JUnit/dump, restored into separate empty scratch database and ran independent parity/negative probes; no source/main restore mutations, commits or external reviews/messages.",
+  "owner_state": "Owner states app is not yet deployed; no deployed target supplied. No zero-obligation/authority inference.",
+  "requirements": [
+    "I01",
+    "I03",
+    "I04",
+    "I05",
+    "I06",
+    "I08",
+    "I09",
+    "I10",
+    "I11",
+    "I13",
+    "R13",
+    "R15",
+    "R16",
+    "D13",
+    "AC01",
+    "AC67",
+    "AC68",
+    "AC75",
+    "30.5",
+    "G10"
+  ],
+  "readiness_review": "docs/tasks/T006-readiness-review.md",
+  "acceptance": {
+    "P01": {
+      "result": "PASS",
+      "observed": "Owner undeployed clarification is distinct from infrastructure evidence; no zero-obligation, hosting, live custodian or authority inference."
+    },
+    "P02": {
+      "result": "PASS",
+      "observed": "Independent original exact-source readiness report technically accepts only its six non-code points; all 27 full criteria remain NOT VERIFIED."
+    },
+    "P03": {
+      "result": "PASS",
+      "observed": "Live docker inspect confirms named running containers labeled raid.scope=synthetic-t006-restore, tmpfs-only data mounts and same PostgreSQL image. Source binding is 127.0.0.1:52813, useraid_test/useraid. Restore has network none, no host ports, separate useraid_restore_test/useraid."
+    },
+    "P04": {
+      "result": "PASS",
+      "observed": "Original bootstrap log and 18 stored checksum/source comparisons show unchanged legacy SQL. Actual JUnit files and logs verify X DB 16 + wallet DB 18 = 34 PASS, zero failure/error/skip; Node v26.0.0, PostgreSQL 16.15. This is legacy regression setup only."
+    },
+    "P05": {
+      "result": "PASS",
+      "observed": "Backup checksum matches. Independent pg_restore --single-transaction --no-owner --no-privileges --exit-on-error into separate initially empty useraid_review_test succeeds. All 36 table contents/counts, constraints/indexes/columns/functions and complete structurally normalized triggers match source/main restore/scratch. Restored consumed marker produces zero guarded reconsume changes; ledger/enrollment/transfer prohibited updates reject with intended trigger errors. All contents remain unchanged."
+    },
+    "P06": {
+      "result": "PASS",
+      "observed": "Primary removal evidence inspected. Independent docker ps label inventory is empty, docker inspect confirms both exact names absent, and known synthetic dump path is absent. Limits remain accurate. Cleanup execution is primary-owned; reviewer verified removal afterward."
+    }
+  },
+  "environment": {
+    "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+    "postgres_image_id": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+    "postgres_repo_digests": [
+      "postgres@sha256:65b16a8b326e0cfbdf33fa7e783f2a0cb352a61448616ccccfd616ef42aa0f65",
+      "postgres@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d"
+    ],
+    "node_version": "v26.0.0",
+    "source_database": "disposable useraid_test",
+    "main_restore_database": "disposable useraid_restore_test",
+    "independent_restore_database": "disposable useraid_review_test in restore container",
+    "providers": "none executed by independent review; synthetic fixture rows only"
+  },
+  "source_and_review_artifact_hashes": {
+    "plan_sha256": "a5d77c44b0dde6bae76bb4d06fe4af73b271301049df8ad817aa1b89dec7d726",
+    "primary_result_sha256": "1a85a66d4a6b48740cda5354d1bfd54189b8c8dcd9dc76167ef70686eae214db",
+    "independent_probe_sha256": "8c3848a0cc23eb1f4936e8234affff06066ef5c357bf9abd72e086eeea7a612a",
+    "independent_result_sha256": "190fa98246eebbf7c65efd632d6e285796e1b3601bf489a6fc6b9fa5fba11067",
+    "legacy_bootstrap_log_sha256": "cc8e03aaff47d98a431871770c8546ee7c7972de3400f6c6f6a17c0738bb8f15"
+  },
+  "independent_observations": {
+    "review_db": "useraid_review_test",
+    "independent_restore": "PASS",
+    "table_count": 36,
+    "source_restore_review_parity": true,
+    "fingerprint": {
+      "tables": {
+        "BalanceEntry": {
+          "rows": 4,
+          "digest_md5": "ecb0f69736bd4152cd96580c6dd3c095"
+        },
+        "CampaignResult": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "ContributionDecision": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "Event": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "FeeClaim": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "FinancialTx": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "Job": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "MediaAsset": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "MetricObservation": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "ModerationEvent": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "OAuthAttempt": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "Post": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "PostSubmission": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "ProviderUsage": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "Raid": {
+          "rows": 2,
+          "digest_md5": "38866a75b98941faf9bce50e26f37322"
+        },
+        "RaidAllocation": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "RaidBriefPost": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "RaidDispute": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "RaidEnrollment": {
+          "rows": 2,
+          "digest_md5": "d0fb9fec1a577001d9a0f0dd61930526"
+        },
+        "RateLimit": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "RewardEnrollment": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "RewardPayout": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "RewardRound": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "Session": {
+          "rows": 1,
+          "digest_md5": "d5a0419d99bc7dd48e5ce93397eab17a"
+        },
+        "Settings": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "Snapshot": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "Token": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "TokenLaunch": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "UsdcAllocation": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "UsdcTransfer": {
+          "rows": 6,
+          "digest_md5": "10a23180892a06035ef4a7b6831a39f8"
+        },
+        "User": {
+          "rows": 20,
+          "digest_md5": "f34a178dd008d9790c2c65f25443047d"
+        },
+        "WalletChallenge": {
+          "rows": 2,
+          "digest_md5": "b813e0084640e3d3559cb32258c161e5"
+        },
+        "WalletIdentity": {
+          "rows": 15,
+          "digest_md5": "a2374f461931d0558c6de9ab8f0c5d90"
+        },
+        "XAccount": {
+          "rows": 15,
+          "digest_md5": "59d5c723cca3b12fe720472a5e6c65fb"
+        },
+        "XEndpointState": {
+          "rows": 0,
+          "digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "_prisma_migrations": {
+          "rows": 18,
+          "digest_md5": "f61e41cedc6e570f7634e4d1f42ed7d9"
+        }
+      },
+      "catalog_digest_sha256": {
+        "constraints": "b5e31da9c3574e96dd60c20990fcec4c9863f1664e5afb8c14f12f4e61d8f0ee",
+        "indexes": "b9ea4f60b7af8c63b2f447c568a505e85c69a63c8789b8fee094d1142cb37c33",
+        "triggers": "1379ba62c00b6d826c0399e242871a4bf15ed7aff526442dba2213b33194979b",
+        "functions": "30bd3566548d9d345e86697625e313bcefcaa007f335811057b2c254f03d35a6",
+        "columns": "b162b6c327b0cab7b7eb2650b6445cdb0dc7c66f15539c41eb33e9e1ac5f2e36"
+      }
+    },
+    "migration_checksums_match": 18,
+    "consumed_challenge_count": 1,
+    "guarded_reconsume_changes": 0,
+    "negative_checks": [
+      {
+        "case": "ledger_update",
+        "result": "PASS",
+        "error_category": "append-only",
+        "exit_code": 3
+      },
+      {
+        "case": "enrollment_destination_change",
+        "result": "PASS",
+        "error_category": "append-only",
+        "exit_code": 3
+      },
+      {
+        "case": "transfer_destination_change",
+        "result": "PASS",
+        "error_category": "immutable",
+        "exit_code": 3
+      }
+    ],
+    "source_main_restore_review_unchanged": true,
+    "junit": [
+      {
+        "report": "x-db.xml",
+        "sha256": "5b0b9b8e34c45649ff1c259a4e1f2dfbae24e6e890df83ac057683ed03647fcd",
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "report": "wallet-db.xml",
+        "sha256": "c3dd75831e74d3eb9c48c6ec2c99b91be51b3eb2bbd921fca7cff77bc9ec3b20",
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "dump_sha256": "6efa83a172afc39364feb452eb8764096986d7be5500a20bcc31cc781b9c8b2f",
+    "review_database_created_only_in_isolated_restore_container": true,
+    "initial_check_failure": "Byte-for-byte trigger catalog comparison failed on 152 PostgreSQL-generated internal FK trigger names whose embedded OIDs differ after restore. Other catalog groups and all table data matched.",
+    "resolved_comparison": "Retained internal triggers and all function/definition/enabled/constraint behavior; normalized only RI_ConstraintTrigger_a/c instance-local numeric OID suffixes and sorted normalized definitions. Full structural parity then passed; no public triggers, FK constraints or adverse behavioral checks removed.",
+    "cleanup": "Primary removed both containers and known synthetic dump; independent reviewer subsequently verified exact-name and label inventory absence plus dump absence."
+  },
+  "genuine_failed_attempts": [
+    {
+      "attempt": "Byte-for-byte full trigger catalog comparison",
+      "result": "FAIL",
+      "observed": "152 PostgreSQL-generated internal FK trigger names contain instance-local OIDs and differ after restore. Table data and other catalog groups match.",
+      "correction": "Normalize only generated RI_ConstraintTrigger_a/c numeric OID names, preserving all internal/user trigger function/definition/enabled and constraint behavior. Structural parity then passes; no FK/guard removed."
+    },
+    {
+      "attempt": "Initial independent ledger mutation probe",
+      "result": "FAIL",
+      "observed": "Probe incorrectly named absent BalanceEntry.memo column; PostgreSQL rejected the statement before the trigger. Not counted as trigger evidence.",
+      "correction": "Read actual schema, probe availableDelta+1 inside rollback transaction. Intended append-only trigger rejects; independent snapshots unchanged."
+    }
+  ],
+  "limits": [
+    "No deployed target/custodian/snapshot or financial custody reconciliation",
+    "No canonical participant/terms/consents/capacity/claim tables; T006 remains NOT VERIFIED",
+    "No actual post-snapshot external operation or durable authority-watermark recovery exercised; AC68 NOT VERIFIED",
+    "Database consumed-marker update tests restored nonce storage only, not a complete signed login replay after restore",
+    "Temporary local containers do not establish production durability or G10",
+    "Existing legacy migration bootstrap on empty synthetic source only; no proposed T006 migration/backfill",
+    "Independent reviewer reproduced dump restoration and parity/negative mechanics; existing DB suite execution is evidenced by original local logs/JUnit, not re-run by reviewer.",
+    "MD5 row digests provide bounded same-input equality checks, not adversarial backup integrity or production assurance; backup and catalog integrity use SHA-256.",
+    "Same restore container and scratch DB supply test mechanics, not an independent production failure domain."
+  ],
+  "full_criteria": {
+    "T006-C01": "NOT VERIFIED",
+    "T006-C02": "NOT VERIFIED",
+    "T006-C03": "NOT VERIFIED",
+    "T006-C04": "NOT VERIFIED",
+    "T006-C05": "NOT VERIFIED",
+    "T006-C06": "NOT VERIFIED",
+    "T006-C07": "NOT VERIFIED",
+    "T006-C08": "NOT VERIFIED",
+    "T006-C09": "NOT VERIFIED",
+    "T006-C10": "NOT VERIFIED",
+    "T006-C11": "NOT VERIFIED",
+    "T006-C12": "NOT VERIFIED",
+    "T006-C13": "NOT VERIFIED",
+    "T006-C14": "NOT VERIFIED",
+    "T006-C15": "NOT VERIFIED",
+    "T006-C16": "NOT VERIFIED",
+    "T006-C17": "NOT VERIFIED",
+    "T006-C18": "NOT VERIFIED",
+    "T006-C19": "NOT VERIFIED",
+    "T006-C20": "NOT VERIFIED",
+    "T006-C21": "NOT VERIFIED",
+    "T006-C22": "NOT VERIFIED"
+  },
+  "task_specific_criteria": {
+    "T006-A01": "NOT VERIFIED",
+    "T006-A02": "NOT VERIFIED",
+    "T006-W01": "NOT VERIFIED",
+    "T006-W02": "NOT VERIFIED",
+    "T006-W03": "NOT VERIFIED"
+  },
+  "gates": {
+    "AC01": "NOT VERIFIED",
+    "AC73": "NOT VERIFIED",
+    "AC74": "NOT VERIFIED",
+    "AC68": "NOT VERIFIED",
+    "G10": "NOT VERIFIED",
+    "deployed_audit": "NOT VERIFIED / no deployed target supplied",
+    "custody_and_obligation_reconciliation": "NOT VERIFIED",
+    "production_durability": "NOT VERIFIED"
+  },
+  "cleanup": {
+    "owner": "primary agent",
+    "status": "PASS",
+    "safe_to_cleanup_after_live_review": true,
+    "resources": ["raid-t006-source-9f32153", "raid-t006-restore-9f32153", "synthetic-legacy.dump"],
+    "scratch_in_restore_container": "useraid_review_test; removed with its disposable parent container",
+    "independently_verified_at": "2026-10-08T14:20:29.801661+05:45",
+    "remaining_task_containers": 0,
+    "exact_named_containers_absent": true,
+    "synthetic_dump_absent": true,
+    "scope": "primary executed removal; independent agent checked absence afterward"
+  },
+  "attribution": {
+    "signed_by": "Codex independent AG08 reviewer (/root/t006_independent_review)",
+    "signed_at": "2026-10-08T14:19:03.620824+05:45"
+  },
+  "final_metadata_review": {
+    "verified_at": "2026-10-08T14:20:29.801661+05:45",
+    "source_manifest_hashes_match_original_readiness": true,
+    "primary_27_criterion_ids_and_NOT_VERIFIED_dispositions_preserved": true,
+    "full_completion_validator": "Expected rejection: exit 1, exactly 27 NOT VERIFIED criterion diagnostics",
+    "scope": "No runtime/schema/migration/API/event/dependency/test/CI changes; owner undeployed status and bounded independent/synthetic evidence added only. Original exact-source report remains historical."
+  }
+}

@@ -1,0 +1,309 @@
+{
+  "task_id": "T006",
+  "scope": "Disposable synthetic legacy backup/restore rehearsal; not deployed audit or canonical recovery assurance",
+  "status": "VERIFIED_IN_TEST: all six bounded synthetic legacy rehearsal acceptance points independently reviewed; full T006 NOT VERIFIED",
+  "acceptance_sha": "9f32153e399119d68e9dae1017fbac8de7455498",
+  "recorded_at": "2026-10-08T14:12:55.894204+05:45",
+  "owner_state": "Owner states app is not yet deployed; no deployed target supplied. No zero-obligation/authority inference.",
+  "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+  "postgres_image_id": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+  "postgres_repo_digests": [
+    "postgres@sha256:65b16a8b326e0cfbdf33fa7e783f2a0cb352a61448616ccccfd616ef42aa0f65",
+    "postgres@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d"
+  ],
+  "node_version": "v26.0.0",
+  "containers": [
+    {
+      "name": "raid-t006-source-9f32153",
+      "network_mode": "bridge",
+      "mounts": [
+        {
+          "type": "tmpfs",
+          "destination": "/var/lib/postgresql/data"
+        }
+      ],
+      "port_bindings": {
+        "5432/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": ""
+          }
+        ]
+      }
+    },
+    {
+      "name": "raid-t006-restore-9f32153",
+      "network_mode": "none",
+      "mounts": [
+        {
+          "type": "tmpfs",
+          "destination": "/var/lib/postgresql/data"
+        }
+      ],
+      "port_bindings": {}
+    }
+  ],
+  "tests": [
+    {
+      "report": "x-db.xml",
+      "sha256": "5b0b9b8e34c45649ff1c259a4e1f2dfbae24e6e890df83ac057683ed03647fcd",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "report": "wallet-db.xml",
+      "sha256": "c3dd75831e74d3eb9c48c6ec2c99b91be51b3eb2bbd921fca7cff77bc9ec3b20",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "tables": {
+    "BalanceEntry": {
+      "rows": 4,
+      "content_digest_md5": "ecb0f69736bd4152cd96580c6dd3c095"
+    },
+    "CampaignResult": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "ContributionDecision": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "Event": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "FeeClaim": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "FinancialTx": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "Job": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "MediaAsset": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "MetricObservation": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "ModerationEvent": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "OAuthAttempt": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "Post": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "PostSubmission": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "ProviderUsage": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "Raid": {
+      "rows": 2,
+      "content_digest_md5": "38866a75b98941faf9bce50e26f37322"
+    },
+    "RaidAllocation": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "RaidBriefPost": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "RaidDispute": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "RaidEnrollment": {
+      "rows": 2,
+      "content_digest_md5": "d0fb9fec1a577001d9a0f0dd61930526"
+    },
+    "RateLimit": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "RewardEnrollment": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "RewardPayout": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "RewardRound": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "Session": {
+      "rows": 1,
+      "content_digest_md5": "d5a0419d99bc7dd48e5ce93397eab17a"
+    },
+    "Settings": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "Snapshot": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "Token": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "TokenLaunch": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "UsdcAllocation": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "UsdcTransfer": {
+      "rows": 6,
+      "content_digest_md5": "10a23180892a06035ef4a7b6831a39f8"
+    },
+    "User": {
+      "rows": 20,
+      "content_digest_md5": "f34a178dd008d9790c2c65f25443047d"
+    },
+    "WalletChallenge": {
+      "rows": 2,
+      "content_digest_md5": "b813e0084640e3d3559cb32258c161e5"
+    },
+    "WalletIdentity": {
+      "rows": 15,
+      "content_digest_md5": "a2374f461931d0558c6de9ab8f0c5d90"
+    },
+    "XAccount": {
+      "rows": 15,
+      "content_digest_md5": "59d5c723cca3b12fe720472a5e6c65fb"
+    },
+    "XEndpointState": {
+      "rows": 0,
+      "content_digest_md5": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "_prisma_migrations": {
+      "rows": 18,
+      "content_digest_md5": "f61e41cedc6e570f7634e4d1f42ed7d9"
+    }
+  },
+  "table_count": 36,
+  "catalog_digest_sha256": {
+    "constraints": "ffcac398c9593a4cb836acb6734cf4eb696eba94e42920d24c0363ce5986caf4",
+    "indexes": "aa112120d4a8d4670257f58702bd06eec115694273d8e462b02f1bb7c722fb34",
+    "triggers": "0c84211e792ae0533fdfdd5cfd1d961ef0da947874e109006b9b5e8160dea6a2",
+    "functions": "28182214268c6dd489ff1b265a1f3a08391d90ba78c88930d323e733f96a6ff5",
+    "columns": "bd01d2c3c96743143d97d42683d3c398aa9656983574e2b2bab142c42b90a398"
+  },
+  "consistent_source_before_dump_and_after": true,
+  "restored_content_and_catalog_match": true,
+  "consumed_challenges_present": 1,
+  "restored_consumed_challenge_reconsume_mutations": 0,
+  "negative_checks": [
+    {
+      "case": "ledger_update",
+      "result": "PASS",
+      "observed": "Rejected by restored legacy trigger; no row changed.",
+      "expected_error_category": "append-only"
+    },
+    {
+      "case": "enrollment_destination_change",
+      "result": "PASS",
+      "observed": "Rejected by restored legacy trigger; no row changed.",
+      "expected_error_category": "append-only"
+    },
+    {
+      "case": "transfer_destination_change",
+      "result": "PASS",
+      "observed": "Rejected by restored legacy trigger; no row changed.",
+      "expected_error_category": "immutable"
+    }
+  ],
+  "restored_and_source_content_unchanged_after_negative_checks": true,
+  "synthetic_backup_sha256": "6efa83a172afc39364feb452eb8764096986d7be5500a20bcc31cc781b9c8b2f",
+  "synthetic_backup_bytes": 112656,
+  "cleanup": {
+    "result": "PASS",
+    "recorded_at": "2026-10-08T14:18:03.137553+05:45",
+    "containers_removed": ["raid-t006-source-9f32153", "raid-t006-restore-9f32153"],
+    "remaining_task_containers": 0,
+    "synthetic_dump_removed": true,
+    "persistent_or_shared_volume_used": false,
+    "commands": [
+      "docker rm -f <two verified task-owned synthetic container names>",
+      "docker ps -a --filter label=raid.scope=synthetic-t006-restore --format {{.Names}} (empty)",
+      "Delete only the known synthetic dump after checking its hash; absence verified."
+    ],
+    "independent_verification": {
+      "owner": "primary agent",
+      "status": "PASS",
+      "safe_to_cleanup_after_live_review": true,
+      "resources": [
+        "raid-t006-source-9f32153",
+        "raid-t006-restore-9f32153",
+        "synthetic-legacy.dump"
+      ],
+      "scratch_in_restore_container": "useraid_review_test; removed with its disposable parent container",
+      "independently_verified_at": "2026-10-08T14:20:29.801661+05:45",
+      "remaining_task_containers": 0,
+      "exact_named_containers_absent": true,
+      "synthetic_dump_absent": true,
+      "scope": "primary executed removal; independent agent checked absence afterward"
+    }
+  },
+  "limitations": [
+    "No deployed target/custodian/snapshot or financial custody reconciliation",
+    "No canonical participant/terms/consents/capacity/claim tables; T006 remains NOT VERIFIED",
+    "No actual post-snapshot external operation or durable authority-watermark recovery exercised; AC68 NOT VERIFIED",
+    "Database consumed-marker update tests restored nonce storage only, not a complete signed login replay after restore",
+    "Temporary local containers do not establish production durability or G10",
+    "Existing legacy migration bootstrap on empty synthetic source only; no proposed T006 migration/backfill"
+  ],
+  "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)",
+  "verification_environment": "Two task-owned disposable local containers using test-only credentials and synthetic fixtures. Source localhost-only; restore network none; both tmpfs.",
+  "source_sha": "9f32153e399119d68e9dae1017fbac8de7455498",
+  "observed_commands": [
+    "npm exec -- prisma migrate deploy (unchanged legacy bootstrap only, dedicated synthetic useraid_test)",
+    "npm test -- tests/x-oauth-db.test.ts --reporter=default --reporter=junit --outputFile=<scratch>/x-db.xml",
+    "npm test -- tests/wallet-auth-db.test.ts --reporter=default --reporter=junit --outputFile=<scratch>/wallet-db.xml",
+    "docker exec <source> pg_dump -U useraid -d useraid_test --format=custom --no-owner --serializable-deferrable",
+    "docker exec -i <restore> pg_restore -U useraid -d useraid_restore_test --no-owner --no-privileges --single-transaction --exit-on-error",
+    "Per-table count and sorted to_jsonb content MD5, plus public constraint/index/trigger/function/column SHA-256 comparisons; source before/after and restored parity",
+    "Restored consumed challenge conditional update affects zero rows; three restored trigger negative checks leave content unchanged"
+  ],
+  "deployed_target_evidence": {
+    "owner_statement": "the app is not yt deployed",
+    "interpreted_state": "App not yet deployed",
+    "github_environment_listing": "No entries returned",
+    "github_deployment_listing": "No entries returned",
+    "limitation": "GitHub listings and owner app-state statement do not establish absence of independently provisioned databases or financial/provider obligations."
+  },
+  "reviewer_check_boundary": "Independent reviewer re-restored the dump and reproduced structural/content parity and guards, inspected original test artifacts, then independently verified primary-executed cleanup. No live/canonical recovery authority.",
+  "logs_sha256": {
+    "wallet-db.log": "cec919c76b88548e1e59d03775e6412ff949816b623dd3dd59ffa854e58dd5c1",
+    "x-db.log": "24960a6d112b8108c09a08a512c6657059aadb3e2a0988e4d9288ed213127d35",
+    "legacy-bootstrap.log": "cc8e03aaff47d98a431871770c8546ee7c7972de3400f6c6f6a17c0738bb8f15"
+  },
+  "independent_review_reference": "planning/task-evidence/T006-predeployment-review.json",
+  "independent_review_disposition": "TECHNICALLY ACCEPTED: all six bounded non-code rehearsal points; full T006 remains NOT VERIFIED"
+}
