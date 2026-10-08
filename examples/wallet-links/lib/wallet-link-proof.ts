@@ -1,0 +1,1 @@
+../../../src/lib/wallet-link-proof.ts

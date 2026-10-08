@@ -10,7 +10,7 @@ Gives every existing legacy `User` at most one immutable canonical HUMAN `Partic
 
 Owned requirements: R04, R13 (identity half only), R15, R16; I01, I05, I06, I07, I10, I11, I13; D01, D13. Blueprint §§07, 13, 24.6–24.7, 25, 28, 30, 32.
 
-Non-goals (not delivered here, still due under T006 and later tasks): automatic backfill, login auto-provisioning, wallet/provider linking commands, account recovery, capacity or one-active-engagement enforcement, AI or operator participants, session issuance, HTTP routes, UI, events, receipts or outbox. A mapping grants no Guild role, private access, skill rank, work slot or payout entitlement. Mapping a legacy account does not move balances, enrollments, transfers or payout destinations.
+Non-goals (not delivered here, still due under T006 and later tasks): automatic backfill, login auto-provisioning, wallet/provider linking commands (additional verified wallets are delivered separately as [wallet links v1](raid-wallet-links.md), which reuses this module's participant mapping and port), account recovery, capacity or one-active-engagement enforcement, AI or operator participants, session issuance, HTTP routes, UI, events, receipts or outbox. A mapping grants no Guild role, private access, skill rank, work slot or payout entitlement. Mapping a legacy account does not move balances, enrollments, transfers or payout destinations.
 
 ## Dependency and host contract
 

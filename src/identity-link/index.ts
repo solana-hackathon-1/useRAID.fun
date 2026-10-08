@@ -1,0 +1,313 @@
+import { z } from 'zod';
+import { AccountId, InternalId, SolanaAddress, UtcTimestamp } from '../contracts';
+import {
+  IdentityLinkPolicySchema,
+  LinkProofObservationSchema,
+  inspectVerifiedLink,
+  type IdentityPreflightReason,
+} from '../identity';
+import {
+  IdentityStorageError,
+  findHumanParticipant,
+  ensureHumanParticipant,
+  type HumanParticipant,
+} from '../identity-storage';
+import {
+  IdentityLinkError,
+  type IdentityLinkCode,
+  type IdentityTransaction,
+  type LinkWalletInput,
+  type LinkWalletResult,
+  type PublicWalletLink,
+  type WalletLinkRecord,
+} from './contracts';
+export * from './contracts';
+
+// Documented lock order (module contract, WR12). Every writer that can touch a wallet subject or
+// its account must follow it, or take a prefix of it:
+//   1. transaction-scoped advisory lock "wallet-subject:<address>" (the DB triggers take the same key)
+//   2. "User" row FOR NO KEY UPDATE for the account being linked
+//   3. Participant mapping (read, or insert only for the first link)
+//   4. WalletLink insert
+// No two-account locks are taken, so the only cycle risk is against legacy writers; PostgreSQL
+// reports any as 40P01 and the host retries the whole callback.
+const SUBJECT_LOCK =
+  'SELECT 1 AS "locked" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS "lock"';
+const USER_LOCK = 'SELECT "id", "suspended" FROM "User" WHERE "id" = $1 FOR NO KEY UPDATE';
+const PRIMARY_SQL = 'SELECT "address" FROM "WalletIdentity" WHERE "userId" = $1';
+const OWNER_SQL = `SELECT 'PRIMARY' AS "source", "userId" AS "accountId", NULL::text AS "id", NULL::text AS "status", NULL::text AS "networkIdentity" FROM "WalletIdentity" WHERE "address" = $1
+UNION ALL
+SELECT 'LINK', "accountId", "id"::text, "status", "networkIdentity" FROM "WalletLink" WHERE "address" = $1`;
+const COUNT_SQL = `SELECT count(*) FILTER (WHERE "status" = 'ACTIVE')::text AS "active", count(*)::text AS "total", count(*) FILTER (WHERE "status" = 'REVOKED')::text AS "revoked" FROM "WalletLink" WHERE "accountId" = $1`;
+// ON CONFLICT DO NOTHING (no target) absorbs unique-index races without aborting the transaction;
+// the exclusivity trigger still raises SQLSTATE 23505, which the adapter classifies as UNIQUE_CONFLICT.
+const INSERT_SQL = `INSERT INTO "WalletLink" ("accountId", "participantId", "networkIdentity", "address", "proofRef", "linkActorAccountId", "linkRequestId")
+VALUES ($1, $2::uuid, $3, $4, $5, $6, $7) ON CONFLICT DO NOTHING RETURNING "id"::text`;
+const CONFLICT_SQL = `SELECT "id"::text AS "id", "accountId", "address", "proofRef", "networkIdentity", "status" FROM "WalletLink" WHERE "address" = $1 OR "proofRef" = $2`;
+const LIST_SQL = `SELECT "id"::text AS "id", "address", "networkIdentity", "status",
+  to_char("verifiedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS "verifiedAt",
+  to_char("revokedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS "revokedAt"
+FROM "WalletLink" WHERE "accountId" = $1 ORDER BY "verifiedAt", "id"`;
+// Preflight needs a participant snapshot even before the first link creates the mapping. The
+// placeholder is never stored or returned.
+const UNMAPPED_PARTICIPANT = '00000000-0000-4000-8000-000000000000';
+
+const SessionSchema = z.strictObject({
+  accountId: AccountId,
+  state: z.enum(['ACTIVE', 'REVOKED']),
+  expiresAt: UtcTimestamp,
+});
+const LimitsSchema = z
+  .strictObject({
+    maxActiveLinks: z.number().int().min(1).max(1000),
+    maxTotalLinks: z.number().int().min(1).max(10000),
+  })
+  .refine((limits) => limits.maxTotalLinks >= limits.maxActiveLinks);
+const OwnerRow = z.strictObject({
+  source: z.enum(['PRIMARY', 'LINK']),
+  accountId: z.string(),
+  id: z.string().nullish(),
+  status: z.string().nullable(),
+  networkIdentity: z.string().nullable(),
+});
+const CountRow = z.strictObject({
+  active: z.string().regex(/^\d+$/),
+  total: z.string().regex(/^\d+$/),
+  revoked: z.string().regex(/^\d+$/),
+});
+const ConflictRow = z.strictObject({
+  id: z.string(),
+  accountId: z.string(),
+  address: z.string(),
+  proofRef: z.string(),
+  networkIdentity: z.string(),
+  status: z.string(),
+});
+const ListRow = z.strictObject({
+  id: z.string(),
+  address: z.string(),
+  networkIdentity: z.string(),
+  status: z.enum(['ACTIVE', 'REVOKED']),
+  verifiedAt: z.string(),
+  revokedAt: z.string().nullable(),
+});
+
+const fail = (code: IdentityLinkCode): never => {
+  throw new IdentityLinkError(code);
+};
+function validId(value: unknown): asserts value is string {
+  if (!InternalId.safeParse(value).success) fail('INVALID_INPUT');
+}
+function validPort(tx: IdentityTransaction) {
+  if (
+    tx?.dialect !== 'POSTGRESQL' ||
+    tx?.isolation !== 'READ_COMMITTED' ||
+    typeof tx.query !== 'function'
+  )
+    fail('STORAGE_CONTRACT');
+}
+async function query(tx: IdentityTransaction, sql: string, bindings: readonly string[]) {
+  const rows = await tx.query<unknown>(sql, bindings);
+  if (!Array.isArray(rows)) fail('STORAGE_CONTRACT');
+  return rows;
+}
+function single<T extends z.ZodType>(schema: T, rows: unknown[]): z.infer<T> | null {
+  if (!rows.length) return null;
+  const parsed = schema.safeParse(rows[0]);
+  if (rows.length !== 1 || !parsed.success) return fail('STORAGE_CONTRACT');
+  return parsed.data;
+}
+function translate(error: unknown): IdentityLinkError {
+  if (error instanceof IdentityLinkError) return error;
+  if (error instanceof IdentityStorageError)
+    return new IdentityLinkError(
+      error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.code,
+    );
+  return new IdentityLinkError('STORAGE_UNAVAILABLE');
+}
+const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCode>> = {
+  INVALID_COMMAND: 'INVALID_INPUT',
+  AUTHENTICATION_REQUIRED: 'AUTHENTICATION_REQUIRED',
+  FORBIDDEN: 'FORBIDDEN',
+  ACCOUNT_RESTRICTED: 'ACCOUNT_RESTRICTED',
+  PROOF_INVALID: 'PROOF_INVALID',
+  UNSUPPORTED_IDENTITY: 'UNSUPPORTED_IDENTITY',
+  IDENTITY_CONFLICT: 'IDENTITY_CONFLICT',
+  IDENTITY_REVOKED: 'IDENTITY_REVOKED',
+};
+
+function result(
+  outcome: LinkWalletResult['outcome'],
+  source: LinkWalletResult['source'],
+  linkId: string | null,
+  participantId: string | null,
+  subject: { networkIdentity: string; address: string },
+): LinkWalletResult {
+  return {
+    outcome,
+    source,
+    linkId,
+    participantId,
+    networkIdentity: subject.networkIdentity,
+    address: subject.address,
+    status: 'ACTIVE',
+  };
+}
+
+/**
+ * Links an additional VERIFIED wallet credential to the caller's own account and its HUMAN
+ * participant. The host authenticates the actor, verifies the signature and claims the challenge
+ * inside the same READ COMMITTED transaction; any thrown error must roll that transaction back.
+ * The legacy payout wallet is never read for payout purposes, changed or promoted.
+ */
+export async function linkVerifiedWallet(
+  tx: IdentityTransaction,
+  input: LinkWalletInput,
+): Promise<LinkWalletResult> {
+  validId(input?.accountId);
+  validId(input?.actorAccountId);
+  validId(input?.requestId);
+  if (input.accountId !== input.actorAccountId) fail('WRONG_ACTOR');
+  const address = SolanaAddress.safeParse(input.subject?.address);
+  const network = InternalId.safeParse(input.subject?.networkIdentity);
+  const limits = LimitsSchema.safeParse(input.limits);
+  const proof = LinkProofObservationSchema.safeParse(input.proof);
+  const session = SessionSchema.safeParse(input.session);
+  const policy = IdentityLinkPolicySchema.safeParse(input.policy);
+  const now = UtcTimestamp.safeParse(input.now);
+  if (
+    !address.success ||
+    !network.success ||
+    !limits.success ||
+    !proof.success ||
+    !session.success ||
+    !policy.success ||
+    !now.success
+  )
+    return fail('INVALID_INPUT');
+  validPort(tx);
+  const accountId = input.accountId;
+  const subject = { kind: 'WALLET', networkIdentity: network.data, address: address.data } as const;
+  try {
+    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
+    const user = single(
+      z.strictObject({ id: z.string(), suspended: z.boolean() }),
+      await query(tx, USER_LOCK, [accountId]),
+    );
+    if (!user) return fail('ACCOUNT_NOT_FOUND');
+    if (user.id !== accountId) return fail('STORAGE_CONTRACT');
+    const participant: HumanParticipant | null = await findHumanParticipant(tx, accountId);
+    const primary = single(
+      z.strictObject({ address: z.string() }),
+      await query(tx, PRIMARY_SQL, [accountId]),
+    );
+    const owner = single(OwnerRow, await query(tx, OWNER_SQL, [subject.address]));
+    const counts = single(CountRow, await query(tx, COUNT_SQL, [accountId]));
+    if (!counts) return fail('STORAGE_CONTRACT');
+    const active = Number(counts.active);
+    const total = Number(counts.total);
+    const revision = 1 + total + Number(counts.revoked); // derived, monotone: rows are never deleted
+    const proposal = inspectVerifiedLink(
+      {
+        actorAccountId: accountId,
+        expectedRevision: revision,
+        subject,
+        snapshot: {
+          participant: { id: participant?.id ?? UNMAPPED_PARTICIPANT, kind: 'HUMAN', accountId },
+          revision,
+          status: user.suspended ? 'RESTRICTED' : 'ACTIVE',
+          activeEngagementId: null,
+        },
+        session: session.data,
+        ownership: owner
+          ? {
+              state: owner.source === 'LINK' && owner.status === 'REVOKED' ? 'REVOKED' : 'LINKED',
+              subject,
+              accountId: owner.accountId,
+            }
+          : { state: 'UNCLAIMED', subject },
+        proof: proof.data,
+      },
+      policy.data,
+      now.data,
+    );
+    // Restriction, session and proof checks all happened above, before any idempotent short circuit.
+    if (proposal.stage === 'BLOCKED') return fail(BLOCKED[proposal.code] ?? 'STORAGE_CONTRACT');
+    if (owner) {
+      // Preflight proved the owner is this account and not revoked.
+      if (owner.source === 'PRIMARY')
+        return result('ALREADY_LINKED', 'PRIMARY', null, participant?.id ?? null, subject);
+      if (owner.networkIdentity !== subject.networkIdentity) return fail('IDENTITY_CONFLICT');
+      return result('ALREADY_LINKED', 'LINK', owner.id ?? null, participant?.id ?? null, subject);
+    }
+    if (!primary) return fail('PRIMARY_WALLET_REQUIRED');
+    if (active >= limits.data.maxActiveLinks || total >= limits.data.maxTotalLinks)
+      return fail('LINK_LIMIT_REACHED');
+    const mapping =
+      participant ??
+      (await ensureHumanParticipant(tx, {
+        accountId,
+        actorAccountId: input.actorAccountId,
+        requestId: input.requestId,
+      }));
+    const inserted = single(
+      z.strictObject({ id: z.string() }),
+      await query(tx, INSERT_SQL, [
+        accountId,
+        mapping.id,
+        subject.networkIdentity,
+        subject.address,
+        proof.data.ref,
+        input.actorAccountId,
+        input.requestId,
+      ]),
+    );
+    if (inserted) return result('LINKED', 'LINK', inserted.id, mapping.id, subject);
+    // A unique index absorbed the insert. Same account, address and proof is an idempotent replay.
+    const rows = await query(tx, CONFLICT_SQL, [subject.address, proof.data.ref]);
+    const existing = rows.map((row) => {
+      const parsed = ConflictRow.safeParse(row);
+      return parsed.success ? parsed.data : fail('STORAGE_CONTRACT');
+    });
+    if (!existing.length) return fail('STORAGE_CONTRACT');
+    const replay = existing.find(
+      (row) =>
+        row.accountId === accountId &&
+        row.address === subject.address &&
+        row.proofRef === proof.data.ref &&
+        row.networkIdentity === subject.networkIdentity &&
+        row.status === 'ACTIVE',
+    );
+    if (!replay) return fail('IDENTITY_CONFLICT');
+    return result('ALREADY_LINKED', 'LINK', replay.id, mapping.id, subject);
+  } catch (error) {
+    throw translate(error);
+  }
+}
+
+/** The caller's own link rows (never another account's), oldest first. */
+export async function listWalletLinks(
+  tx: IdentityTransaction,
+  accountId: string,
+): Promise<WalletLinkRecord[]> {
+  validId(accountId);
+  validPort(tx);
+  try {
+    return (await query(tx, LIST_SQL, [accountId])).map((row) => {
+      const parsed = ListRow.safeParse(row);
+      return parsed.success ? parsed.data : fail('STORAGE_CONTRACT');
+    });
+  } catch (error) {
+    throw translate(error);
+  }
+}
+
+/** Safe response shape: no account, participant or link identifiers. */
+export function publicWalletLink(result: LinkWalletResult): PublicWalletLink {
+  return Object.freeze({
+    address: result.address,
+    networkIdentity: result.networkIdentity,
+    status: result.status,
+    alreadyLinked: result.outcome === 'ALREADY_LINKED',
+  });
+}

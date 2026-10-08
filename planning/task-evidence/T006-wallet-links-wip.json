@@ -1,0 +1,243 @@
+{
+  "task_id": "T006",
+  "slice": "Wallet links PR-A: additive WalletLink storage and link command (issue #48, AC01 identity half)",
+  "status": "IMPLEMENTATION_WIP / NOT VERIFIED (disposable-database evidence only; independent implementation review due)",
+  "criteria_status": "All 27 full T006 criteria remain NOT VERIFIED (validator exit 1, 27 lines \"NOT VERIFIED prevents completion\"); no review is self-certified.",
+  "ac01": "PARTIAL: identity half evidenced at real PostgreSQL (same canonical participant, byte-identical Participant row, history, payout rows unchanged after linking W2 and W3). Capacity half NOT VERIFIED (gap G1: no active_commitments/engagement table). The user outcome \"second wallet signs in to the same account\" is NOT delivered (PR-B). T006-A01 PARTIAL; T006-A02 NOT VERIFIED; T006-W03 not claimed.",
+  "recorded_at": "2026-10-09 (Claude Sonnet 5.5 implementation agent, resumed after an API rate-limit interruption)",
+  "base": {
+    "branch": "claude/t006-wallet-links-storage",
+    "based_on": "origin/claude/t006-wallet-link-plan 12cb3a4e51817e93951d32e7b82f3c86a90ff5d4 (PR #180)",
+    "working_tree_head_at_record": "12cb3a4e51817e93951d32e7b82f3c86a90ff5d4"
+  },
+  "scope": "Migration 202610090003_wallet_links, Prisma models, src/identity-link/ module, src/lib/wallet-link-proof.ts proof seam, additive UNIQUE_CONFLICT classification, tests, docs, examples/wallet-links. No route, sign-in, flag, wallet-auth.ts, x-oauth.ts or account-merge.ts change (WR13).",
+  "proposal_deviations": {
+    "executable_sql": "NONE. The executable statements of the migration are identical to planning/migration-proposals/T006-wallet-links.sql (enforced by tests/identity-link-migration.test.ts comparing comment-stripped statements).",
+    "comment_only": [
+      "Header replaced with a truthful applied-migration header (the proposal header said PROPOSED / NOT REVIEWED / NOT APPLIED).",
+      "proofRef comment reworded per WR14: unique index is defence in depth; the effective replay barrier is challenge consumption in the same transaction."
+    ],
+    "schema": "Prisma models added with map: \"WalletLink_participant_fkey\" and map: \"WalletLink_accountId_fkey\" (WR02); prisma migrate diff is empty.",
+    "legacy_code_changes": "Only src/lib/identity-storage-adapter.ts: additive classification of SQLSTATE 23505 / Prisma P2002 to UNIQUE_CONFLICT (WR01) and the new code in src/identity-storage/contracts.ts. No legacy sign-in/link/rotate/merge file was edited; none is required for the DB fence to be safe with old binaries (characterized by frozen-helper tests)."
+  },
+  "tdd": {
+    "phase_1_catalog_only_red": {
+      "command": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL=<own container 56904 useraid_test, 19 migrations, WalletLink absent> npx vitest run tests/identity-link-db.test.ts -t \"catalog contains\"",
+      "result": "1 failed (empty constraint observation), 33 filtered; no 42P01 counted",
+      "junit": {
+        "local_path": "/tmp/raid-t006-wallet-links/schema-red.xml",
+        "sha256": "865742248613f2ed632744047fe1ec9441d5ca41063869cfc20df1481c28fb2a",
+        "tests": 34,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 33
+      },
+      "source_snapshot": "/tmp/raid-t006-wallet-links/red-source (manifest.sha256)"
+    },
+    "baseline_legacy_409": {
+      "command": "... -t \"unchanged legacy link path\"",
+      "result": "passed: legacy verifyWalletChallenge answers 409 \"Account already has a wallet.\" for a second wallet before and after PR-A (the AC01 gap that PR-B closes)",
+      "junit": {
+        "local_path": "/tmp/raid-t006-wallet-links/baseline.xml",
+        "sha256": "e18114f525c8b55f1f61e153ffcf7eec2bc78d21f7b5eb01ed90d157e0bb7d77",
+        "tests": 34,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 33
+      }
+    },
+    "phase_2": "Reviewed SQL copied to prisma/migrations/202610090003_wallet_links and applied with prisma migrate deploy to the disposable container; prisma migrate diff --exit-code empty.",
+    "phase_3_behavioral_red": {
+      "command": "npx vitest run tests/identity-link.test.ts tests/wallet-link-proof.test.ts tests/identity-link-db.test.ts tests/identity-link-migration.test.ts (module stubs throw STORAGE_UNAVAILABLE / PROOF_INVALID; classification not yet extended)",
+      "result": "88 cases: 67 failed, 21 passed, 0 errors, 0 skipped. Failures are behavioral assertions (STORAGE_UNAVAILABLE where a typed result was expected); 4 race tests failed by 5 s timeout because the expected PostgreSQL blocker was never observed (genuine, but timeout-shaped). The 21 passes characterize the SQL fence and unchanged legacy code, not the new module.",
+      "junit": {
+        "local_path": "/tmp/raid-t006-wallet-links/behavioral-red.xml",
+        "sha256": "df9762d02dac3be83ba0317f8af503dcfa9742b20c2951487db4f1fafac5d970",
+        "tests": 88,
+        "failures": 67,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_snapshot": "/tmp/raid-t006-wallet-links/behavioral-red-source",
+      "honest_notes": [
+        "One test bug (catalog index regex expected quoted \"address\") was corrected after this run; assertions were not weakened.",
+        "Boundary/doc/example/evidence tests also failed at the file-missing level before implementation; those are not counted as semantic RED."
+      ]
+    },
+    "green": {
+      "result": "New unit/proof/DB/migration/boundary tests green after implementation; the unit and DB suites were green on their first run after the implementation (no iteration needed).",
+      "junit": {
+        "local_path": "/tmp/raid-t006-wallet-links/green-final.xml",
+        "sha256": "77355e1d8e6644514932679ac62966c8f02aadf8c81eee35fbdbe8818cf8a32c",
+        "tests": 93,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "refactor": "Extracted result() builder, removed an unused import, prettier formatting; module outputs unchanged. Regression: full suite below.",
+    "mutation_checks": {
+      "note": "Six deliberate source mutations of src/identity-link/index.ts, each killed by the new unit and DB tests (file restored afterward).",
+      "results": {
+        "M1_no_subject_lock": {
+          "failed": 5,
+          "examples": [
+            " (D3, D4) two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge",
+            "gacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict",
+            "st every writer (WR12) rotate holding the subject vs link of that address: link waits, then reports a conflict"
+          ]
+        },
+        "M2_no_user_row_lock": {
+          "failed": 29,
+          "examples": [
+            "r (WR12) link vs link on one account with different addresses serializes at the User row lock; one participant",
+            " merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan",
+            "riter (WR12) legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit"
+          ]
+        },
+        "M3_no_on_conflict": {
+          "failed": 1,
+          "examples": [
+            "k command v1 (fake port) links a new address in the documented lock order and returns the existing participant"
+          ]
+        },
+        "M4_short_circuit_before_preflight": {
+          "failed": 9,
+          "examples": [
+            " (D3, D4) two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge",
+            "gacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict",
+            "st every writer (WR12) rotate holding the subject vs link of that address: link waits, then reports a conflict"
+          ]
+        },
+        "M5_no_primary_required": {
+          "failed": 2,
+          "examples": [
+            " machine and constraints (D7, D8, D9) requires an existing primary wallet and creates nothing otherwise (WR05)",
+            "et link command v1 (fake port) requires an existing primary wallet and creates no participant otherwise (WR05)"
+          ]
+        },
+        "M6_creates_participant_on_noop": {
+          "failed": 2,
+          "examples": [
+            "state machine and constraints (D7, D8, D9) own primary is an idempotent no-op that never creates a participant",
+            "wallet link command v1 (fake port) own active link or own primary is an idempotent no-op that creates nothing"
+          ]
+        }
+      },
+      "caveat": "M3 (removing ON CONFLICT) is killed only by the unit test: at the database level the outcome is still IDENTITY_CONFLICT, only the aborted-transaction side effect differs."
+    }
+  },
+  "full_suite": {
+    "command": "npx vitest run (RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false) against the own container",
+    "junit": {
+      "local_path": "/tmp/raid-t006-wallet-links/full-final.xml",
+      "sha256": "cb38b5363b7b4660bab2b27bc3ffc731b3ba7e2e3fcd18af870ea43be38705e0",
+      "tests": 826,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "other_checks": {
+    "typecheck": "npx tsc --noEmit: no output (pass)",
+    "eslint": "changed files: 0 errors 0 warnings after removing one unused import",
+    "prettier": "changed files formatted; npx prettier --check . reports only docs/tasks/T006-wallet-link-plan-review.md (reviewer-owned file on the PR #180 base, not edited here)",
+    "migrate_deploy": "Applied once to the own container; second run \"No pending migrations to apply\"; fresh scratch-database bootstrap, repeat deploy and migrate diff --exit-code run inside tests/identity-link-migration.test.ts; CI-style shadow-database diff --from-migrations: No difference detected.",
+    "planning_tests": "python3 -m unittest discover -s tests -p \"test_raid_*.py\": 27 tests OK",
+    "standalone_example": "Independent copy (cp -RL, own npm install --ignore-scripts 43 packages, own prisma generate, own 4 migrations on empty useraid_wallet_links_host_test) printed the expected 11-flag JSON. A first run exposed a missing User.suspended column in the example host table; fixed and documented as a host contract.",
+    "completion_validator": {
+      "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+      "result": "exit 1; 27 of 27 criteria report \"NOT VERIFIED prevents completion\" (expected rejection; output /tmp/raid-t006-wallet-links/validator.txt)"
+    },
+    "not_run": [
+      "browser/Playwright/accessibility (no UI)",
+      "T003 environment audit, backup/restore (AC68), UAT, exact-head CI (recorded in the PR after it runs)",
+      "x-oauth fold path end to end"
+    ]
+  },
+  "race_evidence": "tests/identity-link-db.test.ts prints one {\"walletLinkRace\": name, waiter, blocker, blockedStatement} JSON line per named race from pg_blocking_pids; no 40P01 was observed in any named test.",
+  "source_sha256": {
+    "prisma/migrations/202610090003_wallet_links/migration.sql": "ebbdec9a71c18e7420280c42948769785325350bd50e48331a103d0858232de8",
+    "prisma/schema.prisma": "ffced337b7e84da3fcbd6495e3a362d34a295458652cc5ffa181cb472a52b438",
+    "src/identity-link/index.ts": "e6cd1c721f55e513b385fb3d9c8f2bf08b559344a3fd3fa8917c0a5cc2d4e1ed",
+    "src/identity-link/contracts.ts": "e18505c3082bcd3b326258b32bdc6a5414d200faf689d572404bfc42fa8d9d7a",
+    "src/lib/wallet-link-proof.ts": "3a30b6f26bb543ceae8dc8124b6de149fbafec87f70aeff106612d2b5552b5dd",
+    "src/lib/identity-storage-adapter.ts": "9ef68ed6cdfe51111ec45b80dd21de2bf8a2b7ca78a86e6879b71e92aa79defd",
+    "src/identity-storage/contracts.ts": "a23aa17945519cc29cc46ca0d7da01a40a3e36603fb4ac953f639e6ceb89f3dd",
+    "tests/identity-link.test.ts": "a2b6412820c40d298a3ee04b150fff943cd71420f56f2704db7e0ac6b815b220",
+    "tests/identity-link-db.test.ts": "c26594c7d70f74ffe6f024d4e250e7bd3225240f76665988a6ba8b1b28025c7b",
+    "tests/identity-link-migration.test.ts": "f7cf0702e1e50a677bb505f80bcea171bdbc4507994e195bdadd8db3044de441",
+    "tests/identity-link-boundary.test.ts": "003035bb35a94e715ecd7fdb9359153dd1edbf68e3a3baef1caf89b8aa03a4f8",
+    "tests/wallet-link-proof.test.ts": "28477ac0953a612812b8badc00d59e5ee4e31c5e9e04a9a2aeedfb651d387098",
+    "tests/helpers/legacy-wallet-auth.ts": "0c083a9abc2f13d14560f5392a9dcee684b411d5bfde30ba889762011421bfd1",
+    "tests/helpers/wallet-link-fixtures.ts": "c7eb6afde55bda8053c4c6132f1ffe8e7424aaef080626a6900f5cf428c063f6",
+    "examples/wallet-links/host.ts": "c35e300b44134b18fcd7acd6228702d7c253c74f0910708382f476f90b280afc",
+    "docs/raid-wallet-links.md": "f331f27c0d6610e1ed9db1c27a31c82afdb9ff08220cd1dae181c08bd5a7c94e",
+    "planning/raid-ci-matrix.json": "16d8dfdcac1a66039f6f4a7e1c1c9930e9a49f25f01a26028cf941442686df22"
+  },
+  "condition_dispositions": {
+    "WR01": {
+      "disposition": "SATISFIED",
+      "evidence": "Classification by SQLSTATE/P2002 only (adapter); INSERT ... ON CONFLICT DO NOTHING RETURNING plus a read under the same locks; trigger and unique-index conflicts classified through real Prisma wrappers; raw message containing the address never reaches errors or failure() logs (tests/identity-link-db.test.ts WR01, tests/identity-link.test.ts)."
+    },
+    "WR02": {
+      "disposition": "SATISFIED",
+      "evidence": "map on the composite relation; tests/identity-link-migration.test.ts: scratch DB deploy twice, migrate diff --exit-code empty, applied-count equals directory count; shadow-DB diff empty; earlier 19 migrations pinned by SHA-256."
+    },
+    "WR03": {
+      "disposition": "SATISFIED",
+      "evidence": "Corrected inventory (24 sites in 16 files plus studio-sandbox upsert writer; none reads WalletLink) in docs/raid-wallet-links.md \"Legacy readers and writers\"."
+    },
+    "WR04": {
+      "disposition": "DEFERRED to PR-B",
+      "evidence": "Step-up choice (connected X vs fresh primary-wallet signature) is NOT decided here and no revoke command exists; PR-A adds no route/flag/sign-in change (boundary test), so nothing is enableable. Decision and revoke path must precede PR-B; documented in \"Permissions and trust boundary\" and \"Rollout\"."
+    },
+    "WR05": {
+      "disposition": "SATISFIED",
+      "evidence": "PRIMARY_WALLET_REQUIRED; unit and DB tests; no participant or link created."
+    },
+    "WR06": {
+      "disposition": "PARTIAL",
+      "evidence": "Consequence documented; rejection behavior tested through the real wallet sign-in fold path, absorbAccount and the frozen legacy merge (whole rollback). Not done: truthful user-facing copy in wallet-auth/x-oauth (legacy files, not needed for fence safety, moved to PR-B), registration of the O11/W03 merge-recovery follow-up task, x-oauth fold end to end."
+    },
+    "WR07": {
+      "disposition": "PARTIAL",
+      "evidence": "Frozen legacy helper characterizes sign-in, link and rotate onto linked/revoked addresses: fail closed as P2002, wholly rolled back, no orphan user/session, old primary retained, both race orders. Typed handling (stable codes, same 409 text) and suspended-owner sign-in through a link need sign-in resolution and are PR-B; rollout order documented."
+    },
+    "WR08": {
+      "disposition": "SATISFIED",
+      "evidence": "Preflight (session, restriction, proof) runs before the ALREADY_LINKED short circuit; unit and DB tests for suspended/session/proof; challenge consumption rolls back with the transaction."
+    },
+    "WR09": {
+      "disposition": "SATISFIED",
+      "evidence": "D1 pre-provisions the participant with its own request id and asserts the Participant row, WalletIdentity and money/payout tables byte-identical after W2 and W3; lazy-creation case separate. AC01 stays PARTIAL."
+    },
+    "WR10": {
+      "disposition": "SATISFIED",
+      "evidence": "Two-phase RED with exact commands and hashes (catalog-only RED before SQL; behavioral RED with executable stubs); baseline legacy 409 recorded; frozen legacy wallet-auth helper; link-vs-rotate race; link vs real absorbAccount and frozen merge; Prisma-wrapper classification; cap boundaries. Caveats listed under tdd.phase_3_behavioral_red.honest_notes."
+    },
+    "WR11": {
+      "disposition": "SATISFIED",
+      "evidence": "src/lib/wallet-link-proof.ts derives domain/uri/issuedAt/Chain ID strictly from the stored message, expiresAt from the column (must match the message), digest must hash the message, no defaults; 19 tests including parse of the legacy generator format via expectedStatement. No nonce/Chain ID semantics added (T007)."
+    },
+    "WR12": {
+      "disposition": "SATISFIED",
+      "evidence": "Lock order is a documented module contract; named pg_blocking_pids tests: link/link same account, two accounts one address, legacy insert (both orders), rotate (both orders), merge as drop (both orders) and keep, User row update. No 40P01 observed."
+    },
+    "WR13": {
+      "disposition": "SATISFIED",
+      "evidence": "Two-PR split chosen: this PR is migration + module + proof seam + tests + docs + example only; test asserts wallet-auth/x-oauth/config contain no link wiring and no flag."
+    },
+    "WR14": {
+      "disposition": "PARTIAL",
+      "evidence": "Wording corrected in migration comment and docs (replay barrier is challenge consumption; reservation asymmetry; receipt replay must precede challenge consumption; T006-W03 not claimed). Migration prefix renumbering against T019/T029 and the fresh-bootstrap count recomputation remain a merge-time task."
+    }
+  },
+  "open_risks_for_reviewer": [
+    "WR04 step-up decision and revoke path are unmade; PR-B cannot enable anything until they exist.",
+    "Lock-order freedom from cycles is argued from reading every legacy writer plus named races; it is not a proof over all interleavings.",
+    "The example host and the repository fixture runner share the app node_modules for the CI-style consumer test; independence was shown separately by the fresh-directory install.",
+    "Unique-on-address is stricter than the blueprint (network, address) tuple.",
+    "docs/tasks/T006-wallet-link-plan-review.md (PR #180 base) fails prettier --check; not edited here."
+  ]
+}
