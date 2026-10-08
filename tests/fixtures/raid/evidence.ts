@@ -35,8 +35,9 @@ export const EvidenceRecordSchema = z
       });
     if (
       record.assurance === 'FIXTURE_STRUCTURE' &&
-      record.environment.kind !== 'UNIT' &&
-      record.environment.kind !== 'INDEPENDENT_HOST'
+      [record.environment.kind, ...(record.environment.coveredKinds ?? [])].some(
+        (kind) => kind !== 'UNIT' && kind !== 'INDEPENDENT_HOST',
+      )
     )
       ctx.addIssue({ code: 'custom', message: 'Fixture inspection proves no external boundary.' });
     if (

@@ -302,7 +302,7 @@ export function createSyntheticFixtures() {
     engagement,
     walletLinks: [4, 5].map((byte) => ({
       simulation: true as const,
-      accountId: people.busy.participant.kind === 'HUMAN' ? people.busy.participant.accountId : '',
+      accountId: people.busy.participant.accountId,
       participantId: people.busy.participant.id,
       networkIdentity: id('genesis'),
       address: address(byte),
