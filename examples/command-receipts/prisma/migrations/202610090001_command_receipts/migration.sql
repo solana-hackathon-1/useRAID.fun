@@ -1,0 +1,1 @@
+../../../../../prisma/migrations/202610090001_command_receipts/migration.sql

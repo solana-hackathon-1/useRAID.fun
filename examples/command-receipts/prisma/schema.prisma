@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+// Host business table: the state change the receipt protects.
+model HostCredit {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  claimId String
+}
+model CommandReceipt {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  actorId String
+  commandKind String
+  idempotencyKey String
+  requestDigest String
+  requestId String
+  resultRef String?
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  auditEvents AuditEvent[]
+  @@unique([actorId, commandKind, idempotencyKey])
+}
+model InboxDelivery {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  provider String
+  deliveryId String
+  payloadDigest String
+  resultRef String?
+  receivedAt DateTime @default(now()) @db.Timestamptz(6)
+  auditEvents AuditEvent[]
+  @@unique([provider, deliveryId])
+}
+model AuditEvent {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  receiptId String? @db.Uuid
+  inboxId String? @db.Uuid
+  ordinal Int
+  eventType String
+  aggregateId String
+  aggregateVersion Int
+  actorId String
+  guildId String?
+  correlationId String
+  payload Json @db.JsonB
+  occurredAt DateTime @default(now()) @db.Timestamptz(6)
+  receipt CommandReceipt? @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  inbox InboxDelivery? @relation(fields: [inboxId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  outbox OutboxEvent?
+  @@unique([receiptId, ordinal])
+  @@unique([inboxId, ordinal])
+  @@index([aggregateId, occurredAt])
+}
+model OutboxEvent {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  event AuditEvent @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([createdAt])
+}
