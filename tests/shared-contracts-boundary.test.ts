@@ -28,9 +28,9 @@ describe('T002 ownership and independent consumer boundary', () => {
       actorId: 'a-1',
       guildId: 'g-1',
       correlationId: 'req-1',
-      references: { termsVersionId: 't-1' },
+      payload: { termsVersionId: 't-1' },
     };
-    expect(EventEnvelopeSchema.parse(event).references.termsVersionId).toBe('t-1');
+    expect(EventEnvelopeSchema.parse(event).payload.termsVersionId).toBe('t-1');
     expect(() =>
       EventEnvelopeSchema.parse({ ...event, payload: { privateBrief: 'secret' } }),
     ).toThrow();

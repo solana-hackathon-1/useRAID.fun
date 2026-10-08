@@ -10,7 +10,7 @@ import {
   Revision,
   UtcTimestamp,
 } from './ids';
-import { AmountSchema, AssetIdSchema, AssetPolicySnapshotSchema } from './assets';
+import { AmountSchema, TokenAssetIdSchema, AssetPolicySnapshotSchema } from './assets';
 import { StateSchema } from './states';
 export const ParticipantSchema = z.discriminatedUnion('kind', [
   z.strictObject({ id: ParticipantId, kind: z.literal('HUMAN'), accountId: AccountId }),
@@ -28,7 +28,7 @@ export const PublicGuildSchema = z.strictObject({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   name: z.string().min(1).max(200),
   description: z.string().max(4000),
-  primaryToken: AssetIdSchema.nullable(),
+  primaryToken: TokenAssetIdSchema.nullable(),
 });
 export type PublicGuild = z.infer<typeof PublicGuildSchema>;
 /** Internal authority reference; verified roles/grants remain identity/Guild commands. */
@@ -36,7 +36,7 @@ export const GuildSchema = z.strictObject({
   id: GuildId,
   founderAccountId: AccountId,
   revision: Revision,
-  primaryToken: AssetIdSchema.nullable(),
+  primaryToken: TokenAssetIdSchema.nullable(),
 });
 export type Guild = z.infer<typeof GuildSchema>;
 const member = z
@@ -69,9 +69,26 @@ export const TermsSnapshotSchema = z
     revision: Revision,
     scope: z.string().min(1),
     acceptanceCriteria: z.array(z.string().min(1)).min(1).readonly(),
+    requiredSkills: z
+      .array(
+        z
+          .strictObject({
+            skillId: InternalId,
+            minimumRank: z.enum(['E', 'D', 'C', 'B', 'A', 'S']),
+            assessmentPolicyVersion: InternalId,
+          })
+          .readonly(),
+      )
+      .readonly(),
     roster: z.array(member).min(1).readonly(),
     rewards: z.array(reward).readonly(),
     deadlines,
+    eligibilityPolicyVersion: InternalId,
+    allowedToolsPolicyVersion: InternalId,
+    revisionPolicyVersion: InternalId,
+    withdrawalPolicyVersion: InternalId,
+    terminationPolicyVersion: InternalId,
+    rubricVersion: InternalId.nullable(),
     rightsPolicyVersion: InternalId,
     reviewPolicyVersion: InternalId,
     disputePolicyVersion: InternalId,
@@ -96,7 +113,7 @@ export const TermsSnapshotSchema = z
       terms.deadlines.review,
       terms.deadlines.operationalClosure,
     ].map(Date.parse);
-    if (times.some((time, i) => i > 0 && time <= times[i - 1]))
+    if (times[1] <= times[0] || times.some((time, i) => i > 1 && time < times[i - 1]))
       ctx.addIssue({
         code: 'custom',
         path: ['deadlines'],

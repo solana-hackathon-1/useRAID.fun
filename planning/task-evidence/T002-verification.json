@@ -1,0 +1,160 @@
+{
+  "task_id": "T002",
+  "status": "IN_PROGRESS",
+  "baseline_sha": "27bfa3aca4894067017a5cb21c4df6eb527959db",
+  "environment": {
+    "local_runtime": "Node 26.0.0",
+    "declared_and_ci_runtime": "Node 22.12+ / Node22 CI",
+    "dependencies": {
+      "zod": "4.6.5",
+      "bs58": "6.0.0",
+      "tsx": "4.23.15",
+      "vitest": "4.1.11"
+    },
+    "network": "synthetic contract fixture; no chain/provider effects"
+  },
+  "red": {
+    "command": "npx vitest run tests/shared-contracts.test.ts --reporter=json --outputFile=/private/tmp/raid-t002-red.json",
+    "sha": "74118cc17a5e38489c21ad9b13414aa77e1adf4f",
+    "passed": 7,
+    "failed": 24,
+    "qualification": "Unused, explicitly RED-only scaffold lets behavior assertions execute; missing-import attempt is not counted as behavioral RED",
+    "failures": [
+      {
+        "test": "T002 canonical identity and public boundary keeps account, participant, Guild and terms identifiers distinct",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 canonical identity and public boundary requires the accountable identity appropriate to each participant kind",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 canonical identity and public boundary supports a pending Guild without a token and rejects private public fields",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts requires mint/program for tokens and forbids either on native SOL",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts never keys an asset by display ticker or policy revision",
+        "observed": "Error: Asset identity not implemented"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1.5",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount -1",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1.5",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1e6",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount ",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 01",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount +1",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts round trips large amounts exactly and handles zero/precision without float arithmetic",
+        "observed": "Error: Exact amount parsing not implemented"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts uses host bounds and checked precision",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 accepted terms and engagement references freezes parsed terms, roster, rewards and policy snapshots",
+        "observed": "AssertionError: expected false to be true // Object.is equality"
+      },
+      {
+        "test": "T002 accepted terms and engagement references rejects duplicate members, unassigned beneficiaries and unbounded/reversed deadlines",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 accepted terms and engagement references binds exactly one execution source and terms to the same Guild",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts keeps listing, money, work, access, dispute, transaction and run vocabularies separate",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts holds capacity through setup/review and releases terminal work independently of money",
+        "observed": "Error: Capacity classification not implemented"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts assigns lifecycle mutation to an explicit domain command owner with authority and guard contracts",
+        "observed": "AssertionError: expected '' to be 'work' // Object.is equality"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts plans the same source/operator/participant lock order for all input permutations",
+        "observed": "Error: Lock ordering not implemented"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts validates retry context without letting a receipt replace authorization",
+        "observed": "AssertionError: expected 'unimplemented' to be 'v1' // Object.is equality"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts emits stable safe error envelopes without private exception content",
+        "observed": "Error: Error envelope not implemented"
+      }
+    ],
+    "report_sha256": "275ddd9f3ec726eba2f598a287bcade2c47a68077d754308634c504bc0f1599d"
+  },
+  "review_regression_red": {
+    "sha": "ad48ab0fcae1812ae3e92a9e78ed2e2b460459b1",
+    "command": "npx vitest run tests/shared-contracts-review.test.ts",
+    "failed": 3,
+    "passed": 0,
+    "observed": "Native SOL accepted as Guild token; required accepted policy/skills omitted; global identity event with null Guild and canonical payload rejected",
+    "log_sha256": "894472f7d7267327483585ca3ac43f9e486d7352ed4edc5ad71fa0054cec804b"
+  },
+  "green": {
+    "command": "npx vitest run tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts",
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "report_sha256": "d5aa636f2b1664892b0fd881981ea41ca021a7602308242d425333abdf81ff65"
+  },
+  "static": {
+    "typecheck": "PASS",
+    "format": "PASS",
+    "lint": "PASS; 24 pre-existing warnings, zero errors",
+    "planning": "27 PASS; initial failure on unregistered new files resolved by adding all three files to E01 CI inventory"
+  },
+  "consumer": {
+    "ci_fixture": "PASS; copied module and separate host to temp directory, explicit installed dependency runtime, no app config/credentials",
+    "independent_review": "Reviewer reports clean separate dependency install and host PASS; final report pending"
+  },
+  "remaining": [
+    "Exact candidate GitHub checks",
+    "Independent criterion review and completion validator",
+    "No new DB/domain/provider/live implementation or UAT verified"
+  ],
+  "refactor": {
+    "command": "DATABASE_URL=<isolated disposable PostgreSQL16 useraid_test> RUN_DB_TESTS=true DEMO_MODE=false npm test -- --reporter=json --outputFile=/private/tmp/raid-t002-db-regression.json",
+    "passed": 582,
+    "failed": 0,
+    "skipped": 0,
+    "observed": "Full real-database legacy regression plus all new contract and consumer suites; disposable DB migrated and removed after test",
+    "report_sha256": "b3c6fef2248016112573e1957f2d8f81c9dd85e8eb69f5b39b3d74e31e9a89eb"
+  }
+}

@@ -3,7 +3,7 @@ import { AccountId, GuildId, TermsVersionId, InternalId, Revision, UtcTimestamp 
 export const API_VERSION = 'v1' as const;
 export const API_BASE_PATH = '/api/v1' as const;
 // Metadata is never a replacement for server-resolved identity or permission.
-export const CommandContextSchema = z.strictObject({
+export const GuildWorkCommandContextSchema = z.strictObject({
   actorId: AccountId,
   guildId: GuildId,
   requestId: InternalId,
@@ -11,6 +11,8 @@ export const CommandContextSchema = z.strictObject({
   expectedRevision: Revision,
   expectedTermsVersion: TermsVersionId,
 });
+// Compatibility name within this initial change; this is explicitly Guild-work scope.
+export const CommandContextSchema = GuildWorkCommandContextSchema;
 export type CommandContext = z.infer<typeof CommandContextSchema>;
 /** Minimal identifier-only event references. Feature schemas extend via reviewed versions. */
 export const EventEnvelopeSchema = z
@@ -25,14 +27,15 @@ export const EventEnvelopeSchema = z
     aggregateVersion: Revision,
     occurredAt: UtcTimestamp,
     actorId: AccountId,
-    guildId: GuildId,
+    guildId: GuildId.nullable(),
     correlationId: InternalId,
-    references: z
+    payload: z
       .strictObject({
         termsVersionId: TermsVersionId.optional(),
         submissionId: InternalId.optional(),
         operationId: InternalId.optional(),
         claimId: InternalId.optional(),
+        identityLinkId: InternalId.optional(),
       })
       .readonly(),
   })

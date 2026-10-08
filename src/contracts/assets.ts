@@ -9,16 +9,17 @@ export const SolanaAddress = z.string().refine((value) => {
   }
 }, 'Expected a 32-byte base58 address.');
 const network = { chain: z.literal('SOLANA'), networkIdentity: InternalId };
+export const TokenAssetIdSchema = z
+  .strictObject({
+    ...network,
+    kind: z.literal('TOKEN'),
+    mint: SolanaAddress,
+    tokenProgram: SolanaAddress,
+  })
+  .readonly();
 export const AssetIdSchema = z.discriminatedUnion('kind', [
   z.strictObject({ ...network, kind: z.literal('NATIVE_SOL') }).readonly(),
-  z
-    .strictObject({
-      ...network,
-      kind: z.literal('TOKEN'),
-      mint: SolanaAddress,
-      tokenProgram: SolanaAddress,
-    })
-    .readonly(),
+  TokenAssetIdSchema,
 ]);
 export type AssetId = z.infer<typeof AssetIdSchema>;
 export const AmountSchema = z
