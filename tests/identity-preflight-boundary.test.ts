@@ -11,21 +11,34 @@ it('consumes only the public identity interface outside the RAID app with explic
   }
   const directory = await mkdtemp(join(tmpdir(), 'raid-t006-preflight-consumer-'));
   try {
-    await cp('src/identity', join(directory, 'src/identity'), { recursive: true });
-    await cp('src/contracts', join(directory, 'src/contracts'), { recursive: true });
+    await cp('src/identity', join(directory, 'identity'), { recursive: true });
+    await cp('src/contracts', join(directory, 'contracts'), { recursive: true });
     await cp('examples/identity-preflight/host.ts', join(directory, 'host.ts'));
     await cp('examples/identity-preflight/package.json', join(directory, 'package.json'));
     // Explicit existing fixture runtime; separately installed host evidence is recorded in the task.
     await symlink(join(process.cwd(), 'node_modules'), join(directory, 'node_modules'), 'dir');
-    const output = execFileSync(process.execPath, [join(directory, 'node_modules/tsx/dist/cli.mjs'), 'host.ts'], {
-      cwd: directory, encoding: 'utf8', timeout: 15000,
-      env: { PATH: process.env.PATH, NODE_ENV: 'test' },
-    });
+    const output = execFileSync(
+      process.execPath,
+      [join(directory, 'node_modules/tsx/dist/cli.mjs'), 'host.ts'],
+      {
+        cwd: directory,
+        encoding: 'utf8',
+        timeout: 15000,
+        env: { PATH: process.env.PATH, NODE_ENV: 'test' },
+      },
+    );
     expect(JSON.parse(output)).toEqual({
-      version: 'v1', simulation: true, executionEnabled: false,
-      sameParticipant: true, capacityRetained: true, subjectSupplierReplacementStable: true,
-      collisionBlocked: true, replayBlocked: true, removalBlocked: true,
-      unknownInventoryBlocked: true, revokedLinkBlocked: true,
+      version: 'v1',
+      simulation: true,
+      executionEnabled: false,
+      sameParticipant: true,
+      capacityRetained: true,
+      subjectSupplierReplacementStable: true,
+      collisionBlocked: true,
+      replayBlocked: true,
+      removalBlocked: true,
+      unknownInventoryBlocked: true,
+      revokedLinkBlocked: true,
     });
   } finally {
     await rm(directory, { recursive: true, force: true });
