@@ -103,6 +103,10 @@ describe('T006 verified-link preflight (trusted synthetic observations only)', (
     const command = { ...link(), ownership: { state: 'LINKED', accountId: 'other' } };
     expect(inspectVerifiedLink(command, policy, now)).toEqual({ stage: 'BLOCKED', code: 'IDENTITY_CONFLICT' });
   });
+  it('does not use an unclaimed observation for a different subject', () => {
+    const command = { ...link(), ownership: { state: 'UNCLAIMED', subject: { ...link().subject, networkIdentity: 'different' } } };
+    expect(inspectVerifiedLink(command, policy, now)).toEqual({ stage: 'BLOCKED', code: 'OWNERSHIP_UNKNOWN' });
+  });
   it('treats an existing own verified link as a proposal, not proof-consumption success', () => {
     const command = { ...link(), ownership: { state: 'LINKED', accountId: 'synthetic-account' } };
     expect(inspectVerifiedLink(command, policy, now).stage).toBe('READY_FOR_TRANSACTION');
