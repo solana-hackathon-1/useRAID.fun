@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   AssetRegistryError,
+  MAX_SPLIT_RECIPIENTS,
   U64_MAX,
   checkedAdd,
   checkedSub,
@@ -151,6 +152,13 @@ describe('T029 deterministic split with disclosed remainder rule (14.3)', () => 
     expect(codeOf(() => splitProportional(10n, [1n], 'ROUND_UP' as never))).toBe(
       'INVALID_ALLOCATION',
     );
+  });
+  it('caps the number of recipients at 1024', () => {
+    expect(MAX_SPLIT_RECIPIENTS).toBe(1024);
+    const atCap = splitProportional(5000n, Array(1024).fill(1n));
+    expect(atCap.shares).toHaveLength(1024);
+    expect(sumAmounts(atCap.shares)).toBe(5000n);
+    expect(codeOf(() => splitProportional(5000n, Array(1025).fill(1n)))).toBe('INVALID_ALLOCATION');
   });
   it('conserves the total, is never negative and is deterministic (property)', () => {
     const random = mulberry32(14);

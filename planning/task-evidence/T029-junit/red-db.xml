@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="10" errors="0" time="5.123140917">
+    <testsuite name="tests/asset-registry-db.test.ts" timestamp="2026-10-08T16:42:18.128Z" hostname="0xd.local" tests="10" failures="10" errors="0" skipped="0" time="5.123140917">
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; enforces exact identity uniqueness: network, mint and token program all matter" time="0.053371041">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:104:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; allows one native SOL asset per network and rejects a second" time="0.005098375">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:122:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects malformed identities by check constraint" time="0.009035125">
+            <failure message="expected &apos;42P01&apos; to be &apos;23514&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;42P01&apos; to be &apos;23514&apos; // Object.is equality
+
+Expected: &quot;23514&quot;
+Received: &quot;42P01&quot;
+
+ ❯ tests/asset-registry-db.test.ts:140:64
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; keeps one asset row across policy versions and never splits identity (AC30)" time="0.00460175">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:145:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects a decimals change or an older observation for the same asset" time="0.004303">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:155:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; bounds decimals and observed slot, and requires an existing asset" time="0.004238917">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:166:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; makes identities and snapshots immutable, while no-op updates stay possible" time="0.003893542">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:182:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes two concurrent creations of the same instrument to one winner" time="5.00811425">
+            <failure message="Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;." type="Error">
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;.
+ ❯ tests/asset-registry-db.test.ts:212:3
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes competing policy versions so decimals cannot diverge" time="0.009911416">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:235:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; feeds the in-process registry from stored rows without changing decisions (adapter substitution)" time="0.009924875">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation &quot;Asset&quot; does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/asset-registry-db.test.ts:262:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42P01&apos;, message: &apos;relation &quot;Asset&quot; does not exist&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

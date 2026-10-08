@@ -225,6 +225,23 @@ describe('T029 support policy is fail-closed (16.5)', () => {
     expect(registry.evaluateSupport(noPolicy).reasons).toContain('NO_POLICY');
     expect(codeOf(() => registry.evaluateSupport(token('0OIl')))).toBe('INVALID_ASSET_ID');
   });
+  it('rejects a native SOL asset whose profile declares any extension', () => {
+    const input = baseInput();
+    const sol = native(NETWORK_B);
+    input.assets.push({ assetId: sol, display: { symbol: 'SOLB' }, origin: 'TEST_FIXTURE' });
+    input.policies.push(
+      policy(sol, 'fixture-v1', {
+        verifiedDecimals: 9,
+        supportedExtensionProfile: 'metadata-only',
+      }),
+    );
+    const registry = createAssetRegistry(input);
+    expect(registry.evaluateSupport(sol)).toEqual({
+      supported: false,
+      reasons: ['EXTENSIONS_ON_NATIVE_ASSET'],
+    });
+    expect(registry.evaluateSupport(native()).supported).toBe(true);
+  });
   it('rejects a plain SPL token program asset that claims extensions', () => {
     const input = baseInput();
     const id = token(MINT_THREE);

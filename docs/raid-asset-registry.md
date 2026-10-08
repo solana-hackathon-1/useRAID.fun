@@ -2,7 +2,7 @@
 
 [Rewards and escrow](../RAID_AGENT_BLUEPRINT.md#16-rewards-and-escrow) · [Domain and data model](../RAID_AGENT_BLUEPRINT.md#25-domain-and-data-model) · [Module reuse](raid-module-reuse.md) · [Shared contracts](raid-shared-contracts.md) · [T029 plan](tasks/T029-plan.md) · [Migration plan](tasks/T003-migration-plan.md)
 
-**Status: IMPLEMENTED_UNVERIFIED on a disposable test database. T029 and all 22 completion criteria remain NOT VERIFIED.** No independent review has happened. Nothing here is deployed, migrated on a live database or backfilled. **No asset is supported for production**: open decision O07 (initial supported assets and extension/freeze policy) and gate G04 (supported assets) are unresolved, so the shipped allow list is empty.
+**Status: technically reviewed, ACCEPTED WITH CONDITIONS ([review](tasks/T029-review.md)), on a disposable test database. T029 is NOT complete: criteria C02, C08 and C15 remain NOT VERIFIED.** Independent technical review (a distinct non-author agent) covered the other criteria only; there is no UAT, business or release approval. Nothing here is deployed, migrated on a live database or backfilled. **No asset is supported for production**: open decision O07 (initial supported assets and extension/freeze policy) and gate G04 (supported assets) are unresolved, so the shipped allow list is empty.
 
 ## Purpose and non-goals
 
@@ -101,7 +101,9 @@ No logging or metrics are emitted. Hosts should record `AssetRegistryError.code`
 
 ## Limitations
 
-- **NOT VERIFIED:** no independent review, no human UAT, no live gate (G02 to G05, G10).
+- **NOT VERIFIED:** C02, C08 and C15 stay open until the O07 decision record, G04/G10 evidence and the chain and escrow slices (T031 to T033, T080) exist. No human UAT and no live gate (G02 to G05, G10).
+- **Carried-forward obligation K3 (T069):** before any asset is approved under O07/G04, extend the shared contract with typed authority roles (mint, freeze, upgrade, permanent delegate) and record retained freeze powers (16.5). Not implemented here.
+- **Carried-forward obligation K6 (next tasks):** commitment and acceptance commands must gate on `evaluateRewardFunding().fullyFunded`; balances and claims must be keyed by `assetKey` only, never by registry version or symbol; the production allow list must come only from a recorded O07/G04 decision, never from request or environment input.
 - The module cannot prove an address is a real mint or that decimals match the chain. `CHAIN_VERIFIED` is a host claim; real verification is T031 and the adapter layer.
 - The shared T002 `observedAuthorities` field is an untyped list of addresses, so mint, freeze and upgrade authority roles are not distinguished. Retained issuer freeze powers (16.5) need a typed extension in a later contract version.
 - Mainnet genesis identity and per-asset decimals are not hard-coded (nothing to verify them against offline).

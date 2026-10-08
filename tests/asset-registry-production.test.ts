@@ -99,6 +99,16 @@ describe('T029 production validation fails closed (AC41, I12, O07)', () => {
       expect(codes(config)).toContain('PROGRAM_NOT_CHAIN_VERIFIED');
     }
   });
+  it('blocks a token asset whose token program is not declared chain-verified', () => {
+    const undeclared = candidate();
+    undeclared.programs = [{ address: fixtureAddress(8), origin: 'CHAIN_VERIFIED' }];
+    const violations = validateProductionConfig(undeclared, allowlist).violations;
+    expect(violations).toEqual([{ code: 'PROGRAM_NOT_CHAIN_VERIFIED', subject: 'assets[0]' }]);
+    const none = candidate();
+    none.programs = [];
+    expect(codes(none)).toContain('PROGRAM_NOT_CHAIN_VERIFIED');
+    expect(validateProductionConfig(candidate(), allowlist).ok).toBe(true);
+  });
   it('blocks an asset without a recorded decision reference matching the allow list entry', () => {
     const noApproval = candidate();
     noApproval.assets = [{ ...noApproval.assets[0], approval: undefined } as never];

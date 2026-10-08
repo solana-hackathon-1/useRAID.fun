@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="0" errors="0" time="0.346688">
+    <testsuite name="tests/asset-registry-db.test.ts" timestamp="2026-10-08T16:43:06.925Z" hostname="0xd.local" tests="10" failures="0" errors="0" skipped="0" time="0.346688">
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; enforces exact identity uniqueness: network, mint and token program all matter" time="0.059078959">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; allows one native SOL asset per network and rejects a second" time="0.011109625">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects malformed identities by check constraint" time="0.029609375">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; keeps one asset row across policy versions and never splits identity (AC30)" time="0.016924917">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects a decimals change or an older observation for the same asset" time="0.016754417">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; bounds decimals and observed slot, and requires an existing asset" time="0.0266095">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; makes identities and snapshots immutable, while no-op updates stay possible" time="0.02533475">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes two concurrent creations of the same instrument to one winner" time="0.075892541">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes competing policy versions so decimals cannot diverge" time="0.05594375">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; feeds the in-process registry from stored rows without changing decisions (adapter substitution)" time="0.018569209">
+        </testcase>
+    </testsuite>
+</testsuites>

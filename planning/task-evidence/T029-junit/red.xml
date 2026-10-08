@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="91" failures="81" errors="0" time="0.048323832">
+    <testsuite name="tests/asset-registry-amounts.test.ts" timestamp="2026-10-08T16:37:42.631Z" hostname="0xd.local" tests="39" failures="34" errors="0" skipped="0" time="0.020518041">
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; parses the section 16.3 example exactly and formats it back" time="0.003800334">
+            <failure message="expected &apos;5e-9&apos; to be &apos;0.000000005&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;5e-9&apos; to be &apos;0.000000005&apos; // Object.is equality
+
+Expected: &quot;0.000000005&quot;
+Received: &quot;5e-9&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:35:33
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects excess precision instead of rounding" time="0.000374833">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;EXCESS_PRECISION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;EXCESS_PRECISION&apos; // Object.is equality
+
+Expected: &quot;EXCESS_PRECISION&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:38:55
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;&quot;" time="0.000471792">
+            <failure message="The number NaN cannot be converted to a BigInt because it is not an integer" type="RangeError">
+RangeError: The number NaN cannot be converted to a BigInt because it is not an integer
+ ❯ parseAmount src/asset-registry/amounts.ts:5:10
+ ❯ tests/asset-registry-amounts.test.ts:60:25
+ ❯ codeOf tests/asset-registry-amounts.test.ts:20:5
+ ❯ tests/asset-registry-amounts.test.ts:60:12
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot; 1&quot;" time="0.000212375">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1 &quot;" time="0.000202">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;-1&quot;" time="0.000217084">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;+1&quot;" time="0.000191833">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1e3&quot;" time="0.000159875">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;0x10&quot;" time="0.000167917">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;.5&quot;" time="0.000159209">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1.&quot;" time="0.0001445">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;01&quot;" time="0.00014025">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1,000&quot;" time="0.000145416">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;NaN&quot;" time="0.000088625">
+            <failure message="The number NaN cannot be converted to a BigInt because it is not an integer" type="RangeError">
+RangeError: The number NaN cannot be converted to a BigInt because it is not an integer
+ ❯ parseAmount src/asset-registry/amounts.ts:5:10
+ ❯ tests/asset-registry-amounts.test.ts:60:25
+ ❯ codeOf tests/asset-registry-amounts.test.ts:20:5
+ ❯ tests/asset-registry-amounts.test.ts:60:12
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;Infinity&quot;" time="0.000074541">
+            <failure message="The number Infinity cannot be converted to a BigInt because it is not an integer" type="RangeError">
+RangeError: The number Infinity cannot be converted to a BigInt because it is not an integer
+ ❯ parseAmount src/asset-registry/amounts.ts:5:10
+ ❯ tests/asset-registry-amounts.test.ts:60:25
+ ❯ codeOf tests/asset-registry-amounts.test.ts:20:5
+ ❯ tests/asset-registry-amounts.test.ts:60:12
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1..2&quot;" time="0.000143459">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;１２３&quot;" time="0.000087167">
+            <failure message="The number NaN cannot be converted to a BigInt because it is not an integer" type="RangeError">
+RangeError: The number NaN cannot be converted to a BigInt because it is not an integer
+ ❯ parseAmount src/asset-registry/amounts.ts:5:10
+ ❯ tests/asset-registry-amounts.test.ts:60:25
+ ❯ codeOf tests/asset-registry-amounts.test.ts:20:5
+ ❯ tests/asset-registry-amounts.test.ts:60:12
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1\n&quot;" time="0.000117333">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:60:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects non-string input including JavaScript numbers" time="0.000138542">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:63:68
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; validates decimals and the host bound" time="0.000135292">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:68:48
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; enforces the inclusive u64 upper bound by default" time="0.000657084">
+            <failure message="expected 18446744073709551616n to be 18446744073709551615n // Object.is equality" type="AssertionError">
+AssertionError: expected 18446744073709551616n to be 18446744073709551615n // Object.is equality
+
+- Expected
++ Received
+
+- 18446744073709551615n
++ 18446744073709551616n
+
+ ❯ tests/asset-registry-amounts.test.ts:75:52
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; formats only in-bound nonnegative integers" time="0.000123292">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:83:48
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; agrees with the shared T002 contract helpers (reuse, no divergence)" time="0.000376125">
+            <failure message="expected &apos;4953160606937089000&apos; to be &apos;4953160606937088689&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;4953160606937089000&apos; to be &apos;4953160606937088689&apos; // Object.is equality
+
+Expected: &quot;4953160606937088689&quot;
+Received: &quot;4953160606937089000&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:93:23
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; round trips random amounts for every decimals value without precision loss (property)" time="0.000132625">
+            <failure message="expected 5780132452195271680n to be 5780132452195271195n // Object.is equality" type="AssertionError">
+AssertionError: expected 5780132452195271680n to be 5780132452195271195n // Object.is equality
+
+- Expected
++ Received
+
+- 5780132452195271195n
++ 5780132452195271680n
+
+ ❯ tests/asset-registry-amounts.test.ts:103:68
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; adds, subtracts and sums exactly within the bound" time="0.000153708">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; rejects overflow, underflow and non-bigint input" time="0.000153666">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;AMOUNT_OVERFLOW&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;AMOUNT_OVERFLOW&apos; // Object.is equality
+
+Expected: &quot;AMOUNT_OVERFLOW&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:118:51
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; splits the section 14.3 example 50/30/20 exactly" time="0.000127083">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; distributes remainder to the largest fractional parts, ties to the lowest index" time="0.000495">
+            <failure message="expected [ 3n, 3n, 3n ] to deeply equal [ 4n, 3n, 3n ]" type="AssertionError">
+AssertionError: expected [ 3n, 3n, 3n ] to deeply equal [ 4n, 3n, 3n ]
+
+- Expected
++ Received
+
+  [
+-   4n,
++   3n,
+    3n,
+    3n,
+  ]
+
+ ❯ tests/asset-registry-amounts.test.ts:136:57
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; never gives remainder to a zero-weight recipient" time="0.000199584">
+            <failure message="expected [ 0n, 2n, 2n ] to deeply equal [ 0n, 3n, 2n ]" type="AssertionError">
+AssertionError: expected [ 0n, 2n, 2n ] to deeply equal [ 0n, 3n, 2n ]
+
+- Expected
++ Received
+
+  [
+    0n,
+-   3n,
++   2n,
+    2n,
+  ]
+
+ ❯ tests/asset-registry-amounts.test.ts:143:56
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; can disclose the remainder as unallocated instead of assigning it" time="0.000134916">
+            <failure message="expected 0n to be 1n // Object.is equality" type="AssertionError">
+AssertionError: expected 0n to be 1n // Object.is equality
+
+- Expected
++ Received
+
+- 1n
++ 0n
+
+ ❯ tests/asset-registry-amounts.test.ts:149:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; rejects invalid allocations" time="0.0001205">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_ALLOCATION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_ALLOCATION&apos; // Object.is equality
+
+Expected: &quot;INVALID_ALLOCATION&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:153:54
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; conserves the total, is never negative and is deterministic (property)" time="0.000354792">
+            <failure message="expected 9420752259804159746n to be 9420752259804159747n // Object.is equality" type="AssertionError">
+AssertionError: expected 9420752259804159746n to be 9420752259804159747n // Object.is equality
+
+- Expected
++ Received
+
+- 9420752259804159747n
++ 9420752259804159746n
+
+ ❯ tests/asset-registry-amounts.test.ts:179:59
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; keeps every share within one unit of the exact proportional value (property)" time="0.006242917">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; floors or ceils basis points exactly and never exceeds the amount" time="0.000162375">
+            <failure message="expected 25n to be 24n // Object.is equality" type="AssertionError">
+AssertionError: expected 25n to be 24n // Object.is equality
+
+- Expected
++ Received
+
+- 24n
++ 25n
+
+ ❯ tests/asset-registry-amounts.test.ts:208:44
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; rejects unreasonable basis points and rounding names" time="0.000130792">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_ALLOCATION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_ALLOCATION&apos; // Object.is equality
+
+Expected: &quot;INVALID_ALLOCATION&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:216:59
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; serializes amounts as canonical decimal strings and parses them back" time="0.000083083">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; rejects JSON numbers, noncanonical strings and out-of-bound values" time="0.000121958">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:232:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; round trips large random amounts exactly (property)" time="0.001687666">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 error shape &gt; exposes only a machine code, never input text" time="0.000443083">
+            <failure message="expected RangeError: The number NaN cannot be conv… to be an instance of AssetRegistryError" type="AssertionError">
+AssertionError: expected RangeError: The number NaN cannot be conv… to be an instance of AssetRegistryError
+ ❯ tests/asset-registry-amounts.test.ts:255:21
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-bundle.test.ts" timestamp="2026-10-08T16:37:42.638Z" hostname="0xd.local" tests="16" failures="13" errors="0" skipped="0" time="0.009733666">
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; is not funded when only one of two promised assets is deposited" time="0.003404958">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-bundle.test.ts:47:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; is funded once both legs are verified" time="0.00021775">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; reports a shortfall for an under-deposited leg and counts nothing unverified" time="0.000317084">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-bundle.test.ts:64:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; does not accept a deposit of a same-ticker different mint or the same mint on another network" time="0.000204375">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-bundle.test.ts:76:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; ignores unrelated surplus assets and allows surplus of a promised asset" time="0.000281334">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; blocks a leg whose asset is not supported by the registry" time="0.000184917">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-bundle.test.ts:93:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; never calls an empty bundle funded" time="0.000052792">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; rejects zero, malformed and noncanonical leg amounts" time="0.000704875">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_AMOUNT&apos; // Object.is equality
+
+Expected: &quot;INVALID_AMOUNT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-bundle.test.ts:101:101
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; aggregates two legs of one asset and guards the sum against overflow" time="0.000626">
+            <failure message="expected [ { …(6) }, { …(6) } ] to have a length of 1 but got 2" type="AssertionError">
+AssertionError: expected [ { …(6) }, { …(6) } ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ tests/asset-registry-bundle.test.ts:122:27
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; counts a repeated operation once even when tagged with different policy versions" time="0.001481541">
+            <failure message="expected undefined to deeply equal { verified: 500n, pending: 0n }" type="AssertionError">
+AssertionError: expected undefined to deeply equal { verified: 500n, pending: 0n }
+
+- Expected:
+{
+  &quot;pending&quot;: 0n,
+  &quot;verified&quot;: 500n,
+}
+
++ Received:
+undefined
+
+ ❯ tests/asset-registry-bundle.test.ts:147:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; sums distinct operations under one key regardless of policy version" time="0.00027075">
+            <failure message="expected undefined to deeply equal { verified: 750n, pending: 0n }" type="AssertionError">
+AssertionError: expected undefined to deeply equal { verified: 750n, pending: 0n }
+
+- Expected:
+{
+  &quot;pending&quot;: 0n,
+  &quot;verified&quot;: 750n,
+}
+
++ Received:
+undefined
+
+ ❯ tests/asset-registry-bundle.test.ts:156:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; treats a late verified delivery as the same operation progressing, never as extra funds" time="0.00026525">
+            <failure message="expected undefined to deeply equal { verified: 500n, pending: 0n }" type="AssertionError">
+AssertionError: expected undefined to deeply equal { verified: 500n, pending: 0n }
+
+- Expected:
+{
+  &quot;pending&quot;: 0n,
+  &quot;verified&quot;: 500n,
+}
+
++ Received:
+undefined
+
+ ❯ tests/asset-registry-bundle.test.ts:165:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; rejects a conflicting redelivery of the same operation" time="0.000246834">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;CONFLICTING_OBSERVATION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;CONFLICTING_OBSERVATION&apos; // Object.is equality
+
+Expected: &quot;CONFLICTING_OBSERVATION&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-bundle.test.ts:175:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; rejects malformed observations and overflowing totals" time="0.00022975">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_CONFIGURATION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_CONFIGURATION&apos; // Object.is equality
+
+Expected: &quot;INVALID_CONFIGURATION&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-bundle.test.ts:188:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; ignores observations for assets the registry does not know instead of crediting them" time="0.000134292">
+            <failure message="expected 1 to be +0 // Object.is equality" type="AssertionError">
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/asset-registry-bundle.test.ts:205:27
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; credits exactly the verified deposits for random duplicated streams (property)" time="0.000400333">
+            <failure message="expected 0n to be 585998n // Object.is equality" type="AssertionError">
+AssertionError: expected 0n to be 585998n // Object.is equality
+
+- Expected
++ Received
+
+- 585998n
++ 0n
+
+ ❯ tests/asset-registry-bundle.test.ts:228:40
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-production.test.ts" timestamp="2026-10-08T16:37:42.640Z" hostname="0xd.local" tests="15" failures="14" errors="0" skipped="0" time="0.007204">
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; ships no supported production asset until O07 supplies one" time="0.003335125">
+            <failure message="expected false to be true // Object.is equality" type="AssertionError">
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/asset-registry-production.test.ts:48:57
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an empty configuration" time="0.000720875">
+            <failure message="expected [] to include &apos;NO_SUPPORTED_PRODUCTION_ASSET&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;NO_SUPPORTED_PRODUCTION_ASSET&apos;
+ ❯ tests/asset-registry-production.test.ts:58:26
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; accepts a fully verified, approved, allow-listed configuration only when the host supplies the list" time="0.000179541">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a DEVNET network in a production profile" time="0.000177">
+            <failure message="expected [] to include &apos;NETWORK_NOT_MAINNET&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;NETWORK_NOT_MAINNET&apos;
+ ❯ tests/asset-registry-production.test.ts:72:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a TESTNET network in a production profile" time="0.00015675">
+            <failure message="expected [] to include &apos;NETWORK_NOT_MAINNET&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;NETWORK_NOT_MAINNET&apos;
+ ❯ tests/asset-registry-production.test.ts:72:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a LOCAL network in a production profile" time="0.00012425">
+            <failure message="expected [] to include &apos;NETWORK_NOT_MAINNET&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;NETWORK_NOT_MAINNET&apos;
+ ❯ tests/asset-registry-production.test.ts:72:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a SYNTHETIC network in a production profile" time="0.000121833">
+            <failure message="expected [] to include &apos;NETWORK_NOT_MAINNET&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;NETWORK_NOT_MAINNET&apos;
+ ❯ tests/asset-registry-production.test.ts:72:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test fixture and sample assets even when listed" time="0.000133875">
+            <failure message="expected [] to include &apos;ASSET_NOT_CHAIN_VERIFIED&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;ASSET_NOT_CHAIN_VERIFIED&apos;
+ ❯ tests/asset-registry-production.test.ts:82:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks mock and simulated providers" time="0.00013375">
+            <failure message="expected [] to include &apos;PROVIDER_NOT_LIVE&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;PROVIDER_NOT_LIVE&apos;
+ ❯ tests/asset-registry-production.test.ts:89:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test or sample program identifiers" time="0.000173708">
+            <failure message="expected [] to include &apos;PROGRAM_NOT_CHAIN_VERIFIED&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;PROGRAM_NOT_CHAIN_VERIFIED&apos;
+ ❯ tests/asset-registry-production.test.ts:99:29
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset without a recorded decision reference matching the allow list entry" time="0.000126042">
+            <failure message="expected [] to include &apos;ASSET_NOT_APPROVED&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;ASSET_NOT_APPROVED&apos;
+ ❯ tests/asset-registry-production.test.ts:105:31
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset that is allow-listed on a different network or mint" time="0.0001195">
+            <failure message="expected [] to include &apos;ASSET_NOT_ALLOWLISTED&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;ASSET_NOT_ALLOWLISTED&apos;
+ ❯ tests/asset-registry-production.test.ts:112:98
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset whose policy is unsupported (rejected extension, unknown program, no policy)" time="0.000128834">
+            <failure message="expected [] to include &apos;ASSET_POLICY_UNSUPPORTED&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;ASSET_POLICY_UNSUPPORTED&apos;
+ ❯ tests/asset-registry-production.test.ts:124:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; reports every violation at once and carries no input text" time="0.000738458">
+            <failure message="expected [] to deeply equal ArrayContaining{…}" type="AssertionError">
+AssertionError: expected [] to deeply equal ArrayContaining{…}
+
+- Expected
++ Received
+
+- ArrayContaining [
+-   &quot;ASSET_NOT_ALLOWLISTED&quot;,
+-   &quot;NETWORK_NOT_MAINNET&quot;,
+-   &quot;PROVIDER_NOT_LIVE&quot;,
+- ]
++ []
+
+ ❯ tests/asset-registry-production.test.ts:136:73
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; treats malformed configuration as blocked, never as acceptable" time="0.000153584">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-production.test.ts:149:56
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-registry.test.ts" timestamp="2026-10-08T16:37:42.641Z" hostname="0xd.local" tests="21" failures="20" errors="0" skipped="0" time="0.010868125">
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; treats two mints that share a ticker as two distinct assets" time="0.00373425">
+            <failure message="expected function to throw an error, but it didn&apos;t" type="AssertionError">
+AssertionError: expected function to throw an error, but it didn&apos;t
+ ❯ tests/asset-registry-registry.test.ts:41:74
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint presented on another network" time="0.001487083">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality
+
+Expected: &quot;UNSUPPORTED_ASSET&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:48:72
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint under another token program" time="0.000284375">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality
+
+Expected: &quot;UNSUPPORTED_ASSET&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:56:95
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; distinguishes native SOL from a token and one network from another" time="0.000272166">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality
+
+Expected: &quot;UNSUPPORTED_ASSET&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:63:63
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; cannot select an asset by ticker, name or smuggled display fields" time="0.000202416">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_ASSET_ID&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_ASSET_ID&apos; // Object.is equality
+
+Expected: &quot;INVALID_ASSET_ID&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:67:73
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; is immutable to later mutation of its inputs and outputs" time="0.00058775">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-registry.test.ts:80:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects ambiguous or inconsistent registry configuration" time="0.000243292">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_CONFIGURATION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_CONFIGURATION&apos; // Object.is equality
+
+Expected: &quot;INVALID_CONFIGURATION&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:89:58
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; keeps one identity and key across registry versions and returns the newest policy" time="0.000828583">
+            <failure message="expected [ &apos;fixture-v1&apos;, &apos;fixture-v1&apos;, …(2) ] to deeply equal [ &apos;fixture-v1&apos;, &apos;fixture-v2&apos; ]" type="AssertionError">
+AssertionError: expected [ &apos;fixture-v1&apos;, &apos;fixture-v1&apos;, …(2) ] to deeply equal [ &apos;fixture-v1&apos;, &apos;fixture-v2&apos; ]
+
+- Expected
++ Received
+
+  [
+    &quot;fixture-v1&quot;,
++   &quot;fixture-v1&quot;,
++   &quot;fixture-v1&quot;,
+    &quot;fixture-v2&quot;,
+  ]
+
+ ❯ tests/asset-registry-registry.test.ts:114:74
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; treats re-recording an identical snapshot as idempotent" time="0.000561125">
+            <failure message="expected [ { assetId: { …(5) }, …(6) }, …(3) ] to have a length of 1 but got 4" type="AssertionError">
+AssertionError: expected [ { assetId: { …(5) }, …(6) }, …(3) ] to have a length of 1 but got 4
+
+- Expected
++ Received
+
+- 1
++ 4
+
+ ❯ tests/asset-registry-registry.test.ts:126:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a different snapshot under an existing version" time="0.000227">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;ASSET_POLICY_CHANGED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;ASSET_POLICY_CHANGED&apos; // Object.is equality
+
+Expected: &quot;ASSET_POLICY_CHANGED&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:131:52
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a decimals change for the same asset so accepted amounts keep their meaning" time="0.000197042">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;ASSET_POLICY_CHANGED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;ASSET_POLICY_CHANGED&apos; // Object.is equality
+
+Expected: &quot;ASSET_POLICY_CHANGED&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:136:56
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot for an unregistered asset instead of registering it implicitly" time="0.0001625">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality
+
+Expected: &quot;UNSUPPORTED_ASSET&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:140:70
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot whose observed slot moves backwards" time="0.000138458">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;ASSET_POLICY_CHANGED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;ASSET_POLICY_CHANGED&apos; // Object.is equality
+
+Expected: &quot;ASSET_POLICY_CHANGED&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:145:50
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; errors when a pinned policy version is unknown and does not guess" time="0.000133625">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;UNSUPPORTED_ASSET&apos; // Object.is equality
+
+Expected: &quot;UNSUPPORTED_ASSET&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-registry.test.ts:149:78
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; supports a plain SPL token with no extensions and native SOL" time="0.000134167">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; lists the sixteen-point-five extensions as always rejected" time="0.000233333">
+            <failure message="expected [] to deeply equal [ …(7) ]" type="AssertionError">
+AssertionError: expected [] to deeply equal [ …(7) ]
+
+- Expected
++ Received
+
+- [
+-   &quot;ConfidentialTransferFeeConfig&quot;,
+-   &quot;ConfidentialTransferMint&quot;,
+-   &quot;DefaultAccountStateFrozen&quot;,
+-   &quot;NonTransferable&quot;,
+-   &quot;PermanentDelegate&quot;,
+-   &quot;TransferFeeConfig&quot;,
+-   &quot;TransferHook&quot;,
+- ]
++ []
+
+ ❯ tests/asset-registry-registry.test.ts:162:51
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects transfer-fee and transfer-hook profiles by default" time="0.000145">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-registry.test.ts:188:31
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a Token-2022 asset whose extension is not on the reviewed allow list" time="0.000222625">
+            <failure message="expected [] to include &apos;UNREVIEWED_EXTENSION:MetadataPointer&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;UNREVIEWED_EXTENSION:MetadataPointer&apos;
+ ❯ tests/asset-registry-registry.test.ts:197:48
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; never lets the allow list override the rejected extensions" time="0.000128792">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/asset-registry-registry.test.ts:207:52
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects an unknown token program, an unknown profile and a missing policy" time="0.000121875">
+            <failure message="expected [] to include &apos;UNKNOWN_TOKEN_PROGRAM&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;UNKNOWN_TOKEN_PROGRAM&apos;
+ ❯ tests/asset-registry-registry.test.ts:226:51
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a plain SPL token program asset that claims extensions" time="0.000108042">
+            <failure message="expected [] to include &apos;EXTENSIONS_ON_LEGACY_PROGRAM&apos;" type="AssertionError">
+AssertionError: expected [] to include &apos;EXTENSIONS_ON_LEGACY_PROGRAM&apos;
+ ❯ tests/asset-registry-registry.test.ts:239:50
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
