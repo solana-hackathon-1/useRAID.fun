@@ -721,5 +721,37 @@
     "migration": "prisma migrate deploy applied 202610090002_asset_registry; second deploy reported no pending migrations; prisma migrate diff --from-url --to-schema-datamodel exit 0 (No difference detected); prisma generate OK",
     "standalone_host": "cp -RL examples/asset-registry to a clean directory, npm install --no-audit --no-fund (6 packages), npx tsx host.ts printed all 13 expected true values plus version and synthetic",
     "full_suite": "840 PASS, 0 FAIL, 0 SKIP across 73 files with RUN_DB_TESTS=true on PostgreSQL 16 (see FULL run above); PR CI test job reproduced 840 passed"
+  },
+  "junit_directory": "planning/task-evidence/T029-junit/",
+  "k2_mutation_runs": [
+    {
+      "mutant": "M24",
+      "mutation": "remove native-asset extension rejection (registry.ts)",
+      "test": "tests/asset-registry-registry.test.ts",
+      "observed": "1 of 22 failed: supported true instead of false",
+      "junit": "planning/task-evidence/T029-junit/k2-red-M24.xml"
+    },
+    {
+      "mutant": "M26",
+      "mutation": "remove token-program chain-verified requirement (production.ts)",
+      "test": "tests/asset-registry-production.test.ts",
+      "observed": "1 of 16 failed: no violation reported",
+      "junit": "planning/task-evidence/T029-junit/k2-red-M26.xml"
+    },
+    {
+      "mutant": "M30",
+      "mutation": "remove 1024-recipient cap (amounts.ts)",
+      "test": "tests/asset-registry-amounts.test.ts",
+      "observed": "1 of 40 failed: NO_ERROR instead of INVALID_ALLOCATION",
+      "junit": "planning/task-evidence/T029-junit/k2-red-M30.xml"
+    }
+  ],
+  "k2_green": {
+    "sha": "61938aa3d2e27c1f3d0ecd021615a26ff1e8a394",
+    "observed": "three feature suites 78 PASS; full suite 843 PASS, 0 FAIL, 0 SKIP on PostgreSQL 16 (disposable raid-t029-db)",
+    "junit": [
+      "planning/task-evidence/T029-junit/k2-green-pure.xml",
+      "planning/task-evidence/T029-junit/k2-green-full.xml"
+    ]
   }
 }
