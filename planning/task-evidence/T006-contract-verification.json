@@ -280,8 +280,10 @@
   "reviewed_candidate_sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
   "target_preparation": {
     "scope": "Owner-authorized disposable local legacy target only",
-    "result": "TEST_BASELINE_PREPARED; independent target acceptance NOT REVIEWED",
+    "result": "Six-point synthetic target preparation independently accepted at de7df7a; reviewed forward storage remains pending",
     "evidence_url": "docs/tasks/T006-target-handoff.md",
-    "forward_t006_migration_executed": false
+    "forward_t006_migration_executed": false,
+    "pre_review_checkpoint": "TEST_BASELINE_PREPARED; independent target acceptance NOT REVIEWED",
+    "independent_review_evidence": "planning/task-evidence/T006-target-review.json"
   }
 }

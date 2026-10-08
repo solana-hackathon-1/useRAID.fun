@@ -436,16 +436,16 @@
     "failure_model": "Container loss while same-host scratch backup survives; excludes host loss/post-snapshot external effects/AC68/G10"
   },
   "forward_t006_migration_executed": false,
-  "independent_target_review": "NOT REVIEWED; new entry evidence cannot self-approve",
+  "independent_target_review": "Six bounded points accepted at de7df7a353d390f3d8b7c05c017f6d04ff5c0efc by independent task 01a11bd5-25c2-7371-ac50-6d667ad0762c; see T006-target-review.json",
   "full_t006": "IN_PROGRESS / NOT VERIFIED",
   "limitations": [
     "Synthetic ledger/transfer/test-state rows are not actual custody, owed customer funds or verified external finality. No zero-obligation inference for another target.",
     "Legacy ledger lacks full canonical asset identity and new canonical participant/terms/consents/capacity records are absent.",
-    "Independent target acceptance and reviewed restrictive references/shared merge-deletion locks are required before proposed persistence execution.",
+    "Independent target entry accepted for this synthetic baseline; reviewed restrictive references/shared merge-deletion locks remain required before proposed persistence execution.",
     "No production deployment/durability/custodian/case authority/UAT/release approval."
   ],
   "task_id": "T006",
-  "status": "TEST_BASELINE_PREPARED / INDEPENDENT TARGET REVIEW PENDING",
+  "status": "TEST_BASELINE_TECHNICALLY_ACCEPTED; full T006 IN_PROGRESS / NOT VERIFIED",
   "handoff": "docs/tasks/T006-target-handoff.md",
   "full_task_criteria": {
     "T006-C01": "NOT VERIFIED",
@@ -486,7 +486,7 @@
     "live_financial_custodian": false
   },
   "remaining_gate_requirements": [
-    "Named independent reviewer has not accepted this new target evidence.",
+    "Independent target entry review satisfied for this exact synthetic baseline only; reviewed forward compatibility remains required before proposed T006 DDL.",
     "No proposed T006 migration/guard/backfill has been independently reviewed or executed.",
     "Canonical terms/consents/identity/capacity recovery and reviewed cross-domain lock contract remain absent.",
     "All-asset financial/provider/customer authority for any other or live target remains unverified."
@@ -532,9 +532,9 @@
     "prisma/migrations/202610020009_launch_finance_hardening/migration.sql": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027"
   },
   "current_resources": {
-    "source": "RUNNING, task-owned; reserved for independent review and later authorized tests",
-    "restore": "RUNNING, network none; retained for independent verification",
-    "dump": "Retained synthetic task-owned backup; contents are test fixtures only",
+    "source": "RUNNING, reviewed synthetic baseline; reserved for later authorized tests",
+    "restore": "RUNNING, network none; reviewed preserved baseline",
+    "dump": "Retained verified synthetic backup; fixture data only",
     "persistent_or_shared_volume_used": false,
     "cleanup_owner": "Codex bounded task operator under active owner authorization",
     "cleanup_precondition": "Review or superseding baseline evidence recorded; verify exact names/labels/hash before removing only these task-owned resources"
@@ -550,5 +550,11 @@
       "all_full_criteria_unverified": true
     },
     "unused_default_public_tables": 0
-  }
+  },
+  "pre_review_checkpoint": {
+    "status": "TEST_BASELINE_PREPARED / INDEPENDENT TARGET REVIEW PENDING",
+    "independent_target_review": "NOT REVIEWED; new entry evidence cannot self-approve",
+    "candidate_sha": "de7df7a353d390f3d8b7c05c017f6d04ff5c0efc"
+  },
+  "independent_review_evidence": "planning/task-evidence/T006-target-review.json"
 }
