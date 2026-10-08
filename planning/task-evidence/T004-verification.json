@@ -1,0 +1,134 @@
+{
+  "task_id": "T004",
+  "date": "2026-10-08",
+  "timezone": "Asia/Kathmandu",
+  "environment": {
+    "os": "macOS-27.0-arm64-arm-64bit",
+    "node": "v26.0.0",
+    "npm": "11.12.1",
+    "python": "3.12.4"
+  },
+  "source_baseline": "3b92ac604e47fae1ccd440185b307f89dd04e0a2",
+  "acceptance_plan_sha": "1112d0ccd71322705e9a261f781350daaf04ad12",
+  "schema_migration_manifest": {
+    "prisma/schema.prisma": "36dee67b6be0f2536400ad6cdfc677f23f5a95390ad7bf5c5934efeae98c94b4",
+    "prisma/migrations/202609270001_init/migration.sql": "6097b1b9b32535a9e8dfb2a4694fc48c9d26a7ae749fc0986b1b8ed12bbb821f",
+    "prisma/migrations/202609280001_x_connection/migration.sql": "846ffa673555539710687f9265ceaa10ee6c4d8a0d2cc57b8f81fd839afa2603",
+    "prisma/migrations/202609280002_pump_launch/migration.sql": "15c34a12f5effed2d20dad6848b955ff444defb33365797480f7d1a11f7bf020",
+    "prisma/migrations/202609290001_x_tracking/migration.sql": "2ecd1549904bc3ee9fd4eba19cf75935540ea04380607b27b5cd364a9fb0032f",
+    "prisma/migrations/202609290002_standalone_raids/migration.sql": "a68b159e961c563092bcb95290c4fa6feb9cc557d2fb29abe9daaaa9ee2eea0b",
+    "prisma/migrations/202609300001_creator_studio/migration.sql": "5d9896bcd2f706c769c42eb0a67639bbaac0f2d5ceb1d84f9c8e4ca6b8e2f7de",
+    "prisma/migrations/202610020001_studio_fk_alignment/migration.sql": "0e3254751a38d9224aa25ad3bcd9c22dc18d8d324b18c0f33224aa3a484fa7f4",
+    "prisma/migrations/202610020002_job_dead_letter/migration.sql": "f80f7bd422d3fd391ec4cc30b3f7105466161109c675e7b368ca1756fa5ec3e8",
+    "prisma/migrations/202610020003_x_budget_controls/migration.sql": "f46c859300bb0b4bf34bda5e6874b9b808175ef0565f0a70edac0bdf586e71b9",
+    "prisma/migrations/202610020004_raid_money_policies/migration.sql": "abb5f5e5eecdbaf6eef1549f60db1735be44a8ae14c5de6cc6cfb46eec261854",
+    "prisma/migrations/202610020005_token_metadata_source/migration.sql": "d63b30ad51030236405279c3d6a09b29d020ca1bc7f83dc01fc2b33fde9b1d07",
+    "prisma/migrations/202610020006_auth_hardening/migration.sql": "2291eae6911d4e097dd2f403a1f26de0935d69c53d7c7563e8be6cc3de62e63e",
+    "prisma/migrations/202610020007_media_assets/migration.sql": "1747bf415b9e1ccdc6e3d24e2d0ae54caf2eaa76ec0ab1b0bd1fd7f6052cd46d",
+    "prisma/migrations/202610020008_wallet_rotation/migration.sql": "a65464300afc8ff5e9a304b02603f14c876e8ddd92b276ad7d462de1f47047b6",
+    "prisma/migrations/202610020009_launch_finance_hardening/migration.sql": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027",
+    "prisma/migrations/202610020010_hot_path_indexes/migration.sql": "4f73dba4ae3f5805b3a718942fff9cad4482c95830c0b33f2f9b5ed54fa77f8c",
+    "prisma/migrations/202610020011_ledger_integrity/migration.sql": "8b94c4b55ac388f72eedc9ebafdcd19736cba4c9e7b74da5ff989ae46a56b0af",
+    "prisma/migrations/202610020012_state_checks/migration.sql": "950310190fd896aab69ceef02a9a012c9e958754f7e05dba6e9a3d203a0535b1",
+    "prisma/migrations/migration_lock.toml": "1db17a8d051aa136110736752c5e1f8b7ed92b6ea8e803112fbbe2497047c210"
+  },
+  "schema_hashes_unchanged": true,
+  "checks": {
+    "baseline": {
+      "result": "PASS",
+      "tests": 38,
+      "skips": 0
+    },
+    "red_missing_module": {
+      "result": "FAIL",
+      "sha": "c955002b659331a68bcf25dda84ed142e2e11ac7",
+      "observed": "2 suites fail module resolution, no executed assertions; actual new boundary missing"
+    },
+    "red_host": {
+      "result": "FAIL",
+      "sha": "fe877ed3776b4a3878ae3beb6f72cbc287780b93",
+      "observed": "1 test fails ENOENT fixture directory"
+    },
+    "red_partial_assurance": {
+      "result": "FAIL",
+      "sha": "705361b1e5c89dd93f85050c6ff52ab575efb631",
+      "passed": 28,
+      "failed": 2
+    },
+    "initial_green": {
+      "result": "PASS",
+      "sha": "215b9c0d06e51887265ee661efbb2a1c0c44bd2e",
+      "tests": 30,
+      "skips": 0
+    },
+    "red_external_assurance": {
+      "command": "npx vitest run tests/raid-evidence.test.ts",
+      "sha": "3b585369a78c3e31f328c050400abe15c80dbf33",
+      "evidence_url": "planning/task-evidence/T004-verification.json",
+      "result": "FAIL",
+      "expected_failure": "Fixture record with PROGRAM coveredKinds must be rejected",
+      "observed_failure": "1 failed/20passed: expected true to be false"
+    },
+    "green": {
+      "command": "npx vitest run tests/raid-fixtures.test.ts tests/raid-evidence.test.ts tests/raid-fixtures-boundary.test.ts",
+      "sha": "145771c8d2a60b1d0d08e48cd8da95b0f05c8d88",
+      "evidence_url": "planning/task-evidence/T004-verification.json",
+      "result": "PASS",
+      "observed": "31 new tests pass;69 fixture/shared-contract regression tests pass;0skips"
+    },
+    "refactor_regression": {
+      "command": "npx vitest run tests/raid-fixtures.test.ts tests/raid-evidence.test.ts tests/raid-fixtures-boundary.test.ts tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts",
+      "sha": "145771c8d2a60b1d0d08e48cd8da95b0f05c8d88",
+      "evidence_url": "planning/task-evidence/T004-verification.json",
+      "result": "PASS",
+      "observed": "31 new tests pass;69 fixture/shared-contract regression tests pass;0skips"
+    },
+    "planning_initial": {
+      "result": "FAIL",
+      "tests": 27,
+      "failed": 1,
+      "observed": "New3testfiles missing from CI inventory"
+    },
+    "planning_corrected": {
+      "result": "PASS",
+      "tests": 27,
+      "skips": 0
+    },
+    "static": {
+      "result": "PASS",
+      "lint_errors": 0,
+      "existing_lint_warnings": 24
+    },
+    "audit": {
+      "result": "PASS",
+      "policy_changed": false
+    },
+    "independent_install_host": {
+      "result": "PASS",
+      "packages_installed": 7,
+      "observed": {
+        "directory": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t004-installed-ci093woi",
+        "exit": 0,
+        "output": "\n> raid-synthetic-fixtures-host@1.0.0 start\n> tsx host.ts\n\n{\"simulation\":true,\"scenariosPlanned\":75,\"scenariosVerified\":0,\"distinctSameSymbolAssets\":true,\"fixtureAssurance\":\"FIXTURE_STRUCTURE\",\"unexecutedPassRejected\":true}\n"
+      }
+    },
+    "completion_validator_initial": {
+      "result": "FAIL",
+      "expected": true,
+      "observed": "All27criterion rows NOT VERIFIED and7exactCIchecks absent; validator correctly rejects unfinished packet."
+    },
+    "full_db_initial": {
+      "result": "FAIL",
+      "passed": 615,
+      "failed": 1,
+      "tests": 616,
+      "skips": 0,
+      "observed": "Docs link test ran before handoff file was written; all60other suites pass. Handoff now exists; retest required."
+    }
+  },
+  "limitations": [
+    "No75domain scenarios claimed executed by plan",
+    "No deployed audit/restore/live provider or UAT",
+    "Exact-source CI and distinct reviewer pending"
+  ]
+}
