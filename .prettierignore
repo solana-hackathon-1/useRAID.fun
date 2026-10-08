@@ -1,4 +1,6 @@
 node_modules
+vendor/braces/index.js
+vendor/braces/lib
 .next
 artifacts
 package-lock.json

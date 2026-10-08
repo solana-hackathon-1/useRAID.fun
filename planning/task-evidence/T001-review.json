@@ -1,0 +1,436 @@
+{
+  "task_id": "T001",
+  "review_status": "BLOCKED",
+  "review_date": "2026-10-07",
+  "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+  "independence": "Separate agent explicitly selected by human; not implementation owner; technical inventory review only",
+  "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+  "application_baseline_sha": "9fd686207da5e20d1e233b863dc736c28a55062d",
+  "acceptance_sha": "c36e21fc8fc8ca88fa93cab85febd274f7c86697",
+  "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "scope": "Documentation-only T001 independent initial review and bounded re-review bec32c5..acc0250; technical inventory approval only, final criterion C22 remains failed.",
+  "non_code_boundary": {
+    "result": "ACCEPT",
+    "acceptance_defined_before_execution": true,
+    "rationale": "Plan-only first commit precedes inventory/evidence; diff contains five documents/evidence files, no implementation changes. Exclusions cover changed-behavior evidence only and waive no R/I requirement."
+  },
+  "deployed_data_boundary": {
+    "source_inventory": "Accepted bounded T001 W03 identifies source-defined obligation families and policy fields (including corrected code/config payout policies), not live quantities. Authorized deployed-data snapshot remains a mandatory pre-migration condition.",
+    "live_data": "NOT VERIFIED",
+    "pre_migration_gate": "T003 must obtain authorized sanitized deployed code/config/policy tuples, obligation/receipt/custody reconciliation, orphan/state/constraint audit and independently accepted compatibility before any backfill/migration. Missing recovered historical terms/consent cannot be invented.",
+    "authority": "No production credentials or funds accessed."
+  },
+  "criteria": {
+    "T001-C01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.2; 34.1/34.3; 40.2",
+      "repository_evidence": "docs/tasks/T001-plan.md; git diff 9fd6862...bec32c5",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "M0 source inventory and preservation handoff are bounded; no command, provider, schema, test or policy implementation changed.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 02.1\u201302.5; 38; 40.4",
+      "repository_evidence": "T001-inventory.md outcome/reuse sections; canonical decision register",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "LOCKED, INVARIANT, DIRECTION, DEFAULT, OPEN and examples remain distinct. Existing fees/providers/deadlines are observed legacy facts, not owner decisions. Existing mainnet readiness gap remains recorded; no live gate accepted.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 24.3; 25.1\u201325.8",
+      "repository_evidence": "prisma/schema.prisma; all 18 migration families; T001 source/key map",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Independently counted 35 models and 18 migrations. CUID/provider/address keys, per-campaign uniqueness and absent Participant/Guild/TermsVersion/Engagement/capacity/grant entities are accurately identified.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C04": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.1\u201328.5; I10",
+      "repository_evidence": "src/lib/auth.ts; admins.ts; tracking.ts; T001 actor matrix; docs-only diff",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No read/write permission changed. Actor map records current boundaries and absent Guild/restricted-claim permissions. New direct authorization/download behavior tests are excluded for T001 only, not for later commands.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C05": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 12; 13; 25.7; 27",
+      "repository_evidence": "states.ts; tracking.ts; tracking-review.ts; studio-finance.ts; T001 transition table",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No application transition introduced. Source-observed campaign/tracking/funding/transfer transitions are separate and no new engagement lifecycle is claimed. New transition/deadline tests belong to implementing slices.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C06": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 07; 13; R13/I01/I02; AC01/11\u201323",
+      "repository_evidence": "schema RaidEnrollment/WalletIdentity; wallet-auth.ts; tracking.ts",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Inventory/review consumes no work slot. Per-Raid uniqueness is correctly distinguished from global capacity. No Party/operator/acceptance database race has been delivered or waived.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C07": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I08; 11.5; 16; AC72",
+      "repository_evidence": "202610020011_ledger_integrity/migration.sql; CampaignResult; T001 preservation register",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No terms or consent changed. Financial freeze is correctly described as partial, not full immutable work terms; corrected minimum-policy distinction supports preservation planning. New stale-version/amendment behavior tests remain required in implementing slices.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C08": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16; I03/I04/I11",
+      "repository_evidence": "schema BalanceEntry/UsdcTransfer/allocations/rewards; T001 preservation register",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No financial obligation changed or paid. Exact base-unit and beneficiary preservation inventory is useful; no live credited-fund/finality/conservation proof is claimed. Future treasury tests remain required.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C09": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 10; 26.5; I06",
+      "repository_evidence": "src/app/api/media/[id]/route.ts; src/lib/data.ts; T001 privacy gap",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No DTO, private artifact or resource grant introduced. Public immutable media and absent confidential access are correctly flagged. This accepts no existing private-byte or effective-grant guarantee.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C10": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 26.1; 27.5; I05; AC69",
+      "repository_evidence": "src/lib/usdc.ts:340; schema Job/FinancialTx; tracking.ts submission transaction",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No idempotent command changed. Prior withdrawal result is returned without a new payload digest check, matching G-T001-03. Required altered-payload regression test is handed to implementing task, not passed here.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C11": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 13.3\u201313.5; 32.2",
+      "repository_evidence": "tracking.ts; usdc.ts; rewards.ts; studio-db/rewards-finance test sources",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No competing command changed. Existing campaign/payment advisory locks and tests cannot prove canonical global work capacity. Source inspection and CI real DB suites do not satisfy unimplemented AC11\u201323.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C12": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 27; 30; I09; AC67/68",
+      "repository_evidence": "FinancialTx schema; rewards.ts reconciliation; worker-db tests; T001 recovery register",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No external effect or provider switch delivered. Existing raw signatures/validity/reconciliation are documented; missing generic generation, restore and pinned-operation contracts remain future gates.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C13": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 23; AC70",
+      "repository_evidence": "five-file docs-only diff; checks.yml browser job",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No UI journey changed. Remote browser logs disclose demo 49 pass/1 skip, Studio 44 pass and live fixture 38 pass/6 skip. Job success is not proof of skipped scenarios, new RAID journeys or human accessibility/UAT approval.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C14": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28; I10/I12",
+      "repository_evidence": "wallet-auth.ts consumeChallenge; auth.ts origin/session; admins.ts; media route; security CI log",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Security boundaries and failures are identified accurately for inventory scope. Actual suspended-user blanket denial and provider/global coupling are gaps. No adversarial audit or production assurance is implied.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C15": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 29; 30; 34.4",
+      "repository_evidence": "src/lib/release.ts; config.ts; checks.yml; T001 flags/operations section",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No feature enabled/deployed, migration applied or operational policy adopted. Missing live gate, named case ownership, restore and continuity evidence remain explicit preconditions, never waived by documentation.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C16": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; 39.1; task guide required evidence",
+      "repository_evidence": "planning/task-evidence/T001.json all criterion sha fields; T001-verification.json; run 37594062183",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Corrected evidence distinguishes acceptance/local-check commit c36e21f, unchanged application baseline 9fd6862, inventory head bec32c5 and full CI synthetic merge d0831669c2631ce244f228a3594631f0ac367099. Remote counts/failures/skips and later-commit limitation are now accurate. This separate report records corrected document review SHA acc025085dda867bdd21c570a6825fefe8bc5088; CI for this newer commit remains pending under C22.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C17": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 39.1; task guide C17/E22",
+      "repository_evidence": "docs-only diff; T001 no-release scope",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No user-facing release or business decision is delivered. Human representative UAT/business sign-off is excluded from T001 technical inventory only. This agent has no such approval authority.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C18": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 39.2; 40.3",
+      "repository_evidence": "T001-inventory.md findings/handoff; T001.json migration_rollback/handoff",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Changed documents, source risks, no migration/API/event change, irreversible external-effect limits and exact next T002/T003/T004 steps are accurate. Correction records distinct technical reviewer and report-pending status; integrate this independently authored report without inventing business/UAT/live approval.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-A01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.2; 39.2",
+      "repository_evidence": "T001 source map/migration table; actual schema/source/CI inspected independently",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Links resolve to actual files/evidence; intended models are not asserted implemented. Source/executed/live distinctions are explicit. The payout-policy detail identified initially was corrected and independently rechecked.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-A02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I07/I08/I09/I11; 29.2; 30.6; 40.5",
+      "repository_evidence": "T001 legacy preservation table; money/identity migration source",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No new production policy is adopted. Documented path preserves IDs, amounts, networks, receipts, old defaults and beneficiary/history while requiring accepted amendments and reconciled snapshot before future migration. This is a plan, not executed compatibility validation.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-W01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.2; 24\u201329; 34.3",
+      "repository_evidence": "schema; all migration families; checks.yml; package.json; tests; flags",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Actual source/schema/test/flag/prior-result inventory and all 18 migration families are mapped, including deletions/backfills and NOT VALID checks. Corrected evidence separately identifies historical/local/remote CI and limitations.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-W02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 04.3; 07; 10; 13; 16; 24/25",
+      "repository_evidence": "T001 domain map; auth/tracking/studio-finance/data/schema inspected",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Equivalent participant/Guild/terms/work/money/access behavior and missing canonical models are accurately separated. Existing campaign ACTIVE and maxActiveRaids do not implement R13.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-W03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16; I07/I08; 29.2; 30.6",
+      "repository_evidence": "T001 preservation row Minimum payouts / review / fees; rewards.ts:42/526; config.ts:28; usdc.ts limits",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Correction independently confirmed: legacy launch fee-reward MIN_PAYOUT=1_000_000n, configured standalone SOL SOL_MIN_PAYOUT_LAMPORTS (default 890_880n), and USDC configuration are distinguished; deployed code/config history must be retained. Source-defined obligation/policy inventory satisfies this bounded T001 outcome. No actual deployed quantities/distributions/zero-obligation claim is accepted; authorized snapshot and reconciliation remain mandatory before T003 migration/backfill.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C19": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 02.5; I13; AC75; 39.1.11",
+      "repository_evidence": "git show c36e21fc8fc8ca88fa93cab85febd274f7c86697; five-file diff; own validator execution",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "Non-code boundary independently ACCEPTED: acceptance plan was committed before inventory delivery; only docs/evidence changed; no coding RED/GREEN/REFACTOR fabricated. Validator honestly rejects pending independent completion evidence.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C20": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R15; AC73; 24.6",
+      "repository_evidence": "T001 reuse section; wallet-auth.ts/db/config/vendor imports; providers/X references",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No integration adapter or provider change delivered. Legacy coupling and absence of versioned substitution suite remain real R15 gaps. This exclusion does not certify legacy integrations or waive feature-owner obligations.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C21": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R16; AC74; 24.7; docs/raid-module-reuse.md",
+      "repository_evidence": "T001 dependencies/reuse sections; package.json; data.ts provider Market type",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "No module is delivered. Explicit legacy host dependencies and missing independent examples are recorded. Auth and every later feature still require same-change docs, host contracts and a verified consuming example.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    },
+    "T001-C22": {
+      "result": "FAIL",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; task guide C22; T001 ci_requirements",
+      "repository_evidence": "checks.yml ci-gate; GitHub run 37594062183 API/log; JUnit artifact 11469549503",
+      "reviewed_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+      "reviewer": "/root/t001_independent_review (distinct Codex AG08/AG10 technical review agent)",
+      "observed_and_rationale": "FAIL completion disposition retained. Prior head bec32c5/full merge d0831669 failed dependency-security and ci-gate; JUnit 523 passed/0 skipped, browser 131 passed/7 skipped. At corrected reviewed acc0250 PR run 37595545285, independently verified dependency-security failure (job112707163396), planning/static/test/docker success, browser still running; aggregate not yet returned and fresh counts unverified. No required check is waived. Repair sequence needs owner review because T005 hard-depends on T001.",
+      "verification_boundary": "Independent source/contract/document review; no live deployment data or business/release authority"
+    }
+  },
+  "counts": {
+    "PASS": 12,
+    "NOT APPLICABLE": 14,
+    "FAIL": 1
+  },
+  "ci": {
+    "run_id": 37594062183,
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37594062183",
+    "event": "pull_request",
+    "head_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+    "conclusion": "failure",
+    "success": ["planning-contracts", "static", "test", "docker", "browser"],
+    "failure": ["dependency-security", "ci-gate"],
+    "junit": {
+      "artifact_id": 11469549503,
+      "name": "vitest-database-results",
+      "sha256": "570fa719927ac1490ca2d3df6d944eb8fcf170d6eac3abc74cb480134ab29720",
+      "suites": 53,
+      "cases": 523,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    "qualification": "Prior completed run at initial bec32c5 head/full synthetic merge, independently inspected via API, JUnit and logs; does not verify corrected acc0250. Successful jobs are not live-gate/UAT approval.",
+    "checkout_sha": "d0831669c2631ce244f228a3594631f0ac367099",
+    "browser_counts": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live_fixture": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "total": {
+        "passed": 131,
+        "skipped": 7
+      },
+      "evidence": "Independent extraction from job log; skipped cases and real external release behavior remain unverified."
+    }
+  },
+  "verification": [
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "result": "PASS",
+      "observed": "27 tests passed"
+    },
+    {
+      "command": "python3 scripts/verify-raid-completion.py T001 planning/task-evidence/T001.json",
+      "result": "REJECTED",
+      "exit_code": 1,
+      "observed": "Missing reviewer/non-code independent review; all 27 criteria NOT VERIFIED in pending implementation packet. Rejection is accurate, not completion."
+    },
+    {
+      "command": "npx vitest run tests/docs-links.test.ts tests/env-example.test.ts",
+      "result": "PASS",
+      "observed": "52 tests / 2 files passed"
+    },
+    {
+      "command": "npx prettier --check docs/tasks/T001-plan.md docs/tasks/T001-inventory.md planning/task-evidence/T001.json planning/task-evidence/T001-verification.json docs/raid-task-progress.md",
+      "result": "PASS",
+      "observed": "Five files formatted"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "observed": "No whitespace errors before reviewer artifacts"
+    },
+    {
+      "command": "Python nested T001 relative-file-link resolver using pathlib/re",
+      "result": "PASS",
+      "observed": "No broken relative-file links; does not claim anchor or web availability test."
+    },
+    {
+      "command": "gh api repos/solana-hackathon-1/useRAID.fun/actions/runs/37594062183 and /jobs with result-only jq projections",
+      "result": "PASS",
+      "observed": "Exact head/event and actual seven-job outcomes verified read-only."
+    },
+    {
+      "command": "Python hashlib/xml.etree inspection of /private/tmp/raid-t001-review-ci/vitest.xml; rg result/checkout/audit/gate lines in /private/tmp/raid-t001-current-ci.log",
+      "result": "PASS",
+      "observed": "Artifact digest/counts and failure results corroborated."
+    },
+    {
+      "command": "git diff --stat bec32c5807385b2324ba231aebe6c8b975e5aae6..acc025085dda867bdd21c570a6825fefe8bc5088; git diff targeted documents; Python evidence field extraction",
+      "result": "PASS",
+      "observed": "Four docs-only correction files; fixed minimum and distinct SHA/full merge/CI counts verified."
+    },
+    {
+      "command": "Repeat Python planning27, Vitest docs/env52 and Prettier of owner five files at acc025085dda867bdd21c570a6825fefe8bc5088",
+      "result": "PASS",
+      "observed": "27 + 52 tests and formatting passed."
+    },
+    {
+      "command": "gh api repos/solana-hackathon-1/useRAID.fun/actions/runs?head_sha=acc025085dda867bdd21c570a6825fefe8bc5088&per_page=5 with safe result projection",
+      "result": "PASS",
+      "observed": "New PR/push runs both in progress; conclusions null."
+    },
+    {
+      "command": "gh api repos/solana-hackathon-1/useRAID.fun/actions/runs/37595545285/jobs with result projection; rg T005/T001 in docs/raid-project-backlog.md",
+      "result": "PASS",
+      "observed": "Corrected-head security already failed; browser still running; T005 depends on T001 in repository backlog."
+    },
+    {
+      "command": "npx prettier --check docs/tasks/T001-review.md planning/task-evidence/T001-review.json; git diff --check",
+      "result": "PASS",
+      "observed": "Reviewer artifacts formatted and tracked diff whitespace clear before final factual snapshot amendment; repeated after final edit."
+    }
+  ],
+  "source_inspection_commands": "git status --short; git rev-parse HEAD; git diff --stat 9fd6862...bec32c5; git show --stat c36e21f; cat/sed AGENTS.md, map, required blueprint contracts, task guide/reuse guide, T001 deliverables, completion validator, schema, source and workflow; rg source permissions/states/minimums/locks/migration data effects and test discovery; Python registry/evidence extraction and all migration DDL/data-mutation-family summaries.",
+  "not_verified": [
+    "Authorized deployed-data obligation/policy/custody snapshot",
+    "Full recovery/restore or production durability",
+    "Live provider/chain/program/finality/gates",
+    "Human representative UAT/business sign-off/release approval",
+    "CI for any commit after bec32c5807385b2324ba231aebe6c8b975e5aae6"
+  ],
+  "next_actions": [
+    "Integrate these exact independent dispositions with reviewer attribution; keep T001/E01 open and C22 blocking.",
+    "Record explicit T001 C22 \u2194 T005 hard-dependency sequencing concern and seek owner-led resolution using accepted inventory input; no silent Done/Ready transition or task graph edit.",
+    "Record required CI at the corrected/final full candidate; do not treat earlier bec32/d083166 run as later-SHA proof.",
+    "Repair dependency baseline under T005 with genuine TDD and rerun required CI without suppressions.",
+    "Retain authorized deployed-code/config/policy/obligation/custody audit as a pre-migration T003 gate; no human/UAT/release approval supplied."
+  ],
+  "initial_reviewed_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+  "new_candidate_ci_snapshot": {
+    "head_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+    "pr_run": 37595545285,
+    "push_run": 37595539750,
+    "status": "in_progress",
+    "conclusion": null,
+    "qualification": "Independent API snapshot: run unfinished, security failure already observed at corrected head; no new aggregate result or counts inferred.",
+    "pr_job_results": {
+      "planning-contracts": "success",
+      "static": "success",
+      "dependency-security": "failure",
+      "test": "success",
+      "docker": "success",
+      "browser": "in_progress",
+      "ci-gate": "not yet returned"
+    },
+    "dependency_security_job": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37595545285/job/112707163396"
+  },
+  "correction_review": {
+    "from_sha": "bec32c5807385b2324ba231aebe6c8b975e5aae6",
+    "to_sha": "acc025085dda867bdd21c570a6825fefe8bc5088",
+    "files": [
+      "docs/raid-task-progress.md",
+      "docs/tasks/T001-inventory.md",
+      "planning/task-evidence/T001.json",
+      "planning/task-evidence/T001-verification.json"
+    ],
+    "finding_disposition": {
+      "minimum_policy": "RESOLVED",
+      "SHA_and_CI_accuracy": "RESOLVED",
+      "required_CI_failure": "UNRESOLVED"
+    },
+    "observed": "Four docs/evidence files only; no source/tests/schema/lockfile/CI policy changes. Independent local recheck Python27, docs/env52 and owner-file formatting passed."
+  },
+  "sequencing_conflict": {
+    "observed": "C22 requires successful baseline security/aggregate CI for T001 valid completion, while T005 baseline-CI repair hard-depends on T001 (docs/raid-project-backlog.md and parent native issue inspection).",
+    "disposition": "Owner-led sequencing/dependency review required; accepted inventory can be reviewed input. Do not silently mark T001 Done, T005 Ready, waive C22, change dependency graph, or expand T001 into implementation fixes.",
+    "authority": "This technical reviewer does not alter task graph or completion policy."
+  }
+}

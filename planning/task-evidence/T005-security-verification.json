@@ -1,0 +1,197 @@
+{
+  "parent_task": "T005",
+  "scope": "Local dependency-security repair, not full task completion",
+  "date": "2026-10-07",
+  "baseline_sha": "21f901b6815207c55fa461d7173177ede2788a2f",
+  "candidate": "29fc44e737a49b26b6043e945f0ea51373fe466c; exact push-head CI, reviewed implementation sources unchanged in evidence-only follow-up",
+  "source_sha256": {
+    ".npmrc": "0ed44e7d606cd7a9eba915a10f13a13a09ea85e4b2bb4415bb0c481dbdcded51",
+    ".prettierignore": "1c2cb1d631392a6b4e7fd971532776b9c355ee511d99a8f1b3c8a5943d1fd459",
+    "Dockerfile": "8d5b5c82cf02b7bf1fda54840fcb68eeddd1e4fdfff6e385d52fb77885c44366",
+    "eslint.config.mjs": "817425d0c5e9291bd40955078ed1d6d69371701c53d484a9d1fecd3254ad85d2",
+    "package-lock.json": "695f9ef7311d3a4c346eac8fd10509dfd1e6ac24efbe58c02b21dc63b6b8bab3",
+    "package.json": "8b5616105358bd110c67b6f4ddd73f601b798f3b1ca85ea54c5d25540d8884aa",
+    "planning/raid-ci-matrix.json": "5bdc51a79bd57535e8798c0db0e2f8d6ed5d34549ef1c8e7e3168fb8a9f8a200",
+    "tests/braces-security.test.ts": "25174cfb319cb8bc927a1987ee67207511c77f50600865b4469c6c9018c74b48",
+    "tests/dependency-compatibility.test.ts": "1f9fc124d4e5877f89241f1695b4d8a6ea8ab397efa5274f330a0cb5eb2a7d75",
+    "vendor/braces/LICENSE": "35bdd8a44339719441900fb50fbefc5e2dca1ca662cbaed7a687de842c8b70f2",
+    "vendor/braces/README.md": "a67b84af4b5baef1178cd9f964e647a4de00f4ba32cd7979536feee1e79dee10",
+    "vendor/braces/examples/consumer.cjs": "9d9a11a65d8f40a6e0e9d03940a1729f8b390b73dbc362ed287cbe62bd89d7e1",
+    "vendor/braces/index.js": "332ea07c7b006361aad12aa994ca75dc1db8e8382b884909e2f38f10b85c88a4",
+    "vendor/braces/lib/compile.js": "5b5946803fdbec036571c36e1817d66cc5e42bd3f79fa9192ff7b4dfbaffec80",
+    "vendor/braces/lib/constants.js": "c18ac5adb57308f1ce42a28552da3a31f5d83709743ebd9a636336813a744d4b",
+    "vendor/braces/lib/depth.js": "ea12f342769a58c1c59795310c5ae24d456f4e462c359b6d39dc45c0e1f76351",
+    "vendor/braces/lib/expand.js": "5a0ac9801dd31fc18282e631e112b4fba730606ff8c95c72e018670029a3b00d",
+    "vendor/braces/lib/parse.js": "71f633443d6f7db14b8bc28812436a574b761a899bd18d821f00accb41aa7c63",
+    "vendor/braces/lib/stringify.js": "69e98165030c41c3c4edf77e977836ceef95e41028d3e91e9a6607211e56781f",
+    "vendor/braces/lib/utils.js": "b5a7596aa67730412b3c029ef09e84e6b67b8e445cffd35d1d295549c89066c7",
+    "vendor/braces/package.json": "f8b584ef356f5990239e49dc54867e792b85e10de96dd88512ce8aeb72e03e81",
+    "vendor/braces/provenance.json": "f4555189388d6af065b5c24ceb0a62b555e6b17c76e17da799f3d39bc1de847b"
+  },
+  "verification": {
+    "clean_install": {
+      "command": "npm ci",
+      "result": "PASS"
+    },
+    "security": {
+      "command": "npm run audit:check",
+      "result": "PASS",
+      "allowlist_changed": false,
+      "qualification": "Existing reviewed allowlisted advisories remain; scanner does not independently verify local fork"
+    },
+    "unit_database": {
+      "command": "RUN_DB_TESTS=true DATABASE_URL=<isolated local useraid_test> DEMO_MODE=false npm test -- --reporter=default --reporter=json --outputFile=/private/tmp/raid-security-vitest-results.json",
+      "result": "PASS",
+      "files": 55,
+      "passed": 542,
+      "failed": 0,
+      "skipped": 0,
+      "database": "Fresh disposable PostgreSQL 16; 18 existing migrations; container removed after tests",
+      "report_sha256": "722e3fc5e2840a4d541769f6e35c940622b2db84879774c37f77d27bdd888ae9"
+    },
+    "planning": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "result": "PASS",
+      "tests": 27
+    },
+    "static": {
+      "typecheck": "PASS",
+      "lint": "PASS; 24 warnings",
+      "format_check": "PASS",
+      "diff_check": "PASS"
+    },
+    "docker": {
+      "command": "docker build -t useraid:security-local .",
+      "result": "PASS",
+      "image": "sha256:4dd03420d59ef8f734c558fbd7d48d6e9a404b024541ba273670f95db9cb0477",
+      "architecture": "linux/arm64",
+      "node": "22.23.3",
+      "runtime_prisma_worker_smoke": "PASS",
+      "deps_consumer_and_image_resize": "PASS"
+    },
+    "independent_host_example": {
+      "command": "npm install --prefix /private/tmp/raid-braces-host-20261007 /private/tmp/braces-3.0.4-raid.1.tgz; node /private/tmp/raid-braces-host-20261007/node_modules/braces/examples/consumer.cjs",
+      "result": "PASS",
+      "qualification": "Independent host, not independent reviewer"
+    },
+    "documentation_regression": {
+      "command": "npx vitest run tests/docs-links.test.ts tests/env-example.test.ts",
+      "result": "PASS",
+      "tests": 52
+    },
+    "existing_T001_completion_validator": {
+      "command": "python3 scripts/verify-raid-completion.py T001 planning/task-evidence/T001.json",
+      "exit_code": 1,
+      "observed": "T001-C22: FAIL prevents completion",
+      "qualification": "Historical completion packet unchanged; local repair is not new independent candidate review"
+    },
+    "browser_demo": {
+      "result": "PASS",
+      "passed": 49,
+      "skipped": 1,
+      "failed": 0,
+      "report_sha256": "dedf3fba26d7ef8534f3c973f726718dec4bec19f63e886510da6c666a6a39c1",
+      "qualification": "Unchanged suite; explicit migrated disposable PostgreSQL; first missing-DB attempt not product failure"
+    },
+    "browser_studio": {
+      "result": "PASS",
+      "passed": 44,
+      "skipped": 0,
+      "failed": 0,
+      "flaky": 0,
+      "report_sha256": "f58a3df491378d65e4e3f92f495856798528b3304fc4fecfe3ab4543663727b3",
+      "qualification": "Serial rerun; initial simultaneous suites collided on report files; isolated Compose database removed"
+    },
+    "production_build": {
+      "command": "DATABASE_URL=<isolated local useraid_test> DEMO_MODE=false npm run build",
+      "result": "PASS",
+      "log_sha256": "e8b714ab9989544ef9112399535df0a7a33aafee580352bd0be6b3b1d9eca3df"
+    },
+    "production_journey": {
+      "result": "PASS",
+      "command": "DATABASE_URL=<isolated local useraid_test> DEMO_MODE=false npm run test:live",
+      "observed": "Admin approval, Creator Studio draft, launch gate, public raid/end, X connection/error/history preservation; admin/cross-origin authorization enforced",
+      "log_sha256": "80c4bd02f3361e5cc21c464a8a772a9dba3bafcb79bd33a1448eec5d98a0ccb9"
+    },
+    "browser_live": {
+      "command": "CI=true DATABASE_URL=<isolated local useraid_test> npm run test:browser:live -- --reporter=line,json",
+      "result": "PASS",
+      "stats": {
+        "startTime": "2026-10-07T16:22:42.093Z",
+        "duration": 33936.152,
+        "expected": 38,
+        "skipped": 6,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "report_sha256": "efc6fddbd9def431c9f3aa6aa883f575561081e903368d4c33403a26eb120f39",
+      "qualification": "Local production build; synthetic provider/chain fixtures, not live-provider or mainnet assurance; six gated tests remain skipped"
+    },
+    "github_ci": {
+      "result": "SUCCESS",
+      "sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+      "event": "push",
+      "run_id": 37651984851,
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851",
+      "checks": {
+        "static": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362350"
+        },
+        "test": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362671"
+        },
+        "docker": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362800"
+        },
+        "browser": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362821"
+        },
+        "dependency-security": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362864"
+        },
+        "planning-contracts": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112897362896"
+        },
+        "ci-gate": {
+          "result": "success",
+          "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851/job/112900637737"
+        }
+      },
+      "unit_database": {
+        "passed": 542,
+        "files": 55,
+        "skipped": 0,
+        "failed": 0,
+        "artifact_id": 11496229697,
+        "artifact_sha256": "bb5fb1c5f7af8b28815f0437bad59d9f522aef4e15f9286f7d8ea8bd7ac1aca0",
+        "independent_reviewer_download": "PASS"
+      },
+      "browser": {
+        "demo_passed": 49,
+        "studio_passed": 44,
+        "live_passed": 38,
+        "existing_skipped": 7
+      },
+      "docker_linux_amd64": "PASS; sha256:ec57c6e65ddf011b17048f0733bab8332c34c149b63478e3440bc2bedef7aceb",
+      "qualification": "No skipped scenario, live provider, restore, UAT or deployment assurance inferred",
+      "browser_evidence": "Job logs independently read; upload found no files, so no remote Playwright report artifact exists. Local JSON report hashes separately retained. Passed job/log evidence does not prove skipped scenarios."
+    }
+  },
+  "tdd_evidence": "docs/tasks/T005-security-repair.md",
+  "reviewer": "/root/t005_independent_review; docs/tasks/T005-review.md and planning/task-evidence/T005-review.json",
+  "full_task_completion": "Technical delivered repair/preparation accepted on reviewed source candidate; final evidence-only head CI separate; no board/merge/release or full-product completion claim",
+  "remaining": [
+    "O18 owner adoption before actual provider deployment",
+    "Cloudflare build-log access and historical startup diagnostic",
+    "Full G01-G10/live-data/operating assurance for dependent live features"
+  ],
+  "no_production_effects": "No live-data migration, policy change, financial operation, provider publication, issue closure or deployment",
+  "staging_preparation": "docs/tasks/T005-staging-path.md; independently reviewed options and precise blockers; no accepted O18 provider/budget/SLO or deploy",
+  "dependency_retest": "T001-C22-retest addendum independently accepts exact composite candidate29fc44e and preserves all26prior inventory dispositions and original failed snapshots; T001 bounded13PASS/14NOT APPLICABLE. Original PR172 head itself not certified green."
+}

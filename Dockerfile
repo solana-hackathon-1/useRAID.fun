@@ -2,7 +2,9 @@ FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 RUN apt-get update && apt-get install -y openssl --no-install-recommends && rm -rf /var/lib/apt/lists/*
 COPY package*.json ./
+COPY .npmrc ./
 COPY prisma ./prisma
+COPY vendor ./vendor
 RUN npm ci
 
 FROM deps AS build

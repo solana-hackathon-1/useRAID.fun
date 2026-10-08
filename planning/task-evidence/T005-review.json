@@ -1,0 +1,785 @@
+{
+  "task": "T005",
+  "review_date": "2026-10-07",
+  "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+  "independence": "Human explicitly authorized separate reviewer; reviewer did not implement application/source/test changes.",
+  "review_status": "ALL 27 TECHNICAL PREPARATION CRITERIA ACCEPTED; T001 PREREQUISITE TECHNICALLY RECONCILED BY INDEPENDENT RETEST",
+  "baseline_sha": "21f901b6815207c55fa461d7173177ede2788a2f",
+  "candidate": "Committed candidate 29fc44e737a49b26b6043e945f0ea51373fe466c on codex/t005-ci-security-staging. Final evidence-only working-tree additions are separately hashed; CI is not attributed to their future commit.",
+  "scope": "Independent security implementation and full T005 staging preparation review. Actual adoption/deployment/root-cause access remains explicitly separate.",
+  "candidate_publication_blocking_source_defects": [],
+  "full_task_status": "TECHNICALLY ACCEPTED ON REVIEWED SOURCE CANDIDATE; final evidence-head CI separate; no board/merge/release change",
+  "source_sha256": {
+    ".npmrc": "0ed44e7d606cd7a9eba915a10f13a13a09ea85e4b2bb4415bb0c481dbdcded51",
+    ".prettierignore": "1c2cb1d631392a6b4e7fd971532776b9c355ee511d99a8f1b3c8a5943d1fd459",
+    "Dockerfile": "8d5b5c82cf02b7bf1fda54840fcb68eeddd1e4fdfff6e385d52fb77885c44366",
+    "eslint.config.mjs": "817425d0c5e9291bd40955078ed1d6d69371701c53d484a9d1fecd3254ad85d2",
+    "package-lock.json": "695f9ef7311d3a4c346eac8fd10509dfd1e6ac24efbe58c02b21dc63b6b8bab3",
+    "package.json": "8b5616105358bd110c67b6f4ddd73f601b798f3b1ca85ea54c5d25540d8884aa",
+    "planning/raid-ci-matrix.json": "5bdc51a79bd57535e8798c0db0e2f8d6ed5d34549ef1c8e7e3168fb8a9f8a200",
+    "tests/braces-security.test.ts": "25174cfb319cb8bc927a1987ee67207511c77f50600865b4469c6c9018c74b48",
+    "tests/dependency-compatibility.test.ts": "1f9fc124d4e5877f89241f1695b4d8a6ea8ab397efa5274f330a0cb5eb2a7d75",
+    "vendor/braces/LICENSE": "35bdd8a44339719441900fb50fbefc5e2dca1ca662cbaed7a687de842c8b70f2",
+    "vendor/braces/README.md": "a67b84af4b5baef1178cd9f964e647a4de00f4ba32cd7979536feee1e79dee10",
+    "vendor/braces/examples/consumer.cjs": "9d9a11a65d8f40a6e0e9d03940a1729f8b390b73dbc362ed287cbe62bd89d7e1",
+    "vendor/braces/index.js": "332ea07c7b006361aad12aa994ca75dc1db8e8382b884909e2f38f10b85c88a4",
+    "vendor/braces/lib/compile.js": "5b5946803fdbec036571c36e1817d66cc5e42bd3f79fa9192ff7b4dfbaffec80",
+    "vendor/braces/lib/constants.js": "c18ac5adb57308f1ce42a28552da3a31f5d83709743ebd9a636336813a744d4b",
+    "vendor/braces/lib/depth.js": "ea12f342769a58c1c59795310c5ae24d456f4e462c359b6d39dc45c0e1f76351",
+    "vendor/braces/lib/expand.js": "5a0ac9801dd31fc18282e631e112b4fba730606ff8c95c72e018670029a3b00d",
+    "vendor/braces/lib/parse.js": "71f633443d6f7db14b8bc28812436a574b761a899bd18d821f00accb41aa7c63",
+    "vendor/braces/lib/stringify.js": "69e98165030c41c3c4edf77e977836ceef95e41028d3e91e9a6607211e56781f",
+    "vendor/braces/lib/utils.js": "b5a7596aa67730412b3c029ef09e84e6b67b8e445cffd35d1d295549c89066c7",
+    "vendor/braces/package.json": "f8b584ef356f5990239e49dc54867e792b85e10de96dd88512ce8aeb72e03e81",
+    "vendor/braces/provenance.json": "f4555189388d6af065b5c24ceb0a62b555e6b17c76e17da799f3d39bc1de847b",
+    ".github/workflows/checks.yml": "c177119ecd0127a143cebd37d4633f9203a6e6e95f256d8ce23e843120121c46",
+    "vitest.config.ts": "5c81557a8d69bdd43580ce6ce396f96561503a7789904036743380435fc47d15",
+    "docs/tasks/T005-security-repair.md": "626749891860bd55263c666094ac395c54b588d2e9aae536d8c1b1ff5a7edebb",
+    "planning/task-evidence/T005-security-verification.json": "59280a6601b1f58642eb2e067e8ad8dda1ba9371cef85171c3675b8786086706",
+    "docs/tasks/T005-staging-path.md": "11bb469f92cf70397507edbb3b93231821e175f05464a82770a2363392219fdf",
+    "railway.toml": "558511abe9e9a75555a59bcb4081d00b5285cf69d7ae99ec7931b49635f89f31",
+    "railway.worker.toml": "d706c8cfef842439d52d88de84054ff8a85027faf692b1f7bab28618d48037c3",
+    "src/lib/config.ts": "ed62fecacf4d50a8100a08d6fb0ccd65d5b093598dd1576fe99d833d5e3697d1",
+    "src/lib/queue.ts": "69fc35c186386fcae470fcf78731f58964aa5bb504b7d04757e9ae1baa4b2d93",
+    "src/worker.ts": "fdacec3ae4723095dc014b4d3e7b2b160d2101a21e86e6167e6e2adf062573ec",
+    "src/app/api/health/route.ts": "43aee49abbd99e9801ce2503cf59aa7581a7965fe1f07a295f8109345b1cc6b0",
+    ".env.example": "c844af7eed1ab22fa898da51ba38393588dc5bdf9eee7e2f67c3eadaf3e6ec5e",
+    "docs/coming-soon-deploy.md": "c3f1838603fad2ffc64569f2a8e76e51d2d04652342ed7dd9a6963feb5cd050d"
+  },
+  "artifact_sha256": {
+    "/private/tmp/raid-t005-independent-targeted.json": "98848dfab9d42e0ca907fa39356b3a9f1516598e670c3dc4e78d8a7cb5bdb386",
+    "/private/tmp/raid-t005-review-retrospective-red.json": "1c09ee4b50bae3638c244eb97fde802ebed9b9c629825477d322fe65f2470b23",
+    "/private/tmp/raid-security-vitest-results.json": "722e3fc5e2840a4d541769f6e35c940622b2db84879774c37f77d27bdd888ae9",
+    "/private/tmp/braces-3.0.3.tgz": "1cd18e862c8640b4568b1425a7df4ee030ff201d45b2da8f9f222d2987494ffc",
+    "/private/tmp/braces-3.0.4-raid.1.tgz": "d4e6eed0411a559761b56c0c1a494414a4174a526c41a59bd3c56ff95ccffd35",
+    "/private/tmp/raid-t005-upstream-braces-hook.cjs": "779304f184bdddb8aa7a21cc1a105a64e920b82e2dcc2b7d667969024fd86d23",
+    "/private/tmp/t005-demo-browser-final.json": "dedf3fba26d7ef8534f3c973f726718dec4bec19f63e886510da6c666a6a39c1",
+    "/private/tmp/t005-studio-browser-final.json": "f58a3df491378d65e4e3f92f495856798528b3304fc4fecfe3ab4543663727b3",
+    "/private/tmp/t005-live-browser-final.json": "efc6fddbd9def431c9f3aa6aa883f575561081e903368d4c33403a26eb120f39",
+    "/private/tmp/t005-startup-run.json": "904b68f02d18df83f1a7b1f654bb2024ddc92f31a3bbbf8c4baac9c92261993f",
+    "/private/tmp/t005-startup-jobs.json": "b3dab5870ff3a8209160335de7c1077b89e461d875d9041ac9d8b8ed7c1666f6",
+    "/private/tmp/t005-startup-checks.json": "e83cfac35507982a40cfeb776ce85aa0367e7646f81fe857df4a6c841ea8a170",
+    "/private/tmp/t005-startup-log-response.txt": "e8fa4851e502f3095a703c63ad22e9fd551fe971c46d41f9ed673989835740ab",
+    "/private/tmp/t005-cloudflare-checks.json": "5fff92e49b8c732df06db96bfdef4d31198f51a3cf65dcb04bfaf9df31cde29b",
+    "/private/tmp/t005-review-ci-independent.log": "44d44d604ea0cc2df2ee81349b6478bb95e2637c8796935d51b24938d1145140",
+    "/private/tmp/t005-review-ci-jobs.json": "8f99852fbd75515bf5b9848dcf1796d08ebb5ff71fbb666bae8d8c256aa33632",
+    "/private/tmp/t005-review-ci-run.json": "6b8641f4a1b1ac1d850e3a656e46e0f0087b9ed395b8240617d96eb1e59df478",
+    "/private/tmp/t005-review-ci-artifacts.json": "919061cf7c5ce22996312d62acf9625b52eac46babf5976ea6894137318d25d7",
+    "/private/tmp/t005-review-ci-independent/vitest.xml": "bb5fb1c5f7af8b28815f0437bad59d9f522aef4e15f9286f7d8ea8bd7ac1aca0"
+  },
+  "environment": {
+    "node": "26.0.0",
+    "npm": "11.12.1",
+    "os": "macOS",
+    "database": "Local implementation artifact and fresh independently downloaded GitHub PostgreSQL-backed XML inspected; no independent local full-DB rerun",
+    "docker": "Implementation Node22/Linux arm64 evidence inspected; independent review of GitHub Node22/Linuxamd64 build/runtime job, not a reviewer-local amd64 build"
+  },
+  "verification": [
+    {
+      "command": "npx vitest run tests/braces-security.test.ts tests/dependency-compatibility.test.ts --reporter=json --outputFile=/private/tmp/raid-t005-independent-targeted.json",
+      "result": "PASS",
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm view braces@3.0.3 dist.integrity; verify original archive/provenance hashes and source diff",
+      "result": "PASS",
+      "archive_integrity_matches": true,
+      "all_original_hashes_match": true,
+      "mit_license_unchanged": true
+    },
+    {
+      "command": "npm pack ./vendor/braces --pack-destination /private/tmp; npm install --prefix /private/tmp/raid-t005-review-host /private/tmp/braces-3.0.4-raid.1.tgz --ignore-scripts --no-audit --no-fund; node /private/tmp/raid-t005-review-host/node_modules/braces/examples/consumer.cjs",
+      "result": "PASS",
+      "qualification": "Fresh independent minimal host; not RAID singleton/global config."
+    },
+    {
+      "command": "Deterministic upstream differential using seed 123456789, 2000 shallow generated patterns, compile/expand/stringify/create and four option sets",
+      "result": "PASS",
+      "matching_cases": 32000,
+      "additional_adversarial_nested_cases": 36,
+      "qualification": "Sampled compatibility; not exhaustive or universal resource budget."
+    },
+    {
+      "command": "Inspect jayson 4.3.0 archived browser client/request generator against installed 5.0.0; VM native crypto/fallback/missing crypto checks",
+      "result": "PASS",
+      "qualification": "Actual web3.js consumed browser module; no live RPC or TCP/TLS behavior claim."
+    },
+    {
+      "command": "npm ls braces jayson sharp source-map-js stream-json --all",
+      "result": "PASS",
+      "qualification": "One fork in lint chain, scoped jayson5, patched sharp/source-map; stream-json absent."
+    },
+    {
+      "command": "npm run audit:check",
+      "result": "PASS",
+      "qualification": "Unchanged allowlist; local fork protection established by source/behavior review rather than scanner exclusion."
+    },
+    {
+      "command": "Inspect original full regression JSON and matching SHA-256 plus original parent transcript",
+      "result": "PASS",
+      "passed": 542,
+      "failed": 0,
+      "skipped": 0,
+      "qualification": "Artifact review of implementation run, not independent rerun."
+    },
+    {
+      "command": "NODE_PATH=<repository>/node_modules NODE_OPTIONS=--require /private/tmp/raid-t005-upstream-braces-hook.cjs npx vitest run tests/braces-security.test.ts --reporter=json --outputFile=/private/tmp/raid-t005-review-retrospective-red.json",
+      "result": "EXPECTED FAIL",
+      "passed": 1,
+      "failed": 13,
+      "qualification": "Current strengthened test via integrity-verified upstream archive; reviewer retrospective reproduction, not historical failing-first evidence."
+    },
+    {
+      "command": "gh run view37651984851 --log; gh api run/jobs/artifacts; gh run download --name vitest-database-results; independently inspect XML and checkout/output logs",
+      "result": "PASS",
+      "qualification": "Fresh reviewer fetches verify seven exact push-head jobs and actual counts. Remote browser artifact missing; retained logs inspected."
+    }
+  ],
+  "tdd_chronology": {
+    "source": "Independently read original tool/file-change items using read_thread on parent thread 01a115c6-7cc7-7843-bbb5-27b2595a1c2f",
+    "dependency_turn": "01a115c8-253b-7101-b2cb-75ad9d7aaa04",
+    "dependency_red": {
+      "item_index": 30,
+      "id": "exec-427ce856-f17f-4aad-a3c0-af337704500b",
+      "failed": 3,
+      "passed": 2
+    },
+    "dependency_edit": {
+      "item_index": 32,
+      "id": "exec-d5e53bbf-4bc1-430a-8dfe-8e6523c3214f"
+    },
+    "dependency_green": {
+      "item_index": 40,
+      "id": "exec-b51a5aff-d3f2-436e-8964-3dd5ed22e0ea",
+      "passed": 27
+    },
+    "braces_turn": "01a115d2-e741-70f2-a00e-4c46aa21812e",
+    "braces_test_add": {
+      "item_index": 11,
+      "id": "exec-2977b00a-f29f-4a55-a026-8b79e6e481ca"
+    },
+    "braces_corrected_red": {
+      "item_index": 14,
+      "id": "exec-97dea08c-89e5-4946-8683-9605a1c093e3",
+      "exit_code": 1,
+      "observed": "12-failure heading; corrected repeat(4000) fixture; RangeError instead of SyntaxError",
+      "qualification": "Original tool output truncated; no original RED JSON. Earlier oversized-fixture run has untruncated 12 failed/2 passed footer; exact corrected counts retain qualification."
+    },
+    "braces_vendor_copy": {
+      "item_index": 19,
+      "id": "exec-c3dbeb4f-9059-489d-93a2-3c891666ba6d"
+    },
+    "braces_guard_edits": {
+      "item_index": 20,
+      "id": "exec-3506808c-4984-4322-a0b1-292933ea1fbe"
+    },
+    "braces_install_correction_green": {
+      "item_index": 32,
+      "id": "exec-b6c6a556-7547-457b-9d17-214197ea2dd3"
+    },
+    "braces_boundary_assertion_additions": {
+      "item_index": 35,
+      "id": "exec-4933d43a-a622-4c70-82e3-b5d91fb81904",
+      "qualification": "Added assertions strengthen contract after original RED; no safety assertions removed."
+    },
+    "regression": {
+      "item_index": 65,
+      "id": "exec-24a9be53-b813-4797-922e-a1d941def53d",
+      "passed": 542,
+      "skipped": 0
+    },
+    "verdict": "PASS for bounded repair; retrospective negative control not represented as original history."
+  },
+  "criteria": [
+    {
+      "id": "T005-C01",
+      "status": "PASS",
+      "evidence": "Observable outcome and bounded repair scope are explicit; full staging/CI outcome remains separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C02",
+      "status": "PASS",
+      "evidence": "LOCKED R15/R16, I13, DEFAULT D01/D12 and OPEN O18/custody are distinguished. No production policy changes.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C03",
+      "status": "NOT APPLICABLE",
+      "evidence": "Package graph and pure helper only; no schema/entity/table/tenant identifier is changed.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C04",
+      "status": "NOT APPLICABLE",
+      "evidence": "No new application read/write authority or actor/resource permission boundary.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C05",
+      "status": "NOT APPLICABLE",
+      "evidence": "No application lifecycle, deadline or business transition changes.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C06",
+      "status": "NOT APPLICABLE",
+      "evidence": "No identity/linking/capacity command or reservation change; review consumes no work slot.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C07",
+      "status": "NOT APPLICABLE",
+      "evidence": "Accepted terms, roster, allocation and rubric are unchanged.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C08",
+      "status": "PASS",
+      "evidence": "No financial obligation/accounting mutation; RPC compatibility tests do not establish live financial safety.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C09",
+      "status": "NOT APPLICABLE",
+      "evidence": "No public/private DTO, storage grant or log field change; fork consumes no secrets.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C10",
+      "status": "NOT APPLICABLE",
+      "evidence": "No semantic command receipt, outbox or external payment retry change.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C11",
+      "status": "NOT APPLICABLE",
+      "evidence": "No competing business command, lock or transaction boundary is changed.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C12",
+      "status": "NOT APPLICABLE",
+      "evidence": "No new provider effect/recovery operation; only consumed JSON-RPC library compatibility is checked.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C13",
+      "status": "NOT APPLICABLE",
+      "evidence": "No UI flow or state is implemented in this dependency slice; browser compatibility remains an overall CI obligation.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C14",
+      "status": "PASS",
+      "evidence": "Targeted brace recursion source protection, provenance, install graph, unchanged audit and adversarial regression reviewed independently. Not universal DoS protection.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C15",
+      "status": "PASS",
+      "evidence": "Preparation documents source-backed evaluation flags, separate DB/provider/key boundaries, worker/migration/health behavior, private connectivity requirements, monitoring/recovery/rollback limits and unexecuted production G10. No live deployment, data migration or backup/restore acceptance is claimed.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C16",
+      "status": "PASS",
+      "evidence": "Independent targeted and artifact review plus exact-head remote CI: 542 database/unit cases zero failures/skips; browser 49 demo,44 Studio,38 live passed with 7 existing gated skips. Missing remote browser artifact explicitly qualified; retained job logs inspected.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C17",
+      "status": "NOT APPLICABLE",
+      "evidence": "No new user-facing release behavior in this slice; no representative UAT/business sign-off inferred or waived for full T005.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C18",
+      "status": "PASS",
+      "evidence": "Security and staging preparation have exact files, authority/effects, original test chronology, failure/unknown evidence, environment requirements, reviewer and next bounded steps; no production effects hidden.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C19",
+      "status": "PASS",
+      "evidence": "Genuine implementation RED/GREEN/regression independently read from original transcript. Documentation acceptance defined before writing staging document; source/provider evidence reviewed without inventing code RED for investigation.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C20",
+      "status": "NOT APPLICABLE",
+      "evidence": "Delivered scope upgrades libraries/pure helper and prepares hosting options; creates no live deployment integration, provider port or in-flight switching command. AC73 remains mandatory for future actual adapter replacement; legacy port gaps are not waived.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C21",
+      "status": "PASS",
+      "evidence": "Packed independent helper host verified; source-backed portable Docker web/worker/migration/runtime host contract and consuming image evidence documented. No assertion that all legacy modules are reusable.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C22",
+      "status": "PASS",
+      "evidence": "Independently fetched run37651984851 metadata/jobs/logs and downloaded unit XML. All six checkout jobs use exact 29fc44e737a49b26b6043e945f0ea51373fe466c; all seven unchanged required jobs succeed. XML542cases55suites0skips/failures; browser131passes7existinggatedskips in retained job logs; no downloadable Playwright artifact. Linuxamd64 Docker build/runtime pass. Final report-only amendments were not run in this CI.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-A01",
+      "status": "PASS",
+      "evidence": "Root-cause-or-blocker contract satisfied for preparation: independently confirmed five-advisory baseline failure and local repair, startup_failure before jobs with no diagnostic/log404, and provider check failure lacking build detail. Actual Cloudflare log/root cause remains inaccessible; no cause invented.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-A02",
+      "status": "PASS",
+      "evidence": "Prepared portable Docker/Node22/PostgreSQL path executes all required checks on exact committed candidate: push37651984851 all7success, Linuxamd64 build/runtime, database542 and browser131passed/7existinggatedskips. No chosen commercial host adoption or actual deployment is inferred; O18 remains OPEN.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-W01",
+      "status": "PASS",
+      "evidence": "Investigated actual Actions and Cloudflare candidates. Independently reproduced REST observations, source commits and precise missing diagnostics/provider login evidence. Investigation acceptance is met; Cloudflare repair itself remains blocked pending provider log.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-W02",
+      "status": "PASS",
+      "evidence": "Source-inspected static HTML folder and buildless guide are distinguished from existing Docker web/worker/PostgreSQL image, manifests, durable jobs and DB-aware health endpoint.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-W03",
+      "status": "PASS",
+      "evidence": "Actual config/admin/origin/collection/runtime dependencies and Railway/portable-container O18 options documented. Independently verified issue41 OPEN and relevant official docs; no provider, budget or SLO adoption fabricated.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    }
+  ],
+  "counts": {
+    "PASS": 15,
+    "NOT APPLICABLE": 12,
+    "NOT VERIFIED": 0
+  },
+  "remaining": [
+    "Final evidence-only head CI is separate from verified29fc44e; no earlier CI promoted to later SHA",
+    "O18 provider/region/budget/SLO/operator decision and actual deployment/recovery gates remain OPEN",
+    "Authenticated historical startup diagnostic and Cloudflare build log/root-cause/fix remain unavailable",
+    "No production, UAT/business, custody or financial gate approval supplied; actual board/merge/issue actions not performed by this review"
+  ],
+  "report": "docs/tasks/T005-review.md",
+  "bounded_security_criteria": [
+    {
+      "id": "T005-C01",
+      "status": "PASS",
+      "evidence": "Observable outcome and bounded repair scope are explicit; full staging/CI outcome remains separate.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C02",
+      "status": "PASS",
+      "evidence": "LOCKED R15/R16, I13, DEFAULT D01/D12 and OPEN O18/custody are distinguished. No production policy changes.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C03",
+      "status": "NOT APPLICABLE",
+      "evidence": "Package graph and pure helper only; no schema/entity/table/tenant identifier is changed.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C04",
+      "status": "NOT APPLICABLE",
+      "evidence": "No new application read/write authority or actor/resource permission boundary.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C05",
+      "status": "NOT APPLICABLE",
+      "evidence": "No application lifecycle, deadline or business transition changes.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C06",
+      "status": "NOT APPLICABLE",
+      "evidence": "No identity/linking/capacity command or reservation change; review consumes no work slot.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C07",
+      "status": "NOT APPLICABLE",
+      "evidence": "Accepted terms, roster, allocation and rubric are unchanged.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C08",
+      "status": "PASS",
+      "evidence": "No financial obligation/accounting mutation; RPC compatibility tests do not establish live financial safety.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C09",
+      "status": "NOT APPLICABLE",
+      "evidence": "No public/private DTO, storage grant or log field change; fork consumes no secrets.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C10",
+      "status": "NOT APPLICABLE",
+      "evidence": "No semantic command receipt, outbox or external payment retry change.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C11",
+      "status": "NOT APPLICABLE",
+      "evidence": "No competing business command, lock or transaction boundary is changed.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C12",
+      "status": "NOT APPLICABLE",
+      "evidence": "No new provider effect/recovery operation; only consumed JSON-RPC library compatibility is checked.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C13",
+      "status": "NOT APPLICABLE",
+      "evidence": "No UI flow or state is implemented in this dependency slice; browser compatibility remains an overall CI obligation.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C14",
+      "status": "PASS",
+      "evidence": "Targeted brace recursion source protection, provenance, install graph, unchanged audit and adversarial regression reviewed independently. Not universal DoS protection.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C15",
+      "status": "PASS",
+      "evidence": "Preparation documents source-backed evaluation flags, separate DB/provider/key boundaries, worker/migration/health behavior, private connectivity requirements, monitoring/recovery/rollback limits and unexecuted production G10. No live deployment, data migration or backup/restore acceptance is claimed.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C16",
+      "status": "PASS",
+      "evidence": "Security evidence plus independently inspected demo49/skip1, Studio44/no skips and live38/skip6 artifacts; GH candidate/failure observations independently queried. Committed candidate remote CI remains separately unverified under C22/A02.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C17",
+      "status": "NOT APPLICABLE",
+      "evidence": "No new user-facing release behavior in this slice; no representative UAT/business sign-off inferred or waived for full T005.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C18",
+      "status": "PASS",
+      "evidence": "Security and staging preparation have exact files, authority/effects, original test chronology, failure/unknown evidence, environment requirements, reviewer and next bounded steps; no production effects hidden.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C19",
+      "status": "PASS",
+      "evidence": "Genuine implementation RED/GREEN/regression independently read from original transcript. Documentation acceptance defined before writing staging document; source/provider evidence reviewed without inventing code RED for investigation.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C20",
+      "status": "NOT APPLICABLE",
+      "evidence": "Delivered scope upgrades libraries/pure helper and prepares hosting options; creates no live deployment integration, provider port or in-flight switching command. AC73 remains mandatory for future actual adapter replacement; legacy port gaps are not waived.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C21",
+      "status": "PASS",
+      "evidence": "Packed independent helper host verified; source-backed portable Docker web/worker/migration/runtime host contract and consuming image evidence documented. No assertion that all legacy modules are reusable.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-C22",
+      "status": "NOT VERIFIED",
+      "evidence": "Unchanged required workflow/test discovery and original matrix reviewed; new candidate SHA has not yet been committed or run through required GitHub CI. Existing gated browser skips retained and must be qualified.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-A01",
+      "status": "PASS",
+      "evidence": "Root-cause-or-blocker contract satisfied for preparation: independently confirmed five-advisory baseline failure and local repair, startup_failure before jobs with no diagnostic/log404, and provider check failure lacking build detail. Actual Cloudflare log/root cause remains inaccessible; no cause invented.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-A02",
+      "status": "NOT VERIFIED",
+      "evidence": "Prepared portable Docker/Node22/PostgreSQL path has local install/build/runtime/consumer/browser evidence. Exact committed candidate required CI is not available yet; O18 commercial/deployment adoption remains separately OPEN.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-W01",
+      "status": "PASS",
+      "evidence": "Investigated actual Actions and Cloudflare candidates. Independently reproduced REST observations, source commits and precise missing diagnostics/provider login evidence. Investigation acceptance is met; Cloudflare repair itself remains blocked pending provider log.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-W02",
+      "status": "PASS",
+      "evidence": "Source-inspected static HTML folder and buildless guide are distinguished from existing Docker web/worker/PostgreSQL image, manifests, durable jobs and DB-aware health endpoint.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    },
+    {
+      "id": "T005-W03",
+      "status": "PASS",
+      "evidence": "Actual config/admin/origin/collection/runtime dependencies and Railway/portable-container O18 options documented. Independently verified issue41 OPEN and relevant official docs; no provider, budget or SLO adoption fabricated.",
+      "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+      "scope": "Full T005 delivered security repair and staging preparation; no actual provider deployment or adopted O18 decision."
+    }
+  ],
+  "bounded_security_counts": {
+    "PASS": 9,
+    "NOT APPLICABLE": 12,
+    "NOT VERIFIED": 6
+  },
+  "staging_review": {
+    "document": "docs/tasks/T005-staging-path.md",
+    "result": "PASS FOR PREPARATION",
+    "accepted_document_correction": "Zero checks qualified to Actions check suite 101442604528; commit-wide endpoint contains a Cloudflare Pages check.",
+    "independent_observations": {
+      "startup_run": 37451295338,
+      "startup_head": "9ffe5b81d9a754f4109a33523666edc0eb4f44c5",
+      "startup_conclusion": "startup_failure",
+      "startup_path": "BuildFailed",
+      "startup_jobs": 0,
+      "startup_suite_checks": 0,
+      "commit_checks": 1,
+      "startup_logs": "HTTP404",
+      "later_run": 37596319672,
+      "later_head": "21f901b6815207c55fa461d7173177ede2788a2f",
+      "later_failed_jobs": ["dependency-security", "ci-gate"],
+      "cloudflare_check": 112221151647,
+      "cloudflare_head": "8fe87d263ea206017489871f43f5eb39907ccb14",
+      "cloudflare_conclusion": "failure",
+      "cloudflare_annotations": 0,
+      "cloudflare_build_error": "Not available in check summary; provider login required",
+      "O18_issue": 41,
+      "O18_state": "OPEN"
+    },
+    "provider_docs": [
+      "https://docs.railway.com/builds/dockerfiles",
+      "https://docs.railway.com/deployments/pre-deploy-command",
+      "https://developers.cloudflare.com/pages/framework-guides/deploy-anything/"
+    ],
+    "qualification": "Official Railway Docker/static Cloudflare docs independently browsed. Railway pre-deploy web fetch returned tool error; inspected independently retrieved official HTML artifact for separate-container/private-network/nonpersisted-filesystem text. No actual provider capability/budget/region assurance."
+  },
+  "reviewed_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+  "source_hash_qualification": "All 35 original reviewed file hashes independently match committed candidate bytes. Supplemental evidence-only amendments are separately hashed below; no application/test/config change after the candidate.",
+  "ci_review": {
+    "run_id": 37651984851,
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37651984851",
+    "event": "push",
+    "head_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "static",
+        "id": 112897362350,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "test",
+        "id": 112897362671,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "docker",
+        "id": 112897362800,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "browser",
+        "id": 112897362821,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "dependency-security",
+        "id": 112897362864,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "planning-contracts",
+        "id": 112897362896,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "ci-gate",
+        "id": 112900637737,
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "checkout_qualification": "All six checkout job logs independently inspected for exact candidate SHA; aggregate does not check out source.",
+    "unit_cases": 542,
+    "unit_suites": 55,
+    "unit_skips": 0,
+    "unit_failures": 0,
+    "browser": {
+      "demo_passed": 49,
+      "demo_skipped": 1,
+      "studio_passed": 44,
+      "studio_skipped": 0,
+      "live_passed": 38,
+      "live_skipped": 6,
+      "failures": 0,
+      "qualification": "Actual job logs; no downloadable Playwright artifact (upload no-files warning). Existing gated skips give no deferred live-provider coverage."
+    },
+    "docker_image_digest": "sha256:ec57c6e65ddf011b17048f0733bab8332c34c149b63478e3440bc2bedef7aceb",
+    "remote_artifacts": [
+      {
+        "id": 11496229697,
+        "name": "vitest-database-results",
+        "size_in_bytes": 19855,
+        "digest": "sha256:de446d8e70376015fa3b429b5f882c42f82924223965691dd452dd46fda40e44",
+        "expired": false
+      }
+    ],
+    "source_vs_evidence": "CI tests committed29fc44e; current evidence-only follow-up is not represented as CI-tested future SHA."
+  },
+  "supplemental_evidence_sha256": {
+    "docs/tasks/T005-security-repair.md": "439bf9f24659e30aad4ba47105261412bb234314f7e3474c44ccc74ffad6e600",
+    "docs/tasks/T005-staging-path.md": "4c1c047ffac701d65afff59cb6cf8a1e5efd46564a754254e3f55779bab026ba",
+    "docs/raid-task-progress.md": "5d62c7a082dc051c4f2cddf83f504c9d6fbf907bdb310818b2276eb764ee6bef",
+    "planning/task-evidence/T005-security-verification.json": "1734aaa00b9c2a9f78673e3efc6c565c5b68d5d30d73041cad127fb7fd9e9ea8",
+    "planning/task-evidence/T005.json": "03f19384d873e87a76ebb0448396e0a011bf39238868e937b251ec7c85182352"
+  },
+  "supplemental_evidence_qualification": "Independent final packet/doc review snapshot before implementer replaces pending-review wording. Such wording-only replacement is authorized by this confirmation; subsequent commit requires its own SHA qualification.",
+  "completion_packet_review": {
+    "path": "planning/task-evidence/T005.json",
+    "result": "ACCEPTED FOR DELIVERED TECHNICAL PREPARATION; PREREQUISITE EVIDENCE RECONCILED",
+    "criteria_agree": true,
+    "counts": {
+      "PASS": 15,
+      "NOT APPLICABLE": 12
+    },
+    "validator": "Both python3 scripts/verify-raid-completion.py T001/T005 actual packets exit0; structural pass only, not production authority",
+    "qualifications": [
+      "OriginalT001 source review26dispositions preserved; current C22 independently retested with source/code ownership and exactSHA qualifications.",
+      "Original blockedT005 dependency review snapshot retained in historical_before_T001_retest_integration; current readiness supplement supersedes only missing prerequisite evidence.",
+      "O18/deployment/operations/recovery approvals and T003 authorized deployed-data pre-migration gate remain separate.",
+      "No earlier29fc44eCI promoted to subsequent metadata commit; final evidence-headCI requires own result."
+    ]
+  },
+  "historical_before_T001_retest_integration": {
+    "review_status": "ALL 27 TECHNICAL PREPARATION CRITERIA ACCEPTED; PROJECT DONE BLOCKED BY T001 PREREQUISITE",
+    "full_task_status": "TECHNICAL PREPARATION VERIFIED; NOT DONE because T001 prerequisite completion is unresolved",
+    "remaining": [
+      "T001 hard prerequisite completion/board sequencing and historical C22 reconciliation require separately reviewed evidence; no silent waiver",
+      "O18 provider/region/budget/SLO/operator decision and actual deployment/recovery gates remain OPEN",
+      "Authenticated historical startup diagnostic and Cloudflare build log/root-cause/fix remain unavailable",
+      "No production, UAT/business, custody or financial gate approval supplied; report-only follow-up not covered by29fc44e CI"
+    ],
+    "completion_packet_review": {
+      "path": "planning/task-evidence/T005.json",
+      "result": "ACCEPTED FOR TECHNICAL PREPARATION; OVERALL NOT DONE",
+      "criteria_agree": true,
+      "counts": {
+        "PASS": 15,
+        "NOT APPLICABLE": 12
+      },
+      "validator": "python3 scripts/verify-raid-completion.py T005 planning/task-evidence/T005.json exits0; structural pass only, not prerequisite or production authority",
+      "qualifications": [
+        "T001 hard prerequisite and historical C22 completion remain unresolved; parent must not mark T001/T005 Done or rewrite sequencing.",
+        "O18 is OPEN; actual adoption/deployment/operations/recovery approval remains separate.",
+        "Historical startup cause and Cloudflare build failure diagnostics inaccessible; exact external blockers satisfy investigation acceptance, not a fabricated repair.",
+        "Corrected RED original output truncation retained; reviewer negative control is not historical RED.",
+        "Pending final-review statements may now be replaced with this independent confirmation; exact future evidence-only commit CI must remain separate."
+      ]
+    }
+  },
+  "T001_reconciliation_supplement": {
+    "date": "2026-10-07",
+    "reviewer": "/root/t005_independent_review (separate human-selected Codex AG08/AG10 agent)",
+    "result": "ACCEPTED",
+    "source_candidate_sha": "29fc44e737a49b26b6043e945f0ea51373fe466c",
+    "retest": "docs/tasks/T001-C22-retest.md; planning/task-evidence/T001-C22-retest.json",
+    "metadata_review": "Independent semantic equality check confirms other26T001 criterion objects exactly unchanged, with original reviewer/SHA and exclusions. Saved historicalC22/CI/status/tracking/sequencing fields exactly match original packet. Only currentT001-C22 disposition changes from historicalFAIL to independently reviewed descendantPASS. NewC22 attributions/CI SHA and actual counts match independent addendum. T005 criteria remain15PASS/12NA with readiness wording only; no new source/test/config change or policy claim.",
+    "T001_counts": {
+      "PASS": 13,
+      "NOT APPLICABLE": 14
+    },
+    "T005_counts": {
+      "PASS": 15,
+      "NOT APPLICABLE": 12
+    },
+    "validators": "Both actual T001 and T005 current packets exit0. Structural pass only; independent review verifies evidence.",
+    "working_tree_snapshot_sha256": {
+      "planning/task-evidence/T001.json": "7707eee3d78a906059d20d9236e20c139d67abdfeaa441ba70a9bde6ae634662",
+      "planning/task-evidence/T005.json": "58e08d5ea8544288111bf4ff444ef8d7b08587e5b036f05196c4ef24f37e668f",
+      "planning/task-evidence/T005-security-verification.json": "47c6248eeb19a3d974b553e03b660f092d9aa4897ff001182b0803f72849caa6",
+      "docs/raid-task-progress.md": "4a250de5d57501e117cc569cb5b4c8fbd883447342543084b981cc59e47eb6e1",
+      "docs/tasks/T005-security-repair.md": "c216868d0fa88f00cf92627b2349c2678e220942ccb50bee755c8c56ace0e43e",
+      "docs/tasks/T005-staging-path.md": "0a34803467a4695a79b9a6bc9a220a4e70b43794db05a9358c401c19afe3e9b1",
+      "docs/tasks/T001-C22-retest.md": "2b17170da390e19286d0a9a46bea548f20672a512a896cc69f33380afaa47bce",
+      "planning/task-evidence/T001-C22-retest.json": "db228509b1b99a099a21eaeab35605c597ece6647f06e3e7607c8e86ac1a47d8"
+    },
+    "snapshot_qualification": "Evidence-only working-tree integration before final commit; pending metadata-review wording may now be replaced by this exact independent confirmation. Future final-head CI remains separate.",
+    "authority": "Technical hard predecessor evidence reconciled without removing task graph edge. OriginalT001 review/history and originalPR172 failedhead not recertified. No board mutation/closure/merge/release/UAT/deploy/paid resource or custody authority. T003 authorized live-data gate and O18 remain retained."
+  }
+}
