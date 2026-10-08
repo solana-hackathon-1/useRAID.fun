@@ -28,8 +28,15 @@ export const FIXTURE_IDS = [
 ] as const;
 const id = (name: string) => `test-only-${name}`;
 const address = (byte: number) => bs58.encode(new Uint8Array(32).fill(byte));
-const human = (name: string) =>
-  ParticipantSchema.parse({ id: id(name), kind: 'HUMAN', accountId: id(`${name}-account`) });
+const human = (name: string) => {
+  const participant = ParticipantSchema.parse({
+    id: id(name),
+    kind: 'HUMAN',
+    accountId: id(`${name}-account`),
+  });
+  if (participant.kind !== 'HUMAN') throw new Error('Invalid synthetic human.');
+  return participant;
+};
 
 function freeze<T>(value: T): T {
   if (value && typeof value === 'object') {
@@ -183,9 +190,15 @@ export function createSyntheticFixtures() {
     pilotDistinctEngagementCap: 1,
     simulation: true as const,
   };
-  const agents = ['agent-a', 'agent-b'].map((name) =>
-    ParticipantSchema.parse({ id: id(name), kind: 'AI_AGENT', operatorId: operator.id }),
-  );
+  const agents = ['agent-a', 'agent-b'].map((name) => {
+    const participant = ParticipantSchema.parse({
+      id: id(name),
+      kind: 'AI_AGENT',
+      operatorId: operator.id,
+    });
+    if (participant.kind !== 'AI_AGENT') throw new Error('Invalid synthetic agent.');
+    return participant;
+  });
   // Alternative admission inputs, never simultaneous accepted Party engagements.
   const parties = [people.newcomer, people.specialist].map((person, i) => ({
     id: id(`party-${i}`),

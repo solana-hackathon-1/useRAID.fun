@@ -15,6 +15,7 @@ export const EvidenceRecordSchema = z
     candidateSha: Sha,
     environment: z.strictObject({
       kind: z.enum(ENVIRONMENTS),
+      coveredKinds: z.array(z.enum(ENVIRONMENTS)).optional(),
       network: text,
       providerVersion: text,
     }),
@@ -41,7 +42,10 @@ export const EvidenceRecordSchema = z
     if (
       record.assurance === 'SCENARIO_BEHAVIOR' &&
       ['PASS', 'FAIL'].includes(record.result) &&
-      !REQUIRED_ENVIRONMENTS[record.scenarioId].includes(record.environment.kind)
+      REQUIRED_ENVIRONMENTS[record.scenarioId].some(
+        (kind) =>
+          ![record.environment.kind, ...(record.environment.coveredKinds ?? [])].includes(kind),
+      )
     )
       ctx.addIssue({
         code: 'custom',
