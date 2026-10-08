@@ -1,0 +1,393 @@
+{
+  "task_id": "T006",
+  "scope": "Documentation-only identity readiness; not a full completion packet",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex primary readiness author",
+  "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)",
+  "baseline_sha": "09b7706235e7dd412eb0f707e4f1d7a6ddcbb096",
+  "acceptance_sha": "069198cf9d69343dc9fa69f0a82c677805074fc8",
+  "recorded_at": "2026-10-08T13:26:32.846893+05:45",
+  "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "handoff": "docs/tasks/T006-handoff.md",
+  "migration_rollback": "No proposed T006 migration/backfill or deployed rollout executed. Original readiness source was documentation-only; later unchanged legacy migration bootstrap/restore ran solely in disposable synthetic databases under the predeployment acceptance plan.",
+  "dependency_evidence": {
+    "T002": "accepted structural contracts; not persistence",
+    "T003": "technically accepted planning; deployed audit/restore NOT VERIFIED",
+    "T004": "PR #177 accepted test-support source; all 75 scenario plan results NOT VERIFIED"
+  },
+  "open_decisions": ["O11", "O05", "O06", "O07", "O12", "O15", "O18", "O19"],
+  "release_gate_disposition": "No gate passed by readiness. G02/G03/G04/G06/G10 block dependent live actions.",
+  "tdd": {
+    "non_code_rationale": "Only acceptance/readiness/handoff/evidence documents changed; no behavior or new module. No implementation RED/GREEN invented.",
+    "acceptance_defined_before_execution": true,
+    "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+  },
+  "environment": {
+    "os": "macOS-27.0-arm64-arm-64bit",
+    "node": "v26.0.0",
+    "python": "3.12.4",
+    "network": "local synthetic inputs only",
+    "providers": "mocked; no live provider execution",
+    "database": "not used; DB suites inspected only"
+  },
+  "local_checks": [
+    {
+      "command": "env -u DATABASE_URL -u RUN_DB_TESTS NODE_ENV=test npm test -- tests/auth.test.ts tests/auth-routes.test.ts tests/wallet-routes.test.ts tests/x-oauth.test.ts tests/x-oauth-routes.test.ts tests/shell-account.test.ts tests/shared-contracts.test.ts tests/shared-contracts-review.test.ts tests/shared-contracts-boundary.test.ts tests/raid-fixtures.test.ts tests/raid-evidence.test.ts tests/raid-fixtures-boundary.test.ts tests/docs-links.test.ts",
+      "result": "PASS",
+      "tests_passed": 167,
+      "suites_passed": 13,
+      "tests_skipped": 0,
+      "assurance": "existing pure/mocked regression; not T006 domain implementation"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "result": "PASS",
+      "tests_passed": 27
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "PASS"
+    },
+    {
+      "command": "Nested T006 relative link/anchor, exact criteria-set and inspected-source checksum check (one-off read-only Python)",
+      "result": "PASS",
+      "observed": "3 nested documents; all links/anchors resolve; all 27 criterion IDs retained NOT VERIFIED; all 36 inspected hashes unchanged."
+    },
+    {
+      "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-readiness.json",
+      "result": "EXPECTED_REJECTION",
+      "exit_code": 1,
+      "observed": "29 diagnostics: absent independent reviewer, unreviewed non-code exception and all 27 NOT VERIFIED full-task criteria.",
+      "output_sha256": "7b8fa25cb19893b9190a1d6fc96a3aac9dbd4ad8e77279a8afc0a21b95f7ae54"
+    },
+    {
+      "command": "npm exec -- prettier --check docs/tasks/T006-plan.md docs/tasks/T006-readiness.md docs/tasks/T006-handoff.md planning/task-evidence/T006-readiness.json",
+      "result": "PASS_AFTER_CORRECTION",
+      "observed": "Initial readiness-table format mismatch corrected; final check passes all four readiness files. No requirement/source/test behavior changed."
+    },
+    {
+      "command": "env -u DATABASE_URL -u RUN_DB_TESTS NODE_ENV=test npm test -- tests/docs-links.test.ts",
+      "sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+      "result": "PASS",
+      "tests_passed": 51,
+      "suites_passed": 1,
+      "tests_skipped": 0
+    },
+    {
+      "command": "Committed-source nested-doc links and source manifest parity check",
+      "sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+      "result": "PASS",
+      "observed": "All links and anchors in three T006 documents resolve; 36 inspected baseline hashes unchanged."
+    }
+  ],
+  "source_manifest_sha256": {
+    "prisma/schema.prisma": "36dee67b6be0f2536400ad6cdfc677f23f5a95390ad7bf5c5934efeae98c94b4",
+    "src/lib/auth.ts": "9bf78eff5e477d63bf935ad2375fe7680f7bf95ff0321475b398437caafc84f0",
+    "src/lib/auth-primitives.ts": "be98e5813cb646d7eac96d5041419a7578cf47688a849e2240ce49adb8297026",
+    "src/lib/account-merge.ts": "b0433df2276aba050f01adae97405b67a9bec175a951677aaa377dd8f3c56221",
+    "src/lib/wallet-auth.ts": "887a9996e6a5f29a29fed6b9715c420ff33cd9ce6ee978a166e6c5e15a667653",
+    "src/lib/x-oauth.ts": "39d1e4a05db2ca4362425ea7d1775eafc199dea0e43f5f77c8e19c781ac3115c",
+    "src/lib/usdc.ts": "36f0259fcdcca8e6729059ad7a87ae1317d1c2d0826626ebe99677cc9138e4c4",
+    "src/lib/reward-view.ts": "cc70dda1aa476a906c2c6f7a301d7d0e93cc9808fcd010431e69dd32c99dff93",
+    "src/lib/studio-finance.ts": "c7e260ac006122e561f62d471d2ce0544875ce68f9775391804f00724440af82",
+    "src/lib/config.ts": "ed62fecacf4d50a8100a08d6fb0ccd65d5b093598dd1576fe99d833d5e3697d1",
+    "src/lib/shell-account.ts": "4632faeecad8c84355dafa5db326b3821818630b1b05bff4fe80fa4c62493ba3",
+    "src/contracts/entities.ts": "1d233e295662cfd586cf1a2edafa704f6f9fd8db699ee535346914c9f2f10fa9",
+    "src/contracts/ids.ts": "7f8b552c0d1c60c6cdafdb74d9a515e8f5753bd3f076d98cbfab84f775ba4a69",
+    "src/app/api/wallet/challenge/route.ts": "f44c575843ae722a21ec2a27b43a1cb184545c1d3b8f795034dd9ca5a39f7ab4",
+    "src/app/api/wallet/verify/route.ts": "856d98ee2ae1157f44b38a09556ac16b9c53a764ede9a749bab323083ef67671",
+    "tests/wallet-auth-db.test.ts": "52278597058216aeb7a9c58302fff8c55a261a905162f5e33648ddd9983c7909",
+    "tests/x-oauth-db.test.ts": "c6647abef3b5f6b8b2ac7d308e2623d3398cf8af8e5409113a6715eea143c671",
+    ".github/workflows/checks.yml": "c177119ecd0127a143cebd37d4633f9203a6e6e95f256d8ce23e843120121c46",
+    "prisma/migrations/202609270001_init/migration.sql": "6097b1b9b32535a9e8dfb2a4694fc48c9d26a7ae749fc0986b1b8ed12bbb821f",
+    "prisma/migrations/202609280001_x_connection/migration.sql": "846ffa673555539710687f9265ceaa10ee6c4d8a0d2cc57b8f81fd839afa2603",
+    "prisma/migrations/202609280002_pump_launch/migration.sql": "15c34a12f5effed2d20dad6848b955ff444defb33365797480f7d1a11f7bf020",
+    "prisma/migrations/202609290001_x_tracking/migration.sql": "2ecd1549904bc3ee9fd4eba19cf75935540ea04380607b27b5cd364a9fb0032f",
+    "prisma/migrations/202609290002_standalone_raids/migration.sql": "a68b159e961c563092bcb95290c4fa6feb9cc557d2fb29abe9daaaa9ee2eea0b",
+    "prisma/migrations/202609300001_creator_studio/migration.sql": "5d9896bcd2f706c769c42eb0a67639bbaac0f2d5ceb1d84f9c8e4ca6b8e2f7de",
+    "prisma/migrations/202610020001_studio_fk_alignment/migration.sql": "0e3254751a38d9224aa25ad3bcd9c22dc18d8d324b18c0f33224aa3a484fa7f4",
+    "prisma/migrations/202610020002_job_dead_letter/migration.sql": "f80f7bd422d3fd391ec4cc30b3f7105466161109c675e7b368ca1756fa5ec3e8",
+    "prisma/migrations/202610020003_x_budget_controls/migration.sql": "f46c859300bb0b4bf34bda5e6874b9b808175ef0565f0a70edac0bdf586e71b9",
+    "prisma/migrations/202610020004_raid_money_policies/migration.sql": "abb5f5e5eecdbaf6eef1549f60db1735be44a8ae14c5de6cc6cfb46eec261854",
+    "prisma/migrations/202610020005_token_metadata_source/migration.sql": "d63b30ad51030236405279c3d6a09b29d020ca1bc7f83dc01fc2b33fde9b1d07",
+    "prisma/migrations/202610020006_auth_hardening/migration.sql": "2291eae6911d4e097dd2f403a1f26de0935d69c53d7c7563e8be6cc3de62e63e",
+    "prisma/migrations/202610020007_media_assets/migration.sql": "1747bf415b9e1ccdc6e3d24e2d0ae54caf2eaa76ec0ab1b0bd1fd7f6052cd46d",
+    "prisma/migrations/202610020008_wallet_rotation/migration.sql": "a65464300afc8ff5e9a304b02603f14c876e8ddd92b276ad7d462de1f47047b6",
+    "prisma/migrations/202610020009_launch_finance_hardening/migration.sql": "277719f448879a3aeb449dc6efc404b7f2aee3519e5997b6e17b65a27ceef027",
+    "prisma/migrations/202610020010_hot_path_indexes/migration.sql": "4f73dba4ae3f5805b3a718942fff9cad4482c95830c0b33f2f9b5ed54fa77f8c",
+    "prisma/migrations/202610020011_ledger_integrity/migration.sql": "8b94c4b55ac388f72eedc9ebafdcd19736cba4c9e7b74da5ff989ae46a56b0af",
+    "prisma/migrations/202610020012_state_checks/migration.sql": "950310190fd896aab69ceef02a9a012c9e958754f7e05dba6e9a3d203a0535b1"
+  },
+  "criteria": {
+    "T006-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "State the observable user outcome, assigned milestone, in-scope commands and explicit adjacent work excluded. Compare the actual baseline to the desired behavior; identify existing working behavior that must survive.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "List every applicable LOCKED, DIRECTION, DEFAULT, OPEN and EXAMPLE reference separately. Keep unresolved dependent production actions disabled. A recorded owner decision must identify who accepted it, date, changed contract and effect on old accepted work.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "List affected canonical entities, concrete tables/models, identifiers, foreign keys, tenant scope, uniqueness and immutable fields. Identify the shared contract owner and reuse existing contracts. Do not assert the intended blueprint tables already exist.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Provide an actor \u00d7 action \u00d7 resource \u00d7 state matrix for every changed read/write. Cover unauthenticated, wrong Guild, token-holder-only, self-review, expired/revoked grant and restricted account cases. Deny at the server/resource boundary; include direct API/download tests.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Provide before-state, command, authorized actor, terms/submission version, precondition, atomic mutation, after-state and rejected alternatives. Keep listing, offer, work, access, funding, settlement, dispute and run states separate. Specify finite deadlines and material cancellation/timeout paths.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Use canonical participant identity across linked wallets and Guilds. Identify whether this action consumes capacity under section 13. Prove database uniqueness, all-or-none Party reservations, same-engagement operator accounting, current eligibility rechecks, lock order and engagement-scoped release where touched.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Identify exact immutable terms, roster, payout split, beneficiary, rubric and submission version. Test stale version and unauthorized amendment. Material accepted-work changes require affected consent, valid additional funding and audit; defaults cannot rewrite old agreements.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Declare whether financial obligations are touched. If so specify network/kind/mint/program/decimals, integer base units, verified funds, reserves, allocations, fees, claims, refunds and conservation per asset. Verify actual effects/finality and beneficiary authority; transaction submission and ticker text prove nothing.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Enumerate public and private DTOs, HTML hydration, metadata, search, previews, artifacts, logs and notification fields. Test absence of private bytes and effective scoped provider access. Distinguish desired from observed grants; preserve independent rights and surface failed revocation.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Specify command identity, request digest, immutable receipt, semantic external operation and outbox/inbox deduplication. Same key plus different payload must conflict. Retry or rebuilt transaction cannot repeat business effects. Preserve intent across process crashes.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Name every competing command and linearization boundary. Exercise meaningful independent transactions/provider boundaries for applicable acceptance, refund, claim/appeal, Party, Challenge handoff, delayed cleanup and stale job races. Record winning state and losing response; in-memory mocks do not prove database/program races.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "List every provider/program effect, authority, generation, timeout, partial success, stale success and compensation path. Do not hold database locks during provider/LLM/wallet/finality waits. Reconcile before retrying an unknown outcome; stale success cannot reopen work or grant access.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Cover loading, empty, unknown/stale, validation failure, conflict, permission denied, rejected signature, pending/failed/partial effect, cancellation and recovery states where applicable. Verify keyboard/focus, mobile, draft preservation, exact amounts and intelligible eligibility reasons.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Identify applicable input validation, session/nonce/CSRF/origin, rate limit, upload quarantine, SSRF/redirect, secrets, malicious build and prompt-injection boundaries. Untrusted code and model output cannot inherit credentials, grant permissions, self-approve or expand spending.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Record feature flags at server and UI, monitoring, named case owner, incident/runbook and feature-specific G01\u2013G10 evidence. Disabling new work must preserve old claims, cancellation, dispute and access cleanup. Define migration/backfill, verified backup/restore and rollback constraints.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "For each requirement and criterion provide setup/fixtures, exact action, expected result, observed result, command/test, SHA, environment/network/provider version and sanitized evidence. Record failed, blocked or not-run checks accurately; compiler success is insufficient.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "For affected user-facing release scope identify representative journey, tester, candidate environment/SHA, expected results, defect disposition/retest and separate business sign-off. QA, UAT and release approval cannot be inferred from each other.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Record actual files, schema/API/event changes, tests executed/results, unresolved risks, authority/privacy/money effects, migration/rollback limits, reviewer and exact next bounded task. Unimplemented criteria cannot disappear through issue closure or epic roll-up.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Second wallet uses the same participant and history",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Merge cannot hide two active engagements",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Extend existing account and wallet-link services around a stable participant",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Reject conflicting provider subjects",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Require proof/review for recovery and merges, preserving claims and capacity",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "For every implementation change, define behavior from canonical requirements and write a meaningful failing test BEFORE implementation. Record RED command, actual failure and unchanged baseline; implement the smallest complete behavior; record GREEN result; refactor without changing the contract and record relevant regression results. Use real database/program/provider boundaries for material races and financial/access effects. Tests cannot be weakened, deleted or replaced with mocks merely to obtain green. For existing verified behavior, run and record the baseline and add a failing test for each changed/missing behavior; do not fabricate a red result. For decisions/docs/UAT-only work, define expected acceptance results before execution, record why a coding cycle is not applicable, and validate the actual deliverable.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Declare the stable versioned port, operations/capabilities, injected configuration, typed errors, cancellation/retry/idempotency, secrets, observations and provider-specific adapter boundary. Write shared contract tests first and demonstrate an alternate/test adapter without changing domain commands. Negative capability tests fail closed. Pin/reconcile in-flight operations before switching; verify no duplicate effects, asset/authority/terms drift or lost receipts. Document switch/drain/rollback and repeat affected live gates. See R15, AC73 and section 24.6.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Deliver module purpose/non-goals, public API/schema/event/error contracts, dependencies/host wiring, configuration, permissions, entity/state ownership, architecture, installation, runnable consuming example, tests/fixtures, limitations, migration/versioning and operations/recovery notes in the implementation change. Run the independently declared consuming host and negative/contract tests; no hidden RAID singleton/global secret or undeclared app import. Document UI accessibility and host authority when relevant. See R16, AC74 and section 24.7.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "T006-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "rationale": "Independent review accepts documentation readiness only. Canonical feature implementation, feature executions and/or required approvals are absent; no criterion exclusion or full-task PASS is granted.",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745288669",
+      "boundary": "existing legacy/synthetic regression; not canonical T006 execution"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745288669",
+      "boundary": "existing legacy/synthetic regression; not canonical T006 execution"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745288669",
+      "boundary": "existing legacy/synthetic regression; not canonical T006 execution"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745288669",
+      "boundary": "existing legacy/synthetic regression; not canonical T006 execution"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745288669",
+      "boundary": "existing legacy/synthetic regression; not canonical T006 execution"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745288669",
+      "boundary": "existing legacy/synthetic regression; not canonical T006 execution"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "bbbc53cfa351b0d6031e5ee4856514b2cce28391",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745288669",
+      "boundary": "existing legacy/synthetic regression; not canonical T006 execution"
+    }
+  },
+  "independent_review": "TECHNICALLY ACCEPTED for six non-code readiness acceptance points at bbbc53c; full T006 NOT VERIFIED.",
+  "expected_completion_validator": "REJECT: all 27 full-task criteria remain NOT VERIFIED; independent non-code readiness review now recorded.",
+  "local_check_boundary": "Executed after acceptance commit 069198c with readiness docs under construction. Runtime/schema hash manifest matches T004 baseline; no exact-candidate T006 domain behavior claimed.",
+  "local_check_logs_sha256": {
+    "regression.log": "46ab7e28530c3bbc1fd68f7f8578ed09c4a3466d5267c23f5fc915bdadde9123",
+    "regression-final.log": "bbcdae2479237ad30bfe41607694222b6fd35f9f253d0410af893c5d0f3b0d9d",
+    "planning.log": "82ff2716d6381ddd4d2547998da1b3290c78db71826ff691f06319a6e00a45de",
+    "typecheck.log": "835b274db8452ebea4e6ff39051074f58874736c2105d60f4e0fe89d1554fac9",
+    "completion.log": "7b8fa25cb19893b9190a1d6fc96a3aac9dbd4ad8e77279a8afc0a21b95f7ae54"
+  },
+  "readiness_source_sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+  "documentation_source_sha256": {
+    "docs/tasks/T006-plan.md": "09dfb1a993186984d9c0c1a83e4694819678aa60afc05563395e2b24a02b8775",
+    "docs/tasks/T006-handoff.md": "1de7422eae2f5313b57a10157a714e67688bd9ba4d80202d076ee91ab1fa8760",
+    "docs/tasks/T006-readiness.md": "ae2c362ce9a2a8c99c6db683ac8181b1021975905bd04b41b707f158b6dfc662"
+  },
+  "ci_tracking": {
+    "status": "IN_PROGRESS when recorded; inspect linked exact-source runs for later result",
+    "source_sha": "f80aebc22cbe85f8f5e4a11ff3ba50a22c8c4e2b",
+    "push_run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745118249",
+    "pull_request_run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37745155403",
+    "assurance": "Unchanged legacy/synthetic regression only; not canonical T006 feature execution.",
+    "subsequent_evidence": "bbbc53c final-source CI passed all seven; see independent review record. Earlier f80aebc runs were cancelled/superseded."
+  },
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/178",
+  "independent_review_reference": "planning/task-evidence/T006-readiness-review.json",
+  "readiness_disposition": "TECHNICALLY ACCEPTED, documentation readiness only; not feature or persistence approval",
+  "current_owner_deployment_state": "Owner clarified app is not yet deployed. No deployed target supplied. Live audit/restore obligations remain future predeployment requirements; no zero-obligation inference.",
+  "predeployment_rehearsal_reference": "planning/task-evidence/T006-predeployment-verification.json",
+  "documentation_source_sha256_note": "These hashes refer to the original readiness source reviewed at bbbc53c, before this follow-up metadata.",
+  "environment_history_note": "environment/local-check fields above describe original readiness checks. Subsequent real local DB test/restore environment and results are in the separate predeployment verification record.",
+  "completion_validator_followup": {
+    "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-readiness.json",
+    "exit_code": 1,
+    "observed": "Exactly 27 diagnostics, one for each full-task criterion retained NOT VERIFIED; independent non-code readiness reviewer evidence is now present.",
+    "result": "EXPECTED_REJECTION"
+  }
+}
