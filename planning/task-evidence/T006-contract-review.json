@@ -1,0 +1,306 @@
+{
+  "task_id": "T006",
+  "scope": "Independent review of six original bounded pure identity preflight acceptance points, not full-task completion",
+  "source_sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+  "implementer_task": "01a11a6d-d1ac-7041-bcd6-9c50aa377e11",
+  "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+  "reviewer_is_source_author": false,
+  "signed_at": "2026-10-08T19:01:04.279376+05:45",
+  "result": "TECHNICALLY ACCEPTED \u2014 PURE PREFLIGHT ONLY",
+  "criteria": {
+    "P01": {
+      "result": "PASS",
+      "canonical_reference": "R04/R12/R13; D13; I01/I07/I08; \u00a7\u00a707/13/16.13",
+      "related_full_task_criteria": "T006-C03/C06/C07/C08/A01/W01",
+      "repository_facts": "Same original HUMAN account/participant/engagement proposal; no mutation or payout field. Nonmutation tests prove pure input preservation only, not retained database amounts.",
+      "files": "src/identity/preflight.ts; tests/identity-preflight.test.ts",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+      "evidence_url": "docs/tasks/T006-contract-review.md",
+      "boundary": "Bounded pure preflight acceptance only; related full-task criteria remain NOT VERIFIED"
+    },
+    "P02": {
+      "result": "PASS",
+      "canonical_reference": "I10; \u00a7\u00a707.1\u201307.2/28",
+      "related_full_task_criteria": "T006-C04/C05/C14/W02",
+      "repository_facts": "Exact session/actor/account/revision/proof/subject/domain/URI/clock/ownership checks deny invalid, unknown, revoked or conflicting observations. Trusted host observations are explicitly not verified HTTP proof.",
+      "files": "src/identity/contracts.ts; src/identity/preflight.ts; tests/identity-preflight.test.ts",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+      "evidence_url": "docs/tasks/T006-contract-review.md",
+      "boundary": "Bounded pure preflight acceptance only; related full-task criteria remain NOT VERIFIED"
+    },
+    "P03": {
+      "result": "PASS",
+      "canonical_reference": "I01/I07/I11; D13; \u00a7\u00a725.8/16.13",
+      "related_full_task_criteria": "T006-C06/C08/A02/W03",
+      "repository_facts": "Removal always returns BLOCKED; two busy snapshots conflict, retained rights remain, mismatched/unknown inventories deny, empty inventory requires scoped review. No merge/deletion command delivered.",
+      "files": "src/identity/preflight.ts; tests/identity-preflight.test.ts",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+      "evidence_url": "docs/tasks/T006-contract-review.md",
+      "boundary": "Bounded pure preflight acceptance only; related full-task criteria remain NOT VERIFIED"
+    },
+    "P04": {
+      "result": "PASS",
+      "canonical_reference": "R15/R16; bounded AC73/AC74; \u00a724.6\u201324.7",
+      "related_full_task_criteria": "T006-C20/C21",
+      "repository_facts": "Pure public module uses only explicit shared-contract/Zod dependencies; independent fresh pinned installation and synthetic host run succeeded with minimal environment and no repo node_modules link. Supplier replacement proves fixture observation substitution only.",
+      "files": "src/identity/index.ts; examples/identity-preflight/; docs/raid-identity-preflight.md",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+      "evidence_url": "docs/tasks/T006-contract-review.md",
+      "boundary": "Bounded pure preflight acceptance only; related full-task criteria remain NOT VERIFIED"
+    },
+    "P05": {
+      "result": "PASS",
+      "canonical_reference": "I13/AC75; \u00a7\u00a732/35",
+      "related_full_task_criteria": "T006-C16/C19/C22",
+      "repository_facts": "Independent archived-source execution reproduced 47 assertion failures at original RED, 47 GREEN passes, later 1 failure/47 passes at ownership RED, then 48 behavior passes at refactor. Current 211 local regressions/13 suites pass without skips. New tests execute in exact-source CI.",
+      "files": "tests/identity-preflight*.test.ts; planning/raid-ci-matrix.json; .github/workflows/checks.yml",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+      "evidence_url": "docs/tasks/T006-contract-review.md",
+      "boundary": "Bounded pure preflight acceptance only; related full-task criteria remain NOT VERIFIED"
+    },
+    "P06": {
+      "result": "PASS",
+      "canonical_reference": "\u00a7\u00a739\u201340; full T006 numbered contract",
+      "related_full_task_criteria": "T006-C01/C02/C15/C16/C18/C22",
+      "repository_facts": "Same-change module docs/handoff identify current helper limits, unresolved owner/target and T003 execution gate. All 27 full-task criteria remain NOT VERIFIED; seven source checks succeed; full-task validator still must reject.",
+      "files": "docs/tasks/T006-contract-plan.md; docs/tasks/T006-contract-evidence.md; planning/task-evidence/T006-contract-verification.json",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+      "evidence_url": "docs/tasks/T006-contract-review.md",
+      "boundary": "Bounded pure preflight acceptance only; related full-task criteria remain NOT VERIFIED"
+    }
+  },
+  "full_task_criteria": {
+    "T006-C01": "NOT VERIFIED",
+    "T006-C02": "NOT VERIFIED",
+    "T006-C03": "NOT VERIFIED",
+    "T006-C04": "NOT VERIFIED",
+    "T006-C05": "NOT VERIFIED",
+    "T006-C06": "NOT VERIFIED",
+    "T006-C07": "NOT VERIFIED",
+    "T006-C08": "NOT VERIFIED",
+    "T006-C09": "NOT VERIFIED",
+    "T006-C10": "NOT VERIFIED",
+    "T006-C11": "NOT VERIFIED",
+    "T006-C12": "NOT VERIFIED",
+    "T006-C13": "NOT VERIFIED",
+    "T006-C14": "NOT VERIFIED",
+    "T006-C15": "NOT VERIFIED",
+    "T006-C16": "NOT VERIFIED",
+    "T006-C17": "NOT VERIFIED",
+    "T006-C18": "NOT VERIFIED",
+    "T006-A01": "NOT VERIFIED",
+    "T006-A02": "NOT VERIFIED",
+    "T006-W01": "NOT VERIFIED",
+    "T006-W02": "NOT VERIFIED",
+    "T006-W03": "NOT VERIFIED",
+    "T006-C19": "NOT VERIFIED",
+    "T006-C20": "NOT VERIFIED",
+    "T006-C21": "NOT VERIFIED",
+    "T006-C22": "NOT VERIFIED"
+  },
+  "source_manifest_sha256": {
+    "docs/raid-identity-preflight.md": "be2cbb85c589fb3cdbced4afbfb64673f7250a062410139bcdef6cfe4c56a3d1",
+    "docs/tasks/T006-contract-evidence.md": "e13d18e4a25450d203a371237d7f8df6453abe615c065fcafd1f98918923cba8",
+    "docs/tasks/T006-contract-plan.md": "a59113798297a2811bb8df6a0a19e2771751bbf16646470d59c557a10a73c30b",
+    "examples/identity-preflight/contracts": "3454017a4ed25e7afbd1c0fa387ebfa492433dd9be02acd5af39eeccff6fa26c",
+    "examples/identity-preflight/host.ts": "27dd673afdf26d917e7104f05da83356c355f09c7027bc6616f649e406acc700",
+    "examples/identity-preflight/identity": "d70d94e91dc433b894ed33b495c358a893aceee35e9685ac980f52c58ea8aee4",
+    "examples/identity-preflight/package.json": "e2909dff6a3c883ad813a551066380078a5e3490ccad64f3bb1dc91e656c7907",
+    "planning/raid-ci-matrix.json": "549897b9cae668704269551bda23298efe4829e4a83f2359357780957a925f7d",
+    "planning/task-evidence/T006-contract-verification.json": "ae19e8d7919817980d43ce708a94f3455a10ba2aa903968d0e02d37f6ad44c13",
+    "src/identity/contracts.ts": "e1f8812271c4226b7cfcae5d24ba254a7bbfdcd3bc66b3c532f2b39af616bea2",
+    "src/identity/index.ts": "2741018027a74d3042a0cc6fe98c1a00fa51128e154b75e3301d2114dfea9d58",
+    "src/identity/preflight.ts": "488c031de2d946199e7d9585d1c6b7ffc8f3ec2cc765325f3aa169e1c828e721",
+    "tests/identity-preflight-boundary.test.ts": "da3d84e6e164ea33f523ee64b2c945c07b85cedfe6a5961d13b81eb7d430155e",
+    "tests/identity-preflight.test.ts": "46e648279618273d725f01cb7cce7c4d793cca94fca8a913a394f5bac35c4244"
+  },
+  "source_scope": {
+    "changed_files": 14,
+    "schema_migrations_auth_routes_shared_contracts_workflows_changed": false,
+    "new_stored_account_rights": false
+  },
+  "verification": {
+    "local_regression": {
+      "testcases": 211,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 13,
+      "sha256": "e13ea39e3a78bcf0cf562bf02037bce7105182a181cbbaea2a2504e0190876f1"
+    },
+    "ci_database": {
+      "testcases": 668,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": 63,
+      "sha256": "ef2deb3caef6a198578e3bb968e928b2e57707d25366d417263112b286e09cf2"
+    },
+    "browser": {
+      "passed": 131,
+      "existing_skipped": 7,
+      "groups": {
+        "demo": {
+          "passed": 49,
+          "skipped": 1
+        },
+        "studio": {
+          "passed": 44,
+          "skipped": 0
+        },
+        "live": {
+          "passed": 38,
+          "skipped": 6
+        }
+      },
+      "artifact": "No retained browser artifact; checked job logs"
+    },
+    "tdd_reproduction": [
+      {
+        "phase": "red",
+        "sha": "1f92fd3513daa203f7f0af83e8c0d42f0a8bbcf8",
+        "exit": 1,
+        "command": "npm test -- tests/identity-preflight.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-independent-review/red.xml",
+        "testcases": 47,
+        "failures": 47,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 1,
+        "sha256": "4718654137629efacd00e5e0d0be7da0eb363f741d0fcd00ffe604cfe5e1b86b"
+      },
+      {
+        "phase": "green",
+        "sha": "d82ef93546a3e2d19ef6b4f0ee3b8204aade953d",
+        "exit": 0,
+        "command": "npm test -- tests/identity-preflight.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-independent-review/green.xml",
+        "testcases": 47,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 1,
+        "sha256": "93eaeb0b8c4fddebce0910455556575fb4ec76b14228b9f2f4a259582b39d5e7"
+      },
+      {
+        "phase": "ownership-red",
+        "sha": "dd71d93250a77a6a7be9a91bea29eae40aa179e8",
+        "exit": 1,
+        "command": "npm test -- tests/identity-preflight.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-independent-review/ownership-red.xml",
+        "testcases": 48,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 1,
+        "sha256": "7688d904e382ae23b25f33b95a0538b0584f2e883c2cef008871f9eaa1e7e070"
+      },
+      {
+        "phase": "refactor",
+        "sha": "eb9ffb5cbcf33575c67ed99008754dcdaebd00e3",
+        "exit": 0,
+        "command": "npm test -- tests/identity-preflight.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-independent-review/refactor.xml",
+        "testcases": 48,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 1,
+        "sha256": "ce0b7e6097da672c73a10f8ebc1a93e3910d2b3eda9cc094fda3b096a2be3758"
+      }
+    ],
+    "planning_tests": 27,
+    "typecheck": "PASS",
+    "independently_installed_host": {
+      "result": "PASS",
+      "declared_dependencies": {
+        "bs58": "6.0.0",
+        "zod": "4.6.5",
+        "tsx": "4.23.15"
+      },
+      "repo_node_modules_link": false,
+      "environment": "env -i PATH only; separate empty npm configs and isolated cache; ignore-scripts",
+      "simulation": true,
+      "executionEnabled": false
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129245"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129260"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129275"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322128911"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129375"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129257"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113325232995"
+    }
+  },
+  "historical_failed_review_attempts": [
+    "Initial unittest start directory tests/planning is absent: import/discovery error, not a passing test; corrected workflow command executes 27 tests.",
+    "Initial sandboxed regression run: 208 pass and three consuming-host failures due to EPERM on tsx IPC sockets. Same tests pass 211/211 after approved escalation; no source/assertion/timeouts changed."
+  ],
+  "log_sha256": {
+    "browser.log": "0d31a4b763f552d05141295a197c88f57c855f2102a3936d1f65d540e54091df",
+    "ownership-red.log": "dba6ece8019488f985784c41b1b0eb033a01d5591091e4813e3c275e0482bce0",
+    "planning.log": "01bcf37f114a27addb3bcc115217e22a8c571533e34f464ab797d1e48708804b",
+    "red.log": "d7fb5c3f9dbaa7b863daa2a2f27195eebc5d61a7bd912b51793a6aea672279c6",
+    "review.xml": "e13ea39e3a78bcf0cf562bf02037bce7105182a181cbbaea2a2504e0190876f1",
+    "refactor.xml": "ce0b7e6097da672c73a10f8ebc1a93e3910d2b3eda9cc094fda3b096a2be3758",
+    "source-ci.json": "949588988f903f7e9e25e361d0bb742c8df7a848308e57d7f5c3b537c0a56bd8",
+    "green.log": "4dbb28adba3a28e71b6c8bfe5ae46b0cff5c6b32cc1e924e9e4fef52f0281baf",
+    "standalone-output.log": "0725c91dadf87fdcce509a495fc6211f44500a56942256841ab0adfcfc4969e3",
+    "typecheck.log": "835b274db8452ebea4e6ff39051074f58874736c2105d60f4e0fe89d1554fac9",
+    "planning-corrected.log": "33abc81953b754022d201dd87c5b37bb020e22515d7a2775683d353e27414611",
+    "standalone-install.log": "2c13a071504f7024639631b7713ed13d9f324f1fb02fcf7f6eab1532265067e9",
+    "refactor.log": "eb5bc3c64986aa7cd07775928dcf0d6e16e1f8ada8f32e8ddec79b2b1f713fef",
+    "green.xml": "93eaeb0b8c4fddebce0910455556575fb4ec76b14228b9f2f4a259582b39d5e7",
+    "review-tests.log": "b7082090c8bffbde6165f8bc451cac90a58e559eceb567f719dee9ff8561b9bb",
+    "ownership-red.xml": "7688d904e382ae23b25f33b95a0538b0584f2e883c2cef008871f9eaa1e7e070",
+    "tdd-reproduction.json": "b998f8cd9a2574d17ad81958ed0e1b9ca6141265f21f671c35dc112ab191e295",
+    "artifacts.json": "0bae1d750dacd14ac68064f3dfafdaaca41caaa2fcf1db506731c10224ddf414",
+    "red.xml": "4718654137629efacd00e5e0d0be7da0eb363f741d0fcd00ffe604cfe5e1b86b",
+    "review-tests-unsandboxed.log": "56704a309587c4aea72a768937566627159ccf34d728da04e24fe26fa29205f1"
+  },
+  "remaining_gates": [
+    "Actual isolated persistence target and named authorized owner remain unsupplied; T003 section 3 entry evidence required before dependent execution.",
+    "Canonical identity storage, proof consumption/session issuance, link uniqueness and independent transaction races are absent.",
+    "Full auth adapter/host, claim-safe restriction path, AC68/G10, representative UAT/business/release approval remain unverified."
+  ],
+  "no_external_review_posted": true,
+  "completion_validator": {
+    "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+    "exit": 1,
+    "diagnostics": 27,
+    "expected": "All 27 exact full-task criteria remain NOT VERIFIED; bounded review and source CI cannot complete the task.",
+    "observed": "Exactly 27 matching criterion diagnostics; no missing reviewer/CI diagnostics.",
+    "log_sha256": "44bd125b82f57251819ebde7b3eca33c9a609a5ef10d22d90bf8bd5b0e50d228"
+  }
+}

@@ -3,7 +3,7 @@
   "scope": "Pure identity preflight and runtime observation schemas only; not integrated authentication or persistence",
   "status": "IN_PROGRESS / NOT VERIFIED",
   "implementer": "Codex primary readiness author",
-  "reviewer": null,
+  "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
   "baseline_sha": "54c9c5555e56ffce3da7e350744e036c46707c08",
   "code_source_sha": "eb9ffb5cbcf33575c67ed99008754dcdaebd00e3",
   "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
@@ -205,20 +205,77 @@
     "final-docs-links.log": "a8e1999b690bfc2d8a0611658c3025745d0464c62725c37a165ee86981e9b06a"
   },
   "independent_review": {
-    "result": "NOT REVIEWED",
-    "scope_note": "Original readiness/rehearsal review does not accept this new code"
+    "result": "PASS \u2014 bounded six-point pure preflight only",
+    "reviewer": "Codex independent AG08 reviewer, task 01a11ba0-7a30-7733-8540-fd8670f45eb0",
+    "source_sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+    "evidence_url": "docs/tasks/T006-contract-review.md",
+    "full_task_criteria": "All 27 remain NOT VERIFIED"
   },
   "ci": {
-    "result": "NOT VERIFIED",
-    "note": "Exact final-head seven-check result will be tracked on the draft PR; previous PR CI does not verify this code"
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129245"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129260"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129275"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322128911"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129375"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113322129257"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37780511843/job/113325232995"
+    }
   },
   "completion_validator": {
     "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
     "exit": 1,
-    "diagnostics": 35,
+    "diagnostics": 27,
     "unverified_criterion_diagnostics": 27,
-    "missing_independent_reviewer": true,
-    "unverified_required_ci_checks": 7,
-    "observed": "Rejected full task: all 27 criteria, independent reviewer and 7 exact-head CI checks absent."
-  }
+    "missing_independent_reviewer": false,
+    "unverified_required_ci_checks": 0,
+    "observed": "Expected full-task rejection: all 27 exact criteria remain NOT VERIFIED despite bounded independent review and source CI."
+  },
+  "historical_pre_review_checkpoint": {
+    "reviewer": null,
+    "independent_review": {
+      "result": "NOT REVIEWED",
+      "scope_note": "Original readiness/rehearsal review does not accept this new code"
+    },
+    "ci": {
+      "result": "NOT VERIFIED",
+      "note": "Exact final-head seven-check result will be tracked on the draft PR; previous PR CI does not verify this code"
+    },
+    "completion_validator": {
+      "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+      "exit": 1,
+      "diagnostics": 35,
+      "unverified_criterion_diagnostics": 27,
+      "missing_independent_reviewer": true,
+      "unverified_required_ci_checks": 7,
+      "observed": "Rejected full task: all 27 criteria, independent reviewer and 7 exact-head CI checks absent."
+    }
+  },
+  "reviewed_candidate_sha": "cb9ad6157630a5679708c09a2384d4f05a9a9041"
 }
