@@ -1,0 +1,237 @@
+{
+  "task_id": "T003",
+  "implementer": "/root (Codex AG01/AG03/AG10 planning owner)",
+  "reviewer": "PENDING independent review",
+  "status": "IN_PROGRESS; planning only, not technically accepted",
+  "source_baseline": "13dd7ff6b0d097270c1d9a3b2ee8c3c8b99404eb",
+  "acceptance_plan_sha": "149e4651497bfa26827b8148648f6a9dc26723a2",
+  "handoff": "docs/tasks/T003-handoff.md; docs/tasks/T003-migration-plan.md",
+  "migration_rollback": "No migrations/backfill/runtime effects. Future rollback retains authoritative rights/constraints/semantic IDs and claims/reconciliation; program/provider effects cannot be undone by code rollback.",
+  "dependency_evidence": "Accepted T001 inventory + independent C22 retest; accepted T002 source798f64f and integrated13dd7ff; exact integration-head GitHub checks confirmed successful on2026-10-08. Not deployed-data evidence.",
+  "open_decisions": "O01–O19 remain feature-specific and unresolved. Named deployed-audit/rollback/case custodians and authorized consistent snapshot/restore evidence not supplied.",
+  "release_gate_disposition": "No G01–G10 approval, live data export, deployment, migration execution, funds/access authority, UAT, merge or issue/board mutation.",
+  "tdd": {
+    "non_code_rationale": "Documentation/evidence plan only; no implementation/module/schema/API behavior. Acceptance committed before plan deliverable under I13. Future implementation needs real RED/GREEN/REFACTOR.",
+    "acceptance_defined_before_execution": true,
+    "acceptance_evidence": "docs/tasks/T003-plan.md at149e4651497bfa26827b8148648f6a9dc26723a2",
+    "reviewer": null
+  },
+  "criteria": {
+    "T003-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; scope",
+      "expected": "State the observable user outcome, assigned milestone, in-scope commands and explicit adjacent work excluded. Compare the actual baseline to the desired behavior; identify existing working behavior that must survive.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; authority",
+      "expected": "List every applicable LOCKED, DIRECTION, DEFAULT, OPEN and EXAMPLE reference separately. Keep unresolved dependent production actions disabled. A recorded owner decision must identify who accepted it, date, changed contract and effect on old accepted work.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; entities",
+      "expected": "List affected canonical entities, concrete tables/models, identifiers, foreign keys, tenant scope, uniqueness and immutable fields. Identify the shared contract owner and reuse existing contracts. Do not assert the intended blueprint tables already exist.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; permissions",
+      "expected": "Provide an actor × action × resource × state matrix for every changed read/write. Cover unauthenticated, wrong Guild, token-holder-only, self-review, expired/revoked grant and restricted account cases. Deny at the server/resource boundary; include direct API/download tests.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; transitions",
+      "expected": "Provide before-state, command, authorized actor, terms/submission version, precondition, atomic mutation, after-state and rejected alternatives. Keep listing, offer, work, access, funding, settlement, dispute and run states separate. Specify finite deadlines and material cancellation/timeout paths.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; identity-capacity",
+      "expected": "Use canonical participant identity across linked wallets and Guilds. Identify whether this action consumes capacity under section 13. Prove database uniqueness, all-or-none Party reservations, same-engagement operator accounting, current eligibility rechecks, lock order and engagement-scoped release where touched.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; terms-consent",
+      "expected": "Identify exact immutable terms, roster, payout split, beneficiary, rubric and submission version. Test stale version and unauthorized amendment. Material accepted-work changes require affected consent, valid additional funding and audit; defaults cannot rewrite old agreements.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; money",
+      "expected": "Declare whether financial obligations are touched. If so specify network/kind/mint/program/decimals, integer base units, verified funds, reserves, allocations, fees, claims, refunds and conservation per asset. Verify actual effects/finality and beneficiary authority; transaction submission and ticker text prove nothing.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; privacy-access",
+      "expected": "Enumerate public and private DTOs, HTML hydration, metadata, search, previews, artifacts, logs and notification fields. Test absence of private bytes and effective scoped provider access. Distinguish desired from observed grants; preserve independent rights and surface failed revocation.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; idempotency",
+      "expected": "Specify command identity, request digest, immutable receipt, semantic external operation and outbox/inbox deduplication. Same key plus different payload must conflict. Retry or rebuilt transaction cannot repeat business effects. Preserve intent across process crashes.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; concurrency",
+      "expected": "Name every competing command and linearization boundary. Exercise meaningful independent transactions/provider boundaries for applicable acceptance, refund, claim/appeal, Party, Challenge handoff, delayed cleanup and stale job races. Record winning state and losing response; in-memory mocks do not prove database/program races.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; external-recovery",
+      "expected": "List every provider/program effect, authority, generation, timeout, partial success, stale success and compensation path. Do not hold database locks during provider/LLM/wallet/finality waits. Reconcile before retrying an unknown outcome; stale success cannot reopen work or grant access.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; experience",
+      "expected": "Cover loading, empty, unknown/stale, validation failure, conflict, permission denied, rejected signature, pending/failed/partial effect, cancellation and recovery states where applicable. Verify keyboard/focus, mobile, draft preservation, exact amounts and intelligible eligibility reasons.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; security",
+      "expected": "Identify applicable input validation, session/nonce/CSRF/origin, rate limit, upload quarantine, SSRF/redirect, secrets, malicious build and prompt-injection boundaries. Untrusted code and model output cannot inherit credentials, grant permissions, self-approve or expand spending.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; operations",
+      "expected": "Record feature flags at server and UI, monitoring, named case owner, incident/runbook and feature-specific G01–G10 evidence. Disabling new work must preserve old claims, cancellation, dispute and access cleanup. Define migration/backfill, verified backup/restore and rollback constraints.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; verification",
+      "expected": "For each requirement and criterion provide setup/fixtures, exact action, expected result, observed result, command/test, SHA, environment/network/provider version and sanitized evidence. Record failed, blocked or not-run checks accurately; compiler success is insufficient.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; uat",
+      "expected": "For affected user-facing release scope identify representative journey, tester, candidate environment/SHA, expected results, defect disposition/retest and separate business sign-off. QA, UAT and release approval cannot be inferred from each other.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; handoff",
+      "expected": "Record actual files, schema/API/event changes, tests executed/results, unresolved risks, authority/privacy/money effects, migration/rollback limits, reviewer and exact next bounded task. Unimplemented criteria cannot disappear through issue closure or epic roll-up.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; task acceptance",
+      "expected": "Migration plan names affected tables and checks",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; task acceptance",
+      "expected": "Applied migrations remain immutable",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; implementation outcome",
+      "expected": "List schema additions and backfills",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; implementation outcome",
+      "expected": "Explain how accepted history and financial records remain valid",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; implementation outcome",
+      "expected": "Define verification and honest rollback boundaries",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; test-driven development",
+      "expected": "For every implementation change, define behavior from canonical requirements and write a meaningful failing test BEFORE implementation. Record RED command, actual failure and unchanged baseline; implement the smallest complete behavior; record GREEN result; refactor without changing the contract and record relevant regression results. Use real database/program/provider boundaries for material races and financial/access effects. Tests cannot be weakened, deleted or replaced with mocks merely to obtain green. For existing verified behavior, run and record the baseline and add a failing test for each changed/missing behavior; do not fabricate a red result. For decisions/docs/UAT-only work, define expected acceptance results before execution, record why a coding cycle is not applicable, and validate the actual deliverable.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; replaceable integrations",
+      "expected": "Declare the stable versioned port, operations/capabilities, injected configuration, typed errors, cancellation/retry/idempotency, secrets, observations and provider-specific adapter boundary. Write shared contract tests first and demonstrate an alternate/test adapter without changing domain commands. Negative capability tests fail closed. Pin/reconcile in-flight operations before switching; verify no duplicate effects, asset/authority/terms drift or lost receipts. Document switch/drain/rollback and repeat affected live gates. See R15, AC73 and section 24.6.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; documented independent reuse",
+      "expected": "Deliver module purpose/non-goals, public API/schema/event/error contracts, dependencies/host wiring, configuration, permissions, entity/state ownership, architecture, installation, runnable consuming example, tests/fixtures, limitations, migration/versioning and operations/recovery notes in the implementation change. Run the independently declared consuming host and negative/contract tests; no hidden RAID singleton/global secret or undeclared app import. Document UI accessibility and host authority when relevant. See R16, AC74 and section 24.7.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    },
+    "T003-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md sections00–04/13/24–30/33–35/39–40; complete continuous integration coverage",
+      "expected": "Define the task’s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "observed": "Planning candidate awaiting exact-source independent criterion review; no executed migration/live audit/restore claimed.",
+      "evidence_url": "docs/tasks/T003-migration-plan.md; planning/task-evidence/T003-verification.json",
+      "reviewer": null
+    }
+  }
+}
