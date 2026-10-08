@@ -124,11 +124,146 @@
       "tests": 616,
       "skips": 0,
       "observed": "Docs link test ran before handoff file was written; all60other suites pass. Handoff now exists; retest required."
+    },
+    "full_db_corrected": {
+      "result": "PASS",
+      "sha": "1d3be8e4f4669a4d34935ae3789bfd7065cc38a1",
+      "command": "DATABASE_URL=<isolated localhost:useraid_test> RUN_DB_TESTS=true DEMO_MODE=false npm test -- --reporter=default --reporter=json",
+      "tests": 616,
+      "suites": 61,
+      "skips": 0,
+      "isolated_test_volume_removed": true
+    },
+    "packaging_red": {
+      "result": "FAIL",
+      "sha": "0218f74d49c93f53f6e4b1d273dc31f7d4b6685e",
+      "command": "npx vitest run tests/deploy.test.ts",
+      "passed": 5,
+      "failed": 1,
+      "observed": "Fixture example was present in Docker context after tests dependency exclusion"
+    },
+    "packaging_ci_failure": {
+      "result": "FAIL",
+      "sha": "1d3be8e4f4669a4d34935ae3789bfd7065cc38a1",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37740993133/job/113191418755",
+      "observed": "TS2307 examples/raid-fixtures/host.ts cannot find ./fixtures; default tsconfig checks all project files per bundled Next guide"
+    },
+    "packaging_green_regression": {
+      "result": "PASS",
+      "sha": "208802525a92c185e682bb3314458d6379560c18",
+      "command": "npx vitest run tests/deploy.test.ts tests/raid-fixtures.test.ts tests/raid-evidence.test.ts tests/raid-fixtures-boundary.test.ts tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts tests/docs-links.test.ts",
+      "tests": 126,
+      "suites": 8,
+      "skips": 0
     }
   },
   "limitations": [
-    "No75domain scenarios claimed executed by plan",
-    "No deployed audit/restore/live provider or UAT",
-    "Exact-source CI and distinct reviewer pending"
-  ]
+    "All75domain scenario plan results remain NOT VERIFIED; fixtures/schema checks never execute those product scenarios",
+    "No deployed audit/restore, live provider/funds, UAT/business/release approval",
+    "Technical acceptance binds exact source2088025; subsequent evidence-only integration-head checks are separate"
+  ],
+  "superseded_ci": [
+    {
+      "run_id": 37740993133,
+      "sha": "1d3be8e4f4669a4d34935ae3789bfd7065cc38a1",
+      "conclusion": "cancelled",
+      "checks": {
+        "test": "SUCCESS",
+        "static": "SUCCESS",
+        "dependency-security": "SUCCESS",
+        "planning-contracts": "SUCCESS",
+        "docker": "FAILURE",
+        "browser": "CANCELLED",
+        "ci-gate": "FAILURE"
+      },
+      "reason": "Concrete missing fixture import in Docker context fixed by0218f74\u21922088025; superseded by newsource, not claimed green."
+    }
+  ],
+  "source_candidate_sha": "208802525a92c185e682bb3314458d6379560c18",
+  "source_ci": {
+    "result": "SUCCESS",
+    "sha": "208802525a92c185e682bb3314458d6379560c18",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638",
+    "checks": {
+      "test": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638/job/113192763797"
+      },
+      "docker": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638/job/113192763876"
+      },
+      "planning-contracts": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638/job/113192763968"
+      },
+      "dependency-security": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638/job/113192763975"
+      },
+      "browser": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638/job/113192764048"
+      },
+      "static": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638/job/113192764098"
+      },
+      "ci-gate": {
+        "result": "SUCCESS",
+        "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37741293638/job/113195160824"
+      }
+    },
+    "unit_database": {
+      "tests": 617,
+      "suites": 61,
+      "skips": 0,
+      "failures": 0,
+      "artifact_id": 11534107087,
+      "xml_sha256": "a1d5dc5727b5e95a7e3cf4e7657874aa138daa6c4594cd1a59fba55178c79b63"
+    },
+    "browser": {
+      "passed": 131,
+      "skipped": 7,
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "exclusions": "One desktop guard for mobile-only navigation and three disabled launchpad/reward cases in each of two projects; existing gates unchanged."
+    },
+    "production_build": "PASS",
+    "synthetic_database_backed_journey": "PASS"
+  },
+  "independent_review": {
+    "result": "TECHNICALLY ACCEPTED",
+    "sha": "208802525a92c185e682bb3314458d6379560c18",
+    "reviewer": "/root/t004_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+    "counts": {
+      "pass": 14,
+      "bounded_not_applicable": 13,
+      "not_verified": 0,
+      "total": 27
+    },
+    "evidence": "planning/task-evidence/T004-review.json;docs/tasks/T004-review.md"
+  },
+  "completion_validator_final": {
+    "command": "python3 scripts/verify-raid-completion.py T004 planning/task-evidence/T004.json",
+    "result": "PASS",
+    "observed": "All27criterion records accounted for, distinct independent attribution; genuineTDD and all7CIchecks atsame2088025 source. Structural validation is not live/UAT/release approval."
+  },
+  "final_evidence_integration": {
+    "scope": "Evidence/docs only after accepted2088025; no implementation/schema/dependency/provider change",
+    "planning_tests": 27,
+    "document_tests": 51,
+    "result": "PASS",
+    "note": "Final evidence-only head checks remain separate from accepted source run"
+  }
 }
