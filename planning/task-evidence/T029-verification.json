@@ -1,0 +1,725 @@
+{
+  "task_id": "T029",
+  "baseline_sha": "101348a0e65454ec705be17b54c3ecc29801eede",
+  "source_sha": "01845840af6292b31f50d9e0eafa981194986931",
+  "note": "JUnit XML files lived in /tmp/raid-t029 (ephemeral); their SHA-256 values are recorded so a reviewer can compare a reproduction. Counts below are parsed from them.",
+  "runs": [
+    {
+      "junit_file": "red.xml",
+      "junit_sha256": "4ee45e435c0c9cc0f8dfafaba0f9ebb893598aa73acacd16c736fb3b62037b89",
+      "tests": 91,
+      "failed": 81,
+      "skipped": 0,
+      "suites": [
+        {
+          "file": "tests/asset-registry-amounts.test.ts",
+          "tests": 39,
+          "failures": 34,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-bundle.test.ts",
+          "tests": 16,
+          "failures": 13,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-production.test.ts",
+          "tests": 15,
+          "failures": 14,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-registry.test.ts",
+          "tests": 21,
+          "failures": 20,
+          "skipped": 0
+        }
+      ],
+      "failing_tests": [
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > parses the section 16.3 example exactly and formats it back",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects excess precision instead of rounding",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \" 1\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"1 \"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"-1\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"+1\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"1e3\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"0x10\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \".5\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"1.\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"01\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"1,000\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"NaN\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"Infinity\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"1..2\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"\uff11\uff12\uff13\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects malformed display amount \"1\\n\"",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > rejects non-string input including JavaScript numbers",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > validates decimals and the host bound",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > enforces the inclusive u64 upper bound by default",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > formats only in-bound nonnegative integers",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > agrees with the shared T002 contract helpers (reuse, no divergence)",
+        "asset-registry-amounts.test.ts :: T029 exact bounded amount parsing and formatting (16.3) > round trips random amounts for every decimals value without precision loss (property)",
+        "asset-registry-amounts.test.ts :: T029 checked arithmetic > rejects overflow, underflow and non-bigint input",
+        "asset-registry-amounts.test.ts :: T029 deterministic split with disclosed remainder rule (14.3) > distributes remainder to the largest fractional parts, ties to the lowest index",
+        "asset-registry-amounts.test.ts :: T029 deterministic split with disclosed remainder rule (14.3) > never gives remainder to a zero-weight recipient",
+        "asset-registry-amounts.test.ts :: T029 deterministic split with disclosed remainder rule (14.3) > can disclose the remainder as unallocated instead of assigning it",
+        "asset-registry-amounts.test.ts :: T029 deterministic split with disclosed remainder rule (14.3) > rejects invalid allocations",
+        "asset-registry-amounts.test.ts :: T029 deterministic split with disclosed remainder rule (14.3) > conserves the total, is never negative and is deterministic (property)",
+        "asset-registry-amounts.test.ts :: T029 fee calculation is a separate exact function > floors or ceils basis points exactly and never exceeds the amount",
+        "asset-registry-amounts.test.ts :: T029 fee calculation is a separate exact function > rejects unreasonable basis points and rounding names",
+        "asset-registry-amounts.test.ts :: T029 JSON decimal-string serialization > rejects JSON numbers, noncanonical strings and out-of-bound values",
+        "asset-registry-amounts.test.ts :: T029 error shape > exposes only a machine code, never input text",
+        "asset-registry-bundle.test.ts :: T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) > is not funded when only one of two promised assets is deposited",
+        "asset-registry-bundle.test.ts :: T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) > reports a shortfall for an under-deposited leg and counts nothing unverified",
+        "asset-registry-bundle.test.ts :: T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) > does not accept a deposit of a same-ticker different mint or the same mint on another network",
+        "asset-registry-bundle.test.ts :: T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) > blocks a leg whose asset is not supported by the registry",
+        "asset-registry-bundle.test.ts :: T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) > rejects zero, malformed and noncanonical leg amounts",
+        "asset-registry-bundle.test.ts :: T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) > aggregates two legs of one asset and guards the sum against overflow",
+        "asset-registry-bundle.test.ts :: T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) > counts a repeated operation once even when tagged with different policy versions",
+        "asset-registry-bundle.test.ts :: T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) > sums distinct operations under one key regardless of policy version",
+        "asset-registry-bundle.test.ts :: T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) > treats a late verified delivery as the same operation progressing, never as extra funds",
+        "asset-registry-bundle.test.ts :: T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) > rejects a conflicting redelivery of the same operation",
+        "asset-registry-bundle.test.ts :: T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) > rejects malformed observations and overflowing totals",
+        "asset-registry-bundle.test.ts :: T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) > ignores observations for assets the registry does not know instead of crediting them",
+        "asset-registry-bundle.test.ts :: T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) > credits exactly the verified deposits for random duplicated streams (property)",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > ships no supported production asset until O07 supplies one",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks an empty configuration",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks a DEVNET network in a production profile",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks a TESTNET network in a production profile",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks a LOCAL network in a production profile",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks a SYNTHETIC network in a production profile",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks test fixture and sample assets even when listed",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks mock and simulated providers",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks test or sample program identifiers",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks an asset without a recorded decision reference matching the allow list entry",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks an asset that is allow-listed on a different network or mint",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > blocks an asset whose policy is unsupported (rejected extension, unknown program, no policy)",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > reports every violation at once and carries no input text",
+        "asset-registry-production.test.ts :: T029 production validation fails closed (AC41, I12, O07) > treats malformed configuration as blocked, never as acceptable",
+        "asset-registry-registry.test.ts :: T029 asset identity is exact and never display-based (AC29, 16.2) > treats two mints that share a ticker as two distinct assets",
+        "asset-registry-registry.test.ts :: T029 asset identity is exact and never display-based (AC29, 16.2) > rejects the same mint presented on another network",
+        "asset-registry-registry.test.ts :: T029 asset identity is exact and never display-based (AC29, 16.2) > rejects the same mint under another token program",
+        "asset-registry-registry.test.ts :: T029 asset identity is exact and never display-based (AC29, 16.2) > distinguishes native SOL from a token and one network from another",
+        "asset-registry-registry.test.ts :: T029 asset identity is exact and never display-based (AC29, 16.2) > cannot select an asset by ticker, name or smuggled display fields",
+        "asset-registry-registry.test.ts :: T029 asset identity is exact and never display-based (AC29, 16.2) > is immutable to later mutation of its inputs and outputs",
+        "asset-registry-registry.test.ts :: T029 asset identity is exact and never display-based (AC29, 16.2) > rejects ambiguous or inconsistent registry configuration",
+        "asset-registry-registry.test.ts :: T029 policy versions never create or split an asset (AC30, 16.2) > keeps one identity and key across registry versions and returns the newest policy",
+        "asset-registry-registry.test.ts :: T029 policy versions never create or split an asset (AC30, 16.2) > treats re-recording an identical snapshot as idempotent",
+        "asset-registry-registry.test.ts :: T029 policy versions never create or split an asset (AC30, 16.2) > rejects a different snapshot under an existing version",
+        "asset-registry-registry.test.ts :: T029 policy versions never create or split an asset (AC30, 16.2) > rejects a decimals change for the same asset so accepted amounts keep their meaning",
+        "asset-registry-registry.test.ts :: T029 policy versions never create or split an asset (AC30, 16.2) > rejects a snapshot for an unregistered asset instead of registering it implicitly",
+        "asset-registry-registry.test.ts :: T029 policy versions never create or split an asset (AC30, 16.2) > rejects a snapshot whose observed slot moves backwards",
+        "asset-registry-registry.test.ts :: T029 policy versions never create or split an asset (AC30, 16.2) > errors when a pinned policy version is unknown and does not guess",
+        "asset-registry-registry.test.ts :: T029 support policy is fail-closed (16.5) > lists the sixteen-point-five extensions as always rejected",
+        "asset-registry-registry.test.ts :: T029 support policy is fail-closed (16.5) > rejects transfer-fee and transfer-hook profiles by default",
+        "asset-registry-registry.test.ts :: T029 support policy is fail-closed (16.5) > rejects a Token-2022 asset whose extension is not on the reviewed allow list",
+        "asset-registry-registry.test.ts :: T029 support policy is fail-closed (16.5) > never lets the allow list override the rejected extensions",
+        "asset-registry-registry.test.ts :: T029 support policy is fail-closed (16.5) > rejects an unknown token program, an unknown profile and a missing policy",
+        "asset-registry-registry.test.ts :: T029 support policy is fail-closed (16.5) > rejects a plain SPL token program asset that claims extensions"
+      ],
+      "phase": "RED-pure",
+      "command": "npx vitest run tests/asset-registry-{amounts,registry,bundle,production}.test.ts --reporter=junit",
+      "source_state": "101348a0e65454ec705be17b54c3ecc29801eede + uncommitted tests and deliberately naive stub implementation (floating-point parse, ticker-style lookup, always-funded, always-allowed). Missing-module errors are not counted.",
+      "environment": "node/vitest 4.1.11, no database"
+    },
+    {
+      "junit_file": "red-db.xml",
+      "junit_sha256": "318c7ac76c895da08268dc29a7fa3ab7a2e7eedff8793368a82e249807dfbba8",
+      "tests": 10,
+      "failed": 10,
+      "skipped": 0,
+      "suites": [
+        {
+          "file": "tests/asset-registry-db.test.ts",
+          "tests": 10,
+          "failures": 10,
+          "skipped": 0
+        }
+      ],
+      "failing_tests": [
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > enforces exact identity uniqueness: network, mint and token program all matter",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > allows one native SOL asset per network and rejects a second",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > rejects malformed identities by check constraint",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > keeps one asset row across policy versions and never splits identity (AC30)",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > rejects a decimals change or an older observation for the same asset",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > bounds decimals and observed slot, and requires an existing asset",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > makes identities and snapshots immutable, while no-op updates stay possible",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > serializes two concurrent creations of the same instrument to one winner",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > serializes competing policy versions so decimals cannot diverge",
+        "asset-registry-db.test.ts :: T029 asset registry persistence on real PostgreSQL > feeds the in-process registry from stored rows without changing decisions (adapter substitution)"
+      ],
+      "phase": "RED-db",
+      "command": "RUN_DB_TESTS=true npx vitest run tests/asset-registry-db.test.ts --reporter=junit",
+      "source_state": "101348a0e65454ec705be17b54c3ecc29801eede + uncommitted DB test; migration not yet written. Failure is relation \"Asset\" does not exist (SQLSTATE 42P01), i.e. the DB behavior is absent; this is a weaker RED than the pure suites.",
+      "environment": "PostgreSQL 16 disposable container raid-t029-db, existing 19 migrations applied"
+    },
+    {
+      "junit_file": "green.xml",
+      "junit_sha256": "9cbc977ac216942c0cb86df4e2d51f64fee4d06f0704208ff4ede680cefcb623",
+      "tests": 91,
+      "failed": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "file": "tests/asset-registry-amounts.test.ts",
+          "tests": 39,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-bundle.test.ts",
+          "tests": 16,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-production.test.ts",
+          "tests": 15,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-registry.test.ts",
+          "tests": 21,
+          "failures": 0,
+          "skipped": 0
+        }
+      ],
+      "failing_tests": [],
+      "phase": "GREEN-pure",
+      "command": "same four suites",
+      "source_state": "real implementation, same tests (one test-helper assertion corrected: error equality ignored attached violations; replaced by code comparison)",
+      "environment": "node/vitest 4.1.11"
+    },
+    {
+      "junit_file": "green-db.xml",
+      "junit_sha256": "696ea5f799a35adef13dcfe38c9bae795d7f9755d82e28c8fff707bc09a11292",
+      "tests": 10,
+      "failed": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "file": "tests/asset-registry-db.test.ts",
+          "tests": 10,
+          "failures": 0,
+          "skipped": 0
+        }
+      ],
+      "failing_tests": [],
+      "phase": "GREEN-db",
+      "command": "RUN_DB_TESTS=true npx vitest run tests/asset-registry-db.test.ts",
+      "source_state": "migration 202610090002_asset_registry applied",
+      "environment": "PostgreSQL 16 disposable container"
+    },
+    {
+      "junit_file": "refactor.xml",
+      "junit_sha256": "37406b9bbb54310fb474031b118be95af76249391764d9bf729853df596bc2d0",
+      "tests": 91,
+      "failed": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "file": "tests/asset-registry-amounts.test.ts",
+          "tests": 39,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-bundle.test.ts",
+          "tests": 16,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-production.test.ts",
+          "tests": 15,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-registry.test.ts",
+          "tests": 21,
+          "failures": 0,
+          "skipped": 0
+        }
+      ],
+      "failing_tests": [],
+      "phase": "REFACTOR-pure",
+      "command": "same four suites after moving codeOf into tests/helpers/asset-fixtures.ts and typing fixtures",
+      "source_state": "refactor only, behavior unchanged",
+      "environment": "node/vitest 4.1.11"
+    },
+    {
+      "junit_file": "full.xml",
+      "junit_sha256": "4fc13412d0508663fb2bcca2f2f626e0e2564dd929bc78982bc5d46c8312ce35",
+      "tests": 840,
+      "failed": 0,
+      "skipped": 0,
+      "suites": [
+        {
+          "file": "tests/account-merge-canonical.test.ts",
+          "tests": 13,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/admin-db.test.ts",
+          "tests": 5,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/admin-lists.test.ts",
+          "tests": 5,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/admins.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-amounts.test.ts",
+          "tests": 39,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-boundary.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-bundle.test.ts",
+          "tests": 16,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-db.test.ts",
+          "tests": 10,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-production.test.ts",
+          "tests": 15,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/asset-registry-registry.test.ts",
+          "tests": 21,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/audit-check.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/audit-db.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/auth-routes.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/auth.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/braces-security.test.ts",
+          "tests": 14,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/creator-route.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/db-guard.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/dependency-compatibility.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/deploy.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/discovery-rows.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/docs-links.test.ts",
+          "tests": 57,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/domain.test.ts",
+          "tests": 15,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/env-example.test.ts",
+          "tests": 5,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/fake-solana.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/format.test.ts",
+          "tests": 2,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/http.test.ts",
+          "tests": 11,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/identity-preflight-boundary.test.ts",
+          "tests": 1,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/identity-preflight.test.ts",
+          "tests": 48,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/identity-storage-boundary.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/identity-storage-db.test.ts",
+          "tests": 12,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/identity-storage.test.ts",
+          "tests": 33,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/image-hosts.test.ts",
+          "tests": 11,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/integration.test.ts",
+          "tests": 28,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/launch-crypto.test.ts",
+          "tests": 8,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/launch-db.test.ts",
+          "tests": 11,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/launch-gate.test.ts",
+          "tests": 10,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/launch-ipfs.test.ts",
+          "tests": 11,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/local-db.test.ts",
+          "tests": 2,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/media-db.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/money-integrity-db.test.ts",
+          "tests": 23,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/public-load-db.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/pump-launch.test.ts",
+          "tests": 2,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/raid-evidence.test.ts",
+          "tests": 21,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/raid-fixtures-boundary.test.ts",
+          "tests": 1,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/raid-fixtures.test.ts",
+          "tests": 9,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/refresh.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/report-route.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/rewards-finance.test.ts",
+          "tests": 34,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/rewards.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/security-headers.test.ts",
+          "tests": 5,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/shared-contracts-boundary.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/shared-contracts-review.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/shared-contracts.test.ts",
+          "tests": 31,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/shell-account.test.ts",
+          "tests": 4,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/standalone-db.test.ts",
+          "tests": 5,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/standalone-raids.test.ts",
+          "tests": 11,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/states.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/studio-db.test.ts",
+          "tests": 14,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/studio-preview-route.test.ts",
+          "tests": 2,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/studio.test.ts",
+          "tests": 14,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/submit-route.test.ts",
+          "tests": 2,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/token-data.test.ts",
+          "tests": 1,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/tracking-db.test.ts",
+          "tests": 48,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/tracking.test.ts",
+          "tests": 17,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/usdc-chain.test.ts",
+          "tests": 3,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/usdc-ops-db.test.ts",
+          "tests": 9,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/usdc-receipt.test.ts",
+          "tests": 6,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/wallet-auth-db.test.ts",
+          "tests": 18,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/wallet-routes.test.ts",
+          "tests": 11,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/worker-db.test.ts",
+          "tests": 15,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/x-oauth-db.test.ts",
+          "tests": 16,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/x-oauth-routes.test.ts",
+          "tests": 12,
+          "failures": 0,
+          "skipped": 0
+        },
+        {
+          "file": "tests/x-oauth.test.ts",
+          "tests": 12,
+          "failures": 0,
+          "skipped": 0
+        }
+      ],
+      "failing_tests": [],
+      "phase": "FULL",
+      "command": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false npx vitest run --reporter=junit",
+      "source_state": "working tree before first commit",
+      "environment": "PostgreSQL 16 disposable container, 20 migrations"
+    }
+  ],
+  "other_checks": {
+    "completion_validator": {
+      "command": "python3 scripts/verify-raid-completion.py T029 planning/task-evidence/T029.json",
+      "exit_code": 1,
+      "result": "REJECTED as expected: no independent reviewer and all 27 criteria NOT VERIFIED",
+      "error_count": 28,
+      "first_errors": [
+        "Missing report field: reviewer",
+        "T029-C01: NOT VERIFIED prevents completion",
+        "T029-C02: NOT VERIFIED prevents completion"
+      ]
+    },
+    "static": "npx tsc --noEmit clean; npx eslint . 0 errors (24 pre-existing warnings, none in T029 files); npm run format:check clean",
+    "planning_tests": "python3 -m unittest discover -s tests -p 'test_raid_*.py': 27 tests OK",
+    "migration": "prisma migrate deploy applied 202610090002_asset_registry; second deploy reported no pending migrations; prisma migrate diff --from-url --to-schema-datamodel exit 0 (No difference detected); prisma generate OK",
+    "standalone_host": "cp -RL examples/asset-registry to a clean directory, npm install --no-audit --no-fund (6 packages), npx tsx host.ts printed all 13 expected true values plus version and synthetic",
+    "full_suite": "840 PASS, 0 FAIL, 0 SKIP across 73 files with RUN_DB_TESTS=true on PostgreSQL 16 (see FULL run above); PR CI test job reproduced 840 passed"
+  }
+}
