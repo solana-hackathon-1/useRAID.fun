@@ -2,7 +2,7 @@
 
 Purpose: reproducible local inputs for canonical §32.4 adverse cases, plus a validated evidence format and a complete [scenario plan](../planning/raid-scenarios.json). This M0 test-support module satisfies R16/AC74 for its own boundary and I13/AC75 for honest verification. It does not implement work, identity, grants, settlement, adapters or any acceptance scenario. The plan covers AC01–75; the historical T004-A02/backlog count of 72 is stale and retained as a recorded conflict.
 
-Implementation source is [`tests/fixtures/raid/index.ts`](../tests/fixtures/raid/index.ts). Imports point at the canonical T002 contracts through `tests/fixtures/contracts`; the link is not a divergent specification or schema. Production `src`, seed and migration paths do not import this module. Docker excludes tests. All observations, IDs, names, wallets, amounts, provider scripts and history are synthetic. No live credentials, private customer material or real reputation/traffic/funding records are inputs or outputs.
+Implementation source is [`tests/fixtures/raid/index.ts`](../tests/fixtures/raid/index.ts). Imports point at the canonical T002 contracts through `tests/fixtures/contracts`; the link is not a divergent specification or schema. Production `src`, seed and migration paths do not import this module. Docker excludes tests and this test-only example from its build context; normal CI still typechecks the example and executes its independent host test. All observations, IDs, names, wallets, amounts, provider scripts and history are synthetic. No live credentials, private customer material or real reputation/traffic/funding records are inputs or outputs.
 
 ## Interface and host dependencies
 
