@@ -37,6 +37,32 @@ model Participant {
   provisionRequestId String
   account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 }
+// Exact instrument identity (T029). Checks, immutability and policy guards live in the additive SQL migration.
+model Asset {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  chain String @default("SOLANA")
+  networkIdentity String
+  kind String
+  mint String @default("")
+  tokenProgram String @default("")
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  policySnapshots AssetPolicySnapshot[]
+  @@unique([chain, networkIdentity, kind, mint, tokenProgram], map: "Asset_identity_key")
+}
+// Versioned policy observations for one Asset; never an identity (T029).
+model AssetPolicySnapshot {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assetId String @db.Uuid
+  registryVersion String
+  verifiedDecimals Int @db.SmallInt
+  observedAuthorities String[] @default([])
+  supportedExtensionProfile String
+  observedAt DateTime @db.Timestamptz(6)
+  observedSlot Decimal @db.Decimal(20, 0)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([assetId, registryVersion])
+}
 model MediaAsset {
   id String @id @default(cuid())
   sha256 String @unique
