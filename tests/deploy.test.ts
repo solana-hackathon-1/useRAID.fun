@@ -21,6 +21,12 @@ describe('deploy configuration', () => {
     expect(docker).not.toMatch(/COPY --from=build \/app\/tests/);
     expect(read('.dockerignore')).toMatch(/^tests$/m);
   });
+  it('excludes the test-only fixture example whose dependencies are outside the image context', () => {
+    expect(read('.dockerignore')).toMatch(/^examples\/raid-fixtures$/m);
+    expect(read('tests/raid-fixtures-boundary.test.ts')).toContain(
+      'examples/raid-fixtures/host.ts',
+    );
+  });
   it('keeps runtime tools in dependencies and pins the framework', () => {
     const pkg = JSON.parse(read('package.json'));
     expect(pkg.dependencies.prisma).toBeDefined();
