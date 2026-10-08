@@ -1,0 +1,1 @@
+CREATE TABLE "User" ("id" TEXT PRIMARY KEY, "handle" TEXT NOT NULL);

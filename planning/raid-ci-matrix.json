@@ -2,6 +2,7 @@
   "version": 1,
   "workflow": ".github/workflows/checks.yml",
   "test_files": [
+    "tests/account-merge-canonical.test.ts",
     "tests/admin-db.test.ts",
     "tests/admin-lists.test.ts",
     "tests/admins.test.ts",
@@ -36,6 +37,9 @@
     "tests/http.test.ts",
     "tests/identity-preflight-boundary.test.ts",
     "tests/identity-preflight.test.ts",
+    "tests/identity-storage-boundary.test.ts",
+    "tests/identity-storage-db.test.ts",
+    "tests/identity-storage.test.ts",
     "tests/image-hosts.test.ts",
     "tests/integration.test.ts",
     "tests/launch-crypto.test.ts",
@@ -93,6 +97,7 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/account-merge-canonical.test.ts",
         "tests/admin-db.test.ts",
         "tests/admin-lists.test.ts",
         "tests/admins.test.ts",
@@ -112,6 +117,9 @@
         "tests/http.test.ts",
         "tests/identity-preflight-boundary.test.ts",
         "tests/identity-preflight.test.ts",
+        "tests/identity-storage-boundary.test.ts",
+        "tests/identity-storage-db.test.ts",
+        "tests/identity-storage.test.ts",
         "tests/image-hosts.test.ts",
         "tests/integration.test.ts",
         "tests/media-db.test.ts",
@@ -168,10 +176,14 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/account-merge-canonical.test.ts",
         "tests/auth-routes.test.ts",
         "tests/auth.test.ts",
         "tests/identity-preflight-boundary.test.ts",
         "tests/identity-preflight.test.ts",
+        "tests/identity-storage-boundary.test.ts",
+        "tests/identity-storage-db.test.ts",
+        "tests/identity-storage.test.ts",
         "tests/shell-account.test.ts",
         "tests/wallet-auth-db.test.ts",
         "tests/wallet-routes.test.ts",

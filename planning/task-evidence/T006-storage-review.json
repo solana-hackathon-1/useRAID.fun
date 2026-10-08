@@ -1,0 +1,370 @@
+{
+  "task_id": "T006",
+  "scope": "Independent exact-source storage proposal/SQL/RED and disposable-copy entry review only; not implementation completion",
+  "status": "PROPOSAL_TECHNICALLY_ACCEPTED",
+  "reviewed_source_sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+  "proposal_author": "Codex AG03, task 01a11bd5-25c2-7371-ac50-6d667ad0762c",
+  "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)",
+  "review_started_and_signed_at": "2026-10-08T21:00:51.184995+05:45",
+  "owner_authorization": "Explicit owner: Use the existing independent reviewer; root requested review before new DDL/runtime changes. No live operating authority follows.",
+  "reviewer_independence": "Did not author storage proposal/SQL/tests/runtime; owns only T006-storage-review.md/json. Fresh source/RED/target inspections were independent.",
+  "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "disposition": "All eight proposal-readiness points accepted for the bounded HUMAN mapping/legacy guard slice. Selected disposable copy entry accepted. This removes these two review conditions only; implementation tests, GREEN/REFACTOR, module/host, forward migration execution and feature approval are not supplied.",
+  "proposal_readiness_points": {
+    "P01": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "Unique accountId + immutable UUID mapping, User key-share gate and separate READ COMMITTED statements preserve one account mapping. First actor/request provenance is never updated on retry. Actor/account equality is validated input plus SQL CHECK; verified caller authority remains host responsibility. Missing/invalid/foreign actor and invalid adapter DTO denial, duplicate-create and whole-transaction retry tests remain required.",
+      "title": "Stable source identity",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "P02": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "Immediate ON DELETE/UPDATE RESTRICT FK and Participant BEFORE UPDATE/DELETE guard fence parent deletion/key reassignment and all mapping/provenance mutations. No-op update and normal User profile edit remain available. No indefinite-retention or reviewed recovery policy is adopted; privileged schema/trigger owners are not contained by these DML fences.",
+      "title": "Restrictive identity history",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "P03": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "Canonical reference guard must deny mapped drop account before mutations. Existing wallet/X callers put absorption inside their transaction; the database restrictive FK is the old-binary fence whose error must roll back all earlier mutations. Unmapped genuine empty source may still merge into mapped keeper through unchanged verified legacy flow; mapped-source replacement is unavailable.",
+      "title": "Legacy merge guard",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "P04": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "User FOR KEY SHARE and FK/unique-account boundary are sufficient foundation serialization points for the proposed READ COMMITTED create/delete, create/absorb and create/create schedules. Record actual distinct backend PIDs/blockers and outcomes. Use wallet-only drop if specifically proving blockage at final DELETE: X-subject update can require a conflicting User key lock earlier. No future capacity/treasury common-lock implementation is accepted.",
+      "title": "Real competing writes",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "P05": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "Mapping provision changes no balance, enrollment, transfer, payout destination, semantic key or history authority. Old guards and all 18 SQL fingerprints remain unchanged. Real before/after retained fixtures and legacy caller rollback are still implementation obligations; a test network label or ledger delta is not verified custody/finality.",
+      "title": "Retained financial/history evidence",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "P06": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "Public feature accepts a trusted transaction query port and shared HUMAN DTO without Next/Prisma/global client/config. Host owns authorization and one READ COMMITTED transaction. Module-owned parameterized SQL, typed sanitized failures, alternate-port tests and independent DB host/docs are specified; no module/consumer has yet been delivered. Actual Prisma/raw retry wrappers and unknown errors must be tested without swallowing them.",
+      "title": "Reusable contract",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "P07": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "Independent explicit RED reproduced unchanged test assertions: 13 cases, 2 intended guard/absorption assertion failures, 11 passes, zero setup errors/skips. Existing 123 regressions and 27 planning tests pass. New storage/constraint/race/consumer assertions must be authored first and record semantic results; missing table/module/syntax errors are not preservation/race RED. GREEN/REFACTOR and candidate feature CI remain unverified.",
+      "title": "TDD/regression",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    },
+    "P08": {
+      "result": "PROPOSAL_READINESS_PASS",
+      "implementation_result": "NOT VERIFIED",
+      "observed": "Original accepted source/restore container identity/start/image/tmpfs/ports, 36-table/five-catalog fingerprints and dump are unchanged on fresh read-only inspection. Independently verified selected separate storage-test copy identity/baseline before proposed DDL; no Participant table exists yet. Migration/consumer/tests run only on this disposable copy; no live rollout/backfill/UAT/board closure or full-task acceptance.",
+      "title": "Operations/handoff",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "reviewer": "Codex independent AG08 reviewer (/root/t006_independent_review)"
+    }
+  },
+  "requirements": [
+    "R04",
+    "R13",
+    "R15",
+    "R16",
+    "I01",
+    "I03",
+    "I04",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I09",
+    "I10",
+    "I11",
+    "I13",
+    "D01",
+    "D13",
+    "AC01",
+    "AC02",
+    "AC11",
+    "AC40",
+    "AC49",
+    "AC73",
+    "AC74",
+    "AC75",
+    "AC68",
+    "G10"
+  ],
+  "blueprint_sections": [
+    "00-04",
+    "07",
+    "13",
+    "16.13",
+    "24.6-24.7",
+    "25-28",
+    "30.5-30.6",
+    "32",
+    "33.5",
+    "33.10",
+    "33.11",
+    "33.12",
+    "34.1",
+    "35",
+    "37-40"
+  ],
+  "inspected_actual_files": [
+    "AGENTS.md",
+    "RAID_BLUEPRINT_MAP.md",
+    "RAID_AGENT_BLUEPRINT.md",
+    "docs/raid-agent-task-contracts.md",
+    "planning/raid-task-contracts.json",
+    "docs/raid-module-reuse.md",
+    "docs/tasks/T006-target-review.md",
+    "docs/tasks/T006-target-handoff.md",
+    "docs/tasks/T006-storage-plan.md",
+    "docs/tasks/T006-storage-handoff.md",
+    "planning/migration-proposals/T006-participant.sql",
+    "planning/migration-proposals/T006-account-merge.red.test.ts",
+    "planning/task-evidence/T006-storage-plan-verification.json",
+    "prisma/schema.prisma",
+    "src/lib/account-merge.ts",
+    "src/lib/wallet-auth.ts",
+    "src/lib/x-oauth.ts",
+    "src/contracts/entities.ts",
+    "src/contracts/ids.ts",
+    "src/contracts/ownership.ts",
+    "src/identity/contracts.ts",
+    "src/identity/preflight.ts",
+    "examples/identity-preflight/package.json",
+    "prisma/migrations/202610020011_ledger_integrity/migration.sql"
+  ],
+  "proposal_manifest": {
+    "docs/tasks/T006-storage-plan.md": "d16bf97b72081c28600942a49b594b940d496de6bbfb13f901e7eb79099ca154",
+    "docs/tasks/T006-storage-handoff.md": "dc35f8b29dcd65cc854d3ec3729043152c774ebcbb1aba8cba2258c190f0b2c7",
+    "planning/migration-proposals/T006-participant.sql": "2a795d1e97c1b76ea5fe6bce45821ad56127a0c0dd619956107443b08b1f0a36",
+    "planning/migration-proposals/T006-account-merge.red.test.ts": "af6c21d6ab0e7435fe391007ad6bbc1a512194d37235de35d5efc140655bf299",
+    "planning/task-evidence/T006-storage-plan-verification.json": "82e407de769811d4291fa239ed05c9ce8670075f1c96dd81ca20f121d39143c9"
+  },
+  "original_baseline_read_only_review": {
+    "scope": "read-only original-target parity",
+    "source_sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+    "resources": {
+      "raid-t006-dev-e90fa5f": {
+        "container_identity_start_mount_port_unchanged": true,
+        "database": "useraid_test",
+        "baseline_36_tables_5_catalog_match": true,
+        "watermark": {
+          "as_of": "2026-10-08T15:10:49.967671+00:00",
+          "wal_lsn": "0/2083690",
+          "snapshot": "1119:1119:",
+          "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+          "other_clients": 0
+        },
+        "gen_random_uuid_present": true,
+        "participant_table_absent": true
+      },
+      "raid-t006-dev-restore-e90fa5f": {
+        "container_identity_start_mount_port_unchanged": true,
+        "database": "useraid_t006_restore_test",
+        "baseline_36_tables_5_catalog_match": true,
+        "watermark": {
+          "as_of": "2026-10-08T15:10:50.278192+00:00",
+          "wal_lsn": "0/1AF4B68",
+          "snapshot": "754:754:",
+          "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+          "other_clients": 0
+        },
+        "gen_random_uuid_present": true,
+        "participant_table_absent": true
+      }
+    },
+    "backup_sha256": "429d5f484f1113b7f08074304ffd9dc89aa03f07de303b59808c8fa19243a716",
+    "original_schema_18_sql_unchanged": true,
+    "participant_table_absent": true,
+    "proposed_ddl_executed": false
+  },
+  "selected_copy_entry": {
+    "disposition": "TECHNICALLY ACCEPTED: baseline entry for proposed synthetic storage tests only",
+    "exact_proposal_sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+    "container": "raid-t006-storage-71fe95a",
+    "id": "ea978a27f5ff7320648dacd09105d46792d7bf77874713ddebfcffb13cf906cc",
+    "started_at": "2026-10-08T15:11:25.986683965Z",
+    "label": "t006-storage-tests",
+    "image_id": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+    "tmpfs": {
+      "/var/lib/postgresql/data": "rw,nosuid,size=512m"
+    },
+    "ports": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "56771"
+        }
+      ]
+    },
+    "network_mode": "bridge",
+    "provider_network_note": "bridge provides localhost-only inbound publication, not outbound network isolation; provider calls remain forbidden by test scope",
+    "all_36_table_five_catalog_baseline_matches": true,
+    "participant_table_absent": true,
+    "watermark": {
+      "as_of": "2026-10-08T15:12:39.030515+00:00",
+      "wal_lsn": "0/1AEE828",
+      "snapshot": "751:751:",
+      "postgres_version": "16.15 (Debian 16.15-1.pgdg13+2)",
+      "other_clients": 0
+    },
+    "copy_read_only_review": true
+  },
+  "executed_checks": [
+    {
+      "command": "npm exec -- vitest run --config /tmp/raid-t006-storage-plan/vitest.red.config.mjs --reporter=default --reporter=junit --outputFile=/tmp/t006-independent-review/storage-red.xml",
+      "execution_prefix": "env -u DATABASE_URL -u RUN_DB_TESTS",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "result": "EXPECTED_FAIL",
+      "exit_code": 1,
+      "tests": 13,
+      "passed": 11,
+      "failed": 2,
+      "errors": 0,
+      "skips": 0,
+      "observed_failures": [
+        "expected true to be false for canonical-mapped legacy-empty account",
+        "absorbAccount promise resolved undefined instead of rejecting"
+      ],
+      "junit_sha256": "5abf2f6aceaf337b9289454b8b49c1dc6d6689839287b210f1969a8974c13463",
+      "assurance": "Unit decision behavior only; no DDL/provider/storage/race executed"
+    },
+    {
+      "command": "env -u DATABASE_URL -u RUN_DB_TESTS npm test -- tests/raid-evidence.test.ts tests/docs-links.test.ts tests/identity-preflight.test.ts tests/identity-preflight-boundary.test.ts --reporter=default --reporter=junit --outputFile=/tmp/t006-independent-review/storage-regression.xml",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "result": "PASS",
+      "tests": 123,
+      "suites": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "junit_sha256": "f78211d9d523b83b64b5d06a3c9214b4f0c0e69136db75c9aa04449e5704b991"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "result": "PASS",
+      "tests": 27
+    },
+    {
+      "command": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "result": "EXPECTED_REJECTION",
+      "exit_code": 1,
+      "diagnostics": 27,
+      "observed": "All full-task criteria remain NOT VERIFIED"
+    },
+    {
+      "command": "npm exec -- prettier --check docs/tasks/T006-storage-plan.md docs/tasks/T006-storage-handoff.md planning/migration-proposals/T006-account-merge.red.test.ts planning/task-evidence/T006-storage-plan-verification.json",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "result": "PASS"
+    },
+    {
+      "command": "Read-only Git/file/JUnit proposal hash, criterion set and nested links verification",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "result": "PASS",
+      "observed": "9 nested proposal links/anchors resolve; exact SQL/test hashes match current source and recorded manifest; test unchanged since RED commit; original RED JUnit matches hash; all 27 full criteria retained NOT VERIFIED."
+    },
+    {
+      "command": "Read-only PostgreSQL repeatable-read fingerprints, explicit named-container Docker inspection and original dump hash",
+      "sha": "70c654f8785dc1b3a2927effe94fc879cad1d30f",
+      "result": "PASS",
+      "observed": "Original targets and selected storage-test copy match accepted 36-table/five-catalog baseline; original image/start/mount/port identities retained; no Participant/proposed DDL exists; gen_random_uuid() present on PostgreSQL16 targets."
+    }
+  ],
+  "findings": {
+    "blocking_proposal_defects": [],
+    "required_implementation_conditions": [
+      {
+        "id": "SR01",
+        "condition": "P04a fixture must isolate intended lock boundary",
+        "detail": "A wallet-only dropped User with xId=null can reach final User DELETE after credential/session changes. X subject update may obtain conflicting User key lock earlier; do not mislabel that blocker as final DELETE. Record actual pg_blocking_pids and whole rollback."
+      },
+      {
+        "id": "SR02",
+        "condition": "Legacy transaction rollback includes auth-side effects",
+        "detail": "Adverse tests must preserve wallet challenge consumption, OAuth attempt/session effects, provider subject/wallet ownership and moderation changes, not only the Participant/User row. Both existing wallet/X callers transaction-wrap absorbAccount; do not catch FK errors and commit partial work."
+      },
+      {
+        "id": "SR03",
+        "condition": "Host retry and READ COMMITTED capability must be explicit",
+        "detail": "ON CONFLICT DO NOTHING followed by a separate read needs READ COMMITTED fresh statement visibility. Test raw40001/40P01 plus real Prisma wrappers; host retries entire business transaction with same semantic identity and never a final statement only."
+      },
+      {
+        "id": "SR04",
+        "condition": "Storage/runtime evidence remains due",
+        "detail": "No future TABLE/module-not-found/syntax failure counts as behavioral RED. Promote unchanged guard assertions into CI; author all new DB invariants/races/consumer tests before implementation, record semantic outcomes and exact candidate tests/CI."
+      },
+      {
+        "id": "SR05",
+        "condition": "Metadata authorization is subsequent evidence",
+        "detail": "Pending delegation/reviewer wording in original proposal was accurate when written. Record current explicit owner authorization and independent acceptance as subsequent metadata without rewriting historical evidence or altering requirements."
+      }
+    ]
+  },
+  "review_tool_corrections": [
+    {
+      "attempt": "Formatting invocation included .sql",
+      "observed": "Prettier cannot infer an SQL parser, exit2; SQL not formatted or mutated. Re-ran supported Markdown/TS/JSON files successfully; SQL received static review only."
+    },
+    {
+      "attempt": "Proposal-hash verification initially expected SQL at RED-only commit49ee01a",
+      "observed": "SQL was added later at70c654f, so Git path absence stopped that harness. Corrected check verifies SQL hash at reviewed source, and test is unchanged since genuine RED commit. No source or criteria changed."
+    }
+  ],
+  "full_task_criteria": {
+    "T006-C01": "NOT VERIFIED",
+    "T006-C02": "NOT VERIFIED",
+    "T006-C03": "NOT VERIFIED",
+    "T006-C04": "NOT VERIFIED",
+    "T006-C05": "NOT VERIFIED",
+    "T006-C06": "NOT VERIFIED",
+    "T006-C07": "NOT VERIFIED",
+    "T006-C08": "NOT VERIFIED",
+    "T006-C09": "NOT VERIFIED",
+    "T006-C10": "NOT VERIFIED",
+    "T006-C11": "NOT VERIFIED",
+    "T006-C12": "NOT VERIFIED",
+    "T006-C13": "NOT VERIFIED",
+    "T006-C14": "NOT VERIFIED",
+    "T006-C15": "NOT VERIFIED",
+    "T006-C16": "NOT VERIFIED",
+    "T006-C17": "NOT VERIFIED",
+    "T006-C18": "NOT VERIFIED",
+    "T006-A01": "NOT VERIFIED",
+    "T006-A02": "NOT VERIFIED",
+    "T006-W01": "NOT VERIFIED",
+    "T006-W02": "NOT VERIFIED",
+    "T006-W03": "NOT VERIFIED",
+    "T006-C19": "NOT VERIFIED",
+    "T006-C20": "NOT VERIFIED",
+    "T006-C21": "NOT VERIFIED",
+    "T006-C22": "NOT VERIFIED"
+  },
+  "full_task_status": "IN_PROGRESS / NOT VERIFIED",
+  "open_decisions": ["O11", "O05", "O06", "O07", "O12", "O15", "O18", "O19"],
+  "remaining_gates": "No full busy-wallet/participant capacity, canonical recovery/claims, auth/link R15/R16, actual deployed audit/custody/obligations, host-loss durability, post-snapshot external reconciliation, AC68/G10 or UAT/business/release/merge/board approval.",
+  "proposed_ddl_executed_by_reviewer": false,
+  "source_target_mutations_by_reviewer": false,
+  "runtime_edits_by_reviewer": false,
+  "next_step": "Primary may perform the explicitly authorized bounded implementation on independently verified raid-t006-storage-71fe95a with exact-source TDD and contract evidence; return implementation for independent review. If copy restarts/changes before DDL, repeat baseline entry review. Original accepted targets/dump remain unchanged.",
+  "attribution": {
+    "signed_by": "Codex independent AG08 reviewer (/root/t006_independent_review)",
+    "signed_at": "2026-10-08T21:00:51.184995+05:45"
+  }
+}
