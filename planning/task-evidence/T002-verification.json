@@ -1,0 +1,268 @@
+{
+  "task_id": "T002",
+  "status": "TECHNICALLY_ACCEPTED source candidate798f64f; independent19PASS/8NA",
+  "baseline_sha": "27bfa3aca4894067017a5cb21c4df6eb527959db",
+  "environment": {
+    "local_runtime": "Node 26.0.0",
+    "declared_and_ci_runtime": "Node 22.12+ / Node22 CI",
+    "dependencies": {
+      "zod": "4.6.5",
+      "bs58": "6.0.0",
+      "tsx": "4.23.15",
+      "vitest": "4.1.11"
+    },
+    "network": "synthetic contract fixture; no chain/provider effects"
+  },
+  "red": {
+    "command": "npx vitest run tests/shared-contracts.test.ts --reporter=json --outputFile=/private/tmp/raid-t002-red.json",
+    "sha": "74118cc17a5e38489c21ad9b13414aa77e1adf4f",
+    "passed": 7,
+    "failed": 24,
+    "qualification": "Unused, explicitly RED-only scaffold lets behavior assertions execute; missing-import attempt is not counted as behavioral RED",
+    "failures": [
+      {
+        "test": "T002 canonical identity and public boundary keeps account, participant, Guild and terms identifiers distinct",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 canonical identity and public boundary requires the accountable identity appropriate to each participant kind",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 canonical identity and public boundary supports a pending Guild without a token and rejects private public fields",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts requires mint/program for tokens and forbids either on native SOL",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts never keys an asset by display ticker or policy revision",
+        "observed": "Error: Asset identity not implemented"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1.5",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount -1",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1.5",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 1e6",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount ",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount 01",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts rejects noncanonical raw amount +1",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts round trips large amounts exactly and handles zero/precision without float arithmetic",
+        "observed": "Error: Exact amount parsing not implemented"
+      },
+      {
+        "test": "T002 exact instrument and amount contracts uses host bounds and checked precision",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 accepted terms and engagement references freezes parsed terms, roster, rewards and policy snapshots",
+        "observed": "AssertionError: expected false to be true // Object.is equality"
+      },
+      {
+        "test": "T002 accepted terms and engagement references rejects duplicate members, unassigned beneficiaries and unbounded/reversed deadlines",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 accepted terms and engagement references binds exactly one execution source and terms to the same Guild",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts keeps listing, money, work, access, dispute, transaction and run vocabularies separate",
+        "observed": "AssertionError: expected [Function] to throw an error"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts holds capacity through setup/review and releases terminal work independently of money",
+        "observed": "Error: Capacity classification not implemented"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts assigns lifecycle mutation to an explicit domain command owner with authority and guard contracts",
+        "observed": "AssertionError: expected '' to be 'work' // Object.is equality"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts plans the same source/operator/participant lock order for all input permutations",
+        "observed": "Error: Lock ordering not implemented"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts validates retry context without letting a receipt replace authorization",
+        "observed": "AssertionError: expected 'unimplemented' to be 'v1' // Object.is equality"
+      },
+      {
+        "test": "T002 state, command, error and locking contracts emits stable safe error envelopes without private exception content",
+        "observed": "Error: Error envelope not implemented"
+      }
+    ],
+    "report_sha256": "275ddd9f3ec726eba2f598a287bcade2c47a68077d754308634c504bc0f1599d"
+  },
+  "review_regression_red": {
+    "sha": "ad48ab0fcae1812ae3e92a9e78ed2e2b460459b1",
+    "command": "npx vitest run tests/shared-contracts-review.test.ts",
+    "failed": 3,
+    "passed": 0,
+    "observed": "Native SOL accepted as Guild token; required accepted policy/skills omitted; global identity event with null Guild and canonical payload rejected",
+    "log_sha256": "894472f7d7267327483585ca3ac43f9e486d7352ed4edc5ad71fa0054cec804b"
+  },
+  "green": {
+    "command": "npx vitest run tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts",
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "report_sha256": "d5aa636f2b1664892b0fd881981ea41ca021a7602308242d425333abdf81ff65"
+  },
+  "static": {
+    "typecheck": "PASS",
+    "format": "PASS",
+    "lint": "PASS; 24 pre-existing warnings, zero errors",
+    "planning": "27 PASS; initial failure on unregistered new files resolved by adding all three files to E01 CI inventory"
+  },
+  "consumer": {
+    "ci_fixture": "PASS; copied module and separate host to temp directory, explicit installed dependency runtime, no app config/credentials",
+    "independent_review": "PASS: separate reviewer independently installed declared dependencies and ran copied host, recorded in T002-review.json"
+  },
+  "remaining": [
+    "Metadata-only final head CI to be tracked separately",
+    "Review/merge remains owner action; no issue/board closure, UAT or release approval",
+    "Real domain/provider/live capabilities remain owned by dependent feature tasks"
+  ],
+  "refactor": {
+    "command": "DATABASE_URL=<isolated disposable PostgreSQL16 useraid_test> RUN_DB_TESTS=true DEMO_MODE=false npm test -- --reporter=json --outputFile=/private/tmp/raid-t002-db-regression.json",
+    "passed": 582,
+    "failed": 0,
+    "skipped": 0,
+    "observed": "Full real-database legacy regression plus all new contract and consumer suites; disposable DB migrated and removed after test",
+    "report_sha256": "b3c6fef2248016112573e1957f2d8f81c9dd85e8eb69f5b39b3d74e31e9a89eb"
+  },
+  "historical_candidate_ci": {
+    "sha": "e2942c471ea61dfa352d7797d0c14ee210554287",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709161741",
+    "dependency_security": "FAIL",
+    "observed": "Historical exact-source dependency-security FAIL; planning/static/test/docker success before cancellation. Browser/aggregate unverified; superseded runs cancelled to free repaired candidate runners.",
+    "qualification": "Historical failure retained; not accepted as passing completion"
+  },
+  "next_prerequisite_repair": {
+    "red": {
+      "sha": "a13ea0e202950eb2142da0dbdf40df2756195a31",
+      "command": "npx vitest run tests/dependency-compatibility.test.ts; npm run audit:check",
+      "observed": "1 dependency regression FAIL / 5 PASS; audit FAIL for 5 nonallowlisted Next advisories",
+      "log_sha256": "65f38850c8d9c6086162867695a817ad995f3af8a3ad54206c8d54bfbd29c380"
+    },
+    "green": {
+      "command": "npm run audit:check; npx vitest run tests/dependency-compatibility.test.ts tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts",
+      "observed": "Audit PASS under unchanged existing allowlist; all44 targeted tests PASS",
+      "log_sha256": "ccf3d345dac187a5dca15cf42758c10e90bc1f9be232758a3df8bd7bf709d1a0",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "bounded_change": "next16.3.6\u219216.3.8 same-minor security patch; package-lock next, @next/env and platform @next/swc packages updated; no audit policy/weakened gate",
+    "advisories": [
+      "GHSA-3w37-wq28-93x7",
+      "GHSA-4jqv-mc3x-m676",
+      "GHSA-f87g-xv8r-7p7x",
+      "GHSA-mcj8-r9mp-w47p",
+      "GHSA-cjq9-62q9-8jv4"
+    ],
+    "primary_sources": [
+      "https://github.com/advisories/GHSA-cjq9-62q9-8jv4",
+      "https://github.com/advisories/GHSA-3w37-wq28-93x7"
+    ],
+    "remaining": "No source check pending; metadata-only integration head checked separately",
+    "refactor": {
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "command": "npm ci --no-audit --no-fund; npm run db:generate; DATABASE_URL=<isolated disposable PostgreSQL16 useraid_test> npm run db:migrate; RUN_DB_TESTS=true DEMO_MODE=false npm test -- --reporter=json",
+      "passed": 583,
+      "failed": 0,
+      "skipped": 0,
+      "observed": "Clean locked install and all new/legacy unit/database tests; client generated, migrations deployed, DB removed. Typecheck and formatting PASS.",
+      "report_sha256": "df78982fe1eae1c28e93fbfc689436d9410a9117d9fea0b51574ef1167f6d438"
+    }
+  },
+  "source_candidate": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+  "source_ci_observation": {
+    "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612",
+    "completed_checks": {
+      "planning-contracts": "SUCCESS",
+      "dependency-security": "SUCCESS",
+      "static": "SUCCESS",
+      "test": "SUCCESS",
+      "docker": "SUCCESS",
+      "browser": "SUCCESS",
+      "ci-gate": "SUCCESS"
+    },
+    "pending_checks": [],
+    "junit": {
+      "artifact": "vitest-database-results",
+      "tests": 583,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "sha256": "c6f706bf39f9cf785719c1bdd5e61f38f5cebd2edd3834cf3bb9a4f93131016f"
+    },
+    "result": "SUCCESS",
+    "event": "push",
+    "browser": {
+      "demo": {
+        "passed": 49,
+        "skipped": 1
+      },
+      "studio": {
+        "passed": 44,
+        "skipped": 0
+      },
+      "live": {
+        "passed": 38,
+        "skipped": 6
+      },
+      "total_passed": 131,
+      "total_skipped": 7,
+      "qualification": "One existing desktop guard for a mobile-only test and six disabled launchpad/reward scenarios; no new contract tests skipped. Synthetic provider/chain fixtures; not live-provider/mainnet assurance. Actual step logs; no browser artifact claimed."
+    },
+    "artifacts": [
+      {
+        "name": "vitest-database-results",
+        "id": 11521027890,
+        "tests": 583,
+        "skipped": 0
+      }
+    ],
+    "log_sha256": "b2c67f6a282318690993cf0d9175a3c0e5d5d08d236b8e7873f8d22d7fce162f",
+    "pr_merge_run": {
+      "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709426081",
+      "source_head_sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "result": "SUCCESS",
+      "qualification": "Separate synthetic merge run; source acceptance uses exact push head above."
+    }
+  },
+  "independent_review": {
+    "result": "ACCEPTED",
+    "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+    "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+    "passed_criteria": 19,
+    "bounded_exclusions": 8,
+    "evidence": "docs/tasks/T002-review.md; planning/task-evidence/T002-review.json"
+  }
+}

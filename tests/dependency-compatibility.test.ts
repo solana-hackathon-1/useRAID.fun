@@ -23,6 +23,7 @@ function atLeast(version: string, floor: string) {
 
 describe('security repair dependency contracts', () => {
   it.each([
+    ['next', '16.3.8'],
     ['sharp', '0.35.5'],
     ['source-map-js', '1.2.2'],
   ])('clean installs exclude vulnerable %s releases', (name, floor) => {

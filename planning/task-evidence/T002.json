@@ -1,0 +1,449 @@
+{
+  "task_id": "T002",
+  "implementer": "/root (Codex AG01/AG03/AG10 implementation owner)",
+  "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+  "status": "TECHNICALLY_ACCEPTED on exact source798f64f;19 PASS/8 bounded NOT APPLICABLE; no UAT/business/release/merge authority",
+  "handoff": "docs/tasks/T002-handoff.md; docs/raid-shared-contracts.md; independent docs/tasks/T002-review.md; next T003 planning only before authorized compatibility audit/backfill",
+  "migration_rollback": "No schema migration or legacy accepted-work mutation. Unused additive module may be removed; Next security patch requires retaining a nonvulnerable host runtime. Future migration cannot discard terms/claims/receipts/capacity/in-flight bindings.",
+  "dependency_evidence": "T001 independent original inventory plus C22 composite retest accepted 13PASS/14NA; docs/tasks/T001-C22-retest.md and planning/task-evidence/T001.json. Draft#174 supplies baseline27bfa3a. No dependency graph/status waived.",
+  "open_decisions": "O01\u2013O19 remain unresolved for dependent production slices. No economics/authority/provider/retention/jurisdiction/hosting decision selected. Technical framework patch fixes rejected existing security gate only.",
+  "release_gate_disposition": "G01\u2013G10 not granted. No live launch/funding/claims/private resources/agent/social/promotion/deployment enabled; no human UAT or business/release approval.",
+  "source_candidate": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+  "tdd": {
+    "red": {
+      "command": "npx vitest run tests/shared-contracts.test.ts --reporter=json",
+      "sha": "74118cc17a5e38489c21ad9b13414aa77e1adf4f",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/planning/task-evidence/T002-verification.json",
+      "expected_failure": "Permissive RED-only unused scaffold violates canonical validation, snapshots, amounts, states, ownership, lock order and errors.",
+      "observed_failure": "24 assertions FAIL; 7 assertions PASS; meaningful behaviors executed. Independently reproduced by separate reviewer. Missing-import attempt not counted.",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "npx vitest run tests/shared-contracts.test.ts tests/shared-contracts-boundary.test.ts tests/shared-contracts-review.test.ts tests/dependency-compatibility.test.ts; npm run audit:check",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/planning/task-evidence/T002-verification.json",
+      "observed": "44 PASS, zero skipped, plus unchanged audit gate PASS. Reviewer independently reproduced; review regressions had3FAIL atad48ab0, additional Next regression had1FAIL at a13ea0e.",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "npm ci --no-audit --no-fund; npm run db:generate; DATABASE_URL=<disposable PostgreSQL16 useraid_test> npm run db:migrate; RUN_DB_TESTS=true DEMO_MODE=false npm test -- --reporter=json",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "planning/task-evidence/T002-verification.json",
+      "observed": "Clean locked install, generated client, migrated disposable database;583PASS/0FAIL/0SKIP, including38 new schema/consumer tests and Next regression. No further code refactor needed after reviewed correction; full regression preserves behavior.",
+      "result": "PASS"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612"
+    }
+  },
+  "criteria": {
+    "T002-C01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.2; 34.1/34.3; 40.2",
+      "repository_facts": "docs/tasks/T002-plan.md; baseline diff",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "State the observable user outcome, assigned milestone, in-scope commands and explicit adjacent work excluded. Compare the actual baseline to the desired behavior; identify existing working behavior that must survive.",
+      "observed": "M0 contract-only scope is explicit. New consumers receive validated schemas; legacy application, schema, provider and monetary behavior are unchanged.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 02.1\u201302.5; 38; 40.4",
+      "repository_facts": "T002-plan.md authority; raid-shared-contracts.md gaps; review regressions",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "List every applicable LOCKED, DIRECTION, DEFAULT, OPEN and EXAMPLE reference separately. Keep unresolved dependent production actions disabled. A recorded owner decision must identify who accepted it, date, changed contract and effect on old accepted work.",
+      "observed": "LOCKED/DIRECTION/DEFAULT/OPEN/EXAMPLE are distinguished. No owner economics/provider policy is invented. Strict final-deadline ordering was corrected; equal review/closure now succeeds.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 24.3; 25.1\u201325.8",
+      "repository_facts": "prisma/schema.prisma; wallet_rotation/ledger_integrity/state_checks migrations; src/contracts; module documentation",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "List affected canonical entities, concrete tables/models, identifiers, foreign keys, tenant scope, uniqueness and immutable fields. Identify the shared contract owner and reuse existing contracts. Do not assert the intended blueprint tables already exist.",
+      "observed": "Actual legacy User/WalletIdentity/XAccount/Token/Raid and snapshot/ledger records are distinguished from absent canonical Guild/Participant/TermsVersion/Engagement tables. Brands, tenant references, immutable snapshot fields and downstream FK/uniqueness duties are documented.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C04": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.1\u201328.5; I10",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "No protected read/write, route or resource action is implemented or changed. Authority declarations assign actors and deny holder-only administration/self-review/arbitrary payout; direct API/download permission tests belong to feature owners. This excludes enforcement testing only for this pure contract task.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C05": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 12; 13; 25.7",
+      "repository_facts": "states.ts; ownership.ts; module transition table; shared-contracts tests",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Provide before-state, command, authorized actor, terms/submission version, precondition, atomic mutation, after-state and rejected alternatives. Keep listing, offer, work, access, funding, settlement, dispute and run states separate. Specify finite deadlines and material cancellation/timeout paths.",
+      "observed": "Thirteen families stay separate; each has one owner and explicit commands/guards. Capacity classification holds setup/review and releases terminal work independently of money. Finite snapshot deadlines and exit/revision policy references exist. No executable generic transition setter or deadline worker is claimed.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C06": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 07; 13; I01/I02",
+      "repository_facts": "ids.ts; ParticipantSchema; planCapacityLocks; module lock protocol; contract tests",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Use canonical participant identity across linked wallets and Guilds. Identify whether this action consumes capacity under section 13. Prove database uniqueness, all-or-none Party reservations, same-engagement operator accounting, current eligibility rechecks, lock order and engagement-scoped release where touched.",
+      "observed": "Canonical ID brands and accountable participant variants are distinct. Planner deduplicates and sorts receipt/admission/source/terms/operator/participant order. No capacity is reserved; actual uniqueness, Party/operator races and engagement-scoped release remain T019/T020 dependencies, not proven by sorting.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C07": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I08; 11.2/11.5; 12.5; 13.3; AC72",
+      "repository_facts": "entities.ts; shared-contracts-review.test.ts; module terms/compatibility",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Identify exact immutable terms, roster, payout split, beneficiary, rubric and submission version. Test stale version and unauthorized amendment. Material accepted-work changes require affected consent, valid additional funding and audit; defaults cannot rewrite old agreements.",
+      "observed": "Frozen terms include exact roster, responsibility, consent, reward legs/destination references, skill/assessment snapshots and eligibility/tools/revision/withdrawal/termination/rights/review/dispute/finality/rubric versions. Duplicate roster, outsider beneficiary and inconsistent Guild are rejected. Stale-reference/consent validation and immutable persistence remain host commands; no agreement is amended.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C08": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I03; 16.2\u201316.3; AC29/30",
+      "repository_facts": "assets.ts; TOKEN-only Guild fields; money tests; consuming host",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Declare whether financial obligations are touched. If so specify network/kind/mint/program/decimals, integer base units, verified funds, reserves, allocations, fees, claims, refunds and conservation per asset. Verify actual effects/finality and beneficiary authority; transaction submission and ticker text prove nothing.",
+      "observed": "Exact network/kind/mint/program keys exclude ticker and policy revision; nonnegative canonical raw strings and bigint display conversion reject excess precision and host overflow. Guild primary token rejects native SOL. No obligation, transfer, balance or reserve changes; conservation/finality/beneficiary proof remain treasury tasks.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C09": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I06; 10; 26.5; 27.1",
+      "repository_facts": "PublicGuildSchema; EventEnvelopeSchema; boundary/review tests; safe errors",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Enumerate public and private DTOs, HTML hydration, metadata, search, previews, artifacts, logs and notification fields. Test absence of private bytes and effective scoped provider access. Distinguish desired from observed grants; preserve independent rights and surface failed revocation.",
+      "observed": "Strict public Guild fields and identifier-only event payload reject extra private data. Exception details cannot enter fixed errors. This verifies structural boundaries, not whether a host chooses safe text or grants effective private access; no HTML/search/download/provider grant changes.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C10": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I05; 26.1; 27.3/27.5; AC69",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "Receipt scope/digest/conflict and semantic IDs are documented host obligations. No receipt storage, idempotent mutating command, inbox/outbox or retry effect is delivered. Persistent replay/crash tests remain required before the consuming command is accepted.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C11": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 13.3\u201313.5; 32.2",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "Only a deterministic lock plan is delivered; no DB transaction/program/provider race is changed. Real Party/accept/refund/claim/cleanup/handoff races cannot be proven with the pure planner and remain downstream requirements.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C12": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I09; 13.5; 24.6; 27; AC67/68",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "No external effect, operation persistence, worker, timeout or provider switch changes. Pinning, generation, unknown-success reconciliation and no provider waits under locks are declared future host duties; no recovery guarantee is inferred.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C13": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 23; AC70",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "No visual interaction/user journey is delivered. Fixed validation/conflict/denial/pending errors and exact display arithmetic are covered. Keyboard/mobile/draft/signature/recovery behavior remains feature UI/UAT scope.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C14": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.2\u201328.3; I06/I10/I12",
+      "repository_facts": "strict schemas; safe errors; dependency isolation tests; standalone consumer",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Identify applicable input validation, session/nonce/CSRF/origin, rate limit, upload quarantine, SSRF/redirect, secrets, malicious build and prompt-injection boundaries. Untrusted code and model output cannot inherit credentials, grant permissions, self-approve or expand spending.",
+      "observed": "Invalid identity/asset/amount/state/context/private extras reject. Host package runs without app credentials/environment. Schemas do not grant permissions, validate deployment or enable assets. Sessions/origin/uploads/SSRF/sandbox are unchanged and remain feature security obligations. Independent repair review confirms only Next/@next env/SWC versions16.3.6\u219216.3.8; no package removed, app/contract behavior or audit policy changed. Current audit:check passes; browser/production checks remain C22.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C15": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 29; 30; 34.4",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "No feature enabled, migrated, deployed or provider switched; no new operating process exists. Rollback removes unused additive contracts only. Deployed-obligation audit, restore, claims continuity and live gates remain mandatory for future rollout.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C16": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; 39.1; task guide required evidence",
+      "repository_facts": "T002-verification.json; own historical reproductions/log hash checks; independent checks below",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "For each requirement and criterion provide setup/fixtures, exact action, expected result, observed result, command/test, SHA, environment/network/provider version and sanitized evidence. Record failed, blocked or not-run checks accurately; compiler success is insufficient.",
+      "observed": "Named baseline/source SHAs, synthetic fixture boundary, local Node26/dependency versions and actual RED/GREEN/refactor results are distinguished. Verified original/final GREEN/full DB-report hashes and counts. Local historical reproduction and own tests support bounded source assurance. Exact CI failure is recorded separately in C22; no remote unfinished count is invented.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C17": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 39.1; task guide C17/E22",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "Internal developer contract foundation introduces no user-facing release/business decision. Representative human UAT and business sign-off are not claimed and remain gates for actual feature release.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C18": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 39.2; 40.3",
+      "repository_facts": "docs/tasks/T002-handoff.md; module docs; baseline diff",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Record actual files, schema/API/event changes, tests executed/results, unresolved risks, authority/privacy/money effects, migration/rollback limits, reviewer and exact next bounded task. Unimplemented criteria cannot disappear through issue closure or epic roll-up.",
+      "observed": "Actual files, schema/API/event declaration changes, unchanged legacy behavior, verification, risks, authority/privacy/money limits, rollback and exact T003 next task are recorded. Issue remains open; no merge/live approval follows.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-A01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 24.5/24.7; 26.1; AC74",
+      "repository_facts": "src/contracts/index.ts; three tests; examples/shared-contracts/host.ts",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Consumers use one contract source",
+      "observed": "All newly delivered consumers import one public barrel; standalone copy requires only declared dependencies. Legacy state enums remain explicitly separate campaign contracts pending compatibility, not silently remapped to new work.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-A02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 12.2; 16.9; 25.7",
+      "repository_facts": "states.ts; StateSchema; cross-family/owner tests",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Work, money, access, dispute and transaction states remain distinct",
+      "observed": "Work, funding/agreement/claim, access, dispute, transaction and run state vocabularies remain separate. OFFER ACCEPTED and terminal ENGAGEMENT ACCEPTED have separate owning schemas/effects.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-W01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 07; 13; 16.2/16.3; 25",
+      "repository_facts": "ids/assets/entities.ts; contract tests; consuming host",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Define canonical identity, Guild, terms, engagement, asset and exact amount contracts",
+      "observed": "Identity, Guild, accepted terms, one-source engagement, full asset identity and exact amount contracts are defined and runtime validated. Initial native-token, missing policy and global event problems were reproduced and corrected.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-W02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 24.3; 25.7; 26.2",
+      "repository_facts": "COMMANDS; STATE_OWNERS; transition documentation; ownership test",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Assign each state transition and authority to one command owner",
+      "observed": "Every declared state family maps to commands of one owner with authority/guards. This is an owned contract registry, not implemented commands; selected financial/dispute authority remains explicitly OPEN.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-W03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 13.3; 26.1; 27.1/27.5",
+      "repository_facts": "protocol.ts; ownership.ts; module API/retry/lock protocol",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Record API versioning, error envelopes and global lock order",
+      "observed": "v1 path, scoped Guild-work optimistic terms/revision context, safe typed error envelopes, canonical identifier-only event payload and total namespaced host lock ordering are specified. Global identity events use null Guild; global auth commands own separate feature contexts.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C19": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I13; AC75; 39.1.11",
+      "repository_facts": "git 74118cc/ad48ab0/e2942c4; T002-verification; independent historical reproduction",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "For every implementation change, define behavior from canonical requirements and write a meaningful failing test BEFORE implementation. Record RED command, actual failure and unchanged baseline; implement the smallest complete behavior; record GREEN result; refactor without changing the contract and record relevant regression results. Use real database/program/provider boundaries for material races and financial/access effects. Tests cannot be weakened, deleted or replaced with mocks merely to obtain green. For existing verified behavior, run and record the baseline and add a failing test for each changed/missing behavior; do not fabricate a red result. For decisions/docs/UAT-only work, define expected acceptance results before execution, record why a coding cycle is not applicable, and validate the actual deliverable.",
+      "observed": "Independently reproduced initial behavior RED:24 fail/7 pass at74118cc; reviewer regression RED:3 fail/0 pass atad48ab0. Final38 tests pass. Test diff preserves original expectations; const typing/HUMAN narrowing are valid cleanup. Full582 DB/unit regression report hash/count matches; own95 contract/state/docs/env regression and27 planning pass. No fabricated runtime-failure evidence from missing imports is accepted. Independently reproduced a13ea0e dependency-floor RED:1fail/5pass against historical lock; repaired798f64f target44 contracts/dependency tests pass, and local audit passes. Broad repaired DB/browser regression remains exact CI evidence under C22.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C20": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R15; AC73; 24.6",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)",
+      "rationale": "Pure schemas/helpers and declarative protocol own no external integration port or provider switch. Zod/bs58 are explicit library dependencies; no vendor client/state/credential is imported. Alternate adapter, in-flight pin/drain and live gates remain required in actual provider tasks; no invented adapter added for helpers.",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052"
+    },
+    "T002-C21": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R16; AC74; 24.7; module-reuse guide",
+      "repository_facts": "docs/raid-shared-contracts.md; host.ts/package.json; boundary suite; independent npm install/start",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Deliver module purpose/non-goals, public API/schema/event/error contracts, dependencies/host wiring, configuration, permissions, entity/state ownership, architecture, installation, runnable consuming example, tests/fixtures, limitations, migration/versioning and operations/recovery notes in the implementation change. Run the independently declared consuming host and negative/contract tests; no hidden RAID singleton/global secret or undeclared app import. Document UI accessibility and host authority when relevant. See R16, AC74 and section 24.7.",
+      "observed": "Same-change purpose/API/event/error/ownership/permissions/config/dependency/install/example/testing/compatibility/operations/gaps documentation exists. Reviewer copied code and manifest outside app, installed only declared dependencies without scripts, ran host successfully without app node_modules symlink. Output explicitly simulation:true and exact reward/capacity/private/source checks. No hidden app/global secret dependency.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/798f64f8c6b93f2e63bc41bb81b735b4a8100052/docs/raid-shared-contracts.md",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    },
+    "T002-C22": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 32; task guide C22; T002 ci_requirements",
+      "repository_facts": "planning/raid-ci-matrix.json; vitest config; checks.yml; exact798f64f run37709420612 all7SUCCESS; artifact11521027890; actual browser step logs",
+      "entities": "Bounded source DTOs/declarations/pure helpers only; see source/host mapping in docs/raid-shared-contracts.md and T002-plan.md",
+      "permissions": "Synthetic host may parse/format; schemas never authorize business actors. Actual mutation authority remains owning commands; no protected read/write changed.",
+      "state_transitions": "Unvalidated/unimplemented contract source \u2192 runtime-validated shared declarations; no persisted business state changes.",
+      "setup": "Acceptance-first plan; synthetic account/Guild/roster/terms/asset/deadline fixtures in three contract suites; separately installed consuming host. No live customer data.",
+      "action": "Independent source/contract review and applicable checks in verification array; exclusions are specific to this pure contract delivery.",
+      "expected": "Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "observed": "All three new suites are discovered by owned CI. Exact repaired798f64f pushrun37709420612 has all seven required jobs SUCCESS, independently verified via run/jobsAPI and freshly downloaded full log. Artifact XML583testcases/0FAIL/0ERROR/0SKIP. Browser logs:Demo49PASS/1 desktop guardSKIP,Studio44PASS/0SKIP,live38PASS/6 disabled launch-featureSKIP;total131PASS/7 existing exclusions. No browser artifact exists in runAPI, none claimed. Production build and DBjourney pass. Historical e2942c4 audit failure remains recorded; obsolete full run was subsequently cancelled, not passed. No source test skipped or audit/CI policy weakened.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37709420612",
+      "sha": "798f64f8c6b93f2e63bc41bb81b735b4a8100052",
+      "environment": "Local Node26.0.0/npm11.12.1; zod4.6.5/bs58 6.0.0/tsx4.23.15/vitest4.1.11; synthetic only. Remote source CI Ubuntu24.04.5/Node22.23.3/npm10.9.9.",
+      "reviewer": "/root/t002_independent_review (distinct Codex AG08/AG10 technical reviewer)"
+    }
+  },
+  "historical_ci": "Exact e2942c4 security jobFAIL preserved; obsolete run cancelled after recording failure to free repaired-candidate runners. No passing aggregate claimed.",
+  "source_ci_counts": {
+    "unit_database": {
+      "passed": 583,
+      "skipped": 0,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 131,
+      "skipped": 7,
+      "qualification": "One existing desktop guard for a mobile-only test and six disabled launchpad/reward scenarios; no new module tests skipped"
+    }
+  },
+  "independent_review": "docs/tasks/T002-review.md and planning/task-evidence/T002-review.json, accepted source candidate798f64f, historical audit failure and all corrected criteria retained"
+}
