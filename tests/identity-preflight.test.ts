@@ -333,8 +333,11 @@ describe('T006 verified-link preflight (trusted synthetic observations only)', (
 function removal() {
   return {
     kind: 'MERGE',
-    keep: { ...snapshot('synthetic-keep', 'synthetic-keep-participant'), activeEngagementId: null },
-    drop: { ...snapshot(), activeEngagementId: null },
+    keep: {
+      ...snapshot('synthetic-keep', 'synthetic-keep-participant'),
+      activeEngagementId: null as string | null,
+    },
+    drop: { ...snapshot(), activeEngagementId: null as string | null },
     inventory: {
       state: 'COMPLETE',
       accountId: 'synthetic-account',
@@ -347,8 +350,8 @@ function removal() {
 describe('T006 destructive-identity preflight (never authorizes execution)', () => {
   it('rejects two busy participants without hiding either assignment', () => {
     const command = removal();
-    command.keep.activeEngagementId = 'keep-work' as never;
-    command.drop.activeEngagementId = 'drop-work' as never;
+    command.keep.activeEngagementId = 'keep-work';
+    command.drop.activeEngagementId = 'drop-work';
     const before = JSON.stringify(command);
     expect(inspectAccountRemoval(command)).toEqual({ stage: 'BLOCKED', code: 'CAPACITY_CONFLICT' });
     expect(JSON.stringify(command)).toBe(before);
@@ -376,7 +379,7 @@ describe('T006 destructive-identity preflight (never authorizes execution)', () 
   });
   it('retains a sole active commitment even when inventory incorrectly claims zero references', () => {
     const command = removal();
-    command.drop.activeEngagementId = 'work' as never;
+    command.drop.activeEngagementId = 'work';
     expect(inspectAccountRemoval(command)).toEqual({ stage: 'BLOCKED', code: 'RIGHTS_RETAINED' });
   });
   it('blocks unknown, wrong account/participant and stale inventories', () => {

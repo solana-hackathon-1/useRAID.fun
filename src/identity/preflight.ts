@@ -7,6 +7,7 @@ import {
   type IdentityLinkProposal,
   type IdentityPreflightBlocked,
   type IdentityPreflightReason,
+  type IdentitySubject,
 } from './contracts';
 
 function blocked(code: IdentityPreflightReason): IdentityPreflightBlocked {
@@ -20,6 +21,9 @@ export function identitySubjectKey(input: unknown): string {
       ? ['WALLET', 'SOLANA', subject.networkIdentity, subject.address]
       : ['PROVIDER', subject.provider, subject.subject],
   );
+}
+function matchesSubject(key: string, subject: IdentitySubject): boolean {
+  return identitySubjectKey(subject) === key;
 }
 /** Pure proposal only. Host must revalidate and consume proof atomically at commit. */
 export function inspectVerifiedLink(
@@ -47,7 +51,7 @@ export function inspectVerifiedLink(
     proof.consumed ||
     proof.intent !== 'LINK' ||
     proof.accountId !== accountId ||
-    identitySubjectKey(proof.subject) !== subjectKey ||
+    !matchesSubject(subjectKey, proof.subject) ||
     proof.domain !== policy.data.domain ||
     proof.uri !== policy.data.uri ||
     Date.parse(proof.issuedAt) > now ||
@@ -59,7 +63,7 @@ export function inspectVerifiedLink(
       ? policy.data.walletNetworks.includes(subject.networkIdentity)
       : policy.data.providers.includes(subject.provider);
   if (!supported) return blocked('UNSUPPORTED_IDENTITY');
-  if (identitySubjectKey(ownership.subject) !== subjectKey || ownership.state === 'UNKNOWN')
+  if (!matchesSubject(subjectKey, ownership.subject) || ownership.state === 'UNKNOWN')
     return blocked('OWNERSHIP_UNKNOWN');
   if (ownership.state === 'LINKED' || ownership.state === 'REVOKED') {
     if (ownership.accountId !== accountId) return blocked('IDENTITY_CONFLICT');
