@@ -1,6 +1,6 @@
 # T003 — additive migration, backfill and rollback plan
 
-Status: **IN_PROGRESS, planning only**. Prepared 8 October 2026 (Asia/Kathmandu). [Acceptance-first packet](T003-plan.md) precedes this deliverable. [Issue #45](https://github.com/solana-hackathon-1/useRAID.fun/issues/45) owns M0 planning, not executing the migrations described here. The canonical [blueprint](../../RAID_AGENT_BLUEPRINT.md) and [T002 public boundary](../../src/contracts/index.ts) remain authoritative. No deployed database, provider or custody state has been inspected for this task.
+Status: **VERIFIED_IN_TEST as a planning artifact; technically accepted on reviewed source `6865af5`**. Prepared 8 October 2026 (Asia/Kathmandu). [Acceptance-first packet](T003-plan.md) precedes this deliverable. [Issue #45](https://github.com/solana-hackathon-1/useRAID.fun/issues/45) owns M0 planning, not executing the migrations described here. The canonical [blueprint](../../RAID_AGENT_BLUEPRINT.md) and [T002 public boundary](../../src/contracts/index.ts) remain authoritative. No deployed database, provider or custody state has been inspected for this task.
 
 ## 1. Outcome, authority and source map
 
