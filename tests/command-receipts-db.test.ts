@@ -32,25 +32,37 @@ function deferred<T = void>() {
 async function pid(tx: Prisma.TransactionClient) {
   return (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid;
 }
-async function observeBlock(waiter: number, blocker: number, statement: RegExp) {
+async function observeBlock(
+  waiter: number,
+  blocker: number,
+  statement: RegExp,
+  release: () => void,
+) {
   expect(waiter).not.toBe(blocker);
   const deadline = Date.now() + 10_000;
-  while (Date.now() < deadline) {
-    const rows = await db.$queryRawUnsafe<{ query: string; blockers: number[] }[]>(
-      'SELECT query, pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid = $1',
-      waiter,
-    );
-    if (rows[0]?.blockers.includes(blocker)) {
-      expect(rows[0].query).toMatch(statement);
-      // Evidence comes from the database lock graph, never from elapsed sleep.
-      console.info(
-        JSON.stringify({ receiptRace: true, waiter, blocker, blockedStatement: rows[0].query }),
+  let last = '';
+  try {
+    while (Date.now() < deadline) {
+      const rows = await db.$queryRawUnsafe<{ query: string; blockers: number[] }[]>(
+        'SELECT query, pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid = $1',
+        waiter,
       );
-      return;
+      last = rows[0]?.query ?? '';
+      // The activity text and the lock graph are read at slightly different instants, so require both.
+      if (rows[0]?.blockers.includes(blocker) && statement.test(last)) {
+        // Evidence comes from the database lock graph, never from elapsed sleep.
+        console.info(
+          JSON.stringify({ receiptRace: true, waiter, blocker, blockedStatement: last }),
+        );
+        return;
+      }
+      await new Promise((r) => setTimeout(r, 10));
     }
-    await new Promise((r) => setTimeout(r, 10));
+    throw Error(`Expected independent PostgreSQL blocker was not observed (last: ${last})`);
+  } catch (error) {
+    release();
+    throw error;
   }
-  throw Error('Expected independent PostgreSQL blocker was not observed');
 }
 const command = (patch: Partial<CommandInput> = {}): CommandInput => ({
   actorId: 'account-a',
@@ -285,7 +297,12 @@ integration('command receipts on real PostgreSQL', { timeout: 30_000 }, () => {
         },
         { transaction: TX },
       );
-      await observeBlock(await secondPid.promise, blocker, /INSERT INTO "CommandReceipt"/);
+      await observeBlock(
+        await secondPid.promise,
+        blocker,
+        /INSERT INTO "CommandReceipt"/,
+        gate.resolve,
+      );
       gate.resolve();
       const [first, second] = await Promise.all([a, b]);
       expect(first.status).toBe('EXECUTED');
@@ -328,7 +345,12 @@ integration('command receipts on real PostgreSQL', { timeout: 30_000 }, () => {
         },
         { transaction: TX },
       );
-      await observeBlock(await secondPid.promise, blocker, /INSERT INTO "CommandReceipt"/);
+      await observeBlock(
+        await secondPid.promise,
+        blocker,
+        /INSERT INTO "CommandReceipt"/,
+        gate.resolve,
+      );
       gate.resolve();
       expect((await a)?.message).toBe('domain rejection');
       expect((await b).status).toBe('EXECUTED');
@@ -365,7 +387,12 @@ integration('command receipts on real PostgreSQL', { timeout: 30_000 }, () => {
           { transaction: TX },
         ),
       );
-      await observeBlock(await secondPid.promise, blocker, /INSERT INTO "CommandReceipt"/);
+      await observeBlock(
+        await secondPid.promise,
+        blocker,
+        /INSERT INTO "CommandReceipt"/,
+        gate.resolve,
+      );
       gate.resolve();
       await a;
       expect((await b)?.code).toBe('IDEMPOTENCY_KEY_REUSED');
@@ -573,7 +600,12 @@ integration('command receipts on real PostgreSQL', { timeout: 30_000 }, () => {
         },
         { transaction: TX },
       );
-      await observeBlock(await secondPid.promise, blocker, /INSERT INTO "InboxDelivery"/);
+      await observeBlock(
+        await secondPid.promise,
+        blocker,
+        /INSERT INTO "InboxDelivery"/,
+        gate.resolve,
+      );
       gate.resolve();
       expect((await first).status).toBe('PROCESSED');
       expect((await second).status).toBe('DUPLICATE');
