@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run in a dedicated candidate checkout. Requires Node 22, Python 3.12, Docker,
-# installed Chromium/system dependencies and available ports 3000/3008/55432.
+# browser system dependencies and available ports 3000/3001/3006/3007/3008/55432.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 export CI=1 NEXT_TELEMETRY_DISABLED=1 PLAYWRIGHT_HTML_OPEN=never
@@ -52,6 +52,7 @@ step runtime-files docker run --rm useraid:local-ci sh -c 'test ! -d /app/tests 
 else
   echo "runtime/runtime-files: NOT RUN (image build failed)" | tee -a "$LOG_DIR/results.txt"
 fi
+step browser-install npx playwright install chromium || exit 1
 step demo npm run test:browser || true
 step studio env DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_studio_test npm run test:browser:studio || true
 step build npm run build || true

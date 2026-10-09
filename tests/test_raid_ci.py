@@ -25,7 +25,7 @@ class LocalCIMode(unittest.TestCase):
         runner = (ROOT / 'scripts/local-ci.sh').read_text()
         for command in ['unittest discover', 'format:check', 'typecheck', 'lint',
                         'audit:check', 'migrate diff', 'RUN_DB_TESTS=true',
-                        'docker build', 'test:browser', 'test:browser:studio',
+                        'docker build', 'playwright install chromium', 'test:browser', 'test:browser:studio',
                         'npm run build', 'test:live', 'test:browser:live']:
             self.assertIn(command, runner)
         self.assertIn('git rev-parse HEAD', runner)
