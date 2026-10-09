@@ -1,0 +1,35 @@
+[
+  {
+    "id": "F03",
+    "file": "src/command-receipts/index.ts",
+    "original_sha256": "b112a968a544045e5c1f0c95ce5ec64390e313183ea17d6f7ac9e78b7cdd3e77",
+    "mutant_sha256": "dd47aed21ef1f15c993282948418865c8b4a8698694670ba31b4a32789ba35f6",
+    "mutation": {
+      "old": "insertBindings: [delivery.provider, delivery.verifiedDeliveryId, digest],",
+      "new": "insertBindings: [delivery.provider, digest, digest],"
+    },
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "tests/command-receipts-db.test.ts",
+      "-t",
+      "processes two distinct delivery ids that carry identical payloads",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T019/F03-red.xml"
+    ],
+    "exit_code": 1,
+    "junit": {
+      "name": "vitest tests",
+      "tests": "28",
+      "failures": "1",
+      "errors": "0",
+      "time": "0.045366208"
+    },
+    "failing_cases": [
+      "command receipts on real PostgreSQL > inbound provider deliveries (AC32 foundation) > processes two distinct delivery ids that carry identical payloads (no dedupe by content)"
+    ],
+    "skipped": 27
+  }
+]

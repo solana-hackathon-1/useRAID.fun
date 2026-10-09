@@ -1,0 +1,687 @@
+{
+  "task_id": "T019",
+  "review_status": "ACCEPTED WITH CONDITIONS",
+  "review_date": "2026-10-09",
+  "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+  "independence": "Separate agent context (AG08 QA/security role) that did not write the implementation, tests, docs or packet; same model family as the implementer. Reviewed by re-execution and mutation, not by reading the implementer packet alone. No implementation, test or packet edits.",
+  "reviewed_sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+  "source_sha": "5ea28674c96686e8f8ddc9e6559017ae197a71fe",
+  "baseline_sha": "101348a0e65454ec705be17b54c3ecc29801eede",
+  "blueprint_sha256": "151d00e3cc2d45578ad83aa52f828ef8247f453ba66bdeef4eac214b1fa547c5",
+  "scope": "M2 T019 command receipts, audit and outbox foundation: 27 criteria independently disposed, 19 PASS and 8 bounded NOT APPLICABLE; nothing wired into a business flow; no live, UAT, business or release approval.",
+  "criteria": {
+    "T019-C01": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.2, 27.3, 34.1; issue #61",
+      "repository_facts": "PR 182 diff is 23 files: new src/command-receipts, adapter, additive migration, 3 test files, doc, example, plan, CI matrix; no route, worker, provider call or existing table is changed.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Reviewer re-ran feature tests, full suite, migration repeat/drift, standalone example, typecheck/format/eslint/planning tests and 14 targeted mutations.",
+      "expected": "Scope is a reusable foundation (receipt, digest, audit, outbox intent, inbox) and nothing is wired into a business flow.",
+      "observed": "Diff stat confirms no src/app, src/lib (other than the new adapter) or existing migration change; docs/raid-command-receipts.md states non-goals; the existing baseline tests still pass (full suite 810 of 810).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/tasks/T019-plan.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C02": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 00.4, 02.2-02.5, 38 (O11, O18)",
+      "repository_facts": "Plan lists LOCKED R13/R15/R16, DEFAULT D01, OPEN O11/O18 separately.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Read plan and doc authority sections; checked no OPEN decision is selected.",
+      "expected": "No OPEN item turned into policy; retention (O11) stays unresolved with no delete path.",
+      "observed": "Plan and module doc keep retention OPEN; no delete path exists; guard trigger blocks delete. No owner decision invented.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/tasks/T019-plan.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C03": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 25.1, 25.6, 25.8",
+      "repository_facts": "prisma/schema.prisma mirrors the four tables; migration 202610090001_command_receipts adds checks, unique keys, FKs, triggers.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Applied migration to empty DB twice, ran prisma migrate diff, inspected SQL, ran guard tests and 3 trigger mutations.",
+      "expected": "Additive migration, schema matches DB, immutability and append-only enforced in the database, shared contracts reused.",
+      "observed": "migrate deploy applied all migrations on an empty database, second run No pending migrations, drift check exit 0; dropping the result-required, receipt-immutability or append-only triggers is each caught by a database guard test.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/prisma/migrations/202610090001_command_receipts/migration.sql",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C04": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.1; I10",
+      "repository_facts": "No protected read or write route is added or changed.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Checked diff for route, session and role changes; checked key scoping by mutation M9.",
+      "expected": "Actor x action matrix is a host duty; module must not become an authorization source.",
+      "observed": "Module only scopes idempotency keys per actor; it grants no permission. Actor x resource matrix belongs to T020 and other consumers.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/raid-command-receipts.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "No protected endpoint, resource read or role is introduced; the module explicitly authorizes nothing and documents the host trust boundary. Per-actor key isolation was verified under C10."
+    },
+    "T019-C05": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 12.3, 27.3",
+      "repository_facts": "Plan and doc list the single persisted lifecycle: claimed, committed, or rolled back.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Exercised replay, conflict, rollback and deferred-trigger tests; mutation M1 and trigger drops.",
+      "expected": "Rejected commands leave no record; replays do not mutate; result reference set once.",
+      "observed": "Rollback matrix (callback error, bad event, no event, bad result ref) leaves zero rows and the same key executes later; receipt cannot commit without result (deferred trigger).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C06": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 13.1, 13.3",
+      "repository_facts": "No capacity or engagement table is touched; claim-first lock order recorded for T020.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Checked diff for capacity writes; checked lock order statement.",
+      "expected": "No capacity consumed.",
+      "observed": "No active_commitments or participant data is read or written; the receipt claim runs before the handler so later locks can follow the T002 order.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/raid-command-receipts.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "This foundation does not consume or release R13 capacity; T020 owns capacity acquisition and must follow the claim-first lock order documented here."
+    },
+    "T019-C07": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 11.5, I08",
+      "repository_facts": "Digest covers the whole request object including any expected terms version supplied by the caller.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Changed expectedTermsVersion with the same key (db test) and ran mutation M1.",
+      "expected": "A changed terms version under one key conflicts.",
+      "observed": "Same key with expectedTermsVersion terms-v2 returns IDEMPOTENCY_KEY_REUSED and leaves rows byte-identical. No terms, roster, split or amendment logic exists in this module.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "No immutable terms, consent or amendment entity is created or modified; stale-terms and unauthorized-amendment behavior belongs to T020/T023. Digest sensitivity to a supplied terms version was verified."
+    },
+    "T019-C08": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 16.3, I03",
+      "repository_facts": "No asset, ledger, reservation or claim table is touched.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Checked diff and canonicalization probes for numeric handling.",
+      "expected": "No financial obligations are created.",
+      "observed": "Amounts must travel as strings: unsafe integers, floats beyond safe range, bigint, NaN and Infinity are rejected by the digest; no money state is written.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/src/command-receipts/canonical.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "No financial obligation, balance or transfer is created or changed; settlement idempotency semantics belong to later treasury tasks. Digest refuses ambiguous numbers."
+    },
+    "T019-C09": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I06, 27.1, 28.3",
+      "repository_facts": "Requests and provider payloads reduce to SHA-256 digests; audit payloads are identifier-only EventEnvelope payloads; results are opaque references.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Searched all four tables for planted secret strings; mutation M7 leaked the request into audit payload.",
+      "expected": "No private bytes in receipts, inbox, audit or outbox.",
+      "observed": "Secret strings in request and webhook body appear in no table; M7 (request copied into audit payload) was caught by both the real-DB and the unit privacy tests; free-text payload fields are rejected before SQL.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C10": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 26.1, 27.5; AC69, AC32, I05",
+      "repository_facts": "executeIdempotentCommand, processInboundDelivery, canonicalRequestDigest, unique indexes.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Replay, conflict, 8-way parallel, cross-actor, inbox duplicate/conflict tests; mutations M1, M1b, M3a, M3b, M5, M9; canonicalization probes.",
+      "expected": "Same key and digest replays; changed digest conflicts without overwrite; delivery deduplicated by provider plus delivery id.",
+      "observed": "All of the above held. Mutations that remove the conflict check, overwrite on conflict, drop the unique index, drop ON CONFLICT, dedupe inbox by payload instead of delivery id, or drop actor from the key were each caught. Canonicalization: key order and Unicode key order irrelevant, NFC and NFD distinct, string \"1\" differs from number 1, -0 equals 0, sparse arrays/unsafe ints/depth over 32/over 64K chars rejected. A distinct-delivery-same-payload over-dedupe case is not asserted (low finding F03).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/src/command-receipts/index.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C11": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 13.4, 32.2; C11",
+      "repository_facts": "Real PostgreSQL tests observe a blocked second backend through pg_blocking_pids and run an 8-way race plus a genuine 40P01 deadlock retry.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Ran the DB suite in the full run plus six repeats on the reviewer database; mutations M3a/M3b removed the unique index or ON CONFLICT.",
+      "expected": "Exactly one execution under identical concurrent commands; waiter replays, conflicts, or executes after rollback.",
+      "observed": "27 DB tests passed in every run; race tests fail with 30 s/10 s timeouts or duplicate executions when the serialization point is removed, so they test the real boundary and are not mocks.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C12": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 27.3, I09",
+      "repository_facts": "No provider, chain or LLM call exists; outbox rows are intents only with no dispatcher.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Searched module for network, SDK and provider imports; boundary test.",
+      "expected": "No external effect is performed inside the transaction.",
+      "observed": "Public module imports only node:crypto and ../contracts; docs forbid external calls in the handler. Dispatch, reconciliation and stale-generation handling belong to the later worker task.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/raid-command-receipts.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "No provider or program effect is introduced; this delivers the intent records (outbox) only. Worker dispatch, reconciliation and compensation are separate tasks."
+    },
+    "T019-C13": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 23.8",
+      "repository_facts": "No UI, route or copy changed.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Checked diff.",
+      "expected": "No user-facing surface.",
+      "observed": "No file under src/app or src/components changed.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/tasks/T019-plan.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "No user-facing surface is added; error-envelope mapping to the UI is a consumer task."
+    },
+    "T019-C14": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 28.3, 26.1",
+      "repository_facts": "All SQL uses bound parameters; table names come from a closed literal set; identifiers pass InternalId; driver messages are never exposed.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Read module and adapter; ran unit tests for sanitized errors and invalid input, mutation tests, boundary test.",
+      "expected": "Invalid input fails before SQL; secrets and driver detail are not leaked.",
+      "observed": "Bad IDs, kinds, digests, events and ports fail typed before any SQL; a failing port yields STORAGE_UNAVAILABLE with message equal to the code; module has no process.env, globalThis or app import.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/src/command-receipts/index.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C15": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 30.5-30.6, 29.3; T003 P3",
+      "repository_facts": "Additive migration with documented rollback; no flag or live path; restore rehearsal was NOT run by the implementer and NOT run by the reviewer.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Applied migration, dropped and recreated all four tables and three functions repeatedly via psql.",
+      "expected": "Rollback before consumers is a drop; after acknowledged receipts keep tables.",
+      "observed": "Drop/recreate cycle worked repeatedly; migration contains no ALTER/DROP TABLE or backfill. Backup/restore rehearsal and G10 operations gates are not exercised.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/raid-command-receipts.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "Nothing is enabled for users, so no feature flag, monitor owner or live runbook applies yet. Restore rehearsal and G10 stay unverified and are recorded as condition COND-03 for the first consumer."
+    },
+    "T019-C16": {
+      "result": "PASS",
+      "canonical_reference": "docs/raid-agent-task-contracts.md C16; RAID_AGENT_BLUEPRINT.md 32.5",
+      "repository_facts": "Implementer packet planning/task-evidence/T019.json: file hashes, junit hashes, counts, CI.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Compared packet file hashes with the reviewed tree, reran counts, checked RED source/junit.",
+      "expected": "Evidence reproducible and honest.",
+      "observed": "All 11 packet file hashes match the tree at d38a45d; 77 feature tests and 810/810 full suite reproduced; RED junit shows 67 failed/10 passed with assertion failures on a stub module and bare tables (ENOENT only for two absent-artifact assertions); test edits after RED only added assertions or release hooks (no weakening).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/planning/task-evidence/T019.json",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C17": {
+      "result": "NOT APPLICABLE",
+      "canonical_reference": "docs/raid-uat-plan.md",
+      "repository_facts": "No user-facing journey.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Checked diff.",
+      "expected": "No UAT scope.",
+      "observed": "No UAT applies; no business sign-off claimed.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/tasks/T019-plan.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+      "rationale": "No affected user-facing release scope; UAT and business sign-off are not inferred from this review."
+    },
+    "T019-C18": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md 39.2, 40.3",
+      "repository_facts": "Plan, module doc, packet handoff and PR body identify files, tests, migration/rollback, limits and next task T020.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Read plan, doc, packet handoff fields and PR 182 body.",
+      "expected": "Next agent can identify what exists, what is verified and what is next.",
+      "observed": "Handoff fields present and truthful; packet status text must be updated by the implementer after this review (COND-01).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/planning/task-evidence/T019.json",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-A01": {
+      "result": "PASS",
+      "canonical_reference": "Issue #61 acceptance A01; AC69",
+      "repository_facts": "Same logical command has one business outcome.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Sequential replay, 8-way parallel race, waiter replay after the first commits.",
+      "expected": "One business row, one receipt, one audit, one outbox, callback once.",
+      "observed": "Observed in sequential and concurrent tests; snapshot before/after replay byte-identical.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-A02": {
+      "result": "PASS",
+      "canonical_reference": "Issue #61 acceptance A02; AC69",
+      "repository_facts": "Different payload returns explicit conflict.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Changed slot and expectedTermsVersion under the same key, sequentially and as a blocked waiter.",
+      "expected": "IDEMPOTENCY_KEY_REUSED; original untouched.",
+      "observed": "Typed error code IDEMPOTENCY_KEY_REUSED, callback not run, full table snapshot unchanged; mutation M1 caught by 6 tests.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-W01": {
+      "result": "PASS",
+      "canonical_reference": "Issue #61 outcome W01; 26.1",
+      "repository_facts": "Receipt persists actor + kind + key + digest + request id + result reference.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Inspected stored row after execution.",
+      "expected": "Row has all fields and canonical digest.",
+      "observed": "CommandReceipt row matches actor, kind, key, request id, result reference and canonicalRequestDigest(request).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-W02": {
+      "result": "PASS",
+      "canonical_reference": "Issue #61 outcome W02; AC69",
+      "repository_facts": "Same key and changed payload is rejected.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "See A02; mutations M1 and M1b (ON CONFLICT DO UPDATE overwrite).",
+      "expected": "Conflict; no overwrite.",
+      "observed": "Both mutations caught; database immutability trigger also rejects digest overwrite.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/src/command-receipts/index.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-W03": {
+      "result": "PASS",
+      "canonical_reference": "Issue #61 outcome W03; 27.3; AC32",
+      "repository_facts": "State, audit and outbox commit together; inbox dedupes by provider and delivery id.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Rollback matrix, later-statement failure, outbox-omission mutation, non-transactional adapter mutation, inbox duplicate/concurrent/conflict tests, mutation M5.",
+      "expected": "Atomic commit or nothing; one outcome per delivery.",
+      "observed": "All held; mutations that omit outbox insert or run the claim outside the host transaction were caught; inbox dedupe by payload digest instead of delivery id was caught by the changed-payload conflict test.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/tests/command-receipts-db.test.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C19": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md I13; 32",
+      "repository_facts": "RED at baseline with stub module and bare tables, GREEN, REFACTOR (claimOrReplay extraction), full suite.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Inspected /tmp/raid-t019/red.xml (67 fail/10 pass), red-source stub, diff of RED vs final tests, reproduced GREEN.",
+      "expected": "Semantic RED, tests not weakened.",
+      "observed": "Failures are assertion/behavior failures (expected INVALID_INPUT got handler ran, no receipt rows, 8 executions instead of 1, no retry classification, empty digest). Only two failures are ENOENT for absent docs/example and are disclosed as not behavioral. RED SHA is the unchanged baseline because RED was uncommitted (disclosed, sources and hashes retained).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/planning/task-evidence/T019.json",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C20": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R15, 24.6; AC73",
+      "repository_facts": "CommandReceiptTransaction port (PostgreSQL READ_COMMITTED), Prisma adapter, scripted alternate port, capability-gap tests.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Ran alternate-port and wrong-dialect/isolation tests and the standalone host.",
+      "expected": "Port is replaceable; unsupported capability fails closed; sanitized errors.",
+      "observed": "Scripted alternate port serves replay and conflict without Prisma; MYSQL, SERIALIZABLE and missing-query ports fail STORAGE_CONTRACT before any SQL. No second real driver adapter exists (informational F05).",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/src/command-receipts/contracts.ts",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C21": {
+      "result": "PASS",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md R16, 24.7; AC74",
+      "repository_facts": "docs/raid-command-receipts.md has all R16 sections; examples/command-receipts is an independent host.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "cp -RL examples/command-receipts to a clean directory, own npm install, own prisma generate and migrate deploy, own database useraid_command_host_test, npm start.",
+      "expected": "Host runs and prints all nine true flags.",
+      "observed": "Host output {\"version\":\"v1\",\"synthetic\":true,\"realDatabase\":true,\"replayedWithoutSecondEffect\":true,\"changedPayloadConflict\":true,\"duplicateDeliveryOneOutcome\":true,\"alternatePort\":true,\"capabilityGapFailsClosed\":true,\"sanitizedFailure\":true}; prisma migrate diff in the host directory exit 0; symlinks dereferenced, 43 packages installed independently.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/docs/raid-command-receipts.md",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    },
+    "T019-C22": {
+      "result": "PASS",
+      "canonical_reference": "docs/raid-agent-task-contracts.md C22; planning/raid-ci-matrix.json",
+      "repository_facts": "Three test files registered in the CI inventory; CI test job runs them against PostgreSQL service.",
+      "entities": "New CommandReceipt, InboxDelivery, AuditEvent, OutboxEvent (UUID ids, RESTRICT FKs, unique (actorId, commandKind, idempotencyKey) and (provider, deliveryId), unique (receiptId|inboxId, ordinal), unique OutboxEvent.eventId). No existing table changed; reuses InternalId and EventEnvelopeSchema from src/contracts.",
+      "permissions": "The module authorizes nothing; the host authenticates the actor and supplies actorId (docs/raid-command-receipts.md trust boundary). Receipt keys are scoped per actor and command kind, so another actor reusing a key neither collides nor reads a result (mutation M9 caught).",
+      "state_transitions": "absent -> claimed by the open transaction -> committed with result reference, audit rows and outbox rows; or rolled back with nothing stored. Replay and conflict add no state.",
+      "setup": "Reviewer worktree of origin/claude/t019-command-receipts at d38a45d544efc18aa9948c628a7b95f5960c4a2c; npm ci; disposable PostgreSQL 16; prisma migrate deploy twice; RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false.",
+      "action": "Inspected matrix diff and CI log of run 37814391505.",
+      "expected": "Tests are discovered and executed in CI at the candidate source.",
+      "observed": "CI log shows command-receipts-db 27, command-receipts 46, boundary 4 tests executed, 70 files passed; 7 of 7 required checks success at d38a45d and at 5ea2867; planning unit tests 27 OK locally.",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/blob/d38a45d544efc18aa9948c628a7b95f5960c4a2c/planning/raid-ci-matrix.json",
+      "sha": "d38a45d544efc18aa9948c628a7b95f5960c4a2c",
+      "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+      "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author"
+    }
+  },
+  "verification": [
+    {
+      "command": "npm ci; docker run postgres:16 (tmpfs, 127.0.0.1:56906); DATABASE_URL=...useraid_test npx prisma migrate deploy (x2); npx prisma migrate diff --from-url ... --to-schema-datamodel prisma/schema.prisma --exit-code",
+      "result": "PASS",
+      "observed": "All migrations applied on an empty database; second run \"No pending migrations\"; drift check \"No difference detected\", exit 0."
+    },
+    {
+      "command": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL=... npx vitest run tests/command-receipts.test.ts tests/command-receipts-db.test.ts tests/command-receipts-boundary.test.ts",
+      "result": "PASS",
+      "observed": "3 files, 77 tests passed (46 unit, 27 real-PostgreSQL, 4 boundary), 0 failed, 0 skipped; repeated 6 more times with identical results."
+    },
+    {
+      "command": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL=... npm test",
+      "result": "PASS",
+      "observed": "70 files, 810 tests passed, 0 failed, 0 skipped."
+    },
+    {
+      "command": "npm run typecheck; npx prettier --check .; npx eslint (module, adapter, tests, host); python3 -m unittest discover -s tests -p \"test_raid_*.py\"",
+      "result": "PASS",
+      "observed": "tsc clean; Prettier clean; eslint no output for the touched files; 27 planning tests OK."
+    },
+    {
+      "command": "cp -RL examples/command-receipts <clean dir>; npm install --ignore-scripts; prisma generate; prisma migrate deploy; prisma migrate diff; npm start (database useraid_command_host_test)",
+      "result": "PASS",
+      "observed": "43 packages installed independently; both host migrations applied; no drift; host JSON with all flags true."
+    },
+    {
+      "command": "gh pr view 182 / gh run view 37814391505",
+      "result": "PASS",
+      "observed": "7 of 7 required checks success at d38a45d (pull_request run 37814391505, push run 37814384653); test job executed command-receipts db 27, unit 46, boundary 4, 70 files passed."
+    },
+    {
+      "command": "Packet integrity: sha256 of 11 files in planning/task-evidence/T019.json artifacts.files_sha256 against the d38a45d tree",
+      "result": "PASS",
+      "observed": "All 11 hashes match; 5ea2867..d38a45d changes only planning/task-evidence/T019.json."
+    }
+  ],
+  "mutations": [
+    {
+      "id": "M1",
+      "change": "Remove the digest comparison in claimOrReplay (return original on changed payload)",
+      "expected": "AC69 conflict tests fail",
+      "result": "CAUGHT",
+      "observed": "6 failed (db sequential conflict, db waiter conflict, db inbox changed payload, unit conflict, unit inbox conflict, consumer host)."
+    },
+    {
+      "id": "M1b",
+      "change": "ON CONFLICT DO UPDATE overwriting requestDigest and clearing resultRef",
+      "expected": "Overwrite blocked",
+      "result": "CAUGHT",
+      "observed": "13 failed; immutability trigger raises; replay, race and unit tests fail."
+    },
+    {
+      "id": "M3a",
+      "change": "Drop the unique index in the database and remove ON CONFLICT (plain INSERT)",
+      "expected": "Concurrent identical commands create two outcomes",
+      "result": "CAUGHT",
+      "observed": "8 failed incl. 8-way race (not exactly one EXECUTED), three blocked-waiter tests (10 s timeout), guard uniqueness."
+    },
+    {
+      "id": "M3b",
+      "change": "Keep unique index, remove ON CONFLICT (check-then-act)",
+      "expected": "Loser errors instead of replay",
+      "result": "CAUGHT",
+      "observed": "6 failed incl. 8-way race and blocked-waiter replay."
+    },
+    {
+      "id": "M4a",
+      "change": "Omit the OutboxEvent insert",
+      "expected": "Atomic audit/outbox tests fail",
+      "result": "CAUGHT",
+      "observed": "Multiple failures in outcome, rollback, append-only and race tests."
+    },
+    {
+      "id": "M4b",
+      "change": "Receipt/audit port built from the global client instead of the host transaction (non-transactional write)",
+      "expected": "Partial commit caught",
+      "result": "CAUGHT",
+      "observed": "Many failures; deferred result-required trigger and race tests fail (30 s timeouts). Module cannot open its own connection by construction."
+    },
+    {
+      "id": "M5",
+      "change": "Inbox unique key and lookup by (provider, payloadDigest) instead of (provider, deliveryId)",
+      "expected": "Delivery-id dedupe tests fail",
+      "result": "CAUGHT",
+      "observed": "1 failed: changed-payload conflict test. Only one test catches it; distinct-delivery-same-payload is not asserted (F03)."
+    },
+    {
+      "id": "M6",
+      "change": "Mint a new random semantic key suffix on every execution",
+      "expected": "Replay tests fail",
+      "result": "CAUGHT",
+      "observed": "8 failed. Note retry identity is supplied by the caller closure; the module cannot mint identity itself (F04)."
+    },
+    {
+      "id": "M7",
+      "change": "Copy the raw request into the audit event payload",
+      "expected": "Privacy tests fail",
+      "result": "CAUGHT",
+      "observed": "2 failed: real-DB dump contains secret; unit bindings contain secret."
+    },
+    {
+      "id": "M9",
+      "change": "Unique key without actorId (cross-actor collision) and lookup without actorId",
+      "expected": "Scoping test fails",
+      "result": "CAUGHT",
+      "observed": "1 failed: scopes the key to actor and command kind."
+    },
+    {
+      "id": "T1",
+      "change": "Drop deferred result-required constraint triggers",
+      "expected": "Guard test fails",
+      "result": "CAUGHT",
+      "observed": "1 failed: cannot commit a receipt or inbox row without its result reference."
+    },
+    {
+      "id": "T2",
+      "change": "Drop command_receipt_guard_v1 immutability trigger",
+      "expected": "Guard tests fail",
+      "result": "CAUGHT",
+      "observed": "2 failed (immutable, result-once)."
+    },
+    {
+      "id": "T3",
+      "change": "Drop audit and outbox append-only triggers",
+      "expected": "Guard test fails",
+      "result": "CAUGHT",
+      "observed": "1 failed: keeps audit and outbox rows append-only."
+    },
+    {
+      "id": "K1",
+      "change": "Remove .sort() in canonical object keys",
+      "expected": "Digest order test fails",
+      "result": "CAUGHT",
+      "observed": "1 failed: stable digest independent of key order."
+    }
+  ],
+  "mutation_handling": "Each mutation applied one at a time in the reviewer worktree or reviewer database, tests run, then source restored with git checkout (or database dropped and recreated from the pristine migration); git status --short was empty after every source mutation.",
+  "blocking_findings": [],
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "LOW",
+      "topic": "Retention and unbounded growth",
+      "observed": "No delete or archival path exists (O11 OPEN) and the guard triggers block deletes, so receipts, audit and outbox grow without bound; TRUNCATE bypasses row triggers (documented).",
+      "disposition": "Accepted as documented limitation; owner decision O11 and retention procedure required before production volume."
+    },
+    {
+      "id": "F02",
+      "severity": "LOW",
+      "topic": "Blocked duplicates hold a pooled connection",
+      "observed": "A duplicate of a slow in-flight command waits on the unique index for the whole handler duration with no lock_timeout; a flood of duplicates can pin pool connections until the Prisma transaction timeout (then STORAGE_UNAVAILABLE).",
+      "disposition": "Host-owned per the doc; first consumer must set transaction timeout and consider lock_timeout and per-actor rate limits (COND-02)."
+    },
+    {
+      "id": "F03",
+      "severity": "LOW",
+      "topic": "Missing test: distinct deliveries with identical payload",
+      "observed": "No test asserts that two different verifiedDeliveryIds from one provider with the same payload are both processed. Mutation M5 is caught only by the changed-payload test.",
+      "disposition": "Non-blocking; add test when the next change touches the suite (R01)."
+    },
+    {
+      "id": "F04",
+      "severity": "INFO",
+      "topic": "Retry identity test is closure-supplied",
+      "observed": "The \"same identity on retry\" assertion checks keys built by the test callback; the guarantee is structural (module cannot mint an identity) rather than enforced. A commit-succeeded-but-connection-lost retry is not tested.",
+      "disposition": "Informational; no change required."
+    },
+    {
+      "id": "F05",
+      "severity": "INFO",
+      "topic": "Only one real adapter",
+      "observed": "Substitution is shown with a scripted port and capability-gap tests, not a second real driver (for example pg). This satisfies R15/AC73 at foundation level as the blueprint allows a deterministic compatible test adapter.",
+      "disposition": "Informational."
+    },
+    {
+      "id": "F06",
+      "severity": "INFO",
+      "topic": "Canonicalization edge behavior",
+      "observed": "Symbol keys and non-enumerable properties are ignored; a throwing getter propagates the raw error (not a CommandReceiptError). Requests are JSON from hosts, so impact is negligible. Provider redelivery with different bytes under one id raises DELIVERY_PAYLOAD_CONFLICT (not retried), which hosts must map deliberately.",
+      "disposition": "Documented in the runbook; host mapping to HTTP is a consumer task."
+    },
+    {
+      "id": "F07",
+      "severity": "INFO",
+      "topic": "retryWholeTransaction has no backoff or jitter",
+      "observed": "Three immediate attempts; adequate for the tested deadlock, may thrash under sustained contention.",
+      "disposition": "Informational; revisit with measured contention."
+    },
+    {
+      "id": "F08",
+      "severity": "INFO",
+      "topic": "Outbox ordering",
+      "observed": "OutboxEvent has only createdAt for ordering and no delivery state; documented as left to the worker task.",
+      "disposition": "Worker task must add its own ordering and bookkeeping side table."
+    }
+  ],
+  "conditions": [
+    {
+      "id": "COND-01",
+      "condition": "Before the validator can pass, the implementer merges this review into planning/task-evidence/T019.json without changing source: set \"reviewer\" to the review reviewer string, replace the 27 criteria records with the records in this file (same REQUIRED keys; NOT APPLICABLE records carry rationale), update status and independent_review text, and record CI for the final head. Re-run the completion validator.",
+      "blocking": true
+    },
+    {
+      "id": "COND-02",
+      "condition": "T020 (first consumer) must follow the documented host contract: claim before other locks, a bounded transaction timeout (and lock_timeout or duplicate rate limit), map IDEMPOTENCY_KEY_REUSED to HTTP 409 via ERROR_CONTRACT, never expose receipts or audit rows, authenticate actorId in the host.",
+      "blocking": false
+    },
+    {
+      "id": "COND-03",
+      "condition": "Restore rehearsal (AC68), retention policy (O11) and the outbox dispatcher/reconciler with its own side table remain NOT VERIFIED and block any live enablement; G01-G10 are not granted.",
+      "blocking": false
+    }
+  ],
+  "recommendations": [
+    "R01: add a distinct-deliveries-same-payload inbox test (F03).",
+    "R02: keep CI evidence at the final head after this review commit is pushed."
+  ],
+  "completion_validator": {
+    "command": "python3 scripts/verify-raid-completion.py T019 planning/task-evidence/T019.json",
+    "result": "FAIL (expected before COND-01)",
+    "exit_code": 1,
+    "observed": "On the implementer packet at d38a45d the validator rejects: \"Missing report field: reviewer\" and all 27 criteria \"NOT VERIFIED prevents completion\" (28 lines). TDD and CI sections pass structurally. A scratch copy of that packet with reviewer set and the 27 records replaced by this file's records (not committed) passes: \"Completion packet structure passes; independent review must verify actual evidence. No production authority granted.\"",
+    "simulated_merge_result": "PASS"
+  },
+  "limitations": [
+    "Disposable-database evidence only; no live rollout, backfill, UAT, business sign-off or release approval; G01-G10 not granted.",
+    "Reviewer is a Claude Sonnet 5.5 agent in a separate context; independence is role-based, same model family as the implementer.",
+    "Restore rehearsal and outbox dispatch were not exercised by either implementer or reviewer.",
+    "This review is technical acceptance of source at d38a45d (source files identical to 5ea2867) only; later changes require re-review."
+  ],
+  "environment": "Local macOS Darwin 27.0.0 arm64; Node 26.0.0/npm 11.12.1; PostgreSQL 16.15 in disposable postgres:16 container (image sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0, tmpfs, 127.0.0.1:56906, created by the reviewer); Prisma 6.19.3; vitest 4.1.11; synthetic data only. Remote CI run 37814391505 (pull_request) at d38a45d544efc18aa9948c628a7b95f5960c4a2c ubuntu/Node 22.",
+  "disposable_resources": "Container raid-t019-review-db (label raid-task=T019-review), database useraid_test and useraid_command_host_test, port 56906; removed at the end of the review."
+}

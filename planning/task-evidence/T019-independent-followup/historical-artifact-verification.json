@@ -1,0 +1,11 @@
+{
+  "all_6_junit_hashes_match": true,
+  "files": {
+    "red.xml": "e430b75531e9db4d64f5c5404e2bb899b46de3da0fb793e3754dbd79ee005bce",
+    "green.xml": "e2ad68c9dcc660ea89aa1fcb41bd63763746cb8ff2f690b5421e94d8f30ab82d",
+    "refactor.xml": "8bf43daaa2a22f54a24a9fa1f8e002c22d7b65e490b62e91d803a6782bb6f080",
+    "full.xml": "5f0b7573a6e21aaa023677ca6be321b908ac9424956ba6641dcdd59e1914ffe7",
+    "final-receipts.xml": "33bb35739c965d9e47da73a3a12f08a000f210e0acd6692a7271c0770eb91ea8",
+    "final-full.xml": "df049e72c14ab95fae1277530cc88d763badaf54f30612ccb00a8b3afc7d6932"
+  }
+}

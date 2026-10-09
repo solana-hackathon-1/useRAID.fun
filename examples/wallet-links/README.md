@@ -1,0 +1,5 @@
+# Wallet links example host
+
+Minimal consuming host for the T006 wallet-link storage (additional verified wallets on one canonical HUMAN participant). Full module documentation, contracts, configuration names, lock order, retry rules and the step-by-step standalone run are in [docs/raid-wallet-links.md](../../docs/raid-wallet-links.md).
+
+This directory declares its own dependencies (`package.json`), a minimal `User`/`WalletIdentity`/`Participant`/`WalletLink` schema and its own four migrations (host-owned `User` and `WalletIdentity` tables, plus the exact participant-mapping and wallet-link migrations as symlinks to the canonical SQL). `contracts`, `identity`, `identity-storage`, `identity-link`, `lib/identity-storage-adapter.ts` and `lib/wallet-link-proof.ts` are symlinks to the canonical sources; copy with `cp -RL` so the copy is self-contained. Supply `DATABASE_URL` for a disposable local database yourself; the host refuses non-local URLs and `NODE_ENV=production`. It never imports RAID configuration or `src/lib/db`.

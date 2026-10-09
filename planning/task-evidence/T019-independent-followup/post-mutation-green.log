@@ -1,0 +1,27 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/private/tmp/raid-foundation-followup-20261009-codex/T019/source[39m
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mblocks the second identical command on the first backend, then replays it
+[22m[39m{"receiptRace":true,"waiter":190,"blocker":191,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mlets the waiting command execute when the first one rolls back
+[22m[39m{"receiptRace":true,"waiter":191,"blocker":190,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mreports a conflict, not a replay, when the waiting command has another payload
+[22m[39m{"receiptRace":true,"waiter":190,"blocker":191,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2minbound provider deliveries (AC32 foundation)[2m > [22m[2mblocks the duplicate on the first backend while the first handler is open
+[22m[39m{"receiptRace":true,"waiter":189,"blocker":190,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+ [32m✓[39m tests/command-receipts-db.test.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 1721[2mms[22m[39m
+       [33m[2m✓[22m[39m survives a genuine PostgreSQL deadlock between two different commands [33m 1058[2mms[22m[39m
+ [32m✓[39m tests/command-receipts-boundary.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 381[2mms[22m[39m
+   [33m[2m✓[22m[39m minimal external host runs the documented flow using explicit dependencies [33m 377[2mms[22m[39m
+ [32m✓[39m tests/command-receipts.test.ts [2m([22m[2m46 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m3 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[32m78 passed[39m[22m[90m (78)[39m
+[2m   Start at [22m 09:23:05
+[2m   Duration [22m 2.59s[2m (transform 46ms, setup 0ms, import 149ms, tests 2.11s, environment 0ms)[22m
+
+JUNIT report written to /tmp/raid-foundation-followup-20261009-codex/T019/post-mutation-green.xml

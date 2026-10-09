@@ -1,0 +1,1 @@
+../../../../../prisma/migrations/202610090003_wallet_links/migration.sql

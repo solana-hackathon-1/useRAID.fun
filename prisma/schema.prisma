@@ -26,6 +26,7 @@ model User {
   usdcAllocations UsdcAllocation[]
   mediaAssets MediaAsset[]
   participant Participant?
+  walletLinks WalletLink[]
 }
 // Immutable HUMAN foundation; checks/row guard live in the additive SQL migration.
 model Participant {
@@ -36,6 +37,25 @@ model Participant {
   provisionActorAccountId String
   provisionRequestId String
   account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  walletLinks WalletLink[]
+  @@unique([id, accountId])
+}
+// Additional verified wallet credentials; checks, guard and exclusivity triggers live in the SQL migration.
+model WalletLink {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId String
+  participantId String @db.Uuid
+  networkIdentity String
+  address String @unique
+  status String @default("ACTIVE")
+  proofRef String @unique
+  verifiedAt DateTime @default(now()) @db.Timestamptz(6)
+  revokedAt DateTime? @db.Timestamptz(6)
+  linkActorAccountId String
+  linkRequestId String
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "WalletLink_accountId_fkey")
+  participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "WalletLink_participant_fkey")
+  @@index([accountId, status])
 }
 // Exact instrument identity (T029). Checks, immutability and policy guards live in the additive SQL migration.
 model Asset {
@@ -602,4 +622,55 @@ model XEndpointState {
   blockedUntil DateTime?
   lastSuccessAt DateTime?
   lastError String?
+}
+// Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
+// additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
+model CommandReceipt {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  actorId String
+  commandKind String
+  idempotencyKey String
+  requestDigest String
+  requestId String
+  resultRef String?
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  auditEvents AuditEvent[]
+  @@unique([actorId, commandKind, idempotencyKey])
+}
+model InboxDelivery {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  provider String
+  deliveryId String
+  payloadDigest String
+  resultRef String?
+  receivedAt DateTime @default(now()) @db.Timestamptz(6)
+  auditEvents AuditEvent[]
+  @@unique([provider, deliveryId])
+}
+model AuditEvent {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  receiptId String? @db.Uuid
+  inboxId String? @db.Uuid
+  ordinal Int
+  eventType String
+  aggregateId String
+  aggregateVersion Int
+  actorId String
+  guildId String?
+  correlationId String
+  payload Json @db.JsonB
+  occurredAt DateTime @default(now()) @db.Timestamptz(6)
+  receipt CommandReceipt? @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  inbox InboxDelivery? @relation(fields: [inboxId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  outbox OutboxEvent?
+  @@unique([receiptId, ordinal])
+  @@unique([inboxId, ordinal])
+  @@index([aggregateId, occurredAt])
+}
+model OutboxEvent {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  event AuditEvent @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([createdAt])
 }

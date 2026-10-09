@@ -1,0 +1,1 @@
+../../../src/lib/command-receipts-adapter.ts

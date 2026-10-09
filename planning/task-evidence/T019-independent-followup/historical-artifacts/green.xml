@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="77" failures="0" errors="0" time="1.877918083">
+    <testsuite name="tests/command-receipts-boundary.test.ts" timestamp="2026-10-08T16:44:57.939Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.356633708">
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="public module owns SQL and contracts without an app singleton, framework or SDK" time="0.001869875">
+        </testcase>
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="migration is additive, versioned and leaves existing tables untouched" time="0.000472833">
+        </testcase>
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="minimal external host runs the documented flow using explicit dependencies" time="0.352839292">
+        </testcase>
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="module documentation declares the R16 reuse contract and runnable consumer steps" time="0.000849834">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/command-receipts-db.test.ts" timestamp="2026-10-08T16:44:57.939Z" hostname="0xd.local" tests="27" failures="0" errors="0" skipped="0" time="1.511387875">
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; commits the business row, receipt, audit and outbox together and replays the original" time="0.055699542">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; conflicts on the same key with a different payload and never overwrites the original" time="0.016087042">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; scopes the key to actor and command kind" time="0.027523833">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; records several events with ordinals and only publishes the marked ones" time="0.013405417">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on callback error and lets the same key execute later" time="0.012603167">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on invalid event payload and lets the same key execute later" time="0.012113209">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on no event and lets the same key execute later" time="0.011547417">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on invalid result reference and lets the same key execute later" time="0.011179917">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; rolls the business row back when a later database statement fails" time="0.01060525">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; blocks the second identical command on the first backend, then replays it" time="0.013578042">
+            <system-out>
+{&quot;receiptRace&quot;:true,&quot;waiter&quot;:163,&quot;blocker&quot;:164,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;CommandReceipt\&quot; (\&quot;actorId\&quot;, \&quot;commandKind\&quot;, \&quot;idempotencyKey\&quot;, \&quot;requestDigest\&quot;, \&quot;requestId\&quot;)\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\&quot;actorId\&quot;, \&quot;commandKind\&quot;, \&quot;idempotencyKey\&quot;) DO NOTHING RETURNING \&quot;id\&quot;::text AS \&quot;id\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; lets the waiting command execute when the first one rolls back" time="0.02449975">
+            <system-out>
+{&quot;receiptRace&quot;:true,&quot;waiter&quot;:164,&quot;blocker&quot;:163,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;CommandReceipt\&quot; (\&quot;actorId\&quot;, \&quot;commandKind\&quot;, \&quot;idempotencyKey\&quot;, \&quot;requestDigest\&quot;, \&quot;requestId\&quot;)\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\&quot;actorId\&quot;, \&quot;commandKind\&quot;, \&quot;idempotencyKey\&quot;) DO NOTHING RETURNING \&quot;id\&quot;::text AS \&quot;id\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; reports a conflict, not a replay, when the waiting command has another payload" time="0.023512875">
+            <system-out>
+{&quot;receiptRace&quot;:true,&quot;waiter&quot;:163,&quot;blocker&quot;:164,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;CommandReceipt\&quot; (\&quot;actorId\&quot;, \&quot;commandKind\&quot;, \&quot;idempotencyKey\&quot;, \&quot;requestDigest\&quot;, \&quot;requestId\&quot;)\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\&quot;actorId\&quot;, \&quot;commandKind\&quot;, \&quot;idempotencyKey\&quot;) DO NOTHING RETURNING \&quot;id\&quot;::text AS \&quot;id\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; produces one execution for eight simultaneous identical commands" time="0.023187">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; re-runs the entire transaction after a serialization failure and commits one outcome" time="0.016815917">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; classifies exhaustion as RETRY_TRANSACTION and persists nothing" time="0.010311542">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; survives a genuine PostgreSQL deadlock between two different commands" time="1.0539555">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; runs the handler once for a repeated delivery and stores only the digest" time="0.025968708">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; yields one outcome for eight simultaneous deliveries" time="0.021285791">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; blocks the duplicate on the first backend while the first handler is open" time="0.016713542">
+            <system-out>
+{&quot;receiptRace&quot;:true,&quot;waiter&quot;:163,&quot;blocker&quot;:162,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;InboxDelivery\&quot; (\&quot;provider\&quot;, \&quot;deliveryId\&quot;, \&quot;payloadDigest\&quot;) VALUES ($1, $2, $3)\n     ON CONFLICT (\&quot;provider\&quot;, \&quot;deliveryId\&quot;) DO NOTHING RETURNING \&quot;id\&quot;::text AS \&quot;id\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; conflicts on a changed payload, keeps the original and separates providers" time="0.024170916">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; releases the claim when the handler fails so a redelivery can succeed" time="0.013297459">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; private data stays out of the tables (I06) &gt; stores identifiers and digests only" time="0.011890792">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; keeps receipts immutable and unique per actor, kind and key" time="0.0121325">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; keeps audit and outbox rows append-only" time="0.013007583">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; rejects malformed rows through checks and keys" time="0.018326291">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; cannot commit a receipt or inbox row without its result reference" time="0.0083815">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; allows the result reference to be set exactly once and nothing else to change" time="0.007296416">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/command-receipts.test.ts" timestamp="2026-10-08T16:44:57.941Z" hostname="0xd.local" tests="46" failures="0" errors="0" skipped="0" time="0.0098965">
+        <testcase classname="tests/command-receipts.test.ts" name="canonical request digest &gt; is a stable lowercase SHA-256 independent of key order and sensitive to every value" time="0.001389208">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="canonical request digest &gt; rejects values whose identity is ambiguous or not JSON" time="0.000924583">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid actor" time="0.000649667">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid actor charset" time="0.000109833">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid kind lowercase" time="0.000110834">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid kind too short" time="0.000106917">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid key space" time="0.000103833">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid key empty" time="0.000081084">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid request id" time="0.00008825">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid request undefined" time="0.000095542">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; fails closed for a port that is not PostgreSQL READ COMMITTED" time="0.000141125">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="replay and conflict &gt; returns the stored result without running the handler or writing" time="0.000248625">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="replay and conflict &gt; conflicts on a different digest and performs no write after the lookup" time="0.000094375">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="replay and conflict &gt; refuses a receipt row that has no result or a malformed shape" time="0.000124">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; claims the receipt first, then writes audit, outbox and finalizes the result last" time="0.001516083">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; skips the outbox for a non-publishing event and stores only digests, never the request" time="0.000364916">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects no events after the callback and never finalizes" time="0.000081917">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects unknown family after the callback and never finalizes" time="0.000088625">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects free-text payload field after the callback and never finalizes" time="0.000091125">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects zero version after the callback and never finalizes" time="0.000094667">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects too many events after the callback and never finalizes" time="0.000053875">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects an invalid result reference" time="0.000053791">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; passes the callback error through untouched and writes nothing further" time="0.000300042">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; sanitizes driver failures and rejects non-array results" time="0.000139542">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects provider uppercase before SQL" time="0.000101167">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects provider empty before SQL" time="0.00007425">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects delivery id space before SQL" time="0.000046917">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects delivery id too long before SQL" time="0.000062542">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects payload undefined before SQL" time="0.000058542">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; treats a repeated delivery as a duplicate without running the handler" time="0.000073417">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; reports a changed payload under the same delivery id as a conflict" time="0.000048583">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; processes a first delivery and never persists the raw payload" time="0.000137167">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; re-runs the whole attempt with an attempt counter until success" time="0.000076958">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; stops at the bound and rethrows the last retryable failure" time="0.000056875">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; does not retry other errors, including idempotency conflicts" time="0.000118625">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; accepts a host classifier and validates the bound" time="0.000606458">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;40001&quot;} as RETRY_TRANSACTION" time="0.000064666">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;40P01&quot;} as RETRY_TRANSACTION" time="0.000025542">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;P2034&quot;} as RETRY_TRANSACTION" time="0.000020958">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40001&quot;}} as RETRY_TRANSACTION" time="0.0000195">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;23505&quot;}} as STORAGE_UNAVAILABLE" time="0.000018625">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;ECONNRESET&quot;} as STORAGE_UNAVAILABLE" time="0.000018417">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {} as STORAGE_UNAVAILABLE" time="0.000018416">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies null as STORAGE_UNAVAILABLE" time="0.000018125">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; keeps typed module errors unchanged" time="0.000026">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; verifies the real isolation once and refuses anything but read committed" time="0.000321333">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -11,6 +11,7 @@ export type IdentityStorageCode =
   | 'ACCOUNT_NOT_FOUND'
   | 'STORAGE_CONTRACT'
   | 'RETRY_TRANSACTION'
+  | 'UNIQUE_CONFLICT'
   | 'STORAGE_UNAVAILABLE';
 export class IdentityStorageError extends Error {
   constructor(readonly code: IdentityStorageCode) {

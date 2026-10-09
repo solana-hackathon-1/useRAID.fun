@@ -1,0 +1,112 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/private/tmp/raid-foundation-followup-20261009-codex/T019/source[39m
+
+ [32m✓[39m tests/tracking-db.test.ts [2m([22m[2m48 tests[22m[2m)[22m[33m 3445[2mms[22m[39m
+       [33m[2m✓[22m[39m does not dead-letter submissions while X is failing with 5xx or unreachable [33m 301[2mms[22m[39m
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mblocks the second identical command on the first backend, then replays it
+[22m[39m{"receiptRace":true,"waiter":125,"blocker":126,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mlets the waiting command execute when the first one rolls back
+[22m[39m{"receiptRace":true,"waiter":126,"blocker":125,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mreports a conflict, not a replay, when the waiting command has another payload
+[22m[39m{"receiptRace":true,"waiter":125,"blocker":126,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2minbound provider deliveries (AC32 foundation)[2m > [22m[2mblocks the duplicate on the first backend while the first handler is open
+[22m[39m{"receiptRace":true,"waiter":125,"blocker":128,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+ [32m✓[39m tests/command-receipts-db.test.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 1558[2mms[22m[39m
+       [33m[2m✓[22m[39m survives a genuine PostgreSQL deadlock between two different commands [33m 1020[2mms[22m[39m
+ [32m✓[39m tests/rewards-finance.test.ts [2m([22m[2m34 tests[22m[2m)[22m[33m 709[2mms[22m[39m
+ [32m✓[39m tests/integration.test.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 523[2mms[22m[39m
+ [32m✓[39m tests/studio-db.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 446[2mms[22m[39m
+[90mstdout[2m | tests/identity-storage-db.test.ts[2m > [22m[2mT006 actual additive database fences[2m > [22m[2mprovision wins against old binary at final DELETE; entire auth transaction rolls back
+[22m[39m{"storageRace":true,"waiter":163,"blocker":161,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\".\"User\".\"role\", \"public\".\"User\".\"approved\", \"public\".\"User\".\"suspended\", \"public\".\"User\".\"affiliation\", \"public\".\"User\".\"createdAt\""}
+
+[90mstdout[2m | tests/identity-storage-db.test.ts[2m > [22m[2mT006 actual additive database fences[2m > [22m[2mdelete wins: provision blocks on User key lock then denies missing account without orphan
+[22m[39m{"storageRace":true,"waiter":161,"blocker":163,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+
+[90mstdout[2m | tests/identity-storage-db.test.ts[2m > [22m[2mT006 actual additive database fences[2m > [22m[2mindependent create/create race returns one committed identity and first provenance
+[22m[39m{"storageRace":true,"waiter":163,"blocker":161,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+
+ [32m✓[39m tests/identity-storage-db.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 472[2mms[22m[39m
+ [32m✓[39m tests/launch-db.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 275[2mms[22m[39m
+ [32m✓[39m tests/money-integrity-db.test.ts [2m([22m[2m23 tests[22m[2m)[22m[33m 468[2mms[22m[39m
+ [32m✓[39m tests/wallet-auth-db.test.ts [2m([22m[2m18 tests[22m[2m)[22m[33m 582[2mms[22m[39m
+ [32m✓[39m tests/usdc-ops-db.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 227[2mms[22m[39m
+ [32m✓[39m tests/command-receipts.test.ts [2m([22m[2m46 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m tests/worker-db.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 582[2mms[22m[39m
+ [32m✓[39m tests/identity-preflight.test.ts [2m([22m[2m48 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/shared-contracts.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/tracking.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 573[2mms[22m[39m
+ [32m✓[39m tests/x-oauth-db.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 501[2mms[22m[39m
+ [32m✓[39m tests/x-oauth-routes.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/standalone-db.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 153[2mms[22m[39m
+ [32m✓[39m tests/identity-storage.test.ts [2m([22m[2m33 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/domain.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/launch-ipfs.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/x-oauth.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m tests/public-load-db.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 273[2mms[22m[39m
+ [32m✓[39m tests/raid-fixtures.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/standalone-raids.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/raid-evidence.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/launch-gate.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m tests/usdc-receipt.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/media-db.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 70[2mms[22m[39m
+ [32m✓[39m tests/audit-db.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 117[2mms[22m[39m
+ [32m✓[39m tests/admin-db.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 138[2mms[22m[39m
+ [32m✓[39m tests/studio.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/command-receipts-boundary.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 400[2mms[22m[39m
+   [33m[2m✓[22m[39m minimal external host runs the documented flow using explicit dependencies [33m 395[2mms[22m[39m
+ [32m✓[39m tests/usdc-chain.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/account-merge-canonical.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/braces-security.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/launch-crypto.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/refresh.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/wallet-routes.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/shared-contracts-boundary.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 277[2mms[22m[39m
+ [32m✓[39m tests/identity-storage-boundary.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 359[2mms[22m[39m
+   [33m[2m✓[22m[39m minimal external host resolves a real mapping using explicit dependencies [33m 355[2mms[22m[39m
+ [32m✓[39m tests/report-route.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/shared-contracts-review.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/env-example.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/dependency-compatibility.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 496[2mms[22m[39m
+     [33m[2m✓[22m[39m the image runtime can decode and resize a raster image [33m 476[2mms[22m[39m
+ [32m✓[39m tests/rewards.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m tests/docs-links.test.ts [2m([22m[2m57 tests[22m[2m)[22m[33m 338[2mms[22m[39m
+ [32m✓[39m tests/creator-route.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/pump-launch.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32m✓[39m tests/http.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/submit-route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/security-headers.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/db-guard.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/deploy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/identity-preflight-boundary.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 269[2mms[22m[39m
+ [32m✓[39m tests/shell-account.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m tests/admin-lists.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m tests/raid-fixtures-boundary.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 275[2mms[22m[39m
+ [32m✓[39m tests/discovery-rows.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m tests/studio-preview-route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/auth-routes.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/fake-solana.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/auth.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m tests/audit-check.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m tests/states.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/image-hosts.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m tests/admins.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m tests/format.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/token-data.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m tests/local-db.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m70 passed[39m[22m[90m (70)[39m
+[2m      Tests [22m [1m[32m811 passed[39m[22m[90m (811)[39m
+[2m   Start at [22m 09:21:56
+[2m   Duration [22m 27.27s[2m (transform 609ms, setup 0ms, import 5.96s, tests 14.02s, environment 4ms)[22m
+
+JUNIT report written to /tmp/raid-foundation-followup-20261009-codex/T019/full.xml
+[90mstderr[2m | tests/tracking.test.ts[2m > [22m[2mraid-specific search query[2m > [22m[2mfalls back to the unfiltered query when the author list exceeds the limit
+[22m[39mX search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+[90mstderr[2m | tests/x-oauth-db.test.ts[2m > [22m[2mX connection PostgreSQL invariants[2m > [22m[2mignores LOCAL_AUTO_APPROVE_CREATORS in production
+[22m[39mLOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.
+

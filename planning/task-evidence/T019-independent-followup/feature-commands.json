@@ -1,0 +1,8 @@
+[
+  {
+    "label": "feature",
+    "command": "npx vitest run tests/command-receipts.test.ts tests/command-receipts-db.test.ts tests/command-receipts-boundary.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-foundation-followup-20261009-codex/T019/feature.xml",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  }
+]
