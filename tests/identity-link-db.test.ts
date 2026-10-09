@@ -132,6 +132,34 @@ async function observeBlock(name: string, waiter: number, blocker: number, state
 const codeOf = (error: unknown) =>
   error instanceof IdentityLinkError ? error.code : `OTHER:${String(error)}`;
 
+// Prisma's raw-query error omits CONSTRAINT_NAME. Capture PostgreSQL diagnostics
+// inside an exception subtransaction instead of guessing from the driver message.
+async function rawLinkInsertFailure(accountId: string, address: string) {
+  return db.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe(`
+      CREATE OR REPLACE FUNCTION pg_temp.probe_wallet_link_insert(owner_id text, wallet_address text)
+      RETURNS TABLE (sqlstate text, constraint_name text) LANGUAGE plpgsql AS $$
+      DECLARE failure_code text; failure_constraint text;
+      BEGIN
+        INSERT INTO "WalletLink" ("accountId", "participantId", "networkIdentity", address,
+          "proofRef", "linkActorAccountId", "linkRequestId")
+        SELECT owner_id, id, 'mainnet', wallet_address, 'proof-raw-insert', owner_id, 'raw-insert'
+        FROM "Participant" WHERE "accountId"=owner_id;
+        RETURN QUERY SELECT NULL::text, NULL::text;
+      EXCEPTION WHEN unique_violation THEN
+        GET STACKED DIAGNOSTICS failure_code = RETURNED_SQLSTATE,
+          failure_constraint = CONSTRAINT_NAME;
+        RETURN QUERY SELECT failure_code, failure_constraint;
+      END; $$;
+    `);
+    return tx.$queryRawUnsafe<{ sqlstate: string | null; constraint_name: string | null }[]>(
+      'SELECT * FROM pg_temp.probe_wallet_link_insert($1, $2)',
+      accountId,
+      address,
+    );
+  }, options);
+}
+
 integration('T006 wallet links on real PostgreSQL', () => {
   beforeAll(() => assertTestDatabase());
   beforeEach(() => truncateAll(db));
@@ -186,6 +214,7 @@ integration('T006 wallet links on real PostgreSQL', () => {
     );
     const byName = Object.fromEntries(indexes.map((i) => [i.indexname, i.indexdef]));
     expect(byName['WalletLink_address_key']).toMatch(/UNIQUE.*\(address\)/);
+    expect(byName['WalletLink_address_key']).not.toMatch(/\bWHERE\b/i);
     expect(byName['WalletLink_proofRef_key']).toMatch(/UNIQUE.*\("proofRef"\)/);
     expect(byName['WalletLink_accountId_status_idx']).toMatch(/\("accountId", status\)/);
     expect(byName['Participant_id_accountId_key']).toMatch(/UNIQUE.*\(id, "accountId"\)/);
@@ -291,6 +320,35 @@ integration('T006 wallet links on real PostgreSQL', () => {
   });
 
   describe('address exclusivity and old-binary behavior (D3, D4)', () => {
+    it('raw SQL cannot reassign a revoked address to a second account (LR01, D13)', async () => {
+      await account('alice', W1);
+      await account('bob', W4, 'bob-provision');
+      await db.$transaction((tx) => link(tx, 'alice', W2), options);
+      await db.$executeRawUnsafe(
+        `UPDATE "WalletLink" SET status='REVOKED', "revokedAt"=now() WHERE address=$1`,
+        W2,
+      );
+      const before = await rows('WalletLink');
+      expect(await rawLinkInsertFailure('bob', W2)).toEqual([
+        { sqlstate: '23505', constraint_name: 'WalletLink_address_key' },
+      ]);
+      expect(await rows('WalletLink')).toEqual(before);
+    });
+
+    it.each(['alice', 'bob'])(
+      'raw SQL cannot link an existing primary address to %s (LR02)',
+      async (linkAccount) => {
+        await account('alice', W1, 'alice-provision');
+        await account('bob', W4, 'bob-provision');
+        const primaryBefore = await rows('WalletIdentity');
+        expect(await rawLinkInsertFailure(linkAccount, W1)).toEqual([
+          { sqlstate: '23505', constraint_name: 'raid_wallet_subject_exclusive_v1' },
+        ]);
+        expect(await rows('WalletLink')).toEqual([]);
+        expect(await rows('WalletIdentity')).toEqual(primaryBefore);
+      },
+    );
+
     it('two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge', async () => {
       await account('alice', W1);
       await account('bob', W4);

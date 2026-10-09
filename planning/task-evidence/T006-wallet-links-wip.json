@@ -1,10 +1,10 @@
 {
   "task_id": "T006",
   "slice": "Wallet links PR-A: additive WalletLink storage and link command (issue #48, AC01 identity half)",
-  "status": "IMPLEMENTATION_WIP / NOT VERIFIED (disposable-database evidence only; independent implementation review due)",
+  "status": "IMPLEMENTED_UNVERIFIED / NOT VERIFIED (PR-A independently reviewed with conditions; local follow-up tests and docs pending independent verification)",
   "criteria_status": "All 27 full T006 criteria remain NOT VERIFIED (validator exit 1, 27 lines \"NOT VERIFIED prevents completion\"); no review is self-certified.",
   "ac01": "PARTIAL: identity half evidenced at real PostgreSQL (same canonical participant, byte-identical Participant row, history, payout rows unchanged after linking W2 and W3). Capacity half NOT VERIFIED (gap G1: no active_commitments/engagement table). The user outcome \"second wallet signs in to the same account\" is NOT delivered (PR-B). T006-A01 PARTIAL; T006-A02 NOT VERIFIED; T006-W03 not claimed.",
-  "recorded_at": "2026-10-09 (Claude Sonnet 5.5 implementation agent, resumed after an API rate-limit interruption)",
+  "recorded_at": "2026-10-09T02:14:12.957663+00:00",
   "base": {
     "branch": "claude/t006-wallet-links-storage",
     "based_on": "origin/claude/t006-wallet-link-plan 12cb3a4e51817e93951d32e7b82f3c86a90ff5d4 (PR #180)",
@@ -165,15 +165,20 @@
     "src/lib/identity-storage-adapter.ts": "9ef68ed6cdfe51111ec45b80dd21de2bf8a2b7ca78a86e6879b71e92aa79defd",
     "src/identity-storage/contracts.ts": "a23aa17945519cc29cc46ca0d7da01a40a3e36603fb4ac953f639e6ceb89f3dd",
     "tests/identity-link.test.ts": "a2b6412820c40d298a3ee04b150fff943cd71420f56f2704db7e0ac6b815b220",
-    "tests/identity-link-db.test.ts": "c26594c7d70f74ffe6f024d4e250e7bd3225240f76665988a6ba8b1b28025c7b",
+    "tests/identity-link-db.test.ts": "7c27e24c5ed5ca4804e54245e3f03f6e6b769b67f1c96d62b32f2ad7038e8c2c",
     "tests/identity-link-migration.test.ts": "f7cf0702e1e50a677bb505f80bcea171bdbc4507994e195bdadd8db3044de441",
     "tests/identity-link-boundary.test.ts": "003035bb35a94e715ecd7fdb9359153dd1edbf68e3a3baef1caf89b8aa03a4f8",
     "tests/wallet-link-proof.test.ts": "28477ac0953a612812b8badc00d59e5ee4e31c5e9e04a9a2aeedfb651d387098",
     "tests/helpers/legacy-wallet-auth.ts": "0c083a9abc2f13d14560f5392a9dcee684b411d5bfde30ba889762011421bfd1",
     "tests/helpers/wallet-link-fixtures.ts": "c7eb6afde55bda8053c4c6132f1ffe8e7424aaef080626a6900f5cf428c063f6",
     "examples/wallet-links/host.ts": "c35e300b44134b18fcd7acd6228702d7c253c74f0910708382f476f90b280afc",
-    "docs/raid-wallet-links.md": "f331f27c0d6610e1ed9db1c27a31c82afdb9ff08220cd1dae181c08bd5a7c94e",
-    "planning/raid-ci-matrix.json": "16d8dfdcac1a66039f6f4a7e1c1c9930e9a49f25f01a26028cf941442686df22"
+    "docs/raid-wallet-links.md": "281300cc252d4ec31f4582e0dbec22f7c1af355096b969ba62d53477b6d546d4",
+    "planning/raid-ci-matrix.json": "16d8dfdcac1a66039f6f4a7e1c1c9930e9a49f25f01a26028cf941442686df22",
+    "RAID_AGENT_BLUEPRINT.md": "0a1a299e34b3c3a55fa2abceae3b18fbc3396b4039e5bc0b0405961f71e3335f",
+    "docs/raid-identity-storage.md": "797c83cf0e5f692db45d9018c263392b0c950e0d5958d26f27bdba20f28dd69d",
+    "docs/tasks/T006-wallet-link-plan.md": "57583af038c44c0d2939eb9637f59156710cfb62c494a8713f80adf009649e37",
+    "planning/raid-task-contracts.json": "a5f1d7bcd7cc4fe51c6a41562ab30753e39101cc7c0269a23a09daf95c24de1b",
+    "planning/raid-scenarios.json": "a7d155510500d067fbbe87ad03faff908c4bc1da96dbf79954052d21a7bb2c4e"
   },
   "condition_dispositions": {
     "WR01": {
@@ -190,7 +195,7 @@
     },
     "WR04": {
       "disposition": "DEFERRED to PR-B",
-      "evidence": "Step-up choice (connected X vs fresh primary-wallet signature) is NOT decided here and no revoke command exists; PR-A adds no route/flag/sign-in change (boundary test), so nothing is enableable. Decision and revoke path must precede PR-B; documented in \"Permissions and trust boundary\" and \"Rollout\"."
+      "evidence": "Owner chose connected-X confirmation on 9 October 2026 (DEC-2026-10-09-01). PR-B server enforcement and revoke path still absent; linking stays unwired and disabled. T007 AC02 and rollout requirements unchanged."
     },
     "WR05": {
       "disposition": "SATISFIED",
@@ -230,14 +235,173 @@
     },
     "WR14": {
       "disposition": "PARTIAL",
-      "evidence": "Wording corrected in migration comment and docs (replay barrier is challenge consumption; reservation asymmetry; receipt replay must precede challenge consumption; T006-W03 not claimed). Migration prefix renumbering against T019/T029 and the fresh-bootstrap count recomputation remain a merge-time task."
+      "evidence": "Wording corrected; prefix 202610090003 already sorts after T019/T029, no renumbering needed (LR06). Combined-head schema/CI-matrix integration and full bootstrap/tests remain merge-time obligations."
     }
   },
   "open_risks_for_reviewer": [
-    "WR04 step-up decision and revoke path are unmade; PR-B cannot enable anything until they exist.",
     "Lock-order freedom from cycles is argued from reading every legacy writer plus named races; it is not a proof over all interleavings.",
     "The example host and the repository fixture runner share the app node_modules for the CI-style consumer test; independence was shown separately by the fresh-directory install.",
-    "Unique-on-address is stricter than the blueprint (network, address) tuple.",
-    "docs/tasks/T006-wallet-link-plan-review.md (PR #180 base) fails prettier --check; not edited here."
-  ]
+    "Connected-X confirmation selected; PR-B server enforcement and revoke are absent. Flag stays off until LR05 conditions are verified.",
+    "Uniqueness on address is a conservative DEFAULT consistent with legacy wallet identities; see reviewer F6."
+  ],
+  "independent_review": {
+    "verdict": "ACCEPTED WITH CONDITIONS",
+    "reviewer": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+    "review_commit": "1b4a4956ce15041d33499bc5767799b5815bb46d",
+    "report": "docs/tasks/T006-wallet-links-review.md",
+    "evidence": "planning/task-evidence/T006-wallet-links-review.json",
+    "follow_up_note": "Codex authors these follow-up tests/docs; no independent acceptance of the follow-up is claimed."
+  },
+  "review_conditions": {
+    "LR01": "Locally addressed by raw revoked-address INSERT diagnostic and non-partial catalog assertion; D2 mutation rerun, awaiting independent follow-up verification.",
+    "LR02": "Locally addressed by raw own/foreign-primary INSERT diagnostics; D6 rerun kills both behavior cases, awaiting independent follow-up verification.",
+    "LR03": "Locally addressed: UNIQUE_CONFLICT seventh code, sanitized HTTP 409 mapping, transaction rollback and metrics docs.",
+    "LR04": "DEFERRED PR-B: shared chain/statement constants or divergence test.",
+    "LR05": "PARTIAL: owner selected connected-X confirmation; all PR-B enforcement/revoke/conflict/copy/flag/T007/rollout/independent-review obligations remain.",
+    "LR06": "DEFERRED merge: #180 first, retarget #183, integrate all schema/test-matrix changes, all three migrations, full tests and exact-head CI; owner merge authority required.",
+    "LR07": "Locally addressed: links to non-author review in this evidence and module docs; full T006 remains NOT VERIFIED."
+  },
+  "owner_decision": {
+    "id": "DEC-2026-10-09-01",
+    "owner": "project owner, direct Codex response on 9 October 2026",
+    "choice": "Confirmation through a connected X account",
+    "authority": "RAID_AGENT_BLUEPRINT.md section 02.6",
+    "implementation": "DEFERRED PR-B; acceptance tests specified in docs/tasks/T006-wallet-link-plan.md"
+  },
+  "review_follow_up": {
+    "author": "Codex /root; authored follow-up, not its independent reviewer",
+    "baseline_sha": "1b4a4956ce15041d33499bc5767799b5815bb46d",
+    "candidate": "Uncommitted working tree of claude/t006-wallet-links-storage; no candidate commit fabricated",
+    "requirement_map": "R04/R13 (identity only), R16 documentation, D13 revoked credential reservation, I10 authenticated authority, I13 mutation RED/GREEN, AC01 partial, AC02 deferred host enforcement, AC75 honest evidence. No business entity/API/permission/state change in PR-A follow-up.",
+    "environment": {
+      "container": "raid-t006-links-db",
+      "id": "f40d42425c19302cba45504116d8aa9c48024285d6a3aa73047191f51a0ab74c",
+      "started_at": "2026-10-08T17:00:05.593139302Z",
+      "image": "postgres:16",
+      "label": "raid-task=T006-links",
+      "data": "tmpfs size512m, no mounted volumes",
+      "database": "useraid_test",
+      "migrations": 20
+    },
+    "red": {
+      "kind": "Test-gap verification by fault injection; production safeguards already correct. No new production implementation RED claimed.",
+      "command": "python3 planning/task-evidence/T006-wallet-links-followup/verify.py mutants",
+      "D2": "Partial UNIQUE index WHERE status=ACTIVE: catalog and raw revoked-address INSERT fail; 2 failed, 35 filtered.",
+      "D6": "Drop WalletLink-side exclusivity trigger: own and foreign primary INSERT cases fail; 2 failed, 35 filtered.",
+      "restoration": "finally blocks restore unconditional index and exact trigger; catalog assertion passes afterward."
+    },
+    "green": {
+      "command": "same mutants command after restoration",
+      "observed": "4 selected cases passed, 33 filtered; SQLSTATE 23505 and exact CONSTRAINT_NAME obtained through PostgreSQL GET STACKED DIAGNOSTICS."
+    },
+    "feature": {
+      "command": "python3 planning/task-evidence/T006-wallet-links-followup/verify.py feature",
+      "observed": "96 passed, 0 failed/errors/skipped; includes standalone fixture host and migration/deploy/drift tests."
+    },
+    "corrections": [
+      "Initial healthy-schema run failed 3 tests because Prisma raw-query metadata omits CONSTRAINT_NAME. Replaced message inference with database GET STACKED DIAGNOSTICS, retaining exact SQLSTATE/constraint assertions; reran both faults to RED and restored schema to GREEN. Initial-driver-assertion-failure.xml retained; not semantic RED.",
+      "First full regression: 828 passed, 1 stale scenario-plan blueprint hash failed, no skips. Refreshed planning/raid-scenarios.json hash after inspecting unchanged AC01-AC75 definitions; historical review/evidence hashes and remote sync readbacks remain unchanged. Initial-blueprint-hash-failure.xml retained.",
+      "Independent reviewer found stale Limitations claim that no independent implementation review exists; corrected to distinguish original review from pending follow-up verification. Documentation hash refreshed; historical test artifacts retained."
+    ],
+    "checks": {
+      "typecheck": "npx tsc --noEmit: exit 0",
+      "eslint": "npx eslint tests/identity-link-db.test.ts: exit 0",
+      "planning": "python3 -m unittest discover -s tests -p test_raid_*.py: 27 passed",
+      "completion": "T006 validator exit 1, exactly all 27 NOT VERIFIED (expected)",
+      "not_run": [
+        "new independent follow-up review",
+        "remote CI on uncommitted changes",
+        "browser/build/docker (no UI/runtime code changed)",
+        "combined T019/T029/T006 migration integration; merge-time obligation"
+      ],
+      "prettier": "npx prettier --check .: exit 0, all matched files pass",
+      "diff": "git diff --check: exit 0"
+    },
+    "canonical_change": "Owner selected connected-X confirmation; DEC-2026-10-09-01 and section 07.2, PR-B contract and module docs updated. Current task/scenario planning hashes refreshed; prior reviews retain reviewed-source hashes. GitHub task-contract sync remains historical and needs authorized future synchronization.",
+    "artifacts": {
+      "planning/task-evidence/T006-wallet-links-followup/feature-green.xml": {
+        "sha256": "430175b99a9ee4e1a1419d083fd359b3851a85380608b5d484cb7922de353eda",
+        "tests": 96,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "planning/task-evidence/T006-wallet-links-followup/initial-blueprint-hash-failure.xml": {
+        "sha256": "48407de8257ce13151cb36bcb61c66d459bc45b1abf0f2911f973b5fbe7499dd",
+        "tests": 829,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "planning/task-evidence/T006-wallet-links-followup/lr01-lr02-green.xml": {
+        "sha256": "d838c875aec38e9a60ca2ebd098e5ba6c3f959f73ed2eedd6b1a64ee0cc08d61",
+        "tests": 37,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 33
+      },
+      "planning/task-evidence/T006-wallet-links-followup/lr01-D2-red.xml": {
+        "sha256": "c76d4f9c83deec0f0b423e3af0f439fd53a0a79f991e3aabdd1e7a1bc30e132b",
+        "tests": 37,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 35
+      },
+      "planning/task-evidence/T006-wallet-links-followup/lr02-D6-red.xml": {
+        "sha256": "250fbae468c5bb804622e38b080a0cb09e1c5cf4d17fac4d65f24a5ffb0b7752",
+        "tests": 37,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 35
+      },
+      "planning/task-evidence/T006-wallet-links-followup/initial-driver-assertion-failure.xml": {
+        "sha256": "081f47c81d40dd6f4429d2b1a8d459fcb094996e519973367d0eb537e5887968",
+        "tests": 37,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 33
+      },
+      "planning/task-evidence/T006-wallet-links-followup/full-refactor.xml": {
+        "sha256": "b4ac875ad0bd0081e651d2fa6849f6ecd834ed418edb3268f16c2a131d3c91ef",
+        "tests": 829,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "refactor": {
+      "command": "python3 planning/task-evidence/T006-wallet-links-followup/verify.py full",
+      "observed": "72 files, 829 passed, 0 failed/errors/skipped; full unit and real-database regression after docs/decision/hash updates."
+    }
+  },
+  "follow_up_independent_review": {
+    "reviewer": "Codex /root/review_t006_followup, separate non-author",
+    "disposition": "ACCEPTED WITH CONDITIONS; LR01/LR02/LR03/LR07 satisfied; LR04/LR05/LR06 retained; all27 full T006 criteria NOT VERIFIED",
+    "report": "docs/tasks/T006-wallet-links-followup-independent-review.md",
+    "structured_report": "docs/tasks/T006-wallet-links-followup-independent-review.json",
+    "reviewed_evidence_envelope_sha256": "826a1c76537fad344e6513e1bd7ffcd9b1255a57982161e3529af3de176f4392",
+    "artifact_directory": "planning/task-evidence/T006-wallet-links-independent-followup",
+    "artifact_sha256": {
+      "D2-red.xml": "d3d85335651502e759e0269d174c3b5dda44ea9b32000a7ba531260622940e21",
+      "D6-red.xml": "699aea12bf37a912b5c5f1e32093dfe3cd317731b1d4f533523b9df7e9b5ef9e",
+      "restoration-green.xml": "37cd9321264403f6f77dce87b80a12dcb59f2aa512610e7d86b18b286dcd8c2c",
+      "feature.xml": "ec2d6a136a5ee8017fc004c4b55749f2b8bfa3bb425c7b98560bf605fa150c24",
+      "full.xml": "4593843eb2e6b8659de1dd752c1a1fb696bf0c045ac9bfb71ee224067255c832",
+      "full-final.xml": "a06399044af149ce307d3efdd72099ef6f26e84e6938a47fd7cd004fc58ba345",
+      "final-docs.xml": "3cafea2142c314b91ad41f8ef0b1ef4730f2553b1a50a35f438d366a4b0a01ec",
+      "environment.json": "f5c9cea764fcf39e126306d38363627bfd021e67752a7d9cfaa156b368c2e611",
+      "source-manifest.json": "fc2cd14d17b31a2742393100df7e26416e920476e872fee75689f7b151066fa0",
+      "final-source-manifest.json": "24586fb4011a01f4dd4a8eee53b09fc9a6905b373ebc09a2bf20dc94857e088d",
+      "checks.json": "a2715617de37af97b20ffba45879fe2f53fb6f442d92d55f33c06be0cfd728e6",
+      "bootstrap.log": "2d9e612e554cb99d5bdc7f37014a85af94c27aadf046b9624285ed6dd2682432",
+      "tsc.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eslint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "prettier.log": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "planning.log": "691c8da23627f96b9f7a0284569c938ab46fb1ac497444e346ab312e8bf195cd",
+      "validator.log": "44bd125b82f57251819ebde7b3eca33c9a609a5ef10d22d90bf8bd5b0e50d228",
+      "reviewer-verify.py": "6c8a97debed7a55c5138bef4bcac47ed84d869da45e29289f50b39561b35448c",
+      "reviewer-final-verify.py": "3bf6ed56d92e62a103448be1cb183ee16033696a36fe53466f4b91fe4dc8d765"
+    },
+    "annotation_note": "Root added review references and replaced pending review wording after acceptance; no runtime, schema, migration or test changes. Original review/source manifest and historical test artifacts preserved. Fresh candidate CI still pending. Imported checks/environment JSON received formatting only; original reviewer versions remain in the recorded scratch directory; repository hashes above bind formatted copies."
+  }
 }

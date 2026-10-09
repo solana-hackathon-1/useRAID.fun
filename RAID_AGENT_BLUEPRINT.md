@@ -211,6 +211,10 @@ These are conversation references, not claims independently verified on the inte
 
 DEC-2026-10-06-01: project owner requires test-driven implementation; accepted, related I13/AC75. DEC-2026-10-06-02: project owner requires every integration to be replaceable and every delivered module documented and reusable; accepted, related R15/R16/AC73/AC74 and sections 24.6–24.7. These decisions preserve D01 modular-monolith transactions and do not select OPEN providers, authorize publishing packages or alter accepted customer terms. Existing code is not claimed compliant; inventory gaps, migrate in bounded tasks and verify them before completion.
 
+### 02.6 Accepted owner change — 9 October 2026
+
+DEC-2026-10-09-01 (WR04): accepted by the project owner in the Codex continuation on 9 October 2026. Before linking an additional wallet, require confirmation through a connected X account, following the existing connected-X condition in `rotateWallet`, together with the authenticated account and fresh proof from the additional wallet. The owner selected this option over a fresh signature from the primary wallet. A wallet-only session must be denied at the server command boundary; client assertions of X linkage are not authority. This decision governs T006 PR-B under R04/R13/I10, sections 07.1–07.2/28 and AC01/AC02. It does not alter canonical participant identity, accepted work, payout destinations or financial records. PR-A remains storage-only. PR-B must test missing/foreign X linkage rejection, valid connected-X confirmation, restricted accounts, proof replay and revoke; its independent review must verify the host authority boundary. Enablement still requires revoke/unlink or an audited operator revoke procedure, T007 AC02 evidence, every instance running linked-wallet sign-in resolution and a server-gated switch. No release or production authority is granted.
+
 ---
 
 ## 03. Vocabulary
@@ -410,6 +414,8 @@ Prevent duplicate links of the same verified provider subject to unrelated accou
 ### 07.2 Wallet authentication
 
 Use a compatible Sign In With Solana flow where available. The server issues a one-time challenge with a domain, allowed URI/network, nonce, issued-at time, expiration, and account-linking intent where relevant. Verify the returned message and signature server-side against the stored challenge, then consume the challenge atomically. Reject replay, wrong domain, expired intent, and mismatched account. SIWS specifies a standard signed-message format and server-side verification; RAID's single-use nonce and expiry rules are explicit application policy. [S06](#41-sources)
+
+For additional-wallet linking, apply DEC-2026-10-09-01: authenticated self-account, connected-X confirmation checked by the server, and fresh proof from the additional wallet. A wallet-only session is insufficient; the credential relationship preserves the canonical participant and payout wallet.
 
 Wallet connection alone is not authentication. Signing in is not a funds transfer. A later transaction needs a separate, intelligible authorization. Never request a seed phrase or wallet private key.
 

@@ -221,3 +221,7 @@ Risks and mitigations: (1) trigger on a legacy table (`WalletIdentity`) — smal
 3. Copy the reviewed SQL to `prisma/migrations/202610090003_wallet_links/`, apply to a disposable database only, add Prisma models, verify catalog, repeat deploy, fresh bootstrap and drift.
 4. Implement module, wallet-auth composition, route/flag; GREEN; refactor with the ≈731-test regression.
 5. Docs, consuming host (`cp -RL` procedure), CI matrix registration, handoff, evidence JSON, completion-validator run (expect all unsupported criteria NOT VERIFIED), then independent implementation review.
+
+## Owner decision for PR-B — WR04
+
+On 9 October 2026 the owner selected confirmation through a connected X account; see canonical [DEC-2026-10-09-01](../../RAID_AGENT_BLUEPRINT.md#026-accepted-owner-change--9-october-2026). PR-B must check the authenticated account's X linkage on the server, following the existing `rotateWallet` condition, and require fresh proof for the additional wallet. Wallet-only sessions and foreign/client-asserted X linkage must fail. Define these adverse tests before implementation; also verify restricted accounts, proof replay, revoke and the server-off flag. This decision changes no payout destination, financial row or existing participant. WR04 revoke, T007 AC02 and rollout requirements remain unmet; the decision alone does not enable linking.
