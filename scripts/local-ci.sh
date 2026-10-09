@@ -4,7 +4,8 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 export CI=1 NEXT_TELEMETRY_DISABLED=1 PLAYWRIGHT_HTML_OPEN=never
-export COMPOSE_FILE=compose.yaml:compose.test.yaml COMPOSE_PROJECT_NAME=raid-local-ci
+export COMPOSE_FILE=${RAID_CI_COMPOSE_FILE:-compose.yaml:compose.test.yaml}
+export COMPOSE_PROJECT_NAME=raid-local-ci
 export DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_test
 export DEMO_MODE=false
 LOG_DIR=${RAID_CI_LOG_DIR:-/tmp/raid-local-ci-$(date +%Y%m%d-%H%M%S)}
