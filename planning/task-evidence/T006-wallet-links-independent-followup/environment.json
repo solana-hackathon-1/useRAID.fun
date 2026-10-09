@@ -1,0 +1,14 @@
+{
+  "id": "daf7f45f25fad59fa36d30a9176645bc9fa21301d9b27752c5b30710e66785b3",
+  "name": "raid-t006-independent-followup-codex",
+  "started_at": "2026-10-09T03:35:08.331439631Z",
+  "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+  "label": {
+    "raid-task": "T006-independent-followup"
+  },
+  "port": "51500",
+  "tmpfs": {
+    "/var/lib/postgresql/data": "rw,size=512m"
+  },
+  "mounts": []
+}

@@ -1,0 +1,172 @@
+{
+  "task_id": "T006",
+  "slice": "PR-A LR01/LR02/LR03/LR07 follow-up and connected-X decision recording only",
+  "reviewer": "Codex /root/review_t006_followup, separate non-author agent",
+  "reviewed_at": "2026-10-09T03:38:46.476618+00:00",
+  "verdict": "ACCEPTED WITH CONDITIONS",
+  "blocking_findings": [],
+  "baseline_sha": "1b4a4956ce15041d33499bc5767799b5815bb46d",
+  "candidate": "Uncommitted author worktree; exact source hashes bind this review. No candidate commit invented.",
+  "source_manifest": {
+    "RAID_AGENT_BLUEPRINT.md": "0a1a299e34b3c3a55fa2abceae3b18fbc3396b4039e5bc0b0405961f71e3335f",
+    "docs/raid-identity-storage.md": "797c83cf0e5f692db45d9018c263392b0c950e0d5958d26f27bdba20f28dd69d",
+    "docs/raid-wallet-links.md": "38295eb227d33517596b00a51515f822ea801df4ae779e44bde65e5f2767e11e",
+    "docs/tasks/T006-wallet-link-plan.md": "57583af038c44c0d2939eb9637f59156710cfb62c494a8713f80adf009649e37",
+    "planning/raid-scenarios.json": "a7d155510500d067fbbe87ad03faff908c4bc1da96dbf79954052d21a7bb2c4e",
+    "planning/raid-task-contracts.json": "a5f1d7bcd7cc4fe51c6a41562ab30753e39101cc7c0269a23a09daf95c24de1b",
+    "planning/task-evidence/T006-wallet-links-wip.json": "826a1c76537fad344e6513e1bd7ffcd9b1255a57982161e3529af3de176f4392",
+    "tests/identity-link-db.test.ts": "7c27e24c5ed5ca4804e54245e3f03f6e6b769b67f1c96d62b32f2ad7038e8c2c",
+    "prisma/migrations/202610090003_wallet_links/migration.sql": "ebbdec9a71c18e7420280c42948769785325350bd50e48331a103d0858232de8",
+    "prisma/schema.prisma": "ffced337b7e84da3fcbd6495e3a362d34a295458652cc5ffa181cb472a52b438",
+    "src/identity-link/index.ts": "e6cd1c721f55e513b385fb3d9c8f2bf08b559344a3fd3fa8917c0a5cc2d4e1ed",
+    "src/identity-link/contracts.ts": "e18505c3082bcd3b326258b32bdc6a5414d200faf689d572404bfc42fa8d9d7a"
+  },
+  "complete_manifest": "final-source-manifest.json",
+  "evidence_envelope_sha256": "826a1c76537fad344e6513e1bd7ffcd9b1255a57982161e3529af3de176f4392",
+  "environment": {
+    "id": "daf7f45f25fad59fa36d30a9176645bc9fa21301d9b27752c5b30710e66785b3",
+    "name": "raid-t006-independent-followup-codex",
+    "started_at": "2026-10-09T03:35:08.331439631Z",
+    "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+    "label": {
+      "raid-task": "T006-independent-followup"
+    },
+    "port": "51500",
+    "tmpfs": {
+      "/var/lib/postgresql/data": "rw,size=512m"
+    },
+    "mounts": []
+  },
+  "condition_dispositions": {
+    "LR01": "SATISFIED: unconditional address index and raw revoked-address INSERT regression independently kill D2; SQLSTATE23505/exact constraint checked.",
+    "LR02": "SATISFIED: own and foreign primary raw SQL INSERT regression independently kills D6 without relying on catalog listing.",
+    "LR03": "SATISFIED: seven error codes including UNIQUE_CONFLICT; rollback/sanitized409/non-transient handling and metrics accurately documented.",
+    "LR04": "DEFERRED PR-B: shared chain/statement constants or divergence test.",
+    "LR05": "PARTIAL: owner-authorized connected-X policy recorded with server-self/fresh additional-wallet proof/adverse-test requirements; enforcement, revoke, typed conflicts, mapped-account copy, O11/W03 follow-up, server-off flag, T007AC02, all-instance rollout and independent PR-B review remain.",
+    "LR06": "DEFERRED: owner-controlled merge#180 first then retarget#183; combined schema/test-matrix integration, all migrations and exact-candidate CI.",
+    "LR07": "SATISFIED: original non-author review cited accurately and independent follow-up verification preserved separately; stale limitation fixed during review."
+  },
+  "findings": [
+    {
+      "id": "RF01",
+      "severity": "LOW",
+      "status": "FIXED AND VERIFIED",
+      "file": "docs/raid-wallet-links.md",
+      "finding": "Limitations incorrectly said no independent implementation review exists while new status cited one.",
+      "resolution": "Root author corrected to distinguish original PR-A review from then-pending follow-up; exact final hash bound and docs/boundary/evidence rerun."
+    }
+  ],
+  "artifacts": {
+    "D2-red.xml": {
+      "sha256": "d3d85335651502e759e0269d174c3b5dda44ea9b32000a7ba531260622940e21",
+      "tests": 37,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 35
+    },
+    "D6-red.xml": {
+      "sha256": "699aea12bf37a912b5c5f1e32093dfe3cd317731b1d4f533523b9df7e9b5ef9e",
+      "tests": 37,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 35
+    },
+    "restoration-green.xml": {
+      "sha256": "37cd9321264403f6f77dce87b80a12dcb59f2aa512610e7d86b18b286dcd8c2c",
+      "tests": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 33
+    },
+    "feature.xml": {
+      "sha256": "ec2d6a136a5ee8017fc004c4b55749f2b8bfa3bb425c7b98560bf605fa150c24",
+      "tests": 96,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "full.xml": {
+      "sha256": "4593843eb2e6b8659de1dd752c1a1fb696bf0c045ac9bfb71ee224067255c832",
+      "tests": 825,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "full-final.xml": {
+      "sha256": "a06399044af149ce307d3efdd72099ef6f26e84e6938a47fd7cd004fc58ba345",
+      "tests": 829,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "final-docs.xml": {
+      "sha256": "3cafea2142c314b91ad41f8ef0b1ef4730f2553b1a50a35f438d366a4b0a01ec",
+      "tests": 83,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "executed": [
+    "Fresh20-migration bootstrap on own isolated tmpfs PostgreSQL16 container",
+    "D2 partial-unique-index mutant:2intended failures35filtered",
+    "D6 absent WalletLink trigger mutant:2intended behavior failures35filtered",
+    "Restoration:4selected pass33filtered, exact index/trigger restored in finally",
+    "Feature96pass/0fail/0skip includes consuming fixture and bootstrap/redeploy/drift",
+    "Full829pass/0fail/0skip",
+    "tsc --noEmit pass",
+    "eslint changed test pass",
+    "Owned-file Prettier pass",
+    "Planning27Python tests pass",
+    "T006 completion validator expected rejection exactly27NOT VERIFIED",
+    "Final docs/boundary/evidence suites pass",
+    "Historical follow-up source/JUnit hashes and counts verified",
+    "Registry changes independently compared: only blueprint hash refresh; scenario rows unchanged"
+  ],
+  "corrections": [
+    "Initial reviewer full run excluded tracked .env.example along with real env files and discovered825cases/1setupENOENT. Corrected own snapshot by copying tracked template; retained full.xml failure; no candidate test/source assertion changed. Final full-final.xml829pass.",
+    "Review snapshot refreshed final module docs and WIP after author correction; final source hashes match evidence. Reviewer does not rewrite original review/evidence artifacts."
+  ],
+  "full_task_criteria": {
+    "T006-C01": "NOT VERIFIED",
+    "T006-C02": "NOT VERIFIED",
+    "T006-C03": "NOT VERIFIED",
+    "T006-C04": "NOT VERIFIED",
+    "T006-C05": "NOT VERIFIED",
+    "T006-C06": "NOT VERIFIED",
+    "T006-C07": "NOT VERIFIED",
+    "T006-C08": "NOT VERIFIED",
+    "T006-C09": "NOT VERIFIED",
+    "T006-C10": "NOT VERIFIED",
+    "T006-C11": "NOT VERIFIED",
+    "T006-C12": "NOT VERIFIED",
+    "T006-C13": "NOT VERIFIED",
+    "T006-C14": "NOT VERIFIED",
+    "T006-C15": "NOT VERIFIED",
+    "T006-C16": "NOT VERIFIED",
+    "T006-C17": "NOT VERIFIED",
+    "T006-C18": "NOT VERIFIED",
+    "T006-C19": "NOT VERIFIED",
+    "T006-C20": "NOT VERIFIED",
+    "T006-C21": "NOT VERIFIED",
+    "T006-C22": "NOT VERIFIED",
+    "T006-C23": "NOT VERIFIED",
+    "T006-C24": "NOT VERIFIED",
+    "T006-C25": "NOT VERIFIED",
+    "T006-C26": "NOT VERIFIED",
+    "T006-C27": "NOT VERIFIED"
+  },
+  "scope_limits": [
+    "This review certifies bounded follow-up, not entire prior identity-storage implementation or full T006. Earlier author-side-only storage review remains separate gap.",
+    "No PR-B host route/auth/revoke/flag implementation; no second-wallet sign-in delivered. AC01identity half partial, capacity tables absent.",
+    "No new remoteCI, build/browser/UAT/release/live-migration/provider/money authority. Historical greenCI at1b4a495 does not cover uncommitted candidate.",
+    "Review checks copied existing generated Prisma dependency rather than independent reinstall; standalone fixture executes own schema/bootstrap. Original clean-install example evidence is historical.",
+    "No original/shared database/container/dump mutated; only reviewer-owned resource."
+  ],
+  "next_steps": [
+    "Integrate immutable review report/artifacts without editing original Claude review. Preserve source manifest/envelope identity separately from any later evidence annotation.",
+    "Run exact-candidateCI after authorized commit/push; keep all27full criteria NOT VERIFIED and PRdraft.",
+    "Implement separately reviewed PR-B with connected-X server boundary and binding deferred conditions.",
+    "At owner-approved merge integration, verify all three migrations together and conflicts, no renumbering needed."
+  ]
+}

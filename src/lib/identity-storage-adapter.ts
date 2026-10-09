@@ -4,11 +4,13 @@ export function classifyIdentityStorageFailure(error: unknown): IdentityStorageE
   if (error instanceof IdentityStorageError) return error;
   const source = error as { code?: unknown; meta?: { code?: unknown } } | null;
   const state = source?.code === 'P2010' ? source.meta?.code : source?.code;
-  return new IdentityStorageError(
-    state === '40001' || state === '40P01' || source?.code === 'P2034'
-      ? 'RETRY_TRANSACTION'
-      : 'STORAGE_UNAVAILABLE',
-  );
+  // Classify by SQLSTATE or Prisma code only. Prisma's raw error carries no constraint name and its
+  // message can contain the conflicting value, so neither is ever read or forwarded (WR01).
+  if (state === '40001' || state === '40P01' || source?.code === 'P2034')
+    return new IdentityStorageError('RETRY_TRANSACTION');
+  if (state === '23505' || source?.code === 'P2002')
+    return new IdentityStorageError('UNIQUE_CONFLICT');
+  return new IdentityStorageError('STORAGE_UNAVAILABLE');
 }
 export function createPrismaIdentityTransaction(tx: Prisma.TransactionClient): IdentityTransaction {
   // Host must pass a real interactive transaction. Check its actual isolation once.

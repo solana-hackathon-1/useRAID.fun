@@ -1,0 +1,50 @@
+generator client {
+ provider = "prisma-client-js"
+}
+datasource db {
+ provider = "postgresql"
+ url = env("DATABASE_URL")
+}
+model User {
+ id String @id
+ handle String
+ suspended Boolean @default(false)
+ participant Participant?
+ wallet WalletIdentity?
+ walletLinks WalletLink[]
+}
+model WalletIdentity {
+  address String @id
+  userId String @unique
+  verifiedAt DateTime @default(now())
+  previousAddress String?
+  rotatedAt DateTime?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+model Participant {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  kind String @default("HUMAN")
+  accountId String @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  provisionActorAccountId String
+  provisionRequestId String
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  walletLinks WalletLink[]
+  @@unique([id, accountId])
+}
+model WalletLink {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId String
+  participantId String @db.Uuid
+  networkIdentity String
+  address String @unique
+  status String @default("ACTIVE")
+  proofRef String @unique
+  verifiedAt DateTime @default(now()) @db.Timestamptz(6)
+  revokedAt DateTime? @db.Timestamptz(6)
+  linkActorAccountId String
+  linkRequestId String
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "WalletLink_accountId_fkey")
+  participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "WalletLink_participant_fkey")
+  @@index([accountId, status])
+}

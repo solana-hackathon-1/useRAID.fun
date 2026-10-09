@@ -10,7 +10,7 @@ Gives every existing legacy `User` at most one immutable canonical HUMAN `Partic
 
 Owned requirements: R04, R13 (identity half only), R15, R16; I01, I05, I06, I07, I10, I11, I13; D01, D13. Blueprint §§07, 13, 24.6–24.7, 25, 28, 30, 32.
 
-Non-goals (not delivered here, still due under T006 and later tasks): automatic backfill, login auto-provisioning, wallet/provider linking commands, account recovery, capacity or one-active-engagement enforcement, AI or operator participants, session issuance, HTTP routes, UI, events, receipts or outbox. A mapping grants no Guild role, private access, skill rank, work slot or payout entitlement. Mapping a legacy account does not move balances, enrollments, transfers or payout destinations.
+Non-goals (not delivered here, still due under T006 and later tasks): automatic backfill, login auto-provisioning, wallet/provider linking commands (additional verified wallets are delivered separately as [wallet links v1](raid-wallet-links.md), which reuses this module's participant mapping and port), account recovery, capacity or one-active-engagement enforcement, AI or operator participants, session issuance, HTTP routes, UI, events, receipts or outbox. A mapping grants no Guild role, private access, skill rank, work slot or payout entitlement. Mapping a legacy account does not move balances, enrollments, transfers or payout destinations.
 
 ## Dependency and host contract
 
@@ -37,7 +37,7 @@ flowchart LR
 | `findHumanParticipant(tx, accountId)`                                  | Returns the shared HUMAN `Participant` DTO (`id`, `kind: 'HUMAN'`, `accountId`) or `null`. More than one row, wrong kind or wrong account throws `STORAGE_CONTRACT`.                                                                                                                                                                               |
 | `hasHumanParticipant(tx, accountId)`                                   | Boolean reference check; `STORAGE_CONTRACT` if the result shape is wrong.                                                                                                                                                                                                                                                                          |
 | `ensureHumanParticipant(tx, { accountId, actorAccountId, requestId })` | Validates IDs, denies actor/account mismatch before any SQL (`WRONG_ACTOR`), takes `FOR KEY SHARE` on the `User` row (`ACCOUNT_NOT_FOUND` if absent), inserts with `ON CONFLICT ("accountId") DO NOTHING`, then returns the winning row. A retry or concurrent loser returns the first mapping; the first actor and request are never overwritten. |
-| `IdentityStorageError` / `IdentityStorageCode`                         | `INVALID_INPUT`, `WRONG_ACTOR`, `ACCOUNT_NOT_FOUND`, `STORAGE_CONTRACT`, `RETRY_TRANSACTION`, `STORAGE_UNAVAILABLE`. The message is the code only.                                                                                                                                                                                                 |
+| `IdentityStorageError` / `IdentityStorageCode`                         | `INVALID_INPUT`, `WRONG_ACTOR`, `ACCOUNT_NOT_FOUND`, `STORAGE_CONTRACT`, `RETRY_TRANSACTION`, `STORAGE_UNAVAILABLE`, `UNIQUE_CONFLICT`. The message is the code only.                                                                                                                                                                              |
 | `IdentityTransaction`, `HumanParticipant`, `ProvisionHumanInput`       | Types for the port and DTOs.                                                                                                                                                                                                                                                                                                                       |
 
 IDs must satisfy the shared `InternalId` schema. No merge, delete, link, session, work or payment function is exported.
@@ -69,7 +69,7 @@ No secret is read by the module. The reference host and tests use these names; s
 
 ## Transaction, retry and sanitized errors
 
-Run every command inside one interactive transaction at READ COMMITTED. The separate read after `ON CONFLICT DO NOTHING` needs fresh statement visibility, so the port rejects other isolation levels. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or Prisma `P2010` wrapping those) retry the **entire** business transaction with the same `accountId` and `requestId`, never only the final statement. Do not catch an error inside the transaction and commit partial work. Unknown driver or connection failures become `STORAGE_UNAVAILABLE`; the driver message is never exposed. The module has no timeout, cancellation or rate-limit of its own; the host owns them.
+Run every command inside one interactive transaction at READ COMMITTED. The separate read after `ON CONFLICT DO NOTHING` needs fresh statement visibility, so the port rejects other isolation levels. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or Prisma `P2010` wrapping those) retry the **entire** business transaction with the same `accountId` and `requestId`, never only the final statement. Do not catch an error inside the transaction and commit partial work. `UNIQUE_CONFLICT` classifies SQLSTATE `23505` or Prisma `P2002`, including raw-query wrappers. Hosts must handle this seventh code explicitly: roll back the whole transaction and return a sanitized conflict (HTTP 409 for HTTP hosts), without exposing driver messages, constraint details or another account's identity. Do not retry it as a transient error or remap ownership. Unknown driver or connection failures become `STORAGE_UNAVAILABLE`; the driver message is never exposed. The module has no timeout, cancellation or rate-limit of its own; the host owns them.
 
 ## Substitution and versioning
 
@@ -77,7 +77,7 @@ Any adapter that implements `IdentityTransaction` for PostgreSQL at READ COMMITT
 
 ## Observability
 
-No metrics or logs are emitted. Hosts should count the six error codes and the retry rate, and alert on `STORAGE_CONTRACT` (unexpected shape) and sustained `STORAGE_UNAVAILABLE`. Do not log accountIds with request payloads. Operators can audit provenance with `SELECT "accountId", "provisionRequestId", "createdAt" FROM "Participant"`. There are no receipts or outbox events: provenance is a creation audit only, not a command receipt.
+No metrics or logs are emitted. Hosts should count the seven error codes and the retry rate, and alert on `STORAGE_CONTRACT` (unexpected shape) and sustained `STORAGE_UNAVAILABLE`. Do not log accountIds with request payloads. Operators can audit provenance with `SELECT "accountId", "provisionRequestId", "createdAt" FROM "Participant"`. There are no receipts or outbox events: provenance is a creation audit only, not a command receipt.
 
 ## Failure and recovery runbook
 
