@@ -1,0 +1,249 @@
+{
+  "task_id": "T006",
+  "scope": "Independent implementation review of PR-A (additive WalletLink storage and link command); not completion of T006",
+  "status": "ACCEPTED_WITH_CONDITIONS",
+  "reviewed_source_sha": "68b91007187825ceb5374d296372b61e45d48dba",
+  "implementation_commit": "3b4d8d4",
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/183",
+  "base_branch": "claude/t006-wallet-link-plan",
+  "reviewer": "Claude Sonnet 5.5 independent reviewer agent (AG08 QA/security role), non-author",
+  "reviewer_independence": "Did not write the plan, SQL, module, tests, docs or example. Same model family as the implementer; independence by role and process. Edited no source or test file.",
+  "review_date": "2026-10-09",
+  "blocking_findings": [],
+  "environment": {
+    "database": "own container raid-t006-links-review-db postgres:16 tmpfs, 127.0.0.1:56907, label raid-task=T006-links-review",
+    "other_containers_touched": false,
+    "node_modules": "own npm ci in reviewer worktree"
+  },
+  "executed_checks": {
+    "migrate_deploy_twice": "20 migrations applied; second run: No pending migrations to apply",
+    "drift": "live, shadow-database and fresh-bootstrap migrate diff --exit-code: No difference detected (exit 0); 20 directories = 20 _prisma_migrations rows",
+    "executable_sql_equals_proposal": "equal after comment stripping (3905 characters); migration SHA-256 ebbdec9a71c18e7420280c42948769785325350bd50e48331a103d0858232de8 matches WIP JSON",
+    "full_suite": "RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false npx vitest run: 72 files, 826 tests, 826 passed, 0 failed, 0 skipped (run twice, second after all mutations restored)",
+    "feature_suites_repeated": "6 runs x 7 files (identity-link, wallet-link-proof, identity-link-db, identity-link-migration, identity-link-boundary, wallet-auth-db, identity-storage-db): 123 tests each, all passed, no 40P01",
+    "static": "tsc --noEmit clean; eslint clean on changed files; prettier --check . clean; 27 planning unittest OK",
+    "standalone_example": "clean cp -RL copy (0 symlinks), own npm install --ignore-scripts (43 packages), prisma generate, own 4 migrations on useraid_wallet_links_host_test, npm start printed the 11-flag JSON all true",
+    "completion_validator": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json exit 1; 27 of 27 NOT VERIFIED prevents completion (expected)",
+    "implementer_artifact_hashes": "baseline, schema-red, behavioral-red, green-final, full-final JUnit SHA-256 equal the WIP JSON",
+    "exact_head_ci": "observed only: one run all green incl ci-gate; a second run browser job in progress at review time; to be re-read at merge (not certified)"
+  },
+  "mutations": [
+    {
+      "id": "S1",
+      "mutation": "remove ON CONFLICT DO NOTHING",
+      "failed": 1,
+      "result": "killed (unit test only)"
+    },
+    {
+      "id": "S2",
+      "mutation": "invert lock order (User lock before subject lock)",
+      "failed": 2,
+      "result": "killed by fake-port statement-order tests only; real-DB race tests survive (observation O1)"
+    },
+    {
+      "id": "S3",
+      "mutation": "ALREADY_LINKED short circuit before preflight",
+      "failed": 5,
+      "result": "killed"
+    },
+    { "id": "S4", "mutation": "remove PRIMARY_WALLET_REQUIRED", "failed": 3, "result": "killed" },
+    { "id": "S5", "mutation": "error carries raw driver message", "failed": 2, "result": "killed" },
+    {
+      "id": "S6",
+      "mutation": "remove User row FOR NO KEY UPDATE",
+      "failed": 29,
+      "result": "killed"
+    },
+    { "id": "S7", "mutation": "proof adapter drops digest check", "failed": 1, "result": "killed" },
+    {
+      "id": "S8",
+      "mutation": "proof adapter defaults issuedAt to now",
+      "failed": 3,
+      "result": "killed"
+    },
+    {
+      "id": "S9",
+      "mutation": "adapter drops 23505/P2002 classification",
+      "failed": 1,
+      "result": "killed"
+    },
+    {
+      "id": "S10",
+      "mutation": "expiresAt taken from message only",
+      "failed": 1,
+      "result": "killed"
+    },
+    {
+      "id": "D1",
+      "mutation": "drop both exclusivity triggers",
+      "failed": 9,
+      "result": "killed (catalog plus behavioral)"
+    },
+    {
+      "id": "D2",
+      "mutation": "address unique index made partial WHERE status='ACTIVE'",
+      "failed": 0,
+      "result": "SURVIVED (finding F1, LR01)"
+    },
+    {
+      "id": "D3",
+      "mutation": "composite participant FK replaced by simple FK",
+      "failed": 2,
+      "result": "killed"
+    },
+    {
+      "id": "D4",
+      "mutation": "drop link immutability guard trigger",
+      "failed": 2,
+      "result": "killed"
+    },
+    {
+      "id": "D5",
+      "mutation": "drop WalletIdentity exclusivity trigger only",
+      "failed": 9,
+      "result": "killed"
+    },
+    {
+      "id": "D6",
+      "mutation": "drop WalletLink exclusivity trigger only",
+      "failed": 1,
+      "result": "killed by catalog test only; no behavioral test (finding F2, LR02)"
+    },
+    { "id": "D7", "mutation": "drop WalletLink_actor_check", "failed": 2, "result": "killed" },
+    { "id": "D8", "mutation": "drop WalletLink_proofRef_key", "failed": 3, "result": "killed" }
+  ],
+  "mutation_restoration": "source SHA-256 asserted equal after each mutation and rechecked against WIP JSON; database rebuilt from migrations after each database mutation with migrate diff exit 0; git status empty",
+  "wr_dispositions": {
+    "WR01": "SATISFIED",
+    "WR02": "SATISFIED",
+    "WR03": "SATISFIED",
+    "WR04": "DEFERRED to PR-B",
+    "WR05": "SATISFIED",
+    "WR06": "PARTIAL",
+    "WR07": "PARTIAL",
+    "WR08": "SATISFIED",
+    "WR09": "SATISFIED",
+    "WR10": "SATISFIED with caveats (F4)",
+    "WR11": "SATISFIED (F5 constant duplication until PR-B)",
+    "WR12": "SATISFIED (observation O1)",
+    "WR13": "SATISFIED",
+    "WR14": "PARTIAL (acceptable; new prefix sorts after T019/T029 so no renumber; merge-time conflicts remain)"
+  },
+  "red_genuineness": {
+    "catalog_only_red": "schema-red.xml 1 failed 33 filtered, assertion failure, no 42P01 counted; hash verified",
+    "legacy_baseline": "baseline.xml, legacy 409 'Account already has a wallet.'; hash verified",
+    "behavioral_red": "88 cases 67 failed 21 passed 0 errors; 21 passes = 15 vacuous negative proof cases, 4 migration-source, 2 SQL-fence DB; 4 race failures are timeouts; hash verified",
+    "tests_unchanged_red_to_green": "RED snapshot tests identical to final tests modulo whitespace/one semicolon (normalized comparison); cannot establish whether the snapshot predates the disclosed catalog-regex correction"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "low",
+      "type": "test gap",
+      "summary": "DB-level reservation of revoked address (non-partial unique index) not pinned; mutation D2 survived; catalog regex accepts a partial index"
+    },
+    {
+      "id": "F2",
+      "severity": "low",
+      "type": "test gap",
+      "summary": "WalletLink-side exclusivity trigger has catalog coverage only; mutation D6 fails only the catalog test"
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "type": "documentation drift",
+      "summary": "UNIQUE_CONFLICT added to public IdentityStorageCode but docs/raid-identity-storage.md still lists six codes"
+    },
+    {
+      "id": "F4",
+      "severity": "info",
+      "type": "evidence caveat",
+      "summary": "15 vacuous RED passes and 4 timeout-shaped RED failures, disclosed"
+    },
+    {
+      "id": "F5",
+      "severity": "low",
+      "type": "PR-B",
+      "summary": "Chain ID and statements duplicated between wallet-auth.ts and wallet-link-proof.ts until PR-B"
+    },
+    {
+      "id": "F6",
+      "severity": "info",
+      "type": "design note",
+      "summary": "address-only uniqueness stricter than (network,address); consistent with legacy WalletIdentity and not required by 25.2; relaxing is a migration"
+    },
+    {
+      "id": "F7",
+      "severity": "info",
+      "type": "test strength",
+      "summary": "guard-trigger tests assert rejects.toBeDefined() without SQLSTATE"
+    },
+    {
+      "id": "F8",
+      "severity": "info",
+      "type": "documentation",
+      "summary": "status line 'Independent implementation review has not happened' becomes stale"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "LR01",
+      "when": "before merge",
+      "scope": "test-only",
+      "text": "raw-SQL DB test: second account cannot insert same address while first link is REVOKED (23505 on WalletLink_address_key); catalog assertion must fail for a partial index; re-run mutation D2"
+    },
+    {
+      "id": "LR02",
+      "when": "before merge",
+      "scope": "test-only",
+      "text": "raw-SQL DB test: WalletLink insert of an address already in WalletIdentity fails 23505 raid_wallet_subject_exclusive_v1; re-run mutation D6"
+    },
+    {
+      "id": "LR03",
+      "when": "before merge",
+      "scope": "docs",
+      "text": "document UNIQUE_CONFLICT as seventh IdentityStorageCode in docs/raid-identity-storage.md with host mapping guidance"
+    },
+    {
+      "id": "LR04",
+      "when": "PR-B",
+      "scope": "code",
+      "text": "single source of truth for Chain ID and link-additional statement shared by wallet-auth.ts and wallet-link-proof.ts, or a divergence test"
+    },
+    {
+      "id": "LR05",
+      "when": "PR-B",
+      "scope": "binding carry-forward",
+      "text": "WR04 step-up decision and revoke path, WR06 copy and O11/W03 follow-up task, WR07 typed handling and rollout order; server-side flag off until T007 AC02 evidence; PR-B independent review required"
+    },
+    {
+      "id": "LR06",
+      "when": "merge time",
+      "scope": "process",
+      "text": "merge #180 first then retarget #183; resolve schema.prisma and CI matrix conflicts with T019/T029; rerun full suite on merged head with all three migrations; re-read exact-head CI"
+    },
+    {
+      "id": "LR07",
+      "when": "after review",
+      "scope": "docs/evidence",
+      "text": "update WIP JSON and docs/raid-wallet-links.md status to cite this review; keep IMPLEMENTED_UNVERIFIED / T006 NOT VERIFIED; no criterion PASS from this slice"
+    }
+  ],
+  "ac01": "PARTIAL: identity half verified at real PostgreSQL (same participant row, payout and money rows unchanged); capacity half NOT VERIFIED (no engagement/active_commitments table, gap G1); second-wallet sign-in not delivered (PR-B)",
+  "criteria_status": {
+    "T006-A01": "PARTIAL",
+    "T006-A02": "NOT VERIFIED",
+    "T006-W01": "PARTIAL",
+    "T006-W02": "PARTIAL",
+    "T006-W03": "NOT VERIFIED",
+    "T006-C01..C22": "NOT VERIFIED for the task; slice-level evidence reviewed for C03, C05, C06 (identity half), C09, C10 (partial), C11 (storage races), C19, C20, C21, C22 (registration only)",
+    "full_task_status": "IN_PROGRESS / NOT VERIFIED (validator exit 1, 27 of 27)"
+  },
+  "open_decisions": ["O11", "WR04 step-up choice"],
+  "source_modifications_by_reviewer": false,
+  "next_step": "Implementer applies LR01-LR03 (tests/docs only) and re-runs mutations D2 and D6; merge #180 then #183 per LR06; plan, implement and independently review PR-B separately",
+  "attribution": {
+    "signed_by": "Claude Sonnet 5.5 independent reviewer agent, non-author",
+    "signed_at": "2026-10-09"
+  }
+}

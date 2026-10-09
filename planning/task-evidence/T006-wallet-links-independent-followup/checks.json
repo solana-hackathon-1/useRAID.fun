@@ -1,0 +1,32 @@
+[
+  {
+    "check": "full-final",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "tsc",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "eslint",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "prettier",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "planning",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "validator",
+    "exit": 1,
+    "expected": 1
+  }
+]

@@ -14,6 +14,43 @@ class StudioCISafety(unittest.TestCase):
         self.assertIn('docker compose up -d --wait db', studio)
         self.assertIn('docker compose down -v', workflow)
 
+class LocalCIMode(unittest.TestCase):
+    def test_hosted_workflows_are_manual_while_minutes_are_exhausted(self):
+        for name in ['checks.yml', 'raid-status.yml']:
+            workflow = (ROOT / '.github/workflows' / name).read_text()
+            trigger = workflow.split('on:', 1)[1].split('permissions:', 1)[0]
+            self.assertEqual(trigger.strip(), 'workflow_dispatch:')
+
+    def test_local_runner_preserves_all_required_layers(self):
+        runner = (ROOT / 'scripts/local-ci.sh').read_text()
+        for command in ['unittest discover', 'format:check', 'typecheck', 'lint',
+                        'audit:check', 'migrate diff', 'RUN_DB_TESTS=true',
+                        'docker build', 'playwright install chromium', 'test:browser', 'test:browser:studio',
+                        'npm run build', 'test:live', 'test:browser:live']:
+            self.assertIn(command, runner)
+        self.assertIn('git rev-parse HEAD', runner)
+        self.assertIn('exit "$failed"', runner)
+
+
+    def test_runner_reports_unrunnable_browser_layers_instead_of_aborting(self):
+        runner = (ROOT / 'scripts/local-ci.sh').read_text()
+        self.assertNotIn('playwright install chromium || exit', runner)
+        for layer in ['demo', 'studio', 'live-flow', 'live-browser']:
+            self.assertIn(f'skip {layer} ', runner)
+        self.assertIn('NOT RUN', runner)
+
+    def test_runner_preserves_evidence_on_every_exit_path(self):
+        runner = (ROOT / 'scripts/local-ci.sh').read_text()
+        cleanup = runner.split('cleanup() {', 1)[1].split('\n}\n', 1)[0]
+        self.assertIn('cp -R test-results playwright-report', cleanup)
+        self.assertIn('trap cleanup EXIT', runner)
+
+    def test_runner_fails_fast_when_required_host_ports_are_occupied(self):
+        runner = (ROOT / 'scripts/local-ci.sh').read_text()
+        for port in ['3000', '3001', '3006', '3007', '3008', '55432']:
+            self.assertIn(port, runner.split('ports()', 1)[1].split('\n}\n', 1)[0])
+        self.assertLess(runner.index('step ports '), runner.index('step install '))
+
 
 if __name__ == '__main__':
     unittest.main()

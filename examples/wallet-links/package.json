@@ -1,0 +1,21 @@
+{
+  "name": "raid-wallet-links-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate": "prisma migrate deploy",
+    "start": "tsx host.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "prisma": "6.19.3",
+    "bs58": "6.0.0",
+    "zod": "4.6.5",
+    "tsx": "4.23.15"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

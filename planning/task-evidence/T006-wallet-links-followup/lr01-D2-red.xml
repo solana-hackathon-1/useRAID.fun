@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="37" failures="2" errors="0" time="0.087645041">
+    <testsuite name="tests/identity-link-db.test.ts" timestamp="2026-10-09T02:12:46.551Z" hostname="0xd.local" tests="37" failures="2" errors="0" skipped="35" time="0.087645041">
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; catalog contains the reviewed constraints, indexes and enabled triggers (D14)" time="0.041949583">
+            <failure message="expected &apos;CREATE UNIQUE INDEX &quot;WalletLink_addre…&apos; not to match /\bWHERE\b/i" type="AssertionError">
+AssertionError: expected &apos;CREATE UNIQUE INDEX &quot;WalletLink_addre…&apos; not to match /\bWHERE\b/i
+
+- Expected:
+/\bWHERE\b/i
+
++ Received:
+&quot;CREATE UNIQUE INDEX \&quot;WalletLink_address_key\&quot; ON public.\&quot;WalletLink\&quot; USING btree (address) WHERE (status = &apos;ACTIVE&apos;::text)&quot;
+
+ ❯ tests/identity-link-db.test.ts:217:50
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; a pre-provisioned participant is byte-identical after linking W2 and W3; money and payout rows unchanged (WR09)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; lazy creation: the first link creates one mapping with link provenance; later links reuse it" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; unchanged legacy link path still answers 409 for a second wallet until sign-in resolution ships (baseline)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot reassign a revoked address to a second account (LR01, D13)" time="0.02770775">
+            <failure message="expected [ { sqlstate: null, …(1) } ] to deeply equal [ { sqlstate: &apos;23505&apos;, …(1) } ]" type="AssertionError">
+AssertionError: expected [ { sqlstate: null, …(1) } ] to deeply equal [ { sqlstate: &apos;23505&apos;, …(1) } ]
+
+- Expected
++ Received
+
+  [
+    {
+-     &quot;constraint_name&quot;: &quot;WalletLink_address_key&quot;,
+-     &quot;sqlstate&quot;: &quot;23505&quot;,
++     &quot;constraint_name&quot;: null,
++     &quot;sqlstate&quot;: null,
+    },
+  ]
+
+ ❯ tests/identity-link-db.test.ts:332:53
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot link an existing primary address to alice (LR02)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot link an existing primary address to bob (LR02)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; old binary raw INSERT of a linked or revoked address fails with the exclusivity constraint (D4)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy sign-in with a linked or revoked address fails closed with no new account or session (rollout characterization)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy link of a linked address by an account without a primary is rejected by the trigger" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; SQLSTATE classification through real Prisma wrappers (WR01) &gt; trigger conflict and unique-index conflict both classify as sanitized UNIQUE_CONFLICT; the message never reaches logs" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; link vs link on one account with different addresses serializes at the User row lock; one participant" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; rotate holding the subject vs link of that address: link waits, then reports a conflict" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; the same proof twice is one row; a proof reused for another address is a conflict that adds nothing" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; own primary is an idempotent no-op that never creates a participant" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; requires an existing primary wallet and creates nothing otherwise (WR05)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; state machine: no delete, only ACTIVE to REVOKED, revoked address stays reserved for everyone" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; check constraints and the composite participant foreign key reject inconsistent rows" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; legacy User delete and merge of a linked account roll back entirely" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; a linked wallet-only account is rejected by the real wallet sign-in fold path and the merge helper (WR06 behavior)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; a suspended account is restricted: no mapping, no link, challenge not consumed" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; a suspended account re-linking its own wallet is restricted, not ALREADY_LINKED (WR08)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; injected serialization failure at participant ensure retries the whole callback with the same identity" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; injected serialization failure at link insert retries the whole callback with the same identity" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; the adapter rejects SERIALIZABLE before touching link tables (D13)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; the adapter rejects REPEATABLE READ before touching link tables (D13)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; per-account caps hold at the database: active cap, then total ceiling including revoked rows" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; payout wallet is unchanged by links and rotation still works (D11) &gt; rotation to a fresh address works with links present; rotation onto an own link is refused by the fence" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; contract guards &gt; ensureHumanParticipant provenance is untouched by a no-op link replay" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>
