@@ -1,0 +1,26 @@
+[
+  {
+    "label": "validator",
+    "command": "python3 scripts/verify-raid-completion.py T019 planning/task-evidence/T019.json",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  },
+  {
+    "label": "planning",
+    "command": "python3 -m unittest discover -s tests -p test_raid_*.py",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  },
+  {
+    "label": "typecheck",
+    "command": "npm run typecheck",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  },
+  {
+    "label": "format",
+    "command": "npm run format:check",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  }
+]

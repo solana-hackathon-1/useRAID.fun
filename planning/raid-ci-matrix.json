@@ -24,6 +24,9 @@
     "tests/browser/launch.spec.ts",
     "tests/browser/pages.spec.ts",
     "tests/browser/security.spec.ts",
+    "tests/command-receipts-boundary.test.ts",
+    "tests/command-receipts-db.test.ts",
+    "tests/command-receipts.test.ts",
     "tests/creator-route.test.ts",
     "tests/db-guard.test.ts",
     "tests/dependency-compatibility.test.ts",
@@ -377,8 +380,12 @@
         "browser",
         "ci-gate"
       ],
-      "existing_test_files": [],
-      "implementation_status": "DOMAIN_TESTS_NOT_IMPLEMENTED",
+      "existing_test_files": [
+        "tests/command-receipts-boundary.test.ts",
+        "tests/command-receipts-db.test.ts",
+        "tests/command-receipts.test.ts"
+      ],
+      "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
         "unit and boundary contract",
         "real database/transaction races where applicable",

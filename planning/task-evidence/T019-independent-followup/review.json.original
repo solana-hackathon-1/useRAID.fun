@@ -1,0 +1,185 @@
+{
+  "task_id": "T019",
+  "reviewer": "Codex /root/review_foundation_followups, independent non-author follow-up reviewer",
+  "independence": "Separate agent did not author implementation/tests/docs/packet; read-only author checkouts; source mutations only in unique git-archive snapshots; separate disposable reviewer databases. This is AI technical review, not human UAT, cryptographic signature, business or release approval.",
+  "reviewed_at_utc": "2026-10-09T03:40:01.226185+00:00",
+  "reviewed_head": "ffe268356fbb22f3b0ac80650469d0e0b0e062da",
+  "prior_independent_review_commit": "05ef740",
+  "verdict": "ACCEPTED WITH CONDITIONS",
+  "scope": "Post-original-independent-review changes only; no src/ or Prisma diff since original review. No re-awarding full-product gates.",
+  "requirement_map": {
+    "blueprint": [
+      "00-04",
+      "13",
+      "16.2-16.5",
+      "24.6-24.7",
+      "25",
+      "26.1",
+      "27.3",
+      "27.5",
+      "28",
+      "30",
+      "32",
+      "33.10",
+      "34",
+      "35 AC32/AC41/AC69/AC73/AC74/AC75",
+      "39-40"
+    ],
+    "requirements": ["R15", "R16", "I03", "I05", "I06", "I09", "I12", "I13"],
+    "entities": [
+      "CommandReceipt",
+      "InboxDelivery",
+      "AuditEvent",
+      "OutboxEvent"
+    ],
+    "permissions": "No changed route or permissions; host actor/proof authority remains required.",
+    "transitions": "No changed runtime state transition; new tests discriminate existing bounded contracts."
+  },
+  "source_manifest": "source-manifest.json",
+  "runtime_diff": "runtime-diff.txt (empty)",
+  "database": {
+    "id": "455fad76b28652a904955e1067dd149392e156569b4a7fb431d2789e2daa2b1f",
+    "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+    "name": "raid-codex-followup-t019-20261009",
+    "startedAt": "2026-10-09T03:35:24.213634347Z",
+    "labels": {
+      "raid-task": "T019-codex-followup"
+    },
+    "tmpfs": {
+      "/var/lib/postgresql/data": "rw,size=512m"
+    },
+    "mounts": [],
+    "host": "127.0.0.1",
+    "port": "51515",
+    "database": "useraid_test"
+  },
+  "environment": {
+    "node": "26.0.0",
+    "npm": "11.12.1",
+    "Prisma": "6.19.3",
+    "vitest": "4.1.11",
+    "dependency_install": "Independent npm ci: 514 packages per snapshot, exit0",
+    "data": "Synthetic only; fresh own tmpfs PostgreSQL16; original/implementer DBs and dumps untouched"
+  },
+  "tests": {
+    "feature": {
+      "tests": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "files": 3
+    },
+    "full": {
+      "tests": 811,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "files": 70
+    },
+    "post_mutation_green": {
+      "tests": 78,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "files": 3
+    }
+  },
+  "mutations": [
+    {
+      "id": "F03",
+      "file": "src/command-receipts/index.ts",
+      "original_sha256": "b112a968a544045e5c1f0c95ce5ec64390e313183ea17d6f7ac9e78b7cdd3e77",
+      "mutant_sha256": "dd47aed21ef1f15c993282948418865c8b4a8698694670ba31b4a32789ba35f6",
+      "mutation": {
+        "old": "insertBindings: [delivery.provider, delivery.verifiedDeliveryId, digest],",
+        "new": "insertBindings: [delivery.provider, digest, digest],"
+      },
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "tests/command-receipts-db.test.ts",
+        "-t",
+        "processes two distinct delivery ids that carry identical payloads",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T019/F03-red.xml"
+      ],
+      "exit_code": 1,
+      "junit": {
+        "name": "vitest tests",
+        "tests": "28",
+        "failures": "1",
+        "errors": "0",
+        "time": "0.045366208"
+      },
+      "failing_cases": [
+        "command receipts on real PostgreSQL > inbound provider deliveries (AC32 foundation) > processes two distinct delivery ids that carry identical payloads (no dedupe by content)"
+      ],
+      "skipped": 27
+    }
+  ],
+  "migration": "Own fresh bootstrap, repeat deploy no pending, drift no difference, all exit0; schema/runtime unchanged.",
+  "checks": "Typecheck, owned changed-test eslint, full-root format check, Python planning27 pass; validator T019 exit0 or T029 expected exit1 exactly C02/C08/C15.",
+  "ci": {
+    "head": "ffe268356fbb22f3b0ac80650469d0e0b0e062da",
+    "all_checks_success": true,
+    "names": [
+      "browser",
+      "ci-gate",
+      "dependency-security",
+      "docker",
+      "planning-contracts",
+      "static",
+      "test"
+    ],
+    "readback": "ci-readback.json"
+  },
+  "criteria_status_counts": {
+    "PASS": 19,
+    "NOT APPLICABLE": 8,
+    "NOT VERIFIED": 0
+  },
+  "conditions": {
+    "COND-01": "VERIFIED: top-level non-author reviewer and all 27 original criteria merged; validator passes; runtime unchanged.",
+    "F03": "VERIFIED: added real-DB distinct-delivery/same-content case fails under content-dedupe mutant, passes after exact restoration.",
+    "COND-02": "CARRIED FORWARD T020: receipt first; bounded transaction timeout plus lock_timeout or per-actor rate limit; IDEMPOTENCY_KEY_REUSED HTTP409 and deliberate delivery conflict mapping; internal receipts/audit rows; host-authenticated actor.",
+    "COND-03": "OPEN / NOT VERIFIED: no live enablement until AC68 restore reconciliation, O11 retention and outbox dispatcher/reconciler."
+  },
+  "findings": [
+    {
+      "id": "FUP-019-01",
+      "severity": "LOW",
+      "file": "docs/raid-command-receipts.md",
+      "section": "Limitations",
+      "observed": "Historical ffe2683 stale clause said no independent implementation review. Root author corrected doc separately; inspected correction removes contradiction and retains rollout limits.",
+      "status": "FIX VERIFIED, doc-only working-tree delta",
+      "corrected_document_sha256": "cd512916ee5d0b4b3f635c7fa4fe3be1c1d4f16367007ec16ee6a9551903fca4",
+      "historical_document_sha256": "d568104c32908e86bbce2ed079d9a96002f08ddee59c0885c94ef6f0b6bbf70b",
+      "CI": "Remote CI still applies to ffe2683; later corrected-doc publish needs new CI."
+    }
+  ],
+  "not_run": [
+    "New browser/UI/UAT executions (no runtime/UI change; current exact-head CI browser SUCCESS)",
+    "Live rollout/restore/production/provider calls",
+    "Combined T019/T029/T006 schema integration",
+    "Remote CI after any later publication/review-only commit"
+  ],
+  "original_review_reports": "Untouched; original scope/results/source identities retained.",
+  "historical_junit_copies": "historical-artifacts/ all six original packet hashes independently matched; safe to preserve in repository without inventing historical sources.",
+  "artifact_sha256": {
+    "source-manifest.json": "4d442ca5a05fd44ff4fb2dc0136da4e18e3c6c4a92bc54945ff0100ec9a19f03",
+    "full-commands.json": "ed7c9e975b58f8f6a12a832447cd971a4dd9ce53170b439554946f742c1511f5",
+    "static-commands.json": "c8c28e5a653593ee1bcfcdf5164b1f5045376a104ff99ed0861c07fd797b5b13",
+    "ci-readback.json": "733acbcfa0f174858b806750cc3deef9e523c45ae001cd0f24b336f4042715c9",
+    "feature.xml": "17d6e721e50083d081db64a5604d39aacf8391ed7cc3f030474174d415087152",
+    "F03-red.xml": "609fa97a03dc062a3e35565f45bdac78751b3d31b13537d02e27bb9dbcec690d",
+    "setup-commands.json": "d8f9559f47ea1b002374caa1bc4b7d77b14bf07f290ace7726801b7f97cc4a3c",
+    "historical-artifact-verification.json": "c04b98a39870297567679080e6d7a492b7ae6d7ddd44c89fbfe8ce06bea44632",
+    "post-mutation-green.xml": "6316e20d9ce2cbd420a481989477d785d3d30c536358a5aceb9cf0ba132dd2be",
+    "feature-commands.json": "d82cc1b2bb397dd709191d41b409b84219cc0359e747a4896abbde3f0b48b83a",
+    "database-provenance.json": "275ad470a78f4010224c25301432943e85fb8275ffb837c68472ec85a61792a4",
+    "full.xml": "17bc14bd82b4edd2a95af395f0bfd55353ad2af67b487197f73bb111ee42abcf",
+    "mutation-results.json": "501a4738971ed746703b65c674c8abff6686528a5ab3a143cd81ef02fa370345"
+  }
+}
