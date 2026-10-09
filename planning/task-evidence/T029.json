@@ -8,7 +8,7 @@
   "dependency_evidence": "T002 shared contracts (src/contracts/assets.ts) reused as merged on main at 101348a; T002 independent acceptance recorded in planning/task-evidence/T002-review.json. O07 is OPEN and not waived.",
   "open_decisions": "O07 (supported assets, extension/freeze policy) blocks any production asset; also relevant and unresolved: O05 custody, O08 fees, O12 operating terms. No decision recorded.",
   "release_gate_disposition": "G04 not granted; G02, G03, G05, G10 not granted. No production or live-fund action enabled.",
-  "source_candidate": "01845840af6292b31f50d9e0eafa981194986931",
+  "source_candidate": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
   "baseline": "101348a0e65454ec705be17b54c3ecc29801eede",
   "tdd": {
     "red": {
@@ -72,54 +72,50 @@
   "ci": {
     "planning-contracts": {
       "result": "SUCCESS",
-      "sha": "01845840af6292b31f50d9e0eafa981194986931",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811517116"
+      "sha": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862023438"
     },
     "static": {
       "result": "SUCCESS",
-      "sha": "01845840af6292b31f50d9e0eafa981194986931",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811517116"
+      "sha": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862023438"
     },
     "dependency-security": {
       "result": "SUCCESS",
-      "sha": "01845840af6292b31f50d9e0eafa981194986931",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811517116"
+      "sha": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862023438"
     },
     "test": {
       "result": "SUCCESS",
-      "sha": "01845840af6292b31f50d9e0eafa981194986931",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811517116"
+      "sha": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862023438"
     },
     "docker": {
       "result": "SUCCESS",
-      "sha": "01845840af6292b31f50d9e0eafa981194986931",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811517116"
+      "sha": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862023438"
     },
     "browser": {
       "result": "SUCCESS",
-      "sha": "01845840af6292b31f50d9e0eafa981194986931",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811517116"
+      "sha": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862023438"
     },
     "ci-gate": {
       "result": "SUCCESS",
-      "sha": "01845840af6292b31f50d9e0eafa981194986931",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811517116"
+      "sha": "bdc81019b41bbcc16f54c90d28960d078aba5da0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862023438"
     },
-    "push_run_evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37811487478 (success on same SHA)",
+    "push_run_evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862018079 (success on same SHA)",
     "executed_counts": {
       "unit_database": {
-        "passed": 840,
+        "passed": 843,
         "skipped": 0,
         "failed": 0,
         "files": 73
       },
-      "browser": {
-        "demo": "49 passed, 1 skipped (existing guard)",
-        "studio": "44 passed",
-        "live": "38 passed, 6 skipped (existing disabled scenarios)",
-        "note": "No new browser tests; none of the skips are new T029 tests"
-      }
-    }
+      "browser": "success; no new browser tests (existing skips unchanged from the earlier candidate)"
+    },
+    "candidate_note": "Final head containing the K2 tests, JUnit files and merged review. Earlier source candidate 01845840af6292b31f50d9e0eafa981194986931 also passed (runs 37811517116, 37811487478). The commit that records this CI result is itself validated by its own later run."
   },
   "criteria": {
     "T029-C01": {
