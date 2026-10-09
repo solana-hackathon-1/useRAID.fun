@@ -1,0 +1,25 @@
+[
+  {
+    "label": "generate",
+    "command": "npx prisma generate",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  },
+  {
+    "label": "migrate-first",
+    "command": "npx prisma migrate deploy",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  },
+  {
+    "label": "migrate-repeat",
+    "command": "npx prisma migrate deploy",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  },
+  {
+    "label": "drift",
+    "command": "npx prisma migrate diff --from-url \"$DATABASE_URL\" --to-schema-datamodel prisma/schema.prisma --exit-code",
+    "exit_code": 0
+  }
+]

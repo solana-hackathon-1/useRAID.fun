@@ -1,0 +1,8 @@
+[
+  {
+    "label": "full",
+    "command": "npx vitest run --reporter=default --reporter=junit --outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/full.xml",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  }
+]

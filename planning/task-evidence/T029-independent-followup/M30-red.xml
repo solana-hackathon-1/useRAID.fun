@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="40" failures="1" errors="0" time="0.005514083">
+    <testsuite name="tests/asset-registry-amounts.test.ts" timestamp="2026-10-09T03:37:53.975Z" hostname="0xd.local" tests="40" failures="1" errors="0" skipped="39" time="0.005514083">
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; parses the section 16.3 example exactly and formats it back" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects excess precision instead of rounding" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot; 1&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1 &quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;-1&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;+1&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1e3&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;0x10&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;.5&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1.&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;01&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1,000&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;NaN&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;Infinity&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1..2&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;１２３&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1\n&quot;" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects non-string input including JavaScript numbers" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; validates decimals and the host bound" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; enforces the inclusive u64 upper bound by default" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; formats only in-bound nonnegative integers" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; agrees with the shared T002 contract helpers (reuse, no divergence)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; round trips random amounts for every decimals value without precision loss (property)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; adds, subtracts and sums exactly within the bound" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; rejects overflow, underflow and non-bigint input" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; splits the section 14.3 example 50/30/20 exactly" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; distributes remainder to the largest fractional parts, ties to the lowest index" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; never gives remainder to a zero-weight recipient" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; can disclose the remainder as unallocated instead of assigning it" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; rejects invalid allocations" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; caps the number of recipients at 1024" time="0.004836625">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;INVALID_ALLOCATION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;INVALID_ALLOCATION&apos; // Object.is equality
+
+Expected: &quot;INVALID_ALLOCATION&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/asset-registry-amounts.test.ts:161:74
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; conserves the total, is never negative and is deterministic (property)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; keeps every share within one unit of the exact proportional value (property)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; floors or ceils basis points exactly and never exceeds the amount" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; rejects unreasonable basis points and rounding names" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; serializes amounts as canonical decimal strings and parses them back" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; rejects JSON numbers, noncanonical strings and out-of-bound values" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; round trips large random amounts exactly (property)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 error shape &gt; exposes only a machine code, never input text" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

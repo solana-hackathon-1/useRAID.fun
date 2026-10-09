@@ -1,0 +1,16 @@
+{
+  "id": "7b6c4955a1d1eaf84ac65612cf4f771bd27cc2e9bd5c3594906ac4fdf8664611",
+  "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+  "name": "raid-codex-followup-t029-20261009",
+  "startedAt": "2026-10-09T03:35:24.926335514Z",
+  "labels": {
+    "raid-task": "T029-codex-followup"
+  },
+  "tmpfs": {
+    "/var/lib/postgresql/data": "rw,size=512m"
+  },
+  "mounts": [],
+  "host": "127.0.0.1",
+  "port": "51517",
+  "database": "useraid_test"
+}

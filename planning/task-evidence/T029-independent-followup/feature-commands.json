@@ -1,0 +1,8 @@
+[
+  {
+    "label": "feature",
+    "command": "npx vitest run tests/asset-registry-amounts.test.ts tests/asset-registry-boundary.test.ts tests/asset-registry-bundle.test.ts tests/asset-registry-db.test.ts tests/asset-registry-production.test.ts tests/asset-registry-registry.test.ts --reporter=default --reporter=junit --outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/feature.xml",
+    "exit_code": 0,
+    "expected_exit_code": 0
+  }
+]

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="16" failures="1" errors="0" time="0.007619959">
+    <testsuite name="tests/asset-registry-production.test.ts" timestamp="2026-10-09T03:37:53.365Z" hostname="0xd.local" tests="16" failures="1" errors="0" skipped="15" time="0.007619959">
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; ships no supported production asset until O07 supplies one" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an empty configuration" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; accepts a fully verified, approved, allow-listed configuration only when the host supplies the list" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a DEVNET network in a production profile" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a TESTNET network in a production profile" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a LOCAL network in a production profile" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a SYNTHETIC network in a production profile" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test fixture and sample assets even when listed" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks mock and simulated providers" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test or sample program identifiers" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a token asset whose token program is not declared chain-verified" time="0.006891667">
+            <failure message="expected [] to deeply equal [ { …(2) } ]" type="AssertionError">
+AssertionError: expected [] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     &quot;code&quot;: &quot;PROGRAM_NOT_CHAIN_VERIFIED&quot;,
+-     &quot;subject&quot;: &quot;assets[0]&quot;,
+-   },
+- ]
++ []
+
+ ❯ tests/asset-registry-production.test.ts:106:24
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset without a recorded decision reference matching the allow list entry" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset that is allow-listed on a different network or mint" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset whose policy is unsupported (rejected extension, unknown program, no policy)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; reports every violation at once and carries no input text" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; treats malformed configuration as blocked, never as acceptable" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

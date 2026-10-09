@@ -1,0 +1,145 @@
+{
+  "headRefOid": "283f3d77cf679c8d9b4aeb13a61023c98ac64aa9",
+  "statusCheckRollup": [
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:04:28Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862849088/job/113602471330",
+      "name": "planning-contracts",
+      "startedAt": "2026-10-09T00:04:20Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:04:20Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862843355/job/113602447098",
+      "name": "planning-contracts",
+      "startedAt": "2026-10-09T00:04:15Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:05:24Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862849088/job/113602471400",
+      "name": "static",
+      "startedAt": "2026-10-09T00:04:20Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:05:33Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862843355/job/113602447204",
+      "name": "static",
+      "startedAt": "2026-10-09T00:04:16Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:05:31Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862849088/job/113602471047",
+      "name": "dependency-security",
+      "startedAt": "2026-10-09T00:04:56Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:04:53Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862843355/job/113602447078",
+      "name": "dependency-security",
+      "startedAt": "2026-10-09T00:04:15Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:05:54Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862849088/job/113602471386",
+      "name": "docker",
+      "startedAt": "2026-10-09T00:04:20Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:05:58Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862843355/job/113602446904",
+      "name": "docker",
+      "startedAt": "2026-10-09T00:04:15Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:06:23Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862849088/job/113602471357",
+      "name": "test",
+      "startedAt": "2026-10-09T00:04:21Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:05:51Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862843355/job/113602447086",
+      "name": "test",
+      "startedAt": "2026-10-09T00:04:15Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:11:20Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862849088/job/113602471283",
+      "name": "browser",
+      "startedAt": "2026-10-09T00:04:20Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:11:28Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862843355/job/113602447082",
+      "name": "browser",
+      "startedAt": "2026-10-09T00:04:15Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:11:26Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862849088/job/113604516376",
+      "name": "ci-gate",
+      "startedAt": "2026-10-09T00:11:22Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    },
+    {
+      "__typename": "CheckRun",
+      "completedAt": "2026-10-09T00:11:36Z",
+      "conclusion": "SUCCESS",
+      "detailsUrl": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/37862843355/job/113604559490",
+      "name": "ci-gate",
+      "startedAt": "2026-10-09T00:11:32Z",
+      "status": "COMPLETED",
+      "workflowName": "Checks"
+    }
+  ]
+}

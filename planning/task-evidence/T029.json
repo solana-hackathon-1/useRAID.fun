@@ -664,5 +664,55 @@
       "red.xml": "4ee45e435c0c9cc0f8dfafaba0f9ebb893598aa73acacd16c736fb3b62037b89",
       "refactor.xml": "37406b9bbb54310fb474031b118be95af76249391764d9bf729853df596bc2d0"
     }
+  },
+  "follow_up_review": {
+    "reviewer": "Codex /root/review_foundation_followups, separate non-author",
+    "disposition": "ACCEPTED WITH CONDITIONS; downstream conditions retained; C02/C08/C15 still NOT VERIFIED; task stays open",
+    "report": "docs/tasks/T029-followup-review/review.md",
+    "structured_report": "docs/tasks/T029-followup-review/review.json",
+    "reviewed_head": "283f3d77cf679c8d9b4aeb13a61023c98ac64aa9",
+    "artifact_directory": "planning/task-evidence/T029-independent-followup",
+    "annotation_note": "Root imported non-author follow-up reports and durable artifacts; no runtime/schema/migration/test changes. Original report bytes kept as .original; published JSON/MD formatting is presentation only. Final remote candidate CI pending.",
+    "repository_artifact_sha256": {
+      "M24-red.log": "88792d54b7da2b5cb3d0818e93d3cad4726efb9a2b95a117c7156f11d6d71a01",
+      "M24-red.xml": "b53cb6a11240ee65529709d7cd404cd7ddc1c0909248ec8d35d7ed2bedd1f0c7",
+      "M26-red.log": "59e3b050f0e27ac7c30da4e74639503efc09638b8c2d1d69a6dd1934cb91b9d2",
+      "M26-red.xml": "8fe0dd05e80431fd47eb6c75c096904f213876199182f970a4a8fcc2bd1a4eb6",
+      "M30-red.log": "99edad849a7e4f92456ca271046feae2e4f25841c59bde27fa3cb639ac7dbe6a",
+      "M30-red.xml": "6c6ffd40f8fce5124a370ce911bb6adf9ccc59cd2015490046936c3dfdee6d7e",
+      "ci-readback.json": "da224a89f9fa2840484969108a3152f34cc3dd1ebc50c63b9586a8c6f86fefc2",
+      "database-provenance.json": "fced4345b8cdda7233020510566276d623d853ccdbf106a393297d845b0e529b",
+      "drift.log": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed",
+      "eslint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence-format.log": "01bae57af6b76af604d687011aea4d31a23d35ef7d46f5492376440ee4baaa94",
+      "feature-commands.json": "ea7cfa7dd955cbb65548e9a7d429ce1996fb0340ad3e7f9c529945d2daa5e2d0",
+      "feature.log": "de00242a6ab60e8eaac7c8631ab8194ec3ccd9e226785ebc1297c6f3773cd881",
+      "feature.xml": "467eb808713b9d53428c78de4e9c661bbda11992d6387c4a1c938d23cadd4483",
+      "format.log": "90d7aedd45dcf8886a952057501828c717a146ab5b1235a8a8337e7131f716b0",
+      "full-commands.json": "4589e764fc9a0bf9fdf1c5af0d572fe9b18060714459d49cdf7b2f2584cd66d3",
+      "full.log": "9b81db8430827fb8d7bea3717c0dd90ab98f6fadef8626946bbfb561f2943644",
+      "full.xml": "47c5b2a7444da3da704cf45601e5d5875ec5642df6c891833826599fc06134e2",
+      "generate.log": "964a2ecdfd4dbcd95629e34a8201fbe71fa3699ed96892ea7be8d29fd25b623d",
+      "historical-artifact-verification.json": "1c032192cc30e62c710771b901f1d3038d30fa902e5a7e152d728003ff27254e",
+      "migrate-first.log": "3a3d94143f31ab5e401be2791fa8618cd525e7675997428544c7c6acc2b3078a",
+      "migrate-repeat.log": "0be532a08941f19a90a3a85632054c7813fec3676e0030c28fdf5650824478a5",
+      "mutation-results.json": "132374bbbc3d56d031a9c362bcb2b09b414eb1cea8fa68f0b8091a0850ca6edc",
+      "mutations.py": "73d45af0c03c92194d9ea1e146ada54306ffca7172ebc4f0c0fd0e5ff7b3b9ab",
+      "planning.log": "fd0192f385b92a6e2b11dca8074bb4933ac18291e394e7fa2395abfe617dee69",
+      "post-mutation-green.log": "89557a44f2a70ae133cce2d9e4d4f343727b94ddf57437f158a3638ab830f026",
+      "post-mutation-green.xml": "32a7cff76193d3ca7310dcfc11d71948f0014f88bc5c867446b2e1b3f24cbfa7",
+      "review-runner.py": "425a3fc7c60aacb0d3ee43bedc28c2afa2c8dbec67d0184d48b6bc43b988892c",
+      "review.json.original": "815e16db0377cb7a8d238bc8a8cea3a377b5cf6104d7437374dc853b79952d49",
+      "review.md.original": "d9d3e7a0e40ff271f4be8e8fed39875cad3f14d4bbc21433e0cdf7f33e3424bb",
+      "setup-commands.json": "d8f9559f47ea1b002374caa1bc4b7d77b14bf07f290ace7726801b7f97cc4a3c",
+      "source-manifest.json": "f4b83f0edb029734a8657e73175dfa127dcc1dc06f22813523424f4cc4d9df6e",
+      "static-commands.json": "c901c9e0b852616d3b2a8a3236904b25345fbfb73c708630566db1da01722d43",
+      "typecheck.log": "835b274db8452ebea4e6ff39051074f58874736c2105d60f4e0fe89d1554fac9",
+      "validator.log": "7bdfd5ac31eff6e93b64377312579137ba2f3a8ec30015dba4b344e36d6115a9"
+    },
+    "formatted_report_sha256": {
+      "report": "d9d3e7a0e40ff271f4be8e8fed39875cad3f14d4bbc21433e0cdf7f33e3424bb",
+      "structured_report": "815e16db0377cb7a8d238bc8a8cea3a377b5cf6104d7437374dc853b79952d49"
+    }
   }
 }
