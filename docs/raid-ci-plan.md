@@ -16,7 +16,7 @@ Every feature and integration requires meaningful automated checks for its own b
 | browser             | Desktop/mobile demo, Studio and database-backed live suites, production build and supported live-flow fixture. Reports/traces remain downloadable. Test fixtures do not prove a real external provider or production gate.             |
 | ci-gate             | Runs even when an upstream job fails; requires all six named jobs successful. Failure, cancellation or skipped required job fails the gate. Repository branch protection must actually require this check to technically block merges. |
 
-Browser and database jobs run independently to reduce wall-clock time. Concurrent runs on the same ref cancel outdated candidates; all checks refer to the candidate commit. Workflow runs on pushes, PRs and manual dispatch. No real external funds, publishing, customer secrets or production deployment are authorized by CI.
+Browser and database jobs run independently to reduce wall-clock time. Concurrent runs on the same ref cancel outdated candidates; all checks refer to the candidate commit. Hosted workflows currently run only on manual dispatch because the owner reported exhausted Actions minutes (9 October 2026). Run the required checks locally as described below. No real external funds, publishing, customer secrets or production deployment are authorized by CI.
 
 ## Per-feature test layers
 
@@ -45,7 +45,7 @@ Define each applicable scenario before coding, record RED → GREEN → REFACTOR
 
 ## Automatic status file
 
-[raid-project-status.md](raid-project-status.md) refreshes from actual GitHub issue states when an issue/epic closes or reopens, when relevant issue metadata changes, on manual dispatch and daily. It shows all epics, closed/total children, remaining work and candidates whose predecessor issues are closed. Closed with open children is explicitly flagged; deleted/missing issues remain Unknown. The bot writes only this status document to main. If repository permissions or protected-branch policy reject that write, the workflow fails visibly; it does not bypass protection.
+[raid-project-status.md](raid-project-status.md) refreshes from actual GitHub issue states on manual dispatch. Automatic issue events and the daily schedule are paused to conserve Actions minutes. It shows all epics, closed/total children, remaining work and candidates whose predecessor issues are closed. Closed with open children is explicitly flagged; deleted/missing issues remain Unknown. The bot writes only this status document to main. If repository permissions or protected-branch policy reject that write, the workflow fails visibly; it does not bypass protection.
 
 CI status/evidence on the Project belongs to the feature's actual candidate; the status file tracks issue lifecycle and does not invent QA/UAT or release approval.
 
@@ -84,3 +84,11 @@ Implementation reports require a `ci` object keyed by every required check from 
 ## Studio database isolation
 
 The Studio preview helper requires Docker Compose and creates its own `useraid_studio_test` database. CI starts the existing test Compose override on port 55432 under project `raid-ci-studio`, supplies those Compose settings to the preview helper and always cleans up that isolated database. Demo/live jobs keep the GitHub service database on 5432. This corrects a real hosted-CI setup failure without weakening the preview safeguards or changing application logic.
+
+## Local verification while Actions minutes are exhausted
+
+Run `bash scripts/local-ci.sh` from a dedicated checkout of the exact candidate. The runner installs locked dependencies and runs every existing hosted layer: planning, static, security, migrated real-database tests and drift, container build/runtime, demo/Studio/live browsers, production build and live-flow fixtures. Host requirements are Node 22.12+, Python 3.12, Docker Compose, installed Playwright Chromium and browser system dependencies, and free ports 3000, 3008 and 55432. Install browser prerequisites with `npx playwright install --with-deps chromium` when needed. No GitHub token, provider credentials or production database is needed.
+
+The isolated Compose project is `raid-local-ci`; databases are `useraid_test`, `useraid_shadow` and `useraid_studio_test`. Never run against a shared database. The runner stops its database on exit and retains its volume for inspection. Logs, candidate SHA plus working diff, result codes, JUnit and browser reports are retained under `/tmp/raid-local-ci-*` (override with `RAID_CI_LOG_DIR`). Any failed required step returns nonzero; prerequisite failure blocks later checks and must be reported as not run. A local success is not a hosted Actions check, branch-protection bypass, independent review or release approval. Attach sanitized results for each exact PR candidate; do not reuse main results for a different SHA.
+
+Both hosted workflows retain all jobs and can be manually dispatched when minutes are available. Restore push/PR triggers and the status issue/schedule triggers through a reviewed change when the allowance returns. PR branches carrying older workflows still retain their old triggers until this change is incorporated.
