@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="77" failures="67" errors="0" time="41.547660458">
+    <testsuite name="tests/command-receipts-boundary.test.ts" timestamp="2026-10-08T16:40:47.605Z" hostname="0xd.local" tests="4" failures="2" errors="0" skipped="0" time="0.05063175">
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="public module owns SQL and contracts without an app singleton, framework or SDK" time="0.001711417">
+        </testcase>
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="migration is additive, versioned and leaves existing tables untouched" time="0.000463458">
+        </testcase>
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="minimal external host runs the documented flow using explicit dependencies" time="0.047695167">
+            <failure message="ENOENT: no such file or directory, stat &apos;examples/command-receipts&apos;" type="Error">
+Error: ENOENT: no such file or directory, stat &apos;examples/command-receipts&apos;
+ ❯ tests/command-receipts-boundary.test.ts:46:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -2, code: &apos;ENOENT&apos;, syscall: &apos;stat&apos;, path: &apos;examples/command-receipts&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-boundary.test.ts" name="module documentation declares the R16 reuse contract and runnable consumer steps" time="0.0002175">
+            <failure message="ENOENT: no such file or directory, open &apos;docs/raid-command-receipts.md&apos;" type="Error">
+Error: ENOENT: no such file or directory, open &apos;docs/raid-command-receipts.md&apos;
+ ❯ tests/command-receipts-boundary.test.ts:81:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { errno: -2, code: &apos;ENOENT&apos;, syscall: &apos;open&apos;, path: &apos;docs/raid-command-receipts.md&apos; }
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/command-receipts-db.test.ts" timestamp="2026-10-08T16:40:47.606Z" hostname="0xd.local" tests="27" failures="25" errors="0" skipped="0" time="41.48376775">
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; commits the business row, receipt, audit and outbox together and replays the original" time="0.049265708">
+            <failure message="expected { business: 1, receipts: +0, …(3) } to deeply equal { business: 1, receipts: 1, …(3) }" type="AssertionError">
+AssertionError: expected { business: 1, receipts: +0, …(3) } to deeply equal { business: 1, receipts: 1, …(3) }
+
+- Expected
++ Received
+
+  {
+-   &quot;audit&quot;: 1,
++   &quot;audit&quot;: 0,
+    &quot;business&quot;: 1,
+    &quot;inbox&quot;: 0,
+-   &quot;outbox&quot;: 1,
+-   &quot;receipts&quot;: 1,
++   &quot;outbox&quot;: 0,
++   &quot;receipts&quot;: 0,
+  }
+
+ ❯ tests/command-receipts-db.test.ts:126:30
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; conflicts on the same key with a different payload and never overwrites the original" time="0.012017625">
+            <failure message="expected undefined to be an instance of CommandReceiptError" type="AssertionError">
+AssertionError: expected undefined to be an instance of CommandReceiptError
+ ❯ tests/command-receipts-db.test.ts:178:23
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; scopes the key to actor and command kind" time="0.019776291">
+            <failure message="expected 1 to be 3 // Object.is equality" type="AssertionError">
+AssertionError: expected 1 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 1
+
+ ❯ tests/command-receipts-db.test.ts:193:61
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; records several events with ordinals and only publishes the marked ones" time="0.009972042">
+            <failure message="expected [] to deeply equal [ +0, 1, 2 ]" type="AssertionError">
+AssertionError: expected [] to deeply equal [ +0, 1, 2 ]
+
+- Expected
++ Received
+
+- [
+-   0,
+-   1,
+-   2,
+- ]
++ []
+
+ ❯ tests/command-receipts-db.test.ts:206:43
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on callback error and lets the same key execute later" time="0.011149417">
+            <failure message="expected { business: 1, receipts: +0, …(3) } to match object { business: 1, receipts: 1, …(2) }
+(1 matching property omitted from actual)" type="AssertionError">
+AssertionError: expected { business: 1, receipts: +0, …(3) } to match object { business: 1, receipts: 1, …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   &quot;audit&quot;: 1,
++   &quot;audit&quot;: 0,
+    &quot;business&quot;: 1,
+-   &quot;outbox&quot;: 1,
+-   &quot;receipts&quot;: 1,
++   &quot;outbox&quot;: 0,
++   &quot;receipts&quot;: 0,
+  }
+
+ ❯ tests/command-receipts-db.test.ts:237:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on invalid event payload and lets the same key execute later" time="0.003681667">
+            <failure message="expected undefined to be defined" type="AssertionError">
+AssertionError: expected undefined to be defined
+ ❯ tests/command-receipts-db.test.ts:228:59
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on no event and lets the same key execute later" time="0.003382667">
+            <failure message="expected undefined to be defined" type="AssertionError">
+AssertionError: expected undefined to be defined
+ ❯ tests/command-receipts-db.test.ts:228:59
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on invalid result reference and lets the same key execute later" time="0.003393708">
+            <failure message="expected undefined to be defined" type="AssertionError">
+AssertionError: expected undefined to be defined
+ ❯ tests/command-receipts-db.test.ts:228:59
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; rolls the business row back when a later database statement fails" time="0.005416666">
+            <failure message="expected undefined to be defined" type="AssertionError">
+AssertionError: expected undefined to be defined
+ ❯ tests/command-receipts-db.test.ts:252:21
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; blocks the second identical command on the first backend, then replays it" time="10.012245958">
+            <failure message="Expected independent PostgreSQL blocker was not observed" type="Error">
+Error: Expected independent PostgreSQL blocker was not observed
+ ❯ observeBlock tests/command-receipts-db.test.ts:53:9
+ ❯ tests/command-receipts-db.test.ts:288:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; lets the waiting command execute when the first one rolls back" time="10.031114416">
+            <failure message="Expected independent PostgreSQL blocker was not observed" type="Error">
+Error: Expected independent PostgreSQL blocker was not observed
+ ❯ observeBlock tests/command-receipts-db.test.ts:53:9
+ ❯ tests/command-receipts-db.test.ts:331:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; reports a conflict, not a replay, when the waiting command has another payload" time="10.039898917">
+            <failure message="Expected independent PostgreSQL blocker was not observed" type="Error">
+Error: Expected independent PostgreSQL blocker was not observed
+ ❯ observeBlock tests/command-receipts-db.test.ts:53:9
+ ❯ tests/command-receipts-db.test.ts:368:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; produces one execution for eight simultaneous identical commands" time="0.034660792">
+            <failure message="expected [ { status: &apos;EXECUTED&apos;, …(2) }, …(7) ] to have a length of 1 but got 8" type="AssertionError">
+AssertionError: expected [ { status: &apos;EXECUTED&apos;, …(2) }, …(7) ] to have a length of 1 but got 8
+
+- Expected
++ Received
+
+- 1
++ 8
+
+ ❯ tests/command-receipts-db.test.ts:381:62
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; re-runs the entire transaction after a serialization failure and commits one outcome" time="0.019937458">
+            <failure message="
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `40001`. Message: `synthetic serialization failure`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `40001`. Message: `synthetic serialization failure`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/command-receipts-db.test.ts:406:35
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:21:19
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ tests/command-receipts-db.test.ts:398:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;40001&apos;, message: &apos;synthetic serialization failure&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; classifies exhaustion as RETRY_TRANSACTION and persists nothing" time="0.007576667">
+            <failure message="expected PrismaClientKnownRequestError{ …(7) } to be an instance of CommandReceiptError" type="AssertionError">
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to be an instance of CommandReceiptError
+ ❯ tests/command-receipts-db.test.ts:433:21
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; survives a genuine PostgreSQL deadlock between two different commands" time="1.018381042">
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `40P01`. Message: `ERROR: deadlock detected
+DETAIL: Process 118 waits for ExclusiveLock on advisory lock [16384,0,9101,1]; blocked by process 117.
+Process 117 waits for ExclusiveLock on advisory lock [16384,0,9102,1]; blocked by process 118.
+HINT: See server log for query details.`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `40P01`. Message: `ERROR: deadlock detected
+DETAIL: Process 118 waits for ExclusiveLock on advisory lock [16384,0,9101,1]; blocked by process 117.
+Process 117 waits for ExclusiveLock on advisory lock [16384,0,9102,1]; blocked by process 118.
+HINT: See server log for query details.`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/command-receipts-db.test.ts:464:15
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:21:19
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ tests/command-receipts-db.test.ts:469:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;40P01&apos;, message: &apos;ERROR: deadlock detected\nDETAIL: Process 118 waits for ExclusiveLock on advisory lock [16384,0,9101,1]; blocked by process 117.\nProcess 117 waits for ExclusiveLock on advisory lock [16384,0,9102,1]; blocked by process 118.\nHINT: See server log for query details.&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; runs the handler once for a repeated delivery and stores only the digest" time="0.024597417">
+            <failure message="expected { status: &apos;PROCESSED&apos;, …(2) } to deeply equal { status: &apos;DUPLICATE&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { status: &apos;PROCESSED&apos;, …(2) } to deeply equal { status: &apos;DUPLICATE&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+    &quot;deliveryRecordId&quot;: &quot;stub&quot;,
+    &quot;resultRef&quot;: &quot;claim-1&quot;,
+-   &quot;status&quot;: &quot;DUPLICATE&quot;,
++   &quot;status&quot;: &quot;PROCESSED&quot;,
+  }
+
+ ❯ tests/command-receipts-db.test.ts:514:22
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; yields one outcome for eight simultaneous deliveries" time="0.014241709">
+            <failure message="expected [ { status: &apos;PROCESSED&apos;, …(2) }, …(7) ] to have a length of 1 but got 8" type="AssertionError">
+AssertionError: expected [ { status: &apos;PROCESSED&apos;, …(2) }, …(7) ] to have a length of 1 but got 8
+
+- Expected
++ Received
+
+- 1
++ 8
+
+ ❯ tests/command-receipts-db.test.ts:541:63
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; blocks the duplicate on the first backend while the first handler is open" time="10.012699333">
+            <failure message="Expected independent PostgreSQL blocker was not observed" type="Error">
+Error: Expected independent PostgreSQL blocker was not observed
+ ❯ observeBlock tests/command-receipts-db.test.ts:53:9
+ ❯ tests/command-receipts-db.test.ts:576:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; conflicts on a changed payload, keeps the original and separates providers" time="0.037567625">
+            <failure message="expected undefined to be &apos;DELIVERY_PAYLOAD_CONFLICT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected undefined to be &apos;DELIVERY_PAYLOAD_CONFLICT&apos; // Object.is equality
+
+- Expected:
+&quot;DELIVERY_PAYLOAD_CONFLICT&quot;
+
++ Received:
+undefined
+
+ ❯ tests/command-receipts-db.test.ts:588:27
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; releases the claim when the handler fails so a redelivery can succeed" time="0.028384083">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; private data stays out of the tables (I06) &gt; stores identifiers and digests only" time="0.019655375">
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; keeps receipts immutable and unique per actor, kind and key" time="0.017064833">
+            <failure message="
+Invalid `db.auditEvent.findFirstOrThrow()` invocation in
+/Users/dushyant/Documents/useRAID.fun/.claude/worktrees/agent-aab0b62fa4d495a51/tests/command-receipts-db.test.ts:644:39
+
+  641 const result = await exec(command());
+  642 return {
+  643   receiptId: result.receiptId,
+→ 644   auditId: (await db.auditEvent.findFirstOrThrow(
+An operation failed because it depends on one or more records that were required but not found. No record was found for a query." type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `db.auditEvent.findFirstOrThrow()` invocation in
+/Users/dushyant/Documents/useRAID.fun/.claude/worktrees/agent-aab0b62fa4d495a51/tests/command-receipts-db.test.ts:644:39
+
+  641 const result = await exec(command());
+  642 return {
+  643   receiptId: result.receiptId,
+→ 644   auditId: (await db.auditEvent.findFirstOrThrow(
+An operation failed because it depends on one or more records that were required but not found. No record was found for a query.
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ seed tests/command-receipts-db.test.ts:644:19
+ ❯ tests/command-receipts-db.test.ts:650:29
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2025&apos;, meta: { modelName: &apos;AuditEvent&apos;, cause: &apos;No record was found for a query.&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; keeps audit and outbox rows append-only" time="0.013886709">
+            <failure message="
+Invalid `db.auditEvent.findFirstOrThrow()` invocation in
+/Users/dushyant/Documents/useRAID.fun/.claude/worktrees/agent-aab0b62fa4d495a51/tests/command-receipts-db.test.ts:644:39
+
+  641 const result = await exec(command());
+  642 return {
+  643   receiptId: result.receiptId,
+→ 644   auditId: (await db.auditEvent.findFirstOrThrow(
+An operation failed because it depends on one or more records that were required but not found. No record was found for a query." type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `db.auditEvent.findFirstOrThrow()` invocation in
+/Users/dushyant/Documents/useRAID.fun/.claude/worktrees/agent-aab0b62fa4d495a51/tests/command-receipts-db.test.ts:644:39
+
+  641 const result = await exec(command());
+  642 return {
+  643   receiptId: result.receiptId,
+→ 644   auditId: (await db.auditEvent.findFirstOrThrow(
+An operation failed because it depends on one or more records that were required but not found. No record was found for a query.
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ seed tests/command-receipts-db.test.ts:644:19
+ ❯ tests/command-receipts-db.test.ts:667:37
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2025&apos;, meta: { modelName: &apos;AuditEvent&apos;, cause: &apos;No record was found for a query.&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; rejects malformed rows through checks and keys" time="0.007944458">
+            <failure message="expected &apos;&apos; to match /check/i" type="AssertionError">
+AssertionError: expected &apos;&apos; to match /check/i
+
+- Expected:
+/check/i
+
++ Received:
+&quot;&quot;
+
+ ❯ rejected tests/command-receipts-db.test.ts:638:36
+ ❯ tests/command-receipts-db.test.ts:681:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; cannot commit a receipt or inbox row without its result reference" time="0.009417167">
+            <failure message="expected &apos;&apos; to match /result/i" type="AssertionError">
+AssertionError: expected &apos;&apos; to match /result/i
+
+- Expected:
+/result/i
+
++ Received:
+&quot;&quot;
+
+ ❯ tests/command-receipts-db.test.ts:727:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; allows the result reference to be set exactly once and nothing else to change" time="0.013315541">
+            <failure message="expected &apos;&apos; to match /immutable|unique|duplicate/i" type="AssertionError">
+AssertionError: expected &apos;&apos; to match /immutable|unique|duplicate/i
+
+- Expected:
+/immutable|unique|duplicate/i
+
++ Received:
+&quot;&quot;
+
+ ❯ tests/command-receipts-db.test.ts:748:9
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/command-receipts.test.ts" timestamp="2026-10-08T16:40:47.611Z" hostname="0xd.local" tests="46" failures="40" errors="0" skipped="0" time="0.013260958">
+        <testcase classname="tests/command-receipts.test.ts" name="canonical request digest &gt; is a stable lowercase SHA-256 independent of key order and sensitive to every value" time="0.002927292">
+            <failure message="expected &apos;&apos; to match /^[0-9a-f]{64}$/" type="AssertionError">
+AssertionError: expected &apos;&apos; to match /^[0-9a-f]{64}$/
+
+- Expected:
+/^[0-9a-f]{64}$/
+
++ Received:
+&quot;&quot;
+
+ ❯ tests/command-receipts.test.ts:58:15
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="canonical request digest &gt; rejects values whose identity is ambiguous or not JSON" time="0.000821542">
+            <failure message="expected function to throw an error, but it didn&apos;t" type="AssertionError">
+AssertionError: expected function to throw an error, but it didn&apos;t
+ ❯ tests/command-receipts.test.ts:83:49
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid actor" time="0.001252875">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid actor charset" time="0.000257541">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid kind lowercase" time="0.00023325">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid kind too short" time="0.000223375">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid key space" time="0.000200333">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid key empty" time="0.000167583">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid request id" time="0.00016175">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; rejects invalid request undefined" time="0.000199583">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:99:89
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="input validation happens before any SQL &gt; fails closed for a port that is not PostgreSQL READ COMMITTED" time="0.000197125">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:115:9
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="replay and conflict &gt; returns the stored result without running the handler or writing" time="0.000322334">
+            <failure message="handler must not run" type="Error">
+Error: handler must not run
+ ❯ never tests/command-receipts.test.ts:51:9
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:21:25
+ ❯ tests/command-receipts.test.ts:127:18
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="replay and conflict &gt; conflicts on a different digest and performs no write after the lookup" time="0.000185916">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;IDEMPOTENCY_KEY_REUSED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;IDEMPOTENCY_KEY_REUSED&apos; // Object.is equality
+
+Expected: &quot;IDEMPOTENCY_KEY_REUSED&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:142:72
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="replay and conflict &gt; refuses a receipt row that has no result or a malformed shape" time="0.000148833">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:156:74
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; claims the receipt first, then writes audit, outbox and finalizes the result last" time="0.000954042">
+            <failure message="expected { status: &apos;EXECUTED&apos;, …(2) } to deeply equal { status: &apos;EXECUTED&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { status: &apos;EXECUTED&apos;, …(2) } to deeply equal { status: &apos;EXECUTED&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+-   &quot;receiptId&quot;: &quot;row-1&quot;,
++   &quot;receiptId&quot;: &quot;stub&quot;,
+    &quot;resultRef&quot;: &quot;engagement-1&quot;,
+    &quot;status&quot;: &quot;EXECUTED&quot;,
+  }
+
+ ❯ tests/command-receipts.test.ts:182:26
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; skips the outbox for a non-publishing event and stores only digests, never the request" time="0.0005905">
+            <failure message="the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string" type="AssertionError">
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ tests/command-receipts.test.ts:208:35
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects no events after the callback and never finalizes" time="0.000114959">
+            <failure message="expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;RESOLVED&quot;
+
+ ❯ tests/command-receipts.test.ts:219:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects unknown family after the callback and never finalizes" time="0.000104417">
+            <failure message="expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;RESOLVED&quot;
+
+ ❯ tests/command-receipts.test.ts:219:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects free-text payload field after the callback and never finalizes" time="0.00008525">
+            <failure message="expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;RESOLVED&quot;
+
+ ❯ tests/command-receipts.test.ts:219:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects zero version after the callback and never finalizes" time="0.000079792">
+            <failure message="expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;RESOLVED&quot;
+
+ ❯ tests/command-receipts.test.ts:219:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects too many events after the callback and never finalizes" time="0.00007325">
+            <failure message="expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;RESOLVED&quot;
+
+ ❯ tests/command-receipts.test.ts:219:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; rejects an invalid result reference" time="0.000094084">
+            <failure message="expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;RESOLVED&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;RESOLVED&quot;
+
+ ❯ tests/command-receipts.test.ts:225:32
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; passes the callback error through untouched and writes nothing further" time="0.000456375">
+            <failure message="expected [] to have a length of 1 but got +0" type="AssertionError">
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/command-receipts.test.ts:236:19
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="first execution &gt; sanitizes driver failures and rejects non-array results" time="0.000240834">
+            <failure message="expected Error: handler must not run to be an instance of CommandReceiptError" type="AssertionError">
+AssertionError: expected Error: handler must not run to be an instance of CommandReceiptError
+ ❯ tests/command-receipts.test.ts:248:19
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects provider uppercase before SQL" time="0.000125042">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:270:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects provider empty before SQL" time="0.000090459">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:270:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects delivery id space before SQL" time="0.000099209">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:270:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects delivery id too long before SQL" time="0.000103833">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:270:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; rejects payload undefined before SQL" time="0.000114167">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:270:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; treats a repeated delivery as a duplicate without running the handler" time="0.000087">
+            <failure message="handler must not run" type="Error">
+Error: handler must not run
+ ❯ never tests/command-receipts.test.ts:51:9
+ ❯ processInboundDelivery src/command-receipts/index.ts:29:25
+ ❯ tests/command-receipts.test.ts:283:18
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; reports a changed payload under the same delivery id as a conflict" time="0.000130917">
+            <failure message="expected &apos;OTHER:Error: handler must not run&apos; to be &apos;DELIVERY_PAYLOAD_CONFLICT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;OTHER:Error: handler must not run&apos; to be &apos;DELIVERY_PAYLOAD_CONFLICT&apos; // Object.is equality
+
+Expected: &quot;DELIVERY_PAYLOAD_CONFLICT&quot;
+Received: &quot;OTHER:Error: handler must not run&quot;
+
+ ❯ tests/command-receipts.test.ts:296:71
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="inbound deliveries &gt; processes a first delivery and never persists the raw payload" time="0.000235833">
+            <failure message="expected { status: &apos;PROCESSED&apos;, …(2) } to deeply equal { status: &apos;PROCESSED&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { status: &apos;PROCESSED&apos;, …(2) } to deeply equal { status: &apos;PROCESSED&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+-   &quot;deliveryRecordId&quot;: &quot;inbox-1&quot;,
++   &quot;deliveryRecordId&quot;: &quot;stub&quot;,
+    &quot;resultRef&quot;: &quot;claim-1&quot;,
+    &quot;status&quot;: &quot;PROCESSED&quot;,
+  }
+
+ ❯ tests/command-receipts.test.ts:307:20
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; re-runs the whole attempt with an attempt counter until success" time="0.000141084">
+            <failure message="RETRY_TRANSACTION" type="CommandReceiptError">
+CommandReceiptError: RETRY_TRANSACTION
+ ❯ tests/command-receipts.test.ts:320:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;RETRY_TRANSACTION&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; stops at the bound and rethrows the last retryable failure" time="0.000110333">
+            <failure message="expected 1 to be 2 // Object.is equality" type="AssertionError">
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ tests/command-receipts.test.ts:341:18
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; does not retry other errors, including idempotency conflicts" time="0.000138292">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="whole-transaction retry &gt; accepts a host classifier and validates the bound" time="0.000111584">
+            <failure message="raw" type="Error">
+Error: raw
+ ❯ value.isRetryable tests/command-receipts.test.ts:362:45
+ ❯ retryWholeTransaction src/command-receipts/index.ts:36:10
+ ❯ tests/command-receipts.test.ts:360:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;40P01&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;40001&quot;} as RETRY_TRANSACTION" time="0.000150833">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality
+
+Expected: &quot;RETRY_TRANSACTION&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/command-receipts.test.ts:386:55
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;40P01&quot;} as RETRY_TRANSACTION" time="0.000119">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality
+
+Expected: &quot;RETRY_TRANSACTION&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/command-receipts.test.ts:386:55
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;P2034&quot;} as RETRY_TRANSACTION" time="0.000105417">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality
+
+Expected: &quot;RETRY_TRANSACTION&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/command-receipts.test.ts:386:55
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40001&quot;}} as RETRY_TRANSACTION" time="0.000108333">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;RETRY_TRANSACTION&apos; // Object.is equality
+
+Expected: &quot;RETRY_TRANSACTION&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/command-receipts.test.ts:386:55
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;23505&quot;}} as STORAGE_UNAVAILABLE" time="0.000028416">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {&quot;code&quot;:&quot;ECONNRESET&quot;} as STORAGE_UNAVAILABLE" time="0.000023375">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies {} as STORAGE_UNAVAILABLE" time="0.00002425">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; classifies null as STORAGE_UNAVAILABLE" time="0.0000245">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; keeps typed module errors unchanged" time="0.000031375">
+        </testcase>
+        <testcase classname="tests/command-receipts.test.ts" name="Prisma host adapter &gt; verifies the real isolation once and refuses anything but read committed" time="0.000165792">
+            <failure message="expected [] to have a length of 1 but got +0" type="AssertionError">
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/command-receipts.test.ts:406:60
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

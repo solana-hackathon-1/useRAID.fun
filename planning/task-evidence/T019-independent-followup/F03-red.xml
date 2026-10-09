@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="28" failures="1" errors="0" time="0.045366208">
+    <testsuite name="tests/command-receipts-db.test.ts" timestamp="2026-10-09T03:38:05.532Z" hostname="0xd.local" tests="28" failures="1" errors="0" skipped="27" time="0.045366208">
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; commits the business row, receipt, audit and outbox together and replays the original" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; conflicts on the same key with a different payload and never overwrites the original" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; scopes the key to actor and command kind" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; one logical command, one outcome &gt; records several events with ordinals and only publishes the marked ones" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on callback error and lets the same key execute later" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on invalid event payload and lets the same key execute later" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on no event and lets the same key execute later" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; persists nothing on invalid result reference and lets the same key execute later" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; atomic commit &gt; rolls the business row back when a later database statement fails" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; blocks the second identical command on the first backend, then replays it" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; lets the waiting command execute when the first one rolls back" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; reports a conflict, not a replay, when the waiting command has another payload" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; competing real transactions &gt; produces one execution for eight simultaneous identical commands" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; re-runs the entire transaction after a serialization failure and commits one outcome" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; classifies exhaustion as RETRY_TRANSACTION and persists nothing" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; whole-transaction retry keeps the semantic identity &gt; survives a genuine PostgreSQL deadlock between two different commands" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; runs the handler once for a repeated delivery and stores only the digest" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; yields one outcome for eight simultaneous deliveries" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; blocks the duplicate on the first backend while the first handler is open" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; processes two distinct delivery ids that carry identical payloads (no dedupe by content)" time="0.043304917">
+            <failure message="expected [ &apos;PROCESSED&apos;, &apos;DUPLICATE&apos; ] to deeply equal [ &apos;PROCESSED&apos;, &apos;PROCESSED&apos; ]" type="AssertionError">
+AssertionError: expected [ &apos;PROCESSED&apos;, &apos;DUPLICATE&apos; ] to deeply equal [ &apos;PROCESSED&apos;, &apos;PROCESSED&apos; ]
+
+- Expected
++ Received
+
+  [
+    &quot;PROCESSED&quot;,
+-   &quot;PROCESSED&quot;,
++   &quot;DUPLICATE&quot;,
+  ]
+
+ ❯ tests/command-receipts-db.test.ts:620:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; conflicts on a changed payload, keeps the original and separates providers" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; inbound provider deliveries (AC32 foundation) &gt; releases the claim when the handler fails so a redelivery can succeed" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; private data stays out of the tables (I06) &gt; stores identifiers and digests only" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; keeps receipts immutable and unique per actor, kind and key" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; keeps audit and outbox rows append-only" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; rejects malformed rows through checks and keys" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; cannot commit a receipt or inbox row without its result reference" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/command-receipts-db.test.ts" name="command receipts on real PostgreSQL &gt; database guards &gt; allows the result reference to be set exactly once and nothing else to change" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

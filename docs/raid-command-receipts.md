@@ -109,7 +109,7 @@ Retention and deletion of receipts and audit events is OPEN (O11). There is no d
 
 ## Limitations
 
-- Disposable-database evidence only; no live rollout, backfill, deployed worker or independent implementation review.
+- Disposable-database evidence only; independent technical review and its conditions are recorded below; no live rollout, backfill or deployed worker.
 - No outbox dispatcher: rows are intents only, and exactly-once delivery is not claimed (consumers must be idempotent).
 - Isolation is fixed at READ COMMITTED; a handler that needs SERIALIZABLE semantics must enforce them with its own constraints or locks.
 - A command rejected by business rules leaves no record, by design.
