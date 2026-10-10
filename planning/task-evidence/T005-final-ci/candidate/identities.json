@@ -1,0 +1,8 @@
+{
+  "source_sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+  "collected_at": "2026-10-10T15:32:25.645610+00:00",
+  "runtime_image": "sha256:37f8661e71a5a6626ac52d6d5a1890fb58ec2a5c8c6f456d9873c725358e9cee",
+  "database_container": "a71c52b9e6001afd32b76c6562f1fcee81862ce0cf1520748ff0852ba00c92ec",
+  "full_runner_container": "0e77b7a5b9092cb61550d08354b98e2922ac00065ecbb38f4c50f05d555796a9",
+  "browser_host_image": "sha256:6c1febaa039a2b50834ab1d0dea1eb73fbe3b35acda33739cc0736d8a60a552b"
+}

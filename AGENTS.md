@@ -2,13 +2,21 @@
 
 Codex and Claude Code take turns on the same task using [docs/ai-handoff/CURRENT.md](docs/ai-handoff/CURRENT.md) as the shared checkpoint. It records progress; the canonical blueprint and existing instructions remain authoritative.
 
-1. At every session start or resume, read `docs/ai-handoff/CURRENT.md` before task work, then read the applicable repository instructions and required blueprint sections.
+1. At every session start or resume, read `docs/ai-handoff/CURRENT.md` and `docs/ai-handoff/MEMORY.md` before task work, then read the applicable repository instructions and required blueprint sections.
 2. Inspect `git status --short --branch`, staged and unstaged diffs, untracked files, and recent commits. Reconcile the checkpoint with actual files; it may be stale after an abrupt usage-limit interruption. Preserve existing work and distinguish prior changes from your own.
 3. Continue the current bounded task from its recorded next step without repeating completed work. Re-run checks when needed to verify changed or uncertain state; prior results apply only to their recorded source and environment. If blocked, record the blocker and continue only independent work within the authorized scope.
 4. Update `docs/ai-handoff/CURRENT.md` after each meaningful milestone and before yielding, ending a session, or reaching a usage limit when possible. Record timestamp/agent, task and status, branch/HEAD, changed files and unfinished changes, progress, decisions and their authority, exact tests/results (including failures or not-run checks), blockers, and ordered next steps. Keep prior evidence links and unresolved obligations visible; never include secrets.
 5. Never discard unfinished user/agent changes or claim unverified work is complete. Do not reset, clean, overwrite, or stash away existing work to make a handoff easier. Preserve genuine RED/GREEN/REFACTOR evidence and required independent review; a handoff is not task acceptance.
 6. Do not change branches, commit, or merge without explicit user authorization for that action. Continuing a task or switching agents does not authorize these actions. Leave checkpoint and implementation changes in the working tree when authorization is absent.
 7. Use one active writer in this checkout. At a usage limit, the outgoing agent records the checkpoint if possible and stops; the user starts/resumes the other agent in this same checkout. The incoming agent follows steps 1–3 and records that it has taken over. These instructions do not provide automatic usage-limit detection, automatic agent launch, or permission to delegate.
+
+## Review preparation and development preview
+
+When work reaches independent review, first execute the self-evaluation and preview workflow in [blueprint section 24.8](RAID_AGENT_BLUEPRINT.md#248-review-preparation-and-development-preview) and [shared workflow memory](docs/ai-handoff/MEMORY.md). Record UTC start/end and elapsed time, exact source/working-tree identity, requirements checked, actual tests, skipped checks, findings and fixes. Reuse valid exact-source evidence; do not run arbitrary extra checks or weaken assertions to get green.
+
+For browser-visible work, start a task-owned development server on an available port, verify the relevant pages/actions and show the owner its reachable URL, source, mode and observed results. Keep development preview distinct from production build verification. Preserve existing listeners and unfinished work; use dedicated synthetic fixtures and declared host dependencies. If a URL is container-only, provide a verified local forwarding URL or state the access limitation. Keep the owner-requested preview available until no longer needed and record how to stop only that owned resource.
+
+Label author review SELF-EVALUATED. Self-evaluation and a preview do not supply independent criterion review, representative UAT, business approval or release gates. Missing independent evidence remains NOT VERIFIED; an explicitly owner-directed push/merge does not close the full issue or waive those obligations. Do not launch additional agents without explicit delegation authorization. Record review status, preview ownership and next steps in CURRENT.md before handoff.
 
 # RAID blueprint authority
 

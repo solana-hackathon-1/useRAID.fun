@@ -1,0 +1,337 @@
+{
+  "task_id": "T005",
+  "implementer": "Codex /root",
+  "reviewer": null,
+  "candidate_sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+  "status": "CURRENT AUTOMATED EVIDENCE; NOT ACCEPTED; INDEPENDENT REVIEW PENDING",
+  "handoff": "Bounded local CI report retention and exact synthetic payment fixture repairs. Full issue remains open. Prior acceptance belongs to 29fc44e, not this candidate.",
+  "migration_rollback": "No schema/application changes; revert CI runner and fixture together if necessary. Synthetic fixture rows are confined to task-owned tmpfs databases.",
+  "dependency_evidence": "Historical accepted T001\u2013T004 packets remain unchanged; current local full regression recorded separately.",
+  "open_decisions": "O18 hosting adoption remains OPEN; historical provider diagnostics unavailable.",
+  "release_gate_disposition": "No UAT/business/release/production approval.",
+  "tdd": {
+    "red": {
+      "command": "python3 -m unittest discover -s tests -p test_raid_ci.py",
+      "sha": "cf929dfda16bcfefb3585af82bccd8d3061e51a9",
+      "result": "FAIL",
+      "expected_failure": "Missing per-suite archives and false success after report copy failure",
+      "observed_failure": "11 cases, 7 expected subtest failures; 9 prior cases pass",
+      "evidence_url": "planning/task-evidence/T005-browser-artifacts/red.log"
+    },
+    "green": {
+      "command": "python3 -m unittest discover -s tests -p test_raid_ci.py",
+      "sha": "0e6928b19cdb211eeaded40252713aa2e6d13156",
+      "result": "PASS",
+      "observed": "11 pass",
+      "evidence_url": "planning/task-evidence/T005-browser-artifacts/green.log"
+    },
+    "refactor": {
+      "command": "Isolated exact-source check layers (candidate/run.sh) and Docker runtime checks",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "result": "PASS",
+      "observed": "1021 unit/database tests;37 planning; all layers exit0. Browser first run had four flaky cases and seven existing skips, explicitly retained.",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/results.txt"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/",
+      "environment": "Dedicated isolated Node22/PostgreSQL16 host; Python3.12 planning; local layers, no hosted Actions run"
+    },
+    "static": {
+      "result": "SUCCESS",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/",
+      "environment": "Dedicated isolated Node22/PostgreSQL16 host; Python3.12 planning; local layers, no hosted Actions run"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/",
+      "environment": "Dedicated isolated Node22/PostgreSQL16 host; Python3.12 planning; local layers, no hosted Actions run"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/",
+      "environment": "Dedicated isolated Node22/PostgreSQL16 host; Python3.12 planning; local layers, no hosted Actions run"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/",
+      "environment": "Dedicated isolated Node22/PostgreSQL16 host; Python3.12 planning; local layers, no hosted Actions run"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/",
+      "environment": "Dedicated isolated Node22/PostgreSQL16 host; Python3.12 planning; local layers, no hosted Actions run"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+      "evidence_url": "planning/task-evidence/T005-final-ci/candidate/",
+      "environment": "Dedicated isolated Node22/PostgreSQL16 host; Python3.12 planning; local layers, no hosted Actions run"
+    }
+  },
+  "criteria": {
+    "T005-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C01",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C02",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C03",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C04",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C05",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C06",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C07",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C08",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C09",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C10",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C11",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C12",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C13",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C14",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C15",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C16",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C17",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C18",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C19",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C20",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "NOT APPLICABLE",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C21",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-C22",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-A01",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-A02",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-W01",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-W02",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    },
+    "T005-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md \u00a7\u00a724,27\u201332,33.10\u201312,34(M0),35(AC73\u201375),38\u201340; T005-W03",
+      "reviewer": null,
+      "rationale": "Current-candidate independent criterion review pending. Historical source disposition preserved unchanged in T005.json.",
+      "historical_result": "PASS",
+      "evidence_url": "docs/tasks/T005-final-verification.md; planning/task-evidence/T005-final-ci/candidate/"
+    }
+  },
+  "observations": {
+    "unit_database": {
+      "suites": 81,
+      "passed": 1021,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "planning_python312": 37,
+    "demo": {
+      "passed_first_attempt": 46,
+      "flaky": 3,
+      "skipped": 1,
+      "exit": 0
+    },
+    "studio": {
+      "passed_first_attempt": 43,
+      "flaky": 1,
+      "skipped": 0,
+      "exit": 0
+    },
+    "live_browser": {
+      "passed": 38,
+      "skipped": 6,
+      "exit": 0
+    },
+    "lint": {
+      "warnings": 24,
+      "errors": 0
+    },
+    "original_baseline": "7c122de Studio mobile lacked ALLOCATED on initial attempt and retry. Preserved failure; current full suite retains and passes that assertion.",
+    "orchestration_limit": "Actual canonical runner orchestration tested in substituted executable consuming host; real check layers run through isolated external orchestration. Not a full unmodified canonical-runner end-to-end claim.",
+    "trace_boundary": "Raw traces retained locally for review; not committed because synthetic authentication cookies are present.",
+    "serial_retests": {
+      "passed_no_retries": 4,
+      "failed_tests": 0,
+      "incomplete_host_attempt": "Studio first serial host lacked Docker CLI/socket/Compose declaration; webserver failed before tests. Corrected host passed 1 case. Setup failure preserved, not product RED."
+    }
+  }
+}

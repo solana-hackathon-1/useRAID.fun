@@ -1,5 +1,11 @@
 import { test, expect, type Page } from '@playwright/test';
 import { watchConsole } from '../helpers/browser-console';
+import { PrismaClient } from '@prisma/client';
+import { assertTestDatabase } from '../helpers/db-guard';
+
+assertTestDatabase('useraid_studio_test');
+const studioDb = new PrismaClient();
+test.afterAll(async () => studioDb.$disconnect());
 test.beforeEach(async ({ page }) => {
   const login = await page.request.post('/api/studio/sandbox', {
     headers: { origin: 'http://localhost:3007' },
@@ -51,16 +57,37 @@ test('launch, target attribution, completion, reviewed allocation and manual tes
   await expect(page.getByRole('heading', { name: 'Raid these posts' })).toBeVisible();
   await page.goto('/admin');
   const queue = page.locator('#usdc-payments');
+  const transfers = await studioDb.usdcTransfer.findMany({
+    where: { kind: 'REWARD', allocation: { raidId: id } },
+  });
+  expect(transfers).toHaveLength(1);
+  const transfer = transfers[0];
+  expect(transfer).toMatchObject({ amount: 625000n, network: 'sandbox', status: 'REQUESTED' });
+  const unrelatedPending = await studioDb.usdcTransfer.findMany({
+    where: { status: 'REQUESTED', id: { not: transfer.id } },
+    orderBy: { id: 'asc' },
+  });
+  const memo = `useRAID:usdc:${transfer.id}`;
+  const payment = queue.locator('.admin-row').filter({ hasText: memo });
+  await expect(payment).toHaveCount(1);
   await expect(
-    queue.getByText('REWARD · @test_raider · 0.625 USDC', { exact: true }),
+    payment.getByText('REWARD · @test_raider · 0.625 USDC', { exact: true }),
   ).toBeVisible();
-  const payment = queue
-    .locator('.admin-row')
-    .filter({ hasText: 'REWARD · @test_raider · 0.625 USDC' })
-    .last();
-  const memo = (await payment.locator('code').textContent())!;
   await payment.getByRole('button', { name: 'Confirm test payment' }).click();
   await expect(queue.locator('.admin-row').filter({ hasText: memo })).toHaveCount(0);
+  expect(
+    await studioDb.usdcTransfer.findUniqueOrThrow({ where: { id: transfer.id } }),
+  ).toMatchObject({
+    status: 'PAID',
+    amount: transfer.amount,
+    allocationId: transfer.allocationId,
+  });
+  expect(
+    await studioDb.usdcTransfer.findMany({
+      where: { id: { in: unrelatedPending.map((row) => row.id) } },
+      orderBy: { id: 'asc' },
+    }),
+  ).toEqual(unrelatedPending);
   await page.goto('/creator');
   const card = page.locator('.studio-raid-row').filter({ hasText: title });
   await expect(card.getByText(/Paid/)).toBeVisible();

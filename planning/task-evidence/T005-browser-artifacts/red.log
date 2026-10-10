@@ -1,0 +1,61 @@
+...F......
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='demo', report='test-results')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='demo', report='playwright-report')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='studio', report='test-results')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:studio\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='studio', report='playwright-report')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:studio\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='live-browser', report='test-results')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:live\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='live-browser', report='playwright-report')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:live\n'
+
+======================================================================
+FAIL: test_report_copy_failure_fails_aggregate_even_when_browser_tests_pass (test_raid_ci.LocalCICleanupOwnership)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 140, in test_report_copy_failure_fails_aggregate_even_when_browser_tests_pass
+    self.assertEqual(result.returncode, 1)
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.784s
+
+FAILED (failures=7)

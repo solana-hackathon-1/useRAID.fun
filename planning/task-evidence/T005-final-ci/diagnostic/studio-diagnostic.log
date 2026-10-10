@@ -1,0 +1,61 @@
+[WebServer] ⚠ Slow filesystem detected. The benchmark took 207ms. If /tmp/raid-t005-final-source/.next-studio/dev is a network drive, consider moving it to a local folder.
+[WebServer] See more: https://nextjs.org/docs/app/guides/local-development
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+
+Running 1 test using 1 worker
+
+[1/1] [mobile] › tests/browser-studio/studio.spec.ts:12:1 › launch, target attribution, completion, reviewed allocation and manual test payment
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+  1) [mobile] › tests/browser-studio/studio.spec.ts:12:1 › launch, target attribution, completion, reviewed allocation and manual test payment 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('#usdc-payments').getByText('REWARD · @test_raider · 0.625 USDC', { exact: true })
+    Expected: visible
+    Error: strict mode violation: locator('#usdc-payments').getByText('REWARD · @test_raider · 0.625 USDC', { exact: true }) resolved to 3 elements:
+        1) <strong>…</strong> aka getByText('REWARD · @test_raider · 0.625').first()
+        2) <strong>…</strong> aka getByText('REWARD · @test_raider · 0.625').nth(1)
+        3) <strong>…</strong> aka getByText('REWARD · @test_raider · 0.625').nth(2)
+
+    Call log:
+      - Expect "toBeVisible" locator('#usdc-payments').getByText('REWARD · @test_raider · 0.625 USDC', { exact: true }) with timeout 5000ms
+      - waiting for locator('#usdc-payments').getByText('REWARD · @test_raider · 0.625 USDC', { exact: true })
+
+
+      54 |   await expect(
+      55 |     queue.getByText('REWARD · @test_raider · 0.625 USDC', { exact: true }),
+    > 56 |   ).toBeVisible();
+         |     ^
+      57 |   const payment = queue
+      58 |     .locator('.admin-row')
+      59 |     .filter({ hasText: 'REWARD · @test_raider · 0.625 USDC' })
+        at /tmp/raid-t005-final-source/tests/browser-studio/studio.spec.ts:56:5
+
+    Error Context: test-results/studio-launch-target-attri-9793f-ion-and-manual-test-payment-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/studio-launch-target-attri-9793f-ion-and-manual-test-payment-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/studio-launch-target-attri-9793f-ion-and-manual-test-payment-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    [mobile] › tests/browser-studio/studio.spec.ts:12:1 › launch, target attribution, completion, reviewed allocation and manual test payment 

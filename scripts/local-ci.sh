@@ -22,6 +22,23 @@ step() {
   if [ "$result" -ne 0 ]; then failed=1; tail -n 15 "$LOG_DIR/$name.log"; fi
   return "$result"
 }
+browser_step() {
+  local name=$1
+  shift
+  step "$name" "$@"
+  local result=$? report
+  # Playwright replaces shared output directories when the next suite starts.
+  for report in test-results playwright-report; do
+    if [ -d "$report" ]; then
+      if ! mkdir -p "$LOG_DIR/$name-reports" || ! cp -R "$report" "$LOG_DIR/$name-reports/"; then
+        echo "Failed to retain $name reports" | tee -a "$LOG_DIR/results.txt"
+        failed=1
+        return 1
+      fi
+    fi
+  done
+  return "$result"
+}
 skip() {
   echo "$1: NOT RUN ($2)" | tee -a "$LOG_DIR/results.txt"
   failed=1
@@ -79,8 +96,8 @@ else
 fi
 if step browser-install npx playwright install chromium; then browsers=1; else browsers=0; fi
 if [ "$browsers" = 1 ]; then
-  step demo npm run test:browser || true
-  step studio env DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_studio_test npm run test:browser:studio || true
+  browser_step demo npm run test:browser || true
+  browser_step studio env DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_studio_test npm run test:browser:studio || true
 else
   skip demo "locked Chromium unavailable"
   skip studio "locked Chromium unavailable"
@@ -88,7 +105,7 @@ fi
 step build npm run build || true
 if [ "$browsers" = 1 ]; then
   step live-flow npm run test:live || true
-  step live-browser npm run test:browser:live || true
+  browser_step live-browser npm run test:browser:live || true
 else
   skip live-flow "locked Chromium unavailable"
   skip live-browser "locked Chromium unavailable"

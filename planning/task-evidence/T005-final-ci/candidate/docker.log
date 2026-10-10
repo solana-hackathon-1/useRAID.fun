@@ -1,0 +1,217 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 DONE 0.0s
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 963B 0.0s done
+#1 DONE 1.2s
+
+#2 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#2 DONE 25.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 213B done
+#4 DONE 1.0s
+
+#5 [deps 1/8] FROM docker.io/library/node:22-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 13.79MB 0.2s done
+#6 DONE 1.7s
+
+#7 [deps 3/8] RUN apt-get update && apt-get install -y openssl --no-install-recommends && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [deps 4/8] COPY package*.json ./
+#8 CACHED
+
+#9 [deps 5/8] COPY .npmrc ./
+#9 CACHED
+
+#10 [deps 6/8] COPY prisma ./prisma
+#10 CACHED
+
+#11 [deps 7/8] COPY vendor ./vendor
+#11 CACHED
+
+#12 [deps 2/8] WORKDIR /app
+#12 CACHED
+
+#13 [deps 8/8] RUN npm ci
+#13 CACHED
+
+#14 [build 1/3] COPY . .
+#14 DONE 60.5s
+
+#15 [build 2/3] RUN npm run build
+#15 4.228 
+#15 4.228 > useraid@0.1.0 build
+#15 4.228 > prisma generate && next build
+#15 4.228 
+#15 18.78 Prisma schema loaded from prisma/schema.prisma
+#15 21.63 ┌─────────────────────────────────────────────────────────┐
+#15 21.63 │  Update available 6.19.3 -> 8.0.0-rc.22                 │
+#15 21.63 │                                                         │
+#15 21.63 │  This is a major update - please follow the guide at    │
+#15 21.63 │  https://pris.ly/d/major-version-upgrade                │
+#15 21.63 │                                                         │
+#15 21.63 │  Run the following to update                            │
+#15 21.63 │    npm i --save-dev prisma@latest                       │
+#15 21.63 │    npm i @prisma/client@latest                          │
+#15 21.63 └─────────────────────────────────────────────────────────┘
+#15 21.64 
+#15 21.64 ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 1.39s
+#15 21.64 
+#15 21.64 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#15 21.64 
+#15 21.64 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+#15 21.64 
+#15 27.55 ▲ Next.js 16.3.8 (Turbopack)
+#15 28.91 ✓ Running next.config.ts took 1351ms
+#15 28.98 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#15 28.98 This information is used to shape Next.js' roadmap and prioritize features.
+#15 28.98 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#15 28.98 https://nextjs.org/telemetry
+#15 28.98 
+#15 29.13 
+#15 29.32   Creating an optimized production build ...
+#15 95.85 ✓ Compiled successfully in 65s
+#15 95.90   Running TypeScript ...
+#15 165.4   Finished TypeScript in 69s ...
+#15 165.4   Collecting page data using 3 workers ...
+#15 178.6 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#15 178.9 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#15 179.0 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#15 180.7 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#15 181.3 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#15 182.0   Generating static pages using 3 workers (0/19) ...
+#15 182.0   Generating static pages using 3 workers (4/19) 
+#15 182.2   Generating static pages using 3 workers (9/19) 
+#15 182.2   Generating static pages using 3 workers (14/19) 
+#15 182.2 ✓ Generating static pages using 3 workers (19/19) in 268ms
+#15 182.8   Finalizing page optimization ...
+#15 182.9 
+#15 182.9 Route (app)
+#15 182.9 ┌ ƒ /
+#15 182.9 ├ ƒ /_not-found
+#15 182.9 ├ ƒ /admin
+#15 182.9 ├ ƒ /api/admin/[action]
+#15 182.9 ├ ƒ /api/admin/payments
+#15 182.9 ├ ƒ /api/admin/usdc
+#15 182.9 ├ ƒ /api/auth/[action]
+#15 182.9 ├ ƒ /api/auth/x
+#15 182.9 ├ ƒ /api/auth/x/callback
+#15 182.9 ├ ƒ /api/auth/x/disconnect
+#15 182.9 ├ ƒ /api/balance
+#15 182.9 ├ ƒ /api/balance/[action]
+#15 182.9 ├ ƒ /api/creator
+#15 182.9 ├ ƒ /api/discovery
+#15 182.9 ├ ƒ /api/events
+#15 182.9 ├ ƒ /api/health
+#15 182.9 ├ ƒ /api/launch/[id]
+#15 182.9 ├ ƒ /api/launch/[id]/enroll
+#15 182.9 ├ ƒ /api/launch/[id]/renew
+#15 182.9 ├ ƒ /api/launch/[id]/retry
+#15 182.9 ├ ƒ /api/launch/[id]/submit
+#15 182.9 ├ ƒ /api/launch/prepare
+#15 182.9 ├ ƒ /api/launch/upload
+#15 182.9 ├ ƒ /api/media/[id]
+#15 182.9 ├ ƒ /api/raids
+#15 182.9 ├ ƒ /api/raids/[id]
+#15 182.9 ├ ƒ /api/raids/[id]/brief
+#15 182.9 ├ ƒ /api/raids/[id]/disputes
+#15 182.9 ├ ƒ /api/raids/[id]/enroll
+#15 182.9 ├ ƒ /api/raids/[id]/fund
+#15 182.9 ├ ƒ /api/raids/[id]/report
+#15 182.9 ├ ƒ /api/raids/[id]/resolve
+#15 182.9 ├ ƒ /api/raids/[id]/submit
+#15 182.9 ├ ƒ /api/studio/image
+#15 182.9 ├ ƒ /api/studio/preview
+#15 182.9 ├ ƒ /api/studio/quote
+#15 182.9 ├ ƒ /api/studio/sandbox
+#15 182.9 ├ ƒ /api/tokens/[mint]
+#15 182.9 ├ ƒ /api/wallet/challenge
+#15 182.9 ├ ƒ /api/wallet/verify
+#15 182.9 ├ ƒ /creator
+#15 182.9 ├ ƒ /creator/account
+#15 182.9 ├ ƒ /creator/balance
+#15 182.9 ├ ƒ /creator/new
+#15 182.9 ├ ƒ /creator/raids/[id]
+#15 182.9 ├ ○ /icon.svg
+#15 182.9 ├ ƒ /launch
+#15 182.9 ├ ƒ /methodology
+#15 182.9 ├ ƒ /privacy
+#15 182.9 ├ ƒ /raids/[id]
+#15 182.9 ├ ƒ /studio-test
+#15 182.9 └ ƒ /tokens/[mint]
+#15 182.9 
+#15 182.9 
+#15 182.9 ○  (Static)   prerendered as static content
+#15 182.9 ƒ  (Dynamic)  server-rendered on demand
+#15 182.9 
+#15 DONE 187.5s
+
+#16 [build 3/3] RUN npm prune --omit=dev && npx prisma generate
+#16 110.9 
+#16 110.9 up to date, audited 163 packages in 2m
+#16 110.9 
+#16 110.9 26 packages are looking for funding
+#16 110.9   run `npm fund` for details
+#16 110.9 
+#16 110.9 8 high severity vulnerabilities
+#16 110.9 
+#16 110.9 To address issues that do not require attention, run:
+#16 110.9   npm audit fix
+#16 110.9 
+#16 110.9 To address all issues (including breaking changes), run:
+#16 110.9   npm audit fix --force
+#16 110.9 
+#16 110.9 Run `npm audit` for details.
+#16 206.2 Prisma schema loaded from prisma/schema.prisma
+#16 219.0 
+#16 219.0 ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 3.93s
+#16 219.0 
+#16 219.0 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#16 219.0 
+#16 219.0 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+#16 219.0 
+#16 DONE 357.8s
+
+#17 [runtime  4/10] COPY --from=build /app/package.json /app/package-lock.json /app/tsconfig.json /app/next.config.ts ./
+#17 CACHED
+
+#18 [runtime  5/10] COPY --from=build /app/node_modules ./node_modules
+#18 CACHED
+
+#19 [runtime  6/10] COPY --from=build /app/.next ./.next
+#19 DONE 8.7s
+
+#20 [runtime  7/10] COPY --from=build /app/prisma ./prisma
+#20 DONE 2.6s
+
+#21 [runtime  8/10] COPY --from=build /app/src ./src
+#21 DONE 2.1s
+
+#22 [runtime  9/10] COPY --from=build /app/scripts ./scripts
+#22 DONE 3.2s
+
+#23 [runtime 10/10] RUN chown -R node:node /app/.next
+#23 DONE 75.7s
+
+#24 exporting to image
+#24 exporting layers
+#24 exporting layers 3.6s done
+#24 writing image sha256:37f8661e71a5a6626ac52d6d5a1890fb58ec2a5c8c6f456d9873c725358e9cee 0.1s done
+#24 naming to docker.io/library/useraid:t005-efaa03e
+#24 naming to docker.io/library/useraid:t005-efaa03e 0.2s done
+#24 DONE 4.4s

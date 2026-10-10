@@ -74,11 +74,21 @@ class LocalCICleanupOwnership(unittest.TestCase):
 printf '%s\n' "$(basename "$0") $*" >> "$COMMAND_LOG"
 case "$(basename "$0") $*" in
   "npm ci") [ "$FAIL_AT" != install ]; exit $? ;;
-  "docker compose up -d --wait db") exit 1 ;;
+  "docker compose up -d --wait db") [ "$FAIL_AT" != database ]; exit $? ;;
+  "npm run test:browser"|"npm run test:browser:studio"|"npm run test:browser:live")
+    rm -rf test-results playwright-report
+    mkdir -p test-results playwright-report
+    printf '%s\n' "$*" > test-results/suite.txt
+    printf '%s\n' "$*" > playwright-report/suite.txt
+    if [ "$*" = 'run test:browser:studio' ] && [ "$FAIL_AT" = studio ]; then exit 1; fi ;;
+  "cp "*)
+    if [ "$FAIL_AT" = copy ] && [[ "$*" = *-reports* ]]; then exit 1; fi
+    exec /bin/cp "$@" ;;
+
 esac
 exit 0
 '''
-            for command in ['git', 'node', 'npm', 'npx', 'docker']:
+            for command in ['git', 'node', 'npm', 'npx', 'docker', 'cp', 'python3']:
                 path = root / 'bin' / command
                 path.write_text(stub)
                 path.chmod(0o755)
@@ -87,6 +97,8 @@ exit 0
                        RAID_CI_LOG_DIR=str(root / 'evidence'))
             result = subprocess.run(['bash', str(root / 'scripts/local-ci.sh')],
                                     env=env, capture_output=True, text=True, timeout=15)
+            self.reports = {str(p.relative_to(root / 'evidence')): p.read_text()
+                            for p in (root / 'evidence').rglob('suite.txt')}
             return result, (root / 'commands').read_text(), (root / 'evidence/results.txt').read_text()
 
     def test_port_rejection_does_not_stop_database_owned_by_another_run(self):
@@ -109,6 +121,26 @@ exit 0
         self.assertIn('database: 1', evidence)
         self.assertIn('docker compose stop db', commands)
         self.assertLess(commands.index('docker compose up'), commands.index('docker compose stop'))
+
+    def test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them(self):
+        result, commands, evidence = self.run_candidate('studio')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('studio: 1', evidence)
+        self.assertIn('live-browser: 0', evidence)
+        for name, command in [('demo', 'test:browser'), ('studio', 'test:browser:studio'),
+                              ('live-browser', 'test:browser:live')]:
+            for report in ['test-results', 'playwright-report']:
+                with self.subTest(suite=name, report=report):
+                    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+                                     f'run {command}\n')
+        self.assertIn('docker compose stop db', commands)
+
+    def test_report_copy_failure_fails_aggregate_even_when_browser_tests_pass(self):
+        result, commands, evidence = self.run_candidate('copy')
+        self.assertEqual(result.returncode, 1)
+        for name in ['demo', 'studio', 'live-browser']:
+            self.assertIn(f'{name}: 0', evidence)
+        self.assertIn('Failed to retain demo reports', result.stdout)
 
 if __name__ == '__main__':
     unittest.main()

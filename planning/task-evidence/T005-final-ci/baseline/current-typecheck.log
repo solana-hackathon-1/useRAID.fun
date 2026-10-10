@@ -1,0 +1,27 @@
+
+> useraid@0.1.0 typecheck
+> tsc --noEmit
+
+tests/command-receipts-db.test.ts(108,22): error TS2339: Property 'commandReceipt' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(109,19): error TS2339: Property 'auditEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(110,20): error TS2339: Property 'outboxEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(111,19): error TS2339: Property 'inboxDelivery' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(145,34): error TS2339: Property 'commandReceipt' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(155,32): error TS2339: Property 'auditEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(168,24): error TS2339: Property 'outboxEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(217,30): error TS2339: Property 'auditEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(218,25): error TS7006: Parameter 'a' implicitly has an 'any' type.
+tests/command-receipts-db.test.ts(219,35): error TS2339: Property 'outboxEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(219,64): error TS7006: Parameter 'o' implicitly has an 'any' type.
+tests/command-receipts-db.test.ts(400,24): error TS2339: Property 'commandReceipt' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(505,19): error TS2339: Property 'commandReceipt' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(506,12): error TS7006: Parameter 'r' implicitly has an 'any' type.
+tests/command-receipts-db.test.ts(548,30): error TS2339: Property 'inboxDelivery' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(555,32): error TS2339: Property 'auditEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(562,23): error TS2339: Property 'outboxEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(624,29): error TS2339: Property 'inboxDelivery' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(625,24): error TS7006: Parameter 'r' implicitly has an 'any' type.
+tests/command-receipts-db.test.ts(689,28): error TS2339: Property 'auditEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(690,29): error TS2339: Property 'outboxEvent' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(787,19): error TS2339: Property 'commandReceipt' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.
+tests/command-receipts-db.test.ts(794,23): error TS2339: Property 'commandReceipt' does not exist on type 'PrismaClient<{ datasources: { db: { url: string; }; }; log: never[]; }, never, DefaultArgs>'.

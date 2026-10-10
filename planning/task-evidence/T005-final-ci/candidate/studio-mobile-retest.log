@@ -1,0 +1,16 @@
+[WebServer] /tmp/raid-t005-final-source/scripts/local-db.ts:32
+[WebServer]   if (probe.status !== 0) throw Error('Start local database with docker compose up -d db.');
+[WebServer]                                 ^
+[WebServer] 
+[WebServer] Error: Start local database with docker compose up -d db.
+[WebServer]     at ensureLocalDatabase (/tmp/raid-t005-final-source/scripts/local-db.ts:32:33)
+[WebServer]     at <anonymous> (/tmp/raid-t005-final-source/scripts/studio-preview.ts:8:1)
+[WebServer]     at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+[WebServer]     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+[WebServer]     at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+[WebServer] 
+[WebServer] Node.js v22.23.3
+
+Error: Process from config.webServer was not able to start. Exit code: 1
+
+

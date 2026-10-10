@@ -1,0 +1,24 @@
+[WebServer] ⚠ Slow filesystem detected. The benchmark took 341ms. If /tmp/raid-t005-final-source/.next-studio/dev is a network drive, consider moving it to a local folder.
+[WebServer] See more: https://nextjs.org/docs/app/guides/local-development
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+
+Running 1 test using 1 worker
+
+[1/1] [mobile] › tests/browser-studio/studio.spec.ts:18:1 › launch, target attribution, completion, reviewed allocation and manual test payment
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+  1 passed (34.4s)

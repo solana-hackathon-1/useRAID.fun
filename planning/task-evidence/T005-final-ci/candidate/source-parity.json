@@ -1,0 +1,6 @@
+{
+  "sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+  "compared_paths": 682,
+  "differences": [],
+  "qualification": "Next CLI regenerates next-env.d.ts as documented; all other tracked source bytes must match."
+}
