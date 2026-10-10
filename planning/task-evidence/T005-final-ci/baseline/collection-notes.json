@@ -1,0 +1,15 @@
+{
+  "corrections": [
+    {
+      "phase": "read-only evidence collection",
+      "observed": "KeyError: Tmpfs on runner HostConfig",
+      "resolution": "Optional field accessed with get; database/runner identities then captured."
+    },
+    {
+      "phase": "read-only database inventory",
+      "observed": "unterminated quoted string in SELECT datname prefix query",
+      "resolution": "Used SELECT datname FROM pg_database ORDER BY datname; query succeeded."
+    }
+  ],
+  "qualification": "Not semantic test failures or RED evidence; no source/data mutation from either failed query."
+}

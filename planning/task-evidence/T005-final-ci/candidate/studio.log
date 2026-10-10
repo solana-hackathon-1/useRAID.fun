@@ -1,0 +1,68 @@
+
+> useraid@0.1.0 test:browser:studio
+> playwright test --config=playwright.studio.config.ts
+
+[WebServer] ⚠ Slow filesystem detected. The benchmark took 827ms. If /tmp/raid-t005-final-source/.next-studio/dev is a network drive, consider moving it to a local folder.
+[WebServer] See more: https://nextjs.org/docs/app/guides/local-development
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 44 tests using 1 worker
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+······[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·······[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·····[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+··×±·····[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+······[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+··[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·····[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·
+
+  1) [mobile] › tests/browser-studio/pages.spec.ts:27:5 › approved creator › /creator/new loads cleanly 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: page.waitForLoadState: Test timeout of 60000ms exceeded.
+
+       at ../helpers/page-checks.ts:29
+
+      27 |   const response = await page.goto(path);
+      28 |   expect(response?.status()).toBe(options.status ?? 200);
+    > 29 |   await page.waitForLoadState('networkidle');
+         |              ^
+      30 |   await expect(page.locator('h1').first()).toBeVisible();
+      31 |   if (testInfo.project.name === 'mobile')
+      32 |     expect(
+        at expectCleanPage (/tmp/raid-t005-final-source/tests/helpers/page-checks.ts:29:14)
+        at /tmp/raid-t005-final-source/tests/browser-studio/pages.spec.ts:28:7
+
+    Error Context: test-results/pages-approved-creator-creator-new-loads-cleanly-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/pages-approved-creator-creator-new-loads-cleanly-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/pages-approved-creator-creator-new-loads-cleanly-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 flaky
+    [mobile] › tests/browser-studio/pages.spec.ts:27:5 › approved creator › /creator/new loads cleanly 
+  43 passed (3.8m)

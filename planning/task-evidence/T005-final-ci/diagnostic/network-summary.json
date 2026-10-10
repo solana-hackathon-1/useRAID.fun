@@ -1,0 +1,51 @@
+[
+  {
+    "path": "/api/studio/preview",
+    "method": "GET",
+    "status": 200,
+    "milliseconds": 235.034,
+    "started_at": "2026-10-10T15:04:19.601Z"
+  },
+  {
+    "path": "/creator/raids/cmv2iz0qb0006nt4jtjxfbide",
+    "method": "GET",
+    "status": 200,
+    "milliseconds": 1222.9009999999998,
+    "started_at": "2026-10-10T15:04:23.609Z"
+  },
+  {
+    "path": "/creator/raids/cmv2iz0qb0006nt4jtjxfbide",
+    "method": "GET",
+    "status": 200,
+    "milliseconds": 235.137,
+    "started_at": "2026-10-10T15:04:24.704Z"
+  },
+  {
+    "path": "/creator/raids/cmv2iz0qb0006nt4jtjxfbide",
+    "method": "GET",
+    "status": 200,
+    "milliseconds": 189.548,
+    "started_at": "2026-10-10T15:04:30.369Z"
+  },
+  {
+    "path": "/api/studio/sandbox",
+    "method": "POST",
+    "status": 200,
+    "milliseconds": 293.394,
+    "started_at": "2026-10-10T15:04:30.906Z"
+  },
+  {
+    "path": "/creator/raids/cmv2iz0qb0006nt4jtjxfbide",
+    "method": "GET",
+    "status": 200,
+    "milliseconds": 251.805,
+    "started_at": "2026-10-10T15:04:31.210Z"
+  },
+  {
+    "path": "/api/studio/sandbox",
+    "method": "POST",
+    "status": 200,
+    "milliseconds": 712.2109999999993,
+    "started_at": "2026-10-10T15:04:17.258Z"
+  }
+]

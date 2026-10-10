@@ -1,0 +1,20 @@
+{
+  "raid-t005-final-db-1": {
+    "id": "a71c52b9e6001afd32b76c6562f1fcee81862ce0cf1520748ff0852ba00c92ec",
+    "image_id": "sha256:81bd698b4594e751a3269e4dcd3e03a4a0ec0daf7b72e7aa1abd43cce9887542",
+    "started_at": "2026-10-10T14:44:00.433298941Z",
+    "network_mode": "raid-t005-final_default",
+    "tmpfs": {
+      "/var/lib/postgresql/data": "size=536870912"
+    },
+    "published_ports": {}
+  },
+  "raid-t005-final-runner": {
+    "id": "7b001093d9443f201c04126984e583ef8bb13fe3cf9ebfb0a3bfd798eb02cbd2",
+    "image_id": "sha256:041f6e0d93ef8d96c8e974df55427c4ec442eb4a6f7773f2853ebde5a80bb203",
+    "started_at": "2026-10-10T14:47:26.116623606Z",
+    "network_mode": "container:a71c52b9e6001afd32b76c6562f1fcee81862ce0cf1520748ff0852ba00c92ec",
+    "tmpfs": {},
+    "published_ports": {}
+  }
+}

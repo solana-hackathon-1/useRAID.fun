@@ -1,0 +1,12 @@
+[WebServer] ⚠ Slow filesystem detected. The benchmark took 332ms. If /tmp/raid-t005-final-source/.next/dev is a network drive, consider moving it to a local folder.
+[WebServer] See more: https://nextjs.org/docs/app/guides/local-development
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] ⚠ Slow filesystem detected. The benchmark took 705ms. If /tmp/raid-t005-final-source/.next-db-down/dev is a network drive, consider moving it to a local folder.
+[WebServer] See more: https://nextjs.org/docs/app/guides/local-development
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 2 tests using 2 workers
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·
+  2 passed (19.3s)
