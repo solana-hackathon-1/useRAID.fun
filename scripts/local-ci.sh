@@ -11,6 +11,7 @@ export DEMO_MODE=false
 LOG_DIR=${RAID_CI_LOG_DIR:-/tmp/raid-local-ci-$(date +%Y%m%d-%H%M%S)}
 mkdir -p "$LOG_DIR"
 failed=0
+database_attempted=0
 step() {
   local name=$1
   shift
@@ -38,7 +39,9 @@ ports() {
   return "$busy"
 }
 cleanup() {
-  docker compose stop db >> "$LOG_DIR/cleanup.log" 2>&1 || true
+  if [ "$database_attempted" = 1 ]; then
+    docker compose stop db >> "$LOG_DIR/cleanup.log" 2>&1 || true
+  fi
   # Retain reports and logs on every exit path, including failures. No messaging or deployment.
   cp -R test-results playwright-report "$LOG_DIR/" 2>/dev/null || true
   echo "Evidence: $LOG_DIR"
@@ -58,6 +61,8 @@ step routes npx next typegen || exit 1
 step types npm run typecheck || true
 step lint npm run lint || true
 step security npm run audit:check || true
+# A failed start may leave a container running; clean up only after our attempt.
+database_attempted=1
 step database docker compose up -d --wait db || exit 1
 for name in useraid_test useraid_shadow; do
   exists=$(docker compose exec -T db psql -U useraid -d postgres -Atc "SELECT 1 FROM pg_database WHERE datname='$name'") || exit 1

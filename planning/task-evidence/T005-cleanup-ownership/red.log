@@ -1,0 +1,21 @@
+.FF......
+======================================================================
+FAIL: test_install_failure_does_not_stop_database_not_started_by_this_run (test_raid_ci.LocalCICleanupOwnership)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 104, in test_install_failure_does_not_stop_database_not_started_by_this_run
+    self.assertNotIn('docker compose stop db', commands)
+AssertionError: 'docker compose stop db' unexpectedly found in 'git rev-parse HEAD\ngit diff --binary HEAD\nnode --version\nnpm ci\ndocker compose stop db\n'
+
+======================================================================
+FAIL: test_port_rejection_does_not_stop_database_owned_by_another_run (test_raid_ci.LocalCICleanupOwnership)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 96, in test_port_rejection_does_not_stop_database_owned_by_another_run
+    self.assertNotIn('docker compose stop db', commands)
+AssertionError: 'docker compose stop db' unexpectedly found in 'git rev-parse HEAD\ngit diff --binary HEAD\nnode --version\ndocker compose stop db\n'
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.213s
+
+FAILED (failures=2)

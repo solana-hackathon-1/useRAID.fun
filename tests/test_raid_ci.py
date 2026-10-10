@@ -1,5 +1,9 @@
 from pathlib import Path
 import unittest
+import os
+import re
+import subprocess
+import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -51,6 +55,60 @@ class LocalCIMode(unittest.TestCase):
             self.assertIn(port, runner.split('ports()', 1)[1].split('\n}\n', 1)[0])
         self.assertLess(runner.index('step ports '), runner.index('step install '))
 
+
+
+class LocalCICleanupOwnership(unittest.TestCase):
+    def run_candidate(self, failure):
+        # A standalone host with deterministic command substitutes; no Docker mutation.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'scripts').mkdir()
+            (root / 'bin').mkdir()
+            runner = (ROOT / 'scripts/local-ci.sh').read_text()
+            # Exercise lifecycle independently of the machine's occupied ports.
+            runner = re.sub(r'ports\(\) \{.*?\n\}',
+                            'ports() { return ' + ('1' if failure == 'ports' else '0') + '; }',
+                            runner, count=1, flags=re.S)
+            (root / 'scripts/local-ci.sh').write_text(runner)
+            stub = r'''#!/bin/bash
+printf '%s\n' "$(basename "$0") $*" >> "$COMMAND_LOG"
+case "$(basename "$0") $*" in
+  "npm ci") [ "$FAIL_AT" != install ]; exit $? ;;
+  "docker compose up -d --wait db") exit 1 ;;
+esac
+exit 0
+'''
+            for command in ['git', 'node', 'npm', 'npx', 'docker']:
+                path = root / 'bin' / command
+                path.write_text(stub)
+                path.chmod(0o755)
+            env = dict(os.environ, PATH=str(root / 'bin') + ':' + os.environ['PATH'],
+                       COMMAND_LOG=str(root / 'commands'), FAIL_AT=failure,
+                       RAID_CI_LOG_DIR=str(root / 'evidence'))
+            result = subprocess.run(['bash', str(root / 'scripts/local-ci.sh')],
+                                    env=env, capture_output=True, text=True, timeout=15)
+            return result, (root / 'commands').read_text(), (root / 'evidence/results.txt').read_text()
+
+    def test_port_rejection_does_not_stop_database_owned_by_another_run(self):
+        result, commands, evidence = self.run_candidate('ports')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('ports: 1', evidence)
+        self.assertNotIn('docker compose stop db', commands)
+        self.assertNotIn('npm ci', commands)
+        self.assertIn('Evidence:', result.stdout)
+
+    def test_install_failure_does_not_stop_database_not_started_by_this_run(self):
+        result, commands, evidence = self.run_candidate('install')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('install: 1', evidence)
+        self.assertNotIn('docker compose stop db', commands)
+
+    def test_failed_database_start_attempt_still_cleans_up_partial_start(self):
+        result, commands, evidence = self.run_candidate('database')
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('database: 1', evidence)
+        self.assertIn('docker compose stop db', commands)
+        self.assertLess(commands.index('docker compose up'), commands.index('docker compose stop'))
 
 if __name__ == '__main__':
     unittest.main()
