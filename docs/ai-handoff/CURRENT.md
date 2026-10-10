@@ -1,4 +1,4 @@
-# Current checkpoint — 2026-10-10T15:34:00.278746+00:00 by Codex /root
+# Current checkpoint — 2026-10-10T15:36:21.673988+00:00 by Codex /root
 
 Active task: T005 final current-source verification; IN_PROGRESS. Cleanup fix is merged; repaired-candidate automated layers pass with recorded retries/skips; independent review remains unverified. One active writer. Owner requested repository review and sequential issue → push → merge work on 10 October; this explicitly authorizes Git publication/merge, subject to required review and checks. Owner subsequently instructed “merge all”; PR186 merged with the previously disclosed verification limits. No delegation inferred or independent approval fabricated.
 
@@ -19,6 +19,8 @@ Current verification milestone: full efaa03e candidate finished all isolated rea
 Metadata verification:37 planning pass; Bash syntax pass; formatted documentation/JSON pass. Raw console logs retain original carriage returns/trailing whitespace; whole staged diff-check reports those, while non-log staged diff-check passes. Publication initially hit an empty index.lock: no git process or lsof owner, stable inode/mtime/size; moved unused lock to /tmp/raid-t005-preserved-git-index-lock-1791646498899822745, preserving it. No index/source reset or cleanup. Implementation branch pushed at efaa03e before evidence commit; evidence publication follows.
 
 Current packet planning/task-evidence/T005-current-verification.json preserves historical T005.json and all27 dispositions as NOT VERIFIED pending independent review. Validator exits1 as intended (missing reviewer/27unverifiedcriteria); historical packet validator0 is only historical structural evidence. No issue closure. Next steps: (1) publish evidence-only head and draft PR for bounded fixes; (2) obtain separately authorized read-only reviewer or human independent review, no automatic delegation; (3) resolve findings test-first and validate accepted exact-source packet; (4) merge authorized bounded change once reviewed, keep fullT005 gates accurate; (5) continue next dependency-ready issue one at a time, T006 PR-B from merged state. No independent reviewer authorization response received; no agent spawned.
+
+Publication milestone: evidence head1450385b72e26099312707b3dded96b67a9893fe pushed; draft [PR187](https://github.com/solana-hackathon-1/useRAID.fun/pull/187) created for browser report retention/exact reward fixture, tracks #47 without closure. Exact implementation source remains efaa03e; no full-CI claim for later metadata heads. Fresh inventory:161openissues,4closed(T001–T004),onlyopenPR187draft. Separate independent review is required by AGENTS.md and§39/AC75; reviewer authorization question remains unanswered, so no delegation or acceptance/merge of this draft. Evidence/read-only review can proceed once independently staffed. Current outgoing checkpoint commit only records publication, preserving source/remaining gates.
 
 ---
 
