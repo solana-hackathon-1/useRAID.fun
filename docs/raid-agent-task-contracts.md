@@ -792,3 +792,7 @@ The dedicated `planning-contracts` CI job runs the requirement/packet and comple
 ## C22 — Required CI evidence
 
 Every issue includes its feature test layers and named CI checks. Wire actual new tests into discovery and record candidate SHA, check results, artifacts, executed/skipped counts and remaining gaps. Read [the CI matrix and automatic status guide](raid-ci-plan.md). Missing or skipped applicable checks prevent valid completion; broad suite success cannot substitute for absent feature tests.
+
+## Review preparation record
+
+Before independent criterion review, apply [blueprint§24.8](../RAID_AGENT_BLUEPRINT.md#248-review-preparation-and-development-preview): record timed self-evaluation and exact-source findings, verify and show a task-owned development preview where applicable, and retain its source/mode/ownership evidence in the handoff. Author self-evaluation remains SELF-EVALUATED; missing independent criterion evidence stays NOT VERIFIED under AC75. Explicit owner-directed merge does not grant full issue acceptance or live-release approval. The completion validator and numbered criteria retain their existing independence requirements.

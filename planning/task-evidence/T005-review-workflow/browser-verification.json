@@ -1,0 +1,47 @@
+{
+  "start": "2026-10-10T16:04:29.500Z",
+  "end": "2026-10-10T16:04:35.640Z",
+  "source": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+  "mode": "DEMO_MODE=true; Next development",
+  "url": "http://localhost:3010",
+  "observations": [
+    {
+      "viewport": "desktop",
+      "path": "/",
+      "status": 200,
+      "heading": "Make your\ncommunity heard."
+    },
+    {
+      "viewport": "desktop",
+      "path": "/privacy",
+      "status": 200,
+      "heading": "Data and privacy"
+    },
+    {
+      "viewport": "desktop",
+      "path": "/launch",
+      "status": 200,
+      "heading": "Launchpads"
+    },
+    {
+      "viewport": "mobile",
+      "path": "/",
+      "status": 200,
+      "heading": "Make your\ncommunity heard."
+    },
+    {
+      "viewport": "mobile",
+      "path": "/privacy",
+      "status": 200,
+      "heading": "Data and privacy"
+    },
+    {
+      "viewport": "mobile",
+      "path": "/launch",
+      "status": 200,
+      "heading": "Launchpads"
+    }
+  ],
+  "pageErrors": 0,
+  "productionBuild": "Previously PASS on the same application source; this is development rendering only"
+}

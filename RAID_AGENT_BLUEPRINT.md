@@ -215,6 +215,10 @@ DEC-2026-10-06-01: project owner requires test-driven implementation; accepted, 
 
 DEC-2026-10-09-01 (WR04): accepted by the project owner in the Codex continuation on 9 October 2026. Before linking an additional wallet, require confirmation through a connected X account, following the existing connected-X condition in `rotateWallet`, together with the authenticated account and fresh proof from the additional wallet. The owner selected this option over a fresh signature from the primary wallet. A wallet-only session must be denied at the server command boundary; client assertions of X linkage are not authority. This decision governs T006 PR-B under R04/R13/I10, sections 07.1–07.2/28 and AC01/AC02. It does not alter canonical participant identity, accepted work, payout destinations or financial records. PR-A remains storage-only. PR-B must test missing/foreign X linkage rejection, valid connected-X confirmation, restricted accounts, proof replay and revoke; its independent review must verify the host authority boundary. Enablement still requires revoke/unlink or an audited operator revoke procedure, T007 AC02 evidence, every instance running linked-wallet sign-in resolution and a server-gated switch. No release or production authority is granted.
 
+### 02.7 Accepted owner change — 10 October 2026
+
+DEC-2026-10-10-01: the project owner requires timed self-evaluation and a verified development-server preview when a bounded implementation reaches independent review. Persist the workflow in architecture, agent entry instructions and shared repository memory; apply section24.8. Record actual source, timing, findings, tests and preview access. This adds review preparation under I13/R16/AC75 and does not convert author evaluation into independent acceptance, waive numbered completion criteria, approve UAT or enable production. The owner separately authorized push/merge of the current bounded PR187; full T005 remains subject to outstanding independent evidence and hosting/release obligations.
+
 ---
 
 ## 03. Vocabulary
@@ -1611,6 +1615,14 @@ Every module delivery includes purpose/non-goals, requirement IDs, architecture/
 
 Use contract tests and a consuming-host check to prove the documented boundary, plus negative/retry/recovery tests where applicable. Record actual commands and environment. Documentation is delivered in the same change as behavior; missing/stale usage documentation, undeclared app imports or an example that cannot run is a completion gap. Package publication, licensing choices and external distribution require their actual authorized scope; documenting reuse does not authorize them.
 
+### 24.8 Review preparation and development preview
+
+Before handing a bounded implementation to independent review, the author performs a recorded self-evaluation against its requirements, numbered task criteria, actual code/tests and declared consuming-host contracts. Record UTC start/end and elapsed time, exact source SHA and any working-tree differences, commands/results, findings/fixes, skipped checks and remaining gaps. Reuse valid evidence for its exact recorded source/environment; broaden checks only for material changes, failures or uncovered risks. This evaluation is labeled SELF-EVALUATED and never substitutes for an independent reviewer under AC75.
+
+For browser-visible work, provide an actual task-owned development server, verify relevant routes/actions and desktop/mobile behavior where applicable, and show the owner a reachable URL with source, mode and observed results. Use an available port, preserve existing listeners/work, isolate fixtures and declare host dependencies. Keep demo/sandbox data unmistakable; do not copy live credentials or silently connect a preview to production. Development rendering and a successful production build are separate evidence. If infrastructure prevents access or a check, record the limitation rather than claiming verification.
+
+Keep the owner-requested preview available for inspection and record its container/PID, binding, URL and exact owned-resource stop command in the checkpoint. Shared [workflow memory](docs/ai-handoff/MEMORY.md) persists the procedure across Codex/Claude sessions; [CURRENT.md](docs/ai-handoff/CURRENT.md) records mutable execution state. Missing independent evidence remains NOT VERIFIED. An explicitly owner-directed bounded merge is publication authority, not full issue acceptance, UAT/business sign-off, delegation permission or a live-release gate.
+
 ---
 
 ## 25. Domain and data model
@@ -2621,6 +2633,9 @@ Out-of-scope adjacent work:
 
 ```text
 Task ID and status:
+Self-evaluation UTC start/end, elapsed time, source and findings:
+Development preview URL/mode, owned server identity, verification and stop command:
+Independent review status and unresolved criterion evidence:
 Outcome delivered:
 Why the change was needed:
 Requirement IDs satisfied:

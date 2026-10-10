@@ -1,0 +1,86 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+ExpectError: expect(locator).toBeVisible() failed
+
+Locator: getByRole('heading', { name: /coming soon/i })
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toBeVisible" getByRole('heading', { name: /coming soon/i }) with timeout 5000ms
+  - waiting for getByRole('heading', { name: /coming soon/i })
+
+    at captureRawStack (/tmp/raid-owner-preview-source/node_modules/playwright-core/lib/coreBundle.js:8588:17)
+    at callMatcherAsStep (/tmp/raid-owner-preview-source/node_modules/playwright/lib/matchers/expect.js:13310:57)
+    at Object.toBeVisible (/tmp/raid-owner-preview-source/node_modules/playwright/lib/matchers/expect.js:13302:23)
+    at /tmp/preview-check.mjs:19:91 {
+  matcherResult: {
+    message: 'expect(locator).toBeVisible() failed\n' +
+      '\n' +
+      "Locator: getByRole('heading', { name: /coming soon/i })\n" +
+      'Expected: visible\n' +
+      'Timeout: 5000ms\n' +
+      'Error: element(s) not found\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toBeVisible" getByRole('heading', { name: /coming soon/i }) with timeout 5000ms\n` +
+      "  - waiting for getByRole('heading', { name: /coming soon/i })\n",
+    pass: false,
+    actual: undefined,
+    name: 'toBeVisible',
+    expected: 'visible',
+    log: [
+      `  - Expect "toBeVisible" getByRole('heading', { name: /coming soon/i }) with timeout 5000ms`,
+      "  - waiting for getByRole('heading', { name: /coming soon/i })"
+    ],
+    timeout: 5000,
+    ariaSnapshot: '- link "Skip to content":\n' +
+      '  - /url: "#main"\n' +
+      '- banner:\n' +
+      '  - link "useRAID.fun home":\n' +
+      '    - /url: /\n' +
+      '    - text: useRAID.fun\n' +
+      '  - navigation "Main navigation":\n' +
+      '    - link "Discover":\n' +
+      '      - /url: /\n' +
+      '    - link "Creator studio":\n' +
+      '      - /url: /creator\n' +
+      '    - link "Launchpads · Coming soon":\n' +
+      '      - /url: /launch\n' +
+      '    - link "How it works":\n' +
+      '      - /url: /methodology\n' +
+      '  - link "Create a raid":\n' +
+      '    - /url: /creator\n' +
+      '    - img\n' +
+      '    - text: Create a raid\n' +
+      '- text: Product preview Example campaigns. Illustrative metrics.\n' +
+      '- link "About the data":\n' +
+      '  - /url: /methodology\n' +
+      '  - text: About the data\n' +
+      '  - img\n' +
+      '- main:\n' +
+      '  - text: Coming soon\n' +
+      '  - heading "Launchpads" [level=1]\n' +
+      '  - paragraph: Token creation, creator-fee collection, trading, and automated reward payouts are coming soon.\n' +
+      '  - paragraph: Create Raids for existing projects, join campaigns, and track verified X contributions.\n' +
+      '  - link "Create a Raid":\n' +
+      '    - /url: /creator\n' +
+      '- contentinfo:\n' +
+      '  - link "useRAID.fun":\n' +
+      '    - /url: /\n' +
+      '  - text: Community attention, in context.\n' +
+      '  - link "Methodology":\n' +
+      '    - /url: /methodology\n' +
+      '  - link "Privacy":\n' +
+      '    - /url: /privacy\n' +
+      '  - link "Admin":\n' +
+      '    - /url: /admin\n' +
+      '    - img\n' +
+      '    - text: Admin'
+  }
+}
+
+Node.js v22.23.3

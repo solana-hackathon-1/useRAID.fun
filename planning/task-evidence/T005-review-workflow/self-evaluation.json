@@ -1,0 +1,75 @@
+{
+  "task_id": "T005",
+  "status": "SELF-EVALUATED; OWNER-DIRECTED BOUNDED MERGE; FULL TASK NOT ACCEPTED",
+  "author": "Codex /root",
+  "independent_reviewer": null,
+  "start_utc": "2026-10-10T16:01:35.480065+00:00",
+  "end_utc": "2026-10-10T16:06:20.578387+00:00",
+  "elapsed_seconds": 285.1,
+  "base_head": "89cd01dc1abd5ead75e972681c0f5f81da97cc37",
+  "tested_implementation_sha": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+  "scope": "Prior PR187 implementation, current documentation/blueprint/registry-fingerprint additions and owner preview; non-code acceptance defined before editing.",
+  "code_review": [
+    "CI archives optional report formats immediately after each suite, retains failing status, continues independent layers and fails copy errors; genuine RED/GREEN/substituted-host regressions retained.",
+    "Studio fixture selects exact current Raid reward, requires unique transfer/625000 sandbox base units/REQUESTED, confirms the matching memo, verifies PAID/same allocation/amount and preserves unrelated pending rows. Guarded dedicated test DB and client disconnect retained.",
+    "Application code, schema, package graph and numbered criterion contracts unchanged; only registry blueprint fingerprint reconciled.",
+    "Agent and canonical workflow entries retain independent review/UAT/release distinctions; shared repository memory has no hidden-memory or scheduler claim."
+  ],
+  "findings": [
+    {
+      "id": "SR01",
+      "type": "host setup",
+      "finding": "Custom NEXT_DIST_DIR was outside Next config allowlist; initial host used archive default output.",
+      "resolution": "Moved preview to a separate exact-source archive with its own default .next output."
+    },
+    {
+      "id": "SR02",
+      "type": "host setup",
+      "finding": "Turbopack rejects node_modules symlink outside project root.",
+      "resolution": "Direct read-only dependency bind mount inside the preview root; source/code unchanged; failure log retained."
+    },
+    {
+      "id": "SR03",
+      "type": "ad hoc verification setup",
+      "finding": "Initial preview check wrongly treated Coming soon as a heading and used127.0.0.1 with a localhost configured app origin.",
+      "resolution": "Used localhost and the existing browser-suite main-text assertion; original failed check retained; six route/viewport checks pass."
+    }
+  ],
+  "verification": {
+    "planning": {
+      "passed": 37,
+      "failed": 0
+    },
+    "docs_links": {
+      "passed": 61,
+      "failed": 0
+    },
+    "preview": {
+      "route_viewport_checks": 6,
+      "page_errors": 0,
+      "mobile_overflow": false
+    },
+    "format": "PASS (owned canonical/docs/registry); agent Markdown formatting excluded by existing ignore",
+    "diff_check": "PASS",
+    "current_completion_validator": "exit1 as expected: missing independent reviewer and27 NOT VERIFIED criteria; no validator weakening",
+    "full_regression": "Prior exact efaa03e 1021unit/database+37planning/build/runtime/browser evidence reused; later docs/evidence heads are not attributed that full run."
+  },
+  "preview": {
+    "url": "http://localhost:3010",
+    "binding": "127.0.0.1:3010 \u2192 container3010",
+    "access": "server-local; no external hosting or public tunnel",
+    "mode": "DEMO_MODE=true, Next development",
+    "source": "efaa03e324209cebb1430e6efc8b12f5276883a8",
+    "container_id": "3e955be45a7f98b4dcab0a0b2a1a747a99dfa2a8f3134c1318f95a276423ee55",
+    "container_name": "raid-owner-review-preview-v3",
+    "image": "sha256:6c1febaa039a2b50834ab1d0dea1eb73fbe3b35acda33739cc0736d8a60a552b",
+    "source_directory": "/tmp/raid-owner-preview-source",
+    "stop_command": "docker stop 3e955be45a7f98b4dcab0a0b2a1a747a99dfa2a8f3134c1318f95a276423ee55",
+    "production_build": "Previously passed on exact same application source; preview is a distinct development-mode check"
+  },
+  "remaining": [
+    "Independent criterion review is pending; all27 current T005 criteria remain NOT VERIFIED.",
+    "O18 hosting adoption/provider diagnostics and full deployment/UAT/operations gates remain open.",
+    "No full T005 issue closure or real settlement/live enablement."
+  ]
+}
