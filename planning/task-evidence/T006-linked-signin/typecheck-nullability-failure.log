@@ -1,0 +1,6 @@
+
+> useraid@0.1.0 typecheck
+> tsc --noEmit
+
+src/lib/wallet-auth.ts(195,59): error TS18047: 'previous' is possibly 'null'.
+src/lib/wallet-auth.ts(196,15): error TS18047: 'previous' is possibly 'null'.

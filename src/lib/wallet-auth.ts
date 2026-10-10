@@ -180,7 +180,11 @@ export async function verifyWalletChallenge(
     const previous = currentSessionHash
       ? await tx.session.findUnique({ where: { tokenHash: currentSessionHash } })
       : null;
-    if (currentSessionHash)
+    if (
+      currentSessionHash &&
+      previous &&
+      (previous.userId === userId || previous.userId === currentUserId)
+    )
       await tx.session.deleteMany({ where: { tokenHash: currentSessionHash } });
     await tx.session.create({
       data: {
@@ -188,7 +192,7 @@ export async function verifyWalletChallenge(
         userId: userId!,
         // Only a live authenticated session for the resolved account can preserve X authority.
         via:
-          currentUserId && previous?.userId === userId && previous.expiresAt > new Date()
+          currentUserId && previous && previous.userId === userId && previous.expiresAt > new Date()
             ? previous.via
             : 'wallet',
         expiresAt: new Date(Date.now() + 7 * 86400000),
