@@ -311,3 +311,11 @@ export function publicWalletLink(result: LinkWalletResult): PublicWalletLink {
     alreadyLinked: result.outcome === 'ALREADY_LINKED',
   });
 }
+
+/** Executable test-first stub: trusted host must verify proof before consuming this lookup. */
+export async function lookupWalletLink(
+  _tx: IdentityTransaction,
+  _address: string,
+): Promise<import('./contracts').WalletCredentialReservation | null> {
+  return null;
+}

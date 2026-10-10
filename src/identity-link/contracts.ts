@@ -71,3 +71,11 @@ export type PublicWalletLink = Readonly<{
   status: 'ACTIVE';
   alreadyLinked: boolean;
 }>;
+
+/** Internal credential reservation, never an authenticated-session or public HTTP DTO. */
+export type WalletCredentialReservation = Readonly<{
+  accountId: string;
+  networkIdentity: string;
+  status: 'ACTIVE' | 'REVOKED';
+  accountSuspended: boolean;
+}>;
