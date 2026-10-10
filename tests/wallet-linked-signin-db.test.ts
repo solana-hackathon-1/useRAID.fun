@@ -6,7 +6,7 @@ import { db } from '../src/lib/db';
 import { config } from '../src/lib/config';
 import { hash } from '../src/lib/auth-primitives';
 import { createWalletChallenge, verifyWalletChallenge, rotateWallet } from '../src/lib/wallet-auth';
-import { linkVerifiedWallet } from '../src/identity-link';
+import { linkVerifiedWallet, lookupWalletLink } from '../src/identity-link';
 import { createPrismaIdentityTransaction } from '../src/lib/identity-storage-adapter';
 import { fixtureLinkInput } from './helpers/wallet-link-fixtures';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -238,4 +238,115 @@ integration('linked-wallet sign-in host (T006 PR-B1)', () => {
       ).toMatchObject({ userId: ownerId, via: 'wallet' });
     },
   );
+  it('revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)', async () => {
+    const challenge = await createWalletChallenge(second.address);
+    let ready!: (pid: number) => void;
+    let release!: () => void;
+    const started = new Promise<number>((resolve) => {
+      ready = resolve;
+    });
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const holder = db.$transaction(
+      async (tx) => {
+        await tx.walletLink.updateMany({
+          where: { accountId: ownerId },
+          data: { status: 'REVOKED', revokedAt: new Date() },
+        });
+        ready(
+          (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid,
+        );
+        await gate;
+      },
+      { timeout: 20000 },
+    );
+    const blocker = await started;
+    const outcome = verifyWalletChallenge(
+      challenge.digest,
+      second.sign(challenge.message),
+      second.address,
+    ).then(
+      (value) => ({ value, error: null }),
+      (error) => ({ value: null, error }),
+    );
+    try {
+      await observedBlock(blocker, /FOR SHARE/);
+    } finally {
+      release();
+      await holder;
+    }
+    expect((await outcome).error).toMatchObject({ status: 401 });
+    expect(await db.session.count()).toBe(0);
+    expect(
+      (await db.walletChallenge.findUniqueOrThrow({ where: { digest: challenge.digest } }))
+        .consumedAt,
+    ).toBeNull();
+    expect(await db.user.count()).toBe(1);
+    expect(await db.participant.count()).toBe(1);
+  });
+  it('credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)', async () => {
+    let ready!: (pid: number) => void;
+    let release!: () => void;
+    const started = new Promise<number>((resolve) => {
+      ready = resolve;
+    });
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const holder = db.$transaction(
+      async (tx) => {
+        expect(
+          await lookupWalletLink(createPrismaIdentityTransaction(tx), second.address),
+        ).toMatchObject({ accountId: ownerId, status: 'ACTIVE' });
+        ready(
+          (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid,
+        );
+        await gate;
+      },
+      { timeout: 20000 },
+    );
+    const blocker = await started;
+    const revoke = db.walletLink.updateMany({
+      where: { accountId: ownerId },
+      data: { status: 'REVOKED', revokedAt: new Date() },
+    });
+    const outcome = Promise.resolve(revoke);
+    try {
+      await observedBlock(blocker, /UPDATE/);
+    } finally {
+      release();
+      await holder;
+    }
+    expect((await outcome).count).toBe(1);
+    expect((await db.walletLink.findFirstOrThrow({ where: { accountId: ownerId } })).status).toBe(
+      'REVOKED',
+    );
+  });
 });
+
+async function observedBlock(blocker: number, statement: RegExp) {
+  const deadline = Date.now() + 8000;
+  while (Date.now() < deadline) {
+    const waiters = await db.$queryRawUnsafe<{ pid: number; query: string; blockers: number[] }[]>(
+      'SELECT pid, query, pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE $1::integer = ANY(pg_blocking_pids(pid))',
+      blocker,
+    );
+    const waiter = waiters.find((row) => statement.test(row.query));
+    if (waiter) {
+      expect(waiter.pid).not.toBe(blocker);
+      expect(waiter.blockers).toContain(blocker);
+      console.info(
+        JSON.stringify({
+          linkedSigninRace: true,
+          waiter: waiter.pid,
+          blocker,
+          blockedStatement: waiter.query.slice(0, 140),
+        }),
+      );
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  throw Error('Independent PostgreSQL blocking relation was not observed');
+}

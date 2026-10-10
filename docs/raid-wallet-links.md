@@ -170,3 +170,13 @@ RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL='<synthetic test UR
 ```
 
 Migration check: `npx prisma migrate deploy` (a second run reports no pending migrations) and `npx prisma migrate diff --from-url "$DATABASE_URL" --to-schema-datamodel prisma/schema.prisma --exit-code` (exit 0; this needs the `map: "WalletLink_participant_fkey"` on the composite relation, WR02).
+
+## PR-B1 credential resolution contract
+
+`lookupWalletLink(tx, address)` is an internal read-only reservation lookup using the same explicit READ COMMITTED `IdentityTransaction` port. It returns null when no additional link reserves the address, or `{accountId, networkIdentity, status, accountSuspended}`. It does not verify a signature, create a link, create a session or authorize access; the trusted proof/session host applies those decisions. Never expose this internal DTO from an unauthenticated HTTP endpoint.
+
+Lock order: transaction-scoped wallet-subject advisory lock, discover immutable owner, account row FOR NO KEY UPDATE, then WalletLink row FOR SHARE; retain locks until the consuming transaction commits or rolls back. No participant/financial row is modified. Concurrent revocation is observed honestly or waits until the lookup transaction completes. Unknown/malformed rows fail closed through sanitized IdentityLinkError. A future revoke host must use the same lock order, never link row before account.
+
+The RAID wallet-auth host calls lookup only after verifying and atomically claiming the fresh stored challenge. ACTIVE same-network additional credentials resolve to the existing account without creating a User/Participant/WalletIdentity. REVOKED or wrong-network credentials cannot fall through to a new account. Suspended owners cannot receive a session. A foreign signed-in account cannot fold a linked credential. A valid same-account authenticated session may preserve X provenance; anonymous, expired or foreign sessions cannot widen a wallet sign-in. Payout rotation rejects every additional-link reservation. Legacy primary flows remain supported.
+
+PR-B1 completes only resolution preparation, not additional-link creation: no new link-additional route/flag or revoke command exists. Connected-X step-up, revoke, T007 AC02, all-instance rollout, user-facing recovery/copy and capacity/durability/independent evidence remain required before enablement. Prior PR-A reports describe their exact historical source; their no-route/no-sign-in assertion is superseded only by this approved next resolution scope. Existing storage boundary tests now assert no new linking command or enablement, while module isolation remains mandatory.
