@@ -80,12 +80,15 @@ case "$(basename "$0") $*" in
     mkdir -p test-results playwright-report
     printf '%s\n' "$*" > test-results/suite.txt
     printf '%s\n' "$*" > playwright-report/suite.txt
-    if [ "$*" = 'run test:browser:studio' ]; then exit 1; fi ;;
+    if [ "$*" = 'run test:browser:studio' ] && [ "$FAIL_AT" = studio ]; then exit 1; fi ;;
+  "cp "*)
+    if [ "$FAIL_AT" = copy ] && [[ "$*" = *-reports* ]]; then exit 1; fi
+    exec /bin/cp "$@" ;;
 
 esac
 exit 0
 '''
-            for command in ['git', 'node', 'npm', 'npx', 'docker']:
+            for command in ['git', 'node', 'npm', 'npx', 'docker', 'cp']:
                 path = root / 'bin' / command
                 path.write_text(stub)
                 path.chmod(0o755)
@@ -131,6 +134,13 @@ exit 0
                     self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
                                      f'run {command}\n')
         self.assertIn('docker compose stop db', commands)
+
+    def test_report_copy_failure_fails_aggregate_even_when_browser_tests_pass(self):
+        result, commands, evidence = self.run_candidate('copy')
+        self.assertEqual(result.returncode, 1)
+        for name in ['demo', 'studio', 'live-browser']:
+            self.assertIn(f'{name}: 0', evidence)
+        self.assertIn('Failed to retain demo reports', result.stdout)
 
 if __name__ == '__main__':
     unittest.main()
