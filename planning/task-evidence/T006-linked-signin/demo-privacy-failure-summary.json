@@ -1,0 +1,12 @@
+{
+  "synthetic": true,
+  "source": "0e3393b",
+  "failure": "networkidle timeout60000ms; retry passed",
+  "traceAvailableLocally": "/tmp/raid-t006-signin-ci/demo-reports/test-results/pages--privacy-loads-cleanly-desktop/trace.zip",
+  "errors": [
+    {
+      "type": "browser-step-failure",
+      "message": "Error: page.waitForLoadState: Test timeout of 60000ms exceeded."
+    }
+  ]
+}

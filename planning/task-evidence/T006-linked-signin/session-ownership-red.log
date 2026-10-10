@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/wallet-linked-signin-db.test.ts (15 tests | 1 failed) 2627ms
+     × a foreign X session cannot widen anonymous linked-wallet sign-in 130ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > a foreign X session cannot widen anonymous linked-wallet sign-in
+AssertionError: expected null to deeply equal { …(4) }
+
+- Expected:
+{
+  "expiresAt": 2026-10-10T16:39:55.227Z,
+  "tokenHash": "26ae1f6db75379fe9e45150a998d7fd31a4552d5172e57e705309bc3a2257c8b",
+  "userId": "cmv2mcmbe0027bq3ucz3wv618",
+  "via": "x",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-linked-signin-db.test.ts:255:11
+    253|         expect(
+    254|           await db.session.findUnique({ where: { tokenHash: hash('synt…
+    255|         ).toEqual(oldSession);
+       |           ^
+    256|       expect(
+    257|         await db.session.findUniqueOrThrow({ where: { tokenHash: hash(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  22:23:52
+   Duration  3.68s (transform 325ms, setup 0ms, import 862ms, tests 2.63s, environment 0ms)
+

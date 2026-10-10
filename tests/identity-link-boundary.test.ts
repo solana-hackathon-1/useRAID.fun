@@ -29,9 +29,10 @@ it('public link module owns SQL and contracts without an app singleton, framewor
   expect(adapter).not.toMatch(/from ['"].*(?:\/db|config)['"]|process\.env|globalThis/);
 });
 
-it('no route, sign-in flow or flag is wired by this storage slice (WR13)', async () => {
+it('PR-B1 only adds credential resolution; additional-link commands and enablement stay unavailable (WR13)', async () => {
   const walletAuth = await readFile('src/lib/wallet-auth.ts', 'utf8');
-  expect(walletAuth).not.toMatch(/identity-link|walletLink|WalletLink|link-additional/);
+  expect(walletAuth).toContain('lookupWalletLink');
+  expect(walletAuth).not.toMatch(/linkVerifiedWallet|linkAdditionalWallet|link-additional/);
   const xOauth = await readFile('src/lib/x-oauth.ts', 'utf8');
   expect(xOauth).not.toMatch(/identity-link|walletLink|WalletLink/);
   const config = await readFile('src/lib/config.ts', 'utf8');
@@ -72,6 +73,9 @@ it.skipIf(process.env.RUN_DB_TESTS !== 'true')(
         proofDerived: true,
         alternatePort: true,
         sanitizedFailure: true,
+        linkedCredentialOwner: true,
+        revokedCredentialReserved: true,
+        lookupAlternatePort: true,
       });
     } finally {
       await truncateAll(db);

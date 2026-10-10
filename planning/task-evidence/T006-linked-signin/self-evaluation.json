@@ -1,0 +1,61 @@
+{
+  "classification": "SELF-EVALUATED",
+  "startedAt": "2026-10-10T16:46:49.909607+00:00",
+  "candidateSha": "0e3393ba0a3f4ec35803749e37c4b9a7ac8e9010",
+  "independentReview": "NOT VERIFIED",
+  "findings": [
+    {
+      "finding": "Unknown driver errors could expose private message",
+      "disposition": "Meaningful4-case regression1fail3pass before sanitized503 fix; final regression passes."
+    },
+    {
+      "finding": "Foreign session hash could delete an unrelated session",
+      "disposition": "Meaningful15-case regression1fail14pass before ownership guard; final regression passes."
+    },
+    {
+      "finding": "Nullable previous session guard",
+      "disposition": "Typecheck caught; explicit guard; final full typecheck/build pass."
+    },
+    {
+      "finding": "Scenario plan blueprint fingerprint stale after prior documentation change",
+      "disposition": "21-case RED1fail20pass; corrected fingerprint only; GREEN21pass/full1052pass."
+    },
+    {
+      "finding": "Preview revocation fixture missing revokedAt",
+      "disposition": "Existing immutability fence rejected23000; fixture corrected, realHTTP signin/replay/revoke checks pass."
+    },
+    {
+      "finding": "Demo privacy networkidle timeout",
+      "disposition": "Retry passed; original trace retained locally, serial zero-retry check pending."
+    }
+  ],
+  "endedAt": "2026-10-10T16:59:06.521090+00:00",
+  "elapsedSeconds": 736.611,
+  "scope": "R04/R13 identity half; I05/I06/I07/I10/I11/I13; R15/R16 replaceable credential lookup, host session/signature boundary and consuming example; full T006 remains NOT VERIFIED",
+  "verification": {
+    "targeted": "165pass",
+    "full": "84suites1052pass0fail0skip",
+    "planning": "37pass",
+    "staticSecurityMigrationDrift": "PASS; lint24existingwarnings",
+    "buildRuntime": "PASS imagef1d05bbdc50e",
+    "consumer": "Independent copy own Prisma6.19.3 client/4freshmigrations/allJSONflags pass",
+    "preview": "6desktop/mobile checks pass; actualHTTP linkedowner/primary/replay/revoke pass",
+    "deliveryRemaining": "Studio/build/live suites and zero-retry privacy recheck in progress",
+    "completion": "Current packet validator expectedexit1; all27criteria NOT VERIFIED"
+  },
+  "preview": {
+    "url": "http://localhost:3011",
+    "mode": "Next development; DEMO_MODE=false; synthetic dedicatedDB",
+    "container": "d962a9b6c68019832eece3b40e0acc440b475f9765e58ddfee0e72989d5ce19a",
+    "limitations": "Server-local; synthetic storage/proofs; no production/provider/UAT or independent acceptance."
+  },
+  "sourceFiles": {
+    "src/lib/wallet-auth.ts": "6cf58e31f428f9ad1bc07d984dcb9f0c606707c0906a1434b8d4ad5d84805a2d",
+    "src/identity-link/index.ts": "3a3dcabec0a0f7b5aba8eb47ccf4ff193d7dde3b10382c2a13d9c4ff5b1f82ad",
+    "src/identity-link/contracts.ts": "cf3b013c95c6aec7e71a6bc237d93610a44d91c9836749007a6d48bdc4efa530",
+    "tests/wallet-linked-signin-db.test.ts": "3868cea07df99c90695b5794fce017afec17b0c5dc62d3cbb87f8e058ba059dc",
+    "tests/wallet-credential-lookup.test.ts": "95f974ccda4f863838d3e9b16ab3c105aa12e466eace70a37be5a5be89bfa51b",
+    "tests/wallet-auth-transaction.test.ts": "63c50a61810feaa22263acc31997498cf56445dbb25406d134b1933fa74d75cc",
+    "examples/wallet-links/host.ts": "36a22b809681631af4240e373a69a4a4c29d68aff2daa74fa8050374b9141b50"
+  }
+}

@@ -1,0 +1,299 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/wallet-linked-signin-db.test.ts (11 tests | 11 failed) 1466ms
+     × fresh linked signature yields same account; participant, primary and history stay byte-identical 337ms
+     × same-account reauthentication with a linked wallet preserves a valid X session 139ms
+     × rejects REVOKED linked credential without challenge/session residue 119ms
+     × rejects WRONG_NETWORK linked credential without challenge/session residue 123ms
+     × rejects SUSPENDED linked credential without challenge/session residue 109ms
+     × cannot fold a linked credential into a foreign signed-in account 84ms
+     × rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet 85ms
+     × rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet 94ms
+     × replay of a consumed linked sign-in challenge creates no second session 85ms
+     × a expired X session cannot widen anonymous linked-wallet sign-in 88ms
+     × a foreign X session cannot widen anonymous linked-wallet sign-in 125ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > fresh linked signature yields same account; participant, primary and history stay byte-identical
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvwka0004bqanwc9ybi3s, synthetic-signin-history, cmv2lvwjx0000bqanslwolwdo, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:55.354)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > same-account reauthentication with a linked wallet preserves a valid X session
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvwob0009bqanbkzvwgpr, synthetic-signin-history, cmv2lvwnz0005bqan7gsvtyb7, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:55.5)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects REVOKED linked credential without challenge/session residue
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvwrp000ebqanwojrfgw1, synthetic-signin-history, cmv2lvwrg000abqanhe1dif0c, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:55.621)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects WRONG_NETWORK linked credential without challenge/session residue
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvwv4000jbqan54hhhs22, synthetic-signin-history, cmv2lvwur000fbqan3ymqd7az, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:55.744)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects SUSPENDED linked credential without challenge/session residue
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvwy5000obqan2ze2ruds, synthetic-signin-history, cmv2lvwxw000kbqanbqvup9tw, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:55.854)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > cannot fold a linked credential into a foreign signed-in account
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvx0i000tbqanansenfav, synthetic-signin-history, cmv2lvx0b000pbqanfdgzbl2b, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:55.938)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvx2w000ybqan2q0ltxq9, synthetic-signin-history, cmv2lvx2p000ubqanr3sjfcsd, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:56.024)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvx5h0013bqanarvj1mfe, synthetic-signin-history, cmv2lvx5a000zbqanhueaqg7r, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:56.118)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > replay of a consumed linked sign-in challenge creates no second session
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvx7u0018bqantyed2dgp, synthetic-signin-history, cmv2lvx7n0014bqanlppdmjbi, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:56.202)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > a expired X session cannot widen anonymous linked-wallet sign-in
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvxaa001dbqanhlnimp9g, synthetic-signin-history, cmv2lvx9z0019bqanfuo2hq3g, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:56.291)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > a foreign X session cannot widen anonymous linked-wallet sign-in
+PrismaClientUnknownRequestError: 
+Invalid `db.balanceEntry.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/tests/wallet-linked-signin-db.test.ts:45:27
+
+  42 ownerId = owner.id;
+  43 await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synthetic-owner-x', username: 'synthetic-owner', displayName: 'Synthetic owner' } });
+  44 await db.walletIdentity.create({ data: { userId: ownerId, address: primary.address } });
+→ 45 await db.balanceEntry.create(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23514", message: "new row for relation \"BalanceEntry\" violates check constraint \"BalanceEntry_kind_check\"", severity: "ERROR", detail: Some("Failing row contains (cmv2lvxdr001ibqan21du44wm, synthetic-signin-history, cmv2lvxdk001ebqanpryu94h2, synthetic-retained-history, sandbox, 7, 0, null, null, 2026-10-10 16:25:56.416)."), column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-linked-signin-db.test.ts:45:5
+     43|     await db.xAccount.create({ data: { userId: ownerId, xUserId: 'synt…
+     44|     await db.walletIdentity.create({ data: { userId: ownerId, address:…
+     45|     await db.balanceEntry.create({ data: { userId: ownerId, kind: 'syn…
+       |     ^
+     46|     await db.$transaction(tx => linkVerifiedWallet(createPrismaIdentit…
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed (11)
+   Start at  22:10:54
+   Duration  2.74s (transform 316ms, setup 0ms, import 825ms, tests 1.47s, environment 0ms)
+

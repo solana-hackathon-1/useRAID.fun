@@ -1,0 +1,5 @@
+
+> useraid@0.1.0 test:live
+> tsx tests/live-flow.ts
+
+PASS: admin approval → Creator Studio draft → launch gate → public raid → end; X connection UI, disconnect, errors, and history preservation verified; admin and cross-origin authorization enforced.

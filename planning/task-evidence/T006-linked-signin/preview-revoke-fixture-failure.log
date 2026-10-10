@@ -1,0 +1,23 @@
+/app/node_modules/@prisma/client/src/runtime/RequestHandler.ts:228
+      throw new PrismaClientKnownRequestError(message, {
+            ^
+
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `23000`. Message: `ERROR: Wallet link is immutable except ACTIVE to REVOKED`
+    at ei.handleRequestError (/app/node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:13)
+    at ei.handleAndLogRequestError (/app/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:12)
+    at ei.request (/app/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:12)
+    at async a (/app/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:24)
+    at async <anonymous> (/app/verify-preview.ts:29:1) {
+  code: 'P2010',
+  meta: {
+    code: '23000',
+    message: 'ERROR: Wallet link is immutable except ACTIVE to REVOKED'
+  },
+  clientVersion: '6.19.3'
+}
+
+Node.js v22.23.3

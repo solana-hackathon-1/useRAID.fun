@@ -1,0 +1,76 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/wallet-auth-transaction.test.ts (4 tests | 4 failed) 23ms
+   × translates unique conflicts without driver text {"code":"P2002","message":"private address/owner"} 7ms
+   × translates unique conflicts without driver text {"code":"P2010","meta":{"code":"23505","message":"private address/owner"}} 1ms
+   × unknown driver failure is sanitized before the shared HTTP/logger boundary 11ms
+   × preserves the host’s intentional permission rejection 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > translates unique conflicts without driver text {"code":"P2002","message":"private address/owner"}
+Unknown Error: private address/owner
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > translates unique conflicts without driver text {"code":"P2010","meta":{"code":"23505","message":"private address/owner"}}
+{
+  code: 'P2010',
+  meta: { code: '23505', message: 'private address/owner' },
+  stacks: []
+}
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > unknown driver failure is sanitized before the shared HTTP/logger boundary
+AssertionError: expected Error: private proof/session/owner/driver… to match object { status: 503, …(1) }
+
+- Expected
++ Received
+
+- {
+-   "message": "Wallet sign-in unavailable. Please try again.",
+-   "status": 503,
++ Error {
++   "message": "private proof/session/owner/driver detail",
+  }
+
+ ❯ tests/wallet-auth-transaction.test.ts:25:25
+     23| it('unknown driver failure is sanitized before the shared HTTP/logger …
+     24|   mocks.transaction.mockRejectedValue(Error('private proof/session/own…
+     25|   await expect(verify()).rejects.toMatchObject({
+       |                         ^
+     26|     status: 503,
+     27|     message: 'Wallet sign-in unavailable. Please try again.',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > unknown driver failure is sanitized before the shared HTTP/logger boundary
+Error: private proof/session/owner/driver detail
+ ❯ tests/wallet-auth-transaction.test.ts:24:39
+     22| });
+     23| it('unknown driver failure is sanitized before the shared HTTP/logger …
+     24|   mocks.transaction.mockRejectedValue(Error('private proof/session/own…
+       |                                       ^
+     25|   await expect(verify()).rejects.toMatchObject({
+     26|     status: 503,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > preserves the host’s intentional permission rejection
+Error: This account is suspended.
+ ❯ tests/wallet-auth-transaction.test.ts:31:17
+     29| });
+     30| it('preserves the host’s intentional permission rejection', async () =…
+     31|   const error = new HttpError(403, 'This account is suspended.');
+       |                 ^
+     32|   mocks.transaction.mockRejectedValue(error);
+     33|   await expect(verify()).rejects.toBe(error);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed (4)
+   Start at  22:16:59
+   Duration  1.17s (transform 301ms, setup 0ms, import 950ms, tests 23ms, environment 0ms)
+

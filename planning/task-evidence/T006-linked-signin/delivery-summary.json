@@ -1,0 +1,35 @@
+{
+  "candidateSha": "0e3393ba0a3f4ec35803749e37c4b9a7ac8e9010",
+  "classification": "AUTHOR_VERIFICATION; independent criterion acceptance NOT VERIFIED",
+  "unitDatabase": {
+    "suites": 84,
+    "passed": 1052,
+    "failed": 0,
+    "skipped": 0
+  },
+  "planning": {
+    "passed": 37
+  },
+  "demo": {
+    "immediatePass": 48,
+    "flakyPassedAfterRetry": 1,
+    "existingSkipped": 1,
+    "zeroRetryRecheck": "PASS1/1, retries0,19.9seconds"
+  },
+  "studio": {
+    "passed": 44,
+    "failed": 0,
+    "skipped": 0
+  },
+  "liveBrowser": {
+    "passed": 38,
+    "existingSkipped": 6
+  },
+  "buildRuntime": "PASS",
+  "sourceParity": "753trackedfiles; only artifacts/raid-live-fixture.png changed by synthetic live-flow generation; application/source modules unchanged",
+  "rawTraces": "Retained locally /tmp/raid-t006-signin-ci; not committed because synthetic session cookies may be included.",
+  "preview": "http://localhost:3011 dedicated synthetic Next dev; old3010preserved",
+  "fullTask": "T006 all27criteria NOT VERIFIED; no issue closure, independent signoff or live enablement",
+  "deliveryCompletedAt": "2026-10-10T17:04:09.291413+00:00",
+  "docChecks": "82pass2files"
+}

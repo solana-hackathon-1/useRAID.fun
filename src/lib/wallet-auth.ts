@@ -8,6 +8,35 @@ import { config } from './config';
 import { hash, random, HttpError } from './auth-primitives';
 import { absorbAccount, isEmptyAccount } from './account-merge';
 import { lockBalance } from './usdc';
+import { IdentityLinkError, lookupWalletLink } from '../identity-link';
+import {
+  createPrismaIdentityTransaction,
+  classifyIdentityStorageFailure,
+} from './identity-storage-adapter';
+import { runCommandTransaction } from './command-receipts-adapter';
+import { SIWS_CHAIN_ID } from './wallet-link-proof';
+
+// Retry only whole transactions, preserving the same challenge and pre-generated session token.
+// Never expose trigger/driver detail (including a reserved wallet address) to HTTP or logs.
+async function walletTransaction(work: (tx: Prisma.TransactionClient) => Promise<void>) {
+  try {
+    await runCommandTransaction(db, (_port, tx) => work(tx));
+  } catch (error) {
+    if (classifyIdentityStorageFailure(error).code === 'UNIQUE_CONFLICT')
+      throw new HttpError(409, 'Wallet belongs to another account.');
+    if (error instanceof IdentityLinkError) {
+      if (
+        error.code === 'RETRY_TRANSACTION' ||
+        error.code === 'STORAGE_UNAVAILABLE' ||
+        error.code === 'STORAGE_CONTRACT'
+      )
+        throw new HttpError(503, 'Wallet sign-in unavailable. Please try again.');
+      throw new HttpError(401, 'Wallet sign-in unavailable.');
+    }
+    if (error instanceof HttpError) throw error;
+    throw new HttpError(503, 'Wallet sign-in unavailable. Please try again.');
+  }
+}
 
 export function walletAddress(value: string) {
   try {
@@ -38,7 +67,7 @@ export async function createWalletChallenge(
   const nonce = randomBytes(24).toString('base64url');
   const issued = new Date();
   const expires = new Date(+issued + 5 * 60000);
-  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: mainnet\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
+  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: ${SIWS_CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
   const digest = hash(message);
   await db.walletChallenge.create({
     data: { digest, address, message, userId: currentUserId ?? null, expiresAt: expires },
@@ -93,7 +122,7 @@ export async function verifyWalletChallenge(
   walletAddress(address);
   const bytes = decodeSignature(signature);
   const sessionToken = random();
-  await db.$transaction(async (tx) => {
+  await walletTransaction(async (tx) => {
     await consumeChallenge(
       tx,
       digest,
@@ -102,8 +131,17 @@ export async function verifyWalletChallenge(
       currentUserId,
       currentUserId ? 'link' : 'signin',
     );
+    const linked = await lookupWalletLink(createPrismaIdentityTransaction(tx), address);
+    if (linked) {
+      // A linked credential cannot enter the legacy two-account fold path, including when revoked.
+      if (currentUserId && linked.accountId !== currentUserId)
+        throw new HttpError(409, 'Wallet belongs to another account.');
+      if (linked.status !== 'ACTIVE' || linked.networkIdentity !== SIWS_CHAIN_ID)
+        throw new HttpError(401, 'Wallet sign-in unavailable.');
+      if (linked.accountSuspended) throw new HttpError(403, 'This account is suspended.');
+    }
     const known = await tx.walletIdentity.findUnique({ where: { address } });
-    let userId = currentUserId || known?.userId;
+    let userId = currentUserId || linked?.accountId || known?.userId;
     if (currentUserId && known && known.userId !== currentUserId) {
       // A wallet-only account with no activity can be folded into the signed-in X account, or the reverse.
       const [currentWallet, owner] = await Promise.all([
@@ -123,7 +161,7 @@ export async function verifyWalletChallenge(
           409,
           'This wallet already has its own useRAID account with activity. Sign in with the wallet instead.',
         );
-    } else if (currentUserId && !known) {
+    } else if (currentUserId && !known && !linked) {
       const currentWallet = await tx.walletIdentity.findUnique({
         where: { userId: currentUserId },
       });
@@ -142,13 +180,21 @@ export async function verifyWalletChallenge(
     const previous = currentSessionHash
       ? await tx.session.findUnique({ where: { tokenHash: currentSessionHash } })
       : null;
-    if (currentSessionHash)
+    if (
+      currentSessionHash &&
+      previous &&
+      (previous.userId === userId || previous.userId === currentUserId)
+    )
       await tx.session.deleteMany({ where: { tokenHash: currentSessionHash } });
     await tx.session.create({
       data: {
         tokenHash: hash(sessionToken),
         userId: userId!,
-        via: previous?.via ?? 'wallet',
+        // Only a live authenticated session for the resolved account can preserve X authority.
+        via:
+          currentUserId && previous && previous.userId === userId && previous.expiresAt > new Date()
+            ? previous.via
+            : 'wallet',
         expiresAt: new Date(Date.now() + 7 * 86400000),
       },
     });
@@ -165,7 +211,7 @@ export async function rotateWallet(
 ) {
   walletAddress(address);
   const bytes = decodeSignature(signature);
-  await db.$transaction(async (tx) => {
+  await walletTransaction(async (tx) => {
     await lockBalance(tx, userId);
     await consumeChallenge(tx, digest, address, bytes, userId, 'rotate');
     const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
@@ -175,7 +221,10 @@ export async function rotateWallet(
     const current = await tx.walletIdentity.findUnique({ where: { userId } });
     if (!current) throw new HttpError(409, 'Connect a wallet first.');
     if (current.address === address) throw new HttpError(409, 'This is already your wallet.');
-    if (await tx.walletIdentity.findUnique({ where: { address } }))
+    if (
+      (await lookupWalletLink(createPrismaIdentityTransaction(tx), address)) ||
+      (await tx.walletIdentity.findUnique({ where: { address } }))
+    )
       throw new HttpError(409, 'Wallet belongs to another account.');
     const now = new Date();
     const open = await tx.usdcTransfer.count({

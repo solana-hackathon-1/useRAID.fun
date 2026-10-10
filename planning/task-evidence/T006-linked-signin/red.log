@@ -1,0 +1,457 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/wallet-linked-signin-db.test.ts (11 tests | 11 failed) 1873ms
+     × fresh linked signature yields same account; participant, primary and history stay byte-identical 382ms
+     × same-account reauthentication with a linked wallet preserves a valid X session 141ms
+     × rejects REVOKED linked credential without challenge/session residue 153ms
+     × rejects WRONG_NETWORK linked credential without challenge/session residue 216ms
+     × rejects SUSPENDED linked credential without challenge/session residue 122ms
+     × cannot fold a linked credential into a foreign signed-in account 127ms
+     × rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet 159ms
+     × rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet 128ms
+     × replay of a consumed linked sign-in challenge creates no second session 124ms
+     × a expired X session cannot widen anonymous linked-wallet sign-in 121ms
+     × a foreign X session cannot widen anonymous linked-wallet sign-in 121ms
+ ❯ tests/wallet-credential-lookup.test.ts (12 tests | 11 failed) 24ms
+     × returns an honest ACTIVE reservation without granting authentication 9ms
+     × returns an honest REVOKED reservation without granting authentication 1ms
+     × retains restriction so the proof/session host can refuse a suspended account 2ms
+     × takes subject/account/link locks in contract order 1ms
+     × rejects malformed address  before SQL 2ms
+     × rejects malformed address not-a-wallet before SQL 1ms
+     × refuses a host without the declared isolation contract 1ms
+     × fails closed for malformed or changed ownership {"malformed":true} 1ms
+     × fails closed for malformed or changed ownership {"status":"UNKNOWN"} 1ms
+     × fails closed for malformed or changed ownership {"finalOwner":"foreign-owner"} 1ms
+     × sanitizes unknown driver exceptions 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 22 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns an honest ACTIVE reservation without granting authentication
+AssertionError: expected null to deeply equal { accountId: 'synthetic-owner', …(3) }
+
+- Expected:
+{
+  "accountId": "synthetic-owner",
+  "accountSuspended": false,
+  "networkIdentity": "mainnet",
+  "status": "ACTIVE",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-credential-lookup.test.ts:51:55
+     49|     async (status) => {
+     50|       const h = host({ status });
+     51|       expect(await lookupWalletLink(h.port, address)).toEqual({
+       |                                                       ^
+     52|         accountId: 'synthetic-owner',
+     53|         networkIdentity: 'mainnet',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/22]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns an honest REVOKED reservation without granting authentication
+AssertionError: expected null to deeply equal { accountId: 'synthetic-owner', …(3) }
+
+- Expected:
+{
+  "accountId": "synthetic-owner",
+  "accountSuspended": false,
+  "networkIdentity": "mainnet",
+  "status": "REVOKED",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-credential-lookup.test.ts:51:55
+     49|     async (status) => {
+     50|       const h = host({ status });
+     51|       expect(await lookupWalletLink(h.port, address)).toEqual({
+       |                                                       ^
+     52|         accountId: 'synthetic-owner',
+     53|         networkIdentity: 'mainnet',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/22]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > retains restriction so the proof/session host can refuse a suspended account
+AssertionError: expected null to match object { accountSuspended: true }
+
+- Expected:
+{
+  "accountSuspended": true,
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-credential-lookup.test.ts:60:77
+     58|   );
+     59|   it('retains restriction so the proof/session host can refuse a suspe…
+     60|     expect(await lookupWalletLink(host({ suspended: true }).port, addr…
+       |                                                                             ^
+     61|       accountSuspended: true,
+     62|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/22]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > takes subject/account/link locks in contract order
+AssertionError: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string
+ ❯ tests/wallet-credential-lookup.test.ts:73:20
+     71|     await lookupWalletLink(h.port, address);
+     72|     const sql = h.query.mock.calls.map(([sql]) => sql);
+     73|     expect(sql[0]).toContain('pg_advisory_xact_lock');
+       |                    ^
+     74|     expect(sql[2]).toContain('FOR NO KEY UPDATE');
+     75|     expect(sql[3]).toContain('FOR SHARE');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/22]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > rejects malformed address  before SQL
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > rejects malformed address not-a-wallet before SQL
+AssertionError: promise resolved "null" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-credential-lookup.test.ts:79:50
+     77|   it.each(['', 'not-a-wallet'])('rejects malformed address %s before S…
+     78|     const h = host();
+     79|     await expect(lookupWalletLink(h.port, value)).rejects.toMatchObjec…
+       |                                                  ^
+     80|     expect(h.query).not.toHaveBeenCalled();
+     81|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/22]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > refuses a host without the declared isolation contract
+AssertionError: promise resolved "null" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-credential-lookup.test.ts:89:6
+     87|         address,
+     88|       ),
+     89|     ).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
+       |      ^
+     90|     expect(h.query).not.toHaveBeenCalled();
+     91|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/22]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > fails closed for malformed or changed ownership {"malformed":true}
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > fails closed for malformed or changed ownership {"status":"UNKNOWN"}
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > fails closed for malformed or changed ownership {"finalOwner":"foreign-owner"}
+AssertionError: promise resolved "null" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-credential-lookup.test.ts:95:66
+     93|     'fails closed for malformed or changed ownership %j',
+     94|     async (options) => {
+     95|       await expect(lookupWalletLink(host(options).port, address)).reje…
+       |                                                                  ^
+     96|         code: 'STORAGE_CONTRACT',
+     97|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/22]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > sanitizes unknown driver exceptions
+AssertionError: promise resolved "null" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-credential-lookup.test.ts:101:78
+     99|   );
+    100|   it('sanitizes unknown driver exceptions', async () => {
+    101|     await expect(lookupWalletLink(host({ unavailable: true }).port, ad…
+       |                                                                              ^
+    102|       new IdentityLinkError('STORAGE_UNAVAILABLE'),
+    103|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > fresh linked signature yields same account; participant, primary and history stay byte-identical
+PrismaClientKnownRequestError: 
+Invalid `tx.walletIdentity.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/src/lib/wallet-auth.ts:137:31
+
+  134   data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
+  135 });
+  136 userId = user.id;
+→ 137 await tx.walletIdentity.create(
+Unique constraint failed on the (not available)
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ src/lib/wallet-auth.ts:137:7
+    135|       });
+    136|       userId = user.id;
+    137|       await tx.walletIdentity.create({ data: { address, userId } });
+       |       ^
+    138|     }
+    139|     const owner = await tx.user.findUniqueOrThrow({ where: { id: userI…
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:96:3
+ ❯ tests/wallet-linked-signin-db.test.ts:101:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > same-account reauthentication with a linked wallet preserves a valid X session
+Error: Account already has a wallet.
+ ❯ src/lib/wallet-auth.ts:130:32
+    128|         where: { userId: currentUserId },
+    129|       });
+    130|       if (currentWallet) throw new HttpError(409, 'Account already has…
+       |                                ^
+    131|       await tx.walletIdentity.create({ data: { address, userId: curren…
+    132|     } else if (!userId) {
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:96:3
+ ❯ tests/wallet-linked-signin-db.test.ts:118:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects REVOKED linked credential without challenge/session residue
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects WRONG_NETWORK linked credential without challenge/session residue
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 401 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "status": 401,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `tx.walletIdentity.create()` invocation in
++ /srv/projects/useRAIDfun/useRAID-fun/src/lib/wallet-auth.ts:137:31
++
++   134   data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
++   135 });
++   136 userId = user.id;
++ → 137 await tx.walletIdentity.create(
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:167:8
+    165|       await expect(
+    166|         verifyWalletChallenge(challenge.digest, second.sign(challenge.…
+    167|       ).rejects.toMatchObject({ status: state === 'SUSPENDED' ? 403 : …
+       |        ^
+    168|       expect(await db.session.count()).toBe(0);
+    169|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects SUSPENDED linked credential without challenge/session residue
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 403 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "status": 403,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `tx.walletIdentity.create()` invocation in
++ /srv/projects/useRAIDfun/useRAID-fun/src/lib/wallet-auth.ts:137:31
++
++   134   data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
++   135 });
++   136 userId = user.id;
++ → 137 await tx.walletIdentity.create(
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:167:8
+    165|       await expect(
+    166|         verifyWalletChallenge(challenge.digest, second.sign(challenge.…
+    167|       ).rejects.toMatchObject({ status: state === 'SUSPENDED' ? 403 : …
+       |        ^
+    168|       expect(await db.session.count()).toBe(0);
+    169|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > cannot fold a linked credential into a foreign signed-in account
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409, …(1) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "message": "Wallet belongs to another account.",
+-   "status": 409,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `tx.walletIdentity.create()` invocation in
++ /srv/projects/useRAIDfun/useRAID-fun/src/lib/wallet-auth.ts:131:31
++
++   128   where: { userId: currentUserId },
++   129 });
++   130 if (currentWallet) throw new HttpError(409, 'Account already has a wallet.');
++ → 131 await tx.walletIdentity.create(
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:187:6
+    185|         foreign.id,
+    186|       ),
+    187|     ).rejects.toMatchObject({ status: 409, message: 'Wallet belongs to…
+       |      ^
+    188|     expect(await snapshot()).toEqual(before);
+    189|     expect(await db.session.count()).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409, …(1) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "message": "Wallet belongs to another account.",
+-   "status": 409,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `tx.walletIdentity.create()` invocation in
++ /srv/projects/useRAIDfun/useRAID-fun/src/lib/wallet-auth.ts:194:29
++
++   191 if (current.rotatedAt && +now - +current.rotatedAt < ROTATION_COOLDOWN_MS)
++   192   throw new HttpError(429, 'You can change your wallet once every 7 days.');
++   193 await tx.walletIdentity.delete({ where: { userId } });
++ → 194 await tx.walletIdentity.create(
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:207:8
+    205|       await expect(
+    206|         rotateWallet(ownerId, challenge.digest, second.sign(challenge.…
+    207|       ).rejects.toMatchObject({ status: 409, message: 'Wallet belongs …
+       |        ^
+    208|       expect(await snapshot()).toEqual(before);
+    209|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > replay of a consumed linked sign-in challenge creates no second session
+PrismaClientKnownRequestError: 
+Invalid `tx.walletIdentity.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/src/lib/wallet-auth.ts:137:31
+
+  134   data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
+  135 });
+  136 userId = user.id;
+→ 137 await tx.walletIdentity.create(
+Unique constraint failed on the (not available)
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ src/lib/wallet-auth.ts:137:7
+    135|       });
+    136|       userId = user.id;
+    137|       await tx.walletIdentity.create({ data: { address, userId } });
+       |       ^
+    138|     }
+    139|     const owner = await tx.user.findUniqueOrThrow({ where: { id: userI…
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:96:3
+ ❯ tests/wallet-linked-signin-db.test.ts:217:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/22]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > a expired X session cannot widen anonymous linked-wallet sign-in
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > a foreign X session cannot widen anonymous linked-wallet sign-in
+PrismaClientKnownRequestError: 
+Invalid `tx.walletIdentity.create()` invocation in
+/srv/projects/useRAIDfun/useRAID-fun/src/lib/wallet-auth.ts:137:31
+
+  134   data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
+  135 });
+  136 userId = user.id;
+→ 137 await tx.walletIdentity.create(
+Unique constraint failed on the (not available)
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ src/lib/wallet-auth.ts:137:7
+    135|       });
+    136|       userId = user.id;
+    137|       await tx.walletIdentity.create({ data: { address, userId } });
+       |       ^
+    138|     }
+    139|     const owner = await tx.user.findUniqueOrThrow({ where: { id: userI…
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:96:3
+ ❯ tests/wallet-linked-signin-db.test.ts:235:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/22]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  22 failed | 1 passed (23)
+   Start at  22:13:54
+   Duration  3.30s (transform 312ms, setup 0ms, import 973ms, tests 1.90s, environment 0ms)
+

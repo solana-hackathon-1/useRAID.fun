@@ -6,6 +6,7 @@ import {
   IdentityLinkError,
   linkVerifiedWallet,
   listWalletLinks,
+  lookupWalletLink,
   type IdentityTransaction,
 } from './identity-link';
 import { createPrismaIdentityTransaction } from './lib/identity-storage-adapter';
@@ -142,6 +143,34 @@ try {
     },
   };
   await assert.rejects(listWalletLinks(unavailable, alice), { message: 'STORAGE_UNAVAILABLE' });
+  const credential = await db.$transaction(
+    (tx) => lookupWalletLink(createPrismaIdentityTransaction(tx), second),
+    options,
+  );
+  assert.equal(credential?.accountId, alice);
+  assert.equal(credential?.status, 'ACTIVE');
+  await db.$executeRawUnsafe(
+    'UPDATE "WalletLink" SET status=\'REVOKED\', "revokedAt"=now() WHERE address=$1',
+    third,
+  );
+  const revoked = await db.$transaction(
+    (tx) => lookupWalletLink(createPrismaIdentityTransaction(tx), third),
+    options,
+  );
+  assert.equal(revoked?.status, 'REVOKED');
+  assert.deepEqual(await payout(), payoutBefore);
+  const lookupAlternate: IdentityTransaction = {
+    ...alternate,
+    query: async <Row>(sql: string) =>
+      (sql.includes('pg_advisory_xact_lock')
+        ? [{ locked: 1 }]
+        : sql.includes('FROM "User"')
+          ? [{ id: alice, suspended: false }]
+          : sql.includes('FOR SHARE')
+            ? [{ accountId: alice, networkIdentity: SIWS_CHAIN_ID, status: 'ACTIVE' }]
+            : [{ accountId: alice }]) as Row[],
+  };
+  assert.deepEqual(await lookupWalletLink(lookupAlternate, second), credential);
   console.log(
     JSON.stringify({
       version: 'v1',
@@ -156,6 +185,9 @@ try {
       proofDerived: true,
       alternatePort: true,
       sanitizedFailure: true,
+      linkedCredentialOwner: true,
+      revokedCredentialReserved: true,
+      lookupAlternatePort: true,
     }),
   );
 } finally {

@@ -311,3 +311,46 @@ export function publicWalletLink(result: LinkWalletResult): PublicWalletLink {
     alreadyLinked: result.outcome === 'ALREADY_LINKED',
   });
 }
+
+/**
+ * Internal credential lookup, not proof verification or authentication. The host calls this only
+ * after fresh signature verification and atomic challenge claim. Returns revoked reservations
+ * honestly so they never fall through to new-account creation. Locks survive until host commit.
+ */
+export async function lookupWalletLink(
+  tx: IdentityTransaction,
+  address: string,
+): Promise<import('./contracts').WalletCredentialReservation | null> {
+  if (!SolanaAddress.safeParse(address).success) return fail('INVALID_INPUT');
+  validPort(tx);
+  try {
+    await query(tx, SUBJECT_LOCK, [`wallet-subject:${address}`]);
+    const owner = single(
+      z.strictObject({ accountId: AccountId }),
+      await query(tx, 'SELECT "accountId" FROM "WalletLink" WHERE "address" = $1', [address]),
+    );
+    if (!owner) return null;
+    // Account-before-link row order matches linkVerifiedWallet and the future revoke command.
+    const user = single(
+      z.strictObject({ id: AccountId, suspended: z.boolean() }),
+      await query(tx, USER_LOCK, [owner.accountId]),
+    );
+    if (!user || user.id !== owner.accountId) return fail('STORAGE_CONTRACT');
+    const link = single(
+      z.strictObject({
+        accountId: AccountId,
+        networkIdentity: InternalId,
+        status: z.enum(['ACTIVE', 'REVOKED']),
+      }),
+      await query(
+        tx,
+        'SELECT "accountId", "networkIdentity", "status" FROM "WalletLink" WHERE "address" = $1 FOR SHARE',
+        [address],
+      ),
+    );
+    if (!link || link.accountId !== owner.accountId) return fail('STORAGE_CONTRACT');
+    return Object.freeze({ ...link, accountSuspended: user.suspended });
+  } catch (error) {
+    throw translate(error);
+  }
+}

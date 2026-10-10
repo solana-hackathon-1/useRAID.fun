@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/raid-evidence.test.ts (21 tests | 1 failed) 148ms
+     × covers all 75 current canonical scenarios including the three reuse/TDD additions 37ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/raid-evidence.test.ts > T004 canonical scenario responsibility and environment plan > covers all 75 current canonical scenarios including the three reuse/TDD additions
+AssertionError: expected '0a1a299e34b3c3a55fa2abceae3b18fbc3396…' to be 'eeed28db9077838868b131d53c38bb42caed6…' // Object.is equality
+
+Expected: "eeed28db9077838868b131d53c38bb42caed628e6659a6dab9a7d3330b1f0cb5"
+Received: "0a1a299e34b3c3a55fa2abceae3b18fbc3396b4039e5bc0b0405961f71e3335f"
+
+ ❯ tests/raid-evidence.test.ts:122:34
+    120|   it('covers all 75 current canonical scenarios including the three re…
+    121|     expect(canonical).toHaveLength(75);
+    122|     expect(plan.blueprintSha256).toBe(createHash('sha256').update(blue…
+       |                                  ^
+    123|     expect(
+    124|       plan.scenarios.map(({ id, scenario, expected }) => ({ id, scenar…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  22:30:27
+   Duration  1.22s (transform 635ms, setup 0ms, import 807ms, tests 148ms, environment 0ms)
+
