@@ -2,7 +2,7 @@
 
 [Blueprint identity](../RAID_AGENT_BLUEPRINT.md#07-identity-and-onboarding) · [One active Raid](../RAID_AGENT_BLUEPRINT.md#13-one-active-raid) · [Wallet rotation / payout](../RAID_AGENT_BLUEPRINT.md#1613-wallet-rotation-and-payout-recovery) · [Module reuse](raid-module-reuse.md) · [Plan](tasks/T006-wallet-link-plan.md) · [Independent plan review (WR01-WR14)](tasks/T006-wallet-link-plan-review.md) · [Identity storage](raid-identity-storage.md) · [Identity preflight](raid-identity-preflight.md)
 
-**Status: IMPLEMENTED_UNVERIFIED, disposable-database tested only (PR-A of two). Full T006 and all 27 completion criteria remain NOT VERIFIED. AC01 / T006-A01 are PARTIAL: the identity half (same canonical participant, history and payout rows unchanged after a second wallet is linked) is evidenced on real PostgreSQL; the capacity half has no table to assert against (gap G1) and T006-A02 stays NOT VERIFIED.** The independent non-author [PR-A implementation review](tasks/T006-wallet-links-review.md) accepted the slice with conditions LR01–LR07 at `1b4a495`. A separate [follow-up review](tasks/T006-wallet-links-followup-independent-review.md) verified LR01/LR02/LR03/LR07; LR04/LR05/LR06 remain binding. Nothing is deployed, migrated on a live database or backfilled. The user-visible outcome of AC01 (a second wallet signs in to the same account) is **not delivered by this change**: sign-in resolution, the route and the `wallet_links_enabled` flag are PR-B (WR13).
+**Status: IMPLEMENTED_UNVERIFIED, disposable-database tested only (PR-A storage plus PR-B1 resolution; PR-B2 creation/revoke still pending). Full T006 and all 27 completion criteria remain NOT VERIFIED. AC01 / T006-A01 are PARTIAL: the identity half (same canonical participant, history and payout rows unchanged after a second wallet is linked) is evidenced on real PostgreSQL; the capacity half has no table to assert against (gap G1) and T006-A02 stays NOT VERIFIED.** The independent non-author [PR-A implementation review](tasks/T006-wallet-links-review.md) accepted the slice with conditions LR01–LR07 at `1b4a495`. A separate [follow-up review](tasks/T006-wallet-links-followup-independent-review.md) verified LR01/LR02/LR03/LR07; LR04/LR05/LR06 remain binding. Nothing is deployed, migrated on a live database or backfilled. PR-B1 adds sign-in resolution for existing ACTIVE links on the disposable target; HTTP creation/revoke and the server enablement flag remain pending PR-B2 (WR13). No full AC01/issue acceptance is claimed.
 
 ## Purpose and non-goals
 
@@ -10,7 +10,7 @@ Lets one canonical account hold additional VERIFIED wallet credentials, keyed to
 
 Owned requirements: R04, R13 (identity half only), R15, R16; I01, I05, I06, I07, I10, I11, I13; D01, D13; AC01 (partial). Blueprint sections 07, 13, 16.13, 24.6-24.7, 25.2, 26, 28, 32, 35.1.
 
-Non-goals (not delivered here): sign-in through a linked wallet, HTTP routes, `link-additional` challenge purpose in `wallet-auth.ts`, feature flag, UI, revoke/unlink command, account recovery or merge approval (O11, W03), promotion of a link to payout wallet, provider (X) links, capacity or engagement tables, command receipts (T019), nonce/domain/network hardening (T007), backfill, login auto-provisioning.
+Non-goals (not delivered here): additional-link creation HTTP routes, `link-additional` challenge purpose in `wallet-auth.ts`, feature flag, UI, revoke/unlink command, account recovery or merge approval (O11, W03), promotion of a link to payout wallet, provider (X) links, capacity or engagement tables, command receipts (T019), nonce/domain/network hardening (T007), backfill, login auto-provisioning.
 
 ## Dependency and host contract
 
@@ -39,6 +39,7 @@ flowchart LR
 | Export                                                       | Behavior                                                                                                                                                                                                                                                                                                                                            |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `linkVerifiedWallet(tx, input)`                              | Validates input (`INVALID_INPUT`, `WRONG_ACTOR`) and the port (`STORAGE_CONTRACT`) before any SQL, then runs the lock order below. Returns `{ outcome: 'LINKED' \| 'ALREADY_LINKED', source: 'LINK' \| 'PRIMARY', linkId, participantId, networkIdentity, address, status }`.                                                                       |
+| `lookupWalletLink(tx, address)`                              | Internal read-only reservation, null or `{accountId,networkIdentity,status,accountSuspended}`; no proof/session/permission is granted. Host applies fresh proof and session policy.                                                                                                                                                                 |
 | `listWalletLinks(tx, accountId)`                             | The caller's own link rows, oldest first, with UTC ISO timestamps.                                                                                                                                                                                                                                                                                  |
 | `publicWalletLink(result)`                                   | Safe shape `{ address, networkIdentity, status, alreadyLinked }` with no account, participant or link identifier.                                                                                                                                                                                                                                   |
 | `IdentityLinkError` / `IdentityLinkCode`                     | `INVALID_INPUT`, `WRONG_ACTOR`, `ACCOUNT_NOT_FOUND`, `AUTHENTICATION_REQUIRED`, `FORBIDDEN`, `ACCOUNT_RESTRICTED`, `PROOF_INVALID`, `UNSUPPORTED_IDENTITY`, `IDENTITY_CONFLICT`, `IDENTITY_REVOKED`, `PRIMARY_WALLET_REQUIRED`, `LINK_LIMIT_REACHED`, `STORAGE_CONTRACT`, `RETRY_TRANSACTION`, `STORAGE_UNAVAILABLE`. The message is the code only. |
@@ -138,7 +139,7 @@ Migration `202610090003_wallet_links` is additive (no backfill; unlinked account
 ## Limitations
 
 - Disposable-database evidence only; independent technical reviews and their conditions are recorded above; no live rollout, no exact-head CI claim, no browser or accessibility check, no UAT.
-- AC01 capacity half (G1), T006-A02, AC68/G10 durability, AC69 receipts, WR04 connected-X enforcement and revoke, WR06 copy, WR07 typed handling and the sign-in/route/flag wiring are not delivered.
+- AC01 capacity half (G1), T006-A02, AC68/G10 durability, AC69 receipts, WR04 connected-X enforcement and revoke, WR06 copy, the remaining WR07 rollout and the additional-link/revoke route/flag wiring are not delivered.
 - Uniqueness on `address` alone is stricter than the blueprint `(network, address)` tuple (conservative DEFAULT); relaxing it later is a migration.
 - The caps are injected EXAMPLE values, not recorded decisions. The x-oauth fold path shares `isEmptyAccount`/`absorbAccount` and is covered through those helpers, not end to end.
 - The command is database-only: no GitHub, Solana, model or notification effect is involved.
@@ -160,7 +161,7 @@ npx prisma migrate deploy
 npm start
 ```
 
-Expected output is one JSON line with `synthetic`, `realDatabase`, `sameParticipant`, `primaryUnchanged`, `idempotentReplay`, `foreignAddressConflict`, `primaryRequired`, `wrongActorDenied`, `proofDerived`, `alternatePort` and `sanitizedFailure` all `true`.
+Expected output is one JSON line with `synthetic`, `realDatabase`, `sameParticipant`, `primaryUnchanged`, `idempotentReplay`, `foreignAddressConflict`, `primaryRequired`, `wrongActorDenied`, `proofDerived`, `alternatePort` `sanitizedFailure`, `linkedCredentialOwner`, `revokedCredentialReserved` and `lookupAlternatePort` all `true`.
 
 Repository tests (they truncate the target; point them only at an explicitly disposable database):
 

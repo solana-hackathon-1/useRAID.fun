@@ -73,6 +73,9 @@ it.skipIf(process.env.RUN_DB_TESTS !== 'true')(
         proofDerived: true,
         alternatePort: true,
         sanitizedFailure: true,
+        linkedCredentialOwner: true,
+        revokedCredentialReserved: true,
+        lookupAlternatePort: true,
       });
     } finally {
       await truncateAll(db);

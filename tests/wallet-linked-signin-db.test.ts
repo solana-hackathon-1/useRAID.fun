@@ -75,6 +75,19 @@ integration('linked-wallet sign-in host (T006 PR-B1)', () => {
         key: 'synthetic-signin-history',
       },
     });
+    await db.usdcTransfer.create({
+      data: {
+        userId: ownerId,
+        kind: 'DEPOSIT',
+        amount: 5n,
+        walletAddress: primary.address,
+        recipient: 'synthetic-recipient',
+        network: 'sandbox',
+        mint: 'synthetic-usdc',
+        status: 'AWAITING_TRANSFER',
+        expiresAt: new Date(Date.now() + 60000),
+      },
+    });
     await db.$transaction((tx) =>
       linkVerifiedWallet(
         createPrismaIdentityTransaction(tx),
@@ -232,10 +245,39 @@ integration('linked-wallet sign-in host (T006 PR-B1)', () => {
           expiresAt: new Date(Date.now() + (kind === 'expired' ? -60000 : 60000)),
         },
       });
+      const oldSession = await db.session.findUniqueOrThrow({
+        where: { tokenHash: hash('synthetic-old-x') },
+      });
       const token = await verify(second, undefined, hash('synthetic-old-x'));
+      if (kind === 'foreign')
+        expect(
+          await db.session.findUnique({ where: { tokenHash: hash('synthetic-old-x') } }),
+        ).toEqual(oldSession);
       expect(
         await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } }),
       ).toMatchObject({ userId: ownerId, via: 'wallet' });
+    },
+  );
+  it.each(['wrong-signature', 'expired-proof'])(
+    'rejects %s before issuing linked session',
+    async (kind) => {
+      const before = await snapshot();
+      const challenge = await createWalletChallenge(second.address);
+      if (kind === 'expired-proof')
+        await db.walletChallenge.update({
+          where: { digest: challenge.digest },
+          data: { expiresAt: new Date(0) },
+        });
+      const signature = (kind === 'wrong-signature' ? primary : second).sign(challenge.message);
+      await expect(
+        verifyWalletChallenge(challenge.digest, signature, second.address),
+      ).rejects.toMatchObject({ status: 401 });
+      expect(await db.session.count()).toBe(0);
+      expect(
+        (await db.walletChallenge.findUniqueOrThrow({ where: { digest: challenge.digest } }))
+          .consumedAt,
+      ).toBeNull();
+      expect(await snapshot()).toEqual(before);
     },
   );
   it('revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)', async () => {

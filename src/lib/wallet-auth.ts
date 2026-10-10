@@ -33,7 +33,8 @@ async function walletTransaction(work: (tx: Prisma.TransactionClient) => Promise
         throw new HttpError(503, 'Wallet sign-in unavailable. Please try again.');
       throw new HttpError(401, 'Wallet sign-in unavailable.');
     }
-    throw error;
+    if (error instanceof HttpError) throw error;
+    throw new HttpError(503, 'Wallet sign-in unavailable. Please try again.');
   }
 }
 
