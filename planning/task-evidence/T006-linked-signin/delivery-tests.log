@@ -1,0 +1,193 @@
+
+> useraid@0.1.0 test
+> vitest run --reporter=default --reporter=junit --outputFile=/tmp/raid-t006-signin-ci/vitest.xml
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/tmp/raid-t006-signin-source[39m
+
+ [32m✓[39m tests/tracking-db.test.ts [2m([22m[2m48 tests[22m[2m)[22m[33m 11811[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps observations append-only, preserves cross-Raid ownership, and excludes later same-author duplicate [33m 321[2mms[22m[39m
+     [33m[2m✓[22m[39m accepts missing eligible posts during review, then restarts review [33m 317[2mms[22m[39m
+     [33m[2m✓[22m[39m settles once from approved snapshot despite mutable post changes; preserves exact fee allocation [33m 343[2mms[22m[39m
+       [33m[2m✓[22m[39m keeps qualified, admin-excluded and frozen-source posts where they are [33m 311[2mms[22m[39m
+     [33m[2m✓[22m[39m flags cross-author copies until audited review; same-author duplicates stay excluded [33m 415[2mms[22m[39m
+     [33m[2m✓[22m[39m completes paginated discovery and final observations before publishing a snapshot [33m 515[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps held claims untouched until explicit audited assignment to a later same-token Raid [33m 317[2mms[22m[39m
+       [33m[2m✓[22m[39m dead-letters an unresolvable submission as LOOKUP_FAILED and stops blocking finalization [33m 516[2mms[22m[39m
+       [33m[2m✓[22m[39m does not dead-letter submissions while X is failing with 5xx or unreachable [33m 718[2mms[22m[39m
+       [33m[2m✓[22m[39m keeps refreshing a post already owned by this Raid when the author overlaps another Raid [33m 454[2mms[22m[39m
+       [33m[2m✓[22m[39m does not reopen results for an unrelated review-time submission [33m 380[2mms[22m[39m
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2maddress exclusivity and old-binary behavior (D3, D4)[2m > [22m[2mtwo accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+[22m[39m{"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":841,"blocker":832,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2maddress exclusivity and old-binary behavior (D3, D4)[2m > [22m[2mlink then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+[22m[39m{"walletLinkRace":"link-then-legacy-insert","waiter":832,"blocker":841,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2maddress exclusivity and old-binary behavior (D3, D4)[2m > [22m[2mlegacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+[22m[39m{"walletLinkRace":"legacy-insert-then-link","waiter":841,"blocker":832,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2mdocumented lock order against every writer (WR12)[2m > [22m[2mlink vs link on one account with different addresses serializes at the User row lock; one participant
+[22m[39m{"walletLinkRace":"link-vs-link-same-account","waiter":832,"blocker":841,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2mdocumented lock order against every writer (WR12)[2m > [22m[2mlink holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+[22m[39m{"walletLinkRace":"link-vs-rotate-link-first","waiter":841,"blocker":832,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2mdocumented lock order against every writer (WR12)[2m > [22m[2mrotate holding the subject vs link of that address: link waits, then reports a conflict
+[22m[39m{"walletLinkRace":"link-vs-rotate-rotate-first","waiter":832,"blocker":841,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2mdocumented lock order against every writer (WR12)[2m > [22m[2mlegacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+[22m[39m{"walletLinkRace":"link-vs-merge-as-drop","waiter":841,"blocker":832,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\"."}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2mdocumented lock order against every writer (WR12)[2m > [22m[2mlegacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+[22m[39m{"walletLinkRace":"link-vs-merge-delete-first","waiter":832,"blocker":841,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2mdocumented lock order against every writer (WR12)[2m > [22m[2mlegacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+[22m[39m{"walletLinkRace":"link-vs-merge-as-keep","waiter":841,"blocker":832,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+
+[90mstdout[2m | tests/identity-link-db.test.ts[2m > [22m[2mT006 wallet links on real PostgreSQL[2m > [22m[2mdocumented lock order against every writer (WR12)[2m > [22m[2ma concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+[22m[39m{"walletLinkRace":"link-vs-user-row-update","waiter":832,"blocker":841,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ [32m✓[39m tests/identity-link-db.test.ts [2m([22m[2m37 tests[22m[2m)[22m[33m 4974[2mms[22m[39m
+       [33m[2m✓[22m[39m unchanged legacy link path still answers 409 for a second wallet until sign-in resolution ships (baseline) [33m 409[2mms[22m[39m
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mblocks the second identical command on the first backend, then replays it
+[22m[39m{"receiptRace":true,"waiter":859,"blocker":860,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mlets the waiting command execute when the first one rolls back
+[22m[39m{"receiptRace":true,"waiter":860,"blocker":859,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2mcompeting real transactions[2m > [22m[2mreports a conflict, not a replay, when the waiting command has another payload
+[22m[39m{"receiptRace":true,"waiter":859,"blocker":860,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+[90mstdout[2m | tests/command-receipts-db.test.ts[2m > [22m[2mcommand receipts on real PostgreSQL[2m > [22m[2minbound provider deliveries (AC32 foundation)[2m > [22m[2mblocks the duplicate on the first backend while the first handler is open
+[22m[39m{"receiptRace":true,"waiter":865,"blocker":860,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+ [32m✓[39m tests/command-receipts-db.test.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 2363[2mms[22m[39m
+       [33m[2m✓[22m[39m survives a genuine PostgreSQL deadlock between two different commands [33m 1087[2mms[22m[39m
+ [32m✓[39m tests/rewards-finance.test.ts [2m([22m[2m34 tests[22m[2m)[22m[33m 1692[2mms[22m[39m
+ [32m✓[39m tests/integration.test.ts [2m([22m[2m28 tests[22m[2m)[22m[33m 1523[2mms[22m[39m
+ [32m✓[39m tests/studio-db.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 2261[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces minimum and open-request limits on deposits and withdrawals [33m 1342[2mms[22m[39m
+ [32m✓[39m tests/identity-link.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 91[2mms[22m[39m
+[90mstdout[2m | tests/identity-storage-db.test.ts[2m > [22m[2mT006 actual additive database fences[2m > [22m[2mprovision wins against old binary at final DELETE; entire auth transaction rolls back
+[22m[39m{"storageRace":true,"waiter":922,"blocker":913,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\".\"User\".\"role\", \"public\".\"User\".\"approved\", \"public\".\"User\".\"suspended\", \"public\".\"User\".\"affiliation\", \"public\".\"User\".\"createdAt\""}
+
+[90mstdout[2m | tests/identity-storage-db.test.ts[2m > [22m[2mT006 actual additive database fences[2m > [22m[2mdelete wins: provision blocks on User key lock then denies missing account without orphan
+[22m[39m{"storageRace":true,"waiter":913,"blocker":922,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+
+[90mstdout[2m | tests/identity-storage-db.test.ts[2m > [22m[2mT006 actual additive database fences[2m > [22m[2mindependent create/create race returns one committed identity and first provenance
+[22m[39m{"storageRace":true,"waiter":922,"blocker":913,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+
+ [32m✓[39m tests/identity-storage-db.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 1915[2mms[22m[39m
+     [33m[2m✓[22m[39m verified wallet flow preserves mapped keeper and denies two mapped accounts without consuming proof [33m 550[2mms[22m[39m
+ [32m✓[39m tests/launch-db.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 832[2mms[22m[39m
+ [32m✓[39m tests/money-integrity-db.test.ts [2m([22m[2m23 tests[22m[2m)[22m[33m 2307[2mms[22m[39m
+ [32m✓[39m tests/wallet-auth-db.test.ts [2m([22m[2m18 tests[22m[2m)[22m[33m 1662[2mms[22m[39m
+ [32m✓[39m tests/usdc-ops-db.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 736[2mms[22m[39m
+ [32m✓[39m tests/command-receipts.test.ts [2m([22m[2m46 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+[90mstdout[2m | tests/wallet-linked-signin-db.test.ts[2m > [22m[2mlinked-wallet sign-in host (T006 PR-B1)[2m > [22m[2mrevocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)
+[22m[39m{"linkedSigninRace":true,"waiter":976,"blocker":966,"blockedStatement":"SELECT \"accountId\", \"networkIdentity\", \"status\" FROM \"WalletLink\" WHERE \"address\" = $1 FOR SHARE"}
+
+[90mstdout[2m | tests/wallet-linked-signin-db.test.ts[2m > [22m[2mlinked-wallet sign-in host (T006 PR-B1)[2m > [22m[2mcredential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)
+[22m[39m{"linkedSigninRace":true,"waiter":975,"blocker":976,"blockedStatement":"UPDATE \"public\".\"WalletLink\" SET \"status\" = $1, \"revokedAt\" = $2 WHERE \"public\".\"WalletLink\".\"accountId\" = $3"}
+
+ [32m✓[39m tests/wallet-linked-signin-db.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 2624[2mms[22m[39m
+     [33m[2m✓[22m[39m fresh linked signature yields same account; participant, primary and history stay byte-identical [33m 513[2mms[22m[39m
+ [32m✓[39m tests/worker-db.test.ts [2m([22m[2m15 tests[22m[2m)[22m[33m 2487[2mms[22m[39m
+       [33m[2m✓[22m[39m does not write a collection error onto a raid when a finance job fails [33m 723[2mms[22m[39m
+ [32m✓[39m tests/identity-preflight.test.ts [2m([22m[2m48 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+ [32m✓[39m tests/shared-contracts.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 114[2mms[22m[39m
+ [32m✓[39m tests/asset-registry-db.test.ts [2m([22m[2m10 tests[22m[2m)[22m[33m 624[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces exact identity uniqueness: network, mint and token program all matter [33m 324[2mms[22m[39m
+ [32m✓[39m tests/asset-registry-amounts.test.ts [2m([22m[2m40 tests[22m[2m)[22m[33m 517[2mms[22m[39m
+     [33m[2m✓[22m[39m conserves the total, is never negative and is deterministic (property) [33m 324[2mms[22m[39m
+ [32m✓[39m tests/asset-registry-registry.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+[90mstderr[2m | tests/tracking.test.ts[2m > [22m[2mraid-specific search query[2m > [22m[2mfalls back to the unfiltered query when the author list exceeds the limit
+[22m[39mX search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+ [32m✓[39m tests/tracking.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 1370[2mms[22m[39m
+     [33m[2m✓[22m[39m finds the same duplicate peers as the quadratic reference (v2) [33m 742[2mms[22m[39m
+     [33m[2m✓[22m[39m finds the same duplicate peers as the quadratic reference (v3) [33m 588[2mms[22m[39m
+[90mstderr[2m | tests/x-oauth-db.test.ts[2m > [22m[2mX connection PostgreSQL invariants[2m > [22m[2mignores LOCAL_AUTO_APPROVE_CREATORS in production
+[22m[39mLOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.
+
+ [32m✓[39m tests/x-oauth-db.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 1783[2mms[22m[39m
+ [32m✓[39m tests/asset-registry-bundle.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 103[2mms[22m[39m
+ [32m✓[39m tests/x-oauth-routes.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+ [32m✓[39m tests/standalone-db.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 490[2mms[22m[39m
+ [32m✓[39m tests/identity-storage.test.ts [2m([22m[2m33 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m tests/asset-registry-production.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m tests/domain.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m tests/launch-ipfs.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/x-oauth.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 96[2mms[22m[39m
+ [32m✓[39m tests/identity-link-migration.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 9249[2mms[22m[39m
+     [33m[2m✓[22m[39m applies twice, matches the Prisma schema with no drift, and records one row per migration [33m 9238[2mms[22m[39m
+ [32m✓[39m tests/public-load-db.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 877[2mms[22m[39m
+     [33m[2m✓[22m[39m keeps recording events from many visitors behind the shared default bucket [33m 353[2mms[22m[39m
+ [32m✓[39m tests/raid-fixtures.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m tests/standalone-raids.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32m✓[39m tests/raid-evidence.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m tests/identity-link-boundary.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 1462[2mms[22m[39m
+   [33m[2m✓[22m[39m minimal external host links a second wallet using explicit dependencies [33m 1447[2mms[22m[39m
+ [32m✓[39m tests/launch-gate.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m tests/usdc-receipt.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+ [32m✓[39m tests/asset-registry-boundary.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 716[2mms[22m[39m
+     [33m[2m✓[22m[39m runs the declared minimal host outside the application with explicit dependencies [33m 696[2mms[22m[39m
+ [32m✓[39m tests/media-db.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 260[2mms[22m[39m
+ [32m✓[39m tests/audit-db.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 383[2mms[22m[39m
+ [32m✓[39m tests/admin-db.test.ts [2m([22m[2m5 tests[22m[2m)[22m[33m 609[2mms[22m[39m
+ [32m✓[39m tests/wallet-link-proof.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/studio.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m tests/command-receipts-boundary.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 1033[2mms[22m[39m
+   [33m[2m✓[22m[39m minimal external host runs the documented flow using explicit dependencies [33m 1021[2mms[22m[39m
+ [32m✓[39m tests/usdc-chain.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+ [32m✓[39m tests/account-merge-canonical.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/braces-security.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m tests/launch-crypto.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m tests/refresh.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 57[2mms[22m[39m
+ [32m✓[39m tests/wallet-credential-lookup.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m tests/wallet-routes.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+ [32m✓[39m tests/shared-contracts-boundary.test.ts [2m([22m[2m4 tests[22m[2m)[22m[33m 647[2mms[22m[39m
+     [33m[2m✓[22m[39m has no undeclared app/global dependencies and runs the declared host outside the app [33m 632[2mms[22m[39m
+ [32m✓[39m tests/identity-storage-boundary.test.ts [2m([22m[2m3 tests[22m[2m)[22m[33m 1112[2mms[22m[39m
+   [33m[2m✓[22m[39m minimal external host resolves a real mapping using explicit dependencies [33m 1101[2mms[22m[39m
+ [32m✓[39m tests/report-route.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/shared-contracts-review.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m tests/env-example.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m tests/dependency-compatibility.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 96[2mms[22m[39m
+ [32m✓[39m tests/rewards.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/docs-links.test.ts [2m([22m[2m61 tests[22m[2m)[22m[33m 1213[2mms[22m[39m
+     [33m[2m✓[22m[39m docs/raid-agent-task-contracts.md: relative links and anchors resolve [33m 515[2mms[22m[39m
+     [33m[2m✓[22m[39m docs/raid-blueprint-project-map.md: relative links and anchors resolve [33m 539[2mms[22m[39m
+ [32m✓[39m tests/creator-route.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m tests/pump-launch.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 306[2mms[22m[39m
+ [32m✓[39m tests/http.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/submit-route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m tests/security-headers.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/db-guard.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/deploy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/identity-preflight-boundary.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 672[2mms[22m[39m
+   [33m[2m✓[22m[39m consumes only the public identity interface outside the RAID app with explicit dependencies [33m 670[2mms[22m[39m
+ [32m✓[39m tests/shell-account.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m tests/admin-lists.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/raid-fixtures-boundary.test.ts [2m([22m[2m1 test[22m[2m)[22m[33m 904[2mms[22m[39m
+   [33m[2m✓[22m[39m T004 runs its declared consuming host outside RAID without app configuration or credentials [33m 902[2mms[22m[39m
+ [32m✓[39m tests/discovery-rows.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/studio-preview-route.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m tests/auth-routes.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m tests/fake-solana.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 111[2mms[22m[39m
+ [32m✓[39m tests/wallet-auth-transaction.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m tests/auth.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m tests/audit-check.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/states.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/image-hosts.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/admins.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m tests/format.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 52[2mms[22m[39m
+ [32m✓[39m tests/token-data.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/local-db.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m84 passed[39m[22m[90m (84)[39m
+[2m      Tests [22m [1m[32m1052 passed[39m[22m[90m (1052)[39m
+[2m   Start at [22m 16:48:38
+[2m   Duration [22m 101.44s[2m (transform 2.57s, setup 0ms, import 23.33s, tests 63.28s, environment 13ms)[22m
+
+JUNIT report written to /tmp/raid-t006-signin-ci/vitest.xml

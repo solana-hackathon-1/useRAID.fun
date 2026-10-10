@@ -1,0 +1,5 @@
+
+> raid-wallet-links-example@1.0.0 start
+> tsx host.ts
+
+{"version":"v1","synthetic":true,"realDatabase":true,"sameParticipant":true,"primaryUnchanged":true,"idempotentReplay":true,"foreignAddressConflict":true,"primaryRequired":true,"wrongActorDenied":true,"proofDerived":true,"alternatePort":true,"sanitizedFailure":true,"linkedCredentialOwner":true,"revokedCredentialReserved":true,"lookupAlternatePort":true}

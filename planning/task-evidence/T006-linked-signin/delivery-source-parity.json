@@ -1,0 +1,6 @@
+{
+  "candidateSha": "0e3393ba0a3f4ec35803749e37c4b9a7ac8e9010",
+  "checkedTrackedFiles": 753,
+  "differentPaths": ["artifacts/raid-live-fixture.png"],
+  "note": "Generated Next caches and extra temporary scripts are outside tracked source; report actual tracked differences."
+}
