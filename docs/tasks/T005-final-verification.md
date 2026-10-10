@@ -1,0 +1,15 @@
+# T005 — current merged-source verification
+
+Acceptance defined before execution: verify all six automated layers against exact merged SHA `7c122de996fc5e142f043970d02d1ef11c7850a8`, retain commands/logs/JUnit and explicitly preserve skips/failures. Review all27 T005 criteria against the prior accepted preparation packet and subsequent local-CI changes. No independent reviewer or PASS is fabricated; issue closure requires accepted current evidence. This is verification/documentation, not an implementation change, so no coding RED/GREEN is invented.
+
+Scope: AG09/M0, T005-C16/C18/C19/C22 and A01/A02/W01–W03; D01/D12, R15/R16, I05/I06/I09–I13, AC73–75, blueprint §§00–04/13/24/27–35/39–40. All application entities, actor permissions, money, accepted terms and capacity remain unchanged. Fixtures may mutate only a freshly task-owned synthetic database. OPEN O18 and provider diagnostics remain independent of this local verification; no staging/production, spend, custody, UAT or live-gate approval is supplied.
+
+Host preparation: exact `git archive` extracted to `/tmp/raid-t005-final-source`; evidence `/tmp/raid-t005-final-evidence`. Dedicated Compose project `raid-t005-final`, PostgreSQL16 tmpfs512MiB, no published ports or persistent/shared volume. Node22 test container shares only that database's network namespace, so localhost test ports are isolated from the existing host listener. Docker socket/CLI support declared local test orchestration; no provider credentials or application .env copied. Compose settings and orchestration commands are retained with evidence. Standard database tests and browser configurations run unchanged. Python3.12 planning checks run separately in a fresh image. Existing application runtime Dockerfile is built separately against the same archive.
+
+Status: IN_PROGRESS. Original checkout has only prior checkpoint amendments plus this verification document. Source was fast-forwarded to mergedPR186 without discarding the checkpoint; branch `codex/t005-final-verification`. No implementation changes in this continuation. Independent read-only reviewer authorization remains pending.
+
+Next: finish host preparation and checks; record actual results and source/environment identities; reconcile exact criterion evidence; obtain independent review before issue completion and next issue.
+
+## Verification milestone
+
+Candidate `7c122de`: Python3.12 planning35/35; root planning35/35 on Python3.11 inside the Node host; clean npm install, own Prisma generation, repository formatting, installed-Next route generation, typecheck, lint(24 existing warnings/0errors), configured dependency audit, fresh22 migrations and schema drift all pass. Full Vitest81 suites/1021 cases,0failures/errors/skips,98.15seconds. Production runtime Docker image built as `sha256:1ef1eb4c48e54973b5ad1ac5f0ffe15bb4a75e18a43044f2b694cbb10415ad1c`; both runtime smoke checks passed. Browser prerequisite installation passed; demo49passed/1existing skipped. Studio and live checks remain in progress, not PASS. Exact commands, pre-generation676-path source manifest, database/container identities and JUnit retained under the evidence directory.
