@@ -1,0 +1,61 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/private/tmp/raid-foundation-followup-20261009-codex/T029/source[39m
+
+ [31m❯[39m tests/asset-registry-registry.test.ts [2m([22m[2m22 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m21 skipped[39m[2m)[22m[32m 8[2mms[22m[39m
+     [2m[90m↓[39m[22m treats two mints that share a ticker as two distinct assets
+     [2m[90m↓[39m[22m rejects the same mint presented on another network
+     [2m[90m↓[39m[22m rejects the same mint under another token program
+     [2m[90m↓[39m[22m distinguishes native SOL from a token and one network from another
+     [2m[90m↓[39m[22m cannot select an asset by ticker, name or smuggled display fields
+     [2m[90m↓[39m[22m is immutable to later mutation of its inputs and outputs
+     [2m[90m↓[39m[22m rejects ambiguous or inconsistent registry configuration
+     [2m[90m↓[39m[22m keeps one identity and key across registry versions and returns the newest policy
+     [2m[90m↓[39m[22m treats re-recording an identical snapshot as idempotent
+     [2m[90m↓[39m[22m rejects a different snapshot under an existing version
+     [2m[90m↓[39m[22m rejects a decimals change for the same asset so accepted amounts keep their meaning
+     [2m[90m↓[39m[22m rejects a snapshot for an unregistered asset instead of registering it implicitly
+     [2m[90m↓[39m[22m rejects a snapshot whose observed slot moves backwards
+     [2m[90m↓[39m[22m errors when a pinned policy version is unknown and does not guess
+     [2m[90m↓[39m[22m supports a plain SPL token with no extensions and native SOL
+     [2m[90m↓[39m[22m lists the sixteen-point-five extensions as always rejected
+     [2m[90m↓[39m[22m rejects transfer-fee and transfer-hook profiles by default
+     [2m[90m↓[39m[22m rejects a Token-2022 asset whose extension is not on the reviewed allow list
+     [2m[90m↓[39m[22m never lets the allow list override the rejected extensions
+     [2m[90m↓[39m[22m rejects an unknown token program, an unknown profile and a missing policy
+[31m     [31m×[31m rejects a native SOL asset whose profile declares any extension[39m[32m 7[2mms[22m[39m
+     [2m[90m↓[39m[22m rejects a plain SPL token program asset that claims extensions
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m21 skipped[39m[90m (22)[39m
+[2m   Start at [22m 09:22:52
+[2m   Duration [22m 189ms[2m (transform 45ms, setup 0ms, import 79ms, tests 8ms, environment 0ms)[22m
+
+JUNIT report written to /tmp/raid-foundation-followup-20261009-codex/T029/M24-red.xml
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/asset-registry-registry.test.ts[2m > [22mT029 support policy is fail-closed (16.5)[2m > [22mrejects a native SOL asset whose profile declares any extension
+[31m[1mAssertionError[22m: expected { supported: true, reasons: [] } to deeply equal { supported: false, …(1) }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "reasons": [[39m
+[32m-     "EXTENSIONS_ON_NATIVE_ASSET",[39m
+[32m-   ],[39m
+[32m-   "supported": false,[39m
+[31m+   "reasons": [],[39m
+[31m+   "supported": true,[39m
+[2m  }[22m
+
+[36m [2m❯[22m tests/asset-registry-registry.test.ts:[2m239:43[22m[39m
+    [90m237|[39m     )[33m;[39m
+    [90m238|[39m     [35mconst[39m registry [33m=[39m [34mcreateAssetRegistry[39m(input)[33m;[39m
+    [90m239|[39m     [34mexpect[39m(registry[33m.[39m[34mevaluateSupport[39m(sol))[33m.[39m[34mtoEqual[39m({
+    [90m   |[39m                                           [31m^[39m
+    [90m240|[39m       supported[33m:[39m [35mfalse[39m[33m,[39m
+    [90m241|[39m       reasons[33m:[39m [[32m'EXTENSIONS_ON_NATIVE_ASSET'[39m][33m,[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+

@@ -1,0 +1,1855 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="843" failures="0" errors="0" time="12.751438547">
+    <testsuite name="tests/account-merge-canonical.test.ts" timestamp="2026-10-09T03:37:23.118Z" hostname="0xd.local" tests="13" failures="0" errors="0" skipped="0" time="0.004809792">
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; keeps the existing genuinely empty account result" time="0.001634083">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; a canonical HUMAN mapping makes an otherwise legacy-empty account nonempty" time="0.000215042">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy raid references" time="0.0001785">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy tokenLaunch references" time="0.000154083">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy rewardEnrollment references" time="0.000139583">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy raidEnrollment references" time="0.000138125">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy balanceEntry references" time="0.000128541">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy usdcTransfer references" time="0.000123625">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy usdcAllocation references" time="0.000148583">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;role&quot;:&quot;ADMIN&quot;}" time="0.000151667">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;suspended&quot;:true}" time="0.000107667">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;missing&quot;:true}" time="0.000105292">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; refuses mapped-account absorption before any credential/session/account/event mutation" time="0.00085325">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/admin-db.test.ts" timestamp="2026-10-09T03:37:23.119Z" hostname="0xd.local" tests="5" failures="0" errors="0" skipped="0" time="0.128593334">
+        <testcase classname="tests/admin-db.test.ts" name="admin job retry &gt; resets a failed idle job, clears dead-lettering and audits it" time="0.040671042">
+        </testcase>
+        <testcase classname="tests/admin-db.test.ts" name="admin job retry &gt; refuses finished, running and unknown jobs" time="0.027767917">
+        </testcase>
+        <testcase classname="tests/admin-db.test.ts" name="admin job retry &gt; retries a job whose lock went stale" time="0.01555775">
+        </testcase>
+        <testcase classname="tests/admin-db.test.ts" name="admin job retry &gt; revives a dead-lettered submission with its job" time="0.021257417">
+        </testcase>
+        <testcase classname="tests/admin-db.test.ts" name="admin job retry &gt; lets an administrator suspend another administrator but never themselves" time="0.02169725">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/admin-lists.test.ts" timestamp="2026-10-09T03:37:23.119Z" hostname="0xd.local" tests="5" failures="0" errors="0" skipped="0" time="0.00243575">
+        <testcase classname="tests/admin-lists.test.ts" name="admin list queries &gt; normalizes page numbers" time="0.000882292">
+        </testcase>
+        <testcase classname="tests/admin-lists.test.ts" name="admin list queries &gt; pages with one extra row to detect a next page" time="0.000435208">
+        </testcase>
+        <testcase classname="tests/admin-lists.test.ts" name="admin list queries &gt; always excludes allowlisted administrators, keeping users without an X id" time="0.000109417">
+        </testcase>
+        <testcase classname="tests/admin-lists.test.ts" name="admin list queries &gt; searches case-insensitively across each list" time="0.000156709">
+        </testcase>
+        <testcase classname="tests/admin-lists.test.ts" name="admin list queries &gt; filters pending requests to unapproved creators with an affiliation" time="0.000159916">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/admins.test.ts" timestamp="2026-10-09T03:37:23.120Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.002232458">
+        <testcase classname="tests/admins.test.ts" name="isAdmin &gt; requires the ADMIN role and an id on the environment allowlist" time="0.001029041">
+        </testcase>
+        <testcase classname="tests/admins.test.ts" name="isAdmin &gt; reads both variables on every call and trusts neither blank entries nor handles" time="0.000371292">
+        </testcase>
+        <testcase classname="tests/admins.test.ts" name="isAdmin &gt; is false for a suspended administrator" time="0.000084292">
+        </testcase>
+        <testcase classname="tests/admins.test.ts" name="isAdmin &gt; does not honour the sandbox exemption outside the Studio sandbox" time="0.000079083">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-amounts.test.ts" timestamp="2026-10-09T03:37:23.120Z" hostname="0xd.local" tests="40" failures="0" errors="0" skipped="0" time="0.118212584">
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; parses the section 16.3 example exactly and formats it back" time="0.00152675">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects excess precision instead of rounding" time="0.000403">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;&quot;" time="0.000265583">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot; 1&quot;" time="0.000097583">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1 &quot;" time="0.000065583">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;-1&quot;" time="0.000055458">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;+1&quot;" time="0.000050584">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1e3&quot;" time="0.000059">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;0x10&quot;" time="0.000082958">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;.5&quot;" time="0.000075417">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1.&quot;" time="0.0000455">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;01&quot;" time="0.0000435">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1,000&quot;" time="0.000046792">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;NaN&quot;" time="0.000030625">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;Infinity&quot;" time="0.00003825">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1..2&quot;" time="0.000055208">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;１２３&quot;" time="0.000091875">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1\n&quot;" time="0.000031334">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects non-string input including JavaScript numbers" time="0.000108416">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; validates decimals and the host bound" time="0.000498333">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; enforces the inclusive u64 upper bound by default" time="0.000138875">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; formats only in-bound nonnegative integers" time="0.00007">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; agrees with the shared T002 contract helpers (reuse, no divergence)" time="0.00957825">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; round trips random amounts for every decimals value without precision loss (property)" time="0.017260667">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; adds, subtracts and sums exactly within the bound" time="0.000132667">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; rejects overflow, underflow and non-bigint input" time="0.000170667">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; splits the section 14.3 example 50/30/20 exactly" time="0.000381042">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; distributes remainder to the largest fractional parts, ties to the lowest index" time="0.000104791">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; never gives remainder to a zero-weight recipient" time="0.000064542">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; can disclose the remainder as unallocated instead of assigning it" time="0.000047666">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; rejects invalid allocations" time="0.000147375">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; caps the number of recipients at 1024" time="0.000728375">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; conserves the total, is never negative and is deterministic (property)" time="0.073125625">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; keeps every share within one unit of the exact proportional value (property)" time="0.005952833">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; floors or ceils basis points exactly and never exceeds the amount" time="0.000156084">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; rejects unreasonable basis points and rounding names" time="0.000107666">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; serializes amounts as canonical decimal strings and parses them back" time="0.000202334">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; rejects JSON numbers, noncanonical strings and out-of-bound values" time="0.00057625">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; round trips large random amounts exactly (property)" time="0.002217167">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 error shape &gt; exposes only a machine code, never input text" time="0.00205525">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-boundary.test.ts" timestamp="2026-10-09T03:37:23.123Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.308344459">
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; owns arithmetic and registry rules without an app singleton, framework, SDK or float" time="0.003451125">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; reuses the shared T002 asset contracts instead of redefining them" time="0.000554334">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; ships no supported production asset and no production-looking constants" time="0.000323042">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; adds only the additive asset migration under the reserved name" time="0.000446">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; runs the declared minimal host outside the application with explicit dependencies" time="0.30195125">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; documents the R16 reuse contract and the open O07/G04 gate" time="0.000908542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-bundle.test.ts" timestamp="2026-10-09T03:37:23.124Z" hostname="0xd.local" tests="16" failures="0" errors="0" skipped="0" time="0.029093125">
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; is not funded when only one of two promised assets is deposited" time="0.00153975">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; is funded once both legs are verified" time="0.000634667">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; reports a shortfall for an under-deposited leg and counts nothing unverified" time="0.000500083">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; does not accept a deposit of a same-ticker different mint or the same mint on another network" time="0.000462209">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; ignores unrelated surplus assets and allows surplus of a promised asset" time="0.000628583">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; blocks a leg whose asset is not supported by the registry" time="0.000229333">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; never calls an empty bundle funded" time="0.000071375">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; rejects zero, malformed and noncanonical leg amounts" time="0.0003155">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; aggregates two legs of one asset and guards the sum against overflow" time="0.000490042">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; counts a repeated operation once even when tagged with different policy versions" time="0.000287209">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; sums distinct operations under one key regardless of policy version" time="0.000223042">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; treats a late verified delivery as the same operation progressing, never as extra funds" time="0.000107667">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; rejects a conflicting redelivery of the same operation" time="0.000158083">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; rejects malformed observations and overflowing totals" time="0.000244625">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; ignores observations for assets the registry does not know instead of crediting them" time="0.000071541">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; credits exactly the verified deposits for random duplicated streams (property)" time="0.022282083">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-db.test.ts" timestamp="2026-10-09T03:37:23.126Z" hostname="0xd.local" tests="10" failures="0" errors="0" skipped="0" time="0.168018916">
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; enforces exact identity uniqueness: network, mint and token program all matter" time="0.046772125">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; allows one native SOL asset per network and rejects a second" time="0.006704542">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects malformed identities by check constraint" time="0.010772166">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; keeps one asset row across policy versions and never splits identity (AC30)" time="0.006615292">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects a decimals change or an older observation for the same asset" time="0.00589875">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; bounds decimals and observed slot, and requires an existing asset" time="0.008008333">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; makes identities and snapshots immutable, while no-op updates stay possible" time="0.0099355">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes two concurrent creations of the same instrument to one winner" time="0.024569791">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes competing policy versions so decimals cannot diverge" time="0.037347042">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; feeds the in-process registry from stored rows without changing decisions (adapter substitution)" time="0.007108875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-production.test.ts" timestamp="2026-10-09T03:37:23.126Z" hostname="0xd.local" tests="16" failures="0" errors="0" skipped="0" time="0.010576083">
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; ships no supported production asset until O07 supplies one" time="0.00437875">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an empty configuration" time="0.000205541">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; accepts a fully verified, approved, allow-listed configuration only when the host supplies the list" time="0.000580709">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a DEVNET network in a production profile" time="0.000442666">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a TESTNET network in a production profile" time="0.00045825">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a LOCAL network in a production profile" time="0.000416375">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a SYNTHETIC network in a production profile" time="0.000379459">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test fixture and sample assets even when listed" time="0.000399166">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks mock and simulated providers" time="0.000571625">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test or sample program identifiers" time="0.000420583">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a token asset whose token program is not declared chain-verified" time="0.000299416">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset without a recorded decision reference matching the allow list entry" time="0.000190125">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset that is allow-listed on a different network or mint" time="0.000172458">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset whose policy is unsupported (rejected extension, unknown program, no policy)" time="0.000188625">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; reports every violation at once and carries no input text" time="0.000288042">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; treats malformed configuration as blocked, never as acceptable" time="0.0003945">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-registry.test.ts" timestamp="2026-10-09T03:37:23.127Z" hostname="0xd.local" tests="22" failures="0" errors="0" skipped="0" time="0.013919458">
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; treats two mints that share a ticker as two distinct assets" time="0.005206208">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint presented on another network" time="0.000540959">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint under another token program" time="0.0003625">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; distinguishes native SOL from a token and one network from another" time="0.000400542">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; cannot select an asset by ticker, name or smuggled display fields" time="0.000435333">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; is immutable to later mutation of its inputs and outputs" time="0.000336292">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects ambiguous or inconsistent registry configuration" time="0.000630583">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; keeps one identity and key across registry versions and returns the newest policy" time="0.000997042">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; treats re-recording an identical snapshot as idempotent" time="0.000345416">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a different snapshot under an existing version" time="0.000214">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a decimals change for the same asset so accepted amounts keep their meaning" time="0.000151583">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot for an unregistered asset instead of registering it implicitly" time="0.000158417">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot whose observed slot moves backwards" time="0.000135584">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; errors when a pinned policy version is unknown and does not guess" time="0.000129">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; supports a plain SPL token with no extensions and native SOL" time="0.000213583">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; lists the sixteen-point-five extensions as always rejected" time="0.000063667">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects transfer-fee and transfer-hook profiles by default" time="0.000496125">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a Token-2022 asset whose extension is not on the reviewed allow list" time="0.000502209">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; never lets the allow list override the rejected extensions" time="0.000174625">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects an unknown token program, an unknown profile and a missing policy" time="0.000425625">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a native SOL asset whose profile declares any extension" time="0.0007675">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a plain SPL token program asset that claims extensions" time="0.000289416">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/audit-check.test.ts" timestamp="2026-10-09T03:37:23.128Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.002244042">
+        <testcase classname="tests/audit-check.test.ts" name="audit-check evaluate &gt; fails on an unlisted moderate advisory and ignores low ones" time="0.00110775">
+        </testcase>
+        <testcase classname="tests/audit-check.test.ts" name="audit-check evaluate &gt; passes when the advisory is allowlisted" time="0.000091958">
+        </testcase>
+        <testcase classname="tests/audit-check.test.ts" name="audit-check evaluate &gt; fails when the allowlist entry has expired" time="0.000403583">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/audit-db.test.ts" timestamp="2026-10-09T03:37:23.128Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.104936209">
+        <testcase classname="tests/audit-db.test.ts" name="tracking audit &gt; reports USDC liabilities, unpaid allocations and studio pools without writing" time="0.022228833">
+        </testcase>
+        <testcase classname="tests/audit-db.test.ts" name="tracking audit &gt; lists every stored state value and flags any outside the vocabulary" time="0.020514708">
+        </testcase>
+        <testcase classname="tests/audit-db.test.ts" name="tracking audit &gt; counts legacy SOL raids that carry a token as standalone funding" time="0.008799125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/auth-routes.test.ts" timestamp="2026-10-09T03:37:23.129Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.004913041">
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; rejects a wrong origin with 403" time="0.002771084">
+        </testcase>
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; returns 404 for an unknown action" time="0.000296084">
+        </testcase>
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; logs out" time="0.000600625">
+        </testcase>
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; reports database failures as 503 instead of 403" time="0.000530083">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/auth.test.ts" timestamp="2026-10-09T03:37:23.129Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.025127834">
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; has no client identity unless a trusted header is configured" time="0.019261666">
+        </testcase>
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; reads a single-value trusted header" time="0.00085175">
+        </testcase>
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; uses the last hop of a forwarding list, not the client-forgeable first entry" time="0.002766042">
+        </testcase>
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; rejects missing or malformed values" time="0.001568334">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/braces-security.test.ts" timestamp="2026-10-09T03:37:23.129Z" hostname="0xd.local" tests="14" failures="0" errors="0" skipped="0" time="0.009596375">
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; compile rejects excessive brace nesting with a bounded syntax error" time="0.001341083">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; expand rejects excessive brace nesting with a bounded syntax error" time="0.000210834">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; stringify rejects excessive brace nesting with a bounded syntax error" time="0.000198459">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; parse rejects excessive brace nesting with a bounded syntax error" time="0.000153459">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; compile bounds parentheses as well as braces" time="0.00014375">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; expand bounds parentheses as well as braces" time="0.000107375">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; stringify bounds parentheses as well as braces" time="0.00010425">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; parse bounds parentheses as well as braces" time="0.000104792">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; compile rejects a deeply nested supplied AST before recursion" time="0.000466084">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; expand rejects a deeply nested supplied AST before recursion" time="0.000264458">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; stringify rejects a deeply nested supplied AST before recursion" time="0.000211666">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; rejects cyclic AST children instead of exhausting the stack" time="0.000216292">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; preserves ordinary alternatives, ranges, escapes and quoting" time="0.001283708">
+        </testcase>
+        <testcase classname="tests/braces-security.test.ts" name="bounded brace processing in the lint dependency &gt; the consuming glob finds only matching page files across alternatives and exclusions" time="0.004043708">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/creator-route.test.ts" timestamp="2026-10-09T03:37:23.130Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.005931084">
+        <testcase classname="tests/creator-route.test.ts" name="stores an affiliation request for an unapproved creator with an X account" time="0.003869958">
+        </testcase>
+        <testcase classname="tests/creator-route.test.ts" name="rate limits requests before touching the database" time="0.000452917">
+        </testcase>
+        <testcase classname="tests/creator-route.test.ts" name="rejects suspended users, approved users and users without an X account" time="0.000667166">
+        </testcase>
+        <testcase classname="tests/creator-route.test.ts" name="validates the affiliation text" time="0.000381958">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/db-guard.test.ts" timestamp="2026-10-09T03:37:23.130Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.002976958">
+        <testcase classname="tests/db-guard.test.ts" name="assertTestDatabase &gt; accepts the test database on a local host" time="0.001239083">
+        </testcase>
+        <testcase classname="tests/db-guard.test.ts" name="assertTestDatabase &gt; rejects a remote host even with the right name" time="0.000150167">
+        </testcase>
+        <testcase classname="tests/db-guard.test.ts" name="assertTestDatabase &gt; rejects the wrong name or a missing URL" time="0.00018825">
+        </testcase>
+        <testcase classname="tests/db-guard.test.ts" name="assertTestDatabase &gt; allows a remote host only with ALLOW_REMOTE_TEST_DB=true" time="0.00013375">
+        </testcase>
+        <testcase classname="tests/db-guard.test.ts" name="assertTestDatabase &gt; refuses everything in production" time="0.000124959">
+        </testcase>
+        <testcase classname="tests/db-guard.test.ts" name="truncateAll &gt; truncates only the non-empty public tables, never _prisma_migrations" time="0.00041425">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/dependency-compatibility.test.ts" timestamp="2026-10-09T03:37:23.130Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.492304208">
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable next releases" time="0.001202">
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable sharp releases" time="0.000311083">
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable source-map-js releases" time="0.000280625">
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable streaming JSON assemblers" time="0.000151583">
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; the Solana client preserves JSON-RPC request and error handling" time="0.017478291">
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; the image runtime can decode and resize a raster image" time="0.472187">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/deploy.test.ts" timestamp="2026-10-09T03:37:23.131Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.003723917">
+        <testcase classname="tests/deploy.test.ts" name="deploy configuration &gt; migrates before both services deploy" time="0.00122275">
+        </testcase>
+        <testcase classname="tests/deploy.test.ts" name="deploy configuration &gt; checks the schema before the worker loop starts" time="0.000196375">
+        </testcase>
+        <testcase classname="tests/deploy.test.ts" name="deploy configuration &gt; ships a multi-stage image with the migration CLI and no tests" time="0.000947416">
+        </testcase>
+        <testcase classname="tests/deploy.test.ts" name="deploy configuration &gt; excludes the test-only fixture example whose dependencies are outside the image context" time="0.000197083">
+        </testcase>
+        <testcase classname="tests/deploy.test.ts" name="deploy configuration &gt; keeps runtime tools in dependencies and pins the framework" time="0.00022175">
+        </testcase>
+        <testcase classname="tests/deploy.test.ts" name="deploy configuration &gt; smoke-tests the image in CI" time="0.000242166">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/discovery-rows.test.ts" timestamp="2026-10-09T03:37:23.131Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.0019905">
+        <testcase classname="tests/discovery-rows.test.ts" name="discovery tabs &gt; Live shows only raids with a post in the last hour, newest first" time="0.001083458">
+        </testcase>
+        <testcase classname="tests/discovery-rows.test.ts" name="discovery tabs &gt; Trending still ranks every active raid by score" time="0.000096917">
+        </testcase>
+        <testcase classname="tests/discovery-rows.test.ts" name="discovery tabs &gt; Live moves on as time passes" time="0.000083167">
+        </testcase>
+        <testcase classname="tests/discovery-rows.test.ts" name="discovery tabs &gt; applies search on top of Live" time="0.000080166">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/docs-links.test.ts" timestamp="2026-10-09T03:37:23.131Z" hostname="0xd.local" tests="57" failures="0" errors="0" skipped="0" time="0.331194833">
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; README.md: relative links and anchors resolve" time="0.001396041">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; README.md: every npm script it names exists" time="0.000138125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/coming-soon-deploy.md: relative links and anchors resolve" time="0.000111792">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/coming-soon-deploy.md: every npm script it names exists" time="0.000083375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/creator-studio.md: relative links and anchors resolve" time="0.000060292">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/creator-studio.md: every npm script it names exists" time="0.000053875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/fix-branch-report.md: relative links and anchors resolve" time="0.00004575">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/fix-branch-report.md: every npm script it names exists" time="0.00006325">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/operations.md: relative links and anchors resolve" time="0.000099083">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/operations.md: every npm script it names exists" time="0.0000845">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-assignment.md: relative links and anchors resolve" time="0.000064208">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-assignment.md: every npm script it names exists" time="0.000055958">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-task-contracts.md: relative links and anchors resolve" time="0.149151833">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-task-contracts.md: every npm script it names exists" time="0.000140375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-asset-registry.md: relative links and anchors resolve" time="0.001129833">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-asset-registry.md: every npm script it names exists" time="0.000038959">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-blueprint-project-map.md: relative links and anchors resolve" time="0.142432792">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-blueprint-project-map.md: every npm script it names exists" time="0.000404209">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-ci-plan.md: relative links and anchors resolve" time="0.000064042">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-ci-plan.md: every npm script it names exists" time="0.000042333">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-coverage.md: relative links and anchors resolve" time="0.024078125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-coverage.md: every npm script it names exists" time="0.000096125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-timeline.md: relative links and anchors resolve" time="0.002239459">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-timeline.md: every npm script it names exists" time="0.000059375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-development-phases.md: relative links and anchors resolve" time="0.000941542">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-development-phases.md: every npm script it names exists" time="0.000055666">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-preflight.md: relative links and anchors resolve" time="0.001882875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-preflight.md: every npm script it names exists" time="0.000035791">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-storage.md: relative links and anchors resolve" time="0.001157459">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-storage.md: every npm script it names exists" time="0.00002725">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-module-reuse.md: relative links and anchors resolve" time="0.00058025">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-module-reuse.md: every npm script it names exists" time="0.000031041">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-plan-verification.md: relative links and anchors resolve" time="0.000037167">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-plan-verification.md: every npm script it names exists" time="0.000025917">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-backlog.md: relative links and anchors resolve" time="0.000064208">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-backlog.md: every npm script it names exists" time="0.000071917">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-guide.md: relative links and anchors resolve" time="0.000339375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-guide.md: every npm script it names exists" time="0.000031916">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-status.md: relative links and anchors resolve" time="0.000043542">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-status.md: every npm script it names exists" time="0.000037958">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-shared-contracts.md: relative links and anchors resolve" time="0.000052459">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-shared-contracts.md: every npm script it names exists" time="0.000034333">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-sprint-plan.md: relative links and anchors resolve" time="0.001530084">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-sprint-plan.md: every npm script it names exists" time="0.000039083">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-task-progress.md: relative links and anchors resolve" time="0.0002">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-task-progress.md: every npm script it names exists" time="0.000025916">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-fixtures.md: relative links and anchors resolve" time="0.00004825">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-fixtures.md: every npm script it names exists" time="0.000028875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-uat-plan.md: relative links and anchors resolve" time="0.000044875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-uat-plan.md: every npm script it names exists" time="0.000029625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/standalone-raids.md: relative links and anchors resolve" time="0.000019958">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/standalone-raids.md: every npm script it names exists" time="0.000026333">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/verification.md: relative links and anchors resolve" time="0.000026917">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/verification.md: every npm script it names exists" time="0.000026208">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/x-tracking.md: relative links and anchors resolve" time="0.000069208">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/x-tracking.md: every npm script it names exists" time="0.000026709">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; states the release policies" time="0.0002855">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/domain.test.ts" timestamp="2026-10-09T03:37:23.134Z" hostname="0xd.local" tests="15" failures="0" errors="0" skipped="0" time="0.011992375">
+        <testcase classname="tests/domain.test.ts" name="score time &gt; evaluates an ended raid at its end and a live raid now" time="0.000928834">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="score time &gt; keeps the final score of a raid that ended hours ago" time="0.000756834">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attention score &gt; caps the top three posts per author and author contribution" time="0.006143625">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attention score &gt; excludes old, future, hidden and deleted posts from score" time="0.00011125">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attention score &gt; deduplicates normalized content independently of arrival order" time="0.000133792">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attention score &gt; uses latest counters even when they decrease" time="0.000078333">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attention score &gt; does not invent percentages with unavailable or zero baselines" time="0.000107208">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attribution &gt; accepts exact case-insensitive mention and tag" time="0.000100958">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attribution &gt; rejects wrong mention, ambiguous tags and repost wrappers" time="0.000101125">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attribution &gt; uses inclusive start and exclusive end boundaries" time="0.000098666">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="attribution &gt; accepts qualifying replies and quotes" time="0.000051709">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="identity and external URLs &gt; validates a decoded 32-byte mint" time="0.000292292">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="identity and external URLs &gt; does not accept arbitrary submitted URLs" time="0.000238083">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="identity and external URLs &gt; selects highest liquidity correct-chain base mint without inventing market cap" time="0.000123208">
+        </testcase>
+        <testcase classname="tests/domain.test.ts" name="identity and external URLs &gt; enforces duration and spend limits" time="0.001769625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/env-example.test.ts" timestamp="2026-10-09T03:37:23.135Z" hostname="0xd.local" tests="5" failures="0" errors="0" skipped="0" time="0.0157425">
+        <testcase classname="tests/env-example.test.ts" name=".env.example &gt; documents every variable the application reads" time="0.01387225">
+        </testcase>
+        <testcase classname="tests/env-example.test.ts" name=".env.example &gt; documents the money, budget and key variables" time="0.000728875">
+        </testcase>
+        <testcase classname="tests/env-example.test.ts" name=".env.example &gt; has Settlement and inert Deferred-launchpad sections" time="0.000203167">
+        </testcase>
+        <testcase classname="tests/env-example.test.ts" name=".env.example &gt; ships tracking v2 on and settlement off" time="0.000119541">
+        </testcase>
+        <testcase classname="tests/env-example.test.ts" name="tracking v2 default &gt; is on unless explicitly set to false" time="0.000128625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/fake-solana.test.ts" timestamp="2026-10-09T03:37:23.135Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.028273833">
+        <testcase classname="tests/fake-solana.test.ts" name="fake Solana harness &gt; satisfies the mainnet check and records simulated and sent transactions" time="0.001542083">
+        </testcase>
+        <testcase classname="tests/fake-solana.test.ts" name="fake Solana harness &gt; decodes system transfers from a serialized transaction" time="0.025959958">
+        </testcase>
+        <testcase classname="tests/fake-solana.test.ts" name="fake Solana harness &gt; exposes the reward internals for tests" time="0.000110834">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/format.test.ts" timestamp="2026-10-09T03:37:23.135Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="0.002684667">
+        <testcase classname="tests/format.test.ts" name="deterministic formatting &gt; pins the locale for numbers" time="0.001036834">
+        </testcase>
+        <testcase classname="tests/format.test.ts" name="deterministic formatting &gt; renders UTC dates regardless of the process time zone" time="0.000939041">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/http.test.ts" timestamp="2026-10-09T03:37:23.135Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.007195084">
+        <testcase classname="tests/http.test.ts" name="failure() &gt; maps SyntaxError and ZodError to 400" time="0.002747583">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="failure() &gt; maps HttpError to its own status" time="0.000153167">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="failure() &gt; maps Prisma not-found, duplicate and validation errors" time="0.000337167">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="failure() &gt; keeps 503 and logs for anything else" time="0.0005935">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="readJson() &gt; returns the parsed object for a valid body" time="0.001375208">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="readJson() &gt; rejects body &quot;null&quot; with 400" time="0.000295208">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="readJson() &gt; rejects body &quot;[]&quot; with 400" time="0.000143208">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="readJson() &gt; rejects body &quot;\&quot;x\&quot;&quot; with 400" time="0.000138584">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="readJson() &gt; rejects body &quot;{bad json&quot; with 400" time="0.0001505">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="readJson() &gt; rejects body &quot;&quot; with 400" time="0.00017925">
+        </testcase>
+        <testcase classname="tests/http.test.ts" name="readJson() &gt; lets schema failures surface as ZodError, which failure() maps to 400" time="0.000366125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-preflight-boundary.test.ts" timestamp="2026-10-09T03:37:23.136Z" hostname="0xd.local" tests="1" failures="0" errors="0" skipped="0" time="0.264045708">
+        <testcase classname="tests/identity-preflight-boundary.test.ts" name="consumes only the public identity interface outside the RAID app with explicit dependencies" time="0.263497708">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-preflight.test.ts" timestamp="2026-10-09T03:37:23.136Z" hostname="0xd.local" tests="48" failures="0" errors="0" skipped="0" time="0.012517416">
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; retains the busy participant without changing history, terms, claims or payout authority" time="0.00440225">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies missing session without partial effects" time="0.000259792">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies revoked session without partial effects" time="0.00017975">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies expired session at boundary without partial effects" time="0.000149458">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies another session account without partial effects" time="0.00016375">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies another actor without partial effects" time="0.000134084">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies restricted account without partial effects" time="0.000124042">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies stale revision without partial effects" time="0.000128083">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies unknown ownership without partial effects" time="0.0002045">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies unverified proof without partial effects" time="0.000198">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies revoked proof without partial effects" time="0.000119167">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies consumed proof without partial effects" time="0.000108583">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong proof account without partial effects" time="0.000099625">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies signin intent without partial effects" time="0.000090583">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies rotate intent without partial effects" time="0.000075167">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies expired proof at boundary without partial effects" time="0.00009825">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies future-issued proof without partial effects" time="0.000091208">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong domain without partial effects" time="0.000074125">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong URI without partial effects" time="0.000092875">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong proof subject without partial effects" time="0.000084667">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies unsupported network without partial effects" time="0.000096791">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; rejects an ownership collision, even if the other account is considered empty" time="0.000201375">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; does not use an unclaimed observation for a different subject" time="0.000070833">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; treats an existing own verified link as a proposal, not proof-consumption success" time="0.000112417">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; does not reactivate a revoked credential without its recovery policy" time="0.000094125">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; uses the immutable provider subject independently of a supplier instance" time="0.000362333">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; rejects client-supplied privilege, payout and private payload fields" time="0.000326083">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; fails closed for malformed clock, missing policy or corrupt participant input" time="0.000275708">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; keys exact network/provider subjects without ambiguous concatenation or case folding" time="0.000682625">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; rejects two busy participants without hiding either assignment" time="0.000479583">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains TERMS even when legacy activity would be empty" time="0.000156375">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains CONSENT even when legacy activity would be empty" time="0.000057042">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains WORK_HISTORY even when legacy activity would be empty" time="0.000054833">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains SKILL_EVIDENCE even when legacy activity would be empty" time="0.000660125">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains CLAIM even when legacy activity would be empty" time="0.000066708">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains LEDGER even when legacy activity would be empty" time="0.0000565">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains CASE even when legacy activity would be empty" time="0.000053584">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains ROLE even when legacy activity would be empty" time="0.000065125">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains AUDIT even when legacy activity would be empty" time="0.000095">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains RECEIPT even when legacy activity would be empty" time="0.000066583">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains OUTBOX even when legacy activity would be empty" time="0.000049291">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains MEDIA even when legacy activity would be empty" time="0.000048666">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains OTHER even when legacy activity would be empty" time="0.000051917">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains a sole active commitment even when inventory incorrectly claims zero references" time="0.000061042">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; blocks unknown, wrong account/participant and stale inventories" time="0.000118667">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; rejects unrecognized right types instead of treating them as no rights" time="0.000090625">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; does not approve merge or deletion from an empty inventory" time="0.000234084">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; rejects self-merge, alias participant and malformed removal commands" time="0.000093709">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-storage-boundary.test.ts" timestamp="2026-10-09T03:37:23.138Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.389774875">
+        <testcase classname="tests/identity-storage-boundary.test.ts" name="public storage owns SQL/contracts without an app singleton, framework or SDK" time="0.001712166">
+        </testcase>
+        <testcase classname="tests/identity-storage-boundary.test.ts" name="minimal external host resolves a real mapping using explicit dependencies" time="0.386353458">
+        </testcase>
+        <testcase classname="tests/identity-storage-boundary.test.ts" name="module documentation declares the R16 reuse contract and runnable consumer steps" time="0.001096459">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-storage-db.test.ts" timestamp="2026-10-09T03:37:23.138Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.457194709">
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; contains an enabled mapping mutation fence and validated restrictive User FK" time="0.027384791">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; stable sequential retry keeps original ID/provenance and restricted reads" time="0.0196425">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; rejects deletion/key/provenance mutation while allowing profile and no-op updates" time="0.029847167">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; new guard preserves both mapped accounts and all credential effects" time="0.031126875">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; allows genuine unmapped empty absorption into a mapped keeper; reverse denies" time="0.035368167">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; verified wallet flow preserves mapped keeper and denies two mapped accounts without consuming proof" time="0.123851583">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; retains exact synthetic financial/history rows and original monetary fences" time="0.029642083">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; provision wins against old binary at final DELETE; entire auth transaction rolls back" time="0.056532541">
+            <system-out>
+{&quot;storageRace&quot;:true,&quot;waiter&quot;:147,&quot;blocker&quot;:145,&quot;blockedStatement&quot;:&quot;DELETE FROM \&quot;public\&quot;.\&quot;User\&quot; WHERE (\&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot; = $1 AND 1=1) RETURNING \&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;xId\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;handle\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;role\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;approved\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;suspended\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;affiliation\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;createdAt\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; delete wins: provision blocks on User key lock then denies missing account without orphan" time="0.029513666">
+            <system-out>
+{&quot;storageRace&quot;:true,&quot;waiter&quot;:145,&quot;blocker&quot;:147,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR KEY SHARE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; independent create/create race returns one committed identity and first provenance" time="0.022424709">
+            <system-out>
+{&quot;storageRace&quot;:true,&quot;waiter&quot;:147,&quot;blocker&quot;:145,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;Participant\&quot; (\&quot;accountId\&quot;, \&quot;provisionActorAccountId\&quot;, \&quot;provisionRequestId\&quot;)\n    VALUES ($1, $2, $3) ON CONFLICT (\&quot;accountId\&quot;) DO NOTHING RETURNING \&quot;id\&quot;::text, \&quot;kind\&quot;, \&quot;accountId\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; classifies actual PostgreSQL/Prisma 40001 and retries the whole callback" time="0.019287333">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; classifies actual PostgreSQL/Prisma 40P01 and retries the whole callback" time="0.020794083">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-storage.test.ts" timestamp="2026-10-09T03:37:23.139Z" hostname="0xd.local" tests="33" failures="0" errors="0" skipped="0" time="0.007244666">
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; provisions against an existing account, binds values and returns the shared DTO" time="0.002386542">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; reads the winner separately after a conflicting insert without rewriting provenance" time="0.000236958">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL: " time="0.000888334">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL:  space" time="0.000258834">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" time="0.000314667">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL: alice&apos;; DELETE" time="0.000222334">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies wrong-account actor before SQL" time="0.000109166">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies incompatible isolation SERIALIZABLE before SQL" time="0.000097666">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies incompatible isolation REPEATABLE_READ before SQL" time="0.000090542">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies incompatible isolation UNKNOWN before SQL" time="0.000108041">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies a non-PostgreSQL host capability" time="0.00009">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; missing account rejects without an insert" time="0.000093167">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92401&quot;,&quot;kind&quot;:&quot;AI_AGENT&quot;,&quot;accountId&quot;:&quot;alice&quot;}" time="0.000235166">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92401&quot;,&quot;kind&quot;:&quot;HUMAN&quot;,&quot;accountId&quot;:&quot;other&quot;}" time="0.00008775">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;&quot;,&quot;kind&quot;:&quot;HUMAN&quot;,&quot;accountId&quot;:&quot;alice&quot;}" time="0.000073042">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92401&quot;,&quot;kind&quot;:&quot;HUMAN&quot;,&quot;accountId&quot;:&quot;alice&quot;,&quot;secret&quot;:&quot;private&quot;}" time="0.0000725">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies duplicate rows and a missing conflict winner" time="0.000118708">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; resolves existing/restricted account mapping without granting permissions" time="0.000144959">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; fails closed for malformed reference observation: []" time="0.000059084">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; fails closed for malformed reference observation: [{&quot;present&quot;:1}]" time="0.000043459">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; fails closed for malformed reference observation: [{&quot;present&quot;:true},{&quot;present&quot;:false}]" time="0.000042792">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; validates read/reference inputs before querying" time="0.000091125">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; sanitizes arbitrary alternate-driver exceptions" time="0.000081583">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;40001&quot;}" time="0.000058375">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;40P01&quot;}" time="0.000035292">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40001&quot;,&quot;message&quot;:&quot;private&quot;}}" time="0.000044375">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40P01&quot;}}" time="0.000032583">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;P2034&quot;}" time="0.000028209">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; unknown/constraint failures remain sanitized visible failures: {&quot;code&quot;:&quot;23503&quot;}" time="0.000039958">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; unknown/constraint failures remain sanitized visible failures: {}" time="0.000030917">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; unknown/constraint failures remain sanitized visible failures: {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;42P01&quot;}}" time="0.000034458">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; adapter checks actual isolation rather than trusting a caller declaration" time="0.000132292">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; adapter never retries a failed statement" time="0.000091333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/image-hosts.test.ts" timestamp="2026-10-09T03:37:23.140Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.002179959">
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; accepts https URLs on allowlisted hosts" time="0.000850958">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects http://pbs.twimg.com/x.png" time="0.000076333">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects https://evil.example/x.png" time="0.000063208">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects https://u:p@pbs.twimg.com/" time="0.000057">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects https://pbs.twimg.com.evil.example/x.png" time="0.000052833">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects https://pbs.twimg.com:8443/x.png" time="0.000047542">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects data:image/png;base64,AAAA" time="0.000043">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects javascript:alert(1)" time="0.000046">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects /api/media/abc" time="0.000064792">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="allowedImageUrl &gt; rejects " time="0.000067167">
+        </testcase>
+        <testcase classname="tests/image-hosts.test.ts" name="market image &gt; keeps only allowlisted hosts" time="0.000124708">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration.test.ts" timestamp="2026-10-09T03:37:23.141Z" hostname="0xd.local" tests="28" failures="0" errors="0" skipped="0" time="0.603369208">
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; rejects unapproved creation and cross-owner mutation" time="0.005701042">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; enforces the pilot slot quota under concurrent launch requests" time="0.0231945">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; does not inflate counters when overlapping jobs ingest the same post" time="0.019628208">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; deduplicates queued jobs, claims once, and rejects stale lease completion" time="0.012770584">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; enforces kill switch and reserves budget atomically" time="0.009232">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; backs off on rate limits and preserves data on missing transport results" time="0.018656458">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; removes content for an explicit provider deletion" time="0.024249792">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; serializes different jobs for the same raid" time="0.009901125">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; keeps the first-page high water mark while resuming pagination" time="0.033907167">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; does not treat an edited nonqualifying post as current participation" time="0.008908">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; claims jobs by UTC regardless of session time zone" time="0.029137958">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; dead-letters a job after the maximum attempts" time="0.027735208">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; does not consume attempts for deferred provider errors" time="0.030575875">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; never dead-letters through a stale lease" time="0.00483825">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; treats transport failures and 5xx as deferred provider errors" time="0.021521334">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; lookup and finalization correctness &gt; does not let a protected or suspended author break refresh" time="0.041169209">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; lookup and finalization correctness &gt; still throws for unknown lookup errors on a v1 non-final pass and escalates on the final pass" time="0.035513542">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; lookup and finalization correctness &gt; keeps a late non-final refresh from undoing the final state" time="0.011386541">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; lookup and finalization correctness &gt; writes no coverage when the search cursor moved after the refresh began" time="0.007278125">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; lookup and finalization correctness &gt; does not downgrade a complete snapshot with an incomplete one in the same minute" time="0.01484275">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; lookup and finalization correctness &gt; does not overwrite cursors changed by a concurrent end" time="0.026687792">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; X budget and public load controls &gt; charges a weighted cost against one rate-limit bucket" time="0.005121958">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; X budget and public load controls &gt; uses a shared ceiling without a trusted header and per-client buckets with one" time="0.007021792">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; X budget and public load controls &gt; releases the reservation after a 429, a 503 and a transport failure, but keeps it after a timeout" time="0.04146625">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; X budget and public load controls &gt; keeps sign-in accounting separate from the collection cutoff and daily request limit" time="0.025406709">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; X budget and public load controls &gt; limits sign-ins per day and by the monthly hard cap, even with collection paused" time="0.023230375">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; X budget and public load controls &gt; refreshes stored posts by staleness tier and reads everything on a final pass" time="0.029806667">
+        </testcase>
+        <testcase classname="tests/integration.test.ts" name="PostgreSQL integration &gt; keeps the final score of an ended v1 raid instead of decaying it to zero" time="0.006360542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/launch-crypto.test.ts" timestamp="2026-10-09T03:37:23.142Z" hostname="0xd.local" tests="8" failures="0" errors="0" skipped="0" time="0.007320917">
+        <testcase classname="tests/launch-crypto.test.ts" name="sealed fee-wallet secrets &gt; round-trips and binds the context" time="0.003825958">
+        </testcase>
+        <testcase classname="tests/launch-crypto.test.ts" name="sealed fee-wallet secrets &gt; rejects a tampered body" time="0.00051875">
+        </testcase>
+        <testcase classname="tests/launch-crypto.test.ts" name="sealed fee-wallet secrets &gt; needs the private key, which the web tier does not hold" time="0.000407541">
+        </testcase>
+        <testcase classname="tests/launch-crypto.test.ts" name="sealed fee-wallet secrets &gt; cannot be opened with a different private key" time="0.000500625">
+        </testcase>
+        <testcase classname="tests/launch-crypto.test.ts" name="sealed fee-wallet secrets &gt; dispatches on the stored prefix" time="0.000591334">
+        </testcase>
+        <testcase classname="tests/launch-crypto.test.ts" name="symmetric launch secrets &gt; still decrypts legacy values with their own key version" time="0.000261917">
+        </testcase>
+        <testcase classname="tests/launch-crypto.test.ts" name="symmetric launch secrets &gt; rejects a truncated tag, a wrong IV length and extra fields" time="0.000303833">
+        </testcase>
+        <testcase classname="tests/launch-crypto.test.ts" name="symmetric launch secrets &gt; does not accept a short GCM tag even when it authenticates" time="0.000207458">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/launch-db.test.ts" timestamp="2026-10-09T03:37:23.143Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.259659125">
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; preparing a launch &gt; requires an approved creator" time="0.016079541">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; preparing a launch &gt; allows one outstanding reservation per user until it expires" time="0.065389875">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; preparing a launch &gt; seals the fee wallet secret so only the worker key opens it" time="0.023588125">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; enrolling in a launch raid &gt; rejects the launch owner on the legacy path" time="0.017019583">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; admin resume &gt; refuses while a fresh signed transaction is unresolved" time="0.028713667">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; recovering a launch whose mint is already on chain &gt; adopts a creation signed by the payer and the mint despite a changed prepared hash" time="0.019549917">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; recovering a launch whose mint is already on chain &gt; does not adopt a transaction the mint did not sign or another wallet paid for" time="0.013859584">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; recovering a launch whose mint is already on chain &gt; does not create a raid when the curve names another creator" time="0.010976375">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; recovering a launch whose mint is already on chain &gt; no longer throws for a submitted launch whose receipt never landed but whose mint exists" time="0.017593583">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; key rotation &gt; re-seals fee secrets and re-encrypts mint secrets under the active versions" time="0.020053959">
+        </testcase>
+        <testcase classname="tests/launch-db.test.ts" name="launch flow &gt; key rotation &gt; refuses to rewrite a row whose key does not match its address" time="0.007865084">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/launch-gate.test.ts" timestamp="2026-10-09T03:37:23.143Z" hostname="0xd.local" tests="10" failures="0" errors="0" skipped="0" time="0.008328167">
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; prepare returns 503 without touching the database or the chain" time="0.003013709">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; upload returns 503 without touching the database or the chain" time="0.0004475">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; submit returns 503 without touching the database or the chain" time="0.00036475">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; retry returns 503 without touching the database or the chain" time="0.000273334">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; enroll returns 503 without touching the database or the chain" time="0.000342208">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; renew returns 503 without touching the database or the chain" time="0.000280292">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; serves the stored launch row without reconciling on chain while gated" time="0.000546833">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; reconciles a submitted launch on read once launchpads are available" time="0.000563375">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launchpad gate &gt; refuses to resume a paused launch while gated" time="0.001458">
+        </testcase>
+        <testcase classname="tests/launch-gate.test.ts" name="launch reward copy &gt; reports review-based rewards unless v2 tracking is switched off" time="0.000355041">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/launch-ipfs.test.ts" timestamp="2026-10-09T03:37:23.144Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.007371375">
+        <testcase classname="tests/launch-ipfs.test.ts" name="server-verified launch images &gt; is not derived from the launch encryption key" time="0.001579208">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="server-verified launch images &gt; binds uploaded CID to user, image kind, and expiry" time="0.000466708">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="server-verified launch images &gt; rejects content that only claims to be a valid image" time="0.001595959">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="sniffImage &gt; recognises PNG, JPEG and both GIF headers from magic bytes" time="0.000172541">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="sniffImage &gt; rejects everything else" time="0.000094125">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="structural image validation &gt; accepts a minimal PNG and reports its size" time="0.000667458">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="structural image validation &gt; rejects a bad CRC, trailing bytes, an oversized header and a polyglot" time="0.000381708">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="structural image validation &gt; strips PNG text metadata" time="0.000206708">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="structural image validation &gt; accepts a JPEG with Exif and removes the Exif segment" time="0.000334625">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="structural image validation &gt; rejects a JPEG without an end marker or beyond the size limit" time="0.0002135">
+        </testcase>
+        <testcase classname="tests/launch-ipfs.test.ts" name="structural image validation &gt; requires the GIF trailer" time="0.000250667">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/local-db.test.ts" timestamp="2026-10-09T03:37:23.144Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="0.002004709">
+        <testcase classname="tests/local-db.test.ts" name="checkLocalUrl &gt; accepts a local database with the expected name" time="0.001116125">
+        </testcase>
+        <testcase classname="tests/local-db.test.ts" name="checkLocalUrl &gt; rejects remote hosts, other databases and bad URLs" time="0.000260083">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/media-db.test.ts" timestamp="2026-10-09T03:37:23.144Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.084088792">
+        <testcase classname="tests/media-db.test.ts" name="Studio media assets &gt; stores identical uploads once and returns a media path" time="0.01368975">
+        </testcase>
+        <testcase classname="tests/media-db.test.ts" name="Studio media assets &gt; refuses content that is not an image or is too large" time="0.001895">
+        </testcase>
+        <testcase classname="tests/media-db.test.ts" name="Studio media assets &gt; serves the bytes with immutable caching and a pinned content type" time="0.00176575">
+        </testcase>
+        <testcase classname="tests/media-db.test.ts" name="Studio media assets &gt; answers 404 for unknown or malformed ids" time="0.000803125">
+        </testcase>
+        <testcase classname="tests/media-db.test.ts" name="Studio media assets &gt; moves a legacy data URI from a saved draft into a media asset" time="0.011622458">
+        </testcase>
+        <testcase classname="tests/media-db.test.ts" name="Studio media assets &gt; backfills inline images on raids and tokens and leaves invalid ones alone" time="0.012603709">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/money-integrity-db.test.ts" timestamp="2026-10-09T03:37:23.145Z" hostname="0xd.local" tests="23" failures="0" errors="0" skipped="0" time="0.510467459">
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; append-only tables &gt; rejects every change to a moderation event" time="0.061055834">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; append-only tables &gt; rejects changing or deleting a USDC allocation" time="0.028032792">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; append-only tables &gt; rejects changing or deleting an enrollment, but allows a no-op upsert" time="0.028302458">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; RaidAllocation &gt; records a payment once and nothing else" time="0.0227205">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; RaidAllocation &gt; rejects changing the amount before payment" time="0.022208708">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; RaidAllocation &gt; links its result and allows a resultless refund" time="0.018538708">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; UsdcTransfer &gt; keeps identity fields fixed" time="0.019809">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; UsdcTransfer &gt; only moves forward and never edits a settled transfer" time="0.023065333">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; UsdcTransfer &gt; deletes only an unpaid deposit intent and enforces the vocabularies" time="0.018158667">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; Raid frozen fields &gt; freezes the funding terms once verified" time="0.026729208">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; Raid frozen fields &gt; locks phase and result after settlement" time="0.021789583">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; Raid frozen fields &gt; accepts only a newer result of the same Raid" time="0.021881083">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; rejects an entry that would leave a negative balance, at commit" time="0.019164708">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; requires a reservation to equal the raid pool and to happen once" time="0.018497042">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; requires a settlement to conserve the pool across allocations" time="0.020384375">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; releases a whole unallocated pool only" time="0.017928625">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; rejects unknown kinds and sandbox-only kinds elsewhere" time="0.018417">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; allows a DEPOSIT without a transfer only on the sandbox network" time="0.018806416">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; ties transfer entries to the transfer amount, owner and network" time="0.018979041">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; links entries to real raids and transfers" time="0.01635875">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; ledger conservation &gt; keeps the ledger append-only" time="0.016081875">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; state checks &gt; rejects a new Raid state outside the vocabulary" time="0.016984042">
+        </testcase>
+        <testcase classname="tests/money-integrity-db.test.ts" name="money integrity triggers &gt; state checks &gt; rejects a new Post state outside the vocabulary" time="0.014561708">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/public-load-db.test.ts" timestamp="2026-10-09T03:37:23.146Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.297791583">
+        <testcase classname="tests/public-load-db.test.ts" name="public analytics and discovery load &gt; keeps recording events from many visitors behind the shared default bucket" time="0.141209458">
+        </testcase>
+        <testcase classname="tests/public-load-db.test.ts" name="public analytics and discovery load &gt; limits a single visitor to 60 events a minute" time="0.075931875">
+        </testcase>
+        <testcase classname="tests/public-load-db.test.ts" name="public analytics and discovery load &gt; does not charge the per-client limit for an invalid body" time="0.005556042">
+        </testcase>
+        <testcase classname="tests/public-load-db.test.ts" name="public analytics and discovery load &gt; counts returning visitors by distinct days, not by number of views" time="0.002628709">
+        </testcase>
+        <testcase classname="tests/public-load-db.test.ts" name="public analytics and discovery load &gt; lists raids from the latest snapshot with a bounded activity feed, but computes detail live" time="0.021269792">
+        </testcase>
+        <testcase classname="tests/public-load-db.test.ts" name="public analytics and discovery load &gt; shares one query between list calls within ten seconds" time="0.008882792">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/pump-launch.test.ts" timestamp="2026-10-09T03:37:23.146Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="0.064369375">
+        <testcase classname="tests/pump-launch.test.ts" name="signed pump.fun launch review &gt; accepts exact reviewed message with payer and mint signatures" time="0.047133541">
+        </testcase>
+        <testcase classname="tests/pump-launch.test.ts" name="signed pump.fun launch review &gt; rejects changed instruction, changed payer, and missing signature" time="0.01654075">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raid-evidence.test.ts" timestamp="2026-10-09T03:37:23.146Z" hostname="0xd.local" tests="21" failures="0" errors="0" skipped="0" time="0.011112833">
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; records exact SHA/environment/scenario/result and preserves fixture-only assurance" time="0.0026915">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata candidateSha" time="0.00032775">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata scenarioId" time="0.00016125">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata environment" time="0.000100625">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata tester" time="0.000106708">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata expected" time="0.00007725">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata observed" time="0.000069125">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata evidenceRef" time="0.0000745">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata executedAt" time="0.000100875">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects invalid SHA abc" time="0.000163209">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects invalid SHA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" time="0.000074667">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects invalid SHA gggggggggggggggggggggggggggggggggggggggg" time="0.000062334">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects PASS without an execution, invented production environment or approval fields" time="0.000201667">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; accepts honest planned/blocked/skipped evidence without labeling execution" time="0.000097667">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects fixture PASS as a DB/program/provider/recovery scenario result" time="0.000177625">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; validates an actually executed result at its required environment without granting release approval" time="0.000075625">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; requires every assurance layer before a combined money scenario can PASS" time="0.000154">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; cannot attach external assurance layers to a fixture-only check" time="0.000051667">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 canonical scenario responsibility and environment plan &gt; covers all 75 current canonical scenarios including the three reuse/TDD additions" time="0.002844333">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 canonical scenario responsibility and environment plan &gt; rejects missing, duplicate or falsely passing planned scenarios" time="0.002054625">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 canonical scenario responsibility and environment plan &gt; requires real boundaries for capacity races, chain money, private payloads and durability" time="0.000630042">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raid-fixtures-boundary.test.ts" timestamp="2026-10-09T03:37:23.147Z" hostname="0xd.local" tests="1" failures="0" errors="0" skipped="0" time="0.272743708">
+        <testcase classname="tests/raid-fixtures-boundary.test.ts" name="T004 runs its declared consuming host outside RAID without app configuration or credentials" time="0.272176833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raid-fixtures.test.ts" timestamp="2026-10-09T03:37:23.147Z" hostname="0xd.local" tests="9" failures="0" errors="0" skipped="0" time="0.016149083">
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; is visibly synthetic, immutable and reproducible without shared mutable state" time="0.0084785">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; separates orientation, relevant assessed skill, wealth, trust and resource rights" time="0.001044791">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; has one canonical busy identity across two wallet links and finite frozen accepted terms" time="0.00109825">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; supplies two alternative Parties sharing a busy member, not two accepted assignments" time="0.000653959">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; models two agent identities and the operator human sharing one proposed engagement" time="0.000579625">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; keeps same-symbol mints, networks and policy versions distinct from display labels" time="0.000658416">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; includes new, reliable and unresolved-case Guild facts without inventing public reputation" time="0.001731333">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; retains independent provider rights plus two overlapping task grant reasons" time="0.000671667">
+        </testcase>
+        <testcase classname="tests/raid-fixtures.test.ts" name="T004 deterministic synthetic inputs, never domain authority &gt; preserves semantic effect identity across duplicate delivery and rebuilt signatures" time="0.000428833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/refresh.test.ts" timestamp="2026-10-09T03:37:23.148Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.025965917">
+        <testcase classname="tests/refresh.test.ts" name="AutoRefresh &gt; does nothing while inactive" time="0.001888166">
+        </testcase>
+        <testcase classname="tests/refresh.test.ts" name="AutoRefresh &gt; refreshes roughly once a minute with jitter while visible" time="0.000542167">
+        </testcase>
+        <testcase classname="tests/refresh.test.ts" name="AutoRefresh &gt; skips ticks while hidden and refreshes on return when stale" time="0.000374167">
+        </testcase>
+        <testcase classname="tests/refresh.test.ts" name="AutoRefresh &gt; stops on unmount" time="0.000222708">
+        </testcase>
+        <testcase classname="tests/refresh.test.ts" name="track &gt; sends a view once per tab per half hour, but every click" time="0.021635375">
+        </testcase>
+        <testcase classname="tests/refresh.test.ts" name="track &gt; still sends when storage throws and swallows network failures" time="0.000603125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/report-route.test.ts" timestamp="2026-10-09T03:37:23.148Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.006909792">
+        <testcase classname="tests/report-route.test.ts" name="campaign report &gt; is throttled before any data is read" time="0.004880042">
+        </testcase>
+        <testcase classname="tests/report-route.test.ts" name="campaign report &gt; shows no SOL CPA before results are reviewed" time="0.000877666">
+        </testcase>
+        <testcase classname="tests/report-route.test.ts" name="campaign report &gt; shows no SOL CPA while views are missing" time="0.000249542">
+        </testcase>
+        <testcase classname="tests/report-route.test.ts" name="campaign report &gt; computes the SOL CPA from an approved, fully measured result" time="0.00023">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/rewards-finance.test.ts" timestamp="2026-10-09T03:37:23.149Z" hostname="0xd.local" tests="34" failures="0" errors="0" skipped="0" time="0.604749208">
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; signed transaction resolution &gt; expires a signed payout past the confirmation margin and releases its rows" time="0.028564667">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; signed transaction resolution &gt; keeps rebroadcasting inside the margin and waits for young transactions" time="0.013859125">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; signed transaction resolution &gt; confirms instead of expiring when the transaction landed without a status" time="0.013722417">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; signed transaction resolution &gt; records a fee mismatch as confirmed, pauses once, and does not loop" time="0.024180708">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; signed transaction resolution &gt; charges a failed payout to its round and returns the rows to READY" time="0.024511542">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; signed transaction resolution &gt; keeps the round empty for a failed claim" time="0.01270725">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee recipient verification &gt; treats an uncreated canonical pool as the migration window" time="0.009987292">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee recipient verification &gt; pauses when the pool names another creator" time="0.009598208">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; pauses the launch for a changed fee recipient" time="0.011547417">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; pauses the launch for an unexpected network fee" time="0.015122041">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; pauses the launch for a failed simulation" time="0.025342167">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; pauses the launch for an insufficient fee wallet balance" time="0.014564583">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; pauses the launch for a negative claim" time="0.012096458">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; pauses the launch for a claim that does not credit the fee wallet" time="0.010878417">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; does not pause for an RPC failure, and keeps the first pause reason" time="0.012245333">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; pausing &gt; reconciles a signed transaction before the recipient check can block it" time="0.015508792">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee wallet rent floor &gt; payout tops up a remainder below the rent floor" time="0.020966084">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee wallet rent floor &gt; payout leaves a zero remainder alone" time="0.018225083">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee wallet rent floor &gt; payout leaves a remainder above the floor alone" time="0.016321833">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee wallet rent floor &gt; platform transfer tops up a remainder below the rent floor" time="0.018059125">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee wallet rent floor &gt; platform transfer leaves a zero remainder alone" time="0.016712875">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee wallet rent floor &gt; platform transfer leaves a remainder above the floor alone" time="0.014517709">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; fee wallet rent floor &gt; pauses when the balance cannot cover the debit" time="0.008352375">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; failed network cost reimbursement &gt; absorbs failed cost from the platform share" time="0.018883167">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; failed network cost reimbursement &gt; omits the treasury transfer when failed cost exceeds the platform share" time="0.019076083">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; single flight signing &gt; lets only one of two concurrent payouts record and broadcast" time="0.024463416">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; single flight signing &gt; derives the key from a sequence so a retry after expiry gets the next one" time="0.02566975">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; claiming fees &gt; creates, closes and reimburses the wSOL account when none exists" time="0.014844875">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; claiming fees &gt; uses a wSOL account someone else created without paying rent for it" time="0.015273042">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; claiming fees &gt; pauses when the wSOL account has a foreign close authority or owner" time="0.010890959">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; claiming fees &gt; sweeps a stray wSOL account on a curve-only claim" time="0.015232541">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; legacy hourly rounds &gt; consumes only claims made before the window closed" time="0.031143541">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; legacy hourly rounds &gt; skips an empty window instead of stalling" time="0.017102041">
+        </testcase>
+        <testcase classname="tests/rewards-finance.test.ts" name="launch finance &gt; legacy hourly rounds &gt; lets the final window sweep claims made after the raid ended" time="0.016271792">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/rewards.test.ts" timestamp="2026-10-09T03:37:23.150Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.008668833">
+        <testcase classname="tests/rewards.test.ts" name="hourly reward scoring &gt; uses verified enrollment time, interval bounds, duplicate filter, and three-post cap" time="0.002045125">
+        </testcase>
+        <testcase classname="tests/rewards.test.ts" name="fee split &gt; subtracts network costs once and conserves every lamport" time="0.005855666">
+        </testcase>
+        <testcase classname="tests/rewards.test.ts" name="fee split &gt; holds funds when costs exceed claims or no eligible score exists" time="0.000092458">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/security-headers.test.ts" timestamp="2026-10-09T03:37:23.151Z" hostname="0xd.local" tests="5" failures="0" errors="0" skipped="0" time="0.005708959">
+        <testcase classname="tests/security-headers.test.ts" name="security headers &gt; sets a Content-Security-Policy that locks down framing, plugins and images" time="0.0036655">
+        </testcase>
+        <testcase classname="tests/security-headers.test.ts" name="security headers &gt; allows eval only outside production" time="0.00042325">
+        </testcase>
+        <testcase classname="tests/security-headers.test.ts" name="security headers &gt; sends HSTS only in production" time="0.000427666">
+        </testcase>
+        <testcase classname="tests/security-headers.test.ts" name="allowedDevOrigins &gt; is empty unless configured" time="0.000364583">
+        </testcase>
+        <testcase classname="tests/security-headers.test.ts" name="allowedDevOrigins &gt; reads a comma-separated list" time="0.000170291">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/shared-contracts-boundary.test.ts" timestamp="2026-10-09T03:37:23.151Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.270313416">
+        <testcase classname="tests/shared-contracts-boundary.test.ts" name="T002 ownership and independent consumer boundary &gt; assigns every state family to commands of its sole owner" time="0.001406334">
+        </testcase>
+        <testcase classname="tests/shared-contracts-boundary.test.ts" name="T002 ownership and independent consumer boundary &gt; records Guild authority independently from primary-token membership" time="0.001609583">
+        </testcase>
+        <testcase classname="tests/shared-contracts-boundary.test.ts" name="T002 ownership and independent consumer boundary &gt; validates versioned identifier-only events without copying private payloads" time="0.001223917">
+        </testcase>
+        <testcase classname="tests/shared-contracts-boundary.test.ts" name="T002 ownership and independent consumer boundary &gt; has no undeclared app/global dependencies and runs the declared host outside the app" time="0.26538525">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/shared-contracts-review.test.ts" timestamp="2026-10-09T03:37:23.151Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.007225542">
+        <testcase classname="tests/shared-contracts-review.test.ts" name="rejects native SOL as a Guild project token independently of membership or founder authority" time="0.003471583">
+        </testcase>
+        <testcase classname="tests/shared-contracts-review.test.ts" name="preserves immutable skill/tools/revision/exit references and permits coincident final deadlines" time="0.002445917">
+        </testcase>
+        <testcase classname="tests/shared-contracts-review.test.ts" name="carries global identity events without inventing a Guild and keeps the canonical payload key safe" time="0.000720625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/shared-contracts.test.ts" timestamp="2026-10-09T03:37:23.151Z" hostname="0xd.local" tests="31" failures="0" errors="0" skipped="0" time="0.0148555">
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 canonical identity and public boundary &gt; keeps account, participant, Guild and terms identifiers distinct" time="0.001818041">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 canonical identity and public boundary &gt; requires the accountable identity appropriate to each participant kind" time="0.001403375">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 canonical identity and public boundary &gt; supports a pending Guild without a token and rejects private public fields" time="0.000666042">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; requires mint/program for tokens and forbids either on native SOL" time="0.001452125">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; never keys an asset by display ticker or policy revision" time="0.0010435">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1" time="0.000105416">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1.5" time="0.000073084">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount -1" time="0.00009275">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1.5" time="0.000078708">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1e6" time="0.000085625">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount " time="0.000059">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 01" time="0.000052917">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount +1" time="0.000060334">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; round trips large amounts exactly and handles zero/precision without float arithmetic" time="0.000224792">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount -1" time="0.000062125">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 1e6" time="0.000041542">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 1.0000001" time="0.000043542">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount  1" time="0.000039958">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount .5" time="0.000046041">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 1." time="0.000037541">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 01" time="0.000037">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; uses host bounds and checked precision" time="0.000418959">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 accepted terms and engagement references &gt; freezes parsed terms, roster, rewards and policy snapshots" time="0.001302041">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 accepted terms and engagement references &gt; rejects duplicate members, unassigned beneficiaries and unbounded/reversed deadlines" time="0.00067575">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 accepted terms and engagement references &gt; binds exactly one execution source and terms to the same Guild" time="0.001390125">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; keeps listing, money, work, access, dispute, transaction and run vocabularies separate" time="0.000315333">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; holds capacity through setup/review and releases terminal work independently of money" time="0.000145416">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; assigns lifecycle mutation to an explicit domain command owner with authority and guard contracts" time="0.001184">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; plans the same source/operator/participant lock order for all input permutations" time="0.000524875">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; validates retry context without letting a receipt replace authorization" time="0.000348583">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; emits stable safe error envelopes without private exception content" time="0.000132291">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/shell-account.test.ts" timestamp="2026-10-09T03:37:23.153Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.003395167">
+        <testcase classname="tests/shell-account.test.ts" name="shell account &gt; renders signed out instead of throwing when the database is down" time="0.0022105">
+        </testcase>
+        <testcase classname="tests/shell-account.test.ts" name="shell account &gt; also survives a failing X account lookup" time="0.000173708">
+        </testcase>
+        <testcase classname="tests/shell-account.test.ts" name="shell account &gt; maps the session and X account for the header" time="0.00026825">
+        </testcase>
+        <testcase classname="tests/shell-account.test.ts" name="shell account &gt; returns null without a session" time="0.0001045">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/standalone-db.test.ts" timestamp="2026-10-09T03:37:23.153Z" hostname="0xd.local" tests="5" failures="0" errors="0" skipped="0" time="0.128550958">
+        <testcase classname="tests/standalone-db.test.ts" name="standalone Raid database lifecycle &gt; freezes quote and blocks activation until verified funding" time="0.008915458">
+        </testcase>
+        <testcase classname="tests/standalone-db.test.ts" name="standalone Raid database lifecycle &gt; ends Raid once qualified observed impressions reach target" time="0.007290208">
+        </testcase>
+        <testcase classname="tests/standalone-db.test.ts" name="standalone Raid database lifecycle &gt; allocates only after reviewed result and preserves funding exactly" time="0.016701375">
+        </testcase>
+        <testcase classname="tests/standalone-db.test.ts" name="standalone Raid database lifecycle &gt; refunds rewards below the minimum payout to the creator" time="0.0256285">
+        </testcase>
+        <testcase classname="tests/standalone-db.test.ts" name="standalone Raid database lifecycle &gt; does not allocate while the settlement flag is off" time="0.010874834">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/standalone-raids.test.ts" timestamp="2026-10-09T03:37:23.153Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.01811725">
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; quotes integer lamports and rejects impossible targets" time="0.001173417">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; never counts excluded, flagged, or unavailable posts toward target" time="0.000385625">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; splits earned funding by verified views and refunds unearned balance" time="0.000332">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; caps a dominant author and redistributes the excess pro rata, capping again if needed" time="0.000145875">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; redistributes capped excess to uncapped authors" time="0.000133833">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; pays a lone author at most the cap and refunds the rest" time="0.000101125">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; splits four equal authors exactly at the cap" time="0.00008975">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; cascades the cap through several authors" time="0.00007925">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; conserves every unit and never exceeds the cap across random inputs" time="0.014552834">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; moves rewards below the minimum into belowMinimum without losing funds" time="0.000207458">
+        </testcase>
+        <testcase classname="tests/standalone-raids.test.ts" name="standalone Raid funding &gt; per-author cap and minimum payout &gt; rejects an invalid cap" time="0.000154375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/states.test.ts" timestamp="2026-10-09T03:37:23.154Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.002530334">
+        <testcase classname="tests/states.test.ts" name="state vocabularies &gt; match every CHECK constraint in the migrations, in both directions" time="0.001333083">
+        </testcase>
+        <testcase classname="tests/states.test.ts" name="state vocabularies &gt; keeps the post-state checks NOT VALID until a post-audit migration validates them" time="0.000356625">
+        </testcase>
+        <testcase classname="tests/states.test.ts" name="state vocabularies &gt; lists no duplicate values" time="0.000198917">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/studio-db.test.ts" timestamp="2026-10-09T03:37:23.154Z" hostname="0xd.local" tests="14" failures="0" errors="0" skipped="0" time="0.504778167">
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; launch is self-serve and idempotent under concurrency" time="0.039956583">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; withdrawal reserves only available funds, retry once; rejection releases once" time="0.027412167">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; network isolation and append-only ledger preserve funds" time="0.006598375">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; caps one raider at the author share, excludes the creator and refunds the remainder once" time="0.028935041">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; credits dust rewards to the raider balance instead of the manual payout queue" time="0.035356875">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; does not settle while the settlement flag is off, except in the sandbox" time="0.013981584">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; enforces minimum and open-request limits on deposits and withdrawals" time="0.09865425">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; settles a large result with bulk allocation inserts and conserves the pool" time="0.079570792">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; keeps studio money rows bound to their user and raid with RESTRICT foreign keys" time="0.008099791">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; refuses drafts and launches from unapproved creators" time="0.015643666">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; reuses fresh previews and looks up only new targets" time="0.0263365">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; keeps links without lookups once the daily quota is spent" time="0.008220875">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; saves 100 targets in one pass and preserves previews on re-save" time="0.021768333">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; spends no lookups launching while the platform is not ready" time="0.009440709">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/studio-preview-route.test.ts" timestamp="2026-10-09T03:37:23.155Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="0.004933583">
+        <testcase classname="tests/studio-preview-route.test.ts" name="requires creator approval before any X lookup" time="0.003200417">
+        </testcase>
+        <testcase classname="tests/studio-preview-route.test.ts" name="charges the daily lookup quota and stops when it is spent" time="0.001130417">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/studio.test.ts" timestamp="2026-10-09T03:37:23.155Z" hostname="0xd.local" tests="14" failures="0" errors="0" skipped="0" time="0.016498917">
+        <testcase classname="tests/studio.test.ts" name="Studio amounts and target attribution &gt; uses six-decimal USDC, ceil quotes, and rejects malformed amounts" time="0.011658709">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio amounts and target attribution &gt; matches selected quotes or expanded links, never retroactive targets" time="0.00094425">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio amounts and target attribution &gt; requires membership, own-author, mention, selected target and posting window" time="0.000192041">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio amounts and target attribution &gt; requires all sandbox guards; production can never enable fixture funding" time="0.000262583">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; accepts an empty value, an allowlisted https host, or a stored media path" time="0.001675167">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects https://evil.example/a.png" time="0.000191792">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects http://pbs.twimg.com/a.png" time="0.00009475">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects javascript:alert(1)" time="0.0001095">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects data:image/png;base64,iVBORw0KGgo=" time="0.00007925">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=" time="0.000115834">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects /api/media/short" time="0.000104459">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects /api/media/../secret" time="0.000097375">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects /api/media/ccccccccccccccccccccccccc?x=1" time="0.000058375">
+        </testcase>
+        <testcase classname="tests/studio.test.ts" name="Studio draft image rule &gt; rejects //evil.example/a.png" time="0.000067875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/submit-route.test.ts" timestamp="2026-10-09T03:37:23.156Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="0.005570417">
+        <testcase classname="tests/submit-route.test.ts" name="rejects an anonymous submission to a v2 raid before charging any limit" time="0.003539625">
+        </testcase>
+        <testcase classname="tests/submit-route.test.ts" name="limits a legacy submission per user when signed in and per client otherwise" time="0.001439583">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/token-data.test.ts" timestamp="2026-10-09T03:37:23.156Z" hostname="0xd.local" tests="1" failures="0" errors="0" skipped="0" time="0.003134667">
+        <testcase classname="tests/token-data.test.ts" name="token page data &gt; passes a campaign image through to the token" time="0.00251275">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/tracking-db.test.ts" timestamp="2026-10-09T03:37:23.156Z" hostname="0xd.local" tests="48" failures="0" errors="0" skipped="0" time="3.421948959">
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; creates and launches new Raids with frozen mention-only rules" time="0.08534125">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; serializes joining and preserves wallet lock" time="0.051780917">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; deduplicates concurrent submissions and rejects mismatched author without importing it" time="0.049853333">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; automatically assigns a mention only with one eligible Raid" time="0.047531917">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; leaves overlapping mentions unassigned until a raider claims one Raid" time="0.066322708">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; keeps observations append-only, preserves cross-Raid ownership, and excludes later same-author duplicate" time="0.067322334">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; keeps incomplete lookups separate from unavailable posts and preserves content expiry" time="0.06709575">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; blocks incomplete collection, versions corrections, freezes ordinary refresh and rejects snapshot mutation" time="0.092524459">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; accepts missing eligible posts during review, then restarts review" time="0.142436583">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; holds empty results without allocating funds" time="0.053672375">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; settles once from approved snapshot despite mutable post changes; preserves exact fee allocation" time="0.088293792">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; scoring v3 duplicate handling &gt; flags only later copies and keeps an audited clearance when another copy arrives" time="0.061856291">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; scoring v3 duplicate handling &gt; keeps the legacy symmetric flagging on a scoring v2 Raid" time="0.04136075">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; scoring v3 duplicate handling &gt; catches a short near-duplicate under v3 and ignores it under v2" time="0.050275209">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; re-homing an excluded post &gt; moves an excluded post to the Raid where it qualifies and records the move" time="0.056584667">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; re-homing an excluded post &gt; keeps qualified, admin-excluded and frozen-source posts where they are" time="0.075165417">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; flags cross-author copies until audited review; same-author duplicates stay excluded" time="0.075336583">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; completes paginated discovery and final observations before publishing a snapshot" time="0.146994084">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; keeps held claims untouched until explicit audited assignment to a later same-token Raid" time="0.060614917">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; conflict of interest &gt; lets an unrelated administrator review" time="0.046114417">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; conflict of interest &gt; rejects the administrator who created the Raid" time="0.034274375">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; conflict of interest &gt; rejects an administrator who joined the Raid by account" time="0.035889292">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; conflict of interest &gt; rejects an administrator who joined the Raid by X id" time="0.031919584">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; conflict of interest &gt; rejects reviewing a contribution the administrator authored" time="0.03770675">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; conflict of interest &gt; rejects carrying held funds from or into the administrator&apos;s own Raid" time="0.02957475">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; stops new tracking mutations when gate closes" time="0.022395875">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; queue robustness &gt; dead-letters an unresolvable submission as LOOKUP_FAILED and stops blocking finalization" time="0.180223166">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; queue robustness &gt; does not dead-letter submissions while X is failing with 5xx or unreachable" time="0.3070035">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; queue robustness &gt; excludes a submission when X rejects the lookup as an invalid request" time="0.046170209">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; queue robustness &gt; excludes a malformed stored post id without calling X" time="0.026426916">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; excludes a restricted post as POST_RESTRICTED without blocking finalization" time="0.071379167">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; escalates an unresolved final lookup to LOOKUP_FAILED at attempt five" time="0.09218825">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; does not escalate a non-final pass" time="0.056443625">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; lets an admin exclusion unblock a post stuck as DATA_INCOMPLETE" time="0.05734575">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; keeps refreshing a post already owned by this Raid when the author overlaps another Raid" time="0.086401875">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; does not reopen results for an unrelated review-time submission" time="0.108170584">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; caps repeated review extensions at 24 hours from the first result" time="0.086403375">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; holds a Raid whose search window expired until an admin accepts coverage" time="0.100874334">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; finalizes an expired v1 Raid as partial coverage" time="0.060839125">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; lookup and finalization correctness &gt; searches the full window on the final pass and clamps to the 7-day limit" time="0.054385208">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; raid-specific search &gt; skips X entirely and still advances coverage when nobody is enrolled" time="0.047734833">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; raid-specific search &gt; persists the author filter for the whole window and clears it afterwards" time="0.074231333">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; money policies &gt; rejects the raid creator from joining their own raid" time="0.025479">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; money policies &gt; hides the join action from the creator" time="0.033728792">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; money policies &gt; keeps measuring qualified posts after an early end, then settles on the original end" time="0.134857084">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; money policies &gt; does not measure when nobody has posted" time="0.029118375">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; money policies &gt; finalizes without waiting once the impression target is already met" time="0.045386">
+        </testcase>
+        <testcase classname="tests/tracking-db.test.ts" name="tracking v2 database lifecycle &gt; separates operator blockers from excluded history and counts both" time="0.049761542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/tracking.test.ts" timestamp="2026-10-09T03:37:23.163Z" hostname="0xd.local" tests="17" failures="0" errors="0" skipped="0" time="0.559220042">
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; checks enrollment, immutable author, and inclusive start/exclusive end" time="0.001089">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; allows originals/quotes and excludes replies/reposts" time="0.000158833">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; requires only the own-text mention under rule 3 and preserves old hashtag rules" time="0.000152167">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; assigns automatic mentions only with one eligible enrollment at creation" time="0.000106917">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; does not invent zero metrics from partial or malformed observations" time="0.000101292">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; scores best ten across the whole Raid with deterministic ties and one rounding" time="0.006256833">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; keeps incomplete, flagged, excluded, hidden, and unverified records out of scoring" time="0.00008775">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; flags near copies only at the versioned threshold and minimum length" time="0.00058425">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; scores v3 zero-engagement posts at 0 and keeps v2 unchanged" time="0.000493416">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; detects short near-duplicates only for v3 and only from six tokens" time="0.00019775">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; flags only the later copy under v3 and both under v2" time="0.00036925">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; classifies lookup errors per post" time="0.000147667">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; finds the same duplicate peers as the quadratic reference (v2)" time="0.298681292">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; finds the same duplicate peers as the quadratic reference (v3)" time="0.248981">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="raid-specific search query &gt; filters rule 3+ mentions to the enrolled authors, sorted by id" time="0.000113709">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="raid-specific search query &gt; keeps the tag query for rule 2 and legacy raids" time="0.000088125">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="raid-specific search query &gt; falls back to the unfiltered query when the author list exceeds the limit" time="0.000499708">
+            <system-err>
+X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/usdc-chain.test.ts" timestamp="2026-10-09T03:37:23.164Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.010642792">
+        <testcase classname="tests/usdc-chain.test.ts" name="on-chain withdrawal payment lookup &gt; returns the signature of a matching payment" time="0.007218042">
+        </testcase>
+        <testcase classname="tests/usdc-chain.test.ts" name="on-chain withdrawal payment lookup &gt; returns null when nothing matches and stops paging at the intent creation time" time="0.00092775">
+        </testcase>
+        <testcase classname="tests/usdc-chain.test.ts" name="on-chain withdrawal payment lookup &gt; never answers for sandbox intents and refuses an inconclusive history" time="0.001879917">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/usdc-ops-db.test.ts" timestamp="2026-10-09T03:37:23.165Z" hostname="0xd.local" tests="9" failures="0" errors="0" skipped="0" time="0.215743166">
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; releases a hidden raid pool once and blocks settlement afterwards" time="0.054191292">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; refuses release once settled, and settlement cannot follow a release key" time="0.018000417">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; releases a funded SOL raid with exactly one refund row" time="0.017867958">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; credits an expired deposit only through the audited admin override" time="0.011681125">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; answers a replayed signature with 409 instead of a unique-index failure" time="0.007228334">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; refuses to reject a withdrawal already paid on-chain" time="0.012549958">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; holds withdrawals for 24 hours after a wallet change" time="0.007156084">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; reconciles ledger liabilities and pending rewards against custody" time="0.017475875">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; keeps creator-supplied token metadata per raid until the market provider verifies it" time="0.033752083">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/usdc-receipt.test.ts" timestamp="2026-10-09T03:37:23.165Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.011289709">
+        <testcase classname="tests/usdc-receipt.test.ts" name="USDC finalized receipt evidence &gt; accepts exact signed transfer and matching memo" time="0.001899291">
+        </testcase>
+        <testcase classname="tests/usdc-receipt.test.ts" name="USDC finalized receipt evidence &gt; rejects failed, stale, expired or missing evidence" time="0.000269291">
+        </testcase>
+        <testcase classname="tests/usdc-receipt.test.ts" name="USDC finalized receipt evidence &gt; rejects altered amount, mint, wallet, authority, destination, memo and decimals" time="0.005012042">
+        </testcase>
+        <testcase classname="tests/usdc-receipt.test.ts" name="USDC finalized receipt evidence &gt; requires exact net credit, not a transfer reverted within same transaction" time="0.000600125">
+        </testcase>
+        <testcase classname="tests/usdc-receipt.test.ts" name="USDC finalized receipt evidence &gt; honours the expiry only unless an administrator overrides it" time="0.001163083">
+        </testcase>
+        <testcase classname="tests/usdc-receipt.test.ts" name="USDC finalized receipt evidence &gt; requires exactly one useRAID memo and one matching transfer" time="0.001633875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-auth-db.test.ts" timestamp="2026-10-09T03:37:23.165Z" hostname="0xd.local" tests="18" failures="0" errors="0" skipped="0" time="0.672046916">
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; creates wallet-only user, consumes challenge once, and rejects stale challenge" time="0.049088459">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; refuses linking wallet already owned by another X identity" time="0.0136225">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; issues a Sign-In With Solana formatted challenge" time="0.004480333">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; binds a challenge to the signer state it was issued for" time="0.026240584">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not let a link signature perform a wallet rotation" time="0.024486166">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; refuses to sign a suspended owner in and creates no session" time="0.028243042">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; rotates the session and records how it was issued" time="0.030605583">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; keeps an X session an X session when the same user links a wallet" time="0.023123583">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires an X session for administrator access" time="0.008043167">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; moves a wallet from an empty wallet-only account onto the signed-in X account" time="0.057307292">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; keeps the wallet account when the X account is the empty one" time="0.065921917">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity" time="0.04272875">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when the wallet owner joined a Raid" time="0.0427415">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; replaces the address and records the previous one" time="0.032515458">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; keeps an existing enrollment on the wallet snapshotted when it was made" time="0.032872667">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses while a withdrawal or live deposit is open" time="0.063417584">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses an address owned by another account and a second change within 7 days" time="0.071887959">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; requires a connected X account" time="0.027168584">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-routes.test.ts" timestamp="2026-10-09T03:37:23.166Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.012684417">
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body null with 400" time="0.004336333">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body undefined with 400" time="0.000398">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body &quot;x&quot; with 400" time="0.000354917">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects malformed JSON and a missing address with 400" time="0.001496958">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge passes a valid address through" time="0.000804209">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects null with 400" time="0.000378917">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects {} with 400" time="0.000456084">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects {&quot;digest&quot;:&quot;short&quot;,&quot;address&quot;:&quot;a&quot;,&quot;signature&quot;:&quot;s&quot;} with 400" time="0.000374917">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify accepts a well-formed body" time="0.001395208">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; binds the challenge to the signed-in user and requires one to rotate" time="0.000681208">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; rotates the wallet of the signed-in user without issuing a session" time="0.001299">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/worker-db.test.ts" timestamp="2026-10-09T03:37:23.167Z" hostname="0xd.local" tests="15" failures="0" errors="0" skipped="0" time="0.57120525">
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; moves due SCHEDULED raids to ACTIVE" time="0.070597541">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; ends ACTIVE v2 raids past endsAt and resets their finalization cursors" time="0.033720417">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; reconciles recorded work while launchpads are unavailable and nothing else" time="0.045691">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; ignores a prepared launch that has been idle for a day" time="0.031496042">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; polls busy launches every minute and idle ones hourly once launchpads are on" time="0.044235167">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; ranks finance work below collection and keeps the launch id as the serialising key" time="0.023398875">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; does not write a collection error onto a raid when a finance job fails" time="0.058766459">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; finishes an unknown job kind without throwing" time="0.019511333">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; records a failing job and keeps going" time="0.025481375">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; assertSchemaCurrent passes on the migrated database and rejects a newer migration" time="0.016582917">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; step() logs and swallows errors" time="0.016052792">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; does not enqueue collect jobs while collection is paused" time="0.061031792">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; keeps settling other raids when one raid throws" time="0.0334745">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; does not re-finalize APPROVED raids and only retries payable allocations" time="0.05334025">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; expires dead-lettered jobs after thirty days" time="0.036000459">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth-db.test.ts" timestamp="2026-10-09T03:37:23.167Z" hostname="0xd.local" tests="16" failures="0" errors="0" skipped="0" time="0.48131125">
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; creates identity metadata and updates changed username without changing ownership" time="0.054750875">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; only one callback can claim a state and session binding cannot be changed" time="0.029172375">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects expired state" time="0.016333875">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; serializes duplicate account creation" time="0.016740042">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects a different identity for a signed-in user" time="0.024613834">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects an X connection owned by another user" time="0.017111917">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; disconnect preserves sessions, user, and raids and cancels a claimed callback" time="0.037329833">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; disconnect and callback race always ends disconnected" time="0.023656625">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects a session removed during authorization" time="0.023208">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; suspended accounts cannot sign in and admin ID uses existing role" time="0.02270525">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; demotes a stored ADMIN whose id left the environment allowlist" time="0.023390041">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; demotes through the owner path as well" time="0.028191292">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; signs in as the existing X account and takes over the wallet of an empty wallet-only account" time="0.049377959">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity and changes nothing" time="0.038820834">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; absorbs an empty X account into the signed-in wallet account that has activity" time="0.047492875">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; ignores LOCAL_AUTO_APPROVE_CREATORS in production" time="0.026441833">
+            <system-err>
+LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth-routes.test.ts" timestamp="2026-10-09T03:37:23.169Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.012038583">
+        <testcase classname="tests/x-oauth-routes.test.ts" name="limits sign-in starts per session when a session cookie exists, otherwise per client" time="0.00533275">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="starts with HttpOnly and SameSite cookies" time="0.000742792">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="callback success sets only an opaque session and clears state" time="0.000867666">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="invalid state never reaches exchange" time="0.000303084">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="expired or replayed attempt never reaches exchange" time="0.000293666">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="cancellation validates and consumes state, then skips exchange" time="0.000237084">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="provider failures do not create sessions or expose details" time="0.000212041">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="disconnect requires origin and session, then unlinks without signing out" time="0.001258125">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="keeps several states so concurrent authorizations both complete" time="0.000374125">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="ignores router prefetches without any side effect" time="0.000289583">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="returns to an allowlisted destination only" time="0.001104208">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="clears the session cookie only when the session is really gone" time="0.000283167">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth.test.ts" timestamp="2026-10-09T03:37:23.169Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.03660375">
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; uses the exact callback, read scopes, and S256 challenge without secrets" time="0.002186459">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; rejects missing, unequal, and malformed state" time="0.000272416">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; accepts any of several concurrent states and ignores malformed segments" time="0.000343042">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; requires confidential credentials, a valid origin, and production HTTPS" time="0.000588917">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; exchanges on the server and returns only validated identity" time="0.019998625">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes token failure" time="0.000522209">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes profile failure" time="0.000382416">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes malformed failure" time="0.000616542">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes transport failure" time="0.000212792">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; releases the sign-in reservation when users/me returns no billable response" time="0.00202475">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; keeps the sign-in reservation after a timeout but releases it after other transport errors" time="0.000934">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="sets Secure cookies in production even if the configured URL is invalid HTTP" time="0.007753625">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,16 @@
+{
+  "all_11_junit_hashes_match": true,
+  "files": {
+    "full.xml": "4fc13412d0508663fb2bcca2f2f626e0e2564dd929bc78982bc5d46c8312ce35",
+    "green-db.xml": "696ea5f799a35adef13dcfe38c9bae795d7f9755d82e28c8fff707bc09a11292",
+    "green.xml": "9cbc977ac216942c0cb86df4e2d51f64fee4d06f0704208ff4ede680cefcb623",
+    "k2-green-full.xml": "10a379a4be3d6f625ba714e1d9e409a02d26cd35db1404e1c3fcbe74b27d4ab5",
+    "k2-green-pure.xml": "89765b464bc01551a8f2708ace5f5dd78173112fde52c36742cc24c2278fc616",
+    "k2-red-M24.xml": "0480a221102e32c2ca8dca3378cb1ffc0f5ff51a356145830d255a5ecb77b1ce",
+    "k2-red-M26.xml": "750652eab88cb745009b29ef12fb273671ede9e26a8675b0f3d2216e0d44dee7",
+    "k2-red-M30.xml": "c10e9bf66f9884671bbca6a409acc837f9a3f66b05bb8837ba60d897acbe0f78",
+    "red-db.xml": "318c7ac76c895da08268dc29a7fa3ab7a2e7eedff8793368a82e249807dfbba8",
+    "red.xml": "4ee45e435c0c9cc0f8dfafaba0f9ebb893598aa73acacd16c736fb3b62037b89",
+    "refactor.xml": "37406b9bbb54310fb474031b118be95af76249391764d9bf729853df596bc2d0"
+  }
+}

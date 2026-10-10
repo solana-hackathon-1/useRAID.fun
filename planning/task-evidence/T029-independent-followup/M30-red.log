@@ -1,0 +1,70 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/private/tmp/raid-foundation-followup-20261009-codex/T029/source[39m
+
+ [31m❯[39m tests/asset-registry-amounts.test.ts [2m([22m[2m40 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m39 skipped[39m[2m)[22m[32m 6[2mms[22m[39m
+     [2m[90m↓[39m[22m parses the section 16.3 example exactly and formats it back
+     [2m[90m↓[39m[22m rejects excess precision instead of rounding
+     [2m[90m↓[39m[22m rejects malformed display amount ""
+     [2m[90m↓[39m[22m rejects malformed display amount " 1"
+     [2m[90m↓[39m[22m rejects malformed display amount "1 "
+     [2m[90m↓[39m[22m rejects malformed display amount "-1"
+     [2m[90m↓[39m[22m rejects malformed display amount "+1"
+     [2m[90m↓[39m[22m rejects malformed display amount "1e3"
+     [2m[90m↓[39m[22m rejects malformed display amount "0x10"
+     [2m[90m↓[39m[22m rejects malformed display amount ".5"
+     [2m[90m↓[39m[22m rejects malformed display amount "1."
+     [2m[90m↓[39m[22m rejects malformed display amount "01"
+     [2m[90m↓[39m[22m rejects malformed display amount "1,000"
+     [2m[90m↓[39m[22m rejects malformed display amount "NaN"
+     [2m[90m↓[39m[22m rejects malformed display amount "Infinity"
+     [2m[90m↓[39m[22m rejects malformed display amount "1..2"
+     [2m[90m↓[39m[22m rejects malformed display amount "１２３"
+     [2m[90m↓[39m[22m rejects malformed display amount "1\n"
+     [2m[90m↓[39m[22m rejects non-string input including JavaScript numbers
+     [2m[90m↓[39m[22m validates decimals and the host bound
+     [2m[90m↓[39m[22m enforces the inclusive u64 upper bound by default
+     [2m[90m↓[39m[22m formats only in-bound nonnegative integers
+     [2m[90m↓[39m[22m agrees with the shared T002 contract helpers (reuse, no divergence)
+     [2m[90m↓[39m[22m round trips random amounts for every decimals value without precision loss (property)
+     [2m[90m↓[39m[22m adds, subtracts and sums exactly within the bound
+     [2m[90m↓[39m[22m rejects overflow, underflow and non-bigint input
+     [2m[90m↓[39m[22m splits the section 14.3 example 50/30/20 exactly
+     [2m[90m↓[39m[22m distributes remainder to the largest fractional parts, ties to the lowest index
+     [2m[90m↓[39m[22m never gives remainder to a zero-weight recipient
+     [2m[90m↓[39m[22m can disclose the remainder as unallocated instead of assigning it
+     [2m[90m↓[39m[22m rejects invalid allocations
+[31m     [31m×[31m caps the number of recipients at 1024[39m[32m 5[2mms[22m[39m
+     [2m[90m↓[39m[22m conserves the total, is never negative and is deterministic (property)
+     [2m[90m↓[39m[22m keeps every share within one unit of the exact proportional value (property)
+     [2m[90m↓[39m[22m floors or ceils basis points exactly and never exceeds the amount
+     [2m[90m↓[39m[22m rejects unreasonable basis points and rounding names
+     [2m[90m↓[39m[22m serializes amounts as canonical decimal strings and parses them back
+     [2m[90m↓[39m[22m rejects JSON numbers, noncanonical strings and out-of-bound values
+     [2m[90m↓[39m[22m round trips large random amounts exactly (property)
+     [2m[90m↓[39m[22m exposes only a machine code, never input text
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m39 skipped[39m[90m (40)[39m
+[2m   Start at [22m 09:22:53
+[2m   Duration [22m 181ms[2m (transform 44ms, setup 0ms, import 76ms, tests 6ms, environment 0ms)[22m
+
+JUNIT report written to /tmp/raid-foundation-followup-20261009-codex/T029/M30-red.xml
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/asset-registry-amounts.test.ts[2m > [22mT029 deterministic split with disclosed remainder rule (14.3)[2m > [22mcaps the number of recipients at 1024
+[31m[1mAssertionError[22m: expected 'NO_ERROR' to be 'INVALID_ALLOCATION' // Object.is equality[39m
+
+Expected: [32m"INVALID_ALLOCATION"[39m
+Received: [31m"NO_ERROR"[39m
+
+[36m [2m❯[22m tests/asset-registry-amounts.test.ts:[2m161:74[22m[39m
+    [90m159|[39m     [34mexpect[39m(atCap[33m.[39mshares)[33m.[39m[34mtoHaveLength[39m([34m1024[39m)[33m;[39m
+    [90m160|[39m     [34mexpect[39m([34msumAmounts[39m(atCap[33m.[39mshares))[33m.[39m[34mtoBe[39m([34m5000n[39m)[33m;[39m
+    [90m161|[39m     expect(codeOf(() => splitProportional(5000n, Array(1025).fill(1n))…
+    [90m   |[39m                                                                          [31m^[39m
+    [90m162|[39m   })[33m;[39m
+    [90m163|[39m   it('conserves the total, is never negative and is deterministic (pro…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+

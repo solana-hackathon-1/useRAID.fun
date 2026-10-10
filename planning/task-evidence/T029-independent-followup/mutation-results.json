@@ -1,0 +1,101 @@
+[
+  {
+    "id": "M24",
+    "file": "src/asset-registry/registry.ts",
+    "original_sha256": "5530d85adbcb07dfaae32a46683f9ec5260d654227d0a7826f72c66fc6998070",
+    "mutant_sha256": "3ec386a10079eb0d192310f08fe2fa5e3f5ddade107542ccc5ded364344626cd",
+    "mutation": {
+      "old": "      if (id.kind === 'NATIVE_SOL' && extensions.length > 0)\n        reasons.push('EXTENSIONS_ON_NATIVE_ASSET');",
+      "new": ""
+    },
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "tests/asset-registry-registry.test.ts",
+      "-t",
+      "rejects a native SOL asset whose profile declares any extension",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/M24-red.xml"
+    ],
+    "exit_code": 1,
+    "junit": {
+      "name": "vitest tests",
+      "tests": "22",
+      "failures": "1",
+      "errors": "0",
+      "time": "0.007732833"
+    },
+    "failing_cases": [
+      "T029 support policy is fail-closed (16.5) > rejects a native SOL asset whose profile declares any extension"
+    ],
+    "skipped": 21
+  },
+  {
+    "id": "M26",
+    "file": "src/asset-registry/production.ts",
+    "original_sha256": "0ecb2749518759778c42ff3a24d73fadf8bd46716544a871c6c018a5152b7f65",
+    "mutant_sha256": "ff520078718753ea21beb453027541cae9b1c4df2eef55d73444fbcc226453b2",
+    "mutation": {
+      "old": "      if (id.kind === 'TOKEN' && !verifiedPrograms.has(id.tokenProgram as string))\n        add('PROGRAM_NOT_CHAIN_VERIFIED', subject);",
+      "new": ""
+    },
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "tests/asset-registry-production.test.ts",
+      "-t",
+      "blocks a token asset whose token program is not declared chain-verified",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/M26-red.xml"
+    ],
+    "exit_code": 1,
+    "junit": {
+      "name": "vitest tests",
+      "tests": "16",
+      "failures": "1",
+      "errors": "0",
+      "time": "0.007619959"
+    },
+    "failing_cases": [
+      "T029 production validation fails closed (AC41, I12, O07) > blocks a token asset whose token program is not declared chain-verified"
+    ],
+    "skipped": 15
+  },
+  {
+    "id": "M30",
+    "file": "src/asset-registry/amounts.ts",
+    "original_sha256": "3a1f0a2ffb8181f3008cef9cc688770eb9d8c987872a72ec11aa49d7c1867484",
+    "mutant_sha256": "ad04068dc74ee20e6c9c30d7013914e8391746768ce2d6a8bc039d050f38721f",
+    "mutation": {
+      "old": " || weights.length > MAX_SPLIT_RECIPIENTS",
+      "new": ""
+    },
+    "command": [
+      "npx",
+      "vitest",
+      "run",
+      "tests/asset-registry-amounts.test.ts",
+      "-t",
+      "caps the number of recipients at 1024",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/M30-red.xml"
+    ],
+    "exit_code": 1,
+    "junit": {
+      "name": "vitest tests",
+      "tests": "40",
+      "failures": "1",
+      "errors": "0",
+      "time": "0.005514083"
+    },
+    "failing_cases": [
+      "T029 deterministic split with disclosed remainder rule (14.3) > caps the number of recipients at 1024"
+    ],
+    "skipped": 39
+  }
+]

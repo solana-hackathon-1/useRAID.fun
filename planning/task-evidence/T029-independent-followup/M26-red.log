@@ -1,0 +1,54 @@
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.11 [39m[90m/private/tmp/raid-foundation-followup-20261009-codex/T029/source[39m
+
+ [31m❯[39m tests/asset-registry-production.test.ts [2m([22m[2m16 tests[22m[2m | [22m[31m1 failed[39m[2m | [22m[33m15 skipped[39m[2m)[22m[32m 8[2mms[22m[39m
+     [2m[90m↓[39m[22m ships no supported production asset until O07 supplies one
+     [2m[90m↓[39m[22m blocks an empty configuration
+     [2m[90m↓[39m[22m accepts a fully verified, approved, allow-listed configuration only when the host supplies the list
+     [2m[90m↓[39m[22m blocks a DEVNET network in a production profile
+     [2m[90m↓[39m[22m blocks a TESTNET network in a production profile
+     [2m[90m↓[39m[22m blocks a LOCAL network in a production profile
+     [2m[90m↓[39m[22m blocks a SYNTHETIC network in a production profile
+     [2m[90m↓[39m[22m blocks test fixture and sample assets even when listed
+     [2m[90m↓[39m[22m blocks mock and simulated providers
+     [2m[90m↓[39m[22m blocks test or sample program identifiers
+[31m     [31m×[31m blocks a token asset whose token program is not declared chain-verified[39m[32m 7[2mms[22m[39m
+     [2m[90m↓[39m[22m blocks an asset without a recorded decision reference matching the allow list entry
+     [2m[90m↓[39m[22m blocks an asset that is allow-listed on a different network or mint
+     [2m[90m↓[39m[22m blocks an asset whose policy is unsupported (rejected extension, unknown program, no policy)
+     [2m[90m↓[39m[22m reports every violation at once and carries no input text
+     [2m[90m↓[39m[22m treats malformed configuration as blocked, never as acceptable
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[33m15 skipped[39m[90m (16)[39m
+[2m   Start at [22m 09:22:53
+[2m   Duration [22m 178ms[2m (transform 34ms, setup 0ms, import 66ms, tests 8ms, environment 0ms)[22m
+
+JUNIT report written to /tmp/raid-foundation-followup-20261009-codex/T029/M26-red.xml
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m tests/asset-registry-production.test.ts[2m > [22mT029 production validation fails closed (AC41, I12, O07)[2m > [22mblocks a token asset whose token program is not declared chain-verified
+[31m[1mAssertionError[22m: expected [] to deeply equal [ { …(2) } ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   {[39m
+[32m-     "code": "PROGRAM_NOT_CHAIN_VERIFIED",[39m
+[32m-     "subject": "assets[0]",[39m
+[32m-   },[39m
+[32m- ][39m
+[31m+ [][39m
+
+[36m [2m❯[22m tests/asset-registry-production.test.ts:[2m106:24[22m[39m
+    [90m104|[39m     undeclared.programs = [{ address: fixtureAddress(8), origin: 'CHAI…
+    [90m105|[39m     const violations = validateProductionConfig(undeclared, allowlist)…
+    [90m106|[39m     expect(violations).toEqual([{ code: 'PROGRAM_NOT_CHAIN_VERIFIED', …
+    [90m   |[39m                        [31m^[39m
+    [90m107|[39m     [35mconst[39m none [33m=[39m [34mcandidate[39m()[33m;[39m
+    [90m108|[39m     none[33m.[39mprograms [33m=[39m [][33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+

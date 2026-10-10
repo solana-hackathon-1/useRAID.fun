@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="1" errors="0" time="0.007732833">
+    <testsuite name="tests/asset-registry-registry.test.ts" timestamp="2026-10-09T03:37:52.764Z" hostname="0xd.local" tests="22" failures="1" errors="0" skipped="21" time="0.007732833">
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; treats two mints that share a ticker as two distinct assets" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint presented on another network" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint under another token program" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; distinguishes native SOL from a token and one network from another" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; cannot select an asset by ticker, name or smuggled display fields" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; is immutable to later mutation of its inputs and outputs" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects ambiguous or inconsistent registry configuration" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; keeps one identity and key across registry versions and returns the newest policy" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; treats re-recording an identical snapshot as idempotent" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a different snapshot under an existing version" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a decimals change for the same asset so accepted amounts keep their meaning" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot for an unregistered asset instead of registering it implicitly" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot whose observed slot moves backwards" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; errors when a pinned policy version is unknown and does not guess" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; supports a plain SPL token with no extensions and native SOL" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; lists the sixteen-point-five extensions as always rejected" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects transfer-fee and transfer-hook profiles by default" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a Token-2022 asset whose extension is not on the reviewed allow list" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; never lets the allow list override the rejected extensions" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects an unknown token program, an unknown profile and a missing policy" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a native SOL asset whose profile declares any extension" time="0.007087541">
+            <failure message="expected { supported: true, reasons: [] } to deeply equal { supported: false, …(1) }" type="AssertionError">
+AssertionError: expected { supported: true, reasons: [] } to deeply equal { supported: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   &quot;reasons&quot;: [
+-     &quot;EXTENSIONS_ON_NATIVE_ASSET&quot;,
+-   ],
+-   &quot;supported&quot;: false,
++   &quot;reasons&quot;: [],
++   &quot;supported&quot;: true,
+  }
+
+ ❯ tests/asset-registry-registry.test.ts:239:43
+            </failure>
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a plain SPL token program asset that claims extensions" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

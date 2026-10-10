@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="110" failures="0" errors="0" time="0.743148957">
+    <testsuite name="tests/asset-registry-amounts.test.ts" timestamp="2026-10-09T03:37:56.105Z" hostname="0xd.local" tests="40" failures="0" errors="0" skipped="0" time="0.1156155">
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; parses the section 16.3 example exactly and formats it back" time="0.001406125">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects excess precision instead of rounding" time="0.000199625">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;&quot;" time="0.00008075">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot; 1&quot;" time="0.000060583">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1 &quot;" time="0.000059792">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;-1&quot;" time="0.000055625">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;+1&quot;" time="0.00005225">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1e3&quot;" time="0.000049916">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;0x10&quot;" time="0.000078542">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;.5&quot;" time="0.000104541">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1.&quot;" time="0.000046917">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;01&quot;" time="0.000038583">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1,000&quot;" time="0.000036083">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;NaN&quot;" time="0.000033">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;Infinity&quot;" time="0.000046042">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1..2&quot;" time="0.000045833">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;１２３&quot;" time="0.000077041">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects malformed display amount &quot;1\n&quot;" time="0.000032917">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; rejects non-string input including JavaScript numbers" time="0.000102958">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; validates decimals and the host bound" time="0.00045525">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; enforces the inclusive u64 upper bound by default" time="0.000150333">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; formats only in-bound nonnegative integers" time="0.000071792">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; agrees with the shared T002 contract helpers (reuse, no divergence)" time="0.009479083">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 exact bounded amount parsing and formatting (16.3) &gt; round trips random amounts for every decimals value without precision loss (property)" time="0.018738125">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; adds, subtracts and sums exactly within the bound" time="0.000135416">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 checked arithmetic &gt; rejects overflow, underflow and non-bigint input" time="0.0001655">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; splits the section 14.3 example 50/30/20 exactly" time="0.000399084">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; distributes remainder to the largest fractional parts, ties to the lowest index" time="0.000106084">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; never gives remainder to a zero-weight recipient" time="0.000065208">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; can disclose the remainder as unallocated instead of assigning it" time="0.000048125">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; rejects invalid allocations" time="0.000152875">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; caps the number of recipients at 1024" time="0.000783834">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; conserves the total, is never negative and is deterministic (property)" time="0.070664167">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 deterministic split with disclosed remainder rule (14.3) &gt; keeps every share within one unit of the exact proportional value (property)" time="0.005584875">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; floors or ceils basis points exactly and never exceeds the amount" time="0.000126458">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 fee calculation is a separate exact function &gt; rejects unreasonable basis points and rounding names" time="0.000103666">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; serializes amounts as canonical decimal strings and parses them back" time="0.000469084">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; rejects JSON numbers, noncanonical strings and out-of-bound values" time="0.000231459">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 JSON decimal-string serialization &gt; round trips large random amounts exactly (property)" time="0.001924792">
+        </testcase>
+        <testcase classname="tests/asset-registry-amounts.test.ts" name="T029 error shape &gt; exposes only a machine code, never input text" time="0.001922833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-boundary.test.ts" timestamp="2026-10-09T03:37:56.108Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.28277275">
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; owns arithmetic and registry rules without an app singleton, framework, SDK or float" time="0.002706125">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; reuses the shared T002 asset contracts instead of redefining them" time="0.000563291">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; ships no supported production asset and no production-looking constants" time="0.000336125">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; adds only the additive asset migration under the reserved name" time="0.000306708">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; runs the declared minimal host outside the application with explicit dependencies" time="0.27738975">
+        </testcase>
+        <testcase classname="tests/asset-registry-boundary.test.ts" name="T029 public module boundary and reuse contract (R15, R16, AC74) &gt; documents the R16 reuse contract and the open O07/G04 gate" time="0.000738292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-bundle.test.ts" timestamp="2026-10-09T03:37:56.108Z" hostname="0xd.local" tests="16" failures="0" errors="0" skipped="0" time="0.028784833">
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; is not funded when only one of two promised assets is deposited" time="0.001657417">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; is funded once both legs are verified" time="0.000643083">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; reports a shortfall for an under-deposited leg and counts nothing unverified" time="0.000452583">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; does not accept a deposit of a same-ticker different mint or the same mint on another network" time="0.000452541">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; ignores unrelated surplus assets and allows surplus of a promised asset" time="0.000634416">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; blocks a leg whose asset is not supported by the registry" time="0.000240083">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; never calls an empty bundle funded" time="0.0000595">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; rejects zero, malformed and noncanonical leg amounts" time="0.000335917">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 a reward is fully funded only when every promised leg is verified (AC28, 16.4) &gt; aggregates two legs of one asset and guards the sum against overflow" time="0.000486209">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; counts a repeated operation once even when tagged with different policy versions" time="0.000241583">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; sums distinct operations under one key regardless of policy version" time="0.000224917">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; treats a late verified delivery as the same operation progressing, never as extra funds" time="0.000106875">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; rejects a conflicting redelivery of the same operation" time="0.000148542">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; rejects malformed observations and overflowing totals" time="0.000204542">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; ignores observations for assets the registry does not know instead of crediting them" time="0.000069">
+        </testcase>
+        <testcase classname="tests/asset-registry-bundle.test.ts" name="T029 policy version and duplicate delivery cannot duplicate spendable balance (AC30, I05) &gt; credits exactly the verified deposits for random duplicated streams (property)" time="0.02195975">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-db.test.ts" timestamp="2026-10-09T03:37:56.109Z" hostname="0xd.local" tests="10" failures="0" errors="0" skipped="0" time="0.292632583">
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; enforces exact identity uniqueness: network, mint and token program all matter" time="0.068907042">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; allows one native SOL asset per network and rejects a second" time="0.0108475">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects malformed identities by check constraint" time="0.025377542">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; keeps one asset row across policy versions and never splits identity (AC30)" time="0.014399292">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; rejects a decimals change or an older observation for the same asset" time="0.01611475">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; bounds decimals and observed slot, and requires an existing asset" time="0.024847375">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; makes identities and snapshots immutable, while no-op updates stay possible" time="0.021772583">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes two concurrent creations of the same instrument to one winner" time="0.048613625">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; serializes competing policy versions so decimals cannot diverge" time="0.04561675">
+        </testcase>
+        <testcase classname="tests/asset-registry-db.test.ts" name="T029 asset registry persistence on real PostgreSQL &gt; feeds the in-process registry from stored rows without changing decisions (adapter substitution)" time="0.00979775">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-production.test.ts" timestamp="2026-10-09T03:37:56.110Z" hostname="0xd.local" tests="16" failures="0" errors="0" skipped="0" time="0.011457791">
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; ships no supported production asset until O07 supplies one" time="0.004793125">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an empty configuration" time="0.000212334">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; accepts a fully verified, approved, allow-listed configuration only when the host supplies the list" time="0.000596125">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a DEVNET network in a production profile" time="0.000450417">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a TESTNET network in a production profile" time="0.000462625">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a LOCAL network in a production profile" time="0.000396208">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a SYNTHETIC network in a production profile" time="0.00038925">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test fixture and sample assets even when listed" time="0.000424875">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks mock and simulated providers" time="0.000624417">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks test or sample program identifiers" time="0.000497583">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks a token asset whose token program is not declared chain-verified" time="0.000438667">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset without a recorded decision reference matching the allow list entry" time="0.0002445">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset that is allow-listed on a different network or mint" time="0.00019375">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; blocks an asset whose policy is unsupported (rejected extension, unknown program, no policy)" time="0.000210167">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; reports every violation at once and carries no input text" time="0.000326125">
+        </testcase>
+        <testcase classname="tests/asset-registry-production.test.ts" name="T029 production validation fails closed (AC41, I12, O07) &gt; treats malformed configuration as blocked, never as acceptable" time="0.000437917">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/asset-registry-registry.test.ts" timestamp="2026-10-09T03:37:56.111Z" hostname="0xd.local" tests="22" failures="0" errors="0" skipped="0" time="0.0118855">
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; treats two mints that share a ticker as two distinct assets" time="0.004733708">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint presented on another network" time="0.000483958">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects the same mint under another token program" time="0.000317125">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; distinguishes native SOL from a token and one network from another" time="0.000307208">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; cannot select an asset by ticker, name or smuggled display fields" time="0.000395792">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; is immutable to later mutation of its inputs and outputs" time="0.000300875">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 asset identity is exact and never display-based (AC29, 16.2) &gt; rejects ambiguous or inconsistent registry configuration" time="0.000603417">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; keeps one identity and key across registry versions and returns the newest policy" time="0.000885042">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; treats re-recording an identical snapshot as idempotent" time="0.00027675">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a different snapshot under an existing version" time="0.000234125">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a decimals change for the same asset so accepted amounts keep their meaning" time="0.00020975">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot for an unregistered asset instead of registering it implicitly" time="0.000142083">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; rejects a snapshot whose observed slot moves backwards" time="0.000164">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 policy versions never create or split an asset (AC30, 16.2) &gt; errors when a pinned policy version is unknown and does not guess" time="0.000133833">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; supports a plain SPL token with no extensions and native SOL" time="0.0002205">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; lists the sixteen-point-five extensions as always rejected" time="0.000064292">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects transfer-fee and transfer-hook profiles by default" time="0.000298625">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a Token-2022 asset whose extension is not on the reviewed allow list" time="0.0003035">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; never lets the allow list override the rejected extensions" time="0.000142416">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects an unknown token program, an unknown profile and a missing policy" time="0.000431625">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a native SOL asset whose profile declares any extension" time="0.000174334">
+        </testcase>
+        <testcase classname="tests/asset-registry-registry.test.ts" name="T029 support policy is fail-closed (16.5) &gt; rejects a plain SPL token program asset that claims extensions" time="0.000191792">
+        </testcase>
+    </testsuite>
+</testsuites>

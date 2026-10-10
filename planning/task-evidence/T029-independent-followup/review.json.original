@@ -1,0 +1,237 @@
+{
+  "task_id": "T029",
+  "reviewer": "Codex /root/review_foundation_followups, independent non-author follow-up reviewer",
+  "independence": "Separate agent did not author implementation/tests/docs/packet; read-only author checkouts; source mutations only in unique git-archive snapshots; separate disposable reviewer databases. This is AI technical review, not human UAT, cryptographic signature, business or release approval.",
+  "reviewed_at_utc": "2026-10-09T03:40:01.230849+00:00",
+  "reviewed_head": "283f3d77cf679c8d9b4aeb13a61023c98ac64aa9",
+  "prior_independent_review_commit": "f9d248e",
+  "verdict": "ACCEPTED WITH CONDITIONS",
+  "scope": "Post-original-independent-review changes only; no src/ or Prisma diff since original review. No re-awarding full-product gates.",
+  "requirement_map": {
+    "blueprint": [
+      "00-04",
+      "13",
+      "16.2-16.5",
+      "24.6-24.7",
+      "25",
+      "26.1",
+      "27.3",
+      "27.5",
+      "28",
+      "30",
+      "32",
+      "33.10",
+      "34",
+      "35 AC32/AC41/AC69/AC73/AC74/AC75",
+      "39-40"
+    ],
+    "requirements": ["R15", "R16", "I03", "I05", "I06", "I09", "I12", "I13"],
+    "entities": ["Asset", "AssetPolicySnapshot"],
+    "permissions": "No changed route or permissions; host actor/proof authority remains required.",
+    "transitions": "No changed runtime state transition; new tests discriminate existing bounded contracts."
+  },
+  "source_manifest": "source-manifest.json",
+  "runtime_diff": "runtime-diff.txt (empty)",
+  "database": {
+    "id": "7b6c4955a1d1eaf84ac65612cf4f771bd27cc2e9bd5c3594906ac4fdf8664611",
+    "image": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+    "name": "raid-codex-followup-t029-20261009",
+    "startedAt": "2026-10-09T03:35:24.926335514Z",
+    "labels": {
+      "raid-task": "T029-codex-followup"
+    },
+    "tmpfs": {
+      "/var/lib/postgresql/data": "rw,size=512m"
+    },
+    "mounts": [],
+    "host": "127.0.0.1",
+    "port": "51517",
+    "database": "useraid_test"
+  },
+  "environment": {
+    "node": "26.0.0",
+    "npm": "11.12.1",
+    "Prisma": "6.19.3",
+    "vitest": "4.1.11",
+    "dependency_install": "Independent npm ci: 514 packages per snapshot, exit0",
+    "data": "Synthetic only; fresh own tmpfs PostgreSQL16; original/implementer DBs and dumps untouched"
+  },
+  "tests": {
+    "feature": {
+      "tests": 110,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "files": 6
+    },
+    "full": {
+      "tests": 843,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "files": 73
+    },
+    "post_mutation_green": {
+      "tests": 110,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "files": 6
+    }
+  },
+  "mutations": [
+    {
+      "id": "M24",
+      "file": "src/asset-registry/registry.ts",
+      "original_sha256": "5530d85adbcb07dfaae32a46683f9ec5260d654227d0a7826f72c66fc6998070",
+      "mutant_sha256": "3ec386a10079eb0d192310f08fe2fa5e3f5ddade107542ccc5ded364344626cd",
+      "mutation": {
+        "old": "      if (id.kind === 'NATIVE_SOL' && extensions.length > 0)\n        reasons.push('EXTENSIONS_ON_NATIVE_ASSET');",
+        "new": ""
+      },
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "tests/asset-registry-registry.test.ts",
+        "-t",
+        "rejects a native SOL asset whose profile declares any extension",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/M24-red.xml"
+      ],
+      "exit_code": 1,
+      "junit": {
+        "name": "vitest tests",
+        "tests": "22",
+        "failures": "1",
+        "errors": "0",
+        "time": "0.007732833"
+      },
+      "failing_cases": [
+        "T029 support policy is fail-closed (16.5) > rejects a native SOL asset whose profile declares any extension"
+      ],
+      "skipped": 21
+    },
+    {
+      "id": "M26",
+      "file": "src/asset-registry/production.ts",
+      "original_sha256": "0ecb2749518759778c42ff3a24d73fadf8bd46716544a871c6c018a5152b7f65",
+      "mutant_sha256": "ff520078718753ea21beb453027541cae9b1c4df2eef55d73444fbcc226453b2",
+      "mutation": {
+        "old": "      if (id.kind === 'TOKEN' && !verifiedPrograms.has(id.tokenProgram as string))\n        add('PROGRAM_NOT_CHAIN_VERIFIED', subject);",
+        "new": ""
+      },
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "tests/asset-registry-production.test.ts",
+        "-t",
+        "blocks a token asset whose token program is not declared chain-verified",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/M26-red.xml"
+      ],
+      "exit_code": 1,
+      "junit": {
+        "name": "vitest tests",
+        "tests": "16",
+        "failures": "1",
+        "errors": "0",
+        "time": "0.007619959"
+      },
+      "failing_cases": [
+        "T029 production validation fails closed (AC41, I12, O07) > blocks a token asset whose token program is not declared chain-verified"
+      ],
+      "skipped": 15
+    },
+    {
+      "id": "M30",
+      "file": "src/asset-registry/amounts.ts",
+      "original_sha256": "3a1f0a2ffb8181f3008cef9cc688770eb9d8c987872a72ec11aa49d7c1867484",
+      "mutant_sha256": "ad04068dc74ee20e6c9c30d7013914e8391746768ce2d6a8bc039d050f38721f",
+      "mutation": {
+        "old": " || weights.length > MAX_SPLIT_RECIPIENTS",
+        "new": ""
+      },
+      "command": [
+        "npx",
+        "vitest",
+        "run",
+        "tests/asset-registry-amounts.test.ts",
+        "-t",
+        "caps the number of recipients at 1024",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=/tmp/raid-foundation-followup-20261009-codex/T029/M30-red.xml"
+      ],
+      "exit_code": 1,
+      "junit": {
+        "name": "vitest tests",
+        "tests": "40",
+        "failures": "1",
+        "errors": "0",
+        "time": "0.005514083"
+      },
+      "failing_cases": [
+        "T029 deterministic split with disclosed remainder rule (14.3) > caps the number of recipients at 1024"
+      ],
+      "skipped": 39
+    }
+  ],
+  "migration": "Own fresh bootstrap, repeat deploy no pending, drift no difference, all exit0; schema/runtime unchanged.",
+  "checks": "Typecheck, owned changed-test eslint, full-root format check, Python planning27 pass; validator T019 exit0 or T029 expected exit1 exactly C02/C08/C15.",
+  "ci": {
+    "head": "283f3d77cf679c8d9b4aeb13a61023c98ac64aa9",
+    "all_checks_success": true,
+    "names": [
+      "browser",
+      "ci-gate",
+      "dependency-security",
+      "docker",
+      "planning-contracts",
+      "static",
+      "test"
+    ],
+    "readback": "ci-readback.json"
+  },
+  "criteria_status_counts": {
+    "PASS": 20,
+    "NOT APPLICABLE": 4,
+    "NOT VERIFIED": 3
+  },
+  "conditions": {
+    "K1": "OPEN: C02/C08/C15 stay NOT VERIFIED; task cannot close. O07 supported assets, G04/G10 and T031-T033/T080 required.",
+    "K2": "VERIFIED: all three new tests kill the exact missing-guard faults and pass on restored source.",
+    "K3": "CARRIED FORWARD T069: typed mint/freeze/upgrade/permanent-delegate authority roles and retained freeze powers before O07/G04 approval.",
+    "K4": "VERIFIED: 11 committed original/follow-up JUnit files all match packet SHA256; original weaker missing-table RED is retained honestly.",
+    "K5": "VERIFIED: review merged into packet, stale status wording fixed, fresh CI readback shows seven named checks SUCCESS at exact current head.",
+    "K6": "CARRIED FORWARD: commitment/acceptance uses fullyFunded, balances/claims assetKey only, production allowlist requires recorded O07/G04 decision."
+  },
+  "findings": [],
+  "not_run": [
+    "New browser/UI/UAT executions (no runtime/UI change; current exact-head CI browser SUCCESS)",
+    "Live rollout/restore/production/provider calls",
+    "Combined T019/T029/T006 schema integration",
+    "Remote CI after any later publication/review-only commit"
+  ],
+  "original_review_reports": "Untouched; original scope/results/source identities retained.",
+  "artifact_sha256": {
+    "source-manifest.json": "f4b83f0edb029734a8657e73175dfa127dcc1dc06f22813523424f4cc4d9df6e",
+    "M24-red.xml": "b53cb6a11240ee65529709d7cd404cd7ddc1c0909248ec8d35d7ed2bedd1f0c7",
+    "full-commands.json": "4589e764fc9a0bf9fdf1c5af0d572fe9b18060714459d49cdf7b2f2584cd66d3",
+    "static-commands.json": "c901c9e0b852616d3b2a8a3236904b25345fbfb73c708630566db1da01722d43",
+    "ci-readback.json": "da224a89f9fa2840484969108a3152f34cc3dd1ebc50c63b9586a8c6f86fefc2",
+    "feature.xml": "467eb808713b9d53428c78de4e9c661bbda11992d6387c4a1c938d23cadd4483",
+    "M26-red.xml": "8fe0dd05e80431fd47eb6c75c096904f213876199182f970a4a8fcc2bd1a4eb6",
+    "setup-commands.json": "d8f9559f47ea1b002374caa1bc4b7d77b14bf07f290ace7726801b7f97cc4a3c",
+    "historical-artifact-verification.json": "1c032192cc30e62c710771b901f1d3038d30fa902e5a7e152d728003ff27254e",
+    "post-mutation-green.xml": "32a7cff76193d3ca7310dcfc11d71948f0014f88bc5c867446b2e1b3f24cbfa7",
+    "feature-commands.json": "ea7cfa7dd955cbb65548e9a7d429ce1996fb0340ad3e7f9c529945d2daa5e2d0",
+    "M30-red.xml": "6c6ffd40f8fce5124a370ce911bb6adf9ccc59cd2015490046936c3dfdee6d7e",
+    "database-provenance.json": "fced4345b8cdda7233020510566276d623d853ccdbf106a393297d845b0e529b",
+    "full.xml": "47c5b2a7444da3da704cf45601e5d5875ec5642df6c891833826599fc06134e2",
+    "mutation-results.json": "132374bbbc3d56d031a9c362bcb2b09b414eb1cea8fa68f0b8091a0850ca6edc"
+  }
+}
