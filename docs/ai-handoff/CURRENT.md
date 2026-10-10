@@ -1,3 +1,19 @@
+# Current checkpoint — 2026-10-10T14:24:51.171852+00:00 by Codex /root
+
+Active task: T005 bounded CI cleanup ownership fix; IN_PROGRESS, independent review pending. One active writer. Owner requested repository review and sequential issue → push → merge work on 10 October; this explicitly authorizes Git publication/merge, subject to required review and checks. A read-only review-agent permission question is pending; no delegation inferred.
+
+Repository reconciled: initial clean `ci/local-verification` at f96a337, fetched origin, then clean fast-forward of main to `66d6a3a`. Current branch `codex/t005-cleanup-ownership`. No old working-tree changes existed. The historical checkpoint below is stale: T006 storage is committed and PR179 merged; PR180–185 also merged. GitHub inventory: 165 issues, 4 closed (T001–T004 / #43–46), 161 open, no open PRs at inspection. T005 #47, T006 #48, T019 and T029 remain open despite merged bounded slices.
+
+Current changes: `scripts/local-ci.sh` gates database stop on this run's start attempt, including failed partial starts; `tests/test_raid_ci.py` adds three executable consuming-host tests using substituted commands; `docs/raid-ci-plan.md` documents lifecycle ownership. Durable logs in `planning/task-evidence/T005-cleanup-ownership/`; report `docs/tasks/T005-cleanup-ownership.md`. No application/schema/money/auth/capacity changes.
+
+Verification: genuine RED 9 tests / 2 expected cleanup assertion failures; GREEN 9 passed; regression 35 planning tests passed; `bash -n` and `git diff --check` passed. Prettier on Markdown passed; attempted explicit shell-file check failed because Prettier has no shell parser, then used shell syntax verification. Actual runner preflight exited 1 because existing port3000 listener is busy; preserved listener and did not stop any database. Full local CI is NOT RUN beyond preflight. Historical T005 completion packet validator exits0 structurally; that does not certify this changed source. Branch-protection API returns403 (private repository plan restriction); protection state unverified. No external deployment/provider/financial calls.
+
+Next: publish this bounded fix as a reviewable PR; obtain independent review; run exact candidate required checks in an isolated host with free ports; merge only after evidence/review. Do not close full T005 based on this slice. Resume T006 from current merged wallet-link implementation, not the historical uncommitted instructions below. Retain historical evidence and unverified product/gate obligations.
+
+---
+
+# Historical checkpoint (retained; superseded repository state)
+
 # Shared AI handoff — CURRENT
 
 Last updated: 2026-10-08T21:40:00+05:45 (Asia/Kathmandu) by Claude Sonnet 5.5.
