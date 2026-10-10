@@ -88,7 +88,7 @@ case "$(basename "$0") $*" in
 esac
 exit 0
 '''
-            for command in ['git', 'node', 'npm', 'npx', 'docker', 'cp']:
+            for command in ['git', 'node', 'npm', 'npx', 'docker', 'cp', 'python3']:
                 path = root / 'bin' / command
                 path.write_text(stub)
                 path.chmod(0o755)

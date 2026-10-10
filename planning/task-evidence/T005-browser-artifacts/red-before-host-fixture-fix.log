@@ -1,0 +1,61 @@
+...F......
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='demo', report='test-results')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='demo', report='playwright-report')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='studio', report='test-results')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:studio\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='studio', report='playwright-report')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:studio\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='live-browser', report='test-results')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:live\n'
+
+======================================================================
+FAIL: test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them (test_raid_ci.LocalCICleanupOwnership) (suite='live-browser', report='playwright-report')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 134, in test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them
+    self.assertEqual(self.reports.get(f'{name}-reports/{report}/suite.txt'),
+AssertionError: None != 'run test:browser:live\n'
+
+======================================================================
+FAIL: test_report_copy_failure_fails_aggregate_even_when_browser_tests_pass (test_raid_ci.LocalCICleanupOwnership)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 143, in test_report_copy_failure_fails_aggregate_even_when_browser_tests_pass
+    self.assertIn('Failed to retain demo reports', result.stdout)
+AssertionError: 'Failed to retain demo reports' not found in 'Running ports\nports: 0\nRunning install\ninstall: 0\nRunning generate\ngenerate: 0\nRunning planning\nplanning: 1\n  File "/home/rpandox/tools/miniconda/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "/home/rpandox/tools/miniconda/lib/python3.9/unittest/__main__.py", line 18, in <module>\n    main(module=None)\n  File "/home/rpandox/tools/miniconda/lib/python3.9/unittest/main.py", line 100, in __init__\n    self.parseArgs(argv)\n  File "/home/rpandox/tools/miniconda/lib/python3.9/unittest/main.py", line 124, in parseArgs\n    self._do_discovery(argv[2:])\n  File "/home/rpandox/tools/miniconda/lib/python3.9/unittest/main.py", line 244, in _do_discovery\n    self.createTests(from_discovery=True, Loader=Loader)\n  File "/home/rpandox/tools/miniconda/lib/python3.9/unittest/main.py", line 154, in createTests\n    self.test = loader.discover(self.start, self.pattern, self.top)\n  File "/home/rpandox/tools/miniconda/lib/python3.9/unittest/loader.py", line 346, in discover\n    raise ImportError(\'Start directory is not importable: %r\' % start_dir)\nImportError: Start directory is not importable: \'tests\'\nRunning format\nformat: 0\nRunning routes\nroutes: 0\nRunning types\ntypes: 0\nRunning lint\nlint: 0\nRunning security\nsecurity: 0\nRunning database\ndatabase: 0\nRunning migrations\nmigrations: 0\nRunning drift\ndrift: 0\nRunning tests\ntests: 0\nRunning docker\ndocker: 0\nRunning runtime\nruntime: 0\nRunning runtime-files\nruntime-files: 0\nRunning browser-install\nbrowser-install: 0\nRunning demo\ndemo: 0\nRunning studio\nstudio: 0\nRunning build\nbuild: 0\nRunning live-flow\nlive-flow: 0\nRunning live-browser\nlive-browser: 0\nEvidence: /tmp/tmpo6gk5owe/evidence\n'
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.779s
+
+FAILED (failures=7)
