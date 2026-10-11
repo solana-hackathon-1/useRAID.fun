@@ -12,6 +12,7 @@ Do these when deploying the `fix/everything` release, in order:
 4. Run `npm run tracking:audit` against production and account for every obligation it lists.
 5. After that audit, ship the later migration that runs `VALIDATE CONSTRAINT` on the `NOT VALID` state checks from `202610020012_state_checks`. Existing rows were not validated by that migration, so validate only once the audit shows every status value is in its vocabulary.
 6. Leave `LAUNCH_ENABLED` and `PAYOUT_ENABLED` false; launchpads are gated off in code regardless.
+7. Leave `ACCOUNT_FOLDS_ENABLED` false (the default). Automatic merging of an activity-free duplicate account is not concurrency-safe yet (reproduced PostgreSQL deadlocks and a stale merge that deleted a just-connected X identity). With it off, signing in with an X account and a wallet that already belong to two different accounts is refused and both accounts stay unchanged; the user keeps using whichever account they signed in with first.
 
 ## Railway deployment
 

@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { db } from '../src/lib/db';
 import { config } from '../src/lib/config';
 import { hash } from '../src/lib/auth';
@@ -149,6 +149,14 @@ integration('X connection PostgreSQL invariants', () => {
     });
   });
   describe('merging an activity-free duplicate account', () => {
+    // Folding is gated off by default for launch (tests/account-fold-gate-db.test.ts); these
+    // cases keep covering the opt-in path with unchanged assertions.
+    beforeEach(() => {
+      process.env.ACCOUNT_FOLDS_ENABLED = 'true';
+    });
+    afterEach(() => {
+      delete process.env.ACCOUNT_FOLDS_ENABLED;
+    });
     async function walletUser(withActivity: boolean) {
       const user = await db.user.create({ data: { handle: 'walletonly' } });
       await db.walletIdentity.create({ data: { userId: user.id, address: `w-${user.id}` } });

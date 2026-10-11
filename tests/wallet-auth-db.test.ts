@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({ cookie: '' }));
 vi.mock('next/headers', () => ({
   cookies: async () => ({
@@ -198,6 +198,14 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
     vi.unstubAllEnvs();
   });
   describe('merging an activity-free duplicate account', () => {
+    // Folding is gated off by default for launch (tests/account-fold-gate-db.test.ts); these
+    // cases keep covering the opt-in path with unchanged assertions.
+    beforeEach(() => {
+      process.env.ACCOUNT_FOLDS_ENABLED = 'true';
+    });
+    afterEach(() => {
+      delete process.env.ACCOUNT_FOLDS_ENABLED;
+    });
     it('moves a wallet from an empty wallet-only account onto the signed-in X account', async () => {
       const w = pair();
       const walletToken = await walletSignIn(w);

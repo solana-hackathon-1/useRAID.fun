@@ -96,7 +96,9 @@
     "tests/wallet-linked-signin-db.test.ts",
     "tests/wallet-routes.test.ts",
     "tests/worker-db.test.ts",
+    "tests/account-fold-gate-db.test.ts",
     "tests/x-oauth-db.test.ts",
+    "tests/x-oauth-first-link-race-db.test.ts",
     "tests/x-oauth-routes.test.ts",
     "tests/x-oauth.test.ts"
   ],
@@ -217,7 +219,9 @@
         "tests/wallet-link-proof.test.ts",
         "tests/wallet-linked-signin-db.test.ts",
         "tests/wallet-routes.test.ts",
+        "tests/account-fold-gate-db.test.ts",
         "tests/x-oauth-db.test.ts",
+        "tests/x-oauth-first-link-race-db.test.ts",
         "tests/x-oauth-routes.test.ts",
         "tests/x-oauth.test.ts"
       ],

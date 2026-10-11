@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, afterAll, describe, it, expect } from 'vitest';
+import { beforeAll, beforeEach, afterAll, afterEach, describe, it, expect } from 'vitest';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { ensureHumanParticipant, findHumanParticipant } from '../src/identity-storage';
 import {
@@ -217,7 +217,12 @@ integration('T006 actual additive database fences', () => {
       db.$transaction((tx) => absorbAccount(tx, 'new', 'keep'), options),
     ).rejects.toThrow('Only an activity-free account');
   });
+  afterEach(() => {
+    delete process.env.ACCOUNT_FOLDS_ENABLED;
+  });
   it('verified wallet flow preserves mapped keeper and denies two mapped accounts without consuming proof', async () => {
+    // The second half exercises the opt-in fold path; folding is gated off by default for launch.
+    process.env.ACCOUNT_FOLDS_ENABLED = 'true';
     config.demo = false;
     config.appUrl = 'http://localhost:3000';
     const pair = Keypair.generate();

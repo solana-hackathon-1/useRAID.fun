@@ -4,7 +4,7 @@ import bs58 from 'bs58';
 import nacl from 'tweetnacl';
 import { PublicKey } from '@solana/web3.js';
 import { db } from './db';
-import { config } from './config';
+import { accountFoldsEnabled, config } from './config';
 import { hash, random, HttpError } from './auth-primitives';
 import { absorbAccount, isEmptyAccount } from './account-merge';
 import { lockBalance } from './usdc';
@@ -150,6 +150,12 @@ export async function verifyWalletChallenge(
       ]);
       if (currentWallet || owner.xId)
         throw new HttpError(409, 'Wallet belongs to another account.');
+      // Folding is gated off for launch (see accountFoldsEnabled): refuse and change nothing.
+      if (!accountFoldsEnabled())
+        throw new HttpError(
+          409,
+          'This wallet already belongs to another useRAID account. Sign in with that wallet instead.',
+        );
       if (await isEmptyAccount(tx, owner.id)) {
         await absorbAccount(tx, currentUserId, owner.id);
         userId = currentUserId;
