@@ -1,0 +1,45 @@
+{
+  "completed_at_utc": "2026-10-11T13:22:44.523301+00:00",
+  "review_status": "SELF-EVALUATED",
+  "review_started_at_utc": "2026-10-11T13:16:47.103224+00:00",
+  "elapsed_seconds": 357.42,
+  "owner_authority": "Yes check and do it: preserve unfinished work, reconcile local main, commit public ingress separately. No push authorized/requested.",
+  "public_commit": "7ada2fea95179ad2654e5dcd95cae6e719c8ea57",
+  "upstream_main": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+  "clean_checkout": "/Users/dushyant/Documents/useRAID.fun-main",
+  "clean_checkout_branch": "main",
+  "clean_checkout_parentage": "upstream ancestor PASS; public commit only scope reviewed",
+  "original_checkout": "/Users/dushyant/Documents/useRAID.fun",
+  "original_checkout_branch": "main",
+  "original_checkout_head": "736964cf1445aa5d738e17c1633cf61102ad192c",
+  "original_files_hash_preservation": "1067 regular tracked/untracked file hashes PASS before checkpoint update",
+  "original_index": "empty",
+  "original_conflict_count": 11,
+  "resolution": "Recommended optional clean-checkout path used after owner opportunity to respond; unfinished auth changes remain unchanged/uncommitted in original folder. No auth conflict resolution attempted.",
+  "local_reference_in_original_repo": "codex/public-staging-access",
+  "backup": "private /tmp/raid-git-reconcile-20261011, ignored credentials/nested worktrees excluded",
+  "checks": {
+    "isolated_planning_deployment": "48 PASS/10.154s",
+    "format_supported_files": "PASS",
+    "scoped_diff_check_excluding_retained_raw_logs": "PASS",
+    "credential_pattern_scan": "PASS",
+    "public_runtime_inputs_byte_parity": "PASS",
+    "canonical_planning_fingerprints": "PASS",
+    "new_checkout_clean_before_handoff_record": "PASS"
+  },
+  "not_run": [
+    "new full app suite/build (no app code changed)",
+    "hosted CI for unpushed commit",
+    "separate development server",
+    "unfinished auth integration tests (no integration performed)",
+    "independent review/full T005/UAT/production acceptance"
+  ],
+  "push": "NOT PERFORMED",
+  "public_preview": "https://staging.useraid.fun remains running on checked app e492; Git step does not alter VM",
+  "next": "Continue new work in clean checkout; reconcile original unfinished identity/test-center work as a separately bounded task; push scoped local commits when requested.",
+  "preparation_failures_and_corrections": [
+    "First merge-planning script ran from isolated clone rather than primary checkout and failed looking up an old-base added file; corrected all repository paths explicitly, primary untouched.",
+    "Preparation encountered a tracked symlink to a directory; excluded symlink aliases from content merging. Actual non-symlink conflict count11, no canonical or alias file mutated.",
+    "Local clone initially inherited temporary origin/main7ada2fe; after restoring real GitHub remote, fetch moved only local remote-tracking reference back to genuine upstream e492. No remote force push."
+  ]
+}
