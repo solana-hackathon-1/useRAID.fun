@@ -1,0 +1,20 @@
+E........
+======================================================================
+ERROR: test_publication_is_main_only_and_checks_precede_registry_credentials (test_raid_staging.StagingConsumingHost.test_publication_is_main_only_and_checks_precede_registry_credentials)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 97, in test_publication_is_main_only_and_checks_precede_registry_credentials
+    workflow = (ROOT / '.github/workflows/staging-image.yml').read_text()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/dushyant/Documents/useRAID.fun/.github/workflows/staging-image.yml'
+
+----------------------------------------------------------------------
+Ran 9 tests in 2.198s
+
+FAILED (errors=1)

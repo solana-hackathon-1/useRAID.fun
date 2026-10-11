@@ -1,0 +1,77 @@
+ Image nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236 Pulling 
+ 40b38cc61f0e Pulling fs layer 0B
+ d8ad8cd72600 Pulling fs layer 0B
+ 0190f85b6566 Pulling fs layer 0B
+ 0c9e85b345e6 Pulling fs layer 0B
+ 3d2c901b120a Pulling fs layer 0B
+ 39ba19c6a1e3 Pulling fs layer 0B
+ 004928619bd7 Pulling fs layer 0B
+ 04e73639757d Pulling fs layer 0B
+ 04e73639757d Download complete 0B
+ d8ad8cd72600 Downloading 1.049MB
+ d8ad8cd72600 Downloading 2.097MB
+ d8ad8cd72600 Download complete 0B
+ d8ad8cd72600 Extracting 1B
+ 0190f85b6566 Downloading 1.049MB
+ 0c9e85b345e6 Downloading 625B
+ d8ad8cd72600 Extracting 1B
+ 0190f85b6566 Download complete 0B
+ 0c9e85b345e6 Download complete 0B
+ d8ad8cd72600 Extracting 1B
+ d8ad8cd72600 Extracting 1B
+ 3d2c901b120a Download complete 0B
+ d8ad8cd72600 Extracting 1B
+ 39ba19c6a1e3 Download complete 0B
+ d8ad8cd72600 Extracting 1B
+ 004928619bd7 Download complete 0B
+ d8ad8cd72600 Extracting 1B
+ d8ad8cd72600 Extracting 1B
+ d8ad8cd72600 Extracting 1B
+ d8ad8cd72600 Pull complete 0B
+ 0190f85b6566 Extracting 1B
+ 04e73639757d Pull complete 0B
+ 0190f85b6566 Pull complete 0B
+ 0c9e85b345e6 Pull complete 0B
+ 3d2c901b120a Pull complete 0B
+ 39ba19c6a1e3 Pull complete 0B
+ 004928619bd7 Pull complete 0B
+ 914200c2c889 Download complete 0B
+ 40b38cc61f0e Downloading 2.097MB
+ 40b38cc61f0e Downloading 4.194MB
+ 4f217a5abd74 Download complete 0B
+ 40b38cc61f0e Downloading 9.437MB
+ 40b38cc61f0e Downloading 13.63MB
+ 40b38cc61f0e Downloading 15.73MB
+ 40b38cc61f0e Downloading 18.87MB
+ 40b38cc61f0e Download complete 0B
+ 40b38cc61f0e Extracting 1B
+ 40b38cc61f0e Extracting 1B
+ 40b38cc61f0e Pull complete 0B
+ Image nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236 Pulled 
+ Container useraid-staging-db-1 Running 
+ Container useraid-staging-worker-1 Creating 
+ Container useraid-staging-web-1 Creating 
+ Container useraid-staging-worker-1 Created 
+ Container useraid-staging-web-1 Created 
+ Container useraid-staging-proxy-1 Creating 
+ Container useraid-staging-proxy-1 Created 
+ Container useraid-staging-db-1 Waiting 
+ Container useraid-staging-db-1 Waiting 
+ Container useraid-staging-db-1 Healthy 
+ Container useraid-staging-web-1 Starting 
+ Container useraid-staging-db-1 Healthy 
+ Container useraid-staging-worker-1 Starting 
+ Container useraid-staging-web-1 Started 
+ Container useraid-staging-web-1 Waiting 
+ Container useraid-staging-worker-1 Started 
+ Container useraid-staging-web-1 Healthy 
+ Container useraid-staging-proxy-1 Starting 
+ Container useraid-staging-proxy-1 Started 
+ Container useraid-staging-worker-1 Waiting 
+ Container useraid-staging-proxy-1 Waiting 
+ Container useraid-staging-db-1 Waiting 
+ Container useraid-staging-web-1 Waiting 
+ Container useraid-staging-db-1 Healthy 
+ Container useraid-staging-web-1 Healthy 
+ Container useraid-staging-proxy-1 Healthy 
+ Container useraid-staging-worker-1 Healthy 

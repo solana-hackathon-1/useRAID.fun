@@ -1,0 +1,61 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_at": "2026-10-11T11:06:27.788332+00:00",
+  "ended_at": "2026-10-11T11:12:08.497904+00:00",
+  "elapsed_seconds": 340.709572,
+  "base_sha": "5e8080f2a4abe39854bbc00f340f288d273540bb",
+  "source_manifest": "owned-source-manifest.json",
+  "requirements": [
+    "R15",
+    "R16",
+    "D01",
+    "D12",
+    "I05",
+    "I06",
+    "I09",
+    "I10",
+    "I12",
+    "I13",
+    "AC67",
+    "AC68",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "checks": [
+    "46 planning/orchestration PASS",
+    "real ARM64 production build/runtime/migration denial PASS",
+    "actionlint 1.7.12 PASS",
+    "TLS LAN health and desktop/mobile rendering/admin denial PASS",
+    "VM 22 migrations and worker startup PASS",
+    "isolated local backup restore PASS"
+  ],
+  "findings": [
+    "No GHCR token/published workflow: Watchtower remains stopped",
+    "Repository deploy keys disabled; generated key unregistered",
+    "Existing Dokploy preserved; LAN port8443 used",
+    "Private TLS needs explicit client trust",
+    "No atomic/automatic migration rollback; compatible schemas only",
+    "VM disk monitor required; off-host disaster recovery unverified"
+  ],
+  "not_run": [
+    "hosted pipeline/private GHCR pull/actual Watchtower replacement",
+    "full application/database/browser release suite on new pipeline",
+    "authenticated OAuth/wallet/provider/funding journeys",
+    "ShellCheck integration",
+    "separate Next development preview (no product UI change)",
+    "independent criterion review/UAT/production gates"
+  ],
+  "preview": {
+    "url": "https://192.168.101.13:8443",
+    "mode": "production-container staging, disabled provider/financial flags",
+    "owned_resources": [
+      "useraid-staging-db-1",
+      "useraid-staging-web-1",
+      "useraid-staging-worker-1",
+      "useraid-staging-proxy-1"
+    ],
+    "stop": "docker compose -p useraid-staging -f /home/raidstaging/useraid-staging/compose.yaml --env-file /home/raidstaging/useraid-staging/.env stop"
+  },
+  "full_task_acceptance": "NOT VERIFIED"
+}

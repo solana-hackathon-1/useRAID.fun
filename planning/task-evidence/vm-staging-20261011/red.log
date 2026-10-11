@@ -1,0 +1,82 @@
+FFFFFFFFF
+======================================================================
+FAIL: test_rendered_compose_is_private_and_limits_updates_to_application (test_raid_staging.StagingConsumingHost.test_rendered_compose_is_private_and_limits_updates_to_application)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 106, in test_rendered_compose_is_private_and_limits_updates_to_application
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 1 != 0 : open /Users/dushyant/Documents/useRAID.fun/compose.staging.yaml: no such file or directory
+
+
+======================================================================
+FAIL: test_failed_immutable_push_never_promotes_staging (test_raid_staging.StagingPublication.test_failed_immutable_push_never_promotes_staging)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 90, in test_failed_immutable_push_never_promotes_staging
+    self.assertEqual(result.returncode, 9)
+AssertionError: 127 != 9
+
+======================================================================
+FAIL: test_success_publishes_immutable_revision_before_staging (test_raid_staging.StagingPublication.test_success_publishes_immutable_revision_before_staging)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 76, in test_success_publishes_immutable_revision_before_staging
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 127 != 0 : bash: /Users/dushyant/Documents/useRAID.fun/scripts/staging-publish.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_superseded_main_never_promotes_staging (test_raid_staging.StagingPublication.test_superseded_main_never_promotes_staging)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 84, in test_superseded_main_never_promotes_staging
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 127 != 0 : bash: /Users/dushyant/Documents/useRAID.fun/scripts/staging-publish.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_migration_failure_never_launches_either_process (test_raid_staging.StagingStartup.test_migration_failure_never_launches_either_process) (mode='web')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 44, in test_migration_failure_never_launches_either_process
+    self.assertEqual(result.returncode, 23)
+AssertionError: 127 != 23
+
+======================================================================
+FAIL: test_migration_failure_never_launches_either_process (test_raid_staging.StagingStartup.test_migration_failure_never_launches_either_process) (mode='worker')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 44, in test_migration_failure_never_launches_either_process
+    self.assertEqual(result.returncode, 23)
+AssertionError: 127 != 23
+
+======================================================================
+FAIL: test_unknown_role_performs_no_database_mutation (test_raid_staging.StagingStartup.test_unknown_role_performs_no_database_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 49, in test_unknown_role_performs_no_database_mutation
+    self.assertEqual(result.returncode, 64)
+AssertionError: 127 != 64
+
+======================================================================
+FAIL: test_web_starts_only_after_migrations (test_raid_staging.StagingStartup.test_web_starts_only_after_migrations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 31, in test_web_starts_only_after_migrations
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 127 != 0 : sh: /Users/dushyant/Documents/useRAID.fun/scripts/staging-start.sh: No such file or directory
+
+
+======================================================================
+FAIL: test_worker_starts_only_after_migrations (test_raid_staging.StagingStartup.test_worker_starts_only_after_migrations)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging.py", line 37, in test_worker_starts_only_after_migrations
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 127 != 0 : sh: /Users/dushyant/Documents/useRAID.fun/scripts/staging-start.sh: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.166s
+
+FAILED (failures=9)

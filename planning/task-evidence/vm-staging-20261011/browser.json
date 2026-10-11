@@ -1,0 +1,84 @@
+[
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/",
+    "status": 200,
+    "heading": ["Make yourcommunity heard."],
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/privacy",
+    "status": 200,
+    "heading": ["Data and privacy"],
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/creator",
+    "status": 200,
+    "heading": ["Bring your community to a post."],
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "path": "/api/admin/usdc",
+    "status": 401
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/",
+    "status": 200,
+    "heading": ["Make yourcommunity heard."],
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/privacy",
+    "status": 200,
+    "heading": ["Data and privacy"],
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/creator",
+    "status": 200,
+    "heading": ["Bring your community to a post."],
+    "overflow": false,
+    "pageErrors": []
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "path": "/api/admin/usdc",
+    "status": 401
+  }
+]

@@ -1,0 +1,151 @@
+ Image postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea Pulling 
+ a939abc7661d Pulling fs layer 0B
+ a9df484dbfba Pulling fs layer 0B
+ 92de42ef5e5f Pulling fs layer 0B
+ cebfcc8ad205 Pulling fs layer 0B
+ 59d395e5f091 Pulling fs layer 0B
+ 507ae4668108 Pulling fs layer 0B
+ fc1879ba45ce Pulling fs layer 0B
+ a9986cd6f37d Pulling fs layer 0B
+ 42522e794927 Pulling fs layer 0B
+ 60d97d74e2c3 Pulling fs layer 0B
+ 262040291247 Pulling fs layer 0B
+ 92de42ef5e5f Download complete 0B
+ 42522e794927 Download complete 0B
+ a939abc7661d Downloading 186B
+ a939abc7661d Download complete 0B
+ 59d395e5f091 Downloading 128B
+ 59d395e5f091 Download complete 0B
+ 507ae4668108 Download complete 0B
+ fc1879ba45ce Download complete 0B
+ cebfcc8ad205 Download complete 0B
+ a9df484dbfba Downloading 2.097MB
+ a9df484dbfba Downloading 4.194MB
+ a9df484dbfba Downloading 8.389MB
+ a9df484dbfba Downloading 11.53MB
+ a9df484dbfba Downloading 11.53MB
+ 60d97d74e2c3 Download complete 0B
+ a9df484dbfba Downloading 14.68MB
+ a9df484dbfba Downloading 19.92MB
+ a9df484dbfba Downloading 20.97MB
+ a9df484dbfba Downloading 20.97MB
+ a9df484dbfba Downloading 20.97MB
+ a9df484dbfba Downloading 25.17MB
+ 262040291247 Download complete 0B
+ a9df484dbfba Downloading 28.31MB
+ a9df484dbfba Downloading 28.31MB
+ a9df484dbfba Downloading 29.36MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 37.75MB
+ a9df484dbfba Downloading 38.8MB
+ 93d76872891a Download complete 0B
+ a9986cd6f37d Downloading 1.049MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 38.8MB
+ a9df484dbfba Downloading 41.94MB
+ a9986cd6f37d Downloading 1.049MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 42.99MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 44.04MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 51.38MB
+ 2b6cc6ae9fbc Download complete 0B
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 53.48MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 53.48MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 53.48MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 53.48MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 57.67MB
+ a9986cd6f37d Downloading 1.049MB
+ a9df484dbfba Downloading 66.06MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 67.11MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 69.21MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 70.25MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 70.25MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 70.25MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 73.4MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 77.59MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 82.84MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 82.84MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 82.84MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 82.84MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 85.98MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 93.32MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 96.47MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 98.57MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 98.57MB
+ a9986cd6f37d Downloading 2.097MB
+ a9df484dbfba Downloading 99.61MB
+ a9986cd6f37d Downloading 3.146MB
+ a9df484dbfba Downloading 103.8MB
+ a9986cd6f37d Downloading 3.146MB
+ a9df484dbfba Download complete 0B
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Downloading 3.146MB
+ a9986cd6f37d Download complete 0B
+ a9986cd6f37d Extracting 1B
+ 42522e794927 Pull complete 0B
+ fc1879ba45ce Pull complete 0B
+ 60d97d74e2c3 Pull complete 0B
+ 262040291247 Pull complete 0B
+ a9df484dbfba Extracting 1B
+ a9986cd6f37d Pull complete 0B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 1B
+ a9df484dbfba Extracting 2B
+ a9df484dbfba Extracting 2B
+ 92de42ef5e5f Pull complete 0B
+ a939abc7661d Pull complete 0B
+ 59d395e5f091 Pull complete 0B
+ 507ae4668108 Pull complete 0B
+ cebfcc8ad205 Pull complete 0B
+ a9df484dbfba Pull complete 0B
+ Image postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea Pulled 
+ Network useraid-staging_default Creating 
+ Volume useraid-staging_postgres Creating 
+ Volume useraid-staging_postgres Creating 
+ Network useraid-staging_default Creating 
+ Volume useraid-staging_postgres Created 
+ Volume useraid-staging_postgres Created 
+ Network useraid-staging_default Created 
+ Network useraid-staging_default Created 
+ Container useraid-staging-db-1 Creating 
+ Container useraid-staging-db-1 Created 
+ Container useraid-staging-db-1 Starting 
+ Container useraid-staging-db-1 Started 
+ Container useraid-staging-db-1 Waiting 
+ Container useraid-staging-db-1 Healthy 

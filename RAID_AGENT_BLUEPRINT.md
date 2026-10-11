@@ -221,6 +221,14 @@ DEC-2026-10-10-01: the project owner requires timed self-evaluation and a verifi
 
 ---
 
+### 02.9 Accepted staging deployment choice — 11 October 2026
+
+DEC-2026-10-11-01: the project owner selected `raidstaging@192.168.101.13` for an isolated staging server and explicitly requested `main` → GitHub Actions → GHCR image → Watchtower pulls. Preserve the existing VM services; use a dedicated Compose project, database, configuration and registry-pull credential. The inspected VM is ARM64, so the staging image must support ARM64. Publishing uses a repository-scoped Actions token; private registry pulls require a separate read-only package token. Repository SSH deploy keys were rejected by the repository's disabled-deploy-key policy; do not silently relax that policy or substitute owner credentials. This resolves O18's staging host/update mechanism only; production hosting, budgets, SLOs, durability, support and live release gates remain OPEN/unverified.
+
+Each replacement container applies the repository's existing migrations before starting its web/worker process and exits if migration fails. Automatic updates require backward-compatible migrations; Watchtower is not an atomic cross-service rollout, migration rollback or health-based recovery mechanism. Monitor only this stack's web/worker; database, reverse proxy and unrelated VM services remain operator-managed. Keep account folds, additional-wallet linking, provider collection, live settlement, launch and payouts disabled; preserve canonical identity, terms, capacity, claims and in-flight operations. Related R15/R16/D01/D12/I05/I06/I09/I10/I12/I13 and AC67/AC68/AC73–AC75, sections24/28–30/33.11–12. [Deployment contract and consuming example](docs/staging-deploy.md) own exact configuration, verification and recovery instructions. This choice authorizes staging setup; it does not authorize a Git commit/push/merge or close T005, UAT, independent review or production gates.
+
+---
+
 ## 03. Vocabulary
 
 | Term                   | Exact meaning                                                                                                                                                                                                                            |

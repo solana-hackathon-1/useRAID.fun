@@ -1,0 +1,44 @@
+NAME                       IMAGE                                                                                        COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+useraid-staging-db-1       postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea   "docker-entrypoint.s…"   db        3 minutes ago   Up 3 minutes (healthy)   5432/tcp
+useraid-staging-proxy-1    nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236    "/docker-entrypoint.…"   proxy     2 minutes ago   Up 2 minutes             80/tcp, 192.168.101.13:8443->443/tcp
+useraid-staging-web-1      ghcr.io/solana-hackathon-1/useraid.fun:staging                                               "docker-entrypoint.s…"   web       2 minutes ago   Up 2 minutes (healthy)   3000/tcp
+useraid-staging-worker-1   ghcr.io/solana-hackathon-1/useraid.fun:staging                                               "docker-entrypoint.s…"   worker    2 minutes ago   Up 2 minutes             3000/tcp
+web-1  | 
+web-1  | 22 migrations found in prisma/migrations
+web-1  | 
+web-1  | 
+web-1  | No pending migrations to apply.
+web-1  | npm notice
+web-1  | npm notice New major version of npm available! 10.9.9 -> 12.2.0
+web-1  | npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+web-1  | npm notice To update run: npm install -g npm@12.2.0
+web-1  | npm notice
+web-1  | ▲ Next.js 16.3.8
+web-1  | - Local:         http://localhost:3000
+web-1  | - Network:       http://0.0.0.0:3000
+web-1  | ✓ Ready in 100ms
+web-1  | ✓ Running next.config.ts took 92ms
+worker-1  |     └─ migration.sql
+worker-1  |   └─ 202610090001_command_receipts/
+worker-1  |     └─ migration.sql
+worker-1  |   └─ 202610090002_asset_registry/
+worker-1  |     └─ migration.sql
+worker-1  |   └─ 202610090003_wallet_links/
+worker-1  |     └─ migration.sql
+worker-1  |       
+worker-1  | All migrations have been successfully applied.
+worker-1  | npm notice
+worker-1  | npm notice New major version of npm available! 10.9.9 -> 12.2.0
+worker-1  | npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+worker-1  | npm notice To update run: npm install -g npm@12.2.0
+worker-1  | npm notice
+worker-1  | bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   17G   13G  3.9G  76% /
+useraid-staging-proxy-1 Up 2 minutes 80/tcp, 192.168.101.13:8443->443/tcp
+useraid-staging-worker-1 Up 2 minutes 3000/tcp
+useraid-staging-web-1 Up 2 minutes (healthy) 3000/tcp
+useraid-staging-db-1 Up 3 minutes (healthy) 5432/tcp
+dokploy-postgres.1.9xdv4wp268x21jrg6nrj55fzx Up 27 minutes 5432/tcp
+dokploy-traefik Up 33 minutes 0.0.0.0:80->80/tcp, [::]:80->80/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp, 0.0.0.0:443->443/udp, [::]:443->443/udp
+dokploy.1.meurwwh4bht4ltp24npt8vcj3 Up 34 minutes (healthy) 0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp

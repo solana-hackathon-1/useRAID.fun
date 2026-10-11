@@ -1,0 +1,9 @@
+ kind | jobs | done | failed 
+------+------+------+--------
+(0 rows)
+
+ applied_migrations 
+--------------------
+                 22
+(1 row)
+
