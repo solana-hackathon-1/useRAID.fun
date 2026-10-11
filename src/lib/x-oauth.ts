@@ -2,7 +2,7 @@ import { createHash, timingSafeEqual } from 'node:crypto';
 import { z } from 'zod';
 import type { OAuthAttempt } from '@prisma/client';
 import { db } from './db';
-import { config } from './config';
+import { accountFoldsEnabled, config } from './config';
 import { hash, random } from './auth-primitives';
 import { adminXIds } from './admins';
 import { allowedImageUrl } from './image-hosts';
@@ -195,7 +195,9 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
     let user = await tx.user.findUnique({ where: { xId: profile.id } });
     if (user?.suspended) throw new OAuthError('suspended');
     if (owner && user && owner.id !== user.id) {
-      // Two accounts for one person: fold the one with no activity into the other.
+      // Two accounts for one person. Folding is gated off for launch (see accountFoldsEnabled).
+      if (!accountFoldsEnabled()) throw new OAuthError('identity');
+      // Fold the one with no activity into the other.
       if (owner.xId || (await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
         throw new OAuthError('identity');
       if (await isEmptyAccount(tx, owner.id)) {
@@ -221,28 +223,33 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
             ...(role === 'ADMIN' ? { role: 'CREATOR' } : {}),
             ...(localAutoApprove ? { approved: true } : {}),
           };
-    user = owner
-      ? await tx.user.update({
-          where: { id: owner.id },
-          data: {
-            xId: profile.id,
-            handle: profile.username,
-            ...access(owner.role),
-          },
-        })
-      : await tx.user.upsert({
-          where: { xId: profile.id },
-          create: {
-            xId: profile.id,
-            handle: profile.username,
-            role: admin ? 'ADMIN' : 'CREATOR',
-            approved: admin || localAutoApprove,
-          },
-          update: {
-            handle: profile.username,
-            ...access(user?.role),
-          },
-        });
+    if (owner) {
+      // `owner` was read before the lock, so its xId may be stale. Bind only while the stored identity is
+      // still unset or already this profile; a concurrent callback that bound another identity wins.
+      const bound = await tx.user.updateMany({
+        where: { id: owner.id, OR: [{ xId: null }, { xId: profile.id }] },
+        data: {
+          xId: profile.id,
+          handle: profile.username,
+          ...access(owner.role),
+        },
+      });
+      if (bound.count !== 1) throw new OAuthError('identity');
+      user = await tx.user.findUniqueOrThrow({ where: { id: owner.id } });
+    } else
+      user = await tx.user.upsert({
+        where: { xId: profile.id },
+        create: {
+          xId: profile.id,
+          handle: profile.username,
+          role: admin ? 'ADMIN' : 'CREATOR',
+          approved: admin || localAutoApprove,
+        },
+        update: {
+          handle: profile.username,
+          ...access(user?.role),
+        },
+      });
     const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
     if (existing && existing.userId !== user.id) throw new OAuthError('identity');
     const data = {

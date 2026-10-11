@@ -13,6 +13,11 @@ export const config = {
 };
 
 export const trackingEnabled = () => process.env.X_TRACKING_V2_ENABLED !== 'false';
+// Automatic folding of an activity-free duplicate account (X callback, wallet link) is off unless
+// exactly "true". Its lock order is unsafe under concurrency (deadlocks and stale merges were
+// reproduced); keep it off until that protocol is fixed. Duplicates are refused instead.
+export const accountFoldsEnabled = (env: Record<string, string | undefined> = process.env) =>
+  env.ACCOUNT_FOLDS_ENABLED === 'true';
 export const trackingSettlementEnabled = () =>
   trackingEnabled() && process.env.X_TRACKING_V2_SETTLEMENT_ENABLED === 'true';
 export const newTrackingRules = () =>
