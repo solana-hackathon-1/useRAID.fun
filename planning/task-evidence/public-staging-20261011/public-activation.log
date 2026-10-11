@@ -1,0 +1,15 @@
+ Container useraid-staging-web-1 Recreate 
+ Container useraid-staging-worker-1 Recreate 
+ Container useraid-staging-web-1 Recreated 
+ Container useraid-staging-worker-1 Recreated 
+ Container useraid-staging-worker-1 Starting 
+ Container useraid-staging-web-1 Starting 
+ Container useraid-staging-worker-1 Started 
+ Container useraid-staging-web-1 Started 
+NAME                            IMAGE                                                                                                      COMMAND                  SERVICE       CREATED             STATUS                                     PORTS
+useraid-staging-cloudflared-1   cloudflare/cloudflared:2026.10.0@sha256:9b49eed8f62806d5d45ddf59ecefb5710429598ea6d3fcccd2af938f621b2b07   "cloudflared --no-au…"   cloudflared   9 minutes ago       Up 9 minutes                               
+useraid-staging-db-1            postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea                 "docker-entrypoint.s…"   db            About an hour ago   Up About an hour (healthy)                 5432/tcp
+useraid-staging-proxy-1         nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236                  "/docker-entrypoint.…"   proxy         9 minutes ago       Up 9 minutes                               80/tcp, 192.168.101.13:8443->443/tcp
+useraid-staging-watchtower-1    containrrr/watchtower:1.7.1@sha256:6dd50763bbd632a83cb154d5451700530d1e44200b268a4e9488fefdfcf2b038        "/watchtower"            watchtower    32 minutes ago      Up 32 minutes (healthy)                    8080/tcp
+useraid-staging-web-1           ghcr.io/solana-hackathon-1/useraid.fun:staging                                                             "docker-entrypoint.s…"   web           1 second ago        Up Less than a second (health: starting)   3000/tcp
+useraid-staging-worker-1        ghcr.io/solana-hackathon-1/useraid.fun:staging                                                             "docker-entrypoint.s…"   worker        1 second ago        Up Less than a second                      3000/tcp

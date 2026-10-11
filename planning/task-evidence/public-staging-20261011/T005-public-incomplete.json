@@ -1,0 +1,155 @@
+{
+  "task_id": "T005",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": null,
+  "handoff": "docs/tasks/2026-10-11-public-staging.md",
+  "migration_rollback": "docs/staging-deploy.md",
+  "dependency_evidence": "Staging isolated. Existing T005/O18 independent and production obligations retained.",
+  "open_decisions": "Public DNS/token/reachability resolved; uncommitted public ingress has no new publication authority. Independent full T005/UAT/provider/production/O18 remain open.",
+  "release_gate_disposition": "Staging only; hazardous flags disabled. Full T005/independent/UAT/gates NOT VERIFIED.",
+  "base_sha": "736964cf1445aa5d738e17c1633cf61102ad192c",
+  "working_tree_manifest": "owned-source-manifest.json",
+  "ci": {
+    "Staging image / publish": {
+      "result": "SUCCESS",
+      "sha": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38134946330"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_staging_public.py'",
+      "sha": "736964cf1445aa5d738e17c1633cf61102ad192c",
+      "evidence_url": "red.log",
+      "expected_failure": "Public host overlay and trusted Nginx ingress absent",
+      "observed_failure": "1 assertion failure and 1 missing-file error",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_staging_public.py'",
+      "sha": "736964cf1445aa5d738e17c1633cf61102ad192c",
+      "evidence_url": "green.log",
+      "observed": "2 PASS; real Compose and synthetic Nginx host boundary",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "sha": "736964cf1445aa5d738e17c1633cf61102ad192c",
+      "evidence_url": "final-regression.log",
+      "observed": "48 PASS/10.194s; uncommitted source identity recorded in manifest",
+      "result": "PASS"
+    }
+  },
+  "criteria": {
+    "T005-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    },
+    "T005-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Author evidence is not full independent T005 acceptance; see task and retained obligations."
+    }
+  },
+  "deployed_sha": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248"
+}

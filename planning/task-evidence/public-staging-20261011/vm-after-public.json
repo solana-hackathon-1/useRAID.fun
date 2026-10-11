@@ -1,0 +1,262 @@
+[
+  {
+    "name": "useraid-staging-web-1",
+    "id": "7e4cf5d17c8fc8a58f99804f3d501518d454e9739c8400ca7e3610b965be290b",
+    "started": "2026-10-11T12:01:50.975531739Z",
+    "status": "running",
+    "image": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+    "health": "healthy",
+    "restarts": 0,
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "ports": {},
+    "networks": [
+      "useraid-staging_default"
+    ],
+    "environment": {
+      "WALLET_LINKS_ENABLED": "false",
+      "NODE_ENV": "production",
+      "PAYOUT_ENABLED": "false",
+      "LOCAL_AUTO_APPROVE_CREATORS": "false",
+      "LAUNCH_ENABLED": "false",
+      "USDC_NETWORK": "devnet",
+      "ALLOW_REMOTE_TEST_DB": "false",
+      "STUDIO_SANDBOX": "false",
+      "ACCOUNT_FOLDS_ENABLED": "false",
+      "NEXT_PUBLIC_APP_URL": "https://staging.useraid.fun",
+      "X_TRACKING_V2_SETTLEMENT_ENABLED": "false",
+      "X_TRACKING_V2_ENABLED": "false",
+      "DEMO_MODE": "false",
+      "LIVE_COLLECTION_APPROVED": "false"
+    },
+    "mounts": [],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "true",
+      "com.centurylinklabs.watchtower.scope": "useraid-staging",
+      "org.opencontainers.image.revision": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248"
+    }
+  },
+  {
+    "name": "useraid-staging-worker-1",
+    "id": "08da6458010c1e216db80f09000faa27d476691cba24c223da12bf50ff1f7e84",
+    "started": "2026-10-11T12:01:50.898634493Z",
+    "status": "running",
+    "image": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+    "health": null,
+    "restarts": 0,
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "ports": {},
+    "networks": [
+      "useraid-staging_default"
+    ],
+    "environment": {
+      "LOCAL_AUTO_APPROVE_CREATORS": "false",
+      "ACCOUNT_FOLDS_ENABLED": "false",
+      "DEMO_MODE": "false",
+      "STUDIO_SANDBOX": "false",
+      "PAYOUT_ENABLED": "false",
+      "NODE_ENV": "production",
+      "USDC_NETWORK": "devnet",
+      "X_TRACKING_V2_ENABLED": "false",
+      "WALLET_LINKS_ENABLED": "false",
+      "NEXT_PUBLIC_APP_URL": "https://staging.useraid.fun",
+      "LAUNCH_ENABLED": "false",
+      "LIVE_COLLECTION_APPROVED": "false",
+      "X_TRACKING_V2_SETTLEMENT_ENABLED": "false",
+      "ALLOW_REMOTE_TEST_DB": "false"
+    },
+    "mounts": [],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "true",
+      "com.centurylinklabs.watchtower.scope": "useraid-staging",
+      "org.opencontainers.image.revision": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248"
+    }
+  },
+  {
+    "name": "useraid-staging-cloudflared-1",
+    "id": "a979f70fb1c2be0c1e930f0d9a83ee48d93792b382bdfcf5527bc6a4a0aad6de",
+    "started": "2026-10-11T11:52:09.830486333Z",
+    "status": "running",
+    "image": "sha256:9b49eed8f62806d5d45ddf59ecefb5710429598ea6d3fcccd2af938f621b2b07",
+    "health": null,
+    "restarts": 0,
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "ports": {},
+    "networks": [
+      "useraid-staging_public_edge"
+    ],
+    "environment": {},
+    "mounts": [
+      {
+        "destination": "/run/secrets/cloudflare_tunnel_token",
+        "read_write": false
+      }
+    ],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "false"
+    }
+  },
+  {
+    "name": "useraid-staging-proxy-1",
+    "id": "23fe443b7a5244a829faaa98837110c11eb9b78ea3917af5c83d99f5aa059ed0",
+    "started": "2026-10-11T11:52:09.745411287Z",
+    "status": "running",
+    "image": "sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236",
+    "health": null,
+    "restarts": 0,
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "ports": {
+      "443/tcp": [
+        {
+          "HostIp": "192.168.101.13",
+          "HostPort": "8443"
+        }
+      ]
+    },
+    "networks": [
+      "useraid-staging_default",
+      "useraid-staging_public_edge"
+    ],
+    "environment": {},
+    "mounts": [
+      {
+        "destination": "/etc/nginx/tls",
+        "read_write": false
+      },
+      {
+        "destination": "/etc/nginx/conf.d/default.conf",
+        "read_write": false
+      },
+      {
+        "destination": "/etc/nginx/conf.d/staging-public.conf",
+        "read_write": false
+      }
+    ],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "false"
+    }
+  },
+  {
+    "name": "useraid-staging-watchtower-1",
+    "id": "0f93ff27737224e924492a6d4d01b5be30f9fb744e9dd5051d6db4e1751cf319",
+    "started": "2026-10-11T11:29:21.631149368Z",
+    "status": "running",
+    "image": "sha256:6dd50763bbd632a83cb154d5451700530d1e44200b268a4e9488fefdfcf2b038",
+    "health": "healthy",
+    "restarts": 0,
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "ports": {},
+    "networks": [
+      "useraid-staging_default"
+    ],
+    "environment": {},
+    "mounts": [
+      {
+        "destination": "/config",
+        "read_write": false
+      },
+      {
+        "destination": "/var/run/docker.sock",
+        "read_write": true
+      }
+    ],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "false",
+      "com.centurylinklabs.watchtower.scope": "useraid-staging"
+    }
+  },
+  {
+    "name": "useraid-staging-db-1",
+    "id": "85b1c9f2ebd5dc1515ed4efb59f92f2e8d4f95d7582e555a33a11bb37318cb83",
+    "started": "2026-10-11T10:58:54.557437932Z",
+    "status": "running",
+    "image": "sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "health": "healthy",
+    "restarts": 0,
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "ports": {},
+    "networks": [
+      "useraid-staging_default"
+    ],
+    "environment": {},
+    "mounts": [
+      {
+        "destination": "/run/secrets/db_password",
+        "read_write": false
+      },
+      {
+        "destination": "/var/lib/postgresql/data",
+        "read_write": true
+      }
+    ],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "false"
+    }
+  },
+  {
+    "name": "dokploy-postgres.1.9xdv4wp268x21jrg6nrj55fzx",
+    "id": "56a30b21e305cbb925182a02eaed347b4d4da16a35e17f95ac6c9b9da465a289",
+    "started": "2026-10-11T10:34:51.222382687Z",
+    "status": "running",
+    "image": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d"
+  },
+  {
+    "name": "dokploy-postgres.1.s68gslsht9fhni7exlbk2d1ch",
+    "id": "0e321ff6938d0ce6127998c8b3d76e6001d9ef19c09a3d738a5eef23502235d7",
+    "started": "2026-10-11T10:34:45.578236306Z",
+    "status": "exited",
+    "image": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d"
+  },
+  {
+    "name": "dokploy-postgres.1.sy5kbop8e28a4kapmpjpdt5vx",
+    "id": "6d5c9ee55a5296e2f30cc40804b299ea3de453114dc84b6d5098e3b984a701b3",
+    "started": "2026-10-11T10:34:40.140322435Z",
+    "status": "exited",
+    "image": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d"
+  },
+  {
+    "name": "dokploy-postgres.1.a4gk9agwjz6wf7n5hlz4qc72p",
+    "id": "cc6b768c6b5971121e704fd8eb0605eddee022fff608c3f4d14e46e7b31fe4df",
+    "started": "2026-10-11T10:34:34.589972631Z",
+    "status": "exited",
+    "image": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d"
+  },
+  {
+    "name": "dokploy-postgres.1.w7quyfuzwb43vd5lviwl6su1i",
+    "id": "0d480bae2d82a78182cc136cc09d7de23834438c6bc66804c2f1f2aa979235ad",
+    "started": "2026-10-11T10:34:29.142290263Z",
+    "status": "exited",
+    "image": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d"
+  },
+  {
+    "name": "dokploy-traefik",
+    "id": "70a2c503d08fd1081813b2eff15cdb5300cfbaf10443e387ee0664168f8aa49a",
+    "started": "2026-10-11T10:28:44.242142244Z",
+    "status": "running",
+    "image": "sha256:31267173a15b4944e797a76ffd9c419707c8d8b32fe5b610f80cd0cfa05f372d"
+  },
+  {
+    "name": "dokploy.1.meurwwh4bht4ltp24npt8vcj3",
+    "id": "e2a84bc4e6b24f85731850feae57cf2082eb8001c6d94ce73ce0112a4637716c",
+    "started": "2026-10-11T10:28:21.877615249Z",
+    "status": "running",
+    "image": "sha256:e8789a3f71a1e50d817836ad222ee0eab8ee69fc1b0451fee189a880b5602871"
+  }
+]

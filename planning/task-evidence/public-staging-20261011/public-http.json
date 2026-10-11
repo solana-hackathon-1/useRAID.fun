@@ -1,0 +1,84 @@
+{
+  "observed_at_utc": "2026-10-11T12:02:48.388569+00:00",
+  "transport": "Public Cloudflare IPv4 from DNS; --resolve for stale local macOS negative cache, hostname/SNI and trusted TLS validation preserved; ordinary DNS and HTTPS separately verified from VM",
+  "checks": [
+    {
+      "path": "/",
+      "expected_status": 200,
+      "actual_status": 200,
+      "curl_exit": 0,
+      "staging_header": true,
+      "noindex_header": true
+    },
+    {
+      "path": "/privacy",
+      "expected_status": 200,
+      "actual_status": 200,
+      "curl_exit": 0,
+      "staging_header": true,
+      "noindex_header": true
+    },
+    {
+      "path": "/creator",
+      "expected_status": 200,
+      "actual_status": 200,
+      "curl_exit": 0,
+      "staging_header": true,
+      "noindex_header": true
+    },
+    {
+      "path": "/api/health",
+      "expected_status": 200,
+      "actual_status": 200,
+      "curl_exit": 0,
+      "staging_header": true,
+      "noindex_header": true,
+      "body": {
+        "status": "ok",
+        "mode": "live",
+        "rateLimitMode": "per-client"
+      }
+    },
+    {
+      "path": "/api/admin/usdc",
+      "expected_status": 401,
+      "actual_status": 401,
+      "curl_exit": 0,
+      "staging_header": true,
+      "noindex_header": true
+    },
+    {
+      "path": "/api/auth/logout",
+      "origin": "https://staging.useraid.fun",
+      "expected_status": 200,
+      "actual_status": 200,
+      "curl_exit": 0,
+      "body": {
+        "ok": true
+      },
+      "fixture": "no session cookie; no user/session mutation"
+    },
+    {
+      "path": "/api/auth/logout",
+      "origin": "https://foreign.example",
+      "expected_status": 403,
+      "actual_status": 403,
+      "curl_exit": 0,
+      "body": {
+        "error": "Request origin rejected."
+      },
+      "fixture": "no session cookie; no user/session mutation"
+    },
+    {
+      "path": "/api/auth/logout",
+      "origin": "https://192.168.101.13:8443",
+      "expected_status": 403,
+      "actual_status": 403,
+      "curl_exit": 0,
+      "body": {
+        "error": "Request origin rejected."
+      },
+      "fixture": "no session cookie; no user/session mutation"
+    }
+  ]
+}

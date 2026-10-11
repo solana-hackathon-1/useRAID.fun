@@ -1,0 +1,35 @@
+{
+  "observed_at_utc": "2026-10-11T13:20:05.413672+00:00",
+  "author": "Codex /root",
+  "status": "SELF-EVALUATED",
+  "owner_authority": "Yes check and do it: preserve/reconcile/commit public configuration separately; no push",
+  "primary_head": "736964cf1445aa5d738e17c1633cf61102ad192c",
+  "upstream_head": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+  "public_prepared_base": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+  "preservation": "1067 tracked/untracked regular files plus patch/status snapshot in private /tmp/raid-git-reconcile-20261011; ignored credentials/nested worktrees/symlinks untouched",
+  "three_way_conflicts": [
+    "docs/ai-handoff/CURRENT.md",
+    "docs/raid-wallet-links.md",
+    "examples/wallet-links/host.ts",
+    "planning/raid-ci-matrix.json",
+    "planning/raid-scenarios.json",
+    "planning/raid-task-contracts.json",
+    "src/identity-link/contracts.ts",
+    "src/identity-link/index.ts",
+    "src/lib/wallet-auth.ts",
+    "src/lib/x-oauth.ts",
+    "tests/identity-link-boundary.test.ts"
+  ],
+  "primary_worktree_mutated": false,
+  "isolated_checks": {
+    "planning_and_deployment": "48 PASS/10.154s",
+    "public_runtime_evidence": "exact unchanged ingress config: prior public TLS/HTTP8/browser8/Nginx/falseflags/devnet PASS; actual app remains e492"
+  },
+  "pending_choice": "Clean current-main checkout retaining original folder, or explicit reconciliation of unfinished auth changes; asked owner",
+  "not_claimed": [
+    "independent review",
+    "full T005/UAT acceptance",
+    "auth merge correctness",
+    "hosted CI for unpushed commit"
+  ]
+}

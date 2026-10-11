@@ -1,3 +1,9 @@
+# Codex public ingress scoped commit preparation — 2026-10-11T13:16:47.188515+00:00
+
+Owner explicitly instructed “Yes check and do it” after advice to preserve unfinished work, reconcile local main and commit public ingress separately. Scope: public tunnel overlay/proxy contract/test/docs/evidence, Docker build token guard, canonical DEC-2026-10-11-02 and planning fingerprints. Prepared on clean main e492c39; no unfinished wallet-link/test-center source included. No new push/delegation/full issue acceptance requested. Primary checkout's mixed work is privately snapshotted; reviewed three-way local reconciliation follows scoped commit, preserving unfinished changes uncommitted. Actual public preview/RED/GREEN/self-evaluation evidence is under planning/task-evidence/public-staging-20261011/ and docs/tasks/2026-10-11-public-staging.md. Public HTTPS preview https://staging.useraid.fun remains running on checked app e492; Watchtower300s/web+worker, falsehazards/devnet. Independent/fullT005/UAT/OAuth/provider/production obligations remain NOT VERIFIED; prior evidence below retained. Next: exact-source planning/format/diff checks, scoped local commit, local fast-forward with preserved WIP; report resulting Git state. No external push or VM rollout required for this Git-only step.
+
+---
+
 # Codex staging publication candidate — 2026-10-11T11:15:14.451843+00:00
 
 Owner explicitly authorized commit/push of only the prepared staging slice to main from an isolated checkout. Source baseline5e8080f2a4abe39854bbc00f340f288d273540bb; clean clone /tmp/raid-staging-20261011/publish. Primary checkout main736964c and all unfinished T006/test-center changes remain preserved, not published by this slice. No merge or delegation. Canonical DEC-2026-10-11-01 chooses isolated ARM64 VM/GHCR/Watchtower staging; production O18 and fullT005/UAT/independent gates stay open.

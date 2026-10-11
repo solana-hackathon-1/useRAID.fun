@@ -1,0 +1,49 @@
+# Optional public preview host. Apply with compose.staging.yaml in the same project.
+services:
+  web:
+    environment:
+      NEXT_PUBLIC_APP_URL: https://staging.useraid.fun
+  worker:
+    environment:
+      NEXT_PUBLIC_APP_URL: https://staging.useraid.fun
+  proxy:
+    networks:
+      default:
+      public_edge:
+        ipv4_address: 172.30.101.2
+    volumes:
+      - ${STAGING_ROOT:-/opt/useraid-staging}/nginx-public.conf:/etc/nginx/conf.d/staging-public.conf:ro
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.10.0@sha256:9b49eed8f62806d5d45ddf59ecefb5710429598ea6d3fcccd2af938f621b2b07
+    user: '${STAGING_TUNNEL_UID:-1000}:${STAGING_TUNNEL_GID:-1000}'
+    command:
+      ['tunnel', '--no-autoupdate', 'run', '--token-file', '/run/secrets/cloudflare_tunnel_token']
+    restart: unless-stopped
+    read_only: true
+    security_opt: ['no-new-privileges:true']
+    cap_drop: [ALL]
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+    networks:
+      public_edge:
+        ipv4_address: 172.30.101.3
+    secrets: [cloudflare_tunnel_token]
+    depends_on:
+      proxy:
+        condition: service_started
+    labels:
+      com.centurylinklabs.watchtower.enable: 'false'
+
+networks:
+  public_edge:
+    ipam:
+      config:
+        - subnet: 172.30.101.0/29
+
+secrets:
+  cloudflare_tunnel_token:
+    file: ${STAGING_ROOT:-/opt/useraid-staging}/secrets/cloudflare-tunnel-token

@@ -1,0 +1,10 @@
+{
+  "observed_at_utc": "2026-10-11T11:53:26.047502+00:00",
+  "expected_after_activation": 200,
+  "observed_before_activation": 403,
+  "body": {
+    "error": "Request origin rejected."
+  },
+  "setup": "No session cookie; target is currently LAN staging with public-origin header; no user/session mutation",
+  "result": "EXPECTED RED before canonical-origin change"
+}

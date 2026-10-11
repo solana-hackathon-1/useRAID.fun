@@ -229,6 +229,14 @@ Each replacement container applies the repository's existing migrations before s
 
 ---
 
+### 02.10 Accepted public staging access — 11 October 2026
+
+DEC-2026-10-11-02: the project owner requested internet access to staging for preview/testing from college or a friend's home and confirmed ownership of the Cloudflare-managed `useraid.fun` domain. Use a named Cloudflare Tunnel/public staging hostname `staging.useraid.fun`, scoped to the existing isolated staging application. Owner supplies a dedicated tunnel run credential; keep it separate from package pulls and application/provider secrets. This authorizes configuring public staging ingress, not production enablement, unrelated DNS changes, general account credentials or a Git commit/push/merge.
+
+Preserve private database/worker/Dokploy boundaries and existing server authorization; select the public HTTPS canonical origin for existing CSRF/wallet/OAuth domain binding, and accept trusted client-IP headers only from the authenticated connector's private proxy hop. Keep all previously disabled financial/provider/identity feature gates disabled. Public reachability supplies no new product user/admin/fund authority or acceptance evidence. R15/R16/D01/D12/I05/I06/I09/I10/I12/I13, AC67/AC73–AC75 and sections24/28–30/33.11–12 govern the change. [Public staging ingress contract](docs/staging-public-access.md) records topology, consuming dependencies, adversarial tests and recovery. Live URL and representative external-network testing remain unverified until actual evidence; full T005, independent review/UAT/O18/production gates remain open.
+
+---
+
 ## 03. Vocabulary
 
 | Term                   | Exact meaning                                                                                                                                                                                                                            |
