@@ -1,0 +1,130 @@
+{
+  "task_id": "T008",
+  "scope": "T008A pure preparation and host-capability contract; no persisted or full onboarding acceptance",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "c50a60fc7d3aa8f9a6814508f954651a1c81426e",
+  "source_identity": "Current base plus T008-contract/review.json working-tree hashes",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T008-contract.md",
+  "migration_rollback": "No migration or app API wiring; remove only unwired preparation library, preserve all existing account/work/claim state",
+  "dependency_evidence": [
+    "T007 bounded mainc50a60f exact hosted1196passes; fullT006/T007 independent acceptance remains absent",
+    "T008-contract actualRED/GREEN/refactor/146regression/independent consuming-host evidence"
+  ],
+  "open_decisions": [
+    "Protected preference/privacy/retention/recovery and skill/trial/capacity/payout dependencies remain unresolved for full feature"
+  ],
+  "release_gate_disposition": "Only owner-directed bounded staging publication. No profile data collection, real starter/trial, rank, role, money, provider or feature activation. Public ingress530/1033 and SSHtimeout remain unverified rollout.",
+  "criteria": {
+    "T008-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    },
+    "T008-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded preparation evidence exists; full numbered independent T008 acceptance not supplied."
+    }
+  }
+}

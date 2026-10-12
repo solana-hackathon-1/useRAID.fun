@@ -1,0 +1,13 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ✓ tests/raider-onboarding-boundary.test.ts (3 tests) 583ms
+   ✓ independent copied orientation host consumes declared interfaces and substitution failures  572ms
+ ✓ tests/raider-onboarding.test.ts (18 tests) 49ms
+
+ Test Files  2 passed (2)
+      Tests  21 passed (21)
+   Start at  00:04:43
+   Duration  1.26s (transform 105ms, setup 0ms, import 230ms, tests 632ms, environment 0ms)
+
+JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-contract/refactor.xml

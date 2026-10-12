@@ -1,0 +1,150 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/raider-onboarding.test.ts (17 tests | 11 failed) 41ms
+     × prepares a beginner route without inventing completion, rank, capacity or payment authority 7ms
+     × routes experienced newcomers directly through PORTFOLIO evidence 1ms
+     × routes experienced newcomers directly through TRIAL evidence 1ms
+     × allows a beginner to choose a relevant trial without requiring earned rank first 1ms
+     × reports unavailable starter work rather than linking an unimplemented route 1ms
+     × accepts a host replacement without rewriting preferences or granting eligibility 1ms
+     × normalizes an unordered interest set without mutating caller data 1ms
+     ✓ rejects invalid or privilege-bearing input without echoing private values 4ms
+     ✓ rejects invalid or privilege-bearing input without echoing private values 1ms
+     ✓ rejects invalid or privilege-bearing input without echoing private values 1ms
+     ✓ rejects invalid or privilege-bearing input without echoing private values 1ms
+     ✓ rejects invalid or privilege-bearing input without echoing private values 1ms
+     ✓ rejects invalid or privilege-bearing input without echoing private values 1ms
+     × rejects an external or ambiguous host action https://foreign.example/trial 12ms
+     × rejects an external or ambiguous host action //foreign.example/trial 2ms
+     × rejects an external or ambiguous host action /\foreign.example/trial 1ms
+     × rejects success-shaped unavailable capabilities 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > prepares a beginner route without inventing completion, rank, capacity or payment authority
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+      8| export function prepareRaiderOrientation(_input: unknown, _host: unkno…
+      9|   // Executable baseline for the behavior tests; no persistence or suc…
+     10|   throw new OnboardingContractError('INVALID_INPUT');
+       |         ^
+     11| }
+     12|
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:24:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > routes experienced newcomers directly through PORTFOLIO evidence
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > routes experienced newcomers directly through TRIAL evidence
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+      8| export function prepareRaiderOrientation(_input: unknown, _host: unkno…
+      9|   // Executable baseline for the behavior tests; no persistence or suc…
+     10|   throw new OnboardingContractError('INVALID_INPUT');
+       |         ^
+     11| }
+     12|
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:38:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > allows a beginner to choose a relevant trial without requiring earned rank first
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+      8| export function prepareRaiderOrientation(_input: unknown, _host: unkno…
+      9|   // Executable baseline for the behavior tests; no persistence or suc…
+     10|   throw new OnboardingContractError('INVALID_INPUT');
+       |         ^
+     11| }
+     12|
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:44:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > reports unavailable starter work rather than linking an unimplemented route
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+      8| export function prepareRaiderOrientation(_input: unknown, _host: unkno…
+      9|   // Executable baseline for the behavior tests; no persistence or suc…
+     10|   throw new OnboardingContractError('INVALID_INPUT');
+       |         ^
+     11| }
+     12|
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:47:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > accepts a host replacement without rewriting preferences or granting eligibility
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+      8| export function prepareRaiderOrientation(_input: unknown, _host: unkno…
+      9|   // Executable baseline for the behavior tests; no persistence or suc…
+     10|   throw new OnboardingContractError('INVALID_INPUT');
+       |         ^
+     11| }
+     12|
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:54:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > normalizes an unordered interest set without mutating caller data
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+      8| export function prepareRaiderOrientation(_input: unknown, _host: unkno…
+      9|   // Executable baseline for the behavior tests; no persistence or suc…
+     10|   throw new OnboardingContractError('INVALID_INPUT');
+       |         ^
+     11| }
+     12|
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:63:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > rejects an external or ambiguous host action https://foreign.example/trial
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > rejects an external or ambiguous host action //foreign.example/trial
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > rejects an external or ambiguous host action /\foreign.example/trial
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'INVALID_INPUT'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "INVALID_INPUT"
+
+ ❯ tests/raider-onboarding.test.ts:81:126
+     79|   });
+     80|   it.each(['https://foreign.example/trial', '//foreign.example/trial',…
+     81|     expect(() => prepare(input, { ...host, nextActions: { ...host.next…
+       |                                                                                                                              ^
+     82|   });
+     83|   it('rejects success-shaped unavailable capabilities', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > rejects success-shaped unavailable capabilities
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'INVALID_INPUT'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "INVALID_INPUT"
+
+ ❯ tests/raider-onboarding.test.ts:84:145
+     82|   });
+     83|   it('rejects success-shaped unavailable capabilities', () => {
+     84|     expect(() => prepare(input, { ...host, nextActions: { ...host.next…
+       |                                                                                                                                                 ^
+     85|   });
+     86| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed | 6 passed (17)
+   Start at  23:48:49
+   Duration  431ms (transform 62ms, setup 0ms, import 96ms, tests 41ms, environment 0ms)
+
+JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-contract/red.xml

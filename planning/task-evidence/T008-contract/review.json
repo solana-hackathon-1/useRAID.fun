@@ -1,0 +1,49 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-12T18:24:24.043680+00:00",
+  "source_base": "c50a60fc7d3aa8f9a6814508f954651a1c81426e",
+  "scope": "T008A pure preparation/host-navigation contract; no auth/store/API/UI implementation or full issue acceptance",
+  "requirements": [
+    "R04",
+    "R12",
+    "R13",
+    "R15",
+    "R16",
+    "I07",
+    "I10",
+    "I13",
+    "AC03 partial",
+    "AC06 partial",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "red": "17tests11fail6pass, executable stub; no import/setup error",
+  "green": "17testsPASS",
+  "opaque_id_red": "18tests1fail17pass before shared InternalId adoption; arbitrary initial syntax removed in favor of canonical opaque IDs",
+  "boundary_acceptance": "3tests2missing docs/example failures1pass; non-code acceptance defined before writing",
+  "refactor": "refactor.log;21cases including copied host",
+  "schema_api_effects": "NONE: no model/migration, endpoint, feature flag, auth/session/participant, rank/capacity/money change. Module remains unwired.",
+  "independent_review": "NOT VERIFIED; author only; full T008/UAT/real starter-trial and protected persistence gates outstanding",
+  "source_hashes": {
+    "src/raider-onboarding/index.ts": "5cf74811247b2392d734aed39279886659025ed12efadd5c03352aef87183d20",
+    "src/raider-onboarding/contracts.ts": "edeed1883918ee1a95f5338a1bb95de92e3f5f3486253006a2a4c23df1aa344a",
+    "src/contracts/ids.ts": "7f8b552c0d1c60c6cdafdb74d9a515e8f5753bd3f076d98cbfab84f775ba4a69",
+    "tests/raider-onboarding.test.ts": "a2368b897ddb6477e623962d2af9edab254908291eff6a6f1629cc673aa136a1",
+    "tests/raider-onboarding-boundary.test.ts": "7b4ea2325ced3f80f382ebb877043ca6a09a709fc5996b894a9d371cc1ab569f"
+  },
+  "ended_utc": "2026-10-12T18:34:22.382197+00:00",
+  "elapsed_seconds": 598.338517,
+  "checks": {
+    "feature": "21PASS:18domain3boundary",
+    "affected_regression": "6files146PASS including sharedcontracts/docs/evidence",
+    "independent_consumer": "own exact zod4.6.5+tsx4.23.15 install4packages; own copied canonical module/IDs; fixture outputPASS",
+    "planning": "affected requirement/CI inventory suite5PASS; mandatory main workflow full planning retained",
+    "typecheck": "fresh isolated next typegen + tsc exit0; original generated caches preserved",
+    "lint": "owned source/tests/example exit0",
+    "skipped": "No application/schema/dependency/config/UI bytes changed; no repeated DB/browser/Docker/build locally. Mandatory main staging source/fullDB/image/audit gates remain. No devpreview required for unwired library. Real starter/trial/persistence/assessments/UAT/independent criteria not supplied.",
+    "final_docs": "2files88PASS",
+    "format": "owned Prettier check exit0"
+  },
+  "resource_cleanup": "No task-owned containers/server/DB started; CLI child processes completed. Existing stopped resources and unrelated services preserved."
+}

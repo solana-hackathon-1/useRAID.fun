@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="21" failures="0" errors="0" time="0.63160335">
+    <testsuite name="tests/raider-onboarding-boundary.test.ts" timestamp="2026-10-12T18:19:44.399Z" hostname="ubu2" tests="3" failures="0" errors="0" skipped="0" time="0.583085105">
+        <testcase classname="tests/raider-onboarding-boundary.test.ts" name="orientation preparation has no application singleton, identity mutation or privileged SDK" time="0.005748096">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-boundary.test.ts" name="independent copied orientation host consumes declared interfaces and substitution failures" time="0.571549964">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-boundary.test.ts" name="same-change documentation declares the preparation-only host and protected-storage boundary" time="0.003144025">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raider-onboarding.test.ts" timestamp="2026-10-12T18:19:44.402Z" hostname="ubu2" tests="18" failures="0" errors="0" skipped="0" time="0.048518245">
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; prepares a beginner route without inventing completion, rank, capacity or payment authority" time="0.030612799">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through PORTFOLIO evidence" time="0.001161241">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through TRIAL evidence" time="0.000784375">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; allows a beginner to choose a relevant trial without requiring earned rank first" time="0.000831811">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; reports unavailable starter work rather than linking an unimplemented route" time="0.001272054">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; accepts a host replacement without rewriting preferences or granting eligibility" time="0.001548024">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; retains opaque catalog identifiers from the shared InternalId contract" time="0.00076498">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; normalizes an unordered interest set without mutating caller data" time="0.001174917">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.001690461">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000958329">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000691386">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000596674">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000535327">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000708554">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action https://foreign.example/trial" time="0.001232377">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action //foreign.example/trial" time="0.000468439">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action /\foreign.example/trial" time="0.000327272">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects success-shaped unavailable capabilities" time="0.000420543">
+        </testcase>
+    </testsuite>
+</testsuites>
