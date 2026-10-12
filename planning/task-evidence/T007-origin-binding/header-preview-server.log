@@ -1,0 +1,39 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3013
+- Network:       http://127.0.0.1:3013
+✓ Ready in 1385ms
+✓ Running next.config.ts took 72ms
+
+○ Compiling / ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 8.9s (next.js: 7.3s, application-code: 1537ms)
+○ Compiling /api/events ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 702ms (next.js: 110ms, application-code: 592ms)
+ POST /api/events 200 in 65ms (next.js: 8ms, application-code: 57ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 2.8s (next.js: 2.4s, application-code: 426ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 710ms (next.js: 252ms, application-code: 458ms)
+ POST /api/events 200 in 35ms (next.js: 4ms, application-code: 31ms)
+○ Compiling /api/wallet/challenge ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/wallet/challenge 200 in 5.2s (next.js: 4.5s, application-code: 641ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/wallet/verify 200 in 2.7s (next.js: 1727ms, application-code: 982ms)
+ POST /api/wallet/verify 401 in 64ms (next.js: 10ms, application-code: 54ms)
+ POST /api/wallet/challenge 200 in 74ms (next.js: 33ms, application-code: 41ms)
+ POST /api/wallet/verify 401 in 35ms (next.js: 3ms, application-code: 32ms)
+ POST /api/wallet/challenge 403 in 9ms (next.js: 2ms, application-code: 7ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 3.0s (next.js: 2.1s, application-code: 923ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/events 200 in 3.4s (next.js: 3.1s, application-code: 323ms)
+ GET /privacy 200 in 3.3s (next.js: 2.9s, application-code: 399ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /creator/account 200 in 3.6s (next.js: 2.9s, application-code: 642ms)
+ GET / 200 in 117ms (next.js: 10ms, application-code: 107ms)
+ POST /api/events 200 in 46ms (next.js: 8ms, application-code: 38ms)
+ GET /privacy 200 in 108ms (next.js: 7ms, application-code: 101ms)
+ GET /creator/account 200 in 155ms (next.js: 9ms, application-code: 147ms)
+[?25h

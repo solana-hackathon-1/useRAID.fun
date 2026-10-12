@@ -1,0 +1,48 @@
+{
+  "synthetic": true,
+  "mode": "Next development; real fixture session",
+  "checks": [
+    {
+      "mode": "desktop",
+      "path": "/",
+      "status": 200,
+      "pageErrors": 0,
+      "overflow": false
+    },
+    {
+      "mode": "desktop",
+      "path": "/privacy",
+      "status": 200,
+      "pageErrors": 0,
+      "overflow": false
+    },
+    {
+      "mode": "desktop",
+      "path": "/creator/account",
+      "status": 200,
+      "pageErrors": 0,
+      "overflow": false
+    },
+    {
+      "mode": "mobile",
+      "path": "/",
+      "status": 200,
+      "pageErrors": 0,
+      "overflow": false
+    },
+    {
+      "mode": "mobile",
+      "path": "/privacy",
+      "status": 200,
+      "pageErrors": 0,
+      "overflow": false
+    },
+    {
+      "mode": "mobile",
+      "path": "/creator/account",
+      "status": 200,
+      "pageErrors": 0,
+      "overflow": false
+    }
+  ]
+}

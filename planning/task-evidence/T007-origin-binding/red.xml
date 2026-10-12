@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="3" errors="0" time="4.773093855">
+    <testsuite name="tests/wallet-origin-db.test.ts" timestamp="2026-10-12T16:22:25.539Z" hostname="ubu2" tests="4" failures="3" errors="0" skipped="0" time="4.773093855">
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects an otherwise valid sign-in signature issued for the previous domain without mutation" time="4.067800634">
+            <failure message="promise resolved &quot;&apos;3TxRcLfe_EORYzAfcnmTBQR8MZqCViYGqSQw3…&apos;&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;&apos;3TxRcLfe_EORYzAfcnmTBQR8MZqCViYGqSQw3…&apos;&quot; instead of rejecting
+
+- Expected:
+Error {
+  &quot;message&quot;: &quot;rejected promise&quot;,
+}
+
++ Received:
+&quot;3TxRcLfe_EORYzAfcnmTBQR8MZqCViYGqSQw3KJExaI&quot;
+
+ ❯ tests/wallet-origin-db.test.ts:59:106
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a link signed for another application port and preserves the existing session" time="0.14857049">
+            <failure message="promise resolved &quot;&apos;pSn5Vxmdijt7pjcBY04Br4crZhu71YFfK9vYF…&apos;&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;&apos;pSn5Vxmdijt7pjcBY04Br4crZhu71YFfK9vYF…&apos;&quot; instead of rejecting
+
+- Expected:
+Error {
+  &quot;message&quot;: &quot;rejected promise&quot;,
+}
+
++ Received:
+&quot;pSn5Vxmdijt7pjcBY04Br4crZhu71YFfK9vYFeuWoBg&quot;
+
+ ❯ tests/wallet-origin-db.test.ts:71:149
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a rotation signed for another URI scheme and preserves payout ownership and audit" time="0.326780458">
+            <failure message="promise resolved &quot;undefined&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;undefined&quot; instead of rejecting
+
+- Expected:
+Error {
+  &quot;message&quot;: &quot;rejected promise&quot;,
+}
+
++ Received:
+undefined
+
+ ❯ tests/wallet-origin-db.test.ts:85:102
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; allows a current-origin challenge when only the configured URL path changes and rejects replay" time="0.208171069">
+        </testcase>
+    </testsuite>
+</testsuites>

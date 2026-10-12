@@ -45,3 +45,7 @@ A verified wallet can be changed from Account (**Change wallet**), signing with 
 ## Rollback
 
 Migration adds fields/tables and defaults legacy campaigns to Studio version zero/SOL; no existing data rewrite. Disable live funding by clearing rate and deployment gate. Do not drop new tables or delete balance entries. Finish/reconcile pending deposits and transfers before changing network or platform wallet. New network does not expose old-network available funds. Reverting application to older revision stops new Studio launches but cannot settle existing USDC obligations: retain current worker/payment operations until all obligations resolved.
+
+## Authenticated small-screen header
+
+The shared Shell keeps Create Raid, account and navigation controls available at320px and390px. Below640px its header can wrap; an authenticated account has its own row so the menu cannot force horizontal page scrolling. Menu names and Escape/focus behavior remain unchanged. The host supplies the server-observed StudioAccount DTO; rendering an account menu never grants creator/admin authority. Existing live-browser consuming fixtures verify both narrow viewports, open account/mobile menus and keyboard focus; desktop header layout is unchanged.

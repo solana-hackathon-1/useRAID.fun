@@ -26,6 +26,7 @@ import {
   LINK_ADDITIONAL_STATEMENT,
   siwsChainId,
   WALLET_CHALLENGE_STATEMENTS,
+  walletChallengeMatchesOrigin,
 } from './wallet-challenge-contract';
 import { walletSessionAuthority, type WalletSessionObservation } from './wallet-session-authority';
 
@@ -137,6 +138,7 @@ async function consumeChallenge(
     attempt.expiresAt <= new Date() ||
     (attempt.userId ?? undefined) !== currentUserId ||
     hash(attempt.message) !== digest ||
+    !walletChallengeMatchesOrigin(attempt.message, config.appUrl) ||
     attempt.message.split('\n')[3] !== STATEMENTS[purpose] ||
     !nacl.sign.detached.verify(new TextEncoder().encode(attempt.message), bytes, key.toBytes())
   )

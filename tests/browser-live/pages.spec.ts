@@ -82,3 +82,35 @@ test('/studio-test is not found outside the sandbox', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'This signal couldn’t be found.' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Test Creator Studio' })).toHaveCount(0);
 });
+
+for (const width of [320, 390])
+  test(`authenticated header fits a ${width}px viewport and menus remain usable`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await login(page, creatorToken);
+    await page.goto('/');
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+    });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    const navigation = page.getByRole('button', { name: 'Open menu', exact: true });
+    await expect(navigation).toBeVisible();
+    await navigation.click();
+    await expect(page.getByRole('navigation', { name: 'Mobile navigation' })).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(navigation).toBeFocused();
+    const account = page.locator('.studio-account-trigger');
+    await account.click();
+    await expect(page.getByRole('button', { name: 'Sign out', exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    await page.keyboard.press('Escape');
+    await expect(account).toBeFocused();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+  });

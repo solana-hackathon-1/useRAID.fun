@@ -1,0 +1,7 @@
+
+Running 2 tests using 1 worker
+
+  ✓  1 tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 320px viewport and menus remain usable (8.8s)
+  ✓  2 tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 390px viewport and menus remain usable (4.5s)
+
+  2 passed (15.8s)

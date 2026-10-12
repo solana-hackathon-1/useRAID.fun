@@ -1,0 +1,63 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+false !== true
+
+    at file:///tmp/raid-siws-network-consumer-sPgirG/[eval1]:7:14
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:282:26)
+    at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:278:20)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v22.23.1
+ ❯ tests/identity-link-boundary.test.ts (6 tests | 2 failed) 16055ms
+   × B2a wires only the default-off command: no route, UI, X-callback or revoke use (WR13) 5037ms
+   × copied challenge helper resolves its declared host dependencies and production network policy 8941ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link-boundary.test.ts > B2a wires only the default-off command: no route, UI, X-callback or revoke use (WR13)
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/identity-link-boundary.test.ts:34:1
+     32| });
+     33|
+     34| it('B2a wires only the default-off command: no route, UI, X-callback o…
+       | ^
+     35|   const wiring = /identity-link|walletLink|WalletLink|link-additional|…
+     36|   const names = (await readdir('src', { recursive: true })).filter((na…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/identity-link-boundary.test.ts > copied challenge helper resolves its declared host dependencies and production network policy
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/identity-link-boundary.test.ts:67:1
+     65| });
+     66|
+     67| it('copied challenge helper resolves its declared host dependencies an…
+       | ^
+     68|   const directory = await mkdtemp(join(tmpdir(), 'raid-siws-network-co…
+     69|   try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  22:18:18
+   Duration  16.76s (transform 409ms, setup 0ms, import 447ms, tests 16.06s, environment 0ms)
+

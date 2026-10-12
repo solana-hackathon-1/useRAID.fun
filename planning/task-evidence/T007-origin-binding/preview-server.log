@@ -1,0 +1,84 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3013
+- Network:       http://127.0.0.1:3013
+✓ Ready in 16.0s
+✓ Running next.config.ts took 6.1s
+
+○ Compiling /api/wallet/challenge ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/wallet/challenge 200 in 18.7s (next.js: 17.0s, application-code: 1643ms)
+○ Compiling /api/wallet/verify ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/wallet/verify 200 in 6.9s (next.js: 6.2s, application-code: 684ms)
+ POST /api/wallet/verify 401 in 28ms (next.js: 3ms, application-code: 25ms)
+ POST /api/wallet/challenge 200 in 26ms (next.js: 11ms, application-code: 15ms)
+ POST /api/wallet/verify 401 in 20ms (next.js: 3ms, application-code: 17ms)
+ POST /api/wallet/challenge 403 in 9ms (next.js: 2ms, application-code: 7ms)
+○ Compiling / ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 12.5s (next.js: 11.8s, application-code: 713ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="/" loading={[...]}>
+      <Suspense name="/" fallback={<Fragment>}>
+        <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>
+          <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<SegmentViewNode>} forbidden={undefined} ...>
+            <RedirectBoundary>
+              <RedirectErrorBoundary router={{...}}>
+                <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
+                  <SegmentViewNode type="page" pagePath="page.tsx">
+                    <SegmentTrieNode>
+                    <Home>
+                      <Discovery raids={[...]} demo={false}>
+                        <AutoRefresh>
+                        <section>
+                        <section>
+                        <section>
+                        <div className="discovery-...">
+                          <section className="discovery-..." id="discovery" aria-labelledby="discovery-...">
+                            <div>
+                            <div>
+                            <label className="search-box">
+                              <Search>
+                              <input
+                                value=""
+                                onChange={function onChange}
+                                placeholder="Search projects, campaigns, or mint address"
+                                aria-label="Search campaigns"
+-                               style={{caret-color:"transparent"}}
+                              >
+                            ...
+                        ...
+                  ...
+                ...
+ 
+○ Compiling /privacy ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/events 200 in 4.2s (next.js: 3.7s, application-code: 499ms)
+ GET /privacy 200 in 4.2s (next.js: 3.7s, application-code: 575ms)
+○ Compiling /creator/account ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /creator/account 200 in 5.3s (next.js: 3.9s, application-code: 1343ms)
+ GET / 200 in 127ms (next.js: 14ms, application-code: 113ms)
+ POST /api/events 200 in 49ms (next.js: 10ms, application-code: 38ms)
+ GET / 200 in 112ms (next.js: 3ms, application-code: 109ms)
+ POST /api/events 200 in 18ms (next.js: 1.9ms, application-code: 16ms)
+ GET / 200 in 102ms (next.js: 4ms, application-code: 98ms)
+ POST /api/events 200 in 22ms (next.js: 4ms, application-code: 18ms)
+ GET /privacy 200 in 170ms (next.js: 9ms, application-code: 160ms)
+ GET /creator/account 200 in 135ms (next.js: 6ms, application-code: 130ms)
+ GET / 200 in 84ms (next.js: 3ms, application-code: 81ms)
+ GET / 200 in 167ms (next.js: 3ms, application-code: 163ms)
+ POST /api/events 200 in 62ms (next.js: 2ms, application-code: 60ms)
+[?25h

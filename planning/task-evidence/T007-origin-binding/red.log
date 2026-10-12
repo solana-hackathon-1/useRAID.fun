@@ -1,0 +1,81 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/wallet-origin-db.test.ts (4 tests | 3 failed) 4773ms
+     × rejects an otherwise valid sign-in signature issued for the previous domain without mutation 4068ms
+     × rejects a link signed for another application port and preserves the existing session 149ms
+     × rejects a rotation signed for another URI scheme and preserves payout ownership and audit 327ms
+     ✓ allows a current-origin challenge when only the configured URL path changes and rejects replay 208ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-origin-db.test.ts > stored wallet challenge application origin (T007 AC02) > rejects an otherwise valid sign-in signature issued for the previous domain without mutation
+AssertionError: promise resolved "'3TxRcLfe_EORYzAfcnmTBQR8MZqCViYGqSQw3…'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"3TxRcLfe_EORYzAfcnmTBQR8MZqCViYGqSQw3KJExaI"
+
+ ❯ tests/wallet-origin-db.test.ts:59:106
+     57|     const before = await snapshot();
+     58|     config.appUrl = 'https://new-raid.example';
+     59|     await expect(verifyWalletChallenge(challenge.digest, wallet.sign(c…
+       |                                                                                                          ^
+     60|       .rejects.toMatchObject({ status: 401 });
+     61|     expect(await snapshot()).toEqual(before);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/wallet-origin-db.test.ts > stored wallet challenge application origin (T007 AC02) > rejects a link signed for another application port and preserves the existing session
+AssertionError: promise resolved "'pSn5Vxmdijt7pjcBY04Br4crZhu71YFfK9vYF…'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"pSn5Vxmdijt7pjcBY04Br4crZhu71YFfK9vYFeuWoBg"
+
+ ❯ tests/wallet-origin-db.test.ts:71:149
+     69|     const before = await snapshot();
+     70|     config.appUrl = 'http://localhost:3014';
+     71|     await expect(verifyWalletChallenge(challenge.digest, wallet.sign(c…
+       |                                                                                                                                                     ^
+     72|       .rejects.toMatchObject({ status: 401 });
+     73|     expect(await snapshot()).toEqual(before);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/wallet-origin-db.test.ts > stored wallet challenge application origin (T007 AC02) > rejects a rotation signed for another URI scheme and preserves payout ownership and audit
+AssertionError: promise resolved "undefined" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+undefined
+
+ ❯ tests/wallet-origin-db.test.ts:85:102
+     83|     const before = await snapshot();
+     84|     config.appUrl = 'https://raid.example';
+     85|     await expect(rotateWallet(user.id, challenge.digest, next.sign(cha…
+       |                                                                                                      ^
+     86|       .rejects.toMatchObject({ status: 401 });
+     87|     expect(await snapshot()).toEqual(before);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 1 passed (4)
+   Start at  22:07:10
+   Duration  14.93s (transform 2.13s, setup 0ms, import 9.38s, tests 4.77s, environment 0ms)
+
+JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T007-origin-binding/red.xml
