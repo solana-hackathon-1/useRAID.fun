@@ -136,6 +136,7 @@ export function Shell({
           <span>Community attention, in context.</span>
         </div>
         <div className="footer-links">
+          {(demo || sandbox) && <Link href="/test-center">Test center</Link>}
           <Link href="/methodology">Methodology</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/admin">

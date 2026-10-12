@@ -4,7 +4,7 @@ Persistent project instructions for Codex/Claude handoffs. Read after CURRENT.md
 
 ## Owner preference — 10 October 2026
 
-At independent-review time, run a timed self-evaluation, then show a verified development-server preview to the owner. Record this workflow in architecture and agent instructions. The owner explicitly requested push/merge of PR187 with these additions; that is task-specific publication authority, not standing permission for future merges or delegation. Canonical decision: DEC-2026-10-10-01, blueprint§24.8.
+At independent-review time, run a timed self-evaluation, then show a verified development-server preview to the owner. Record this workflow in architecture and agent instructions. The owner explicitly requested push/merge of PR187 with these additions; that is task-specific publication authority, not standing permission for future merges or delegation. Canonical decision: DEC-2026-10-10-02, blueprint§24.8.
 
 1. Reconcile exact source/working-tree identity and prior evidence before reviewing. Map scope to requirements and numbered task criteria; review actual code, tests, adverse boundaries and consuming-host documentation. Record UTC start/end, elapsed time, commands/results, findings and remaining gaps. Preserve genuine failures, retries and skips.
 2. For a browser-visible change, run a task-owned development server with declared dependencies and synthetic fixtures. Use an available port, preserve existing services, verify relevant routes/actions and desktop/mobile behavior where applicable. Show a reachable URL and mode/source identity, retain appropriate screenshots/logs, and state what the preview cannot prove. Verify a production build separately when required.

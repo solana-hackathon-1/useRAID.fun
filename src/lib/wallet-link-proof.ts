@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto';
 import { IdentityLinkError } from '../identity-link';
+import { LINK_ADDITIONAL_STATEMENT } from './wallet-challenge-contract';
+export { LINK_ADDITIONAL_STATEMENT, SIWS_CHAIN_ID } from './wallet-challenge-contract';
 
 /**
  * Thin proof adapter between the host's stored wallet challenge and the pure identity preflight
@@ -8,11 +10,6 @@ import { IdentityLinkError } from '../identity-link';
  * generated for this digest; anything missing or non-matching is PROOF_INVALID and nothing is ever
  * defaulted (in particular `issuedAt` is never "now").
  */
-export const LINK_ADDITIONAL_STATEMENT =
-  'Add this wallet for sign-in to your useRAID.fun account. Your payout wallet does not change.';
-/** The Chain ID the challenge generator signs today (`createWalletChallenge`). One shared constant. */
-export const SIWS_CHAIN_ID = 'mainnet';
-
 export interface StoredWalletChallenge {
   digest: string;
   address: string;

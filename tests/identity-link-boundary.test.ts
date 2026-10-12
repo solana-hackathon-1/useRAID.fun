@@ -12,6 +12,8 @@ const NEW_TESTS = [
   'tests/identity-link-migration.test.ts',
   'tests/identity-link.test.ts',
   'tests/wallet-link-proof.test.ts',
+  'tests/wallet-link-credentials.test.ts',
+  'tests/wallet-auth-isolation-db.test.ts',
 ];
 
 it('public link module owns SQL and contracts without an app singleton, framework or SDK', async () => {
@@ -29,14 +31,37 @@ it('public link module owns SQL and contracts without an app singleton, framewor
   expect(adapter).not.toMatch(/from ['"].*(?:\/db|config)['"]|process\.env|globalThis/);
 });
 
-it('PR-B1 only adds credential resolution; additional-link commands and enablement stay unavailable (WR13)', async () => {
+it('B2a wires only the default-off command: no route, UI, X-callback or revoke use (WR13)', async () => {
+  const wiring = /identity-link|walletLink|WalletLink|link-additional|linkAdditionalWallet/;
+  const names = (await readdir('src', { recursive: true })).filter((name) =>
+    /\.(ts|tsx)$/.test(name),
+  );
+  const users: string[] = [];
+  for (const name of names)
+    if (wiring.test(await readFile(join('src', name), 'utf8')))
+      users.push(name.replaceAll('\\', '/'));
+  // Routes, pages, components and X OAuth stay unwired until their separately reviewed slices.
+  expect(
+    users.filter((name) => /^(app|components)\//.test(name) || name === 'lib/x-oauth.ts'),
+  ).toEqual([]);
   const walletAuth = await readFile('src/lib/wallet-auth.ts', 'utf8');
   expect(walletAuth).toContain('lookupWalletLink');
-  expect(walletAuth).not.toMatch(/linkVerifiedWallet|linkAdditionalWallet|link-additional/);
-  const xOauth = await readFile('src/lib/x-oauth.ts', 'utf8');
-  expect(xOauth).not.toMatch(/identity-link|walletLink|WalletLink/);
-  const config = await readFile('src/lib/config.ts', 'utf8');
-  expect(config).not.toMatch(/wallet_links_enabled|walletLinksEnabled/);
+  // Existing credential lookup is always available; new-link/revoke composition remains gated.
+  expect(walletAuth).not.toMatch(/revokeWalletCredential/);
+  const { walletLinksEnabled } = await import('../src/lib/config');
+  const previous = process.env.WALLET_LINKS_ENABLED;
+  try {
+    for (const value of [undefined, '', 'false', 'TRUE', '1', 'yes']) {
+      if (value === undefined) delete process.env.WALLET_LINKS_ENABLED;
+      else process.env.WALLET_LINKS_ENABLED = value;
+      expect(walletLinksEnabled()).toBe(false);
+    }
+    process.env.WALLET_LINKS_ENABLED = 'true';
+    expect(walletLinksEnabled()).toBe(true);
+  } finally {
+    if (previous === undefined) delete process.env.WALLET_LINKS_ENABLED;
+    else process.env.WALLET_LINKS_ENABLED = previous;
+  }
 });
 
 it.skipIf(process.env.RUN_DB_TESTS !== 'true')(
@@ -73,9 +98,11 @@ it.skipIf(process.env.RUN_DB_TESTS !== 'true')(
         proofDerived: true,
         alternatePort: true,
         sanitizedFailure: true,
+        internalCredentialContext: true,
+        revokedReserved: true,
         linkedCredentialOwner: true,
-        revokedCredentialReserved: true,
         lookupAlternatePort: true,
+        revokedCredentialReserved: true,
       });
     } finally {
       await truncateAll(db);
@@ -117,6 +144,10 @@ it('module documentation declares the R16 reuse contract and runnable consumer s
     'DATABASE_URL',
     'linkVerifiedWallet',
     'listWalletLinks',
+    'resolveWalletCredential',
+    'revokeWalletCredential',
+    'transaction-bound',
+    'PRIMARY_WALLET_PROTECTED',
     'IdentityTransaction',
     'PRIMARY_WALLET_REQUIRED',
     'wallet_link_guard_v1',

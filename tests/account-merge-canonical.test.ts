@@ -70,6 +70,8 @@ function observedTransaction(
         ? [{ transaction_isolation: 'read committed' }]
         : [{ present: options.mapped ?? false }],
     ),
+    // The leading User-row lock is a read lock, not a mutation (identity lock order, N1).
+    $queryRaw: vi.fn().mockResolvedValue([]),
     walletIdentity: { findUnique: vi.fn().mockResolvedValue(null) },
     oAuthAttempt: { deleteMany: mutations.attemptDelete },
     session: { deleteMany: mutations.sessionDelete },

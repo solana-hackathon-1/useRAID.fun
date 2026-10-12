@@ -1,6 +1,6 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { z } from 'zod';
-import type { OAuthAttempt } from '@prisma/client';
+import { Prisma, type OAuthAttempt } from '@prisma/client';
 import { db } from './db';
 import { accountFoldsEnabled, config } from './config';
 import { hash, random } from './auth-primitives';
@@ -173,110 +173,117 @@ export async function claimAttempt(state: string, sessionHash: string | null) {
 let warnedAutoApprove = false;
 export async function completeConnection(attempt: OAuthAttempt, profile: XIdentity) {
   const sessionToken = random();
-  await db.$transaction(async (tx) => {
-    // Lock the permanent owner even for an attempted connection to a different identity.
-    let owner = attempt.userId ? await tx.user.findUnique({ where: { id: attempt.userId } }) : null;
-    if (attempt.userId && !owner) throw new OAuthError('session');
-    await lockIdentity(tx, owner?.xId || profile.id);
-    const live = await tx.oAuthAttempt.deleteMany({
-      where: {
-        stateHash: attempt.stateHash,
-        consumedAt: { not: null },
-        expiresAt: { gt: new Date() },
-      },
-    });
-    if (live.count !== 1) throw new OAuthError('state');
-    if (attempt.userId) {
-      const session = await tx.session.findUnique({ where: { tokenHash: attempt.sessionHash! } });
-      if (!session || session.userId !== attempt.userId || session.expiresAt <= new Date())
-        throw new OAuthError('session');
-      if (owner!.xId && owner!.xId !== profile.id) throw new OAuthError('identity');
-    }
-    let user = await tx.user.findUnique({ where: { xId: profile.id } });
-    if (user?.suspended) throw new OAuthError('suspended');
-    if (owner && user && owner.id !== user.id) {
-      // Two accounts for one person. Folding is gated off for launch (see accountFoldsEnabled).
-      if (!accountFoldsEnabled()) throw new OAuthError('identity');
-      // Fold the one with no activity into the other.
-      if (owner.xId || (await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
-        throw new OAuthError('identity');
-      if (await isEmptyAccount(tx, owner.id)) {
-        await absorbAccount(tx, user.id, owner.id);
-        owner = null;
-      } else if (await isEmptyAccount(tx, user.id)) {
-        await absorbAccount(tx, owner.id, user.id);
-        user = null;
-      } else throw new OAuthError('identity');
-    }
-    const admin = adminXIds().includes(profile.id);
-    const localAutoApprove =
-      process.env.NODE_ENV !== 'production' && process.env.LOCAL_AUTO_APPROVE_CREATORS === 'true';
-    if (localAutoApprove && !warnedAutoApprove) {
-      warnedAutoApprove = true;
-      console.warn('LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.');
-    }
-    // Admin comes from the environment allowlist on every sign-in; a stored ADMIN role that fell off it is demoted.
-    const access = (role?: string) =>
-      admin
-        ? { role: 'ADMIN', approved: true }
-        : {
-            ...(role === 'ADMIN' ? { role: 'CREATOR' } : {}),
-            ...(localAutoApprove ? { approved: true } : {}),
-          };
-    if (owner) {
-      // `owner` was read before the lock, so its xId may be stale. Bind only while the stored identity is
-      // still unset or already this profile; a concurrent callback that bound another identity wins.
-      const bound = await tx.user.updateMany({
-        where: { id: owner.id, OR: [{ xId: null }, { xId: profile.id }] },
+  await db.$transaction(
+    async (tx) => {
+      // Lock the permanent owner even for an attempted connection to a different identity.
+      let owner = attempt.userId
+        ? await tx.user.findUnique({ where: { id: attempt.userId } })
+        : null;
+      if (attempt.userId && !owner) throw new OAuthError('session');
+      await lockIdentity(tx, owner?.xId || profile.id);
+      const live = await tx.oAuthAttempt.deleteMany({
+        where: {
+          stateHash: attempt.stateHash,
+          consumedAt: { not: null },
+          expiresAt: { gt: new Date() },
+        },
+      });
+      if (live.count !== 1) throw new OAuthError('state');
+      if (attempt.userId) {
+        const session = await tx.session.findUnique({ where: { tokenHash: attempt.sessionHash! } });
+        if (!session || session.userId !== attempt.userId || session.expiresAt <= new Date())
+          throw new OAuthError('session');
+        if (owner!.xId && owner!.xId !== profile.id) throw new OAuthError('identity');
+      }
+      let user = await tx.user.findUnique({ where: { xId: profile.id } });
+      if (user?.suspended) throw new OAuthError('suspended');
+      if (owner && user && owner.id !== user.id) {
+        // Two accounts for one person. Folding is gated off for launch (see accountFoldsEnabled).
+        if (!accountFoldsEnabled()) throw new OAuthError('identity');
+        // Fold the one with no activity into the other.
+        if (owner.xId || (await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
+          throw new OAuthError('identity');
+        if (await isEmptyAccount(tx, owner.id)) {
+          await absorbAccount(tx, user.id, owner.id);
+          owner = null;
+        } else if (await isEmptyAccount(tx, user.id)) {
+          await absorbAccount(tx, owner.id, user.id);
+          user = null;
+        } else throw new OAuthError('identity');
+      }
+      const admin = adminXIds().includes(profile.id);
+      const localAutoApprove =
+        process.env.NODE_ENV !== 'production' && process.env.LOCAL_AUTO_APPROVE_CREATORS === 'true';
+      if (localAutoApprove && !warnedAutoApprove) {
+        warnedAutoApprove = true;
+        console.warn(
+          'LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.',
+        );
+      }
+      // Admin comes from the environment allowlist on every sign-in; a stored ADMIN role that fell off it is demoted.
+      const access = (role?: string) =>
+        admin
+          ? { role: 'ADMIN', approved: true }
+          : {
+              ...(role === 'ADMIN' ? { role: 'CREATOR' } : {}),
+              ...(localAutoApprove ? { approved: true } : {}),
+            };
+      if (owner) {
+        // `owner` was read before the lock, so its xId may be stale. Bind only while the stored identity is
+        // still unset or already this profile; a concurrent callback that bound another identity wins.
+        const bound = await tx.user.updateMany({
+          where: { id: owner.id, OR: [{ xId: null }, { xId: profile.id }] },
+          data: {
+            xId: profile.id,
+            handle: profile.username,
+            ...access(owner.role),
+          },
+        });
+        if (bound.count !== 1) throw new OAuthError('identity');
+        user = await tx.user.findUniqueOrThrow({ where: { id: owner.id } });
+      } else
+        user = await tx.user.upsert({
+          where: { xId: profile.id },
+          create: {
+            xId: profile.id,
+            handle: profile.username,
+            role: admin ? 'ADMIN' : 'CREATOR',
+            approved: admin || localAutoApprove,
+          },
+          update: {
+            handle: profile.username,
+            ...access(user?.role),
+          },
+        });
+      const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
+      if (existing && existing.userId !== user.id) throw new OAuthError('identity');
+      const data = {
+        xUserId: profile.id,
+        username: profile.username,
+        displayName: profile.name,
+        profileImage:
+          profile.profile_image_url && allowedImageUrl(profile.profile_image_url)
+            ? profile.profile_image_url
+            : null,
+      };
+      await tx.xAccount.upsert({
+        where: { userId: user.id },
+        create: { userId: user.id, ...data },
+        update: data,
+      });
+      if (attempt.sessionHash)
+        await tx.session.deleteMany({ where: { tokenHash: attempt.sessionHash } });
+      await tx.session.create({
         data: {
-          xId: profile.id,
-          handle: profile.username,
-          ...access(owner.role),
+          tokenHash: hash(sessionToken),
+          userId: user.id,
+          via: 'x',
+          expiresAt: new Date(Date.now() + 7 * 86400000),
         },
       });
-      if (bound.count !== 1) throw new OAuthError('identity');
-      user = await tx.user.findUniqueOrThrow({ where: { id: owner.id } });
-    } else
-      user = await tx.user.upsert({
-        where: { xId: profile.id },
-        create: {
-          xId: profile.id,
-          handle: profile.username,
-          role: admin ? 'ADMIN' : 'CREATOR',
-          approved: admin || localAutoApprove,
-        },
-        update: {
-          handle: profile.username,
-          ...access(user?.role),
-        },
-      });
-    const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
-    if (existing && existing.userId !== user.id) throw new OAuthError('identity');
-    const data = {
-      xUserId: profile.id,
-      username: profile.username,
-      displayName: profile.name,
-      profileImage:
-        profile.profile_image_url && allowedImageUrl(profile.profile_image_url)
-          ? profile.profile_image_url
-          : null,
-    };
-    await tx.xAccount.upsert({
-      where: { userId: user.id },
-      create: { userId: user.id, ...data },
-      update: data,
-    });
-    if (attempt.sessionHash)
-      await tx.session.deleteMany({ where: { tokenHash: attempt.sessionHash } });
-    await tx.session.create({
-      data: {
-        tokenHash: hash(sessionToken),
-        userId: user.id,
-        via: 'x',
-        expiresAt: new Date(Date.now() + 7 * 86400000),
-      },
-    });
-  });
+    },
+    { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
+  );
   return sessionToken;
 }
 export async function disconnectX(userId: string) {

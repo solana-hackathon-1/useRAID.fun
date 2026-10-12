@@ -2,7 +2,7 @@
 
 [Blueprint identity](../RAID_AGENT_BLUEPRINT.md#07-identity-and-onboarding) · [One active Raid](../RAID_AGENT_BLUEPRINT.md#13-one-active-raid) · [Module reuse](raid-module-reuse.md) · [Storage plan](tasks/T006-storage-plan.md) · [Proposal review](tasks/T006-storage-review.md) · [Identity preflight](raid-identity-preflight.md)
 
-**Status: IMPLEMENTED_UNVERIFIED, uncommitted, disposable-database tested only. Full T006 and all 27 completion criteria remain NOT VERIFIED.** Independent implementation review has not happened. Nothing here is deployed, migrated on a live database or backfilled.
+**Status: IMPLEMENTED_UNVERIFIED, disposable-database tested only. Full T006 and all 27 completion criteria remain NOT VERIFIED.** The separate non-author [storage review](tasks/T006-storage-independent-review-record.md) accepted the bounded READ COMMITTED / ordinary-DML slice at `c196ee7` with host conditions. Current B1 auth-host changes still require final independent review. Nothing here is deployed, migrated on a live database or backfilled.
 
 ## Purpose and non-goals
 
@@ -57,7 +57,7 @@ Legacy merge guard: `src/lib/account-merge.ts` now refuses a mapped drop account
 
 ## Permissions and trust boundary
 
-Provisioning authorizes nothing. The host decides who may call `ensureHumanParticipant`, which must only be an authenticated account acting for itself. Treat `accountId` and participant IDs as internal authorized context: do not put them in public responses, search or logs without review. A privileged database owner can alter the schema or trigger; row-level fences do not contain that.
+Provisioning authorizes nothing. The host decides who may call `ensureHumanParticipant`, which must only be an authenticated account acting for itself. Treat `accountId` and participant IDs as internal authorized context: do not put them in public responses, search or logs without review. A privileged database owner can alter the schema or trigger; row-level fences do not contain that. Row triggers also do not protect against TRUNCATE. Before live rollout, independently prove that runtime credentials are non-owner/non-superuser and lack TRUNCATE, schema alteration and trigger-disable privileges, with separate migrator credentials (SI02). This live-role proof remains NOT VERIFIED.
 
 ## Configuration names
 
@@ -69,7 +69,7 @@ No secret is read by the module. The reference host and tests use these names; s
 
 ## Transaction, retry and sanitized errors
 
-Run every command inside one interactive transaction at READ COMMITTED. The separate read after `ON CONFLICT DO NOTHING` needs fresh statement visibility, so the port rejects other isolation levels. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or Prisma `P2010` wrapping those) retry the **entire** business transaction with the same `accountId` and `requestId`, never only the final statement. Do not catch an error inside the transaction and commit partial work. `UNIQUE_CONFLICT` classifies SQLSTATE `23505` or Prisma `P2002`, including raw-query wrappers. Hosts must handle this seventh code explicitly: roll back the whole transaction and return a sanitized conflict (HTTP 409 for HTTP hosts), without exposing driver messages, constraint details or another account's identity. Do not retry it as a transient error or remap ownership. Unknown driver or connection failures become `STORAGE_UNAVAILABLE`; the driver message is never exposed. The module has no timeout, cancellation or rate-limit of its own; the host owns them.
+Run every command inside one interactive transaction at READ COMMITTED. B1 explicitly selects it in legacy wallet verification, wallet rotation and X connection hosts; database defaults are insufficient (SI01). Nondefault-isolation regressions exercise permitted wallet/X folds and rotation-versus-link exclusion. The separate read after `ON CONFLICT DO NOTHING` needs fresh statement visibility, so the port rejects other isolation levels. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or Prisma `P2010` wrapping those) retry the **entire** business transaction with the same `accountId` and `requestId`, never only the final statement. Do not catch an error inside the transaction and commit partial work. `UNIQUE_CONFLICT` classifies SQLSTATE `23505` or Prisma `P2002`, including raw-query wrappers. Hosts must handle this seventh code explicitly: roll back the whole transaction and return a sanitized conflict (HTTP 409 for HTTP hosts), without exposing driver messages, constraint details or another account's identity. Do not retry it as a transient error or remap ownership. Unknown driver or connection failures become `STORAGE_UNAVAILABLE`; the driver message is never exposed. The module has no timeout, cancellation or rate-limit of its own; the host owns them.
 
 ## Substitution and versioning
 
@@ -95,7 +95,7 @@ Retention and deletion policy for provenance is OPEN (O11).
 
 ## Limitations
 
-- Disposable-database evidence only; no live rollout, backfill, deployed custodian or independent implementation review yet.
+- Disposable-database evidence only; historical independent storage review has binding host conditions. No live rollout, backfill or deployed custodian; final B1 delta review and actual runtime-role proof remain due.
 - Host-loss durability, second-wallet reuse, capacity, recovery and the rest of full T006 are not delivered.
 - Migration run on `useraid_test` of an accepted disposable copy; repeat deploy, fresh 19-migration bootstrap and Prisma drift were checked there only.
 - `next-env.d.ts` drift in the working tree is generated Next state, not part of this module.

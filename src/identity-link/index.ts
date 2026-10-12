@@ -20,6 +20,10 @@ import {
   type LinkWalletResult,
   type PublicWalletLink,
   type WalletLinkRecord,
+  type ResolveWalletCredentialInput,
+  type WalletCredentialContext,
+  type RevokeWalletCredentialInput,
+  type RevokeWalletCredentialResult,
 } from './contracts';
 export * from './contracts';
 
@@ -29,8 +33,11 @@ export * from './contracts';
 //   2. "User" row FOR NO KEY UPDATE for the account being linked
 //   3. Participant mapping (read, or insert only for the first link)
 //   4. WalletLink insert
-// No two-account locks are taken, so the only cycle risk is against legacy writers; PostgreSQL
-// reports any as 40P01 and the host retries the whole callback.
+// A host writer that also takes an X advisory lock ("x-auth:<xId>") or locks OAuthAttempt rows
+// must do so BEFORE step 2 (see docs/raid-wallet-links.md, identity lock order). No two-account
+// locks are taken here, so the only cycle risk is against legacy writers. PostgreSQL reports a
+// cycle as 40P01; this module maps it to RETRY_TRANSACTION and the bundled host does NOT retry
+// automatically (it returns 503 or redirects), so ordering, not retry, is what prevents cycles.
 const SUBJECT_LOCK =
   'SELECT 1 AS "locked" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS "lock"';
 const USER_LOCK = 'SELECT "id", "suspended" FROM "User" WHERE "id" = $1 FOR NO KEY UPDATE';
@@ -172,17 +179,18 @@ export async function linkVerifiedWallet(
   const network = InternalId.safeParse(input.subject?.networkIdentity);
   const limits = LimitsSchema.safeParse(input.limits);
   const proof = LinkProofObservationSchema.safeParse(input.proof);
-  const session = SessionSchema.safeParse(input.session);
+  const deferred = typeof input.observeAuthority === 'function';
+  let session = deferred ? null : SessionSchema.safeParse(input.session);
   const policy = IdentityLinkPolicySchema.safeParse(input.policy);
-  const now = UtcTimestamp.safeParse(input.now);
+  let now = deferred ? null : UtcTimestamp.safeParse(input.now);
   if (
     !address.success ||
     !network.success ||
     !limits.success ||
     !proof.success ||
-    !session.success ||
+    (session && !session.success) ||
     !policy.success ||
-    !now.success
+    (now && !now.success)
   )
     return fail('INVALID_INPUT');
   validPort(tx);
@@ -196,6 +204,14 @@ export async function linkVerifiedWallet(
     );
     if (!user) return fail('ACCOUNT_NOT_FOUND');
     if (user.id !== accountId) return fail('STORAGE_CONTRACT');
+    if (input.observeAuthority) {
+      // Authority is observed only now, under the locks, so waiting cannot leave it stale.
+      const observed = await input.observeAuthority(tx);
+      session = SessionSchema.safeParse(observed?.session);
+      now = UtcTimestamp.safeParse(observed?.now);
+      if (!session.success || !now.success) return fail('INVALID_INPUT');
+    }
+    if (!session?.success || !now?.success) return fail('INVALID_INPUT');
     const participant: HumanParticipant | null = await findHumanParticipant(tx, accountId);
     const primary = single(
       z.strictObject({ address: z.string() }),
@@ -310,6 +326,167 @@ export function publicWalletLink(result: LinkWalletResult): PublicWalletLink {
     status: result.status,
     alreadyLinked: result.outcome === 'ALREADY_LINKED',
   });
+}
+
+const CREDENTIAL_OWNER_SQL = `SELECT 'PRIMARY' AS "source", "userId" AS "accountId", NULL::text AS "id", NULL::text AS "participantId", NULL::text AS "status", NULL::text AS "networkIdentity", NULL::text AS "revokedAt" FROM "WalletIdentity" WHERE "address" = $1
+UNION ALL
+SELECT 'LINK', "accountId", "id"::text, "participantId"::text, "status", "networkIdentity",
+  to_char("revokedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') FROM "WalletLink" WHERE "address" = $1`;
+const CredentialOwnerRow = z.strictObject({
+  source: z.enum(['PRIMARY', 'LINK']),
+  accountId: AccountId,
+  id: z.string().nullable(),
+  participantId: z.string().nullable(),
+  status: z.string().nullable(),
+  networkIdentity: z.string().nullable(),
+  revokedAt: z.string().nullable(),
+});
+function credentialSubject(input: ResolveWalletCredentialInput) {
+  const subject = z
+    .strictObject({ networkIdentity: InternalId, address: SolanaAddress })
+    .safeParse(input?.subject);
+  const networks = z.array(InternalId).min(1).max(64).safeParse(input?.walletNetworks);
+  if (!subject.success || !networks.success) return fail('INVALID_INPUT');
+  if (!networks.data.includes(subject.data.networkIdentity)) return fail('UNSUPPORTED_IDENTITY');
+  return subject.data;
+}
+async function credentialOwner(tx: IdentityTransaction, address: string) {
+  return single(CredentialOwnerRow, await query(tx, CREDENTIAL_OWNER_SQL, [address]));
+}
+async function lockedAccount(tx: IdentityTransaction, accountId: string) {
+  const user = single(
+    z.strictObject({ id: AccountId, suspended: z.boolean() }),
+    await query(tx, USER_LOCK, [accountId]),
+  );
+  if (!user) return fail('ACCOUNT_NOT_FOUND');
+  if (user.id !== accountId) return fail('STORAGE_CONTRACT');
+  if (user.suspended) return fail('ACCOUNT_RESTRICTED');
+}
+async function credentialMapping(
+  tx: IdentityTransaction,
+  owner: z.infer<typeof CredentialOwnerRow>,
+  networkIdentity: string,
+) {
+  const participant = await findHumanParticipant(tx, owner.accountId);
+  if (owner.source === 'PRIMARY') {
+    if (
+      owner.id !== null ||
+      owner.participantId !== null ||
+      owner.status !== null ||
+      owner.networkIdentity !== null ||
+      owner.revokedAt !== null
+    )
+      return fail('STORAGE_CONTRACT');
+    return participant?.id ?? null;
+  }
+  if (
+    !owner.id ||
+    !InternalId.safeParse(owner.id).success ||
+    !participant ||
+    owner.participantId !== participant.id ||
+    !['ACTIVE', 'REVOKED'].includes(owner.status ?? '') ||
+    (owner.status === 'REVOKED') !== (owner.revokedAt !== null) ||
+    (owner.revokedAt !== null && !UtcTimestamp.safeParse(owner.revokedAt).success)
+  )
+    return fail('STORAGE_CONTRACT');
+  if (owner.networkIdentity !== networkIdentity) return fail('UNSUPPORTED_IDENTITY');
+  return participant.id;
+}
+
+/**
+ * Internal ownership context under transaction-held locks; it is not proof or authorization.
+ * The host verifies a fresh sign-in proof and creates any session inside this SAME transaction.
+ * No mapping is provisioned. PRIMARY may legitimately have a null participant. ACTIVE links
+ * must reference this account's immutable HUMAN participant. Never expose this context publicly.
+ */
+export async function resolveWalletCredential(
+  tx: IdentityTransaction,
+  input: ResolveWalletCredentialInput,
+): Promise<WalletCredentialContext> {
+  const subject = credentialSubject(input);
+  validPort(tx);
+  try {
+    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
+    const observed = await credentialOwner(tx, subject.address);
+    if (!observed) return { source: 'ABSENT' };
+    await lockedAccount(tx, observed.accountId);
+    // Legacy merge can reassign a PRIMARY userId without taking the subject lock. Never return
+    // an account chosen from an observation that changed while acquiring its account lock.
+    const owner = await credentialOwner(tx, subject.address);
+    if (!owner || owner.accountId !== observed.accountId) return fail('IDENTITY_CONFLICT');
+    const participantId = await credentialMapping(tx, owner, subject.networkIdentity);
+    if (owner.status === 'REVOKED') return fail('IDENTITY_REVOKED');
+    return Object.freeze({
+      source: owner.source,
+      accountId: owner.accountId,
+      participantId,
+      linkId: owner.id,
+      ...subject,
+    });
+  } catch (error) {
+    throw translate(error);
+  }
+}
+/**
+ * Revoke only an additional credential of a host-authenticated active self-session. The host
+ * owns durable audit and session invalidation in this same transaction before acknowledgement.
+ * No provider/X/primary-wallet or financial record changes and no address release/reactivation.
+ */
+export async function revokeWalletCredential(
+  tx: IdentityTransaction,
+  input: RevokeWalletCredentialInput,
+): Promise<RevokeWalletCredentialResult> {
+  validId(input?.accountId);
+  validId(input?.actorAccountId);
+  validId(input?.requestId);
+  if (input.accountId !== input.actorAccountId) return fail('WRONG_ACTOR');
+  const subject = credentialSubject(input);
+  const session = SessionSchema.safeParse(input.session);
+  const now = UtcTimestamp.safeParse(input.now);
+  if (!session.success || !now.success) return fail('INVALID_INPUT');
+  if (session.data.accountId !== input.accountId) return fail('FORBIDDEN');
+  if (session.data.state !== 'ACTIVE' || Date.parse(session.data.expiresAt) <= Date.parse(now.data))
+    return fail('AUTHENTICATION_REQUIRED');
+  validPort(tx);
+  try {
+    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
+    await lockedAccount(tx, input.accountId);
+    const owner = await credentialOwner(tx, subject.address);
+    if (!owner || owner.accountId !== input.accountId) return fail('IDENTITY_CONFLICT');
+    const participantId = await credentialMapping(tx, owner, subject.networkIdentity);
+    if (owner.source === 'PRIMARY') return fail('PRIMARY_WALLET_PROTECTED');
+    if (!participantId || !owner.id) return fail('STORAGE_CONTRACT');
+    if (owner.status === 'REVOKED')
+      return Object.freeze({
+        outcome: 'ALREADY_REVOKED',
+        linkId: owner.id,
+        participantId,
+        ...subject,
+        status: 'REVOKED',
+        revokedAt: owner.revokedAt!,
+      });
+    const updated = single(
+      z.strictObject({ id: z.string(), revokedAt: UtcTimestamp }),
+      await query(
+        tx,
+        `UPDATE "WalletLink" SET "status" = 'REVOKED', "revokedAt" = $3::timestamptz
+WHERE "address" = $1 AND "accountId" = $2 AND "status" = 'ACTIVE'
+RETURNING "id"::text, to_char("revokedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS "revokedAt"`,
+        [subject.address, input.accountId, now.data],
+      ),
+    );
+    if (!updated || updated.id !== owner.id) return fail('STORAGE_CONTRACT');
+    return Object.freeze({
+      outcome: 'REVOKED',
+      linkId: owner.id,
+      participantId,
+      ...subject,
+      status: 'REVOKED',
+      revokedAt: updated.revokedAt,
+    });
+  } catch (error) {
+    throw translate(error);
+  }
 }
 
 /**
