@@ -1,0 +1,20 @@
+{
+  "label": "SELF-EVALUATED",
+  "recorded_utc": "2026-10-12T16:24:59.256165+00:00",
+  "source_base": "cccbb9c5f290dcacbf12a9e7396bfa3f1422b25c",
+  "scope": "T005 synthetic public-proxy fixture supports unused subnet plus older-daemon explicit IPAM",
+  "requirements": ["I13", "R15", "R16", "AC75", "DEC-2026-10-11-04"],
+  "red": "Hosted38276554859 failure; new compatibility regression1test1fail/125, before source edit",
+  "green": "exit0: exact T005 source52planning tests in91.650s, both real proxy variants PASS",
+  "code_sha256": "ba794cdd5b69874e1802c8d0e3721bafa2c66f3ebce30ecf9a99eda86ff7496f",
+  "cleanup": "finally removes only uniquely named fixture containers/network; verified none running",
+  "skipped": "App static/fullDB/build/browser not repeated for unchanged product bytes; main staging mandatory gates retained",
+  "independent_acceptance": "NOT VERIFIED; owner-directed bounded staging publication",
+  "corrections": [
+    "Initial combined-checkout52-suite run had only inventory failure from separately uncommitted T007 test; preserved compatibility-green.log. Exact T005-source archive plus fixture rerun retains inventory assertions; product WIP stays untouched.",
+    "Host Python tar.extractall(filter=...) unavailable; corrected archive extraction from trusted git archive after validating member paths. No repository source changed by setup correction."
+  ],
+  "ended_utc": "2026-10-12T16:28:22.974253+00:00",
+  "started_utc": "2026-10-12T16:24:59.256165+00:00",
+  "elapsed_seconds": 203.718088
+}

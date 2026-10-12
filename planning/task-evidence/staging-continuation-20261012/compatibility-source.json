@@ -1,0 +1,6 @@
+{
+  "path": "/tmp/raid-t005-proxy-compat-t1bp49ec",
+  "base": "cccbb9c5f290dcacbf12a9e7396bfa3f1422b25c",
+  "fixture_sha256": "ba794cdd5b69874e1802c8d0e3721bafa2c66f3ebce30ecf9a99eda86ff7496f",
+  "scope": "exact tracked HEAD archive plus only proxy compatibility fixture; uncommitted T007 RED tests excluded from this T005 source"
+}

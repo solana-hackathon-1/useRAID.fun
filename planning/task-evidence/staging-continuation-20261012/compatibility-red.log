@@ -1,0 +1,17 @@
+F
+======================================================================
+FAIL: test_fixture_supports_daemons_requiring_explicit_static_ip_subnets (test_raid_staging_public.PublicStagingProxy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_staging_public.py", line 76, in test_fixture_supports_daemons_requiring_explicit_static_ip_subnets
+    self.test_real_proxy_trusts_only_connector_and_preserves_public_origin()
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_staging_public.py", line 107, in test_real_proxy_trusts_only_connector_and_preserves_public_origin
+    docker('run', '-d', '--name', upstream, '--network', network, '--ip',
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_staging_public.py", line 87, in docker
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 125 != 0 : user specified IP address is supported only when connecting to networks with user configured subnets
+
+----------------------------------------------------------------------
+Ran 1 test in 0.790s
+
+FAILED (failures=1)

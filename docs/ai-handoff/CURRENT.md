@@ -1,3 +1,25 @@
+# T005 hosted-Docker correction verified — 2026-10-12T16:28:22.975686+00:00 Codex /root
+
+Hosted restriction reproduced by new meaningful real-proxy compatibility test: genuine RED1fail/125 before fixture change. Docker-selected unused subnet is now recreated explicitly before static IPs, retaining every authorization/HTTP assertion. Exact tracked-main archive+only fixture52planning tests PASS (including both real proxy variants); source/evidence in staging-continuation-20261012/compatibility*. Combined checkout attempt had one expected inventory gap from unfinished unregistered T007 test; result retained, not claimed GREEN. Source isolation excludes that separate unpublished slice without removing or weakening it. Original/compatibility fixture owned containers/networks removed; no raid-public-contract resources remain. No application/schema/dependency/UI changes or repeated app checks. Ready to publish compatibility follow-up under owner staging authority; then resume T007 RED. Full issue/independent/UAT/release NOT VERIFIED.
+
+---
+
+# PR190 hosted compatibility failure; T007 RED preserved — 2026-10-12T16:23:53.524230+00:00 Codex /root
+
+Main staging run38276554859 FAIL before source/DB/build/publication: hosted Docker rejects static--ip on default-IPAM networks, unlike this host. No image deployed by PR190. Full failed hosted log retained under planning/task-evidence/staging-continuation-20261012/hosted-red.log. Correct this bounded T005 fixture portability gap first; no disabled/weak assertions. New real-proxy compatibility regression simulates the exact older-daemon restriction, with real containers/config/HTTP tests, RED pending. Then publish follow-up and observe main CI.
+
+T007 product code unchanged. New wallet-origin-db suite produces genuine RED4tests/3fail1pass (different-domain sign-in, different-port link, different-scheme rotation wrongly succeed; current-origin/path-change/replay baseline passes). Evidence planning/task-evidence/T007-origin-binding/red.log/red.xml. Dedicated synthetic PostgreSQL16 container raid-t007-origin-20261012 ida809e768b8899e40a6a00e8a0752f6457167667f482ede1a9a6bb9f4822e0d91, loopback55441/useraid_test, tmpfs, fresh22migrations. This resource belongs to ongoing T007 checks, no other DB used. Stop ONLY with docker stop raid-t007-origin-20261012 when aggregate testing finishes; do not remove retained volume/image/history. New T007 test/evidence remain uncommitted and separate from compatibility follow-up. Next compatibility RED→GREEN/publication, then T007 minimal origin helper/host integration and regression. No preview/provider/live-money/issue closure/delegation; full independent/UAT/release gaps unchanged.
+
+---
+
+# PR190 merged; T007 origin-binding takeover — 2026-10-12T16:20:26.716983+00:00 Codex /root
+
+PR190 owner-directed bounded staging publication merged2026-10-12T16:19:07Z ascccbb9c5f290dcacbf12a9e7396bfa3f1422b25c. Local original branch fast-forwarded to that main source; prior CI/evidence work preserved and published. First merge CLI request used an abbreviated expectedHeadOid and was rejected without mutation; corrected full40-character head succeeded. Staging run38276554859 is IN_PROGRESS, not yet deployment evidence. No full issue closure/independent/UAT/release acceptance. T005 packet expectedexit1 retained.
+
+Active next bounded slice T007: stored wallet challenge signed domain/URI must match current configured app origin before atomic consumption. Existing verifier checks digest/signature/purpose/network/expiry/account but has no current-origin comparison. Write new meaningful real-DB tests first, preserve DEC-2026-10-12-02 pending network changes and existing current-origin flows. Map R04/R13/R15/R16/I05/I10/I13/AC02/AC73–75; T007-A01/W01/W02/W03/C04/C10/C14/C19–22 partial; entities WalletChallenge/Session/WalletIdentity/User, no schema/financial/capacity transition. Keep links/folds/provider/financial gates off. One writer; no delegation. Dedicated synthetic test database/preview ownership recorded when created. Next RED→GREEN→affected/full regression, documented pure helper/independent consuming host, timed SELF-EVALUATED/devpreview, publish to main underDEC-2026-10-12-03. Prior evidence and obligations below retained.
+
+---
+
 # Codex staging queue takeover — 2026-10-12T16:09:05.461196+00:00
 
 Owner directs sequential work on every issue, automated verification and publication to main for staging without waiting for human recommendation/UAT. This provides Git publication/merge authority for completed bounded slices, not independent sign-off, live-money enablement or delegation. One writer in this checkout. Initial branch codex/t006-linked-wallet-signin HEADfa1a7bc; ten prior modified tracked files, PR template and PR189 evidence untracked, index empty. All preserved. Live origin/main2992a78 includes subsequent B2/auth/Studio/deployment work and a newer handoff from another host; reconcile before choosing implementation, do not replay B2. Open PR list empty; fetched issue queue contains task/decision/gate/UAT epics, not all implementable without unresolved business policies.
