@@ -17,3 +17,7 @@ Codex and Claude Code take turns on the same task using [docs/ai-handoff/CURRENT
 ## Review preparation and development preview
 
 Apply AGENTS.md and canonical blueprint§24.8. Read [shared workflow memory](docs/ai-handoff/MEMORY.md), perform timed self-evaluation, verify and show the task-owned development preview, and record exact evidence in CURRENT.md. Author evaluation stays SELF-EVALUATED; independent acceptance and release gates remain separate.
+
+## Testing efficiency and container lifecycle — every PR
+
+Apply DEC-2026-10-11-04 and blueprint§24.8. Select meaningful affected checks plus mandatory gates; reuse valid evidence only for matching source/dependencies/configuration/environment, and do not repeat passing checks without a material change or unresolved concern. Record run/reused/skipped checks in the PR. Track task-owned resources, retain evidence, and automatically stop test containers/servers after success, failure or interruption. Report cleanup failures and outstanding resources; preserve unrelated services, volumes, images and evidence. Follow the owner's latest preview-retention/shutdown direction. Use the repository PR template for every new PR and add its testing/cleanup checklist to open PRs being handled.

@@ -1,0 +1,16 @@
+..............................................F....
+======================================================================
+FAIL: test_real_proxy_trusts_only_connector_and_preserves_public_origin (test_raid_staging_public.PublicStagingProxy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_staging_public.py", line 72, in test_real_proxy_trusts_only_connector_and_preserves_public_origin
+    docker('network', 'create', '--subnet', '172.30.254.0/29', network)
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_staging_public.py", line 65, in docker
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 1 != 0 : Error response from daemon: invalid pool request: Pool overlaps with other one on this address space
+
+
+----------------------------------------------------------------------
+Ran 51 tests in 5.685s
+
+FAILED (failures=1)

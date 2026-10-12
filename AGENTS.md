@@ -45,3 +45,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Testing efficiency and container lifecycle — every PR
+
+Apply DEC-2026-10-11-04 and blueprint§24.8. Select meaningful affected checks plus mandatory gates; reuse valid evidence only for matching source/dependencies/configuration/environment, and do not repeat passing checks without a material change or unresolved concern. Record run/reused/skipped checks in the PR. Track task-owned resources, retain evidence, and automatically stop test containers/servers after success, failure or interruption. Report cleanup failures and outstanding resources; preserve unrelated services, volumes, images and evidence. Follow the owner's latest preview-retention/shutdown direction. Use the repository PR template for every new PR and add its testing/cleanup checklist to open PRs being handled.

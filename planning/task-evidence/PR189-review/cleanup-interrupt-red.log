@@ -1,0 +1,13 @@
+....F.........
+======================================================================
+FAIL: test_interruption_stops_owned_database_and_preserves_failure_status (test_raid_ci.LocalCICleanupOwnership)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_ci.py", line 142, in test_interruption_stops_owned_database_and_preserves_failure_status
+    self.assertEqual(result.returncode, 143)
+AssertionError: -15 != 143
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.491s
+
+FAILED (failures=1)

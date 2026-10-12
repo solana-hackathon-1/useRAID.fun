@@ -75,6 +75,9 @@ printf '%s\n' "$(basename "$0") $*" >> "$COMMAND_LOG"
 case "$(basename "$0") $*" in
   "npm ci") [ "$FAIL_AT" != install ]; exit $? ;;
   "docker compose up -d --wait db") [ "$FAIL_AT" != database ]; exit $? ;;
+  "docker compose stop db") [ "$FAIL_AT" != cleanup ]; exit $? ;;
+  "npm test "*)
+    if [ "$FAIL_AT" = interrupt ]; then kill -TERM "$PPID"; fi ;;
   "npm run test:browser"|"npm run test:browser:studio"|"npm run test:browser:live")
     rm -rf test-results playwright-report
     mkdir -p test-results playwright-report
@@ -121,6 +124,25 @@ exit 0
         self.assertIn('database: 1', evidence)
         self.assertIn('docker compose stop db', commands)
         self.assertLess(commands.index('docker compose up'), commands.index('docker compose stop'))
+
+    def test_success_stops_owned_database_once_and_reports_cleanup(self):
+        result, commands, evidence = self.run_candidate('none')
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(commands.count('docker compose stop db'), 1)
+        self.assertIn('cleanup: 0', evidence)
+
+    def test_cleanup_failure_is_not_reported_as_success(self):
+        result, commands, evidence = self.run_candidate('cleanup')
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(commands.count('docker compose stop db'), 1)
+        self.assertIn('cleanup: 1', evidence)
+
+    def test_interruption_stops_owned_database_and_preserves_failure_status(self):
+        result, commands, evidence = self.run_candidate('interrupt')
+        self.assertEqual(result.returncode, 143)
+        self.assertEqual(commands.count('docker compose stop db'), 1)
+        self.assertIn('cleanup: 0', evidence)
+        self.assertNotIn('docker build', commands)
 
     def test_each_browser_suite_retains_its_own_reports_before_next_suite_overwrites_them(self):
         result, commands, evidence = self.run_candidate('studio')

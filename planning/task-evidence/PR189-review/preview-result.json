@@ -1,0 +1,53 @@
+{
+  "source": "ba9f51edb9d92473cdd93dac3c5656ac065b47f1",
+  "mode": "Next development / synthetic dedicated database",
+  "walletSignIn": true,
+  "replayRejected": true,
+  "foldConflict409": true,
+  "challengeUnconsumed": true,
+  "accountsAndWalletOwnerPreserved": true,
+  "browser": [
+    {
+      "device": "desktop",
+      "path": "/",
+      "status": 200,
+      "noOverflow": true,
+      "noPageError": true
+    },
+    {
+      "device": "desktop",
+      "path": "/privacy",
+      "status": 200,
+      "noOverflow": true,
+      "noPageError": true
+    },
+    {
+      "device": "desktop",
+      "path": "/creator/account",
+      "status": 200,
+      "noOverflow": true,
+      "noPageError": true
+    },
+    {
+      "device": "mobile",
+      "path": "/",
+      "status": 200,
+      "noOverflow": true,
+      "noPageError": true
+    },
+    {
+      "device": "mobile",
+      "path": "/privacy",
+      "status": 200,
+      "noOverflow": true,
+      "noPageError": true
+    },
+    {
+      "device": "mobile",
+      "path": "/creator/account",
+      "status": 200,
+      "noOverflow": true,
+      "noPageError": true
+    }
+  ]
+}

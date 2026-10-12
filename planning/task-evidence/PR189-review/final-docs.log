@@ -1,0 +1,13 @@
+
+> useraid@0.1.0 test
+> vitest run tests/raid-evidence.test.ts tests/docs-links.test.ts
+
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+
+ Test Files  2 passed (2)
+      Tests  82 passed (82)
+   Start at  13:55:51
+   Duration  11.86s (transform 1.09s, setup 0ms, import 7.44s, tests 1.67s, environment 0ms)
+

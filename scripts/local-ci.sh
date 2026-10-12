@@ -56,14 +56,22 @@ ports() {
   return "$busy"
 }
 cleanup() {
+  local exit_status=$? cleanup_status
+  trap - EXIT
   if [ "$database_attempted" = 1 ]; then
-    docker compose stop db >> "$LOG_DIR/cleanup.log" 2>&1 || true
+    docker compose stop db >> "$LOG_DIR/cleanup.log" 2>&1
+    cleanup_status=$?
+    echo "cleanup: $cleanup_status" | tee -a "$LOG_DIR/results.txt"
+    if [ "$cleanup_status" -ne 0 ]; then exit_status=1; fi
   fi
   # Retain reports and logs on every exit path, including failures. No messaging or deployment.
   cp -R test-results playwright-report "$LOG_DIR/" 2>/dev/null || true
   echo "Evidence: $LOG_DIR"
+  exit "$exit_status"
 }
 trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 { git rev-parse HEAD; git diff --binary HEAD; node --version; python3 --version; } > "$LOG_DIR/candidate.txt"
 step ports ports || exit 1
 step install npm ci || exit 1

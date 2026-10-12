@@ -1,0 +1,129 @@
+{
+  "task_id": "T007",
+  "scope": "PR189 bounded auth containment/first-X race; full wallet-auth acceptance remains unverified",
+  "status": "IN_PROGRESS",
+  "implementer": "PR author; workflow changes Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "ba9f51edb9d92473cdd93dac3c5656ac065b47f1",
+  "blueprint_sha256": "6730d754dd95d2b6ddeb4434e8d833aa6a6cec830e2515c52128f0f002be7420",
+  "criteria": {
+    "T007-C01": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C02": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C03": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C04": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C05": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C06": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C07": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C08": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C09": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C10": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C11": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C12": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C13": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C14": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C15": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C16": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C17": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C18": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-A01": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-A02": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-W01": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-W02": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-W03": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C19": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C20": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C21": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    },
+    "T007-C22": {
+      "result": "NOT VERIFIED",
+      "reason": "Bounded PR verification does not establish full criterion acceptance. See PR189-review/verification.json."
+    }
+  },
+  "handoff": "docs/tasks/PR189-auth-review.md",
+  "migration_rollback": "PR189 and local workflow changes introduce no schema migration; retain wallet reservation fences and keep folding disabled during rollback.",
+  "dependency_evidence": [
+    "merged PR188 sourcefa1a7bc",
+    "synthetic PostgreSQL16 and declared verification host; no live-provider evidence"
+  ],
+  "open_decisions": [
+    "full capacity/recovery/retention and live operational acceptance remain open"
+  ],
+  "release_gate_disposition": "No hosted Actions, real provider, UAT or live-money release approval; no feature enabled."
+}

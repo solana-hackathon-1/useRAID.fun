@@ -1,6 +1,7 @@
 """Public staging host contracts with an isolated real-Nginx consuming fixture."""
 from pathlib import Path
 import json
+import ipaddress
 import os
 import subprocess
 import tempfile
@@ -53,8 +54,6 @@ class PublicStagingComposition(unittest.TestCase):
 class PublicStagingProxy(unittest.TestCase):
     def test_real_proxy_trusts_only_connector_and_preserves_public_origin(self):
         source = (ROOT / 'deploy/staging/nginx-public.conf').read_text()
-        # Independent synthetic host IPs; retain every authorization/forwarding directive.
-        source = source.replace('172.30.101.', '172.30.254.')
         prefix = 'raid-public-contract-' + uuid.uuid4().hex[:10]
         network = prefix + '-net'
         owned = []
@@ -67,19 +66,29 @@ class PublicStagingProxy(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             config = Path(directory) / 'public.conf'
-            config.write_text(source)
-            config.chmod(0o644)
-            docker('network', 'create', '--subnet', '172.30.254.0/29', network)
+            docker('network', 'create', network)
             try:
+                # Let Docker allocate an unused pool; unrelated host networks are preserved.
+                pools = json.loads(docker('network', 'inspect', network).stdout)[0]['IPAM']['Config']
+                subnet = next(ipaddress.ip_network(pool['Subnet']) for pool in pools
+                    if ipaddress.ip_network(pool['Subnet']).version == 4)
+                self.assertGreater(subnet.num_addresses, 6)
+                proxy_ip, trusted_ip, untrusted_ip, upstream_ip = (
+                    str(subnet[index]) for index in [2, 3, 4, 5])
+                # Change only synthetic peer/listen addresses, retaining all trust directives.
+                source = source.replace('172.30.101.2', proxy_ip).replace(
+                    '172.30.101.3', trusted_ip)
+                config.write_text(source)
+                config.chmod(0o644)
                 upstream = prefix + '-web'
                 docker('run', '-d', '--name', upstream, '--network', network, '--ip',
-                    '172.30.254.5', '--network-alias', 'web', '--entrypoint', 'node', NODE,
+                    upstream_ip, '--network-alias', 'web', '--entrypoint', 'node', NODE,
                     '-e', "require('http').createServer((q,r)=>{r.setHeader('Content-Type',"
                     "'application/json');r.end(JSON.stringify(q.headers))}).listen(3000,'0.0.0.0')")
                 owned.append(upstream)
                 proxy = prefix + '-proxy'
                 docker('run', '-d', '--name', proxy, '--network', network, '--ip',
-                    '172.30.254.2', '-v', str(config) + ':/etc/nginx/conf.d/default.conf:ro', NGINX)
+                    proxy_ip, '-v', str(config) + ':/etc/nginx/conf.d/default.conf:ro', NGINX)
                 owned.append(proxy)
                 docker('exec', proxy, 'nginx', '-t')
                 script = """(async()=>{
@@ -105,7 +114,8 @@ class PublicStagingProxy(unittest.TestCase):
                     }
                     console.log(JSON.stringify(results));
                 })().catch(e=>{console.error(e.message);process.exit(1)})"""
-                trusted = docker('run', '--rm', '--network', network, '--ip', '172.30.254.3',
+                script = script.replace('172.30.254.2', proxy_ip)
+                trusted = docker('run', '--rm', '--network', network, '--ip', trusted_ip,
                     '--entrypoint', 'node', NODE, '-e', script)
                 results = json.loads(trusted.stdout)
                 self.assertEqual(results[0]['status'], 200)
@@ -114,7 +124,7 @@ class PublicStagingProxy(unittest.TestCase):
                 self.assertEqual(results[0]['body']['host'], 'staging.useraid.fun')
                 self.assertIn('noindex', results[0]['robots'])
                 self.assertEqual(results[1]['status'], 421)
-                untrusted = docker('run', '--rm', '--network', network, '--ip', '172.30.254.4',
+                untrusted = docker('run', '--rm', '--network', network, '--ip', untrusted_ip,
                     '--entrypoint', 'node', NODE, '-e', script)
                 self.assertEqual([r['status'] for r in json.loads(untrusted.stdout)], [403, 403])
             finally:
