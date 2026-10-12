@@ -88,5 +88,6 @@
     "vm": "SSH192.168.101.8 timeout",
     "new_source_rollout": "NOT VERIFIED pending publication; no VM/Cloudflare changes or credentials requested"
   },
-  "skipped": "No repeated1196-case whole-suite after fixture-only correction; prior1193passed relevant domains + exact3failedcase recheck retained separately. Full browser matrices/real Phantom/X/UAT/independent criterion review/release assurance not supplied; affected auth/header and6page probes executed. No schema change, so migration drift not repeated;22freshbootstrapPASS."
+  "skipped": "No repeated1196-case whole-suite after fixture-only correction; prior1193passed relevant domains + exact3failedcase recheck retained separately. Full browser matrices/real Phantom/X/UAT/independent criterion review/release assurance not supplied; affected auth/header and6page probes executed. No schema change, so migration drift not repeated;22freshbootstrapPASS.",
+  "implementation_commit": "64863264b635e5c241b5fcb15f5abeca28a36d82"
 }

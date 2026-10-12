@@ -4,7 +4,7 @@
   "status": "IN_PROGRESS",
   "implementer": "Codex /root",
   "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
-  "code_source_sha": "b02345aa2752042e430f7f2ce278bf79d1498efe",
+  "code_source_sha": "64863264b635e5c241b5fcb15f5abeca28a36d82",
   "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
   "handoff": "docs/tasks/2026-10-12-wallet-origin-header.md",
   "migration_rollback": "No schema migration; preserve reservations/history and keep all dependent feature gates off. Revert of origin helper would reintroduce reproduced defect.",
@@ -125,5 +125,6 @@
       "result": "NOT VERIFIED",
       "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
     }
-  }
+  },
+  "source_identity": "Implementation commit 64863264b635e5c241b5fcb15f5abeca28a36d82; source parity and working-tree test evidence in T007-origin-binding/review.json"
 }
