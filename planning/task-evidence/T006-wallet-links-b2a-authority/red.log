@@ -1,0 +1,238 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":2126,"waiters":[2125]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":2126,"waiters":[2125]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":2126,"waiters":[2125]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":2126,"waiters":[2125]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:403","denied:401","denied:403","denied:401","denied:403","denied:401","denied:403","denied:401","denied:403"]}
+
+ ❯ tests/wallet-link-authority-db.test.ts (9 tests | 8 failed) 2710ms
+     × denies a live own session whose authority is "wallet" even though the account has an X row 127ms
+     × denies a live own session whose authority is "admin" even though the account has an X row 42ms
+     × denies a live own session whose authority is "" even though the account has an X row 54ms
+     × denies a live own session whose authority is "X" even though the account has an X row 64ms
+     × denies an authority change (revoked) committed during a real lock wait 84ms
+     × denies an authority change (expired) committed during a real lock wait 42ms
+     × denies an authority change (X disconnected) committed during a real lock wait 39ms
+     × denies a session that expires naturally while the command waits for the lock 1861ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  394ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a live own session whose authority is "wallet" even though the account has an X row
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "3V4pDu5X1Q9DKwtuRREZfs1kebESpM7Eba9UkXiBFYvQ",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+    103|       const w = pair();
+    104|       const c = await challenge(a, w);
+    105|       await expect(invoke(a, w, c)).rejects.toMatchObject({ status: 40…
+       |                                    ^
+    106|       await unconsumed(c.digest);
+    107|       await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a live own session whose authority is "admin" even though the account has an X row
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "HWn9LBb2ZNMnnTZuz7ZRTKo6Du8sZK3F1s4vd3dhYNNd",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+    103|       const w = pair();
+    104|       const c = await challenge(a, w);
+    105|       await expect(invoke(a, w, c)).rejects.toMatchObject({ status: 40…
+       |                                    ^
+    106|       await unconsumed(c.digest);
+    107|       await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a live own session whose authority is "" even though the account has an X row
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "C4Pf6BFGKvzKRQJMw2m1kFng6mYs8jXLDfFMKTLDkwJ4",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+    103|       const w = pair();
+    104|       const c = await challenge(a, w);
+    105|       await expect(invoke(a, w, c)).rejects.toMatchObject({ status: 40…
+       |                                    ^
+    106|       await unconsumed(c.digest);
+    107|       await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a live own session whose authority is "X" even though the account has an X row
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "4ypBi8byFRbdV9ey3U7cbx4uXdPZigQPWEZcy23K9Ann",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+    103|       const w = pair();
+    104|       const c = await challenge(a, w);
+    105|       await expect(invoke(a, w, c)).rejects.toMatchObject({ status: 40…
+       |                                    ^
+    106|       await unconsumed(c.digest);
+    107|       await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "3Tsmbym3zHdZnJGsy5PwJrtVsVzdq3h7tTFU39h3arNv",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:137:30
+    135|         bar.release();
+    136|         await bar.held;
+    137|         await expect(pending).rejects.toMatchObject({ status });
+       |                              ^
+    138|         await unconsumed(c.digest);
+    139|         await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "4yA7sdUfZRayMh4z5VAfq889XmDD2B8u6CukxLdvJsrV",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:137:30
+    135|         bar.release();
+    136|         await bar.held;
+    137|         await expect(pending).rejects.toMatchObject({ status });
+       |                              ^
+    138|         await unconsumed(c.digest);
+    139|         await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "6dsZgRNxTV3Civvo37cYwq1kCNbk9X3VEC4gzvhcxFgT",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:137:30
+    135|         bar.release();
+    136|         await bar.held;
+    137|         await expect(pending).rejects.toMatchObject({ status });
+       |                              ^
+    138|         await unconsumed(c.digest);
+    139|         await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+AssertionError: promise resolved "{ …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "address": "2Qs8gYTeB2yRvELq3Dg8pLYHmp4Ry21j5VSGyiYLHSn7",
++   "alreadyLinked": false,
++   "networkIdentity": "mainnet",
++   "status": "ACTIVE",
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:160:28
+    158|       bar.release();
+    159|       await bar.held;
+    160|       await expect(pending).rejects.toMatchObject({ status: 401 });
+       |                            ^
+    161|       await unconsumed(c.digest);
+    162|       await noEffects(a.id);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 1 passed (9)
+   Start at  15:50:27
+   Duration  3.08s (transform 68ms, setup 0ms, import 264ms, tests 2.71s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b2a-authority/red.xml

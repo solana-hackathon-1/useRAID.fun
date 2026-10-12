@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({ cookie: '' }));
 vi.mock('next/headers', () => ({
   cookies: async () => ({
@@ -186,6 +186,124 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
       'x',
     );
   });
+  it('does not renew expired X authority through a wallet signature', async () => {
+    vi.stubEnv('X_ADMIN_USER_ID', 'expired-admin');
+    try {
+      const admin = await xUser('expired-admin', { role: 'ADMIN', approved: true });
+      const w = pair();
+      await walletSignIn(w, admin.id);
+      const raw = await session(admin.id, 'x');
+      await db.session.update({
+        where: { tokenHash: hash(raw) },
+        data: { expiresAt: new Date(0) },
+      });
+      // The route sees no current user for this expired cookie.
+      mocks.cookie = await walletSignIn(w, undefined, hash(raw));
+      expect(
+        (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(mocks.cookie) } })).via,
+      ).toBe('wallet');
+      await expect(requireUser(true)).rejects.toMatchObject({ status: 403 });
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+  it("does not borrow or delete another account's live X session", async () => {
+    const own = await xUser('own-session');
+    const foreign = await xUser('foreign-session');
+    const raw = await session(foreign.id, 'x');
+    const before = await db.session.findUniqueOrThrow({ where: { tokenHash: hash(raw) } });
+    const token = await walletSignIn(pair(), own.id, hash(raw));
+    expect(await db.session.findUnique({ where: { tokenHash: hash(raw) } })).toEqual(before);
+    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via).toBe(
+      'wallet',
+    );
+  });
+  it('requires authenticated account context before preserving X authority', async () => {
+    const own = await xUser('context-session');
+    const w = pair();
+    await walletSignIn(w, own.id);
+    const raw = await session(own.id, 'x');
+    const token = await walletSignIn(w, undefined, hash(raw));
+    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via).toBe(
+      'wallet',
+    );
+  });
+  it('normalizes unknown session authority to wallet authority', async () => {
+    const own = await xUser('unknown-session');
+    const raw = await session(own.id, 'unexpected-provider');
+    const token = await walletSignIn(pair(), own.id, hash(raw));
+    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via).toBe(
+      'wallet',
+    );
+  });
+  it.each(['revoked', 'expired', 'downgraded'] as const)(
+    'observes a concurrently %s X session before carrying its authority forward',
+    async (change) => {
+      const own = await xUser(`race-session-${change}`);
+      const raw = await session(own.id, 'x');
+      let ready!: () => void;
+      let release!: () => void;
+      const started = new Promise<void>((done) => {
+        ready = done;
+      });
+      const gate = new Promise<void>((done) => {
+        release = done;
+      });
+      let blocker = 0;
+      const held = db.$transaction(
+        async (tx) => {
+          blocker = (await tx.$queryRaw<{ pid: number }[]>`SELECT pg_backend_pid() AS pid`)[0].pid;
+          const where = { tokenHash: hash(raw) };
+          if (change === 'revoked') await tx.session.delete({ where });
+          else
+            await tx.session.update({
+              where,
+              data: change === 'expired' ? { expiresAt: new Date(0) } : { via: 'wallet' },
+            });
+          ready();
+          await gate;
+        },
+        { timeout: 15000 },
+      );
+      void held.catch(() => ready());
+      let signingIn: Promise<string> | undefined;
+      try {
+        await started;
+        signingIn = walletSignIn(pair(), own.id, hash(raw));
+        const deadline = Date.now() + 5000;
+        let observed = false;
+        while (Date.now() < deadline) {
+          const blocked = await db.$queryRaw<{ pid: number; query: string }[]>`
+            SELECT pid, query FROM pg_stat_activity
+            WHERE ${blocker}::integer = ANY(pg_blocking_pids(pid))
+          `;
+          const row = blocked.find((entry) =>
+            /DELETE FROM "(?:public"\.)?"?Session"?/s.test(entry.query),
+          );
+          if (row) {
+            expect(row.pid).not.toBe(blocker);
+            console.info(JSON.stringify({ sessionRace: change, waiter: row.pid, blocker }));
+            observed = true;
+            break;
+          }
+          await new Promise((done) => setTimeout(done, 10));
+        }
+        expect(observed, 'actual Session DELETE blocked by an independent transaction').toBe(true);
+        release();
+        await held;
+        const token = await signingIn;
+        expect(
+          (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via,
+        ).toBe('wallet');
+        expect(await db.session.findUnique({ where: { tokenHash: hash(raw) } })).toBeNull();
+      } finally {
+        release();
+        await held;
+        await signingIn;
+      }
+    },
+    20000,
+  );
   it('requires an X session for administrator access', async () => {
     vi.stubEnv('X_ADMIN_USER_ID', 'wallet-admin');
     const admin = await xUser('wallet-admin', { role: 'ADMIN', approved: true });
@@ -198,6 +316,14 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
     vi.unstubAllEnvs();
   });
   describe('merging an activity-free duplicate account', () => {
+    // Folding is gated off by default for launch (tests/account-fold-gate-db.test.ts); these
+    // cases keep covering the opt-in path with unchanged assertions.
+    beforeEach(() => {
+      process.env.ACCOUNT_FOLDS_ENABLED = 'true';
+    });
+    afterEach(() => {
+      delete process.env.ACCOUNT_FOLDS_ENABLED;
+    });
     it('moves a wallet from an empty wallet-only account onto the signed-in X account', async () => {
       const w = pair();
       const walletToken = await walletSignIn(w);

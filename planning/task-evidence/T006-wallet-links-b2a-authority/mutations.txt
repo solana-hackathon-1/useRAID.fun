@@ -1,0 +1,18 @@
+KILLED   via check dropped | 4 failed | 18 passed (22)
+KILLED   via compared case-insensitively | 1 failed | 21 passed (22)
+KILLED   X row check dropped | 1 failed | 21 passed (22)
+KILLED   session owner check dropped | 1 failed | 21 passed (22)
+SURVIVED DB clock expiry dropped | 22 passed (22)
+KILLED   app clock instead of DB clock | 8 failed | 14 passed (22)
+SURVIVED X not row-locked | 22 passed (22)
+SKIP(no match) switch ignored for link sign-in
+SURVIVED authenticated caller may use link | 22 passed (22)
+SURVIVED non-LINK source accepted | 22 passed (22)
+SURVIVED verify conflict unmapped | 22 passed (22)
+KILLED   rotate conflict unmapped | 1 failed | 21 passed (22)
+KILLED   module ignores hook (uses stale input) | 20 failed | 2 passed (22)
+
+# 2026-10-10 re-verification (Claude): earlier "SURVIVED X not row-locked" was not reproduced as a survivor.
+# Added test 'makes an X disconnect alone, arriving after the decision, wait for the link to commit' (X-only late writer).
+KILLED   XAccount FOR SHARE dropped | 2 failed (combined late-writer + new X-only) | 9 passed (11)
+# Reviewer-supplied reviewer-b2a-required.test.ts copied unmodified into tests/ temporarily, run on fixed tree: 18/18 pass; copy removed.

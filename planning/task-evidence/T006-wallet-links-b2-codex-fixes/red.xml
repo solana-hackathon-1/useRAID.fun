@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="4" errors="0" time="6.96273575">
+    <testsuite name="tests/wallet-link-lock-order-db.test.ts" timestamp="2026-10-10T17:21:29.525Z" hostname="0xd.local" tests="4" failures="4" errors="0" skipped="0" time="6.96273575">
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the Session row lock" time="2.911959">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:320,&quot;waiter&quot;:319,&quot;needle&quot;:&quot;FROM \&quot;Session\&quot;&quot;}}
+
+            </system-out>
+            <failure message="expected { ok: true, value: { …(4) } } to match object { ok: false, status: 401 }
+(5 matching properties omitted from actual)" type="AssertionError">
+AssertionError: expected { ok: true, value: { …(4) } } to match object { ok: false, status: 401 }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   &quot;ok&quot;: false,
+-   &quot;status&quot;: 401,
++   &quot;ok&quot;: true,
+  }
+
+ ❯ tests/wallet-link-lock-order-db.test.ts:125:31
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the XAccount row lock" time="2.813006667">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:320,&quot;waiter&quot;:319,&quot;needle&quot;:&quot;FROM \&quot;XAccount\&quot;&quot;}}
+
+            </system-out>
+            <failure message="expected { ok: true, value: { …(4) } } to match object { ok: false, status: 401 }
+(5 matching properties omitted from actual)" type="AssertionError">
+AssertionError: expected { ok: true, value: { …(4) } } to match object { ok: false, status: 401 }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   &quot;ok&quot;: false,
+-   &quot;status&quot;: 401,
++   &quot;ok&quot;: true,
+  }
+
+ ❯ tests/wallet-link-lock-order-db.test.ts:125:31
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; does not deadlock a merge against an X reconnect of the same account" time="1.155314875">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:320,&quot;waiter&quot;:319,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:319,&quot;waiter&quot;:322,&quot;needle&quot;:&quot;pg_advisory_xact_lock&quot;}}
+
+            </system-out>
+            <failure message="expected &apos;[{&quot;ok&quot;:true,&quot;value&quot;:&quot;-SyBKOXVOFPpgFcP…&apos; not to match /deadlock|40P01/i" type="AssertionError">
+AssertionError: expected &apos;[{&quot;ok&quot;:true,&quot;value&quot;:&quot;-SyBKOXVOFPpgFcP…&apos; not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+&quot;[{\&quot;ok\&quot;:true,\&quot;value\&quot;:\&quot;-SyBKOXVOFPpgFcPd43xRi2zRaGB2DUefuAaoOZ86tg\&quot;},{\&quot;ok\&quot;:false,\&quot;message\&quot;:\&quot;\\nInvalid `prisma.$executeRaw()` invocation:\\n\\n\\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\\nDETAIL: Process 322 waits for ExclusiveLock on advisory lock [16384,4222043731,1833730928,1]; blocked by process 319.\\nProcess 319 waits for ShareLock on transaction 5259; blocked by process 322.\\nHINT: See server log for query details.`\&quot;,\&quot;code\&quot;:\&quot;P2010\&quot;,\&quot;meta\&quot;:{\&quot;code\&quot;:\&quot;40P01\&quot;,\&quot;message\&quot;:\&quot;ERROR: deadlock detected\\nDETAIL: Process 322 waits for ExclusiveLock on advisory lock [16384,4222043731,1833730928,1]; blocked by process 319.\\nProcess 319 waits for ShareLock on transaction 5259; blocked by process 322.\\nHINT: See server log for query details.\&quot;}}]&quot;
+
+ ❯ tests/wallet-link-lock-order-db.test.ts:169:43
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; refuses a merge when the dropped account connected X while the merge waited for its row" time="0.07991525">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:320,&quot;waiter&quot;:319,&quot;needle&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+            <failure message="expected { ok: true, value: undefined } to match object { ok: false }
+(1 matching property omitted from actual)" type="AssertionError">
+AssertionError: expected { ok: true, value: undefined } to match object { ok: false }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   &quot;ok&quot;: false,
++   &quot;ok&quot;: true,
+  }
+
+ ❯ tests/wallet-link-lock-order-db.test.ts:199:27
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

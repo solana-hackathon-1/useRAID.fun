@@ -1,0 +1,480 @@
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+ ❯ tests/wallet-linked-signin-db.test.ts (15 tests | 11 failed) 14000ms
+     × fresh linked signature yields same account; participant, primary and history stay byte-identical 142ms
+     × same-account reauthentication with a linked wallet preserves a valid X session 65ms
+     × rejects REVOKED linked credential without challenge/session residue 68ms
+     × rejects WRONG_NETWORK linked credential without challenge/session residue 89ms
+     × rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet 60ms
+     × rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet 50ms
+     × replay of a consumed linked sign-in challenge creates no second session 45ms
+     × a expired X session cannot widen anonymous linked-wallet sign-in 51ms
+     × a foreign X session cannot widen anonymous linked-wallet sign-in 47ms
+     × revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids) 5033ms
+     × credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids) 8083ms
+ ❯ tests/account-fold-gate-db.test.ts (5 tests | 4 failed) 390ms
+     × refuses an X callback that would fold two accounts and changes nothing 140ms
+     × refuses a wallet link that would fold two accounts, keeps the challenge unconsumed 73ms
+     × a first X connection racing a wallet-link fold attempt neither deadlocks nor merges 89ms
+     × only the exact value "true" enables folding 21ms
+ ❯ tests/wallet-credential-lookup.test.ts (12 tests | 12 failed) 5ms
+     × returns an honest ACTIVE reservation without granting authentication 2ms
+     × returns an honest REVOKED reservation without granting authentication 0ms
+     × retains restriction so the proof/session host can refuse a suspended account 0ms
+     × returns null for an unreserved address (legacy primary/new-wallet host path) 0ms
+     × takes subject/account/link locks in contract order 0ms
+     × rejects malformed address  before SQL 0ms
+     × rejects malformed address not-a-wallet before SQL 0ms
+     × refuses a host without the declared isolation contract 0ms
+     × fails closed for malformed or changed ownership {"malformed":true} 0ms
+     × fails closed for malformed or changed ownership {"status":"UNKNOWN"} 0ms
+     × fails closed for malformed or changed ownership {"finalOwner":"foreign-owner"} 0ms
+     × sanitizes unknown driver exceptions 0ms
+ ❯ tests/wallet-auth-transaction.test.ts (4 tests | 4 failed) 41ms
+   × translates unique conflicts without driver text {"code":"P2002","message":"private address/owner"} 28ms
+   × translates unique conflicts without driver text {"code":"P2010","meta":{"code":"23505","message":"private address/owner"}} 5ms
+   × unknown driver failure is sanitized before the shared HTTP/logger boundary 4ms
+   × preserves the host’s intentional permission rejection 4ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 31 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/account-fold-gate-db.test.ts > account fold launch gate (default off) > refuses an X callback that would fold two accounts and changes nothing
+AssertionError: expected { ok: true, …(1) } to match object { ok: false, code: 'identity' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "identity",
+-   "ok": false,
++   "ok": true,
+  }
+
+ ❯ tests/account-fold-gate-db.test.ts:106:59
+    104|     const w = await walletOnly();
+    105|     const before = await snapshot();
+    106|     expect(await outcome(connectX(w.sessionHash, x.xId))).toMatchObjec…
+       |                                                           ^
+    107|       ok: false,
+    108|       code: 'identity',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/31]⎯
+
+ FAIL  tests/account-fold-gate-db.test.ts > account fold launch gate (default off) > refuses a wallet link that would fold two accounts, keeps the challenge unconsumed
+AssertionError: expected { ok: true, …(1) } to match object { ok: false, status: 409 }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": false,
+-   "status": 409,
++   "ok": true,
+  }
+
+ ❯ tests/account-fold-gate-db.test.ts:129:7
+    127|         ),
+    128|       ),
+    129|     ).toMatchObject({ ok: false, status: 409 });
+       |       ^
+    130|     expect(await snapshot()).toEqual(before);
+    131|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/31]⎯
+
+ FAIL  tests/account-fold-gate-db.test.ts > account fold launch gate (default off) > a first X connection racing a wallet-link fold attempt neither deadlocks nor merges
+AssertionError: expected [ { ok: true, …(1) }, …(1) ] to match object [ { ok: true }, …(1) ]
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -2,8 +2,8 @@
+    {
+      "ok": true,
+    },
+    {
+      "ok": false,
+-     "status": 409,
++     "status": undefined,
+    },
+  ]
+
+ ❯ tests/account-fold-gate-db.test.ts:201:23
+    199|       const results = await Promise.all([callback, link]);
+    200|       expect(JSON.stringify(results)).not.toMatch(/deadlock|40P01/i);
+    201|       expect(results).toMatchObject([{ ok: true }, { ok: false, status…
+       |                       ^
+    202|       expect(await db.user.findUniqueOrThrow({ where: { id: w.id } }))…
+    203|         xId: 'first-x',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/31]⎯
+
+ FAIL  tests/account-fold-gate-db.test.ts > account fold launch gate (default off) > only the exact value "true" enables folding
+TypeError: accountFoldsEnabled is not a function
+ ❯ tests/account-fold-gate-db.test.ts:222:14
+    220|     const { accountFoldsEnabled } = await import('../src/lib/config');
+    221|     for (const value of [undefined, '', 'false', 'TRUE', '1', 'yes'])
+    222|       expect(accountFoldsEnabled({ ACCOUNT_FOLDS_ENABLED: value })).to…
+       |              ^
+    223|     expect(accountFoldsEnabled({ ACCOUNT_FOLDS_ENABLED: 'true' })).toB…
+    224|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/31]⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > translates unique conflicts without driver text {"code":"P2002","message":"private address/owner"}
+ FAIL  tests/wallet-auth-transaction.test.ts > translates unique conflicts without driver text {"code":"P2010","meta":{"code":"23505","message":"private address/owner"}}
+AssertionError: expected Error: Wallet challenge expired or signat… { status: … } to match object { status: 409, …(1) }
+
+- Expected
++ Received
+
+- {
+-   "message": "Wallet belongs to another account.",
+-   "status": 409,
++ HttpError {
++   "status": 401,
+  }
+
+ ❯ tests/wallet-auth-transaction.test.ts:20:25
+     18| ])('translates unique conflicts without driver text %j', async (error)…
+     19|   mocks.transaction.mockRejectedValue(error);
+     20|   await expect(verify()).rejects.toMatchObject({
+       |                         ^
+     21|     status: 409,
+     22|     message: 'Wallet belongs to another account.',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/31]⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > unknown driver failure is sanitized before the shared HTTP/logger boundary
+AssertionError: expected Error: Wallet challenge expired or signat… { status: … } to match object { status: 503, …(1) }
+
+- Expected
++ Received
+
+- {
+-   "message": "Wallet sign-in unavailable. Please try again.",
+-   "status": 503,
++ HttpError {
++   "status": 401,
+  }
+
+ ❯ tests/wallet-auth-transaction.test.ts:27:25
+     25| it('unknown driver failure is sanitized before the shared HTTP/logger …
+     26|   mocks.transaction.mockRejectedValue(Error('private proof/session/own…
+     27|   await expect(verify()).rejects.toMatchObject({
+       |                         ^
+     28|     status: 503,
+     29|     message: 'Wallet sign-in unavailable. Please try again.',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/31]⎯
+
+ FAIL  tests/wallet-auth-transaction.test.ts > preserves the host’s intentional permission rejection
+AssertionError: expected Error: Wallet challenge expired or signat… { status: … } to be Error: This account is suspended. { status: … } // Object.is equality
+
+- Expected
++ Received
+
+  HttpError {
+-   "message": "This account is suspended.",
+-   "status": 403,
++   "message": "Wallet challenge expired or signature invalid.",
++   "status": 401,
+  }
+
+ ❯ tests/wallet-auth-transaction.test.ts:35:25
+     33|   const error = new HttpError(403, 'This account is suspended.');
+     34|   mocks.transaction.mockRejectedValue(error);
+     35|   await expect(verify()).rejects.toBe(error);
+       |                         ^
+     36| });
+     37|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns an honest ACTIVE reservation without granting authentication
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns an honest REVOKED reservation without granting authentication
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:51:20
+     49|     async (status) => {
+     50|       const h = host({ status });
+     51|       expect(await lookupWalletLink(h.port, address)).toEqual({
+       |                    ^
+     52|         accountId: 'synthetic-owner',
+     53|         networkIdentity: 'mainnet',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > retains restriction so the proof/session host can refuse a suspended account
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:60:18
+     58|   );
+     59|   it('retains restriction so the proof/session host can refuse a suspe…
+     60|     expect(await lookupWalletLink(host({ suspended: true }).port, addr…
+       |                  ^
+     61|       accountSuspended: true,
+     62|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns null for an unreserved address (legacy primary/new-wallet host path)
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:66:18
+     64|   it('returns null for an unreserved address (legacy primary/new-walle…
+     65|     const h = host({ absent: true });
+     66|     expect(await lookupWalletLink(h.port, address)).toBeNull();
+       |                  ^
+     67|     expect(h.query.mock.calls.some(([sql]) => sql.includes('FROM "User…
+     68|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > takes subject/account/link locks in contract order
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:71:11
+     69|   it('takes subject/account/link locks in contract order', async () =>…
+     70|     const h = host();
+     71|     await lookupWalletLink(h.port, address);
+       |           ^
+     72|     const sql = h.query.mock.calls.map(([sql]) => sql);
+     73|     expect(sql[0]).toContain('pg_advisory_xact_lock');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > rejects malformed address  before SQL
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > rejects malformed address not-a-wallet before SQL
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:79:18
+     77|   it.each(['', 'not-a-wallet'])('rejects malformed address %s before S…
+     78|     const h = host();
+     79|     await expect(lookupWalletLink(h.port, value)).rejects.toMatchObjec…
+       |                  ^
+     80|     expect(h.query).not.toHaveBeenCalled();
+     81|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > refuses a host without the declared isolation contract
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:85:7
+     83|     const h = host();
+     84|     await expect(
+     85|       lookupWalletLink(
+       |       ^
+     86|         { ...h.port, isolation: 'SERIALIZABLE' } as unknown as Identit…
+     87|         address,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > fails closed for malformed or changed ownership {"malformed":true}
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > fails closed for malformed or changed ownership {"status":"UNKNOWN"}
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > fails closed for malformed or changed ownership {"finalOwner":"foreign-owner"}
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:95:20
+     93|     'fails closed for malformed or changed ownership %j',
+     94|     async (options) => {
+     95|       await expect(lookupWalletLink(host(options).port, address)).reje…
+       |                    ^
+     96|         code: 'STORAGE_CONTRACT',
+     97|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/31]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > sanitizes unknown driver exceptions
+TypeError: lookupWalletLink is not a function
+ ❯ tests/wallet-credential-lookup.test.ts:101:18
+     99|   );
+    100|   it('sanitizes unknown driver exceptions', async () => {
+    101|     await expect(lookupWalletLink(host({ unavailable: true }).port, ad…
+       |                  ^
+    102|       new IdentityLinkError('STORAGE_UNAVAILABLE'),
+    103|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > fresh linked signature yields same account; participant, primary and history stay byte-identical
+Error: Wallet belongs to another account.
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:156:21
+    154|           if (credential.source !== 'ABSENT') {
+    155|             if (credential.source !== 'LINK' || currentUserId || !wall…
+    156|               throw new HttpError(409, 'Wallet belongs to another acco…
+       |                     ^
+    157|             userId = credential.accountId;
+    158|           }
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:134:5
+ ❯ tests/wallet-linked-signin-db.test.ts:114:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > same-account reauthentication with a linked wallet preserves a valid X session
+Error: Wallet belongs to another account.
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:156:21
+    154|           if (credential.source !== 'ABSENT') {
+    155|             if (credential.source !== 'LINK' || currentUserId || !wall…
+    156|               throw new HttpError(409, 'Wallet belongs to another acco…
+       |                     ^
+    157|             userId = credential.accountId;
+    158|           }
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:134:5
+ ❯ tests/wallet-linked-signin-db.test.ts:131:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects REVOKED linked credential without challenge/session residue
+AssertionError: expected Error: Wallet belongs to another account. { status: … } to match object { status: 401 }
+
+- Expected
++ Received
+
+- {
+-   "status": 401,
++ HttpError {
++   "status": 409,
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:180:8
+    178|       await expect(
+    179|         verifyWalletChallenge(challenge.digest, second.sign(challenge.…
+    180|       ).rejects.toMatchObject({ status: state === 'SUSPENDED' ? 403 : …
+       |        ^
+    181|       expect(await db.session.count()).toBe(0);
+    182|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rejects WRONG_NETWORK linked credential without challenge/session residue
+AssertionError: expected Error: Unsupported wallet. { status: … } to match object { status: 401 }
+
+- Expected
++ Received
+
+- {
+-   "status": 401,
++ HttpError {
++   "status": 400,
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:180:8
+    178|       await expect(
+    179|         verifyWalletChallenge(challenge.digest, second.sign(challenge.…
+    180|       ).rejects.toMatchObject({ status: state === 'SUSPENDED' ? 403 : …
+       |        ^
+    181|       expect(await db.session.count()).toBe(0);
+    182|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet
+AssertionError: expected Error: Finish pending deposits and withdr… { status: … } to match object { status: 409, …(1) }
+
+- Expected
++ Received
+
+- {
+-   "message": "Wallet belongs to another account.",
++ HttpError {
+    "status": 409,
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:220:8
+    218|       await expect(
+    219|         rotateWallet(ownerId, challenge.digest, second.sign(challenge.…
+    220|       ).rejects.toMatchObject({ status: 409, message: 'Wallet belongs …
+       |        ^
+    221|       expect(await snapshot()).toEqual(before);
+    222|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > replay of a consumed linked sign-in challenge creates no second session
+Error: Wallet belongs to another account.
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:156:21
+    154|           if (credential.source !== 'ABSENT') {
+    155|             if (credential.source !== 'LINK' || currentUserId || !wall…
+    156|               throw new HttpError(409, 'Wallet belongs to another acco…
+       |                     ^
+    157|             userId = credential.accountId;
+    158|           }
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:134:5
+ ❯ tests/wallet-linked-signin-db.test.ts:230:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > a expired X session cannot widen anonymous linked-wallet sign-in
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > a foreign X session cannot widen anonymous linked-wallet sign-in
+Error: Wallet belongs to another account.
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:156:21
+    154|           if (credential.source !== 'ABSENT') {
+    155|             if (credential.source !== 'LINK' || currentUserId || !wall…
+    156|               throw new HttpError(409, 'Wallet belongs to another acco…
+       |                     ^
+    157|             userId = credential.accountId;
+    158|           }
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:134:5
+ ❯ tests/wallet-linked-signin-db.test.ts:251:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/wallet-linked-signin-db.test.ts:283:3
+    281|     },
+    282|   );
+    283|   it('revocation committed before lookup completes prevents a real fre…
+       |   ^
+    284|     const challenge = await createWalletChallenge(second.address);
+    285|     let ready!: (pid: number) => void;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/31]⎯
+
+ FAIL  tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/wallet-linked-signin-db.test.ts:330:3
+    328|     expect(await db.participant.count()).toBe(1);
+    329|   });
+    330|   it('credential lookup holds its link row until host commit; concurre…
+       |   ^
+    331|     let ready!: (pid: number) => void;
+    332|     let release!: () => void;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/31]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+TypeError: lookupWalletLink is not a function
+ ❯ db.$transaction.timeout tests/wallet-linked-signin-db.test.ts:342:17
+    340|       async (tx) => {
+    341|         expect(
+    342|           await lookupWalletLink(createPrismaIdentityTransaction(tx), …
+       |                 ^
+    343|         ).toMatchObject({ accountId: ownerId, status: 'ACTIVE' });
+    344|         ready(
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/runtime/library.js:130:8126
+
+This error originated in "tests/wallet-linked-signin-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  4 failed (4)
+      Tests  31 failed | 5 passed (36)
+     Errors  1 error
+   Start at  19:35:01
+   Duration  15.61s (transform 117ms, setup 0ms, import 706ms, tests 14.44s, environment 0ms)
+

@@ -1,0 +1,10 @@
+{
+  "base_sha": "66d6a3a",
+  "working_tree": true,
+  "files": {
+    "src/lib/wallet-auth.ts": "72c687d7b3e713d13678122291de45510baa45ba56e10ea371c70132e287e150",
+    "tests/wallet-link-credentials.test.ts": "29908694ce0fd516e09c6360638ffd2f94a133168a1324a25fa839489218d627",
+    "tests/wallet-auth-isolation-db.test.ts": "f2ac4f69645914ca9acd8f2b58f4f9c12f1af10d04f378d38eb73bec25fb217d",
+    "prisma/migrations/202610090003_wallet_links/migration.sql": "ebbdec9a71c18e7420280c42948769785325350bd50e48331a103d0858232de8"
+  }
+}

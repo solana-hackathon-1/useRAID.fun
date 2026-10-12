@@ -1,0 +1,62 @@
+from pathlib import Path
+p=Path('/tmp/raid-auth-reconcile-20261011/candidate/tests/wallet-link-signin-db.test.ts');s=p.read_text().replace('B2b sign-in through a linked wallet (flag-gated, fail closed)','B2b existing-credential sign-in (released behavior; new linking remains gated)')
+def replace(title,new):
+ global s
+ start=s.index("  it('"+title+"'")
+ end=s.find('\n  it(',start+5)
+ if end<0:end=s.index('\n});',start)
+ s=s[:start]+new.rstrip()+ '\n'+s[end:]
+replace('fails closed with one sanitized conflict and no new user when the switch is off', '''  it('keeps an existing linked credential usable when new linking is switched off', async () => {
+    const a = await account();
+    const w = await linked(a);
+    delete process.env.WALLET_LINKS_ENABLED;
+    const before = await state();
+    const sessions = await db.session.count();
+    const c = await createWalletChallenge(w.address);
+    const token = await verifyWalletChallenge(c.digest, w.sign(c.message), w.address);
+    expect(await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).toMatchObject({ userId: a.user.id, via: 'wallet' });
+    expect(await state()).toEqual(before);
+    expect(await db.session.count()).toBe(sessions + 1);
+    expect((await db.walletChallenge.findUniqueOrThrow({ where: { digest: c.digest } })).consumedAt).not.toBeNull();
+    expect(await db.walletIdentity.findUniqueOrThrow({ where: { userId: a.user.id } })).toMatchObject({ address: a.primary.address });
+  });''')
+s=s.replace("await expect(signIn(w)).rejects.toMatchObject({ status: 409 });", "await expect(signIn(w)).rejects.toMatchObject({ status: 401 });")
+replace('gives a revoked link and a switch-off link the same conflict text (N4)', '''  it('gives revoked and wrong-network reservations the same released denial without changing state', async () => {
+    const a = await account(); const w = await linked(a);
+    delete process.env.WALLET_LINKS_ENABLED;
+    await db.walletLink.updateMany({ where: { address: w.address }, data: { status: 'REVOKED', revokedAt: new Date() } });
+    const before = await state(); const sessions = await db.session.count();
+    const revoked = await signIn(w).catch((e) => e);
+    await db.walletLink.updateMany({ where: { address: w.address }, data: { status: 'ACTIVE', revokedAt: null, networkIdentity: 'wrong-network' } });
+    const wrongNetwork = await signIn(w).catch((e) => e);
+    expect([revoked.status, wrongNetwork.status]).toEqual([401, 401]);
+    expect(revoked.message).toBe(wrongNetwork.message);
+    expect(revoked.message).not.toContain(a.user.id); expect(revoked.message).not.toContain(w.address);
+    expect(await state()).toEqual(before); expect(await db.session.count()).toBe(sessions);
+  });''')
+replace('turns a double-clicked first sign-in of a brand-new wallet into one session and one sanitized 409 (N6)', '''  it('serializes two fresh signed challenges into one account with two independent wallet sessions', async () => {
+    const fresh = pair(); const users = await db.user.count();
+    const [c1, c2] = await Promise.all([createWalletChallenge(fresh.address), createWalletChallenge(fresh.address)]);
+    const tokens = await Promise.all([verifyWalletChallenge(c1.digest, fresh.sign(c1.message), fresh.address), verifyWalletChallenge(c2.digest, fresh.sign(c2.message), fresh.address)]);
+    expect(new Set(tokens).size).toBe(2);
+    const owner = await db.walletIdentity.findUniqueOrThrow({ where: { address: fresh.address } });
+    for (const token of tokens) expect(await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).toMatchObject({ userId: owner.userId, via: 'wallet' });
+    expect(await db.user.count()).toBe(users + 1);
+    expect(await db.walletIdentity.count({ where: { address: fresh.address } })).toBe(1);
+    expect(await db.walletChallenge.count({ where: { digest: { in: [c1.digest, c2.digest] }, consumedAt: { not: null } } })).toBe(2);
+  });''')
+s=s.replace('does not let a legacy link or a rotation take an address that is a sign-in link','allows same-account reauthentication while denying foreign legacy links and payout rotation')
+old='''    // Legacy link purpose by another signed-in account and by the owner.
+    for (const user of [other.user.id, owner.user.id]) {
+      const c = await createWalletChallenge(w.address, user);
+      await expect(
+        verifyWalletChallenge(c.digest, w.sign(c.message), w.address, user),
+      ).rejects.toMatchObject({ status: 409 });
+    }'''
+new='''    const foreign = await createWalletChallenge(w.address, other.user.id);
+    await expect(verifyWalletChallenge(foreign.digest, w.sign(foreign.message), w.address, other.user.id)).rejects.toMatchObject({ status: 409 });
+    const own = await createWalletChallenge(w.address, owner.user.id);
+    const token = await verifyWalletChallenge(own.digest, w.sign(own.message), w.address, owner.user.id, owner.sessionHash);
+    expect(await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).toMatchObject({ userId: owner.user.id, via: 'x' });
+    expect(await db.session.findUnique({ where: { tokenHash: owner.sessionHash } })).toBeNull();'''
+assert old in s;s=s.replace(old,new);p.write_text(s)

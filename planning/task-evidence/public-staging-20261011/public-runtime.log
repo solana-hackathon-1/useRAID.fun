@@ -1,0 +1,41 @@
+worker-1  | 
+worker-1  | > useraid@0.1.0 db:migrate
+worker-1  | > prisma migrate deploy
+worker-1  | 
+worker-1  | Prisma schema loaded from prisma/schema.prisma
+worker-1  | Datasource "db": PostgreSQL database "useraid_staging", schema "public" at "db:5432"
+worker-1  | 
+worker-1  | 22 migrations found in prisma/migrations
+worker-1  | 
+worker-1  | 
+worker-1  | No pending migrations to apply.
+worker-1  | npm notice
+worker-1  | npm notice New major version of npm available! 10.9.9 -> 12.2.0
+worker-1  | npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+worker-1  | npm notice To update run: npm install -g npm@12.2.0
+worker-1  | npm notice
+worker-1  | bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+web-1     | > useraid@0.1.0 db:migrate
+web-1     | > prisma migrate deploy
+web-1     | 
+web-1     | Prisma schema loaded from prisma/schema.prisma
+web-1     | Datasource "db": PostgreSQL database "useraid_staging", schema "public" at "db:5432"
+web-1     | 
+web-1     | 22 migrations found in prisma/migrations
+web-1     | 
+web-1     | 
+web-1     | No pending migrations to apply.
+web-1     | npm notice
+web-1     | npm notice New major version of npm available! 10.9.9 -> 12.2.0
+web-1     | npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+web-1     | npm notice To update run: npm install -g npm@12.2.0
+web-1     | npm notice
+web-1     | ▲ Next.js 16.3.8
+web-1     | - Local:         http://localhost:3000
+web-1     | - Network:       http://0.0.0.0:3000
+web-1     | ✓ Ready in 119ms
+web-1     | ✓ Running next.config.ts took 65ms
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   17G   14G  2.4G  86% /

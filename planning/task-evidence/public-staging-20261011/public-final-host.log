@@ -1,0 +1,19 @@
+7f76c053e2534944fc074123ccbd3cbe1eaf2d38197a69b78d693d77eb81b4ba  compose.yaml
+5770b14ba3b7729168d38641557c605370ab1f54d6495ef99c6ecfe5d70d8b4b  compose-public.yaml
+5318ce02e6610aa1fc99840255361bf43d83d4ce10b4727501727b30b9dd2304  nginx.conf
+f925e805a04f3be8d390cf2005ad7f424359d87f26bde3754da8d67c298fe99a  nginx-public.conf
+600 raidstaging secrets/cloudflare-tunnel-token
+600 raidstaging .env
+600 raidstaging .env.app
+{"status":"ok","mode":"live","rateLimitMode":"per-client"}watchtower-1  | time="2026-10-11T11:29:22Z" level=info msg="Watchtower 1.7.1"
+watchtower-1  | time="2026-10-11T11:29:22Z" level=info msg="Using no notifications"
+watchtower-1  | time="2026-10-11T11:29:22Z" level=info msg="Only checking containers using enable label, in scope \"useraid-staging\""
+watchtower-1  | time="2026-10-11T11:29:22Z" level=info msg="Scheduling first run: 2026-10-11 11:34:22 +0000 UTC"
+watchtower-1  | time="2026-10-11T11:29:22Z" level=info msg="Note that the first check will be performed in 4 minutes, 59 seconds"
+watchtower-1  | time="2026-10-11T11:34:25Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no
+watchtower-1  | time="2026-10-11T11:39:24Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no
+watchtower-1  | time="2026-10-11T11:44:25Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no
+watchtower-1  | time="2026-10-11T11:49:25Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no
+watchtower-1  | time="2026-10-11T11:54:24Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no
+watchtower-1  | time="2026-10-11T11:59:25Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no
+watchtower-1  | time="2026-10-11T12:04:25Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no

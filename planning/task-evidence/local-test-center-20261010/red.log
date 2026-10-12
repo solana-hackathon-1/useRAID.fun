@@ -1,0 +1,133 @@
+
+Running 4 tests using 1 worker
+
+(node:1424) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/browser-studio/test-center.spec.ts:6:1 › test center distinguishes browser checks from backend-only implementation (5.5s)
+(node:1673) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [desktop] › tests/browser-studio/test-center.spec.ts:20:1 › amount explorer uses exact arithmetic and recovers from rejected precision (5.3s)
+(node:1680) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 [desktop] › tests/browser-studio/test-center.spec.ts:44:1 › capacity explorer preserves review duty and distinguishes closure from payment (5.3s)
+(node:1697) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 [desktop] › tests/browser-studio/test-center.spec.ts:55:1 › test center starts the existing isolated Studio flow (5.3s)
+
+
+  1) [desktop] › tests/browser-studio/test-center.spec.ts:6:1 › test center distinguishes browser checks from backend-only implementation 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Implementation test center' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Implementation test center' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Implementation test center' })
+
+
+       6 | test('test center distinguishes browser checks from backend-only implementation', async ({ page }) => {
+       7 |   await page.goto('/test-center');
+    >  8 |   await expect(page.getByRole('heading', { name: 'Implementation test center' })).toBeVisible({ timeout: 5000 });
+         |                                                                                   ^
+       9 |   await expect(page.getByText('T006 · Canonical identity & wallet links', { exact: true })).toBeVisible();
+      10 |   await expect(page.getByText('Review and integration pending', { exact: true })).toBeVisible();
+      11 |   await expect(page.getByRole('button', { name: /link additional wallet|revoke wallet/i })).toHaveCount(0);
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-studio/test-center.spec.ts:8:83
+
+    Error Context: test-results/test-center-test-center-di-7e667-backend-only-implementation-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/test-center-test-center-di-7e667-backend-only-implementation-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/test-center-test-center-di-7e667-backend-only-implementation-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/browser-studio/test-center.spec.ts:20:1 › amount explorer uses exact arithmetic and recovers from rejected precision 
+
+    TimeoutError: locator.fill: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for getByRole('region', { name: 'Exact amount explorer' }).getByLabel('Display amount')
+
+
+      22 |   await page.goto('/test-center');
+      23 |   const explorer = page.getByRole('region', { name: 'Exact amount explorer' });
+    > 24 |   await explorer.getByLabel('Display amount').fill('250.50');
+         |                                               ^
+      25 |   await explorer.getByLabel('Asset decimals').selectOption('6');
+      26 |   await explorer.getByRole('button', { name: 'Calculate exact amounts' }).click();
+      27 |   await expect(explorer.getByTestId('base-units')).toHaveText('250500000');
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-studio/test-center.spec.ts:24:47
+
+    Error Context: test-results/test-center-amount-explore-d5786-ers-from-rejected-precision-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/test-center-amount-explore-d5786-ers-from-rejected-precision-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/test-center-amount-explore-d5786-ers-from-rejected-precision-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › tests/browser-studio/test-center.spec.ts:44:1 › capacity explorer preserves review duty and distinguishes closure from payment 
+
+    TimeoutError: locator.selectOption: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for getByRole('region', { name: 'Capacity state explorer' }).getByLabel('Engagement state')
+
+
+      45 |   await page.goto('/test-center');
+      46 |   const explorer = page.getByRole('region', { name: 'Capacity state explorer' });
+    > 47 |   await explorer.getByLabel('Engagement state').selectOption('UNDER_REVIEW');
+         |                                                 ^
+      48 |   await expect(explorer.getByRole('status')).toContainText('Active slot held');
+      49 |   await explorer.getByLabel('Engagement state').selectOption('ACCEPTED');
+      50 |   await expect(explorer.getByRole('status')).toContainText('Active slot released');
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-studio/test-center.spec.ts:47:49
+
+    Error Context: test-results/test-center-capacity-explo-f5398-uishes-closure-from-payment-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/test-center-capacity-explo-f5398-uishes-closure-from-payment-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/test-center-capacity-explo-f5398-uishes-closure-from-payment-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [desktop] › tests/browser-studio/test-center.spec.ts:55:1 › test center starts the existing isolated Studio flow 
+
+    TimeoutError: locator.click: Timeout 5000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Enter test Creator Studio' })
+
+
+      55 | test('test center starts the existing isolated Studio flow', async ({ page }) => {
+      56 |   await page.goto('/test-center');
+    > 57 |   await page.getByRole('button', { name: 'Enter test Creator Studio' }).click();
+         |                                                                         ^
+      58 |   await expect(page.getByRole('heading', { name: 'Creator Studio', exact: true })).toBeVisible();
+      59 |   await page.goto('/creator/balance');
+      60 |   await expect(page.getByRole('button', { name: 'Add test USDC' })).toBeVisible();
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-studio/test-center.spec.ts:57:73
+
+    Error Context: test-results/test-center-test-center-st-40466-isting-isolated-Studio-flow-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/test-center-test-center-st-40466-isting-isolated-Studio-flow-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/test-center-test-center-st-40466-isting-isolated-Studio-flow-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [desktop] › tests/browser-studio/test-center.spec.ts:6:1 › test center distinguishes browser checks from backend-only implementation 
+    [desktop] › tests/browser-studio/test-center.spec.ts:20:1 › amount explorer uses exact arithmetic and recovers from rejected precision 
+    [desktop] › tests/browser-studio/test-center.spec.ts:44:1 › capacity explorer preserves review duty and distinguishes closure from payment 
+    [desktop] › tests/browser-studio/test-center.spec.ts:55:1 › test center starts the existing isolated Studio flow 

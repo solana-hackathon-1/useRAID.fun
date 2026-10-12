@@ -1,0 +1,435 @@
+[
+  {
+    "id": "0f93ff27737224e924492a6d4d01b5be30f9fb744e9dd5051d6db4e1751cf319",
+    "name": "useraid-staging-watchtower-1",
+    "image_id": "sha256:6dd50763bbd632a83cb154d5451700530d1e44200b268a4e9488fefdfcf2b038",
+    "image_tag": "containrrr/watchtower:1.7.1@sha256:6dd50763bbd632a83cb154d5451700530d1e44200b268a4e9488fefdfcf2b038",
+    "command": null,
+    "labels": {
+      "com.centurylinklabs.watchtower": "true",
+      "com.centurylinklabs.watchtower.enable": "false",
+      "com.centurylinklabs.watchtower.scope": "useraid-staging",
+      "com.docker.compose.config-hash": "82dd94b7e23988e7cd94e0604a3f326451ab2aa1bbd63c59a02e77a562a2a053",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "",
+      "com.docker.compose.image": "sha256:f14f090fcc8235449da45ccbb1aea3b424ed3b101bcbd3de56526909397c2369",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "useraid-staging",
+      "com.docker.compose.project.config_files": "/home/raidstaging/useraid-staging/compose.yaml",
+      "com.docker.compose.project.environment_file": "/home/raidstaging/useraid-staging/.env",
+      "com.docker.compose.project.working_dir": "/home/raidstaging/useraid-staging",
+      "com.docker.compose.service": "watchtower",
+      "com.docker.compose.version": "5.6.0"
+    },
+    "status": "running",
+    "health": "healthy",
+    "restarts": 0,
+    "started_at": "2026-10-11T11:29:21.631149368Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {
+      "DOCKER_API_VERSION": "1.44",
+      "DOCKER_CONFIG": "/config",
+      "WATCHTOWER_LABEL_ENABLE": "true",
+      "WATCHTOWER_SCOPE": "useraid-staging",
+      "WATCHTOWER_POLL_INTERVAL": "300",
+      "WATCHTOWER_INCLUDE_RESTARTING": "true",
+      "WATCHTOWER_TIMEOUT": "60s"
+    },
+    "mount_destinations": ["/config", "/var/run/docker.sock"]
+  },
+  {
+    "id": "15f89094188cd556a4379c81c715e5e954263e32969da7f2a541d96c6be2fcc0",
+    "name": "useraid-staging-web-1",
+    "image_id": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+    "image_tag": "ghcr.io/solana-hackathon-1/useraid.fun:staging",
+    "command": ["sh", "/app/scripts/staging-start.sh", "web"],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "true",
+      "com.centurylinklabs.watchtower.scope": "useraid-staging",
+      "com.docker.compose.config-hash": "18a0213803a037292605879bad26a15a08903190316012a186a1606ab23c270f",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "db:service_healthy:false",
+      "com.docker.compose.image": "sha256:6499e100805bf00e16b301cbaaa6bc8701b45c93903a814dc766740ac13caa42",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "useraid-staging",
+      "com.docker.compose.project.config_files": "/home/raidstaging/useraid-staging/compose.yaml",
+      "com.docker.compose.project.environment_file": "/home/raidstaging/useraid-staging/.env",
+      "com.docker.compose.project.working_dir": "/home/raidstaging/useraid-staging",
+      "com.docker.compose.service": "web",
+      "com.docker.compose.version": "5.6.0",
+      "org.opencontainers.image.description": "useRAID staging web and worker",
+      "org.opencontainers.image.revision": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+      "org.opencontainers.image.source": "https://github.com/solana-hackathon-1/useRAID.fun"
+    },
+    "status": "running",
+    "health": "healthy",
+    "restarts": 0,
+    "started_at": "2026-10-11T11:28:49.649781801Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {
+      "NODE_ENV": "production",
+      "DEMO_MODE": "false",
+      "ACCOUNT_FOLDS_ENABLED": "false",
+      "WALLET_LINKS_ENABLED": "false",
+      "LOCAL_AUTO_APPROVE_CREATORS": "false",
+      "STUDIO_SANDBOX": "false",
+      "ALLOW_REMOTE_TEST_DB": "false",
+      "LIVE_COLLECTION_APPROVED": "false",
+      "X_TRACKING_V2_ENABLED": "false",
+      "X_TRACKING_V2_SETTLEMENT_ENABLED": "false",
+      "LAUNCH_ENABLED": "false",
+      "PAYOUT_ENABLED": "false",
+      "USDC_NETWORK": "devnet"
+    },
+    "mount_destinations": []
+  },
+  {
+    "id": "3d86ce9bce66a9bbbce6882361d637e68066ce80fd2bd52544c94ad4315e55d4",
+    "name": "useraid-staging-worker-1",
+    "image_id": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+    "image_tag": "ghcr.io/solana-hackathon-1/useraid.fun:staging",
+    "command": ["sh", "/app/scripts/staging-start.sh", "worker"],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "true",
+      "com.centurylinklabs.watchtower.scope": "useraid-staging",
+      "com.docker.compose.config-hash": "eb60ea3f0f05c8c9487adef92b2e1568608a6f218846ae3610c5227b5cbb07c3",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "db:service_healthy:false",
+      "com.docker.compose.image": "sha256:6499e100805bf00e16b301cbaaa6bc8701b45c93903a814dc766740ac13caa42",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "useraid-staging",
+      "com.docker.compose.project.config_files": "/home/raidstaging/useraid-staging/compose.yaml",
+      "com.docker.compose.project.environment_file": "/home/raidstaging/useraid-staging/.env",
+      "com.docker.compose.project.working_dir": "/home/raidstaging/useraid-staging",
+      "com.docker.compose.service": "worker",
+      "com.docker.compose.version": "5.6.0",
+      "org.opencontainers.image.description": "useRAID staging web and worker",
+      "org.opencontainers.image.revision": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+      "org.opencontainers.image.source": "https://github.com/solana-hackathon-1/useRAID.fun"
+    },
+    "status": "running",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T11:28:49.525791926Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {
+      "NODE_ENV": "production",
+      "DEMO_MODE": "false",
+      "ACCOUNT_FOLDS_ENABLED": "false",
+      "WALLET_LINKS_ENABLED": "false",
+      "LOCAL_AUTO_APPROVE_CREATORS": "false",
+      "STUDIO_SANDBOX": "false",
+      "ALLOW_REMOTE_TEST_DB": "false",
+      "LIVE_COLLECTION_APPROVED": "false",
+      "X_TRACKING_V2_ENABLED": "false",
+      "X_TRACKING_V2_SETTLEMENT_ENABLED": "false",
+      "LAUNCH_ENABLED": "false",
+      "PAYOUT_ENABLED": "false",
+      "USDC_NETWORK": "devnet"
+    },
+    "mount_destinations": []
+  },
+  {
+    "id": "2e1b144794f3848745df8ac419404b9e2a7c603309dfec0e3a699a42fce54965",
+    "name": "useraid-staging-proxy-1",
+    "image_id": "sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236",
+    "image_tag": "nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236",
+    "command": ["nginx", "-g", "daemon off;"],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "false",
+      "com.docker.compose.config-hash": "e2601f0413ab0205af137cd3c5e95e05b4848e33ab41c5a94747feeb4773096e",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "web:service_healthy:false",
+      "com.docker.compose.image": "sha256:1be286f7dd7d6e6be04f46e8df36d0084b05aa3d7fd3c6ebda3e1eff4e5b665d",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "useraid-staging",
+      "com.docker.compose.project.config_files": "/home/raidstaging/useraid-staging/compose.yaml",
+      "com.docker.compose.project.environment_file": "/home/raidstaging/useraid-staging/.env",
+      "com.docker.compose.project.working_dir": "/home/raidstaging/useraid-staging",
+      "com.docker.compose.service": "proxy",
+      "com.docker.compose.version": "5.6.0",
+      "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"
+    },
+    "status": "running",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T11:00:40.924709172Z",
+    "ports": {
+      "443/tcp": [
+        {
+          "HostIp": "192.168.101.13",
+          "HostPort": "8443"
+        }
+      ]
+    },
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": ["/etc/nginx/tls", "/etc/nginx/conf.d/default.conf"]
+  },
+  {
+    "id": "85b1c9f2ebd5dc1515ed4efb59f92f2e8d4f95d7582e555a33a11bb37318cb83",
+    "name": "useraid-staging-db-1",
+    "image_id": "sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "image_tag": "postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "command": ["postgres"],
+    "labels": {
+      "com.centurylinklabs.watchtower.enable": "false",
+      "com.docker.compose.config-hash": "55a853b477c882fe316196e6805fb9287eef84da4c7667ed60f3472d4a0c5213",
+      "com.docker.compose.container-number": "1",
+      "com.docker.compose.depends_on": "",
+      "com.docker.compose.image": "sha256:2c942175a1255a9abe0366e48c1b401d9f50f835b04dfea13f111609b5530df7",
+      "com.docker.compose.oneoff": "False",
+      "com.docker.compose.project": "useraid-staging",
+      "com.docker.compose.project.config_files": "/home/raidstaging/useraid-staging/compose.yaml",
+      "com.docker.compose.project.environment_file": "/home/raidstaging/useraid-staging/.env",
+      "com.docker.compose.project.working_dir": "/home/raidstaging/useraid-staging",
+      "com.docker.compose.service": "db",
+      "com.docker.compose.version": "5.6.0"
+    },
+    "status": "running",
+    "health": "healthy",
+    "restarts": 0,
+    "started_at": "2026-10-11T10:58:54.557437932Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "unless-stopped",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": ["/run/secrets/db_password", "/var/lib/postgresql/data"]
+  },
+  {
+    "id": "56a30b21e305cbb925182a02eaed347b4d4da16a35e17f95ac6c9b9da465a289",
+    "name": "dokploy-postgres.1.9xdv4wp268x21jrg6nrj55fzx",
+    "image_id": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "image_tag": "postgres:16@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "command": ["postgres"],
+    "labels": {
+      "com.docker.swarm.node.id": "e8nh05tgoz1kbji3cjm1nkc7u",
+      "com.docker.swarm.service.id": "1wjuoxcn688qboh9yc1cx3b2e",
+      "com.docker.swarm.service.name": "dokploy-postgres",
+      "com.docker.swarm.task": "",
+      "com.docker.swarm.task.id": "9xdv4wp268x21jrg6nrj55fzx",
+      "com.docker.swarm.task.name": "dokploy-postgres.1.9xdv4wp268x21jrg6nrj55fzx"
+    },
+    "status": "running",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T10:34:51.222382687Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": ["/var/lib/postgresql/data"]
+  },
+  {
+    "id": "0e321ff6938d0ce6127998c8b3d76e6001d9ef19c09a3d738a5eef23502235d7",
+    "name": "dokploy-postgres.1.s68gslsht9fhni7exlbk2d1ch",
+    "image_id": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "image_tag": "postgres:16@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "command": ["postgres"],
+    "labels": {
+      "com.docker.swarm.node.id": "e8nh05tgoz1kbji3cjm1nkc7u",
+      "com.docker.swarm.service.id": "1wjuoxcn688qboh9yc1cx3b2e",
+      "com.docker.swarm.service.name": "dokploy-postgres",
+      "com.docker.swarm.task": "",
+      "com.docker.swarm.task.id": "s68gslsht9fhni7exlbk2d1ch",
+      "com.docker.swarm.task.name": "dokploy-postgres.1.s68gslsht9fhni7exlbk2d1ch"
+    },
+    "status": "exited",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T10:34:45.578236306Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": ["/var/lib/postgresql/data"]
+  },
+  {
+    "id": "6d5c9ee55a5296e2f30cc40804b299ea3de453114dc84b6d5098e3b984a701b3",
+    "name": "dokploy-postgres.1.sy5kbop8e28a4kapmpjpdt5vx",
+    "image_id": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "image_tag": "postgres:16@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "command": ["postgres"],
+    "labels": {
+      "com.docker.swarm.node.id": "e8nh05tgoz1kbji3cjm1nkc7u",
+      "com.docker.swarm.service.id": "1wjuoxcn688qboh9yc1cx3b2e",
+      "com.docker.swarm.service.name": "dokploy-postgres",
+      "com.docker.swarm.task": "",
+      "com.docker.swarm.task.id": "sy5kbop8e28a4kapmpjpdt5vx",
+      "com.docker.swarm.task.name": "dokploy-postgres.1.sy5kbop8e28a4kapmpjpdt5vx"
+    },
+    "status": "exited",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T10:34:40.140322435Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": ["/var/lib/postgresql/data"]
+  },
+  {
+    "id": "cc6b768c6b5971121e704fd8eb0605eddee022fff608c3f4d14e46e7b31fe4df",
+    "name": "dokploy-postgres.1.a4gk9agwjz6wf7n5hlz4qc72p",
+    "image_id": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "image_tag": "postgres:16@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "command": ["postgres"],
+    "labels": {
+      "com.docker.swarm.node.id": "e8nh05tgoz1kbji3cjm1nkc7u",
+      "com.docker.swarm.service.id": "1wjuoxcn688qboh9yc1cx3b2e",
+      "com.docker.swarm.service.name": "dokploy-postgres",
+      "com.docker.swarm.task": "",
+      "com.docker.swarm.task.id": "a4gk9agwjz6wf7n5hlz4qc72p",
+      "com.docker.swarm.task.name": "dokploy-postgres.1.a4gk9agwjz6wf7n5hlz4qc72p"
+    },
+    "status": "exited",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T10:34:34.589972631Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": ["/var/lib/postgresql/data"]
+  },
+  {
+    "id": "0d480bae2d82a78182cc136cc09d7de23834438c6bc66804c2f1f2aa979235ad",
+    "name": "dokploy-postgres.1.w7quyfuzwb43vd5lviwl6su1i",
+    "image_id": "sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "image_tag": "postgres:16@sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d",
+    "command": ["postgres"],
+    "labels": {
+      "com.docker.swarm.node.id": "e8nh05tgoz1kbji3cjm1nkc7u",
+      "com.docker.swarm.service.id": "1wjuoxcn688qboh9yc1cx3b2e",
+      "com.docker.swarm.service.name": "dokploy-postgres",
+      "com.docker.swarm.task": "",
+      "com.docker.swarm.task.id": "w7quyfuzwb43vd5lviwl6su1i",
+      "com.docker.swarm.task.name": "dokploy-postgres.1.w7quyfuzwb43vd5lviwl6su1i"
+    },
+    "status": "exited",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T10:34:29.142290263Z",
+    "ports": {},
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": ["/var/lib/postgresql/data"]
+  },
+  {
+    "id": "70a2c503d08fd1081813b2eff15cdb5300cfbaf10443e387ee0664168f8aa49a",
+    "name": "dokploy-traefik",
+    "image_id": "sha256:31267173a15b4944e797a76ffd9c419707c8d8b32fe5b610f80cd0cfa05f372d",
+    "image_tag": "traefik:v3.6.25",
+    "command": ["traefik"],
+    "labels": {
+      "org.opencontainers.image.description": "A modern reverse-proxy",
+      "org.opencontainers.image.documentation": "https://docs.traefik.io",
+      "org.opencontainers.image.source": "https://github.com/traefik/traefik",
+      "org.opencontainers.image.title": "Traefik",
+      "org.opencontainers.image.url": "https://traefik.io",
+      "org.opencontainers.image.vendor": "Traefik Labs",
+      "org.opencontainers.image.version": "v3.6.25"
+    },
+    "status": "running",
+    "health": null,
+    "restarts": 0,
+    "started_at": "2026-10-11T10:28:44.242142244Z",
+    "ports": {
+      "443/tcp": [
+        {
+          "HostIp": "",
+          "HostPort": "443"
+        }
+      ],
+      "443/udp": [
+        {
+          "HostIp": "",
+          "HostPort": "443"
+        }
+      ],
+      "80/tcp": [
+        {
+          "HostIp": "",
+          "HostPort": "80"
+        }
+      ]
+    },
+    "restart_policy": {
+      "Name": "always",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {},
+    "mount_destinations": [
+      "/etc/traefik/traefik.yml",
+      "/var/run/docker.sock",
+      "/etc/dokploy/traefik/dynamic"
+    ]
+  },
+  {
+    "id": "e2a84bc4e6b24f85731850feae57cf2082eb8001c6d94ce73ce0112a4637716c",
+    "name": "dokploy.1.meurwwh4bht4ltp24npt8vcj3",
+    "image_id": "sha256:e8789a3f71a1e50d817836ad222ee0eab8ee69fc1b0451fee189a880b5602871",
+    "image_tag": "dokploy/dokploy:v0.30.8@sha256:e8789a3f71a1e50d817836ad222ee0eab8ee69fc1b0451fee189a880b5602871",
+    "command": [
+      "sh",
+      "-c",
+      "node -r dotenv/config dist/wait-for-postgres.mjs && node -r dotenv/config dist/migration.mjs && exec node -r dotenv/config dist/server.mjs"
+    ],
+    "labels": {
+      "com.docker.swarm.node.id": "e8nh05tgoz1kbji3cjm1nkc7u",
+      "com.docker.swarm.service.id": "yj2zrkgjo1hroyys2k5sv27y6",
+      "com.docker.swarm.service.name": "dokploy",
+      "com.docker.swarm.task": "",
+      "com.docker.swarm.task.id": "meurwwh4bht4ltp24npt8vcj3",
+      "com.docker.swarm.task.name": "dokploy.1.meurwwh4bht4ltp24npt8vcj3"
+    },
+    "status": "running",
+    "health": "healthy",
+    "restarts": 0,
+    "started_at": "2026-10-11T10:28:21.877615249Z",
+    "ports": {
+      "3000/tcp": [
+        {
+          "HostIp": "",
+          "HostPort": "3000"
+        }
+      ]
+    },
+    "restart_policy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "safe_environment": {
+      "NODE_ENV": "production"
+    },
+    "mount_destinations": ["/etc/dokploy", "/root/.docker", "/var/run/docker.sock"]
+  }
+]

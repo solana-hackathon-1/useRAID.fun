@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+ ❯ tests/wallet-link-signin-db.test.ts (8 tests | 1 failed) 431ms
+     × gives revoked and wrong-network reservations the same released denial without changing state 34ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > gives revoked and wrong-network reservations the same released denial without changing state
+PrismaClientUnknownRequestError: 
+Invalid `db.walletLink.updateMany()` invocation in
+/private/tmp/raid-auth-reconcile-20261011/candidate/tests/wallet-link-signin-db.test.ts:154:27
+
+  151 const before = await state();
+  152 const sessions = await db.session.count();
+  153 const revoked = await signIn(w).catch((e) => e);
+→ 154 await db.walletLink.updateMany(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23000", message: "Wallet link is immutable except ACTIVE to REVOKED", severity: "ERROR", detail: None, column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-link-signin-db.test.ts:154:7
+    152|       const sessions = await db.session.count();
+    153|       const revoked = await signIn(w).catch((e) => e);
+    154|       await db.walletLink.updateMany({
+       |       ^
+    155|         where: { address: w.address },
+    156|         data: { status: 'ACTIVE', revokedAt: null, networkIdentity: 'w…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 43 passed (44)
+   Start at  19:38:03
+   Duration  3.62s (transform 129ms, setup 0ms, import 912ms, tests 2.12s, environment 0ms)
+

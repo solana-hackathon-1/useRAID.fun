@@ -1,0 +1,23 @@
+{
+  "branch": "main",
+  "head": "736964cf1445aa5d738e17c1633cf61102ad192c",
+  "index": "empty",
+  "source_state": "uncommitted; prior unfinished work retained; listed raw full file hashes identify exact source",
+  "deployed_app_sha": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+  "files": {
+    "compose.staging-public.yaml": "5770b14ba3b7729168d38641557c605370ab1f54d6495ef99c6ecfe5d70d8b4b",
+    "deploy/staging/nginx-public.conf": "f925e805a04f3be8d390cf2005ad7f424359d87f26bde3754da8d67c298fe99a",
+    "tests/test_raid_staging_public.py": "e9a57f7439ae98e78d264fca8696a83b281180cfcc79a8295e02d67333e18ccd",
+    "docs/staging-public-access.md": "778f5b0820f0e51574378a98c4371950cf381fe63b684622d68a5e8593a73743",
+    "docs/staging-deploy.md": "640d49a3986fa4f89086aede47e08bd734df52ad2e5ee776b5c0706fb749ff49",
+    "docs/tasks/2026-10-11-public-staging.md": "f954b185931d9f8fb05394b086e3ca00361acd566f1e003637a5fe3f25d26903",
+    "docs/tasks/2026-10-11-vm-staging.md": "4ef9605d9cad708e3e1527d0d43bf5b88b06df89138debf797d2c08d68148da8",
+    "RAID_AGENT_BLUEPRINT.md": "9c27cda41b401a98b6467e7995f6c73c11be31afd3a8e8f0337855411ef90cd3",
+    "planning/raid-task-contracts.json": "7cde1ce8a7f986d1cf6d97e54a2c9ec1bf14fb53700c66ca67b4a19de648ecee",
+    "planning/raid-scenarios.json": "6b4cf9b338152ad2e0f365315cff429ba8b5e6493d0bf0a51edddb24ad36b16b"
+  },
+  "blueprint_sha256": "9c27cda41b401a98b6467e7995f6c73c11be31afd3a8e8f0337855411ef90cd3",
+  "vm_config_parity": "all four Compose/Nginx file hashes PASS",
+  "prior_unrelated_hashes": "PASS",
+  "deployed_app_image_unchanged": "PASS"
+}

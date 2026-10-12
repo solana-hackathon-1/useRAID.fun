@@ -1,0 +1,5 @@
+   id   | collectionEnabled | launchPaused | payoutPaused 
+--------+-------------------+--------------+--------------
+ global | f                 | f            | f
+(1 row)
+

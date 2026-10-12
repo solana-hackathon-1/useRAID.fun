@@ -1,0 +1,70 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-12T16:11:49.093783+00:00",
+  "local_preservation_commit": "7ba9edf25b8728a01306aaa8dce2e9faed8df689",
+  "upstream": "2992a78cc77112569740abf0522d399994c77910",
+  "source_diff": "git diff --cached origin/main; merge in progress",
+  "affected_requirements": ["I13", "R15", "R16", "AC75", "DEC-2026-10-11-04", "DEC-2026-10-12-03"],
+  "prior_cleanup_byte_parity": {
+    "scripts/local-ci.sh": {
+      "sha256": "4ff7d2a91a309a615ffaf8fb001a74c8e4a14ea729fae969b2622aefbdd8a193",
+      "matches_prior_green_source": true
+    },
+    "tests/test_raid_ci.py": {
+      "sha256": "f312c6ee07fd933fe2948bacdd120ef2638a1309ad0aa934308fa685d0d6e148",
+      "matches_prior_green_source": true
+    }
+  },
+  "checks": {
+    "planning_initial": "exit1: 51 tests, 1 fixture subnet collision; log preserved",
+    "proxy_green": "exit0: 2 real-Docker/Nginx consuming tests, 54.229s; trusted200, foreign-host421, forged peer403/403",
+    "planning_final": "exit0: 51 tests in51.900s",
+    "docs": "exit0: 2 suites/88 tests",
+    "shell": "bash -n scripts/local-ci.sh exit0",
+    "diff": "exit0 excluding historical PR189 final-docs.log, whose trailing blank line is retained byte-for-byte",
+    "completion": "T005 prior full packet exit1, incomplete criteria; no issue closure",
+    "reused": "PR189 cleanup RED/GREEN/interrupt/regression byte-parity verified; no current application verification inferred",
+    "skipped": "No application/schema/dependency/UI changes relative to2992a78: no repeated browser/build/full database checks; main staging workflow runs its mandatory source/DB/image gates before publication."
+  },
+  "ended_utc": "2026-10-12T16:16:24.446956+00:00",
+  "elapsed_seconds": 275.353173,
+  "findings": [
+    "Stale local checkpoint superseded by published B2/auth/staging work; both histories preserved.",
+    "Identical duplicate02.9/02.10 blocks consolidated; cleanup collision renamed DEC-2026-10-11-04; owner continuation recorded DEC-2026-10-12-03.",
+    "Real proxy fixture fixed subnet overlapped preserved172.30.0.0/16; Docker chooses unused synthetic network. No trust directive or rejection assertion weakened."
+  ],
+  "cleanup": "Both successful public-proxy fixtures removed their owned containers/network; no raid-public-contract containers remain. No unrelated container/network/volume/image removed.",
+  "review": "SELF-EVALUATED; independent full T005/UAT/business/release acceptance NOT VERIFIED.",
+  "source_hashes": {
+    ".github/pull_request_template.md": "3cf6b26e53cdbad9fca146e693e646a3b852971235a5c49bf05d868a737c2e79",
+    "AGENTS.md": "7a1f3e156f5c2690f36f0ac93de0dbd7a26f78dd710055fa3bbe6e82e86efa7d",
+    "CLAUDE.md": "b2722a6a4649db728c8de94adf26d0bf79827895024ead2888ed3bf4cc7e1611",
+    "RAID_AGENT_BLUEPRINT.md": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+    "docs/ai-handoff/CURRENT.md": "94af34ad8a68bd64741aa1821a5827a0ccb8b1fcdec7eb8eab441b3112f181a6",
+    "docs/ai-handoff/MEMORY.md": "c864180b2a5bdbd67df9c00654dc14dec8ef756d8153ce24cc5d9549b2a20342",
+    "docs/raid-ci-plan.md": "78055d15bf137a883c16f3bb8c554dafde6e3211f4913332014dcfb29ab99ec4",
+    "docs/tasks/PR189-auth-review.md": "887c6b17870eda3c79d893ec9022454f4e02f446c565cdc7d3f7f02008b71d48",
+    "planning/raid-scenarios.json": "5b4332edd7db085d565385f68833c4b777e5febbd8830d157a17f83606a8821d",
+    "planning/raid-task-contracts.json": "f5f845fbe154ab8bcd88d9a4130dc8752f9d8906de58de39f1ba4d699975a5ec",
+    "planning/task-evidence/PR189-review/cleanup-final-regression.log": "2f81751655b90ea0e31943fc38c0ed2f725fbb0af73f273f0f8e1561463dd254",
+    "planning/task-evidence/PR189-review/cleanup-green.log": "7b1cf457b910c4feadfb4d8646c9927f58cd7919fcfc45f77283232d7bd171a7",
+    "planning/task-evidence/PR189-review/cleanup-interrupt-green.log": "4ed4b974161f1f3b698cc450087d439347e843e53b7a77495738ea8923447ee0",
+    "planning/task-evidence/PR189-review/cleanup-interrupt-red.log": "3e0d7e273f17f4329ab794bbb077c2f5cd1a19ed4946cc5744e09e6a0e1b8e72",
+    "planning/task-evidence/PR189-review/cleanup-red.log": "9b3062dde2a7f4196b4598566e4cdee0d91a026dd8fdba1ad46f6511034ebee2",
+    "planning/task-evidence/PR189-review/cleanup-regression.log": "6a661cd7bf6089d77bc60718f994f6c1781c03ccc4881cf7d12d216690c410e5",
+    "planning/task-evidence/PR189-review/completion-validator.log": "17b25af6dea1304fbdd3b2ec046adb73ac47bc98f742818eb3471a2af979c314",
+    "planning/task-evidence/PR189-review/container-cleanup.log": "33edc7820b4be9d90a282a9262d1216cfb4cf6e8c54b90402da4f5c673649d80",
+    "planning/task-evidence/PR189-review/container-final-state.txt": "4d5024142e0b4bf0ed11409fdc42e8cc24c0e69fe238b72219966560a2b1ff86",
+    "planning/task-evidence/PR189-review/final-docs.log": "6ff2c15afaa26c5969732a7811ac8b2b46a1ff304327bdcff91a81cd669fd065",
+    "planning/task-evidence/PR189-review/final-planning.log": "757c8037bef3d4b8f880d8a7b06f6108c9cd381bafe70f7b84602bdeb144103e",
+    "planning/task-evidence/PR189-review/preview-result.json": "c20cb6fee9eabdccc4b66d41ef390f8652be7734dd67dd3d5ad016df8ed8db4d",
+    "planning/task-evidence/PR189-review/retest-final-state.txt": "282b44c5d92932e9171caa0063ff0fd6babcf8550e28e2987bb9bad342f0f19c",
+    "planning/task-evidence/PR189-review/studio-retest-status.txt": "7f62e9ddffe6446d1d357e8ac6d82f2084ae6f9c8847e1d6369d0e9657ec56b5",
+    "planning/task-evidence/PR189-review/studio-retest.log": "f44faef27b635ab9f79ced5ea0a75b92ad09081a01e08cddd9f0a65cf5b75da2",
+    "planning/task-evidence/PR189-review/verification.json": "e193d294131967cd64e8130103a3804f24759a77c1ae64ab9fc27ef2e4b25cd8",
+    "planning/task-evidence/T007-PR189-verification.json": "475b89390318e6a10550845fb5273b3baa1da7a685942abe58f0fd144813caf9",
+    "scripts/local-ci.sh": "4ff7d2a91a309a615ffaf8fb001a74c8e4a14ea729fae969b2622aefbdd8a193",
+    "tests/test_raid_ci.py": "f312c6ee07fd933fe2948bacdd120ef2638a1309ad0aa934308fa685d0d6e148",
+    "tests/test_raid_staging_public.py": "280b76533e23072c56c98f626d1daf9a61ff83ab7d8a35f9b67b6c68bb10bc54"
+  }
+}

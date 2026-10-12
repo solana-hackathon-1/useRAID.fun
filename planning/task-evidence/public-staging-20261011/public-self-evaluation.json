@@ -1,0 +1,67 @@
+{
+  "review_status": "SELF-EVALUATED",
+  "started_at_utc": "2026-10-11T12:01:49.559737+00:00",
+  "ended_at_utc": "2026-10-11T12:07:47.950077+00:00",
+  "elapsed_seconds": 358.39,
+  "source_manifest": "owned-source-manifest.json",
+  "requirement_ids": [
+    "R15",
+    "R16",
+    "D01",
+    "D12",
+    "I05",
+    "I06",
+    "I09",
+    "I10",
+    "I12",
+    "I13",
+    "AC67",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "scope": "Bounded public ingress and canonical origin for existing isolated VM staging",
+  "actual_checks": {
+    "real_host_contract": "2 PASS; valid forwarding/untrusted403/foreignHost421; RED/GREEN retained",
+    "final_regression": "48 PASS/10.194s",
+    "trusted_public_http_origin": "8 checks PASS; canonical200/foreign and LAN403/admin401",
+    "desktop_mobile_browser": "8 checks PASS/no page errors or overflow; screenshots inspected",
+    "ordinary_vm_dns_https": "PASS",
+    "public_dns_resolvers": "1.1.1.1 and8.8.8.8 PASS",
+    "runtime": "web healthy/worker running/no pending22migrations/zero restarts/all hazardflagsfalse/devnet",
+    "preservation": "nine DB/Watchtower/Dokploy IDs/start/status/images unchanged",
+    "watchtower": "12:04:25Z scanned2updated0failed0",
+    "vm_source_parity": "four config files byte hashes match",
+    "private_file_mode": "tunnel credential and app/Compose env600",
+    "source_preservation": "preexisting unrelated hashes PASS; original registry bytes preserved except fingerprint"
+  },
+  "actual_failures_and_fixes": [
+    "Synthetic fetch Host421\u2192Node HTTP correct Host without weakening assertions",
+    "Prettier unsupported Nginx parser\u2192real nginx -t PASS, supported-format checkPASS",
+    "macOS/Node negative DNS ENOTFOUND\u2192DNS-verified edge hostname mapping plus VM ordinary DNS and trustedTLS; browser same-origin fetch preserves401 assertion",
+    "Accidental registry reformat/duplicate fingerprint field\u2192baseline byte restoration, correct camel/snake fields and exact semantic preservation",
+    "FullT005 validator expected exit1: missing independent reviewer/named full CI/all27criteria remain NOT VERIFIED"
+  ],
+  "reused_evidence": "Published e492 hosted86files/1064tests/build/runtime applies only to unchanged app; no new hosted run for uncommitted ingress",
+  "not_run": [
+    "new full application suite/build",
+    "separate Next development server (host ingress only; public preview production-container mode)",
+    "real OAuth/wallet/provider/financial workflows",
+    "representative college/friend-network UAT",
+    "independent criterion review",
+    "production/G01\u2013G10/O18/offhostdurability acceptance"
+  ],
+  "preview": {
+    "url": "https://staging.useraid.fun",
+    "mode": "production-container staging",
+    "source": "published e492 + uncommitted public host configuration",
+    "ownership": "VM /home/raidstaging/useraid-staging; projectuseraid-staging; keep running",
+    "stop_only_public": "cd /home/raidstaging/useraid-staging && docker compose --env-file .env stop cloudflared"
+  },
+  "maintenance": {
+    "ghcr_read_token_expires_utc": "2026-11-10T11:22:08Z",
+    "disk_free_gb": 2.4,
+    "disk_used_percent": 86,
+    "cleanup": "none"
+  }
+}

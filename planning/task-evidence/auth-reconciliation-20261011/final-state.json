@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "head": "4cc1a12e21078aa493b2b71123758cedd2ad81f2",
+  "branch": "main",
+  "ahead_behind_origin": "0\t2",
+  "index_empty": true,
+  "unmerged_entries": 0,
+  "conflict_markers": 0,
+  "listed_source_hashes_verified": 587,
+  "blueprint_fingerprints_match": true,
+  "unfinished_work_uncommitted": true,
+  "new_push": false,
+  "new_commit": false
+}

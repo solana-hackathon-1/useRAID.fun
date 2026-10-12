@@ -1,0 +1,22 @@
+{
+  "unaffected_containers": [
+    "useraid-staging-watchtower-1",
+    "useraid-staging-db-1",
+    "dokploy-postgres.1.9xdv4wp268x21jrg6nrj55fzx",
+    "dokploy-postgres.1.s68gslsht9fhni7exlbk2d1ch",
+    "dokploy-postgres.1.sy5kbop8e28a4kapmpjpdt5vx",
+    "dokploy-postgres.1.a4gk9agwjz6wf7n5hlz4qc72p",
+    "dokploy-postgres.1.w7quyfuzwb43vd5lviwl6su1i",
+    "dokploy-traefik",
+    "dokploy.1.meurwwh4bht4ltp24npt8vcj3"
+  ],
+  "count": 9,
+  "app_revision": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+  "canonical_origin": "https://staging.useraid.fun",
+  "hazard_flags": "all false",
+  "USDC_NETWORK": "devnet",
+  "web_health": "healthy",
+  "watchtower_health": "healthy",
+  "app_restarts": 0,
+  "result": "PASS"
+}

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+
+ Test Files  2 passed (2)
+      Tests  36 passed (36)
+   Start at  19:47:18
+   Duration  1.67s (transform 89ms, setup 0ms, import 249ms, tests 1.21s, environment 0ms)
+

@@ -266,7 +266,7 @@ export default async function RaidPage({
             <p className="small-print">{raid.mint ? 'Token mint' : 'Project'}</p>
             <p className="mint">{raid.mint || raid.name}</p>
             <p className="small-print">
-              Creator access is approved for this pilot. Approval is not a token endorsement.
+              Campaign creation is self-serve. Listing is not a token endorsement.
             </p>
           </div>
           {raid.status === 'ACTIVE' && !tracking && (

@@ -1,0 +1,130 @@
+{
+  "status": "VERIFIED_IN_TEST",
+  "environment": "Owner-authorized isolated LAN staging; no production enablement",
+  "source_sha": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+  "source_workflow_run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38134946330",
+  "digest": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+  "url": "https://192.168.101.13:8443",
+  "actual_update": {
+    "scanned": 2,
+    "updated": 2,
+    "failed": 0,
+    "finished_utc": "2026-10-11T11:28:49Z",
+    "evidence": "vm-watchtower-first-update-corrected.log"
+  },
+  "permanent_scheduled_poll": {
+    "scanned": 2,
+    "updated": 0,
+    "failed": 0,
+    "finished_utc": "2026-10-11T11:34:25Z",
+    "interval_seconds": 300,
+    "evidence": "vm-permanent-watchtower-poll.log"
+  },
+  "apps": [
+    {
+      "id": "15f89094188cd556a4379c81c715e5e954263e32969da7f2a541d96c6be2fcc0",
+      "name": "useraid-staging-web-1",
+      "image_id": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+      "image_tag": "ghcr.io/solana-hackathon-1/useraid.fun:staging",
+      "command": ["sh", "/app/scripts/staging-start.sh", "web"],
+      "labels": {
+        "com.centurylinklabs.watchtower.enable": "true",
+        "com.centurylinklabs.watchtower.scope": "useraid-staging",
+        "com.docker.compose.config-hash": "18a0213803a037292605879bad26a15a08903190316012a186a1606ab23c270f",
+        "com.docker.compose.container-number": "1",
+        "com.docker.compose.depends_on": "db:service_healthy:false",
+        "com.docker.compose.image": "sha256:6499e100805bf00e16b301cbaaa6bc8701b45c93903a814dc766740ac13caa42",
+        "com.docker.compose.oneoff": "False",
+        "com.docker.compose.project": "useraid-staging",
+        "com.docker.compose.project.config_files": "/home/raidstaging/useraid-staging/compose.yaml",
+        "com.docker.compose.project.environment_file": "/home/raidstaging/useraid-staging/.env",
+        "com.docker.compose.project.working_dir": "/home/raidstaging/useraid-staging",
+        "com.docker.compose.service": "web",
+        "com.docker.compose.version": "5.6.0",
+        "org.opencontainers.image.description": "useRAID staging web and worker",
+        "org.opencontainers.image.revision": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+        "org.opencontainers.image.source": "https://github.com/solana-hackathon-1/useRAID.fun"
+      },
+      "status": "running",
+      "health": "healthy",
+      "restarts": 0,
+      "started_at": "2026-10-11T11:28:49.649781801Z",
+      "ports": {},
+      "restart_policy": {
+        "Name": "unless-stopped",
+        "MaximumRetryCount": 0
+      },
+      "safe_environment": {
+        "NODE_ENV": "production",
+        "DEMO_MODE": "false",
+        "ACCOUNT_FOLDS_ENABLED": "false",
+        "WALLET_LINKS_ENABLED": "false",
+        "LOCAL_AUTO_APPROVE_CREATORS": "false",
+        "STUDIO_SANDBOX": "false",
+        "ALLOW_REMOTE_TEST_DB": "false",
+        "LIVE_COLLECTION_APPROVED": "false",
+        "X_TRACKING_V2_ENABLED": "false",
+        "X_TRACKING_V2_SETTLEMENT_ENABLED": "false",
+        "LAUNCH_ENABLED": "false",
+        "PAYOUT_ENABLED": "false",
+        "USDC_NETWORK": "devnet"
+      },
+      "mount_destinations": []
+    },
+    {
+      "id": "3d86ce9bce66a9bbbce6882361d637e68066ce80fd2bd52544c94ad4315e55d4",
+      "name": "useraid-staging-worker-1",
+      "image_id": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+      "image_tag": "ghcr.io/solana-hackathon-1/useraid.fun:staging",
+      "command": ["sh", "/app/scripts/staging-start.sh", "worker"],
+      "labels": {
+        "com.centurylinklabs.watchtower.enable": "true",
+        "com.centurylinklabs.watchtower.scope": "useraid-staging",
+        "com.docker.compose.config-hash": "eb60ea3f0f05c8c9487adef92b2e1568608a6f218846ae3610c5227b5cbb07c3",
+        "com.docker.compose.container-number": "1",
+        "com.docker.compose.depends_on": "db:service_healthy:false",
+        "com.docker.compose.image": "sha256:6499e100805bf00e16b301cbaaa6bc8701b45c93903a814dc766740ac13caa42",
+        "com.docker.compose.oneoff": "False",
+        "com.docker.compose.project": "useraid-staging",
+        "com.docker.compose.project.config_files": "/home/raidstaging/useraid-staging/compose.yaml",
+        "com.docker.compose.project.environment_file": "/home/raidstaging/useraid-staging/.env",
+        "com.docker.compose.project.working_dir": "/home/raidstaging/useraid-staging",
+        "com.docker.compose.service": "worker",
+        "com.docker.compose.version": "5.6.0",
+        "org.opencontainers.image.description": "useRAID staging web and worker",
+        "org.opencontainers.image.revision": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+        "org.opencontainers.image.source": "https://github.com/solana-hackathon-1/useRAID.fun"
+      },
+      "status": "running",
+      "health": null,
+      "restarts": 0,
+      "started_at": "2026-10-11T11:28:49.525791926Z",
+      "ports": {},
+      "restart_policy": {
+        "Name": "unless-stopped",
+        "MaximumRetryCount": 0
+      },
+      "safe_environment": {
+        "NODE_ENV": "production",
+        "DEMO_MODE": "false",
+        "ACCOUNT_FOLDS_ENABLED": "false",
+        "WALLET_LINKS_ENABLED": "false",
+        "LOCAL_AUTO_APPROVE_CREATORS": "false",
+        "STUDIO_SANDBOX": "false",
+        "ALLOW_REMOTE_TEST_DB": "false",
+        "LIVE_COLLECTION_APPROVED": "false",
+        "X_TRACKING_V2_ENABLED": "false",
+        "X_TRACKING_V2_SETTLEMENT_ENABLED": "false",
+        "LAUNCH_ENABLED": "false",
+        "PAYOUT_ENABLED": "false",
+        "USDC_NETWORK": "devnet"
+      },
+      "mount_destinations": []
+    }
+  ],
+  "unrelated_container_identity_preserved": 9,
+  "self_review": "SELF-EVALUATED",
+  "independent_review": "NOT VERIFIED",
+  "full_T005": "IN_PROGRESS; incomplete validator rejects missing independent/full-criterion evidence",
+  "secrets": "No credential values in this record"
+}

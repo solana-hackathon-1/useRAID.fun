@@ -1,0 +1,8 @@
+SKIP(no match) switch ignored for link sign-in
+SURVIVED authenticated caller may use link | 6 passed (6)
+SURVIVED primary/other source accepted | 6 passed (6)
+KILLED   userId not taken from link | 1 failed | 5 passed (6)
+KILLED   rotate conflict unmapped | 1 failed | 5 passed (6)
+SURVIVED verify conflict unmapped | 6 passed (6)
+SKIP(no match) resolve skipped
+SKIP(no match) conflict message leaks owner

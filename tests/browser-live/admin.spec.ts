@@ -28,8 +28,6 @@ test.beforeAll(async () => {
       data: {
         xId: `listed-x-${i}`,
         handle,
-        approved: i % 2 === 0,
-        affiliation: i % 2 ? `Project ${handle}` : '',
         createdAt: new Date(Date.UTC(2026, 0, 1, 0, i)),
       },
     });
@@ -40,7 +38,7 @@ test.afterAll(async () => {
   await truncateAll(db);
   await db.$disconnect();
 });
-test('admin lists paginate, search and filter on the server', async ({ page }) => {
+test('admin lists paginate and search on the server', async ({ page }) => {
   const problems = watchConsole(page);
   await page
     .context()
@@ -49,7 +47,10 @@ test('admin lists paginate, search and filter on the server', async ({ page }) =
   const rows = page.locator('#creators .admin-row');
   await expect(rows).toHaveCount(25);
   await expect(page.locator('#creators')).not.toContainText('@gate_admin');
-  await expect(rows.first()).toContainText('Pending');
+  await expect(rows.first()).toContainText('@listed29');
+  await expect(
+    rows.first().getByRole('button', { name: 'Suspend creator', exact: true }),
+  ).toBeVisible();
   await page.locator('#creators').getByRole('link', { name: 'Next' }).click();
   await expect(page).toHaveURL(/creatorPage=2#creators/);
   await expect(rows).toHaveCount(5);
@@ -60,8 +61,6 @@ test('admin lists paginate, search and filter on the server', async ({ page }) =
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await expect(rows).toHaveCount(1);
   await expect(rows.first()).toContainText('@listed07');
-  await page.goto('/admin?creators=pending');
-  await expect(rows).toHaveCount(15);
   await page.waitForLoadState('networkidle');
   expect(problems).toEqual([]);
 });

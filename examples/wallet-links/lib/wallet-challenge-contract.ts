@@ -1,0 +1,1 @@
+../../../src/lib/wallet-challenge-contract.ts

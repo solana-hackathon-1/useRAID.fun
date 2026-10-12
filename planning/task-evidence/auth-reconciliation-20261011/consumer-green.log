@@ -1,0 +1,49 @@
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+ ❯ tests/identity-link-boundary.test.ts (5 tests | 1 failed) 620ms
+   × minimal external host links a second wallet using explicit dependencies 579ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link-boundary.test.ts > minimal external host links a second wallet using explicit dependencies
+AssertionError: expected { version: 'v1', …(16) } to deeply equal { version: 'v1', …(13) }
+
+- Expected
++ Received
+
+@@ -1,14 +1,17 @@
+  {
+    "alternatePort": true,
+    "foreignAddressConflict": true,
+    "idempotentReplay": true,
+    "internalCredentialContext": true,
++   "linkedCredentialOwner": true,
++   "lookupAlternatePort": true,
+    "primaryRequired": true,
+    "primaryUnchanged": true,
+    "proofDerived": true,
+    "realDatabase": true,
++   "revokedCredentialReserved": true,
+    "revokedReserved": true,
+    "sameParticipant": true,
+    "sanitizedFailure": true,
+    "synthetic": true,
+    "version": "v1",
+
+ ❯ tests/identity-link-boundary.test.ts:88:34
+     86|         },
+     87|       );
+     88|       expect(JSON.parse(output)).toEqual({
+       |                                  ^
+     89|         version: 'v1',
+     90|         synthetic: true,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  19:42:22
+   Duration  779ms (transform 20ms, setup 0ms, import 40ms, tests 620ms, environment 0ms)
+

@@ -1,0 +1,57 @@
+{
+  "base_sha": "c196ee74d74624b0089185c7b78c926e35238985",
+  "files": {
+    "src/identity-link/contracts.ts": {
+      "sha256": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+      "symlink": null
+    },
+    "src/identity-link/index.ts": {
+      "sha256": "3138cf36b3fccb9547ca6ebd1634c76f3b66998cc09b95daa8c67ba3d8e6dc3e",
+      "symlink": null
+    },
+    "src/lib/wallet-challenge-contract.ts": {
+      "sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+      "symlink": null
+    },
+    "src/lib/wallet-auth.ts": {
+      "sha256": "e62f07000987ff53738ebb4765f5080890a54405acfef4af64ca945ea9e2713f",
+      "symlink": null
+    },
+    "src/lib/wallet-link-proof.ts": {
+      "sha256": "dd27d8b294853ece5ebc5f945e7e5e5bfa7ac10e41193cbf4ad0883054796477",
+      "symlink": null
+    },
+    "tests/wallet-link-credentials.test.ts": {
+      "sha256": "d045b215cd634f2ae7454af9edc44805e7f1f8d6bbc555c48a567ec22a0891d5",
+      "symlink": null
+    },
+    "tests/identity-link-boundary.test.ts": {
+      "sha256": "1de0515d715c5e14035b2ab53a86e231a39d1f303a6473ba620383c2edfc2b5a",
+      "symlink": null
+    },
+    "docs/raid-wallet-links.md": {
+      "sha256": "f1eeb18d58750453474d8fd7a92dc59201876ef01c2315a2c56908c0f0c37f75",
+      "symlink": null
+    },
+    "docs/tasks/T006-wallet-links-b1.md": {
+      "sha256": "3d30b17b4a5e6dc467481c03106f708f62a18c4c16e8def8aea824df22c5b2ee",
+      "symlink": null
+    },
+    "examples/wallet-links/README.md": {
+      "sha256": "be2505c8df6fe4c01bee7c57912ae64245725e11163573e56f3860d0e4c8f37f",
+      "symlink": null
+    },
+    "examples/wallet-links/host.ts": {
+      "sha256": "a9382f9b63f31e4be0aafcbdd9b69176899eb80fccb128594b975a00c1be91d7",
+      "symlink": null
+    },
+    "examples/wallet-links/lib/wallet-challenge-contract.ts": {
+      "sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+      "symlink": "../../../src/lib/wallet-challenge-contract.ts"
+    },
+    "planning/raid-ci-matrix.json": {
+      "sha256": "96f25108b1847853b0e6a01cfdfc1a99057927b2da0068a377e0f10e7c334e39",
+      "symlink": null
+    }
+  }
+}

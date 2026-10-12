@@ -1,0 +1,112 @@
+
+> useraid@0.1.0 test
+> vitest run tests/wallet-auth-db.test.ts -t expired X authority|borrow or delete|authenticated account context|unknown session authority --reporter=default --reporter=junit --outputFile=planning/task-evidence/T007-wallet-session-authority/red.xml
+
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/wallet-auth-db.test.ts (22 tests | 4 failed | 18 skipped) 303ms
+     ↓ creates wallet-only user, consumes challenge once, and rejects stale challenge
+     ↓ refuses linking wallet already owned by another X identity
+     ↓ issues a Sign-In With Solana formatted challenge
+     ↓ binds a challenge to the signer state it was issued for
+     ↓ does not let a link signature perform a wallet rotation
+     ↓ refuses to sign a suspended owner in and creates no session
+     ↓ rotates the session and records how it was issued
+     ↓ keeps an X session an X session when the same user links a wallet
+     × does not renew expired X authority through a wallet signature 134ms
+     × does not borrow or delete another account's live X session 25ms
+     × requires authenticated account context before preserving X authority 44ms
+     × normalizes unknown session authority to wallet authority 32ms
+     ↓ requires an X session for administrator access
+       ↓ moves a wallet from an empty wallet-only account onto the signed-in X account
+       ↓ keeps the wallet account when the X account is the empty one
+       ↓ refuses when both accounts have activity
+       ↓ refuses when the wallet owner joined a Raid
+       ↓ replaces the address and records the previous one
+       ↓ keeps an existing enrollment on the wallet snapshotted when it was made
+       ↓ refuses while a withdrawal or live deposit is open
+       ↓ refuses an address owned by another account and a second change within 7 days
+       ↓ requires a connected X account
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > does not renew expired X authority through a wallet signature
+AssertionError: expected 'x' to be 'wallet' // Object.is equality
+
+Expected: "wallet"
+Received: "x"
+
+ ❯ tests/wallet-auth-db.test.ts:204:9
+    202|       expect(
+    203|         (await db.session.findUniqueOrThrow({ where: { tokenHash: hash…
+    204|       ).toBe('wallet');
+       |         ^
+    205|       await expect(requireUser(true)).rejects.toMatchObject({ status: …
+    206|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > does not borrow or delete another account's live X session
+AssertionError: expected null to deeply equal { …(4) }
+
+- Expected:
+{
+  "expiresAt": 2026-10-10T05:25:55.615Z,
+  "tokenHash": "1f2defafd3d99336bf80dfb65cfb56a77a9417f232770813b800e97b1646e07c",
+  "userId": "cmv1xpplq0006oiml1hiklazb",
+  "via": "x",
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-auth-db.test.ts:216:78
+    214|     const before = await db.session.findUniqueOrThrow({ where: { token…
+    215|     const token = await walletSignIn(pair(), own.id, hash(raw));
+    216|     expect(await db.session.findUnique({ where: { tokenHash: hash(raw)…
+       |                                                                              ^
+    217|     expect(
+    218|       (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > requires authenticated account context before preserving X authority
+AssertionError: expected 'x' to be 'wallet' // Object.is equality
+
+Expected: "wallet"
+Received: "x"
+
+ ❯ tests/wallet-auth-db.test.ts:229:7
+    227|     expect(
+    228|       (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(t…
+    229|     ).toBe('wallet');
+       |       ^
+    230|   });
+    231|   it('normalizes unknown session authority to wallet authority', async…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > normalizes unknown session authority to wallet authority
+AssertionError: expected 'unexpected-provider' to be 'wallet' // Object.is equality
+
+Expected: "wallet"
+Received: "unexpected-provider"
+
+ ❯ tests/wallet-auth-db.test.ts:237:7
+    235|     expect(
+    236|       (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(t…
+    237|     ).toBe('wallet');
+       |       ^
+    238|   });
+    239|   it('requires an X session for administrator access', async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 18 skipped (22)
+   Start at  10:54:14
+   Duration  795ms (transform 83ms, setup 0ms, import 371ms, tests 303ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T007-wallet-session-authority/red.xml

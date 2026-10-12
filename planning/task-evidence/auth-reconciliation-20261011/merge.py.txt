@@ -1,0 +1,74 @@
+from pathlib import Path
+import re,json,hashlib
+root=Path('/Users/dushyant/Documents/useRAID.fun');main=Path('/Users/dushyant/Documents/useRAID.fun-main');prepared=Path('/tmp/raid-git-reconcile-20261011/files-prepared');candidate=Path('/tmp/raid-auth-reconcile-20261011/candidate')
+def write(name,s):p=candidate/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s)
+def merge_markers(s,choice):
+ pattern=r'^<<<<<<< unfinished-local\n(.*?)^\|\|\|\|\|\|\| previous-main\n(.*?)^=======\n(.*?)^>>>>>>> latest-main\n'
+ def resolve(m):
+  if choice=='union':assert not m[2].strip(), 'Only independent added declarations can be unioned';return m[1]+m[3]
+  if choice=='local':return m[1]
+  raise Exception(choice)
+ s=re.sub(pattern,resolve,s,flags=re.M|re.S);assert not re.search(r'^<<<<<<<|^>>>>>>>|^\|\|\|\|\|\|\|',s,re.M);return s
+for name in ['src/identity-link/contracts.ts','src/identity-link/index.ts','examples/wallet-links/host.ts']:write(name,merge_markers((prepared/name).read_text(),'union'))
+for name in ['.env.example','examples/wallet-links/README.md','src/lib/config.ts','tests/wallet-auth-db.test.ts','RAID_AGENT_BLUEPRINT.md']:
+ write(name,(prepared/name).read_text())
+# Keep released transaction/lookup/fold semantics and existing gated B2 linking composition.
+a=(main/'src/lib/wallet-auth.ts').read_text();w=(root/'src/lib/wallet-auth.ts').read_text()
+a=a.replace("import type { Prisma } from '@prisma/client';", "import { Prisma } from '@prisma/client';").replace("import { accountFoldsEnabled, config } from './config';", "import { accountFoldsEnabled, config, walletLinksEnabled } from './config';")
+a=a.replace("import { IdentityLinkError, lookupWalletLink } from '../identity-link';", "import { IdentityLinkError, lookupWalletLink, linkVerifiedWallet, publicWalletLink, type IdentityLinkCode, type PublicWalletLink } from '../identity-link';")
+a=a.replace("import { SIWS_CHAIN_ID } from './wallet-link-proof';", "import { deriveWalletLinkProof } from './wallet-link-proof';\nimport { LINK_ADDITIONAL_STATEMENT, SIWS_CHAIN_ID, WALLET_CHALLENGE_STATEMENTS } from './wallet-challenge-contract';\nimport { walletSessionAuthority, type WalletSessionObservation } from './wallet-session-authority';")
+start=a.index('export type ChallengePurpose');end=a.index('function decodeSignature',start)
+a=a[:start]+w[w.index('export type ChallengePurpose'):w.index('function decodeSignature')]+a[end:]
+# B2 command needs the exact atomically claimed challenge; current signin ignores the return.
+needle="  if (consumed.count !== 1) throw new HttpError(409, 'Wallet challenge already used.');\n}"
+assert needle in a;a=a.replace(needle,needle[:-1]+'  return attempt;\n}',1)
+start=a.index('    const previous = currentSessionHash');end=a.index('    await tx.session.create(',start)
+a=a[:start]+'''    // Atomically claim only this account's prior session so concurrent logout/expiry or
+    // another account's token cannot transfer authority into the replacement session.
+    const previous = currentSessionHash
+      ? await tx.$queryRaw<WalletSessionObservation[]>`
+          DELETE FROM "Session"
+          WHERE "tokenHash" = ${currentSessionHash} AND "userId" = ${userId!}
+          RETURNING "userId", "via", "expiresAt"
+        `
+      : [];
+    const now = new Date();
+'''+a[end:]
+start=a.index('        // Only a live authenticated session');end=a.index('      },\n    });',start)
+a=a[:start]+'''        via: walletSessionAuthority(previous[0], currentUserId, userId!, now),
+        expiresAt: new Date(now.getTime() + 7 * 86400000),
+'''+a[end:]
+a+='\n'+w[w.index('const LINK_LIMITS'):];write('src/lib/wallet-auth.ts',a)
+# Preserve atomic first-X and fold gating from released main, retaining the WIP isolation fix.
+a=(main/'src/lib/x-oauth.ts').read_text();a=a.replace("import type { OAuthAttempt } from '@prisma/client';","import { Prisma, type OAuthAttempt } from '@prisma/client';")
+start=a.index('  await db.$transaction(async (tx) => {',a.index('export async function completeConnection'));end=a.index('  return sessionToken;',start)
+block=a[start:end];assert block.endswith('  });\n');block=block.replace('  await db.$transaction(async (tx) => {','  await db.$transaction(async (tx) => {',1);block=block[:-len('  });\n')]+'  }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted });\n';a=a[:start]+block+a[end:];write('src/lib/x-oauth.ts',a)
+# Keep stronger default-off new-command/route guard and require released lookup alongside it.
+a=(root/'tests/identity-link-boundary.test.ts').read_text();needle='  // B2b uses the resolver for sign-in; the revoke composition (session invalidation, audit) is B2c.';a=a.replace(needle,"  expect(walletAuth).toContain('lookupWalletLink');\n  // Existing credential lookup is always available; new-link/revoke composition remains gated.");write('tests/identity-link-boundary.test.ts',a)
+# The consuming host demonstrates both existing lookup and WIP resolve/revoke contracts.
+# Preserve all matrix changes and union real test-file inventories.
+a=json.loads((root/'planning/raid-ci-matrix.json').read_text());b=json.loads((main/'planning/raid-ci-matrix.json').read_text());a['test_files']=sorted(set(a['test_files'])|set(b['test_files']))
+for ae in a['epics']:
+ be=next((x for x in b['epics'] if x.get('id')==ae.get('id')),None)
+ if be:
+  for key in ae:
+   if isinstance(ae[key],list) and isinstance(be.get(key),list):
+    for value in be[key]:
+     if value not in ae[key]:ae[key].append(value)
+write('planning/raid-ci-matrix.json',json.dumps(a,ensure_ascii=False,indent=2)+'\n')
+# Root historical docs are preserved; append the resolved current contract and main delivery section.
+a=(root/'docs/raid-wallet-links.md').read_text();a+='''\n## Main/WIP reconciliation — 11 October 2026\n\nOwner chose released main sign-in behavior (DEC-2026-10-11-03). Existing `lookupWalletLink` reservations resolve under transaction-held subject/account/link locks regardless of `WALLET_LINKS_ENABLED`; the flag gates new additional-wallet challenges/creation, not already registered credentials. Same-account fresh reauthentication is allowed and preserves only a live session's authority for that same account. Foreign-account legacy linking remains409; revoked/wrong-network credentials401 and suspended accounts403, all without challenge/session residue or payout/history changes. Full transaction retries and sanitized driver failures from released main are preserved. Atomic own-session deletion/returning prevents stale/cross-account X-authority transfer.\n\nWIP `resolveWalletCredential`, `revokeWalletCredential`, `observeAuthority`, linked-proof helpers, consuming example and gated/unwired `linkAdditionalWallet` stay present. Earlier B2 flag-off/signin409 and anonymous-only statements/test results above are historical and superseded for sign-in by this owner decision. New link creation still requires connected-X, current own X session, fresh proof and the default-off switch; no route/UI/X callback or revoke composition is enabled. T006/B2/T007/O11/lock-protocol/independent-review gates remain open for the new combined source.\n\n'''
+release=(main/'docs/raid-wallet-links.md').read_text();heading='## Linked-wallet sign-in'
+# Retain complete latest-main delivery reference without losing the local historical notes.
+a+='Latest released sign-in documentation: [T006 linked-wallet delivery](tasks/T006-linked-wallet-signin.md).\n';write('docs/raid-wallet-links.md',a)
+# Append main-only checkpoint prefix to root history without discarding either history.
+a=(root/'docs/ai-handoff/CURRENT.md').read_text();b=(main/'docs/ai-handoff/CURRENT.md').read_text();write('docs/ai-handoff/CURRENT.md',a+'\n\n# Imported latest-main checkpoint history\n\n'+b)
+# Record owner policy before refreshing canonical fingerprints; preserve all other contracts.
+a=(candidate/'RAID_AGENT_BLUEPRINT.md').read_text();decision='''### 02.11 Accepted main/WIP authentication reconciliation — 11 October 2026
+
+DEC-2026-10-11-03: when reconciling released main with the unfinished B2 work, the owner explicitly selected “Preserve released main sign-in behavior; adapt the unfinished B2 work.” Existing registered linked-wallet credentials remain usable independently of the new-link feature switch, and fresh same-account reauthentication is permitted. `WALLET_LINKS_ENABLED` gates new additional-wallet challenge/creation only. Preserve released denial semantics (foreign-account link409, revoked/wrong-network401, suspended403), transaction-held credential locks, whole-transaction retries, sanitized driver failures, default-off account folds and atomic first-X binding. Carry forward stronger own-session authority checks and the unfinished reusable B2 modules, while adapting their conflicting sign-in tests to this accepted contract. No new linking route/UI/revoke composition, provider/financial enablement or independent acceptance is authorized; historical B2 evidence remains bound to its original source. R04/R13/R15/R16/I05/I06/I10/I13/AC01 partial/AC02 partial/AC40/AC73–75 apply.
+
+''';assert 'DEC-2026-10-11-03' not in a;a=a.replace('## 03. Vocabulary',decision+'## 03. Vocabulary',1);write('RAID_AGENT_BLUEPRINT.md',a)
+hashvalue=hashlib.sha256((candidate/'RAID_AGENT_BLUEPRINT.md').read_bytes()).hexdigest()
+for name,key in [('planning/raid-task-contracts.json','blueprint_sha256'),('planning/raid-scenarios.json','blueprintSha256')]:
+ a=(root/name).read_text();a=re.sub(r'("'+key+r'"\s*:\s*")[0-9a-f]{64}',lambda m:m[1]+hashvalue,a,count=1);write(name,a)

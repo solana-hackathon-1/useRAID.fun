@@ -1,0 +1,16 @@
+
+> useraid@0.1.0 test
+> vitest run tests/docs-links.test.ts tests/raid-evidence.test.ts --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-wallet-links-b1-resume/final-docs.xml
+
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ✓ tests/docs-links.test.ts (61 tests) 324ms
+ ✓ tests/raid-evidence.test.ts (21 tests) 11ms
+
+ Test Files  2 passed (2)
+      Tests  82 passed (82)
+   Start at  10:10:53
+   Duration  663ms (transform 49ms, setup 0ms, import 121ms, tests 335ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b1-resume/final-docs.xml

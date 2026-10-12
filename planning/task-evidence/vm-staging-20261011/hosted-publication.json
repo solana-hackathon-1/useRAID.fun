@@ -1,0 +1,153 @@
+{
+  "recorded_at_utc": "2026-10-11T11:23:16.825139+00:00",
+  "author_review": "SELF-EVALUATED",
+  "run": {
+    "conclusion": "success",
+    "headSha": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+    "jobs": [
+      {
+        "completedAt": "2026-10-11T11:20:46Z",
+        "conclusion": "success",
+        "databaseId": 114456794692,
+        "name": "publish",
+        "startedAt": "2026-10-11T11:16:23Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T11:16:25Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T11:16:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:16:41Z",
+            "conclusion": "success",
+            "name": "Initialize containers",
+            "number": 2,
+            "startedAt": "2026-10-11T11:16:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:16:42Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "number": 3,
+            "startedAt": "2026-10-11T11:16:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:16:43Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "number": 4,
+            "startedAt": "2026-10-11T11:16:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:17:35Z",
+            "conclusion": "success",
+            "name": "Install and check source",
+            "number": 5,
+            "startedAt": "2026-10-11T11:16:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:18:48Z",
+            "conclusion": "success",
+            "name": "Verify database and application contracts",
+            "number": 6,
+            "startedAt": "2026-10-11T11:17:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:20:04Z",
+            "conclusion": "success",
+            "name": "Build production image without deployment secrets",
+            "number": 7,
+            "startedAt": "2026-10-11T11:18:48Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:20:07Z",
+            "conclusion": "success",
+            "name": "Runtime image smoke",
+            "number": 8,
+            "startedAt": "2026-10-11T11:20:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:20:39Z",
+            "conclusion": "success",
+            "name": "Publish checked revision to private GHCR",
+            "number": 9,
+            "startedAt": "2026-10-11T11:20:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:20:42Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+            "number": 16,
+            "startedAt": "2026-10-11T11:20:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:20:43Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "number": 17,
+            "startedAt": "2026-10-11T11:20:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:20:43Z",
+            "conclusion": "success",
+            "name": "Stop containers",
+            "number": 18,
+            "startedAt": "2026-10-11T11:20:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T11:20:43Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-11T11:20:43Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38134946330/job/114456794692"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38134946330"
+  },
+  "registry": "ghcr.io/solana-hackathon-1/useraid.fun",
+  "tags": ["sha-e492c39ef2c5356a490bb5fdcd31b12beaf4a248", "staging"],
+  "published_manifest_digest": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+  "hosted_results": {
+    "planning_tests": 46,
+    "application_test_files": 86,
+    "application_tests_passed": 1064,
+    "lint_errors": 0,
+    "lint_existing_warnings": 24,
+    "production_build": "PASS",
+    "runtime_smoke": "PASS",
+    "source_typecheck": "PASS",
+    "audit_check": "PASS"
+  },
+  "vm_state": {
+    "current_source": "5e8080f2a4abe39854bbc00f340f288d273540bb plus bootstrap staging scripts",
+    "url": "https://192.168.101.13:8443",
+    "tls_verified_health": "PASS",
+    "watchtower_permanent": "NOT STARTED",
+    "authenticated_ghcr_pull": "NOT VERIFIED; dedicated read:packages token missing",
+    "real_watchtower_replacement": "NOT VERIFIED",
+    "anonymous_registry_manifest": "EXPECTED DENIAL: unauthorized",
+    "package_metadata_api": "HTTP403: local gh credential lacks read:packages; visibility field not directly inspected"
+  },
+  "independent_review": "NOT VERIFIED",
+  "full_T005_acceptance": "NOT VERIFIED"
+}

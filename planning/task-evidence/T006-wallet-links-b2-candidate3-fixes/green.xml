@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="20" failures="0" errors="0" time="6.254088376">
+    <testsuite name="tests/account-merge-canonical.test.ts" timestamp="2026-10-10T17:54:52.457Z" hostname="0xd.local" tests="13" failures="0" errors="0" skipped="0" time="0.004719084">
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; keeps the existing genuinely empty account result" time="0.001591">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; a canonical HUMAN mapping makes an otherwise legacy-empty account nonempty" time="0.0002055">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy raid references" time="0.000171125">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy tokenLaunch references" time="0.000137917">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy rewardEnrollment references" time="0.000146125">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy raidEnrollment references" time="0.000134041">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy balanceEntry references" time="0.000132125">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy usdcTransfer references" time="0.000136334">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy usdcAllocation references" time="0.000184584">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;role&quot;:&quot;ADMIN&quot;}" time="0.000154958">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;suspended&quot;:true}" time="0.000095042">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;missing&quot;:true}" time="0.000095542">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; refuses mapped-account absorption before any credential/session/account/event mutation" time="0.000842125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-lock-order-db.test.ts" timestamp="2026-10-10T17:54:52.459Z" hostname="0xd.local" tests="7" failures="0" errors="0" skipped="0" time="6.249369292">
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the Session row lock" time="2.82344725">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:889,&quot;waiter&quot;:888,&quot;needle&quot;:&quot;FROM \&quot;Session\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the XAccount row lock" time="2.809038917">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:889,&quot;waiter&quot;:888,&quot;needle&quot;:&quot;FROM \&quot;XAccount\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; does not deadlock a merge against an X reconnect of the same account" time="0.194575208">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:889,&quot;waiter&quot;:888,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:888,&quot;waiter&quot;:891,&quot;needle&quot;:&quot;pg_advisory_xact_lock&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; refuses a merge when the dropped account connected X while the merge waited for its row" time="0.070502875">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:889,&quot;waiter&quot;:891,&quot;needle&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; first X connection versus merge &gt; serializes without a deadlock and fails the merge closed after the connection wins" time="0.098086917">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:889,&quot;waiter&quot;:891,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;attemptWaiters&quot;:2}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; first X connection versus wallet fold &gt; serializes without a deadlock and fails the merge closed after the connection wins" time="0.12963425">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:889,&quot;waiter&quot;:888,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;attemptWaiters&quot;:2}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; lets unrelated merges and a first X connection proceed without waiting on each other" time="0.120324166">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:889,&quot;waiter&quot;:891,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>

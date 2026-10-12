@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="5" errors="0" time="0.351129417">
+    <testsuite name="tests/wallet-link-signin-db.test.ts" timestamp="2026-10-10T10:03:34.581Z" hostname="0xd.local" tests="6" failures="5" errors="0" skipped="0" time="0.351129417">
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; signs in as the linking account with a wallet session when the switch is on" time="0.099304792">
+            <failure message="
+Invalid `prisma.walletIdentity.create()` invocation:
+
+
+Unique constraint failed on the (not available)" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.walletIdentity.create()` invocation:
+
+
+Unique constraint failed on the (not available)
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:166:9
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:124:3
+ ❯ tests/wallet-link-signin-db.test.ts:93:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2002&apos;, meta: { modelName: &apos;WalletIdentity&apos;, target: null }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; fails closed with one sanitized conflict and no new user when the switch is off" time="0.040297375">
+            <failure message="expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)" type="AssertionError">
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   &quot;status&quot;: 409,
++ PrismaClientKnownRequestError {
++   &quot;message&quot;: &quot;
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)&quot;,
++   &quot;code&quot;: &quot;P2002&quot;,
++   &quot;meta&quot;: {
++     &quot;modelName&quot;: &quot;WalletIdentity&quot;,
++     &quot;target&quot;: null,
++   },
++   &quot;clientVersion&quot;: &quot;6.19.3&quot;,
++   &quot;name&quot;: &quot;PrismaClientKnownRequestError&quot;,
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:114:19
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; never signs in through a revoked link, with the switch on or off" time="0.040772541">
+            <failure message="expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)" type="AssertionError">
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   &quot;status&quot;: 409,
++ PrismaClientKnownRequestError {
++   &quot;message&quot;: &quot;
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)&quot;,
++   &quot;code&quot;: &quot;P2002&quot;,
++   &quot;meta&quot;: {
++     &quot;modelName&quot;: &quot;WalletIdentity&quot;,
++     &quot;target&quot;: null,
++   },
++   &quot;clientVersion&quot;: &quot;6.19.3&quot;,
++   &quot;name&quot;: &quot;PrismaClientKnownRequestError&quot;,
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:135:30
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; denies a suspended owner with no session" time="0.034977833">
+            <failure message="expected PrismaClientKnownRequestError{ …(7) } to match object { status: 403 }
+(6 matching properties omitted from actual)" type="AssertionError">
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 403 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   &quot;status&quot;: 403,
++ PrismaClientKnownRequestError {
++   &quot;message&quot;: &quot;
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)&quot;,
++   &quot;code&quot;: &quot;P2002&quot;,
++   &quot;meta&quot;: {
++     &quot;modelName&quot;: &quot;WalletIdentity&quot;,
++     &quot;target&quot;: null,
++   },
++   &quot;clientVersion&quot;: &quot;6.19.3&quot;,
++   &quot;name&quot;: &quot;PrismaClientKnownRequestError&quot;,
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:145:28
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; does not let a legacy link or a rotation take an address that is a sign-in link" time="0.057120458">
+            <failure message="expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)" type="AssertionError">
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   &quot;status&quot;: 409,
++ PrismaClientKnownRequestError {
++   &quot;message&quot;: &quot;
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)&quot;,
++   &quot;code&quot;: &quot;P2002&quot;,
++   &quot;meta&quot;: {
++     &quot;modelName&quot;: &quot;WalletIdentity&quot;,
++     &quot;target&quot;: null,
++   },
++   &quot;clientVersion&quot;: &quot;6.19.3&quot;,
++   &quot;name&quot;: &quot;PrismaClientKnownRequestError&quot;,
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:165:6
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; keeps ordinary primary-wallet sign-in and unknown-wallet sign-up unchanged" time="0.025910417">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -14,7 +14,6 @@ const server = spawn('node', ['node_modules/next/dist/bin/next', 'start', '--por
     APP_URL: 'http://localhost:3001',
     NEXT_PUBLIC_APP_URL: 'http://localhost:3001',
     LIVE_COLLECTION_APPROVED: 'false',
-    X_ADMIN_USER_ID: `admin-${suffix}`,
   },
   stdio: 'ignore',
 });
@@ -29,18 +28,13 @@ try {
   }
   await db.settings.upsert({
     where: { id: 'global' },
-    create: { maxActiveRaids: 10, maxCreators: 5 },
-    update: { maxActiveRaids: 10, maxCreators: 5, collectionEnabled: false },
+    create: { maxActiveRaids: 10 },
+    update: { maxActiveRaids: 10, collectionEnabled: false },
   });
-  const admin = await db.user.create({
-    data: { xId: `admin-${suffix}`, handle: `admin_${suffix}`, role: 'ADMIN', approved: true },
-  });
-  cleanupUserIds.push(admin.id);
   const creator = await db.user.create({
     data: {
       xId: `creator-${suffix}`,
       handle: `creator_${suffix}`,
-      affiliation: 'I maintain the test project. Test-only affiliation evidence.',
     },
   });
   cleanupUserIds.push(creator.id);
@@ -73,16 +67,7 @@ try {
     ]);
     return context;
   }
-  const adminContext = await session(admin.id),
-    creatorContext = await session(creator.id);
-  const adminPage = await adminContext.newPage();
-  await adminPage.goto('http://localhost:3001/admin');
-  const row = adminPage.locator('.admin-row').filter({ hasText: `@creator_${suffix}` });
-  await row
-    .getByRole('textbox', { name: 'Reason: Approve creator' })
-    .fill('Approved fixture for browser acceptance test');
-  await row.getByRole('button', { name: 'Approve creator', exact: true }).click();
-  await expect(row.getByRole('button', { name: 'Revoke approval', exact: true })).toBeVisible();
+  const creatorContext = await session(creator.id);
   const page = await creatorContext.newPage();
   await page.goto('http://localhost:3001/creator');
   await expect(page.getByRole('heading', { name: 'Creator Studio', exact: true })).toBeVisible();
@@ -183,7 +168,7 @@ try {
     .poll(async () => (await db.raid.findUniqueOrThrow({ where: { id: raid.id } })).status)
     .toBe('ENDED');
   console.log(
-    'PASS: admin approval → Creator Studio draft → launch gate → public raid → end; X connection UI, disconnect, errors, and history preservation verified; admin and cross-origin authorization enforced.',
+    'PASS: self-serve Creator Studio draft → launch gate → public raid → end; X connection UI, disconnect, errors, and history preservation verified; admin and cross-origin authorization enforced.',
   );
 } finally {
   await browser.close();

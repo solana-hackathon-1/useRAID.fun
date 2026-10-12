@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="122" failures="0" errors="0" time="5.085009459">
+    <testsuite name="tests/identity-link-boundary.test.ts" timestamp="2026-10-09T03:48:27.789Z" hostname="0xd.local" tests="5" failures="0" errors="0" skipped="0" time="0.683081958">
+        <testcase classname="tests/identity-link-boundary.test.ts" name="public link module owns SQL and contracts without an app singleton, framework or SDK" time="0.001729292">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="no route, sign-in flow or flag is wired by this storage slice (WR13)" time="0.000717292">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="minimal external host links a second wallet using explicit dependencies" time="0.677041208">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="module documentation declares the R16 reuse contract and runnable consumer steps" time="0.001387541">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="new test files are registered in the CI matrix and the evidence records WR01-WR14" time="0.001603333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-db.test.ts" timestamp="2026-10-09T03:48:27.789Z" hostname="0xd.local" tests="37" failures="0" errors="0" skipped="0" time="1.128882209">
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; catalog contains the reviewed constraints, indexes and enabled triggers (D14)" time="0.04828775">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; a pre-provisioned participant is byte-identical after linking W2 and W3; money and payout rows unchanged (WR09)" time="0.045378583">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; lazy creation: the first link creates one mapping with link provenance; later links reuse it" time="0.026232708">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; unchanged legacy link path still answers 409 for a second wallet until sign-in resolution ships (baseline)" time="0.068852959">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot reassign a revoked address to a second account (LR01, D13)" time="0.028570416">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot link an existing primary address to alice (LR02)" time="0.019706375">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot link an existing primary address to bob (LR02)" time="0.019115917">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge" time="0.040937083">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-link-two-accounts-one-address&quot;,&quot;waiter&quot;:99,&quot;blocker&quot;:97,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user" time="0.039331666">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-then-legacy-insert&quot;,&quot;waiter&quot;:97,&quot;blocker&quot;:99,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;public\&quot;.\&quot;WalletIdentity\&quot; (\&quot;address\&quot;,\&quot;userId\&quot;,\&quot;verifiedAt\&quot;) VALUES ($1,$2,$3) RETURNING \&quot;public\&quot;.\&quot;WalletIdentity\&quot;.\&quot;address\&quot;, \&quot;public\&quot;.\&quot;WalletIdentit&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict" time="0.031040333">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;legacy-insert-then-link&quot;,&quot;waiter&quot;:99,&quot;blocker&quot;:97,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; old binary raw INSERT of a linked or revoked address fails with the exclusivity constraint (D4)" time="0.022215042">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy sign-in with a linked or revoked address fails closed with no new account or session (rollout characterization)" time="0.029850334">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy link of a linked address by an account without a primary is rejected by the trigger" time="0.019795">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; SQLSTATE classification through real Prisma wrappers (WR01) &gt; trigger conflict and unique-index conflict both classify as sanitized UNIQUE_CONFLICT; the message never reaches logs" time="0.025148417">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; link vs link on one account with different addresses serializes at the User row lock; one participant" time="0.034462084">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-link-same-account&quot;,&quot;waiter&quot;:97,&quot;blocker&quot;:99,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot;, \&quot;suspended\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR NO KEY UPDATE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary" time="0.030579417">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-rotate-link-first&quot;,&quot;waiter&quot;:99,&quot;blocker&quot;:97,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;public\&quot;.\&quot;WalletIdentity\&quot; (\&quot;address\&quot;,\&quot;userId\&quot;,\&quot;verifiedAt\&quot;,\&quot;previousAddress\&quot;,\&quot;rotatedAt\&quot;) VALUES ($1,$2,$3,$4,$5) RETURNING \&quot;public\&quot;.\&quot;WalletIdentity&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; rotate holding the subject vs link of that address: link waits, then reports a conflict" time="0.030967833">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-rotate-rotate-first&quot;,&quot;waiter&quot;:97,&quot;blocker&quot;:99,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back" time="0.04751375">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-merge-as-drop&quot;,&quot;waiter&quot;:99,&quot;blocker&quot;:97,&quot;blockedStatement&quot;:&quot;DELETE FROM \&quot;public\&quot;.\&quot;User\&quot; WHERE (\&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot; = $1 AND 1=1) RETURNING \&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;xId\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;handle\&quot;, \&quot;public\&quot;.&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan" time="0.032514083">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-merge-delete-first&quot;,&quot;waiter&quot;:97,&quot;blocker&quot;:99,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot;, \&quot;suspended\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR NO KEY UPDATE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit" time="0.038804459">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-merge-as-keep&quot;,&quot;waiter&quot;:99,&quot;blocker&quot;:97,&quot;blockedStatement&quot;:&quot;UPDATE \&quot;public\&quot;.\&quot;User\&quot; SET \&quot;approved\&quot; = $1, \&quot;affiliation\&quot; = $2 WHERE (\&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot; = $3 AND 1=1) RETURNING \&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;xId\&quot;, &quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle" time="0.032065084">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-user-row-update&quot;,&quot;waiter&quot;:97,&quot;blocker&quot;:99,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot;, \&quot;suspended\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR NO KEY UPDATE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; the same proof twice is one row; a proof reused for another address is a conflict that adds nothing" time="0.033589792">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; own primary is an idempotent no-op that never creates a participant" time="0.01679025">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; requires an existing primary wallet and creates nothing otherwise (WR05)" time="0.016070375">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; state machine: no delete, only ACTIVE to REVOKED, revoked address stays reserved for everyone" time="0.040654">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; check constraints and the composite participant foreign key reject inconsistent rows" time="0.025087791">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; legacy User delete and merge of a linked account roll back entirely" time="0.038157625">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; a linked wallet-only account is rejected by the real wallet sign-in fold path and the merge helper (WR06 behavior)" time="0.046626084">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; a suspended account is restricted: no mapping, no link, challenge not consumed" time="0.017330042">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; a suspended account re-linking its own wallet is restricted, not ALREADY_LINKED (WR08)" time="0.019137292">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; injected serialization failure at participant ensure retries the whole callback with the same identity" time="0.023520125">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; injected serialization failure at link insert retries the whole callback with the same identity" time="0.021971292">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; the adapter rejects SERIALIZABLE before touching link tables (D13)" time="0.011759875">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; the adapter rejects REPEATABLE READ before touching link tables (D13)" time="0.013494416">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; per-account caps hold at the database: active cap, then total ceiling including revoked rows" time="0.03385225">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; payout wallet is unchanged by links and rotation still works (D11) &gt; rotation to a fresh address works with links present; rotation onto an own link is refused by the fence" time="0.027811625">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; contract guards &gt; ensureHumanParticipant provenance is untouched by a no-op link replay" time="0.019701958">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-migration.test.ts" timestamp="2026-10-09T03:48:27.792Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="2.964580375">
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration source &gt; keeps every earlier applied migration byte-for-byte" time="0.0046525">
+        </testcase>
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration source &gt; executes exactly the reviewed proposal statements (header and comments may differ)" time="0.000551333">
+        </testcase>
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration source &gt; declares the composite participant relation with the SQL constraint name (WR02)" time="0.000337">
+        </testcase>
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration on a scratch database (D14) &gt; applies twice, matches the Prisma schema with no drift, and records one row per migration" time="2.958113583">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link.test.ts" timestamp="2026-10-09T03:48:27.792Z" hostname="0xd.local" tests="31" failures="0" errors="0" skipped="0" time="0.020140625">
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; links a new address in the documented lock order and returns the existing participant" time="0.005521166">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; creates the participant mapping only inside a fresh link" time="0.000535458">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies a foreign actor and malformed inputs before any SQL" time="0.001927167">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies isolation SERIALIZABLE / dialect POSTGRESQL before SQL" time="0.000158084">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies isolation REPEATABLE_READ / dialect POSTGRESQL before SQL" time="0.00012075">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies isolation READ_COMMITTED / dialect SQLITE before SQL" time="0.000125667">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; missing account rejects without participant or link writes" time="0.000192458">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; revoked session maps to its typed code and writes nothing" time="0.000314459">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; expired session maps to its typed code and writes nothing" time="0.000272833">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; session of another account maps to its typed code and writes nothing" time="0.000796">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; suspended account maps to its typed code and writes nothing" time="0.000304">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; proof for another account maps to its typed code and writes nothing" time="0.000220291">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; wrong domain maps to its typed code and writes nothing" time="0.000209333">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; wrong uri maps to its typed code and writes nothing" time="0.000251833">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; consumed proof maps to its typed code and writes nothing" time="0.000255292">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; expired proof maps to its typed code and writes nothing" time="0.000210458">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; unverified proof maps to its typed code and writes nothing" time="0.000171291">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; proof for another wallet maps to its typed code and writes nothing" time="0.000175458">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; sign-in intent proof maps to its typed code and writes nothing" time="0.000177291">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; unsupported network maps to its typed code and writes nothing" time="0.000189125">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; foreign primary or link (active or revoked) is one conflict; own revoked is a distinct code" time="0.001333083">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; own active link or own primary is an idempotent no-op that creates nothing" time="0.000631542">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; suspended account re-linking its own wallet is not ALREADY_LINKED" time="0.000189458">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; revoked session account re-linking its own wallet is not ALREADY_LINKED" time="0.000183">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; bad proof account re-linking its own wallet is not ALREADY_LINKED" time="0.000187833">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; requires an existing primary wallet and creates no participant otherwise (WR05)" time="0.000234292">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; enforces the active and total caps at their boundaries" time="0.000550417">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; empty RETURNING after ON CONFLICT: same account/address/proof is idempotent, anything else a conflict" time="0.000789583">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; classifies storage failures by code only, never by message or constraint name (WR01)" time="0.002152792">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; public link DTO omits internal identifiers; listing returns only own links" time="0.000401041">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; a deterministic alternate port yields identical outcomes and errors (adapter substitution)" time="0.000608042">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-credentials.test.ts" timestamp="2026-10-09T03:48:27.793Z" hostname="0xd.local" tests="26" failures="0" errors="0" skipped="0" time="0.28205975">
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants" time="0.001024209">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolves only internal account/participant context under subject then account locks, without writes" time="0.002284083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock" time="0.000670834">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;REVOKED&quot;}" time="0.00044075">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;suspended&quot;:true}" time="0.000200333">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:null}" time="0.000182542">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92402&quot;}" time="0.000174208">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;INVALID&quot;}" time="0.000150375">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;malformed&quot;:true}" time="0.000123458">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; revokes once, preserves permanent reservation, and repeats without another UPDATE" time="0.001143334">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;actorAccountId&quot;:&quot;credentials-bob&quot;}" time="0.000162167">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-bob&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000142">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;REVOKED&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000118459">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00.000Z&quot;}}" time="0.000123375">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;now&quot;:&quot;2026-10-09T09:00:00.100Z&quot;,&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00Z&quot;}}" time="0.000112667">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;requestId&quot;:&quot;&quot;}" time="0.000106875">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; protects own primary and returns identical sanitized failure for missing or foreign targets" time="0.000396667">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000307958">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000242542">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolves unmapped legacy primary without provisioning and links preserve canonical context" time="0.055259666">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; existing generator uses the shared legacy vocabulary without issuing additional-link purposes" time="0.023524667">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; revoke keeps immutable provenance, rejects primary/foreign targets and leaves address reserved" time="0.041398">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; restricted owner cannot resolve or revoke and malformed trusted session causes no mutation" time="0.024973625">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held resolve-first locks" time="0.042548875">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:103,&quot;blocker&quot;:101,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held revoke-first locks" time="0.040940917">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:101,&quot;blocker&quot;:103,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held account-lock locks" time="0.034563709">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:103,&quot;blocker&quot;:101,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot;, \&quot;suspended\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR NO KEY UPDATE&quot;}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-proof.test.ts" timestamp="2026-10-09T03:48:27.795Z" hostname="0xd.local" tests="19" failures="0" errors="0" skipped="0" time="0.006264542">
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; derives every field strictly from the stored message and column" time="0.004000375">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; uses the same chain constant the generator signs and never defaults issuedAt to now" time="0.000433833">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; marks the observation unverified when the host did not verify the signature" time="0.000091792">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; wrong statement is PROOF_INVALID" time="0.000087334">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; address line differs from row address is PROOF_INVALID" time="0.000097625">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; digest is not the hash of the message is PROOF_INVALID" time="0.000089417">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; expiration differs from the column is PROOF_INVALID" time="0.000075542">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; issued after expiry is PROOF_INVALID" time="0.000084167">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; non-ISO issuedAt is PROOF_INVALID" time="0.000076041">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; row for an anonymous sign-in challenge is PROOF_INVALID" time="0.000075834">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; already consumed row is PROOF_INVALID" time="0.000053083">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; extra trailing line is PROOF_INVALID" time="0.000046875">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; missing line is PROOF_INVALID" time="0.000042167">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; reordered lines is PROOF_INVALID" time="0.000039833">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; wrong version is PROOF_INVALID" time="0.000061959">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; uri with path smuggling newline is PROOF_INVALID" time="0.000042167">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; empty host is PROOF_INVALID" time="0.000039125">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; chain id with spaces is PROOF_INVALID" time="0.000038417">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; accepts an expected legacy statement only when the caller names it" time="0.000079292">
+        </testcase>
+    </testsuite>
+</testsuites>

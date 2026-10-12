@@ -1,0 +1,13 @@
+
+> useraid@0.1.0 test
+> vitest run tests/shared-contracts.test.ts tests/asset-registry-amounts.test.ts tests/shell-account.test.ts
+
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+
+ Test Files  3 passed (3)
+      Tests  75 passed (75)
+   Start at  21:53:55
+   Duration  597ms (transform 65ms, setup 0ms, import 141ms, tests 130ms, environment 0ms)
+

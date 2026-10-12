@@ -1,0 +1,17 @@
+{
+  "base_sha": "5e8080f2a4abe39854bbc00f340f288d273540bb",
+  "uncommitted": true,
+  "files": {
+    ".github/workflows/staging-image.yml": "1b492ef12a02a24d5c43cbe976394e048d99eb860a6882947570c68b71bc1760",
+    "compose.staging.yaml": "7f76c053e2534944fc074123ccbd3cbe1eaf2d38197a69b78d693d77eb81b4ba",
+    "scripts/staging-start.sh": "097c2ae1f0403d95e5488e7068cdbecf7788c4a90cf7d37d203af76129565f40",
+    "scripts/staging-publish.sh": "12e259ce9d78df704bfdc97cace9245a11dc7832d9de22ae102fc91db4b67051",
+    "deploy/staging/nginx.conf": "5318ce02e6610aa1fc99840255361bf43d83d4ce10b4727501727b30b9dd2304",
+    "docs/staging-deploy.md": "5c7b70d5f7169c8251554acf9204e84c13277f932a026b3eb47cb5479962c717",
+    "docs/tasks/2026-10-11-vm-staging.md": "248cb26afa8b46b8864df67e67e4f9784acd465d0637468f9d81d205cb12402d",
+    "tests/test_raid_staging.py": "07d5162164a16f379aed6b342308794b28e2df33901482f2f9bd642efa9c1a39",
+    "RAID_AGENT_BLUEPRINT.md": "3b41215cb16be42f9fb3ecc89aca73fe3a946fb26bf74ec4cd645f299042e470",
+    "planning/raid-task-contracts.json": "8697ac5cde99b8be93a3255a0f20698770bd086ac80916df62672404e0147297",
+    "planning/raid-scenarios.json": "dbb268724b386871f2be103df4825788ae1e1b3ba8d94a484fe888b7354148af"
+  }
+}

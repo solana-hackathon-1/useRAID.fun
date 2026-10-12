@@ -1,0 +1,120 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/wallet-link-additional-db.test.ts (7 tests | 7 failed) 203ms
+     × is off by default for challenge issue and verification and writes nothing 56ms
+       × links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed 4ms
+       × denies an account with no connected X at issue and verify; the challenge stays unconsumed 3ms
+       × requires the caller's own live session 4ms
+       × rejects replay, another account's challenge, a wrong-purpose challenge and a bad signature 5ms
+       × returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link 4ms
+       × denies a suspended account and rolls the whole attempt back 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > is off by default for challenge issue and verification and writes nothing
+Error: Invalid wallet challenge.
+ ❯ createWalletChallenge src/lib/wallet-auth.ts:34:11
+     32|   walletAddress(address);
+     33|   if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') ==…
+     34|     throw new HttpError(400, 'Invalid wallet challenge.');
+       |           ^
+     35|   const url = new URL(config.appUrl);
+     36|   const nonce = randomBytes(24).toString('base64url');
+ ❯ challenge tests/wallet-link-additional-db.test.ts:52:5
+ ❯ tests/wallet-link-additional-db.test.ts:96:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed
+Error: Invalid wallet challenge.
+ ❯ createWalletChallenge src/lib/wallet-auth.ts:34:11
+     32|   walletAddress(address);
+     33|   if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') ==…
+     34|     throw new HttpError(400, 'Invalid wallet challenge.');
+       |           ^
+     35|   const url = new URL(config.appUrl);
+     36|   const nonce = randomBytes(24).toString('base64url');
+ ❯ challenge tests/wallet-link-additional-db.test.ts:52:5
+ ❯ tests/wallet-link-additional-db.test.ts:124:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > denies an account with no connected X at issue and verify; the challenge stays unconsumed
+Error: Invalid wallet challenge.
+ ❯ createWalletChallenge src/lib/wallet-auth.ts:34:11
+     32|   walletAddress(address);
+     33|   if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') ==…
+     34|     throw new HttpError(400, 'Invalid wallet challenge.');
+       |           ^
+     35|   const url = new URL(config.appUrl);
+     36|   const nonce = randomBytes(24).toString('base64url');
+ ❯ challenge tests/wallet-link-additional-db.test.ts:52:5
+ ❯ tests/wallet-link-additional-db.test.ts:155:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > requires the caller's own live session
+Error: Invalid wallet challenge.
+ ❯ createWalletChallenge src/lib/wallet-auth.ts:34:11
+     32|   walletAddress(address);
+     33|   if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') ==…
+     34|     throw new HttpError(400, 'Invalid wallet challenge.');
+       |           ^
+     35|   const url = new URL(config.appUrl);
+     36|   const nonce = randomBytes(24).toString('base64url');
+ ❯ challenge tests/wallet-link-additional-db.test.ts:52:5
+ ❯ tests/wallet-link-additional-db.test.ts:192:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > rejects replay, another account's challenge, a wrong-purpose challenge and a bad signature
+Error: Invalid wallet challenge.
+ ❯ createWalletChallenge src/lib/wallet-auth.ts:34:11
+     32|   walletAddress(address);
+     33|   if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') ==…
+     34|     throw new HttpError(400, 'Invalid wallet challenge.');
+       |           ^
+     35|   const url = new URL(config.appUrl);
+     36|   const nonce = randomBytes(24).toString('base64url');
+ ❯ challenge tests/wallet-link-additional-db.test.ts:52:5
+ ❯ tests/wallet-link-additional-db.test.ts:226:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link
+Error: Invalid wallet challenge.
+ ❯ createWalletChallenge src/lib/wallet-auth.ts:34:11
+     32|   walletAddress(address);
+     33|   if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') ==…
+     34|     throw new HttpError(400, 'Invalid wallet challenge.');
+       |           ^
+     35|   const url = new URL(config.appUrl);
+     36|   const nonce = randomBytes(24).toString('base64url');
+ ❯ challenge tests/wallet-link-additional-db.test.ts:52:5
+ ❯ link tests/wallet-link-additional-db.test.ts:58:21
+ ❯ tests/wallet-link-additional-db.test.ts:294:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > denies a suspended account and rolls the whole attempt back
+Error: Invalid wallet challenge.
+ ❯ createWalletChallenge src/lib/wallet-auth.ts:34:11
+     32|   walletAddress(address);
+     33|   if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') ==…
+     34|     throw new HttpError(400, 'Invalid wallet challenge.');
+       |           ^
+     35|   const url = new URL(config.appUrl);
+     36|   const nonce = randomBytes(24).toString('base64url');
+ ❯ challenge tests/wallet-link-additional-db.test.ts:52:5
+ ❯ tests/wallet-link-additional-db.test.ts:323:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  11:46:09
+   Duration  622ms (transform 65ms, setup 0ms, import 297ms, tests 203ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b2a/red.xml

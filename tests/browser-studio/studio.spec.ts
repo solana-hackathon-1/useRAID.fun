@@ -137,22 +137,19 @@ test('existing token uses same editor; Launch Token stays Coming soon', async ({
     true,
   );
 });
-test('unapproved creators request approval before they can create a Raid', async ({ page }) => {
+test('creators can start a Raid without administrator approval', async ({ page }) => {
   const login = await page.request.post('/api/studio/sandbox', {
     headers: { origin: 'http://localhost:3007' },
-    data: { action: 'login', fixtureId: `unapproved-${crypto.randomUUID()}` },
+    data: { action: 'login', fixtureId: `self-serve-${crypto.randomUUID()}` },
   });
   expect(login.ok()).toBe(true);
-  await page.goto('/creator');
-  await expect(page.getByRole('heading', { name: 'Creator approval required' })).toBeVisible();
-  await page
-    .getByLabel('Project affiliation')
-    .fill('Founder of the Example project, official site example.com');
-  await page.getByRole('button', { name: 'Request creator approval' }).click();
-  await expect(page.getByText('Request submitted for administrator review.')).toBeVisible();
   await page.goto('/creator/new');
-  await expect(page.getByRole('heading', { name: 'Creator approval required' })).toBeVisible();
-  await expect(page.getByLabel('Campaign name', { exact: true })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Creator approval required' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Create Raid', level: 1 })).toBeVisible();
+  await expect(page.getByText('How do you want to start?')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /Existing Token Identify your token/ }),
+  ).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

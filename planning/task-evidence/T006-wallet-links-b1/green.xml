@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="0" errors="0" time="0.215536667">
+    <testsuite name="tests/wallet-link-credentials.test.ts" timestamp="2026-10-09T03:46:13.489Z" hostname="0xd.local" tests="22" failures="0" errors="0" skipped="0" time="0.215536667">
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants" time="0.001093833">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolves only internal account/participant context under subject then account locks, without writes" time="0.002306083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock" time="0.000685125">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;REVOKED&quot;}" time="0.000456417">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;suspended&quot;:true}" time="0.000200667">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:null}" time="0.0001905">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92402&quot;}" time="0.000175625">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;INVALID&quot;}" time="0.000157">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;malformed&quot;:true}" time="0.000126834">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; revokes once, preserves permanent reservation, and repeats without another UPDATE" time="0.001193583">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;actorAccountId&quot;:&quot;credentials-bob&quot;}" time="0.000169833">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-bob&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000150083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;REVOKED&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.0001255">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00.000Z&quot;}}" time="0.000124083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;requestId&quot;:&quot;&quot;}" time="0.000121125">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; protects own primary and returns identical sanitized failure for missing or foreign targets" time="0.000368041">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000303667">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.00025475">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolves unmapped legacy primary without provisioning and links preserve canonical context" time="0.082231917">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; existing generator uses the shared legacy vocabulary without issuing additional-link purposes" time="0.029399458">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; revoke keeps immutable provenance, rejects primary/foreign targets and leaves address reserved" time="0.051106167">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; restricted owner cannot resolve or revoke and malformed trusted session causes no mutation" time="0.030902625">
+        </testcase>
+    </testsuite>
+</testsuites>

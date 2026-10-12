@@ -1,0 +1,6 @@
+time="2026-10-11T11:29:22Z" level=info msg="Watchtower 1.7.1"
+time="2026-10-11T11:29:22Z" level=info msg="Using no notifications"
+time="2026-10-11T11:29:22Z" level=info msg="Only checking containers using enable label, in scope \"useraid-staging\""
+time="2026-10-11T11:29:22Z" level=info msg="Scheduling first run: 2026-10-11 11:34:22 +0000 UTC"
+time="2026-10-11T11:29:22Z" level=info msg="Note that the first check will be performed in 4 minutes, 59 seconds"
+time="2026-10-11T11:34:25Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=0 notify=no

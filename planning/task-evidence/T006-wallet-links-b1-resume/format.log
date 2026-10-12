@@ -1,0 +1,58 @@
+
+> useraid@0.1.0 format:check
+> prettier --check .
+
+Checking formatting...
+[warn] .claude/worktrees/agent-a2aa729d805ed7ca5/vendor/braces/index.js
+[warn] .claude/worktrees/agent-a2aa729d805ed7ca5/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-a2aa729d805ed7ca5/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-a2aa729d805ed7ca5/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-a2aa729d805ed7ca5/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-a2aa729d805ed7ca5/vendor/braces/lib/utils.js
+[warn] .claude/worktrees/agent-a2cf93028c912183f/docs/tasks/T006-wallet-link-plan-review.md
+[warn] .claude/worktrees/agent-a2cf93028c912183f/vendor/braces/index.js
+[warn] .claude/worktrees/agent-a2cf93028c912183f/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-a2cf93028c912183f/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-a2cf93028c912183f/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-a2cf93028c912183f/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-a2cf93028c912183f/vendor/braces/lib/utils.js
+[warn] .claude/worktrees/agent-a40fc09707dd8420b/vendor/braces/index.js
+[warn] .claude/worktrees/agent-a40fc09707dd8420b/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-a40fc09707dd8420b/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-a40fc09707dd8420b/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-a40fc09707dd8420b/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-a40fc09707dd8420b/vendor/braces/lib/utils.js
+[warn] .claude/worktrees/agent-a5b25f649f2410838/vendor/braces/index.js
+[warn] .claude/worktrees/agent-a5b25f649f2410838/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-a5b25f649f2410838/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-a5b25f649f2410838/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-a5b25f649f2410838/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-a5b25f649f2410838/vendor/braces/lib/utils.js
+[warn] .claude/worktrees/agent-a72bd54d2c22fff89/vendor/braces/index.js
+[warn] .claude/worktrees/agent-a72bd54d2c22fff89/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-a72bd54d2c22fff89/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-a72bd54d2c22fff89/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-a72bd54d2c22fff89/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-a72bd54d2c22fff89/vendor/braces/lib/utils.js
+[warn] .claude/worktrees/agent-a998cf0ef9246c8ce/vendor/braces/index.js
+[warn] .claude/worktrees/agent-a998cf0ef9246c8ce/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-a998cf0ef9246c8ce/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-a998cf0ef9246c8ce/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-a998cf0ef9246c8ce/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-a998cf0ef9246c8ce/vendor/braces/lib/utils.js
+[warn] .claude/worktrees/agent-aab0b62fa4d495a51/vendor/braces/index.js
+[warn] .claude/worktrees/agent-aab0b62fa4d495a51/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-aab0b62fa4d495a51/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-aab0b62fa4d495a51/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-aab0b62fa4d495a51/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-aab0b62fa4d495a51/vendor/braces/lib/utils.js
+[warn] .claude/worktrees/agent-aec826c78746b6dbc/vendor/braces/index.js
+[warn] .claude/worktrees/agent-aec826c78746b6dbc/vendor/braces/lib/constants.js
+[warn] .claude/worktrees/agent-aec826c78746b6dbc/vendor/braces/lib/depth.js
+[warn] .claude/worktrees/agent-aec826c78746b6dbc/vendor/braces/lib/expand.js
+[warn] .claude/worktrees/agent-aec826c78746b6dbc/vendor/braces/lib/parse.js
+[warn] .claude/worktrees/agent-aec826c78746b6dbc/vendor/braces/lib/utils.js
+[warn] planning/task-evidence/T006-wallet-links-b1-resume/prior-review/b1-core-checks.json
+[warn] planning/task-evidence/T006-wallet-links-b1-resume/prior-review/b1-core-source-manifest.json
+[warn] planning/task-evidence/T006-wallet-links-b1-resume/prior-review/storage-review.json
+[warn] Code style issues found in 52 files. Run Prettier with --write to fix.

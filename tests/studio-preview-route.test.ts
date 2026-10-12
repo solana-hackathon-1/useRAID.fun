@@ -4,7 +4,9 @@ const mocks = vi.hoisted(() => ({
   rateLimit: vi.fn(),
   charge: vi.fn(),
   previews: vi.fn(),
+  xAccount: vi.fn(),
 }));
+vi.mock('../src/lib/db', () => ({ db: { xAccount: { findUnique: mocks.xAccount } } }));
 vi.mock('../src/lib/auth', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../src/lib/auth')>()),
   requireUser: mocks.user,
@@ -29,12 +31,18 @@ beforeEach(() => {
   vi.resetAllMocks();
   mocks.user.mockResolvedValue({ id: 'u1', approved: true });
   mocks.previews.mockResolvedValue([{ id: '123456789' }]);
+  mocks.xAccount.mockResolvedValue({ userId: 'u1' });
 });
-it('requires creator approval before any X lookup', async () => {
-  mocks.user.mockResolvedValue({ id: 'u1', approved: false });
+it('requires a connected X account before charging or fetching a post preview', async () => {
+  mocks.xAccount.mockResolvedValue(null);
   expect((await preview()).status).toBe(403);
   expect(mocks.charge).not.toHaveBeenCalled();
   expect(mocks.previews).not.toHaveBeenCalled();
+});
+it('previews X posts for any signed-in user without creator approval', async () => {
+  mocks.user.mockResolvedValue({ id: 'u1', approved: false });
+  expect((await preview()).status).toBe(200);
+  expect(mocks.charge).toHaveBeenCalledTimes(1);
 });
 it('charges the daily lookup quota and stops when it is spent', async () => {
   expect((await preview()).status).toBe(200);

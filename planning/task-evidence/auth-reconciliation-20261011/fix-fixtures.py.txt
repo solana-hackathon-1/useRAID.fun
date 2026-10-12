@@ -1,0 +1,39 @@
+from pathlib import Path
+import json,re,hashlib
+c=Path('/tmp/raid-auth-reconcile-20261011/candidate');root=Path('/Users/dushyant/Documents/useRAID.fun');main=Path('/Users/dushyant/Documents/useRAID.fun-main')
+p=c/'tests/wallet-link-signin-db.test.ts';s=p.read_text();s=s.replace("import { config } from '../src/lib/config';","import { config } from '../src/lib/config';\nimport { linkVerifiedWallet } from '../src/identity-link';\nimport { createPrismaIdentityTransaction } from '../src/lib/identity-storage-adapter';\nimport { fixtureLinkInput } from './helpers/wallet-link-fixtures';")
+b=s.index("    it('gives revoked and wrong-network reservations");start=s.index('      const before = await state();',b);end=s.index('      expect([revoked.status',start)
+s=s[:start]+'''      // A separate immutable reservation; never reactivate or change a revoked row's network.
+      const foreignNetwork = pair();
+      const fixture = fixtureLinkInput(a.user.id, foreignNetwork.address);
+      const subject = { networkIdentity: 'other-test-network', address: foreignNetwork.address };
+      await db.$transaction((tx) => linkVerifiedWallet(createPrismaIdentityTransaction(tx), {
+        ...fixture, subject,
+        proof: { ...fixture.proof, subject: { kind: 'WALLET', ...subject } },
+        policy: { domain: 'localhost:3000', uri: 'http://localhost:3000', walletNetworks: ['other-test-network'], providers: [] },
+      }));
+      const before = await state();
+      const sessions = await db.session.count();
+      const revoked = await signIn(w).catch((e) => e);
+      const wrongNetwork = await signIn(foreignNetwork).catch((e) => e);
+'''+s[end:];p.write_text(s)
+a=json.loads((root/'planning/raid-ci-matrix.json').read_text());b=json.loads((main/'planning/raid-ci-matrix.json').read_text());a['test_files']=sorted(set(a['test_files'])|set(b['test_files']))
+for ae in a['epics']:
+ be=next(x for x in b['epics'] if x['epic']==ae['epic']);ae['existing_test_files']=sorted(set(ae['existing_test_files'])|set(be['existing_test_files']))
+(c/'planning/raid-ci-matrix.json').write_text(json.dumps(a,ensure_ascii=False,indent=2)+'\n')
+p=c/'src/lib/config.ts';s=p.read_text().replace('Server-side switch for additional sign-in wallets (T006 B2).','Server-side switch for creating additional sign-in wallets (T006 B2). Existing credential resolution is independent.');p.write_text(s)
+p=c/'examples/wallet-links/host.ts';s=p.read_text();start=s.index('  const credential = await db.$transaction(');s=s[:start]+s[start:].replace('createPrismaIdentityTransaction(tx), second','createPrismaIdentityTransaction(tx), third',1);start=s.index('  const revoked = await db.$transaction(',start);s=s[:start]+s[start:].replace('const revoked =','const revokedReservation =',1).replace("revoked?.status, 'REVOKED'","revokedReservation?.status, 'REVOKED'",1);p.write_text(s)
+p=c/'tests/wallet-link-lock-order-db.test.ts';s=p.read_text();b=s.index("  ] as const)('first X connection versus %s'");start=s.index('      let connection:',b);s=s[:start]+'''      // Exercise the explicitly enabled legacy fold in this synthetic fixture;
+      // separate account-fold-gate regressions retain the default-off production contract.
+      const previousFolds = process.env.ACCOUNT_FOLDS_ENABLED;
+      process.env.ACCOUNT_FOLDS_ENABLED = 'true';
+'''+s[start:];start=s.index('        expect(results[1]).toMatchObject({',start);end=s.index('        expect(await db.user',start);s=s[:start]+'''        expect(results[1]).toMatchObject({
+          ok: false,
+          message: challenge ? 'Wallet sign-in unavailable. Please try again.' : expect.stringContaining('Account identity changed'),
+        });
+'''+s[end:];start=s.index('        await Promise.allSettled([connection, other]);',start);end=start+len('        await Promise.allSettled([connection, other]);');s=s[:end]+'''
+        if (previousFolds === undefined) delete process.env.ACCOUNT_FOLDS_ENABLED;
+        else process.env.ACCOUNT_FOLDS_ENABLED = previousFolds;'''+s[end:];p.write_text(s)
+digest=hashlib.sha256((c/'RAID_AGENT_BLUEPRINT.md').read_bytes()).hexdigest()
+for name,key in [('planning/raid-task-contracts.json','blueprint_sha256'),('planning/raid-scenarios.json','blueprintSha256')]:
+ p=c/name;s=p.read_text();p.write_text(re.sub(r'("'+key+r'"\s*:\s*")[0-9a-f]{64}',lambda m:m[1]+digest,s,count=1))

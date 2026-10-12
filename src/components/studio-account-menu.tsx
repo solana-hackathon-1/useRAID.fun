@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Check, ChevronDown } from 'lucide-react';
+import { studioMenuItems } from '@/lib/studio-menu';
 export type StudioAccount = {
   handle: string;
   image: string | null;
@@ -75,25 +76,17 @@ export function StudioAccountMenu({ account }: { account: StudioAccount }) {
             onClick={() => setOpen(false)}
           />
           <div id="studio-account-dropdown" ref={dropdown} className="studio-account-dropdown">
-            <Link href="/creator/account" onClick={() => setOpen(false)}>
-              Account
-            </Link>
-            <Link href="/creator/balance" onClick={() => setOpen(false)}>
-              Balance
-            </Link>
-            {account.admin && (
-              <Link href="/admin" onClick={() => setOpen(false)}>
-                Operations
-              </Link>
+            {studioMenuItems(account).map((item) =>
+              'href' in item ? (
+                <Link key={item.label} href={item.href} onClick={() => setOpen(false)}>
+                  {item.label}
+                </Link>
+              ) : (
+                <button key={item.label} disabled={busy} onClick={() => void action(item.action)}>
+                  {item.label}
+                </button>
+              ),
             )}
-            {account.connected && (
-              <button disabled={busy} onClick={() => void action('/api/auth/x/disconnect')}>
-                Disconnect X
-              </button>
-            )}
-            <button disabled={busy} onClick={() => void action('/api/auth/logout')}>
-              Sign out
-            </button>
             {message && <p role="alert">{message}</p>}
           </div>
         </>

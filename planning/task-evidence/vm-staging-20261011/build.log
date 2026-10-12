@@ -1,0 +1,321 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 963B done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#2 DONE 3.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 213B done
+#3 DONE 0.0s
+
+#4 [deps 1/8] FROM docker.io/library/node:22-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+#4 resolve docker.io/library/node:22-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392 done
+#4 sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392 5.22kB / 5.22kB done
+#4 sha256:b20fe038d9592822dd534600a1ddf467e985178aa3fed60ec441a056c2cc45bd 1.93kB / 1.93kB done
+#4 sha256:cd2df7ff65c5fce1f8a18ce89e3aac24a80c1db3776d5842a4cf86bc27f300a2 6.79kB / 6.79kB done
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 0B / 28.14MB 0.1s
+#4 sha256:8d752b15e16356e3c5fddfe9c08b5cd27a091835fe465cdef26dd30d3d856171 0B / 3.31kB 0.1s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 0B / 49.96MB 0.1s
+#4 ...
+
+#5 [internal] load build context
+#5 transferring context: 16.26MB 0.3s done
+#5 DONE 0.3s
+
+#4 [deps 1/8] FROM docker.io/library/node:22-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+#4 sha256:8d752b15e16356e3c5fddfe9c08b5cd27a091835fe465cdef26dd30d3d856171 3.31kB / 3.31kB 0.8s done
+#4 sha256:aa7268e3e147e6faaf14f99734d2c8565bb9080ec0f292ae2aae65879bfd2727 0B / 1.71MB 0.9s
+#4 sha256:aa7268e3e147e6faaf14f99734d2c8565bb9080ec0f292ae2aae65879bfd2727 1.05MB / 1.71MB 4.2s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 2.10MB / 28.14MB 4.5s
+#4 sha256:aa7268e3e147e6faaf14f99734d2c8565bb9080ec0f292ae2aae65879bfd2727 1.71MB / 1.71MB 4.4s done
+#4 sha256:a8e3f40b26e8ab8419b3b90a177118d69162cdcd4799bd0c6bae541309993590 0B / 447B 4.5s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 3.15MB / 49.96MB 4.9s
+#4 sha256:a8e3f40b26e8ab8419b3b90a177118d69162cdcd4799bd0c6bae541309993590 447B / 447B 4.8s done
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 4.19MB / 28.14MB 5.1s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 6.29MB / 28.14MB 5.7s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 6.29MB / 49.96MB 5.7s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 8.39MB / 28.14MB 6.1s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 10.49MB / 28.14MB 6.3s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 9.44MB / 49.96MB 6.3s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 12.58MB / 28.14MB 6.7s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 14.68MB / 28.14MB 6.9s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 13.63MB / 49.96MB 6.9s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 16.78MB / 28.14MB 7.2s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 18.87MB / 28.14MB 7.4s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 17.83MB / 49.96MB 7.4s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 20.97MB / 28.14MB 7.6s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 23.07MB / 28.14MB 7.8s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 22.02MB / 49.96MB 7.8s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 25.17MB / 28.14MB 8.0s
+#4 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 28.14MB / 28.14MB 8.2s done
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 26.21MB / 49.96MB 8.2s
+#4 extracting sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 0.1s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 29.36MB / 49.96MB 8.4s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 33.15MB / 49.96MB 8.7s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 36.54MB / 49.96MB 8.9s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 39.85MB / 49.96MB 9.1s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 43.31MB / 49.96MB 9.3s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 49.96MB / 49.96MB 9.6s
+#4 sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 49.96MB / 49.96MB 9.6s done
+#4 extracting sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 2.1s done
+#4 extracting sha256:8d752b15e16356e3c5fddfe9c08b5cd27a091835fe465cdef26dd30d3d856171
+#4 extracting sha256:8d752b15e16356e3c5fddfe9c08b5cd27a091835fe465cdef26dd30d3d856171 done
+#4 extracting sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 0.1s
+#4 extracting sha256:a7d3259c055657a65a0815a6a5d07333f0b859c90cb197f4c7853941f77e78f2 2.7s done
+#4 extracting sha256:aa7268e3e147e6faaf14f99734d2c8565bb9080ec0f292ae2aae65879bfd2727 0.1s done
+#4 extracting sha256:a8e3f40b26e8ab8419b3b90a177118d69162cdcd4799bd0c6bae541309993590 done
+#4 DONE 13.4s
+
+#6 [deps 2/8] WORKDIR /app
+#6 DONE 0.3s
+
+#7 [deps 3/8] RUN apt-get update && apt-get install -y openssl --no-install-recommends && rm -rf /var/lib/apt/lists/*
+#7 0.731 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 1.450 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 1.722 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#7 1.924 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8689 kB]
+#7 2.920 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#7 2.989 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [347 kB]
+#7 3.776 Fetched 9285 kB in 3s (2715 kB/s)
+#7 3.776 Reading package lists...
+#7 4.130 Reading package lists...
+#7 4.498 Building dependency tree...
+#7 4.562 Reading state information...
+#7 4.658 The following additional packages will be installed:
+#7 4.658   libssl3
+#7 4.659 Suggested packages:
+#7 4.659   ca-certificates
+#7 4.684 The following NEW packages will be installed:
+#7 4.684   libssl3 openssl
+#7 4.809 0 upgraded, 2 newly installed, 0 to remove and 1 not upgraded.
+#7 4.809 Need to get 3238 kB of archives.
+#7 4.809 After this operation, 8542 kB of additional disk space will be used.
+#7 4.809 Get:1 http://deb.debian.org/debian-security bookworm-security/main arm64 libssl3 arm64 3.0.22-1~deb12u1 [1828 kB]
+#7 6.558 Get:2 http://deb.debian.org/debian-security bookworm-security/main arm64 openssl arm64 3.0.22-1~deb12u1 [1410 kB]
+#7 6.770 debconf: delaying package configuration, since apt-utils is not installed
+#7 6.785 Fetched 3238 kB in 2s (1669 kB/s)
+#7 6.801 Selecting previously unselected package libssl3:arm64.
+#7 6.801 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6090 files and directories currently installed.)
+#7 6.845 Preparing to unpack .../libssl3_3.0.22-1~deb12u1_arm64.deb ...
+#7 6.848 Unpacking libssl3:arm64 (3.0.22-1~deb12u1) ...
+#7 6.995 Selecting previously unselected package openssl.
+#7 6.996 Preparing to unpack .../openssl_3.0.22-1~deb12u1_arm64.deb ...
+#7 6.997 Unpacking openssl (3.0.22-1~deb12u1) ...
+#7 7.066 Setting up libssl3:arm64 (3.0.22-1~deb12u1) ...
+#7 7.071 Setting up openssl (3.0.22-1~deb12u1) ...
+#7 7.083 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#7 DONE 7.1s
+
+#8 [deps 4/8] COPY package*.json ./
+#8 DONE 0.0s
+
+#9 [deps 5/8] COPY .npmrc ./
+#9 DONE 0.0s
+
+#10 [deps 6/8] COPY prisma ./prisma
+#10 DONE 0.0s
+
+#11 [deps 7/8] COPY vendor ./vendor
+#11 DONE 0.0s
+
+#12 [deps 8/8] RUN npm ci
+#12 4.080 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#12 16.14 
+#12 16.14 added 514 packages, and audited 515 packages in 16s
+#12 16.14 
+#12 16.14 177 packages are looking for funding
+#12 16.14   run `npm fund` for details
+#12 16.14 
+#12 16.14 8 high severity vulnerabilities
+#12 16.14 
+#12 16.14 To address issues that do not require attention, run:
+#12 16.14   npm audit fix
+#12 16.14 
+#12 16.14 To address all issues (including breaking changes), run:
+#12 16.14   npm audit fix --force
+#12 16.14 
+#12 16.14 Run `npm audit` for details.
+#12 16.14 npm notice
+#12 16.14 npm notice New major version of npm available! 10.9.9 -> 12.2.0
+#12 16.14 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#12 16.14 npm notice To update run: npm install -g npm@12.2.0
+#12 16.14 npm notice
+#12 DONE 16.8s
+
+#13 [build 1/3] COPY . .
+#13 DONE 0.1s
+
+#14 [build 2/3] RUN npm run build
+#14 0.204 
+#14 0.204 > useraid@0.1.0 build
+#14 0.204 > prisma generate && next build
+#14 0.204 
+#14 0.689 Prisma schema loaded from prisma/schema.prisma
+#14 1.047 
+#14 1.047 ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 181ms
+#14 1.047 
+#14 1.047 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#14 1.047 
+#14 1.047 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+#14 1.047 
+#14 1.235 ▲ Next.js 16.3.8 (Turbopack)
+#14 1.257 ✓ Running next.config.ts took 22ms
+#14 1.260 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+#14 1.260 This information is used to shape Next.js' roadmap and prioritize features.
+#14 1.260 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+#14 1.260 https://nextjs.org/telemetry
+#14 1.260 
+#14 1.268 
+#14 1.300   Creating an optimized production build ...
+#14 6.577 ✓ Compiled successfully in 4.6s
+#14 6.586   Running TypeScript ...
+#14 12.02   Finished TypeScript in 5.4s ...
+#14 12.03   Collecting page data using 10 workers ...
+#14 12.58 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 12.58 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 12.59 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 12.68 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 12.73 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 12.79 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 12.83 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 12.86 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 13.11 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 13.42 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 13.44 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 13.88 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+#14 13.97   Generating static pages using 10 workers (0/19) ...
+#14 13.99   Generating static pages using 10 workers (4/19) 
+#14 14.21   Generating static pages using 10 workers (9/19) 
+#14 14.30   Generating static pages using 10 workers (14/19) 
+#14 14.30 ✓ Generating static pages using 10 workers (19/19) in 335ms
+#14 14.31   Finalizing page optimization ...
+#14 14.34 
+#14 14.34 Route (app)
+#14 14.34 ┌ ƒ /
+#14 14.34 ├ ƒ /_not-found
+#14 14.34 ├ ƒ /admin
+#14 14.34 ├ ƒ /api/admin/[action]
+#14 14.34 ├ ƒ /api/admin/payments
+#14 14.34 ├ ƒ /api/admin/usdc
+#14 14.34 ├ ƒ /api/auth/[action]
+#14 14.34 ├ ƒ /api/auth/x
+#14 14.34 ├ ƒ /api/auth/x/callback
+#14 14.34 ├ ƒ /api/auth/x/disconnect
+#14 14.34 ├ ƒ /api/balance
+#14 14.34 ├ ƒ /api/balance/[action]
+#14 14.34 ├ ƒ /api/creator
+#14 14.34 ├ ƒ /api/discovery
+#14 14.34 ├ ƒ /api/events
+#14 14.34 ├ ƒ /api/health
+#14 14.34 ├ ƒ /api/launch/[id]
+#14 14.34 ├ ƒ /api/launch/[id]/enroll
+#14 14.34 ├ ƒ /api/launch/[id]/renew
+#14 14.34 ├ ƒ /api/launch/[id]/retry
+#14 14.34 ├ ƒ /api/launch/[id]/submit
+#14 14.34 ├ ƒ /api/launch/prepare
+#14 14.34 ├ ƒ /api/launch/upload
+#14 14.34 ├ ƒ /api/media/[id]
+#14 14.34 ├ ƒ /api/raids
+#14 14.34 ├ ƒ /api/raids/[id]
+#14 14.34 ├ ƒ /api/raids/[id]/brief
+#14 14.34 ├ ƒ /api/raids/[id]/disputes
+#14 14.34 ├ ƒ /api/raids/[id]/enroll
+#14 14.34 ├ ƒ /api/raids/[id]/fund
+#14 14.34 ├ ƒ /api/raids/[id]/report
+#14 14.34 ├ ƒ /api/raids/[id]/resolve
+#14 14.34 ├ ƒ /api/raids/[id]/submit
+#14 14.34 ├ ƒ /api/studio/image
+#14 14.34 ├ ƒ /api/studio/preview
+#14 14.34 ├ ƒ /api/studio/quote
+#14 14.34 ├ ƒ /api/studio/sandbox
+#14 14.34 ├ ƒ /api/tokens/[mint]
+#14 14.34 ├ ƒ /api/wallet/challenge
+#14 14.34 ├ ƒ /api/wallet/verify
+#14 14.34 ├ ƒ /creator
+#14 14.34 ├ ƒ /creator/account
+#14 14.34 ├ ƒ /creator/balance
+#14 14.34 ├ ƒ /creator/new
+#14 14.34 ├ ƒ /creator/raids/[id]
+#14 14.34 ├ ○ /icon.svg
+#14 14.34 ├ ƒ /launch
+#14 14.34 ├ ƒ /methodology
+#14 14.34 ├ ƒ /privacy
+#14 14.34 ├ ƒ /raids/[id]
+#14 14.34 ├ ƒ /studio-test
+#14 14.34 └ ƒ /tokens/[mint]
+#14 14.34 
+#14 14.34 
+#14 14.34 ○  (Static)   prerendered as static content
+#14 14.34 ƒ  (Dynamic)  server-rendered on demand
+#14 14.34 
+#14 DONE 14.8s
+
+#15 [build 3/3] RUN npm prune --omit=dev && npx prisma generate
+#15 1.995 
+#15 1.995 up to date, audited 160 packages in 2s
+#15 1.995 
+#15 1.995 26 packages are looking for funding
+#15 1.995   run `npm fund` for details
+#15 1.998 
+#15 1.998 8 high severity vulnerabilities
+#15 1.998 
+#15 1.998 To address issues that do not require attention, run:
+#15 1.998   npm audit fix
+#15 1.998 
+#15 1.998 To address all issues (including breaking changes), run:
+#15 1.998   npm audit fix --force
+#15 1.998 
+#15 1.998 Run `npm audit` for details.
+#15 2.530 Prisma schema loaded from prisma/schema.prisma
+#15 2.897 ┌─────────────────────────────────────────────────────────┐
+#15 2.897 │  Update available 6.19.3 -> 8.0.0-rc.22                 │
+#15 2.897 │                                                         │
+#15 2.897 │  This is a major update - please follow the guide at    │
+#15 2.897 │  https://pris.ly/d/major-version-upgrade                │
+#15 2.897 │                                                         │
+#15 2.897 │  Run the following to update                            │
+#15 2.897 │    npm i --save-dev prisma@latest                       │
+#15 2.897 │    npm i @prisma/client@latest                          │
+#15 2.897 └─────────────────────────────────────────────────────────┘
+#15 2.897 
+#15 2.897 ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 213ms
+#15 2.897 
+#15 2.897 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#15 2.897 
+#15 2.897 Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+#15 2.897 
+#15 DONE 2.9s
+
+#16 [runtime  4/10] COPY --from=build /app/package.json /app/package-lock.json /app/tsconfig.json /app/next.config.ts ./
+#16 DONE 0.0s
+
+#17 [runtime  5/10] COPY --from=build /app/node_modules ./node_modules
+#17 DONE 2.5s
+
+#18 [runtime  6/10] COPY --from=build /app/.next ./.next
+#18 DONE 0.2s
+
+#19 [runtime  7/10] COPY --from=build /app/prisma ./prisma
+#19 DONE 0.0s
+
+#20 [runtime  8/10] COPY --from=build /app/src ./src
+#20 DONE 0.0s
+
+#21 [runtime  9/10] COPY --from=build /app/scripts ./scripts
+#21 DONE 0.0s
+
+#22 [runtime 10/10] RUN chown -R node:node /app/.next
+#22 DONE 1.1s
+
+#23 exporting to image
+#23 exporting layers
+#23 exporting layers 2.0s done
+#23 writing image sha256:fff447cc84e63e0c77cbb04b773db342898b4fb496f755ccda668d9046b1b69c done
+#23 naming to docker.io/library/useraid:staging-20261011 done
+#23 DONE 2.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/7ycjnmbimevt60yo5wseo0ie5

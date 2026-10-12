@@ -8,7 +8,7 @@ import { validMint } from './domain';
 import { balance, lockBalance, quoteUsdc, usdcSettings, studioSandbox } from './usdc';
 import { chargeStudioLookups, targetIds, targetPreviews } from './studio-targets';
 import { lockTracking } from './tracking';
-import { assertApprovedCreator } from './campaigns';
+import { assertCreatorAccess } from './campaigns';
 import { verifiedToken } from './token-identity';
 import { allowedImageUrl } from './image-hosts';
 import { importDataUri, MEDIA_PATH } from './media';
@@ -46,7 +46,7 @@ export const studioInput = z
 export async function saveStudioRaid(user: User, input: unknown, id?: string) {
   if (user.suspended || !(await db.xAccount.findUnique({ where: { userId: user.id } })))
     throw new HttpError(403, 'Connect X to create a Raid.');
-  assertApprovedCreator(user);
+  assertCreatorAccess(user);
   const legacy =
     input && typeof input === 'object'
       ? await importDataUri((input as { imageUri?: unknown }).imageUri, user.id)
@@ -190,7 +190,7 @@ export async function launchStudioRaid(
     owned.creator.suspended
   )
     throw new HttpError(404, 'Campaign not found.');
-  assertApprovedCreator(owned.creator);
+  assertCreatorAccess(owned.creator);
   if (owned.status === 'ACTIVE' || owned.status === 'ENDED') return { id };
   if (owned.status !== 'DRAFT') throw new HttpError(409, 'Only drafts can launch.');
   // Spend no X reads while the platform or the creator is not ready to launch.
@@ -238,7 +238,7 @@ export async function launchStudioRaid(
         raid.creator.suspended
       )
         throw new HttpError(403, 'Campaign access is restricted.');
-      assertApprovedCreator(raid.creator);
+      assertCreatorAccess(raid.creator);
       if (raid.status === 'ACTIVE' || raid.status === 'ENDED') return { id };
       if (raid.status !== 'DRAFT') throw new HttpError(409, 'Only drafts can launch.');
       if (!(await tx.xAccount.findUnique({ where: { userId: user.id } })))

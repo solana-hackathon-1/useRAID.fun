@@ -1,0 +1,58 @@
+{
+  "status": "SELF-EVALUATED; independent acceptance unverified",
+  "reviewStartUTC": "2026-10-10T16:47:19.078787+00:00",
+  "reviewEndUTC": "2026-10-10T16:48:21.688110+00:00",
+  "elapsedSeconds": 62.609323,
+  "base": "736964cf1445aa5d738e17c1633cf61102ad192c",
+  "dirty": true,
+  "files": {
+    "src/components/test-center.tsx": "b396c433113de1b14a0d0db35ab1e6d04f737cf17d76d4c434564dc1b0bd832b",
+    "src/app/test-center/page.tsx": "ceccac1bcd61bb298e6ffa8f6344365be629c60f65074ea570d8919db550ee75",
+    "src/app/test-center/test-center.css": "21c8c69bc270657a412daef0084d765a5d624d1dd68ab49c0f510370f76a4704",
+    "src/components/shell.tsx": "c24d7fe3787ee44862d5818683f756b3235b3e7efb6785b5e39be459dbc7985b",
+    "src/app/studio-test/page.tsx": "37eb391b619aa4fa91cd625b66aa79c412d18d5fdde461cd128a15241506c078",
+    "tests/browser-studio/test-center.spec.ts": "c6dc060e16c9bb80155d30050b772c8b062c075e5b09d009fd5504336577ca8c",
+    "docs/raid-test-center.md": "b3ed8dc65a735eeb1b6252818dd354e48669e3a2137c180a851c57e8eff6e95a",
+    "docs/tasks/2026-10-10-test-center.md": "e58278e5048c4030edda5d34dd275c3987e346daa2c1c3d3fae17df1e944a870",
+    "examples/test-center/host.ts": "61255793f888cb6fc6fa101b007be3e23a58b6b41ad19e9f932cb8f255070248",
+    "examples/test-center/package.json": "1db8e39d8776f6107c80ce77a91afc43b0cc9061e116207fdf7893b93c47c6a0",
+    "examples/test-center/tsconfig.json": "8877f40bca55f6423da51fc1c8eb6cf6f73841a385f2dce051d16595b4141bfc",
+    "examples/test-center/README.md": "f483e11a186b8e4a550b2b4157547419de2d2cc4738a82545b1206a24f198aa2",
+    "planning/raid-ci-matrix.json": "137ed340ede910f912dc8086cd51f11e9b3221efe11a950539e72ba20e7a1145"
+  },
+  "checks": {
+    "red": "4 intended desktop failures before implementation",
+    "green": "8 desktop/mobile pass",
+    "currentStudioRegression": "52 pass / 0 failures / 0 skips",
+    "currentPlanning": "37 pass",
+    "docs": "passed; exact count in docs-current.log",
+    "typecheck": "exit 0",
+    "ownedLint": "exit 0, zero warnings",
+    "scopedFormat": "pass",
+    "independentInstalledReactHost": "pass; own10 package install",
+    "previewGate": "not-found controls/cards absent and noindex; streamed HTTP200; sandbox API404",
+    "keyboard": "filter activation and form focus order passed",
+    "t006Validator": "expected exit1; all27 NOT VERIFIED before incoming source update"
+  },
+  "notRun": [
+    "production build for UI extension",
+    "hosted CI",
+    "independent UI review",
+    "representative UAT",
+    "B2 independent re-review"
+  ],
+  "resources": {
+    "preview": "http://localhost:3007/test-center",
+    "previewPid": 711,
+    "databaseContainer": "raid-ui-test-center-20261010",
+    "databasePort": 55479,
+    "database": "useraid_studio_test",
+    "probePort": 3009,
+    "probePid": 6944
+  },
+  "limitations": [
+    "prior collaborator CI evidence is tied to its candidate; UI tests do not cover cryptographic authentication or DB races",
+    "additional-wallet UI/routes/revoke/audit remain pending; server switch stays off",
+    "no issue acceptance inferred"
+  ]
+}

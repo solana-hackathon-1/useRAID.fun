@@ -1,20 +1,33 @@
-import { randomBytes } from 'node:crypto';
-import type { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
 import { PublicKey } from '@solana/web3.js';
 import { db } from './db';
-import { config } from './config';
+import { accountFoldsEnabled, config, walletLinksEnabled } from './config';
 import { hash, random, HttpError } from './auth-primitives';
 import { absorbAccount, isEmptyAccount } from './account-merge';
 import { lockBalance } from './usdc';
-import { IdentityLinkError, lookupWalletLink } from '../identity-link';
+import {
+  IdentityLinkError,
+  lookupWalletLink,
+  linkVerifiedWallet,
+  publicWalletLink,
+  type IdentityLinkCode,
+  type PublicWalletLink,
+} from '../identity-link';
 import {
   createPrismaIdentityTransaction,
   classifyIdentityStorageFailure,
 } from './identity-storage-adapter';
 import { runCommandTransaction } from './command-receipts-adapter';
-import { SIWS_CHAIN_ID } from './wallet-link-proof';
+import { deriveWalletLinkProof } from './wallet-link-proof';
+import { siwsNonce } from './siws-nonce';
+import {
+  LINK_ADDITIONAL_STATEMENT,
+  siwsChainId,
+  WALLET_CHALLENGE_STATEMENTS,
+} from './wallet-challenge-contract';
+import { walletSessionAuthority, type WalletSessionObservation } from './wallet-session-authority';
 
 // Retry only whole transactions, preserving the same challenge and pre-generated session token.
 // Never expose trigger/driver detail (including a reserved wallet address) to HTTP or logs.
@@ -47,11 +60,11 @@ export function walletAddress(value: string) {
     throw new HttpError(400, 'Enter a valid Solana wallet address.');
   }
 }
-export type ChallengePurpose = 'signin' | 'link' | 'rotate';
+export type ChallengePurpose = 'signin' | 'link' | 'rotate' | 'link-additional';
+// 'link-additional' exists only behind the server switch; legacy vocabulary bytes are unchanged.
 const STATEMENTS: Record<ChallengePurpose, string> = {
-  signin: 'Sign in to useRAID.fun.',
-  link: 'Link this wallet to your useRAID.fun account.',
-  rotate: 'Change the wallet on your useRAID.fun account. Withdrawals pause for 24 hours.',
+  ...WALLET_CHALLENGE_STATEMENTS,
+  'link-additional': LINK_ADDITIONAL_STATEMENT,
 };
 const ROTATION_COOLDOWN_MS = 7 * 86400000;
 // Canonical Sign-In With Solana text, so wallets recognise it and warn when another site relays it.
@@ -61,18 +74,31 @@ export async function createWalletChallenge(
   purpose: ChallengePurpose = currentUserId ? 'link' : 'signin',
 ) {
   walletAddress(address);
-  if ((purpose === 'signin') === !!currentUserId)
+  if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') === !!currentUserId)
     throw new HttpError(400, 'Invalid wallet challenge.');
+  if (purpose === 'link-additional') {
+    if (!walletLinksEnabled()) throw new HttpError(400, 'Invalid wallet challenge.');
+    await requireConnectedX(db, currentUserId!);
+  }
   const url = new URL(config.appUrl);
-  const nonce = randomBytes(24).toString('base64url');
+  const chainId = siwsChainId();
+  const nonce = siwsNonce();
   const issued = new Date();
   const expires = new Date(+issued + 5 * 60000);
-  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: ${SIWS_CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
+  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: ${chainId}\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
   const digest = hash(message);
   await db.walletChallenge.create({
     data: { digest, address, message, userId: currentUserId ?? null, expiresAt: expires },
   });
   return { digest, message };
+}
+async function requireConnectedX(
+  client: Pick<Prisma.TransactionClient, 'xAccount'>,
+  userId: string,
+) {
+  // Server-confirmed X linkage, the same condition rotateWallet applies (DEC-2026-10-09-01).
+  if (!(await client.xAccount.findUnique({ where: { userId } })))
+    throw new HttpError(403, 'Connect X before adding a sign-in wallet.');
 }
 function decodeSignature(signature: string) {
   let bytes: Uint8Array;
@@ -86,6 +112,12 @@ function decodeSignature(signature: string) {
 }
 // The challenge is bound to the signer state and purpose it was issued for, so a signature
 // collected for an anonymous sign-in cannot link or rotate a wallet, and the reverse.
+function challengeChainId(message: string): 'devnet' | 'mainnet' {
+  const line = message.split('\n')[7];
+  if (line === 'Chain ID: devnet') return 'devnet';
+  if (line === 'Chain ID: mainnet') return 'mainnet';
+  throw new HttpError(401, 'Wallet challenge expired or signature invalid.');
+}
 async function consumeChallenge(
   tx: Prisma.TransactionClient,
   digest: string,
@@ -94,6 +126,8 @@ async function consumeChallenge(
   currentUserId: string | undefined,
   purpose: ChallengePurpose,
 ) {
+  // Fail closed on invalid deployment configuration without rewriting a pending signed intent.
+  siwsChainId();
   const key = walletAddress(address);
   const attempt = await tx.walletChallenge.findUnique({ where: { digest } });
   if (
@@ -102,15 +136,18 @@ async function consumeChallenge(
     attempt.consumedAt ||
     attempt.expiresAt <= new Date() ||
     (attempt.userId ?? undefined) !== currentUserId ||
+    hash(attempt.message) !== digest ||
     attempt.message.split('\n')[3] !== STATEMENTS[purpose] ||
     !nacl.sign.detached.verify(new TextEncoder().encode(attempt.message), bytes, key.toBytes())
   )
     throw new HttpError(401, 'Wallet challenge expired or signature invalid.');
+  challengeChainId(attempt.message);
   const consumed = await tx.walletChallenge.updateMany({
     where: { digest, consumedAt: null, expiresAt: { gt: new Date() } },
     data: { consumedAt: new Date() },
   });
   if (consumed.count !== 1) throw new HttpError(409, 'Wallet challenge already used.');
+  return attempt;
 }
 export async function verifyWalletChallenge(
   digest: string,
@@ -123,7 +160,7 @@ export async function verifyWalletChallenge(
   const bytes = decodeSignature(signature);
   const sessionToken = random();
   await walletTransaction(async (tx) => {
-    await consumeChallenge(
+    const attempt = await consumeChallenge(
       tx,
       digest,
       address,
@@ -136,7 +173,10 @@ export async function verifyWalletChallenge(
       // A linked credential cannot enter the legacy two-account fold path, including when revoked.
       if (currentUserId && linked.accountId !== currentUserId)
         throw new HttpError(409, 'Wallet belongs to another account.');
-      if (linked.status !== 'ACTIVE' || linked.networkIdentity !== SIWS_CHAIN_ID)
+      if (
+        linked.status !== 'ACTIVE' ||
+        linked.networkIdentity !== challengeChainId(attempt.message)
+      )
         throw new HttpError(401, 'Wallet sign-in unavailable.');
       if (linked.accountSuspended) throw new HttpError(403, 'This account is suspended.');
     }
@@ -150,6 +190,12 @@ export async function verifyWalletChallenge(
       ]);
       if (currentWallet || owner.xId)
         throw new HttpError(409, 'Wallet belongs to another account.');
+      // Folding is gated off for launch (see accountFoldsEnabled): refuse and change nothing.
+      if (!accountFoldsEnabled())
+        throw new HttpError(
+          409,
+          'This wallet already belongs to another useRAID account. Sign in with that wallet instead.',
+        );
       if (await isEmptyAccount(tx, owner.id)) {
         await absorbAccount(tx, currentUserId, owner.id);
         userId = currentUserId;
@@ -177,25 +223,22 @@ export async function verifyWalletChallenge(
     const owner = await tx.user.findUniqueOrThrow({ where: { id: userId! } });
     if (owner.suspended) throw new HttpError(403, 'This account is suspended.');
     // Signing in again must not widen what the old session could do, nor narrow an X session.
+    // Atomically claim only this account's prior session so concurrent logout/expiry or
+    // another account's token cannot transfer authority into the replacement session.
     const previous = currentSessionHash
-      ? await tx.session.findUnique({ where: { tokenHash: currentSessionHash } })
-      : null;
-    if (
-      currentSessionHash &&
-      previous &&
-      (previous.userId === userId || previous.userId === currentUserId)
-    )
-      await tx.session.deleteMany({ where: { tokenHash: currentSessionHash } });
+      ? await tx.$queryRaw<WalletSessionObservation[]>`
+          DELETE FROM "Session"
+          WHERE "tokenHash" = ${currentSessionHash} AND "userId" = ${userId!}
+          RETURNING "userId", "via", "expiresAt"
+        `
+      : [];
+    const now = new Date();
     await tx.session.create({
       data: {
         tokenHash: hash(sessionToken),
         userId: userId!,
-        // Only a live authenticated session for the resolved account can preserve X authority.
-        via:
-          currentUserId && previous && previous.userId === userId && previous.expiresAt > new Date()
-            ? previous.via
-            : 'wallet',
-        expiresAt: new Date(Date.now() + 7 * 86400000),
+        via: walletSessionAuthority(previous[0], currentUserId, userId!, now),
+        expiresAt: new Date(now.getTime() + 7 * 86400000),
       },
     });
   });
@@ -252,4 +295,109 @@ export async function rotateWallet(
       },
     });
   });
+}
+
+const LINK_LIMITS = { maxActiveLinks: 5, maxTotalLinks: 20 } as const;
+const LINK_HTTP: Partial<Record<IdentityLinkCode, [number, string]>> = {
+  AUTHENTICATION_REQUIRED: [401, 'Sign in to continue.'],
+  WRONG_ACTOR: [403, 'Not allowed.'],
+  FORBIDDEN: [403, 'Not allowed.'],
+  ACCOUNT_RESTRICTED: [403, 'This account is suspended.'],
+  PROOF_INVALID: [401, 'Wallet challenge expired or signature invalid.'],
+  UNSUPPORTED_IDENTITY: [400, 'Unsupported wallet.'],
+  IDENTITY_CONFLICT: [409, 'This wallet cannot be added to your account.'],
+  IDENTITY_REVOKED: [409, 'This wallet cannot be added to your account.'],
+  PRIMARY_WALLET_REQUIRED: [409, 'Connect a wallet first.'],
+  LINK_LIMIT_REACHED: [409, 'Wallet limit reached.'],
+  RETRY_TRANSACTION: [503, 'Try again.'],
+};
+// Linearization boundary for linking (owner clarification 2026-10-10): the CURRENT session must be
+// the caller's own, live by the database clock, and carry X authority (via === 'x'), on an account
+// whose X connection still exists. Read after the subject/account locks and row-locked FOR SHARE
+// until commit, so a revoke, expiry or X disconnect that committed while this command waited is
+// seen, and one arriving later waits for this commit (an already-decided link is not undone).
+// The clock is read in its own statement AFTER both row locks are granted: a clock evaluated in
+// the locking SELECT (or captured before either wait) predates the wait, so a session that
+// expired while the command was blocked would still look live.
+async function observeLinkAuthority(
+  tx: Prisma.TransactionClient,
+  userId: string,
+  sessionHash: string | undefined,
+) {
+  const [session] = sessionHash
+    ? await tx.$queryRaw<{ userId: string; via: string; expiresAt: Date }[]>`
+        SELECT "userId", "via", "expiresAt"
+        FROM "Session" WHERE "tokenHash" = ${sessionHash} FOR SHARE`
+    : [];
+  if (!session || session.userId !== userId) throw new IdentityLinkError('AUTHENTICATION_REQUIRED');
+  const x = await tx.$queryRaw<{ one: number }[]>`
+    SELECT 1 AS "one" FROM "XAccount" WHERE "userId" = ${userId} FOR SHARE`;
+  const [{ now }] = await tx.$queryRaw<{ now: Date }[]>`SELECT clock_timestamp() AS "now"`;
+  if (session.expiresAt <= now) throw new IdentityLinkError('AUTHENTICATION_REQUIRED');
+  if (session.via !== 'x') throw new IdentityLinkError('FORBIDDEN');
+  if (x.length !== 1) throw new IdentityLinkError('FORBIDDEN');
+  return {
+    session: {
+      accountId: session.userId,
+      state: 'ACTIVE',
+      expiresAt: session.expiresAt.toISOString(),
+    },
+    now: now.toISOString(),
+  };
+}
+function linkFailure(error: unknown): HttpError | null {
+  if (!(error instanceof IdentityLinkError)) return null;
+  const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet linking is unavailable.'];
+  return new HttpError(status, message);
+}
+// Adds a sign-in wallet to the caller's own account. The payout wallet never changes. Requires the
+// server switch, a connected X account, the caller's own live session read here (never client
+// asserted) and a fresh single-use proof from the additional wallet.
+export async function linkAdditionalWallet(
+  userId: string,
+  digest: string,
+  signature: string,
+  address: string,
+  currentSessionHash: string | undefined,
+  requestId: string,
+): Promise<PublicWalletLink> {
+  if (!walletLinksEnabled()) throw new HttpError(400, 'Invalid wallet challenge.');
+  walletAddress(address);
+  const bytes = decodeSignature(signature);
+  const url = new URL(config.appUrl);
+  try {
+    const linked = await db.$transaction(
+      async (tx) => {
+        const attempt = await consumeChallenge(
+          tx,
+          digest,
+          address,
+          bytes,
+          userId,
+          'link-additional',
+        );
+        const chainId = challengeChainId(attempt.message);
+        return linkVerifiedWallet(createPrismaIdentityTransaction(tx), {
+          accountId: userId,
+          actorAccountId: userId,
+          requestId,
+          subject: { networkIdentity: chainId, address },
+          proof: deriveWalletLinkProof(attempt, { signatureVerified: true }),
+          // Authority is observed by the module under the subject and account locks (below).
+          observeAuthority: () => observeLinkAuthority(tx, userId, currentSessionHash),
+          policy: {
+            domain: url.host,
+            uri: url.origin,
+            walletNetworks: [chainId],
+            providers: [],
+          },
+          limits: LINK_LIMITS,
+        });
+      },
+      { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
+    );
+    return publicWalletLink(linked);
+  } catch (error) {
+    throw linkFailure(error) ?? error;
+  }
 }

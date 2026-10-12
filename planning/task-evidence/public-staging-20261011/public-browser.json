@@ -1,0 +1,70 @@
+{
+  "observed_at_utc": "2026-10-11T12:04:21.465Z",
+  "browser": "Chromium",
+  "mode": "public production-container staging preview",
+  "source": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248 + uncommitted host public ingress",
+  "tls_verification": "enabled; no ignoreHTTPSErrors",
+  "dns": "Chromium host resolver maps hostname to DNS-verified public Cloudflare edge IPv4 because macOS negative cache; HTTPS/SNI unchanged",
+  "checks": [
+    {
+      "viewport": "desktop",
+      "path": "/",
+      "status": 200,
+      "title": "useRAID.fun — Solana in conversation",
+      "overflow": false,
+      "page_errors": []
+    },
+    {
+      "viewport": "desktop",
+      "path": "/privacy",
+      "status": 200,
+      "title": "useRAID.fun — Solana in conversation",
+      "overflow": false,
+      "page_errors": []
+    },
+    {
+      "viewport": "desktop",
+      "path": "/creator",
+      "status": 200,
+      "title": "useRAID.fun — Solana in conversation",
+      "overflow": false,
+      "page_errors": []
+    },
+    {
+      "viewport": "desktop",
+      "path": "/api/admin/usdc",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "viewport": "mobile",
+      "path": "/",
+      "status": 200,
+      "title": "useRAID.fun — Solana in conversation",
+      "overflow": false,
+      "page_errors": []
+    },
+    {
+      "viewport": "mobile",
+      "path": "/privacy",
+      "status": 200,
+      "title": "useRAID.fun — Solana in conversation",
+      "overflow": false,
+      "page_errors": []
+    },
+    {
+      "viewport": "mobile",
+      "path": "/creator",
+      "status": 200,
+      "title": "useRAID.fun — Solana in conversation",
+      "overflow": false,
+      "page_errors": []
+    },
+    {
+      "viewport": "mobile",
+      "path": "/api/admin/usdc",
+      "status": 401,
+      "expected": 401
+    }
+  ]
+}

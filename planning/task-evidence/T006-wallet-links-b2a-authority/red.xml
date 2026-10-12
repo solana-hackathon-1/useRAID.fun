@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="9" failures="8" errors="0" time="2.709605833">
+    <testsuite name="tests/wallet-link-authority-db.test.ts" timestamp="2026-10-10T10:05:30.717Z" hostname="0xd.local" tests="9" failures="8" errors="0" skipped="0" time="2.709605833">
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;wallet&quot; even though the account has an X row" time="0.12734225">
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;3V4pDu5X1Q9DKwtuRREZfs1kebESpM7Eba9UkXiBFYvQ&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;admin&quot; even though the account has an X row" time="0.041623166">
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;HWn9LBb2ZNMnnTZuz7ZRTKo6Du8sZK3F1s4vd3dhYNNd&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;&quot; even though the account has an X row" time="0.054293625">
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;C4Pf6BFGKvzKRQJMw2m1kFng6mYs8jXLDfFMKTLDkwJ4&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;X&quot; even though the account has an X row" time="0.064035958">
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;4ypBi8byFRbdV9ey3U7cbx4uXdPZigQPWEZcy23K9Ann&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:105:36
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (revoked) committed during a real lock wait" time="0.084046208">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:2126,&quot;waiters&quot;:[2125]}}
+
+            </system-out>
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;3Tsmbym3zHdZnJGsy5PwJrtVsVzdq3h7tTFU39h3arNv&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:137:30
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (expired) committed during a real lock wait" time="0.042008416">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:2126,&quot;waiters&quot;:[2125]}}
+
+            </system-out>
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;4yA7sdUfZRayMh4z5VAfq889XmDD2B8u6CukxLdvJsrV&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:137:30
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (X disconnected) committed during a real lock wait" time="0.03861725">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:2126,&quot;waiters&quot;:[2125]}}
+
+            </system-out>
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;6dsZgRNxTV3Civvo37cYwq1kCNbk9X3VEC4gzvhcxFgT&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:137:30
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a session that expires naturally while the command waits for the lock" time="1.861128584">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:2126,&quot;waiters&quot;:[2125]}}
+
+            </system-out>
+            <failure message="promise resolved &quot;{ …(4) }&quot; instead of rejecting" type="AssertionError">
+AssertionError: promise resolved &quot;{ …(4) }&quot; instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   &quot;message&quot;: &quot;rejected promise&quot;,
++ {
++   &quot;address&quot;: &quot;2Qs8gYTeB2yRvELq3Dg8pLYHmp4Ry21j5VSGyiYLHSn7&quot;,
++   &quot;alreadyLinked&quot;: false,
++   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-authority-db.test.ts:160:28
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; either links or leaves no trace when revocation races the command, with no deadlock" time="0.393965916">
+            <system-out>
+{&quot;authorityRaceOutcomes&quot;:[&quot;denied:401&quot;,&quot;denied:401&quot;,&quot;denied:401&quot;,&quot;denied:403&quot;,&quot;denied:401&quot;,&quot;denied:403&quot;,&quot;denied:401&quot;,&quot;denied:403&quot;,&quot;denied:401&quot;,&quot;denied:403&quot;,&quot;denied:401&quot;,&quot;denied:403&quot;]}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>

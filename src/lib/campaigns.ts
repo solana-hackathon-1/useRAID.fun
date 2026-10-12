@@ -8,11 +8,13 @@ import { lockTracking } from './tracking';
 import { fundingPricing, fundingQuote } from './raid-funding';
 import { config } from './config';
 import { verifiedToken } from './token-identity';
-export function assertApprovedCreator(user: Pick<User, 'approved' | 'suspended'>) {
-  if (!user.approved || user.suspended) throw new HttpError(403, 'Creator approval is required.');
+// Creating Raids is self-serve (DEC-2026-10-12-01): a signed-in user with a connected X account may
+// create them. Only a suspension blocks access; the legacy `approved` flag is no longer a gate.
+export function assertCreatorAccess(user: { suspended: boolean }) {
+  if (user.suspended) throw new HttpError(403, 'This account is suspended.');
 }
 export async function createRaid(user: User, input: unknown) {
-  assertApprovedCreator(user);
+  assertCreatorAccess(user);
   if (!(await db.xAccount.findUnique({ where: { userId: user.id } })))
     throw new HttpError(403, 'Connect your verified X account before creating a Raid.');
   const data = raidInput.parse(input);
@@ -64,7 +66,7 @@ export async function changeRaid(user: User, id: string, action: string) {
       throw new HttpError(403, 'This campaign belongs to another creator.');
     if (user.suspended || raid.hidden) throw new HttpError(403, 'Campaign access is restricted.');
     if (action === 'launch') {
-      assertApprovedCreator(user);
+      assertCreatorAccess(user);
       if (raid.studioVersion === 1) throw new HttpError(409, 'Use Fund & Launch for this Raid.');
       if (!raid.mint && raid.fundingStatus !== 'VERIFIED')
         throw new HttpError(

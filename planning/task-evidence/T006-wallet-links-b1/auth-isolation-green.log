@@ -1,0 +1,23 @@
+
+> useraid@0.1.0 test
+> vitest run tests/wallet-auth-isolation-db.test.ts --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-wallet-links-b1/auth-isolation-green.xml
+
+
+ RUN  v4.1.11 /private/tmp/raid-t006-wallet-links-b1-codex-20261009
+
+stderr | tests/wallet-auth-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+stderr | tests/wallet-auth-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/wallet-auth-isolation-db.test.ts (2 tests) 2064ms
+     ✓ preserves permitted wallet and X account folds under database default repeatable read  1055ms
+     ✓ preserves permitted wallet and X account folds under database default serializable  1007ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  09:40:41
+   Duration  2.23s (transform 15ms, setup 0ms, import 36ms, tests 2.06s, environment 0ms)
+
+JUNIT report written to /private/tmp/raid-t006-wallet-links-b1-codex-20261009/planning/task-evidence/T006-wallet-links-b1/auth-isolation-green.xml

@@ -1,0 +1,99 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":3193,"waiters":[3192]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":3193,"waiters":[3192]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":3193,"waiters":[3192]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":3193,"waiters":[3192]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:401","linked","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > makes a revoke or X disconnect that arrives after the decision wait for the link to commit
+{"authorityLateWriters":{"command":3192,"writers":[3194,3195]}}
+
+ ❯ tests/wallet-link-authority-db.test.ts (12 tests | 1 failed) 4125ms
+     ✓ denies a live own session whose authority is "wallet" even though the account has an X row 137ms
+     ✓ denies a live own session whose authority is "admin" even though the account has an X row 46ms
+     ✓ denies a live own session whose authority is "" even though the account has an X row 42ms
+     ✓ denies a live own session whose authority is "X" even though the account has an X row 33ms
+     ✓ denies an authority change (revoked) committed during a real lock wait 48ms
+     ✓ denies an authority change (expired) committed during a real lock wait 39ms
+     ✓ denies an authority change (X disconnected) committed during a real lock wait 39ms
+     ✓ denies a session that expires naturally while the command waits for the lock  1850ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  529ms
+     ✓ makes a revoke or X disconnect that arrives after the decision wait for the link to commit 128ms
+     ✓ makes an X disconnect alone, arriving after the decision, wait for the link to commit 67ms
+     × does not deadlock with the legacy account merge while the command holds its locks (N1) 1156ms
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 334ms
+ ❯ tests/wallet-link-signin-db.test.ts (8 tests | 1 failed) 415ms
+     ✓ signs in as the linking account with a wallet session when the switch is on 84ms
+     ✓ fails closed with one sanitized conflict and no new user when the switch is off 32ms
+     ✓ never signs in through a revoked link, with the switch on or off 45ms
+     × gives a revoked link and a switch-off link the same conflict text (N4) 41ms
+     ✓ turns a double-clicked first sign-in of a brand-new wallet into one session and one sanitized 409 (N6) 32ms
+     ✓ denies a suspended owner with no session 34ms
+     ✓ does not let a legacy link or a rotation take an address that is a sign-in link 61ms
+     ✓ keeps ordinary primary-wallet sign-in and unknown-wallet sign-up unchanged 32ms
+ ✓ tests/identity-link-authority-hook-db.test.ts (9 tests) 230ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > does not deadlock with the legacy account merge while the command holds its locks (N1)
+AssertionError: expected '\nInvalid `tx.user.update()` invocati…' to contain 'Only an activity-free account can be …'
+
+- Expected
++ Received
+
+- Only an activity-free account can be merged
++
++ Invalid `tx.user.update()` invocation in
++ /Users/dushyant/Documents/useRAID.fun/src/lib/account-merge.ts:47:19
++
++   44 if (drop.xId) {
++   45   const account = await tx.xAccount.findUnique({ where: { userId: dropId } });
++   46   await tx.xAccount.deleteMany({ where: { userId: dropId } });
++ → 47   await tx.user.update(
++ Error occurred during query execution:
++ ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "40P01", message: "deadlock detected", severity: "ERROR", detail: Some("Process 3197 waits for ShareLock on transaction 43258; blocked by process 3192.\nProcess 3192 waits for ShareLock on transaction 43259; blocked by process 3197."), column: None, hint: Some("See server log for query details.") }), transient: false })
+
+ ❯ tests/wallet-link-authority-db.test.ts:338:30
+    336|       const merged = (await merge) as { ok: boolean; message?: string …
+    337|       expect(merged.ok).toBe(false);
+    338|       expect(merged.message).toContain('Only an activity-free account …
+       |                              ^
+    339|       expect(merged.message).not.toMatch(/deadlock/i);
+    340|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b sign-in through a linked wallet (flag-gated, fail closed) > gives a revoked link and a switch-off link the same conflict text (N4)
+AssertionError: expected 'This wallet cannot be added to your a…' to be 'Wallet belongs to another account.' // Object.is equality
+
+Expected: "Wallet belongs to another account."
+Received: "This wallet cannot be added to your account."
+
+ ❯ tests/wallet-link-signin-db.test.ts:151:29
+    149|     const revoked = await signIn(w).catch((e) => e);
+    150|     expect([off.status, revoked.status]).toEqual([409, 409]);
+    151|     expect(revoked.message).toBe(off.message);
+       |                             ^
+    152|   });
+    153|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  2 failed | 34 passed (36)
+   Start at  18:13:11
+   Duration  6.18s (transform 118ms, setup 0ms, import 649ms, tests 5.10s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b2-rereview-fixes/red.xml

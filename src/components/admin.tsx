@@ -68,7 +68,6 @@ export function SettingsForm({
   settings: {
     collectionEnabled: boolean;
     maxActiveRaids: number;
-    maxCreators: number;
     monthlyBudgetCents: number;
     cutoffCents: number;
     dailyRequestLimit: number;
@@ -91,7 +90,6 @@ export function SettingsForm({
             body: JSON.stringify({
               collectionEnabled: d.get('collectionEnabled') === 'on',
               maxActiveRaids: Number(d.get('maxActiveRaids')),
-              maxCreators: Number(d.get('maxCreators')),
               monthlyBudgetCents: Number(d.get('monthlyBudgetCents')),
               cutoffCents: Number(d.get('cutoffCents')),
               dailyRequestLimit: Number(d.get('dailyRequestLimit')),
@@ -122,7 +120,6 @@ export function SettingsForm({
         <div className="form-grid">
           {[
             { key: 'maxActiveRaids', label: 'Campaign slots', max: 10 },
-            { key: 'maxCreators', label: 'Approved creators', max: 5 },
             { key: 'monthlyBudgetCents', label: 'X budget (cents)', max: 20000 },
             { key: 'cutoffCents', label: 'Collection cutoff (cents)', max: 19000 },
             { key: 'dailyRequestLimit', label: 'Daily request limit', max: 5000 },

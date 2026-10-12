@@ -10,7 +10,7 @@ Sandbox cannot run in production: requires development runtime, explicit flag, l
 
 ## Deployment configuration
 
-Apply `npm run db:migrate`; build web and run web plus worker. Set `DEMO_MODE=false`, canonical HTTPS `NEXT_PUBLIC_APP_URL`, matching X OAuth callback in X developer portal, X OAuth credentials, `X_BEARER_TOKEN`, verified provider access to contributor `impression_count`, `LIVE_COLLECTION_APPROVED=true`, and Operations collection enabled. Configure HTTPS `SOLANA_RPC_URL`, `USDC_NETWORK=mainnet`, signer-capable platform `USDC_FUNDING_ADDRESS`, and operator-approved integer `USDC_MICROS_PER_1000_IMPRESSIONS`. Leave rate empty until pricing is approved. Funding stays disabled; drafts remain available. Set `X_TRACKING_V2_SETTLEMENT_ENABLED=true`: without it Studio launches and deposits are unavailable and settlement pauses with funds staying reserved. Studio funding does not need launchpad or automated SOL payout switches. Restart web and worker after configuration changes.
+Apply `npm run db:migrate`; build web and run web plus worker. Set `DEMO_MODE=false`, canonical HTTPS `NEXT_PUBLIC_APP_URL`, matching X OAuth callback in X developer portal, X OAuth credentials, `X_BEARER_TOKEN`, verified provider access to contributor `impression_count`, `LIVE_COLLECTION_APPROVED=true`, and Operations collection enabled. Configure HTTPS `SOLANA_RPC_URL`, explicit `USDC_NETWORK` (`devnet` for current staging; `mainnet` only under accepted live gates), signer-capable platform `USDC_FUNDING_ADDRESS`, and operator-approved integer `USDC_MICROS_PER_1000_IMPRESSIONS`. Leave rate empty until pricing is approved. Funding stays disabled; drafts remain available. Set `X_TRACKING_V2_SETTLEMENT_ENABLED=true`: without it Studio launches and deposits are unavailable and settlement pauses with funds staying reserved. Studio funding does not need launchpad or automated SOL payout switches. Restart web and worker after configuration changes.
 
 USDC has six decimals. Available/reserved ledger is append-only and separated by network. Wallet-signed deposits require finalized transferChecked to canonical USDC mint and platform associated token account, exact amount, verified source signer, time-bounded intent, unique signature, and memo `useRAID:usdc:<transferId>`. Single receipt cannot credit twice. SOL pays deposit network fees, not Raid budget. Operator pays outgoing network fees; platform campaign fee is zero in v1.
 
@@ -26,7 +26,7 @@ Ending a Raid early closes posting and enrollment immediately. If participants h
 
 Deposits and withdrawals have minimums (`USDC_MIN_DEPOSIT_UNITS`, `USDC_MIN_WITHDRAWAL_UNITS`, both 1 USDC by default) and a cap on open requests (`USDC_MAX_OPEN_DEPOSITS`, `USDC_MAX_OPEN_WITHDRAWALS`, both 3).
 
-Creator approval is required to save drafts, preview target posts and launch. Unapproved signed-in creators request approval from Creator Studio with a project affiliation; an administrator approves it in Operations. Target-post lookups for drafts reuse previews validated within 24 hours and are limited to `STUDIO_LOOKUPS_PER_DAY` (default 300) per creator.
+Creator access is self-serve for signed-in users with a connected X account. Suspended users cannot save drafts, preview targets or launch. Target-post lookups for drafts reuse previews validated within 24 hours and are limited to `STUDIO_LOOKUPS_PER_DAY` (default 300) per creator.
 
 ## Manual payouts
 

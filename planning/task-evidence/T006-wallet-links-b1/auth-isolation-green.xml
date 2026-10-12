@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="0" errors="0" time="2.063984708">
+    <testsuite name="tests/wallet-auth-isolation-db.test.ts" timestamp="2026-10-09T03:55:43.352Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="2.063984708">
+        <testcase classname="tests/wallet-auth-isolation-db.test.ts" name="legacy auth hosts own required READ COMMITTED instead of database defaults &gt; preserves permitted wallet and X account folds under database default repeatable read" time="1.055314875">
+        </testcase>
+        <testcase classname="tests/wallet-auth-isolation-db.test.ts" name="legacy auth hosts own required READ COMMITTED instead of database defaults &gt; preserves permitted wallet and X account folds under database default serializable" time="1.007158458">
+        </testcase>
+    </testsuite>
+</testsuites>

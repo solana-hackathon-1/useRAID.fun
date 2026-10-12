@@ -1,0 +1,13 @@
+.F
+======================================================================
+FAIL: test_real_proxy_trusts_only_connector_and_preserves_public_origin (test_raid_staging_public.PublicStagingProxy.test_real_proxy_trusts_only_connector_and_preserves_public_origin)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/tests/test_raid_staging_public.py", line 105, in test_real_proxy_trusts_only_connector_and_preserves_public_origin
+    self.assertEqual(results[0]['status'], 200)
+AssertionError: 421 != 200
+
+----------------------------------------------------------------------
+Ran 2 tests in 17.004s
+
+FAILED (failures=1)

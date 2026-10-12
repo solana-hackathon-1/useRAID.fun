@@ -7,7 +7,7 @@ const login = async (page: Page, fixtureId: string) => {
   });
   expect(response.ok()).toBe(true);
 };
-test.describe('approved creator', () => {
+test.describe('creator', () => {
   let draftId: string;
   test.beforeEach(async ({ page }) => {
     await login(page, crypto.randomUUID());
@@ -43,19 +43,14 @@ test.describe('approved creator', () => {
     await expect(page.getByText('USDC').first()).toBeVisible();
   });
 });
-test.describe('unapproved creator', () => {
+test.describe('creator without legacy approval', () => {
   test.beforeEach(async ({ page }) => {
-    await login(page, `unapproved-${crypto.randomUUID()}`);
+    await login(page, `self-serve-${crypto.randomUUID()}`);
   });
-  for (const path of ['/creator', '/creator/new'])
-    test(`${path} shows the approval request`, async ({ page }, testInfo) => {
+  for (const path of ['/creator', '/creator/new', '/creator/account', '/creator/balance'])
+    test(`${path} loads cleanly with no approval request`, async ({ page }, testInfo) => {
       await expectCleanPage(page, path, testInfo);
-      await expect(page.getByRole('heading', { name: 'Creator approval required' })).toBeVisible();
-      await expect(page.getByLabel('Project affiliation')).toBeVisible();
-    });
-  for (const path of ['/creator/account', '/creator/balance'])
-    test(`${path} loads cleanly`, async ({ page }, testInfo) => {
-      await expectCleanPage(page, path, testInfo);
+      await expect(page.getByRole('heading', { name: 'Creator approval required' })).toHaveCount(0);
     });
 });
 test('/studio-test loads cleanly in the sandbox', async ({ page }, testInfo) => {

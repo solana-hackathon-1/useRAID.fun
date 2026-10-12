@@ -1,0 +1,57 @@
+{
+  "mode": "development Studio sandbox; synthetic owned DB; default-off links/folds",
+  "checks": [
+    {
+      "path": "/",
+      "result": "PASS"
+    },
+    {
+      "path": "/privacy",
+      "result": "PASS"
+    },
+    {
+      "path": "/creator",
+      "result": "PASS"
+    },
+    {
+      "path": "/api/health",
+      "result": "PASS"
+    },
+    {
+      "check": "fresh primary wallet signup over HTTP",
+      "result": "PASS"
+    },
+    {
+      "check": "same-account primary reauthentication over HTTP",
+      "result": "PASS"
+    },
+    {
+      "check": "existing linked wallet HTTP sign-in while creation flag is false; payout wallet unchanged",
+      "result": "PASS"
+    },
+    {
+      "check": "same-account linked-wallet reauthentication over HTTP",
+      "result": "PASS"
+    },
+    {
+      "check": "revoked linked credential HTTP401; no session or consumed challenge",
+      "result": "PASS"
+    },
+    {
+      "check": "admin unauthenticated401",
+      "result": "PASS"
+    },
+    {
+      "check": "new linking route remains absent404",
+      "result": "PASS"
+    },
+    {
+      "check": "desktop preview rendering/no overflow/no page errors",
+      "result": "PASS"
+    },
+    {
+      "check": "mobile preview rendering/no overflow/no page errors",
+      "result": "PASS"
+    }
+  ]
+}

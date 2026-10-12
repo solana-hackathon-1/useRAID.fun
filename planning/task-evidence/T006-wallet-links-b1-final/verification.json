@@ -1,0 +1,74 @@
+{
+  "recordedAt": "2026-10-10",
+  "agent": "Claude Sonnet 5.5",
+  "candidate": {
+    "base": "66d6a3a05936df54c8dbca150b7c3bea6e6134be",
+    "dirty": true,
+    "clone": "/tmp/raid-b1-final-ci-20261010",
+    "manifest": "planning/task-evidence/T006-wallet-links-b1-final/source-manifest.json",
+    "sourceFiles": 19
+  },
+  "independentReview": {
+    "verdict": "ACCEPTED WITH CONDITIONS",
+    "reviewer": "separate non-author Claude subagent (agentId adf7c9e362a97cdd5), isolated copy + own container/DB; NOT the Codex reviewer; same model family as continuing author",
+    "report": "planning/task-evidence/T006-wallet-links-b1-review/REPORT.md",
+    "reportJson": "planning/task-evidence/T006-wallet-links-b1-review/report.json",
+    "reviewerRuns": {
+      "tsc": 0,
+      "focusedSuites": "124/124",
+      "full": "84 files / 1069",
+      "mutations": "31 run, 27 killed, survivors M01(equivalent) M11 M13 M26"
+    }
+  },
+  "conditionDisposition": {
+    "F1_ABSENT_path_isolation": "CLOSED by author: new test 'both commands reject a non-READ_COMMITTED port before any SQL even when the address is absent'; RED by deleting isolation clause (2 failures) -> GREEN; f1-red.xml",
+    "F2_post_lock_recheck": "CLOSED by author: alternate-port test 'fails closed when the PRIMARY owner observed before the account lock changes'; RED by weakening recheck (1 failure) -> GREEN; doc reworded: defense in depth, NOT shown reachable on real PostgreSQL (shipped merge deletes dropped account -> ACCOUNT_NOT_FOUND first)",
+    "F3_session_authority_docs": "CLOSED by author: section added to docs/raid-wallet-links.md",
+    "F4_manifest": "CLOSED: this record + source-manifest.json bind final tree; earlier manifests remain historical",
+    "next_env_excluded": "next-env.d.ts excluded from manifest and delivery; left uncommitted",
+    "B2_obligations_kept": [
+      "DB-read session",
+      "server clock",
+      "durable audit",
+      "session invalidation",
+      "wallet_links_enabled default off",
+      "T007 network binding for legacy PRIMARY",
+      "suspended account cannot revoke leaked additional wallet (policy)"
+    ],
+    "unfixed_low": [
+      "M11 prototype-key guard unpinned",
+      "M01 equivalent mutant",
+      "cosmetic doc/test-title items"
+    ],
+    "authorStatus": "Fixes F1-F3 were written and verified by the continuing author, not re-reviewed by the independent reviewer."
+  },
+  "redGreen": {
+    "f1Red": "planning/task-evidence/T006-wallet-links-b1-review-fixes/f1-red.xml",
+    "f2Red": "planning/task-evidence/T006-wallet-links-b1-review-fixes/f2-red.xml",
+    "green": "full CI vitest.xml"
+  },
+  "cleanLocalCi": {
+    "runner": "scripts/local-ci.sh (unmodified, from candidate clone)",
+    "logDir": "/tmp/raid-b1-final-ci-20261010-logs",
+    "stepsExit0": 22,
+    "stepsTotal": 22,
+    "vitest": {
+      "tests": 1072,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "browser": {
+      "demo": "49 passed / 1 skipped",
+      "studio": "44 passed",
+      "liveBrowser": "38 passed / 6 skipped"
+    },
+    "copied": "planning/task-evidence/T006-wallet-links-b1-final/ci/",
+    "limits": "local isolated, not hosted CI; browser skips are existing; exit 0 != zero skips"
+  },
+  "t006Completion": {
+    "validator": "python3 scripts/verify-raid-completion.py T006 planning/task-evidence/T006-contract-verification.json",
+    "expected": "exit 1, 27 NOT VERIFIED",
+    "note": "see docs/tasks/T006-wallet-links-b1-final-acceptance.md for per-criterion disposition"
+  }
+}

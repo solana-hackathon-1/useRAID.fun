@@ -1,0 +1,18 @@
+
+> useraid@0.1.0 test
+> vitest run tests/wallet-link-credentials.test.ts --testNamePattern=rotation preserves --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-wallet-links-b1-resume/rotation-green.xml
+
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under a non-default snapshot while a link commits
+{"credentialRace":true,"waiter":78,"blocker":76,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"Wall"}
+
+ ✓ tests/wallet-link-credentials.test.ts (27 tests | 26 skipped) 175ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 26 skipped (27)
+   Start at  09:58:47
+   Duration  475ms (transform 70ms, setup 0ms, import 195ms, tests 175ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b1-resume/rotation-green.xml

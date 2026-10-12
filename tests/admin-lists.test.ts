@@ -16,7 +16,7 @@ describe('admin list queries', () => {
     expect(args.users.take).toBe(ADMIN_PAGE + 1);
     expect(args.raids.skip).toBe(ADMIN_PAGE);
     expect(args.posts.skip).toBe(0);
-    expect(args.users.orderBy).toEqual([{ approved: 'asc' }, { createdAt: 'desc' }]);
+    expect(args.users.orderBy).toEqual([{ createdAt: 'desc' }]);
   });
   it('always excludes allowlisted administrators, keeping users without an X id', () => {
     const { users } = adminListArgs({}, ['admin-x']);
@@ -26,14 +26,15 @@ describe('admin list queries', () => {
     const args = adminListArgs({ q: '  Bonk  ' }, []);
     expect(args.q).toBe('Bonk');
     const ci = { contains: 'Bonk', mode: 'insensitive' };
-    expect(args.users.where.AND[1]).toEqual({ OR: [{ handle: ci }, { affiliation: ci }] });
+    expect(args.users.where.AND[1]).toEqual({ handle: ci });
     expect(args.raids.where).toEqual({
       OR: [{ id: 'Bonk' }, { title: ci }, { creator: { handle: ci } }],
     });
     expect(args.posts.where).toEqual({ OR: [{ id: 'Bonk' }, { raidId: 'Bonk' }, { text: ci }] });
   });
-  it('filters pending requests to unapproved creators with an affiliation', () => {
-    const { users } = adminListArgs({ creators: 'pending' }, []);
-    expect(users.where.AND).toContainEqual({ approved: false, affiliation: { not: '' } });
+  it('lists creators newest first with no approval filter or ordering', () => {
+    const { users } = adminListArgs({}, []);
+    expect(users.orderBy).toEqual([{ createdAt: 'desc' }]);
+    expect(JSON.stringify(users.where)).not.toContain('approved');
   });
 });

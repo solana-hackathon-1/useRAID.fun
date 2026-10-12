@@ -1,0 +1,215 @@
+
+> useraid@0.1.0 test
+> vitest run --reporter=default --reporter=junit --outputFile=/tmp/raid-b2-final-ci-20261010-logs/vitest.xml
+
+
+ RUN  v4.1.11 /private/tmp/raid-b2-final-ci-20261010
+
+ ✓ tests/tracking-db.test.ts (48 tests) 8556ms
+     ✓ accepts missing eligible posts during review, then restarts review  300ms
+     ✓ completes paginated discovery and final observations before publishing a snapshot  350ms
+       ✓ does not dead-letter submissions while X is failing with 5xx or unreachable  392ms
+       ✓ keeps measuring qualified posts after an early end, then settles on the original end  303ms
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+{"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":84,"blocker":82,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+{"walletLinkRace":"link-then-legacy-insert","waiter":82,"blocker":84,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+{"walletLinkRace":"legacy-insert-then-link","waiter":84,"blocker":82,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at the User row lock; one participant
+{"walletLinkRace":"link-vs-link-same-account","waiter":82,"blocker":84,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+{"walletLinkRace":"link-vs-rotate-link-first","waiter":84,"blocker":82,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > rotate holding the subject vs link of that address: link waits, then reports a conflict
+{"walletLinkRace":"link-vs-rotate-rotate-first","waiter":82,"blocker":84,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+{"walletLinkRace":"link-vs-merge-as-drop","waiter":84,"blocker":82,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\"."}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+{"walletLinkRace":"link-vs-merge-delete-first","waiter":82,"blocker":84,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+{"walletLinkRace":"link-vs-merge-as-keep","waiter":84,"blocker":82,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+{"walletLinkRace":"link-vs-user-row-update","waiter":82,"blocker":84,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ ✓ tests/identity-link-db.test.ts (37 tests) 3493ms
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > blocks the second identical command on the first backend, then replays it
+{"receiptRace":true,"waiter":95,"blocker":96,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > lets the waiting command execute when the first one rolls back
+{"receiptRace":true,"waiter":96,"blocker":95,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > reports a conflict, not a replay, when the waiting command has another payload
+{"receiptRace":true,"waiter":95,"blocker":96,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > inbound provider deliveries (AC32 foundation) > blocks the duplicate on the first backend while the first handler is open
+{"receiptRace":true,"waiter":95,"blocker":98,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+ ✓ tests/command-receipts-db.test.ts (28 tests) 1694ms
+       ✓ survives a genuine PostgreSQL deadlock between two different commands  1035ms
+ ✓ tests/rewards-finance.test.ts (34 tests) 604ms
+ ✓ tests/integration.test.ts (28 tests) 580ms
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held resolve-first locks
+{"credentialRace":true,"waiter":117,"blocker":115,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held revoke-first locks
+{"credentialRace":true,"waiter":115,"blocker":117,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held account-lock locks
+{"credentialRace":true,"waiter":117,"blocker":115,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default repeatable read while a link commits
+{"credentialRace":true,"waiter":119,"blocker":117,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"Wall"}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default serializable while a link commits
+{"credentialRace":true,"waiter":121,"blocker":117,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"Wall"}
+
+ ✓ tests/wallet-link-credentials.test.ts (31 tests) 1061ms
+ ✓ tests/studio-db.test.ts (14 tests) 415ms
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+{"sessionRace":"revoked","waiter":147,"blocker":146}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+{"sessionRace":"expired","waiter":146,"blocker":147}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+{"sessionRace":"downgraded","waiter":147,"blocker":146}
+
+ ✓ tests/wallet-auth-db.test.ts (25 tests) 884ms
+ ✓ tests/identity-link.test.ts (31 tests) 21ms
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > provision wins against old binary at final DELETE; entire auth transaction rolls back
+{"storageRace":true,"waiter":151,"blocker":149,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\".\"User\".\"role\", \"public\".\"User\".\"approved\", \"public\".\"User\".\"suspended\", \"public\".\"User\".\"affiliation\", \"public\".\"User\".\"createdAt\""}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > delete wins: provision blocks on User key lock then denies missing account without orphan
+{"storageRace":true,"waiter":149,"blocker":151,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > independent create/create race returns one committed identity and first provenance
+{"storageRace":true,"waiter":151,"blocker":149,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+
+ ✓ tests/identity-storage-db.test.ts (12 tests) 1143ms
+ ✓ tests/launch-db.test.ts (11 tests) 236ms
+ ✓ tests/money-integrity-db.test.ts (23 tests) 1715ms
+ ✓ tests/usdc-ops-db.test.ts (9 tests) 284ms
+ ✓ tests/command-receipts.test.ts (46 tests) 10ms
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":167,"waiters":[166]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":167,"waiters":[166]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":167,"waiters":[166]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":167,"waiters":[166]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:403","linked","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > makes a revoke or X disconnect that arrives after the decision wait for the link to commit
+{"authorityLateWriters":{"command":166,"writers":[168,176]}}
+
+ ✓ tests/wallet-link-authority-db.test.ts (12 tests) 3587ms
+     ✓ denies a session that expires naturally while the command waits for the lock  1921ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  564ms
+ ✓ tests/worker-db.test.ts (15 tests) 1595ms
+ ✓ tests/identity-preflight.test.ts (48 tests) 12ms
+ ✓ tests/shared-contracts.test.ts (31 tests) 13ms
+ ✓ tests/asset-registry-db.test.ts (10 tests) 253ms
+ ✓ tests/asset-registry-amounts.test.ts (40 tests) 106ms
+ ✓ tests/asset-registry-registry.test.ts (22 tests) 11ms
+stderr | tests/tracking.test.ts > raid-specific search query > falls back to the unfiltered query when the author list exceeds the limit
+X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+ ✓ tests/tracking.test.ts (17 tests) 538ms
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 331ms
+stderr | tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > ignores LOCAL_AUTO_APPROVE_CREATORS in production
+LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.
+
+ ✓ tests/x-oauth-db.test.ts (16 tests) 1401ms
+ ✓ tests/asset-registry-bundle.test.ts (16 tests) 25ms
+ ✓ tests/x-oauth-routes.test.ts (12 tests) 10ms
+ ✓ tests/standalone-db.test.ts (5 tests) 213ms
+ ✓ tests/wallet-link-signin-db.test.ts (8 tests) 450ms
+ ✓ tests/identity-storage.test.ts (33 tests) 7ms
+ ✓ tests/asset-registry-production.test.ts (16 tests) 10ms
+ ✓ tests/domain.test.ts (15 tests) 11ms
+ ✓ tests/launch-ipfs.test.ts (11 tests) 7ms
+ ✓ tests/identity-link-boundary.test.ts (5 tests) 572ms
+   ✓ minimal external host links a second wallet using explicit dependencies  547ms
+ ✓ tests/x-oauth.test.ts (12 tests) 33ms
+ ✓ tests/identity-link-migration.test.ts (4 tests) 4105ms
+     ✓ applies twice, matches the Prisma schema with no drift, and records one row per migration  4100ms
+ ✓ tests/public-load-db.test.ts (6 tests) 324ms
+ ✓ tests/raid-fixtures.test.ts (9 tests) 14ms
+ ✓ tests/standalone-raids.test.ts (11 tests) 17ms
+ ✓ tests/raid-evidence.test.ts (21 tests) 11ms
+ ✓ tests/launch-gate.test.ts (10 tests) 8ms
+ ✓ tests/usdc-receipt.test.ts (6 tests) 12ms
+ ✓ tests/asset-registry-boundary.test.ts (6 tests) 254ms
+ ✓ tests/media-db.test.ts (6 tests) 144ms
+ ✓ tests/audit-db.test.ts (3 tests) 148ms
+ ✓ tests/identity-link-authority-hook-db.test.ts (9 tests) 614ms
+ ✓ tests/admin-db.test.ts (5 tests) 338ms
+ ✓ tests/wallet-link-proof.test.ts (19 tests) 6ms
+ ✓ tests/studio.test.ts (14 tests) 14ms
+ ✓ tests/command-receipts-boundary.test.ts (4 tests) 437ms
+   ✓ minimal external host runs the documented flow using explicit dependencies  433ms
+ ✓ tests/usdc-chain.test.ts (3 tests) 8ms
+ ✓ tests/account-merge-canonical.test.ts (13 tests) 5ms
+ ✓ tests/braces-security.test.ts (14 tests) 9ms
+ ✓ tests/launch-crypto.test.ts (8 tests) 7ms
+ ✓ tests/refresh.test.ts (6 tests) 24ms
+ ✓ tests/wallet-routes.test.ts (11 tests) 11ms
+ ✓ tests/shared-contracts-boundary.test.ts (4 tests) 253ms
+ ✓ tests/identity-storage-boundary.test.ts (3 tests) 399ms
+   ✓ minimal external host resolves a real mapping using explicit dependencies  396ms
+ ✓ tests/report-route.test.ts (4 tests) 6ms
+ ✓ tests/shared-contracts-review.test.ts (3 tests) 6ms
+ ✓ tests/env-example.test.ts (5 tests) 11ms
+ ✓ tests/wallet-auth-isolation-db.test.ts (2 tests) 2144ms
+     ✓ preserves permitted wallet and X account folds under database default repeatable read  1052ms
+     ✓ preserves permitted wallet and X account folds under database default serializable  1091ms
+ ✓ tests/dependency-compatibility.test.ts (6 tests) 725ms
+     ✓ the image runtime can decode and resize a raster image  705ms
+ ✓ tests/rewards.test.ts (3 tests) 8ms
+ ✓ tests/docs-links.test.ts (61 tests) 328ms
+ ✓ tests/creator-route.test.ts (4 tests) 5ms
+ ✓ tests/pump-launch.test.ts (2 tests) 61ms
+ ✓ tests/http.test.ts (11 tests) 7ms
+ ✓ tests/submit-route.test.ts (2 tests) 5ms
+ ✓ tests/security-headers.test.ts (5 tests) 5ms
+ ✓ tests/db-guard.test.ts (6 tests) 3ms
+ ✓ tests/deploy.test.ts (6 tests) 3ms
+ ✓ tests/identity-preflight-boundary.test.ts (1 test) 250ms
+ ✓ tests/shell-account.test.ts (4 tests) 3ms
+ ✓ tests/admin-lists.test.ts (5 tests) 2ms
+ ✓ tests/raid-fixtures-boundary.test.ts (1 test) 258ms
+ ✓ tests/discovery-rows.test.ts (4 tests) 2ms
+ ✓ tests/studio-preview-route.test.ts (2 tests) 5ms
+ ✓ tests/auth-routes.test.ts (4 tests) 4ms
+ ✓ tests/fake-solana.test.ts (3 tests) 28ms
+ ✓ tests/auth.test.ts (4 tests) 23ms
+ ✓ tests/audit-check.test.ts (3 tests) 2ms
+ ✓ tests/states.test.ts (3 tests) 2ms
+ ✓ tests/image-hosts.test.ts (11 tests) 2ms
+ ✓ tests/admins.test.ts (4 tests) 2ms
+ ✓ tests/wallet-session-authority.test.ts (11 tests) 2ms
+ ✓ tests/format.test.ts (2 tests) 3ms
+ ✓ tests/token-data.test.ts (1 test) 3ms
+ ✓ tests/local-db.test.ts (2 tests) 2ms
+
+ Test Files  88 passed (88)
+      Tests  1108 passed (1108)
+   Start at  18:17:10
+   Duration  56.45s (transform 630ms, setup 0ms, import 6.77s, tests 40.95s, environment 4ms)
+
+JUNIT report written to /tmp/raid-b2-final-ci-20261010-logs/vitest.xml

@@ -1,0 +1,8 @@
+// Executable vocabulary stub, replaced only after recorded RED.
+export const SIWS_CHAIN_ID = 'not-implemented';
+export const LINK_ADDITIONAL_STATEMENT = 'not-implemented';
+export const WALLET_CHALLENGE_STATEMENTS = {
+  signin: 'not-implemented',
+  link: 'not-implemented',
+  rotate: 'not-implemented',
+};

@@ -3,9 +3,9 @@ export default function Privacy() {
     <article className="prose">
       <h1>Data and privacy</h1>
       <p>
-        useRAID stores the X user ID and handle of signed-in creators, submitted project
-        affiliation, campaign information, and a server-side login session. Sign-in requests read
-        access only. Access tokens are used for identity lookup and are not retained.
+        useRAID stores the X user ID and handle of signed-in creators, any previously submitted
+        project affiliation, campaign information, and a server-side login session. Sign-in requests
+        read access only. Access tokens are used for identity lookup and are not retained.
       </p>
       <p>
         Wallet sign-in stores a verified Solana address and a short-lived, single-use signing

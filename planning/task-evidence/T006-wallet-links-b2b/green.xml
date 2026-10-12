@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="0.338215041">
+    <testsuite name="tests/wallet-link-signin-db.test.ts" timestamp="2026-10-10T10:03:56.924Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.338215041">
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; signs in as the linking account with a wallet session when the switch is on" time="0.090802">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; fails closed with one sanitized conflict and no new user when the switch is off" time="0.03305325">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; never signs in through a revoked link, with the switch on or off" time="0.04447725">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; denies a suspended owner with no session" time="0.028985708">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; does not let a legacy link or a rotation take an address that is a sign-in link" time="0.05922075">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b sign-in through a linked wallet (flag-gated, fail closed) &gt; keeps ordinary primary-wallet sign-in and unknown-wallet sign-up unchanged" time="0.024330834">
+        </testcase>
+    </testsuite>
+</testsuites>

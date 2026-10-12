@@ -1,0 +1,36 @@
+{
+  "started_at_utc": "2026-10-11T11:32:35.753455+00:00",
+  "review_status": "SELF-EVALUATED",
+  "source_sha": "e492c39ef2c5356a490bb5fdcd31b12beaf4a248",
+  "scope": "Final operational verification of dedicated private GHCR access, actual scoped replacement, runtime startup and permanent polling",
+  "prior_exact_source_evidence": "hosted-publication.json; no deployed code changed after hosted tests",
+  "skipped": "No duplicate full unit/build suite, authenticated OAuth/UAT, separate development server, independent review or full T005 named CI",
+  "observed": "Dedicated GHCR read-only auth, private pull, actual two-app replacement and first permanent scheduled poll PASS. VM configs/runtime contracts match checked e492; previous unrelated hashes preserved; token absent from owned docs/evidence.",
+  "ended_at_utc": "2026-10-11T11:36:14.884710+00:00",
+  "elapsed_seconds": 219.131,
+  "requirement_ids": [
+    "R15",
+    "R16",
+    "D01",
+    "D12",
+    "I05",
+    "I06",
+    "I09",
+    "I10",
+    "I12",
+    "I13",
+    "AC67",
+    "AC68",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "limits": "AC68 off-host acknowledged-effect recovery, independent review, full T005/UAT and production gates remain NOT VERIFIED. Local staging restore evidence is reused with its original source/environment.",
+  "actual_failures": "Unsupported one-shot --timeout rejected before mutation; corrected to --stop-timeout. Full-T005 validator exits1 as expected for missing independent reviewer/named full CI/all27criteria; no assertion or criterion weakened.",
+  "maintenance": {
+    "token_expiration_utc": "2026-11-10T11:22:08Z",
+    "free_disk_gb": 2.5,
+    "disk_used_percent": 85,
+    "image_cleanup": "No cleanup/global prune; retained bootstrap rollback image. Capacity/owned image retirement requires operational attention."
+  }
+}

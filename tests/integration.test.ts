@@ -38,8 +38,8 @@ integration('PostgreSQL integration', () => {
     vi.unstubAllEnvs();
     await db.$disconnect();
   });
-  it('rejects unapproved creation and cross-owner mutation', async () => {
-    await expect(createRaid({ ...user, approved: false }, input)).rejects.toMatchObject({
+  it('rejects suspended creation and cross-owner mutation', async () => {
+    await expect(createRaid({ ...user, suspended: true }, input)).rejects.toMatchObject({
       status: 403,
     });
     await expect(changeRaid({ ...user, id: 'another' }, raidId, 'launch')).rejects.toMatchObject({

@@ -6,13 +6,15 @@ import {
   IdentityLinkError,
   linkVerifiedWallet,
   listWalletLinks,
+  resolveWalletCredential,
+  revokeWalletCredential,
   lookupWalletLink,
   type IdentityTransaction,
 } from './identity-link';
 import { createPrismaIdentityTransaction } from './lib/identity-storage-adapter';
 import {
   LINK_ADDITIONAL_STATEMENT,
-  SIWS_CHAIN_ID,
+  siwsChainId,
   deriveWalletLinkProof,
 } from './lib/wallet-link-proof';
 
@@ -23,10 +25,11 @@ assert(['/useraid_wallet_links_host_test', '/useraid_test'].includes(url.pathnam
 assert(process.env.NODE_ENV !== 'production');
 const db = new PrismaClient({ datasources: { db: { url: url.toString() } }, log: [] });
 const options = { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted };
+const chainId = siwsChainId();
 const policy = {
   domain: 'localhost:3000',
   uri: 'http://localhost:3000',
-  walletNetworks: [SIWS_CHAIN_ID],
+  walletNetworks: [chainId],
   providers: [],
 };
 const limits = { maxActiveLinks: 5, maxTotalLinks: 20 };
@@ -42,7 +45,7 @@ const code = (promise: Promise<unknown>) =>
 function storedChallenge(accountId: string, wallet: string, now: Date) {
   const issued = new Date(+now - 60_000).toISOString();
   const expires = new Date(+now + 240_000);
-  const message = `localhost:3000 wants you to sign in with your Solana account:\n${wallet}\n\n${LINK_ADDITIONAL_STATEMENT}\n\nURI: http://localhost:3000\nVersion: 1\nChain ID: ${SIWS_CHAIN_ID}\nNonce: ${randomBytes(24).toString('base64url')}\nIssued At: ${issued}\nExpiration Time: ${expires.toISOString()}`;
+  const message = `localhost:3000 wants you to sign in with your Solana account:\n${wallet}\n\n${LINK_ADDITIONAL_STATEMENT}\n\nURI: http://localhost:3000\nVersion: 1\nChain ID: ${chainId}\nNonce: ${randomBytes(24).toString('hex')}\nIssued At: ${issued}\nExpiration Time: ${expires.toISOString()}`;
   return {
     digest: createHash('sha256').update(message).digest('hex'),
     address: wallet,
@@ -58,7 +61,7 @@ function request(accountId: string, wallet: string, requestId: string, overrides
     accountId,
     actorAccountId: accountId,
     requestId,
-    subject: { networkIdentity: SIWS_CHAIN_ID, address: wallet },
+    subject: { networkIdentity: chainId, address: wallet },
     proof: deriveWalletLinkProof(storedChallenge(accountId, wallet, now), {
       signatureVerified: true,
     }),
@@ -120,6 +123,58 @@ try {
   );
   assert.deepEqual(listed.map((row) => row.address).sort(), [second, third].sort());
 
+  // Internal context is transaction-bound, never authentication or a public session token.
+  // The synthetic fixture host supplies caller authority; signature/session composition is B2.
+  const subject = { address: second, networkIdentity: chainId };
+  const resolverInput = { subject, walletNetworks: policy.walletNetworks };
+  await db.$transaction(async (tx) => {
+    const context = await resolveWalletCredential(
+      createPrismaIdentityTransaction(tx),
+      resolverInput,
+    );
+    assert.equal(context.source, 'LINK');
+    if (context.source !== 'LINK') throw Error('Expected internal link context');
+    assert.equal(context.accountId, alice);
+    assert.equal(context.participantId, first.participantId);
+  }, options);
+  const now = new Date();
+  const revokeInput = {
+    ...resolverInput,
+    accountId: alice,
+    actorAccountId: alice,
+    requestId: 'host-revoke',
+    session: {
+      accountId: alice,
+      state: 'ACTIVE',
+      expiresAt: new Date(+now + 3600000).toISOString(),
+    },
+    now: now.toISOString(),
+  };
+  const revoked = await db.$transaction(
+    (tx) => revokeWalletCredential(createPrismaIdentityTransaction(tx), revokeInput),
+    options,
+  );
+  assert.equal(revoked.outcome, 'REVOKED');
+  assert.equal(
+    (
+      await db.$transaction(
+        (tx) => revokeWalletCredential(createPrismaIdentityTransaction(tx), revokeInput),
+        options,
+      )
+    ).outcome,
+    'ALREADY_REVOKED',
+  );
+  assert.equal(
+    await code(
+      db.$transaction(
+        (tx) => resolveWalletCredential(createPrismaIdentityTransaction(tx), resolverInput),
+        options,
+      ),
+    ),
+    'IDENTITY_REVOKED',
+  );
+  assert.deepEqual(await payout(), payoutBefore);
+
   const alternate: IdentityTransaction = {
     dialect: 'POSTGRESQL',
     isolation: 'READ_COMMITTED',
@@ -128,7 +183,7 @@ try {
         {
           id: randomUUID(),
           address: second,
-          networkIdentity: SIWS_CHAIN_ID,
+          networkIdentity: chainId,
           status: 'ACTIVE',
           verifiedAt: '2026-10-09T00:00:00.000Z',
           revokedAt: null,
@@ -144,7 +199,7 @@ try {
   };
   await assert.rejects(listWalletLinks(unavailable, alice), { message: 'STORAGE_UNAVAILABLE' });
   const credential = await db.$transaction(
-    (tx) => lookupWalletLink(createPrismaIdentityTransaction(tx), second),
+    (tx) => lookupWalletLink(createPrismaIdentityTransaction(tx), third),
     options,
   );
   assert.equal(credential?.accountId, alice);
@@ -153,11 +208,11 @@ try {
     'UPDATE "WalletLink" SET status=\'REVOKED\', "revokedAt"=now() WHERE address=$1',
     third,
   );
-  const revoked = await db.$transaction(
+  const revokedReservation = await db.$transaction(
     (tx) => lookupWalletLink(createPrismaIdentityTransaction(tx), third),
     options,
   );
-  assert.equal(revoked?.status, 'REVOKED');
+  assert.equal(revokedReservation?.status, 'REVOKED');
   assert.deepEqual(await payout(), payoutBefore);
   const lookupAlternate: IdentityTransaction = {
     ...alternate,
@@ -167,7 +222,7 @@ try {
         : sql.includes('FROM "User"')
           ? [{ id: alice, suspended: false }]
           : sql.includes('FOR SHARE')
-            ? [{ accountId: alice, networkIdentity: SIWS_CHAIN_ID, status: 'ACTIVE' }]
+            ? [{ accountId: alice, networkIdentity: chainId, status: 'ACTIVE' }]
             : [{ accountId: alice }]) as Row[],
   };
   assert.deepEqual(await lookupWalletLink(lookupAlternate, second), credential);
@@ -185,6 +240,8 @@ try {
       proofDerived: true,
       alternatePort: true,
       sanitizedFailure: true,
+      internalCredentialContext: true,
+      revokedReserved: true,
       linkedCredentialOwner: true,
       revokedCredentialReserved: true,
       lookupAlternatePort: true,

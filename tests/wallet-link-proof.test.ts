@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { IdentityLinkError } from '../src/identity-link';
 import {
   LINK_ADDITIONAL_STATEMENT,
-  SIWS_CHAIN_ID,
+  siwsChainId,
   deriveWalletLinkProof,
 } from '../src/lib/wallet-link-proof';
 import { LinkProofObservationSchema } from '../src/identity';
@@ -18,7 +18,7 @@ function message(overrides: Partial<Record<string, string>> = {}) {
     address: ADDRESS,
     statement: LINK_ADDITIONAL_STATEMENT,
     uri: 'http://localhost:3000',
-    chain: SIWS_CHAIN_ID,
+    chain: 'mainnet',
     nonce: 'nonce-synthetic-0123456789',
     issued: ISSUED,
     expires: EXPIRES,
@@ -66,8 +66,8 @@ describe('wallet-link proof adapter (WR11)', () => {
     });
   });
 
-  it('uses the same chain constant the generator signs and never defaults issuedAt to now', () => {
-    expect(SIWS_CHAIN_ID).toBe('mainnet');
+  it('observes the stored chain independently of current configuration and never defaults issuedAt to now', () => {
+    expect(siwsChainId()).toMatch(/^(devnet|mainnet)$/);
     const other = message({ chain: 'devnet' });
     expect(deriveWalletLinkProof(row(other), opts).subject).toMatchObject({
       networkIdentity: 'devnet',

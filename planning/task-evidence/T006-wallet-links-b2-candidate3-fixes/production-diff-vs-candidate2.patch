@@ -1,0 +1,49 @@
+--- /Users/dushyant/Documents/useRAID-reviews/2026-10-10-b2-rereview-candidate-2/candidate/src/lib/account-merge.ts	2026-10-10 23:06:53
++++ src/lib/account-merge.ts	2026-10-10 23:40:22
+@@ -26,16 +26,21 @@
+ // Moves the identities of an activity-free account onto another one and deletes it.
+ export async function absorbAccount(tx: Prisma.TransactionClient, keepId: string, dropId: string) {
+   if (keepId === dropId) throw new Error('Cannot merge an account into itself.');
+-  // One lock order for every identity writer (merge, X connect/disconnect/callback, wallet link):
++  // One lock order for every identity writer (merge, X first-connect/reconnect/disconnect, link):
+   //   1. the "x-auth:<xId>" advisory lock of the X identity involved, if any
+-  //   2. User rows, in stable id order
+-  //   3. XAccount / Session / wallet rows
+-  // completeConnection already holds (1) before it touches (2), so a merge that took User rows
+-  // first and the advisory lock later formed a cycle with it (SQLSTATE 40P01). The dropped
+-  // account's X id can only be read before its row is locked, so read it, take (1), lock (2) and
+-  // then confirm it did not change; a concurrent connect/disconnect makes the merge fail closed.
++  //   2. the dropped account's OAuthAttempt rows (locked here in stateHash order, deleted below)
++  //   3. User rows, in stable id order
++  //   4. XAccount / Session / wallet rows
++  // completeConnection takes (1), deletes its claimed attempt (2) and only then updates a User
++  // (3). A merge that locked Users first and deleted the attempts afterwards formed a cycle with
++  // it (SQLSTATE 40P01): through the advisory key when the dropped account already had an X id,
++  // and, for a first connection (xId = null, so there is no shared advisory key), through the
++  // attempt row itself. The dropped account's X id can only be read before its row is locked, so
++  // read it, take (1), clear (2), lock (3) and then confirm the id did not change; a connect that
++  // won in the meantime makes the merge fail closed. Retrying a deadlock is not the mechanism.
+   const observed = await tx.user.findUnique({ where: { id: dropId }, select: { xId: true } });
+   if (observed?.xId) await lockIdentity(tx, observed.xId);
++  await tx.$queryRaw`SELECT "stateHash" FROM "OAuthAttempt" WHERE "userId" = ${dropId} ORDER BY "stateHash" FOR UPDATE`;
+   await tx.$queryRaw`SELECT "id" FROM "User" WHERE "id" IN (${keepId}, ${dropId}) ORDER BY "id" FOR NO KEY UPDATE`;
+   const [keep, drop] = await Promise.all([
+     tx.user.findUniqueOrThrow({ where: { id: keepId } }),
+--- /Users/dushyant/Documents/useRAID-reviews/2026-10-10-b2-rereview-candidate-2/candidate/src/identity-link/index.ts	2026-10-10 23:08:10
++++ src/identity-link/index.ts	2026-10-10 23:40:37
+@@ -33,10 +33,11 @@
+ //   2. "User" row FOR NO KEY UPDATE for the account being linked
+ //   3. Participant mapping (read, or insert only for the first link)
+ //   4. WalletLink insert
+-// A host writer that also takes an X advisory lock ("x-auth:<xId>") must take it BEFORE step 2
+-// (see docs/raid-wallet-links.md, identity lock order). No two-account locks are taken here, so the
+-// only cycle risk is against legacy writers; PostgreSQL reports any as 40P01 and the host retries
+-// the whole callback, but that retry is a backstop, not the ordering mechanism.
++// A host writer that also takes an X advisory lock ("x-auth:<xId>") or locks OAuthAttempt rows
++// must do so BEFORE step 2 (see docs/raid-wallet-links.md, identity lock order). No two-account
++// locks are taken here, so the only cycle risk is against legacy writers. PostgreSQL reports a
++// cycle as 40P01; this module maps it to RETRY_TRANSACTION and the bundled host does NOT retry
++// automatically (it returns 503 or redirects), so ordering, not retry, is what prevents cycles.
+ const SUBJECT_LOCK =
+   'SELECT 1 AS "locked" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS "lock"';
+ const USER_LOCK = 'SELECT "id", "suspended" FROM "User" WHERE "id" = $1 FOR NO KEY UPDATE';

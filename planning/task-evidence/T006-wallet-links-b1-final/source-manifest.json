@@ -1,0 +1,25 @@
+{
+  "base": "66d6a3a05936df54c8dbca150b7c3bea6e6134be",
+  "note": "working tree == isolated CI candidate for every listed file (byte compare); next-env.d.ts generated drift excluded",
+  "files": {
+    ".prettierignore": "318f11590c807deff4e6fe11b2f62dffa0afe314816c0a9dd157cd327ce11ad2",
+    "docs/raid-identity-storage.md": "d1347c140df3f4040a27fc1284d0e556a403af797d804a3603ad4a87fbbfa15e",
+    "docs/raid-wallet-links.md": "04c85ac4113cef554cfbdb531ba8fe7a0800d0fc306a62232df893df0ce533b8",
+    "examples/wallet-links/README.md": "be2505c8df6fe4c01bee7c57912ae64245725e11163573e56f3860d0e4c8f37f",
+    "examples/wallet-links/host.ts": "a9382f9b63f31e4be0aafcbdd9b69176899eb80fccb128594b975a00c1be91d7",
+    "examples/wallet-links/lib/wallet-challenge-contract.ts": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+    "planning/raid-ci-matrix.json": "378a6a6fcd783bb26903047df05f712943fafed78c45fd448ade7c81797d0bde",
+    "src/identity-link/contracts.ts": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+    "src/identity-link/index.ts": "3138cf36b3fccb9547ca6ebd1634c76f3b66998cc09b95daa8c67ba3d8e6dc3e",
+    "src/lib/wallet-auth.ts": "097ec921bb4e7c784d728df31aab335454c1350c0b13b5d37365bc7ffb9ce0ef",
+    "src/lib/wallet-challenge-contract.ts": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+    "src/lib/wallet-link-proof.ts": "dd27d8b294853ece5ebc5f945e7e5e5bfa7ac10e41193cbf4ad0883054796477",
+    "src/lib/wallet-session-authority.ts": "b91152a2a189d8c20aa4409c547f7f565fe91d64814fb8703d8bdaf93abb6a71",
+    "src/lib/x-oauth.ts": "49899dc0b34ae6014a9aa03123f37936e5878baa372cb6608f930873784e1e36",
+    "tests/identity-link-boundary.test.ts": "506be7e6a10cc9f47983c7ebb45b4ddbca215108482b6fb98cda01c8a5801cd3",
+    "tests/wallet-auth-db.test.ts": "d09ce71f683a822bd9092a00ebc8de7fecaf2155f612e9b1d72bd292009a63a0",
+    "tests/wallet-auth-isolation-db.test.ts": "f2ac4f69645914ca9acd8f2b58f4f9c12f1af10d04f378d38eb73bec25fb217d",
+    "tests/wallet-link-credentials.test.ts": "95b217f9f424854494e0fc862ab5e996b7c08f9ac89301bab37bd305f5e81504",
+    "tests/wallet-session-authority.test.ts": "4f2209f28261aa9066b267281c73b3dbdcd4de05a0356261cbf49ecaf47a6f0e"
+  }
+}

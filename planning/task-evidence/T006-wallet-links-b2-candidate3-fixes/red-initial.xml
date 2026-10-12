@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="2" errors="0" time="8.500873417">
+    <testsuite name="tests/wallet-link-lock-order-db.test.ts" timestamp="2026-10-10T17:54:04.023Z" hostname="0xd.local" tests="7" failures="2" errors="0" skipped="0" time="8.500873417">
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the Session row lock" time="2.887481584">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:875,&quot;waiter&quot;:874,&quot;needle&quot;:&quot;FROM \&quot;Session\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the XAccount row lock" time="2.832384625">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:875,&quot;waiter&quot;:874,&quot;needle&quot;:&quot;FROM \&quot;XAccount\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; does not deadlock a merge against an X reconnect of the same account" time="0.219402208">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:875,&quot;waiter&quot;:874,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:874,&quot;waiter&quot;:878,&quot;needle&quot;:&quot;pg_advisory_xact_lock&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; refuses a merge when the dropped account connected X while the merge waited for its row" time="0.080473709">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:875,&quot;waiter&quot;:878,&quot;needle&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; first X connection versus merge &gt; serializes without a deadlock and fails the merge closed after the connection wins" time="1.1591045">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:875,&quot;waiter&quot;:878,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;attemptDeleteWaiters&quot;:2}}
+
+            </system-out>
+            <failure message="expected &apos;[{&quot;ok&quot;:true,&quot;value&quot;:&quot;mf9nQelVcWMj0xDA…&apos; not to match /deadlock|40P01/i" type="AssertionError">
+AssertionError: expected &apos;[{&quot;ok&quot;:true,&quot;value&quot;:&quot;mf9nQelVcWMj0xDA…&apos; not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+&quot;[{\&quot;ok\&quot;:true,\&quot;value\&quot;:\&quot;mf9nQelVcWMj0xDA-VxE9jZKsZtaekVxiptq18VkvzI\&quot;},{\&quot;ok\&quot;:false,\&quot;message\&quot;:\&quot;\\nInvalid `tx.oAuthAttempt.deleteMany()` invocation in\\n/Users/dushyant/Documents/useRAID.fun/src/lib/account-merge.ts:81:25\\n\\n  78     ...(keep.affiliation ? {} : { affiliation: drop.affiliation }),\\n  79   },\\n  80 });\\n→ 81 await tx.oAuthAttempt.deleteMany(\\nError occurred during query execution:\\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \\\&quot;40P01\\\&quot;, message: \\\&quot;deadlock detected\\\&quot;, severity: \\\&quot;ERROR\\\&quot;, detail: Some(\\\&quot;Process 874 waits for ShareLock on transaction 19356; blocked by process 878.\\\\nProcess 878 waits for ShareLock on transaction 19357; blocked by process 874.\\\&quot;), column: None, hint: Some(\\\&quot;See server log for query details.\\\&quot;) }), transient: false })\&quot;}]&quot;
+
+ ❯ tests/wallet-link-lock-order-db.test.ts:333:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; first X connection versus wallet fold &gt; serializes without a deadlock and fails the merge closed after the connection wins" time="1.173743958">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:875,&quot;waiter&quot;:878,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;attemptDeleteWaiters&quot;:2}}
+
+            </system-out>
+            <failure message="expected &apos;[{&quot;ok&quot;:true,&quot;value&quot;:&quot;PO1iPSnCPGwUb2DL…&apos; not to match /deadlock|40P01/i" type="AssertionError">
+AssertionError: expected &apos;[{&quot;ok&quot;:true,&quot;value&quot;:&quot;PO1iPSnCPGwUb2DL…&apos; not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+&quot;[{\&quot;ok\&quot;:true,\&quot;value\&quot;:\&quot;PO1iPSnCPGwUb2DLhRlMV7LCsdbEYXn112uWe0vXgaM\&quot;},{\&quot;ok\&quot;:false,\&quot;message\&quot;:\&quot;\\nInvalid `tx.oAuthAttempt.deleteMany()` invocation in\\n/Users/dushyant/Documents/useRAID.fun/src/lib/account-merge.ts:81:25\\n\\n  78     ...(keep.affiliation ? {} : { affiliation: drop.affiliation }),\\n  79   },\\n  80 });\\n→ 81 await tx.oAuthAttempt.deleteMany(\\nError occurred during query execution:\\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \\\&quot;40P01\\\&quot;, message: \\\&quot;deadlock detected\\\&quot;, severity: \\\&quot;ERROR\\\&quot;, detail: Some(\\\&quot;Process 874 waits for ShareLock on transaction 19368; blocked by process 878.\\\\nProcess 878 waits for ShareLock on transaction 19369; blocked by process 874.\\\&quot;), column: None, hint: Some(\\\&quot;See server log for query details.\\\&quot;) }), transient: false })\&quot;}]&quot;
+
+ ❯ tests/wallet-link-lock-order-db.test.ts:333:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; lets unrelated merges and a first X connection proceed without waiting on each other" time="0.143158042">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:875,&quot;waiter&quot;:878,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>

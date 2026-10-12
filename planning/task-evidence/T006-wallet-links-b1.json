@@ -1,0 +1,137 @@
+{
+  "task": "T006",
+  "slice": "B1 transaction-bound credential resolver and storage revoke, shared legacy vocabulary",
+  "status": "IMPLEMENTED_UNVERIFIED; all27 full T006 criteria NOT VERIFIED",
+  "author": "Codex /root/plan_wallet_links_prb",
+  "base_sha": "c196ee74d74624b0089185c7b78c926e35238985",
+  "timestamp": "2026-10-09T03:52:28.658733+00:00",
+  "requirements": [
+    "R04",
+    "R13",
+    "R15",
+    "R16",
+    "I01",
+    "I05",
+    "I06",
+    "I07",
+    "I10",
+    "I11",
+    "I13",
+    "D01",
+    "D13",
+    "AC01 PARTIAL",
+    "AC73",
+    "AC74",
+    "AC75",
+    "DEC-2026-10-09-01"
+  ],
+  "runtime_scope": "Pure injected resolver/revoke plus shared constants; no schema/migration/config/route/UI/session invalidation/linked app signin",
+  "authority": "Root separate non-author accepted B1 plan; branch/commit/push/draft PR authorized only after independent review/tests; no merge/live",
+  "tests": {
+    "red.xml": {
+      "name": "vitest tests",
+      "tests": "22",
+      "failures": "22",
+      "errors": "0",
+      "time": "0.157087375"
+    },
+    "green.xml": {
+      "name": "vitest tests",
+      "tests": "22",
+      "failures": "0",
+      "errors": "0",
+      "time": "0.215536667"
+    },
+    "precision-red.xml": {
+      "name": "vitest tests",
+      "tests": "26",
+      "failures": "1",
+      "errors": "0",
+      "time": "0.01105675"
+    },
+    "purpose-red.xml": {
+      "name": "vitest tests",
+      "tests": "26",
+      "failures": "1",
+      "errors": "0",
+      "time": "0.102422958"
+    },
+    "credentials-green.xml": {
+      "name": "vitest tests",
+      "tests": "26",
+      "failures": "0",
+      "errors": "0",
+      "time": "0.380378708"
+    },
+    "feature-green.xml": {
+      "name": "vitest tests",
+      "tests": "122",
+      "failures": "0",
+      "errors": "0",
+      "time": "5.085009459"
+    },
+    "full-refactor.xml": {
+      "name": "vitest tests",
+      "tests": "855",
+      "failures": "0",
+      "errors": "0",
+      "time": "17.937692671"
+    }
+  },
+  "verification": {
+    "tsc": "PASS npx tsc --noEmit",
+    "eslint": "PASS owned runtime/tests/example",
+    "planning": "PASS python3 -m unittest discover -s tests -p test_raid_*.py,27tests",
+    "wrong_initial_planning_path": "python3 -m unittest discover -s scripts -p test*.py found0tests,exit5, not accepted as verification",
+    "validator": "Expected exit1 exactly all27 T006 NOT VERIFIED",
+    "standalone": "PASS independently cp -RL copy, own43package install/client/4fresh migrations/run; emits all14 success flags including internal context and reserved revoke",
+    "prettier": "owned formatting done; final whole-root result pending capture",
+    "diff_check": "pending final",
+    "browser_build_docker_ci": "NOT RUN locally; no app UI/route changes; exact-head CI after reviewed publish"
+  },
+  "tdd_notes": [
+    "Initial executable stubs22fail/0errors/0skips then same22GREEN. Snapshot files use .ts.snapshot to preserve bytes without compile/discovery.",
+    "Precision edge added before fix:1fail/5pass/20explicitfilter exclusions. Numeric time comparison restores validity.",
+    "Unsupported-purpose edge added before guard:1fail/25explicitfilter exclusions. No new additional purpose exposure.",
+    "Three storage race verification cases added after initialGREEN; no failing-before-implementation claim for extra race coverage."
+  ],
+  "consumer": "examples/wallet-links, independent /tmp/raid-t006-b1-standalone-codex-20261009; task-owned separate host DB",
+  "independent_review": {
+    "status": "NOT RUN, root assigning non-author reviewer"
+  },
+  "downstream": [
+    "B2 trusted proof/X/session/routes/default-off switch/audit/invalidation/typed conflicts and their separate review",
+    "B3 user UI/browser/UAT",
+    "T007 full AC02 before enablement",
+    "LR06 combined-head migrations/CI and owner merges",
+    "O11/W03 recovery/retention child; no address reactivation policy",
+    "T019 receipt integration claim-before-challenge; no AC69 delivery claim",
+    "Capacity store absent; full AC01 and T006-A02 NOT VERIFIED",
+    "O18/AC68/G10/human signoff before live release"
+  ],
+  "environment": "planning/task-evidence/T006-wallet-links-b1/environment.json",
+  "manifest": "planning/task-evidence/T006-wallet-links-b1/source-manifest.json",
+  "artifact_hashes": {
+    "planning/task-evidence/T006-wallet-links-b1/credentials-green.xml": "f509c22f5430adf0a54369ddc30099777ead8bf52daebd0243b1af8106762789",
+    "planning/task-evidence/T006-wallet-links-b1/environment.json": "ecee19e9cc9d4658d721e768dbc548b87baed615e45a8a9f058f861ba7569642",
+    "planning/task-evidence/T006-wallet-links-b1/feature-green.xml": "dc7816f17384abc1fd18bbb522aae8716e89c9659550e95f69371d20d1f55462",
+    "planning/task-evidence/T006-wallet-links-b1/full-refactor.xml": "a2c9c356116c15f2ad05f9c26dd93624e2021163340cea4e923ef0ed8b0af3a4",
+    "planning/task-evidence/T006-wallet-links-b1/full-run.log": "039369d81b8cd9a75314bb3101500d201b08173c97392dc993c43fe528d4bed8",
+    "planning/task-evidence/T006-wallet-links-b1/green.xml": "f6a2004247b314247e5060158a25b62bb8565c6ddf7e1ec77b99e4151ac8e564",
+    "planning/task-evidence/T006-wallet-links-b1/precision-red-source/src/identity-link/index.ts.snapshot": "e3498e2767e36b934ffe00e1b26ff6aa0e62532619390725be551a9c4f7143fd",
+    "planning/task-evidence/T006-wallet-links-b1/precision-red-source/tests/wallet-link-credentials.test.ts.snapshot": "1e9eb79129ec31730310ac043e885382d01076033b6d3ce7b11cffd8a0d63c82",
+    "planning/task-evidence/T006-wallet-links-b1/precision-red.xml": "f00e1e3aa0d1e766108636ea290b04bce852f75748f5a9124c9a2bba429e5b20",
+    "planning/task-evidence/T006-wallet-links-b1/purpose-red-source/src/lib/wallet-auth.ts.snapshot": "448a8ce5a2ce564671edbfe58463a0beff451835f47f573a9d8e991cf3e5dd8e",
+    "planning/task-evidence/T006-wallet-links-b1/purpose-red-source/tests/wallet-link-credentials.test.ts.snapshot": "5e630bd54d657fff539c3db78139c9b1720cb239fabe673c852c19f67fc39d54",
+    "planning/task-evidence/T006-wallet-links-b1/purpose-red.xml": "cc3139818cf683730c919d9d4c0261186b447c7f0aceef3288c1e566b3941f2b",
+    "planning/task-evidence/T006-wallet-links-b1/red-source/manifest.json": "dbf19b2f7856fb5d213766233b49858a7e094478f164704fac76205aa279e15a",
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/identity-link/contracts.ts.snapshot": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/identity-link/index.ts.snapshot": "8f4f4924673b179bd817a500025f697962e0fbafb1668808fafce372a7c8378d",
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/lib/wallet-auth.ts.snapshot": "887a9996e6a5f29a29fed6b9715c420ff33cd9ce6ee978a166e6c5e15a667653",
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/lib/wallet-challenge-contract.ts.snapshot": "9822b3fc0023290894f0fb4f83bde9ee10346ff582739066b48e8ead5ec2e3f4",
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/lib/wallet-link-proof.ts.snapshot": "3a30b6f26bb543ceae8dc8124b6de149fbafec87f70aeff106612d2b5552b5dd",
+    "planning/task-evidence/T006-wallet-links-b1/red-source/tests/wallet-link-credentials.test.ts.snapshot": "7c0cbc5377fab6b922e1d3d2831a51afef5f900078647a975060cfdc9ec1c027",
+    "planning/task-evidence/T006-wallet-links-b1/red.xml": "d9a487e21efd0e79244682031fb5ed130c5287ab305cff226a9d3f0a27444ac0",
+    "planning/task-evidence/T006-wallet-links-b1/source-manifest.json": "49be0e826a17e7e1ecf08d084709f8043908ba447ab1c207e12d5eef4f7e4adb"
+  }
+}
