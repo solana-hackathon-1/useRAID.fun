@@ -96,3 +96,9 @@ Both hosted workflows retain all jobs and can be manually dispatched when minute
 ## Review preparation and preview
 
 Apply canonical blueprint§24.8 and [workflow memory](ai-handoff/MEMORY.md) when work reaches independent review. Record timed exact-source self-evaluation and actual findings, reuse applicable evidence, then verify and show a task-owned development preview with its source/mode and stop command. A dev preview does not replace a production build or real fixture/provider checks. Self-evaluation does not satisfy independent C22 review; owner-directed publication keeps unverified issue/release obligations visible.
+
+## Efficient verification and cleanup for every PR
+
+Apply DEC-2026-10-11-01 and the [PR template](../.github/pull_request_template.md). Select meaningful checks for changed requirements and dependency boundaries plus mandatory gates. Reuse exact-source results only when relevant dependencies/configuration/environment still match; record the evidence identity and reason. Do not rerun passing checks without new changes, failures or unresolved concerns. Required checks are not waived by optimization. Separate concurrent runs' databases, caches and ports.
+
+The local runner records `cleanup: 0` when its owned database stops. A failed stop records its actual nonzero code and makes the aggregate fail, including after otherwise passing checks. External verification hosts must also arrange shutdown of their task-owned runner/database/preview containers after testing or interruption, retaining reports first and following the owner's latest preview direction. Preserve unrelated resources and retained data; shutdown does not imply volume/image deletion.
