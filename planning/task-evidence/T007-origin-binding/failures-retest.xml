@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="26" failures="0" errors="0" time="6.880526024">
+    <testsuite name="tests/dependency-compatibility.test.ts" timestamp="2026-10-12T17:06:02.511Z" hostname="ubu2" tests="6" failures="0" errors="0" skipped="5" time="0.092499714">
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable next releases" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable sharp releases" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable source-map-js releases" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; clean installs exclude vulnerable streaming JSON assemblers" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; the Solana client preserves JSON-RPC request and error handling" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/dependency-compatibility.test.ts" name="security repair dependency contracts &gt; the image runtime can decode and resize a raster image" time="0.089659017">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-boundary.test.ts" timestamp="2026-10-12T17:06:02.519Z" hostname="ubu2" tests="6" failures="0" errors="0" skipped="5" time="3.159612507">
+        <testcase classname="tests/identity-link-boundary.test.ts" name="public link module owns SQL and contracts without an app singleton, framework or SDK" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="B2a wires only the default-off command: no route, UI, X-callback or revoke use (WR13)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="copied challenge helper resolves its declared host dependencies and production network policy" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="minimal external host links a second wallet using explicit dependencies" time="3.141636635">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="module documentation declares the R16 reuse contract and runnable consumer steps" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="new test files are registered in the CI matrix and the evidence records WR01-WR14" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/studio-db.test.ts" timestamp="2026-10-12T17:06:02.522Z" hostname="ubu2" tests="14" failures="0" errors="0" skipped="13" time="3.628413803">
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; launch is self-serve and idempotent under concurrency" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; withdrawal reserves only available funds, retry once; rejection releases once" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; network isolation and append-only ledger preserve funds" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; caps one raider at the author share, excludes the creator and refunds the remainder once" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; credits dust rewards to the raider balance instead of the manual payout queue" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; does not settle while the settlement flag is off, except in the sandbox" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; enforces minimum and open-request limits on deposits and withdrawals" time="3.256266193">
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; settles a large result with bulk allocation inserts and conserves the pool" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; keeps studio money rows bound to their user and raid with RESTRICT foreign keys" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; lets a creator without legacy approval save drafts, but refuses suspended creators" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; reuses fresh previews and looks up only new targets" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; keeps links without lookups once the daily quota is spent" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; saves 100 targets in one pass and preserves previews on re-save" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/studio-db.test.ts" name="Studio atomic balances and settlement &gt; creator approval and bounded X lookups &gt; spends no lookups launching while the platform is not ready" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

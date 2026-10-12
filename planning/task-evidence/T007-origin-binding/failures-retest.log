@@ -1,0 +1,15 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ✓ tests/dependency-compatibility.test.ts (6 tests | 5 skipped) 92ms
+ ✓ tests/studio-db.test.ts (14 tests | 13 skipped) 3628ms
+     ✓ enforces minimum and open-request limits on deposits and withdrawals  3256ms
+ ✓ tests/identity-link-boundary.test.ts (6 tests | 5 skipped) 3160ms
+   ✓ minimal external host links a second wallet using explicit dependencies  3142ms
+
+ Test Files  3 passed (3)
+      Tests  3 passed | 23 skipped (26)
+   Start at  22:50:53
+   Duration  9.17s (transform 486ms, setup 0ms, import 1.53s, tests 6.88s, environment 1ms)
+
+JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T007-origin-binding/failures-retest.xml

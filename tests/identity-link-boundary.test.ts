@@ -69,9 +69,16 @@ it('copied challenge helper resolves its declared host dependencies and producti
   try {
     await cp('examples/wallet-links', directory, { recursive: true, dereference: true });
     await symlink(join(process.cwd(), 'node_modules'), join(directory, 'node_modules'), 'dir');
-    const script = `
+    const script = String.raw`
       import assert from 'node:assert/strict';
       import { siwsChainId } from './lib/wallet-link-proof.ts';
+      import { walletChallengeMatchesOrigin } from './lib/wallet-challenge-contract.ts';
+      const signed = ['raid.example wants you to sign in with your Solana account:', 'wallet', '', 'Sign in to useRAID.fun.', '', 'URI: https://raid.example'].join('\n');
+      assert.equal(walletChallengeMatchesOrigin(signed, 'https://raid.example/profile'), true);
+      assert.equal(walletChallengeMatchesOrigin(signed, 'http://raid.example'), false);
+      assert.equal(walletChallengeMatchesOrigin(signed, 'https://foreign.example'), false);
+      assert.equal(walletChallengeMatchesOrigin(signed.replace('raid.example wants', 'foreign.example wants'), 'https://raid.example'), false);
+      assert.equal(walletChallengeMatchesOrigin(signed, 'invalid'), false);
       assert.equal(siwsChainId(), 'devnet');
       process.env.USDC_NETWORK = 'mainnet';
       assert.equal(siwsChainId(), 'mainnet');

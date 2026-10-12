@@ -1,0 +1,15 @@
+{
+  "path": "/tmp/raid-t007-origin-source-uttjtq46",
+  "base": "b02345aa2752042e430f7f2ce278bf79d1498efe",
+  "changed_files": {
+    "docs/raid-wallet-links.md": "a480336fbed8090501507e3386ee31da4b7ead7bc7f903aabba4256d1dd0a29f",
+    "examples/wallet-links/README.md": "0c2b0a2a790ca18e3c65cb67f98508d4ce373dd41041372f6fbe0c3f24432c9a",
+    "planning/raid-ci-matrix.json": "382e3255309e2244e25ed46a8e7e4bcadad81e9cd9f88a09a6a446b7bcb72e64",
+    "src/lib/wallet-auth.ts": "845e84683e002ce7c94e002c3f8f335084e9efaab450c94477d5d2318cf42a77",
+    "src/lib/wallet-challenge-contract.ts": "1d4399ed9fc3172f9bb58ff01b21c1e46d061fd8391305af51526f943a44efbd",
+    "tests/identity-link-boundary.test.ts": "76d1886a3b869e926d991dfd128e0df4a02cccee48b5455c3a979d342b5c1160",
+    "tests/wallet-origin-db.test.ts": "a416563c59f11ec8e02560e4286cd078d82bfd4d0fdcdc90629fc59bac81f6e4"
+  },
+  "host_dependencies": "symlink to explicit unchanged root Node22/Next16.3.8 dependencies; own generated build/dev caches; no environment files copied",
+  "fixture_correction": "Removed own partial-revert basename reference; copied origin consumer still tests all original/new assertions. Production source bytes unchanged."
+}

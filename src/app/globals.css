@@ -2107,9 +2107,17 @@ footer {
     padding: 0 16px 40px;
   }
   .header-inner {
-    padding: 0 16px;
-    height: 64px;
+    padding: 10px 16px;
+    min-height: 64px;
+    height: auto;
+    flex-wrap: wrap;
     gap: 8px;
+  }
+  .header-inner > .studio-account-menu {
+    order: 1;
+    flex-basis: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
   .logo {
     font-size: 17px;

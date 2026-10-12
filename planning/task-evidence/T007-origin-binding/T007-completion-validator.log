@@ -1,0 +1,53 @@
+TDD red: missing command
+TDD red: missing sha
+TDD red: missing evidence_url
+TDD red: missing expected_failure
+TDD red: missing observed_failure
+TDD red: invalid commit SHA
+TDD red: incorrect or missing actual result
+TDD green: missing command
+TDD green: missing sha
+TDD green: missing evidence_url
+TDD green: missing observed
+TDD green: invalid commit SHA
+TDD green: incorrect or missing actual result
+TDD refactor: missing command
+TDD refactor: missing sha
+TDD refactor: missing evidence_url
+TDD refactor: missing observed
+TDD refactor: invalid commit SHA
+TDD refactor: incorrect or missing actual result
+Required CI check has no successful result: planning-contracts
+Required CI check has no successful result: static
+Required CI check has no successful result: dependency-security
+Required CI check has no successful result: test
+Required CI check has no successful result: docker
+Required CI check has no successful result: browser
+Required CI check has no successful result: ci-gate
+T007-C01: NOT VERIFIED prevents completion
+T007-C02: NOT VERIFIED prevents completion
+T007-C03: NOT VERIFIED prevents completion
+T007-C04: NOT VERIFIED prevents completion
+T007-C05: NOT VERIFIED prevents completion
+T007-C06: NOT VERIFIED prevents completion
+T007-C07: NOT VERIFIED prevents completion
+T007-C08: NOT VERIFIED prevents completion
+T007-C09: NOT VERIFIED prevents completion
+T007-C10: NOT VERIFIED prevents completion
+T007-C11: NOT VERIFIED prevents completion
+T007-C12: NOT VERIFIED prevents completion
+T007-C13: NOT VERIFIED prevents completion
+T007-C14: NOT VERIFIED prevents completion
+T007-C15: NOT VERIFIED prevents completion
+T007-C16: NOT VERIFIED prevents completion
+T007-C17: NOT VERIFIED prevents completion
+T007-C18: NOT VERIFIED prevents completion
+T007-A01: NOT VERIFIED prevents completion
+T007-A02: NOT VERIFIED prevents completion
+T007-W01: NOT VERIFIED prevents completion
+T007-W02: NOT VERIFIED prevents completion
+T007-W03: NOT VERIFIED prevents completion
+T007-C19: NOT VERIFIED prevents completion
+T007-C20: NOT VERIFIED prevents completion
+T007-C21: NOT VERIFIED prevents completion
+T007-C22: NOT VERIFIED prevents completion

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="59" failures="0" errors="0" time="6.129611497">
+    <testsuite name="tests/wallet-auth-db.test.ts" timestamp="2026-10-12T16:31:19.723Z" hostname="ubu2" tests="25" failures="0" errors="0" skipped="0" time="3.705529063">
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; creates wallet-only user, consumes challenge once, and rejects stale challenge" time="0.30286547">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; refuses linking wallet already owned by another X identity" time="0.087967727">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; issues a Sign-In With Solana formatted challenge" time="0.02556423">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; binds a challenge to the signer state it was issued for" time="0.186250393">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not let a link signature perform a wallet rotation" time="0.083462212">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; refuses to sign a suspended owner in and creates no session" time="0.144006392">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; rotates the session and records how it was issued" time="0.104992654">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; keeps an X session an X session when the same user links a wallet" time="0.047198248">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not renew expired X authority through a wallet signature" time="0.094795121">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not borrow or delete another account&apos;s live X session" time="0.051353366">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires authenticated account context before preserving X authority" time="0.098109083">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; normalizes unknown session authority to wallet authority" time="0.133082235">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently revoked X session before carrying its authority forward" time="0.145309091">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;revoked&quot;,&quot;waiter&quot;:97,&quot;blocker&quot;:98}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently expired X session before carrying its authority forward" time="0.089997426">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;expired&quot;,&quot;waiter&quot;:98,&quot;blocker&quot;:97}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently downgraded X session before carrying its authority forward" time="0.106420267">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;downgraded&quot;,&quot;waiter&quot;:99,&quot;blocker&quot;:98}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires an X session for administrator access" time="0.037893177">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; moves a wallet from an empty wallet-only account onto the signed-in X account" time="0.248769342">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; keeps the wallet account when the X account is the empty one" time="0.206915636">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity" time="0.091513692">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when the wallet owner joined a Raid" time="0.125819098">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; replaces the address and records the previous one" time="0.077328174">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; keeps an existing enrollment on the wallet snapshotted when it was made" time="0.099403685">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses while a withdrawal or live deposit is open" time="0.138690246">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses an address owned by another account and a second change within 7 days" time="0.208463146">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; requires a connected X account" time="0.060262119">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-additional-db.test.ts" timestamp="2026-10-12T16:31:19.733Z" hostname="ubu2" tests="7" failures="0" errors="0" skipped="0" time="1.224132852">
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; is off by default for challenge issue and verification and writes nothing" time="0.223936167">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed" time="0.081009873">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies an account with no connected X at issue and verify; the challenge stays unconsumed" time="0.064527197">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; requires the caller&apos;s own live session" time="0.146385366">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; rejects replay, another account&apos;s challenge, a wrong-purpose challenge and a bad signature" time="0.142551381">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link" time="0.203751501">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies a suspended account and rolls the whole attempt back" time="0.073770642">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-network.test.ts" timestamp="2026-10-12T16:31:19.740Z" hostname="ubu2" tests="12" failures="0" errors="0" skipped="0" time="0.3938107">
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; issues and verifies an exact devnet challenge" time="0.174020606">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; issues and verifies an exact mainnet challenge" time="0.030940733">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; rejects a registered credential on a different chain before creating a session" time="0.045146556">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; preserves a pending mainnet challenge across a configuration change to devnet" time="0.026188189">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; rejects altered stored chain text even when signed again, retaining the issued digest" time="0.013051452">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network undefined before issue or consumption" time="0.013074442">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;&quot; before issue or consumption" time="0.015172158">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;testnet&quot; before issue or consumption" time="0.009826641">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;sandbox&quot; before issue or consumption" time="0.014341374">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;MAINNET&quot; before issue or consumption" time="0.01801135">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; retains the nonproduction mainnet default when network is unset" time="0.001122599">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; passes the signed devnet network consistently to additional-link subject/proof/policy" time="0.026343546">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-origin-db.test.ts" timestamp="2026-10-12T16:31:19.744Z" hostname="ubu2" tests="4" failures="0" errors="0" skipped="0" time="0.719141304">
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects an otherwise valid sign-in signature issued for the previous domain without mutation" time="0.38781941">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a link signed for another application port and preserves the existing session" time="0.05357903">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a rotation signed for another URI scheme and preserves payout ownership and audit" time="0.109676212">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; allows a current-origin challenge when only the configured URL path changes and rejects replay" time="0.157433368">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-routes.test.ts" timestamp="2026-10-12T16:31:19.746Z" hostname="ubu2" tests="11" failures="0" errors="0" skipped="0" time="0.086997578">
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body null with 400" time="0.021728454">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body undefined with 400" time="0.003231598">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body &quot;x&quot; with 400" time="0.003275092">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects malformed JSON and a missing address with 400" time="0.013101041">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge passes a valid address through" time="0.00766288">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects null with 400" time="0.004554853">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects {} with 400" time="0.00576257">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects {&quot;digest&quot;:&quot;short&quot;,&quot;address&quot;:&quot;a&quot;,&quot;signature&quot;:&quot;s&quot;} with 400" time="0.00557904">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify accepts a well-formed body" time="0.00764995">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; binds the challenge to the signed-in user and requires one to rotate" time="0.004894021">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; rotates the wallet of the signed-in user without issuing a session" time="0.004285184">
+        </testcase>
+    </testsuite>
+</testsuites>

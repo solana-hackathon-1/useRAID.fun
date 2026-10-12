@@ -1,0 +1,130 @@
+{
+  "task_id": "T045",
+  "scope": "Bounded wallet-origin/server binding and dependent mobile-header reflow; full task acceptance not claimed",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "64863264b635e5c241b5fcb15f5abeca28a36d82",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-12-wallet-origin-header.md",
+  "migration_rollback": "No schema migration; preserve reservations/history and keep all dependent feature gates off. Revert of origin helper would reintroduce reproduced defect.",
+  "dependency_evidence": [
+    "PR191 mainb02345a and successful source/DB/image/runtime/publish workflow38277794427",
+    "T007-origin-binding source hashes, actual RED/GREEN/regression/consuming-host/preview evidence; full task/independent evidence absent"
+  ],
+  "open_decisions": [
+    "O11 recovery/retention, full capacity/restore/UAT/live operational gates remain unresolved"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging publication; no full issue closure, independent signoff, real provider/funds or live feature enablement. Public tunnel530/1033 and VM SSHtimeout prevent rollout confirmation.",
+  "criteria": {
+    "T045-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    },
+    "T045-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in T007-origin-binding/review.json; full numbered independent acceptance is not supplied."
+    }
+  },
+  "source_identity": "Implementation commit 64863264b635e5c241b5fcb15f5abeca28a36d82; source parity and working-tree test evidence in T007-origin-binding/review.json"
+}

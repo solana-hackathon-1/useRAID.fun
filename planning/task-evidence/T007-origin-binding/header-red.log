@@ -1,0 +1,66 @@
+
+Running 2 tests using 1 worker
+
+  ✘  1 tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 320px viewport and menus remain usable (17.8s)
+  ✘  2 tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 390px viewport and menus remain usable (5.2s)
+
+
+  1) tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 320px viewport and menus remain usable 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      90 |     await page.goto('/');
+      91 |     await page.evaluate(async () => { await document.fonts.ready; });
+    > 92 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+         |                                                                                           ^
+      93 |     const navigation = page.getByRole('button', { name: 'Open menu', exact: true });
+      94 |     await expect(navigation).toBeVisible();
+      95 |     await navigation.click();
+        at /src/tests/browser-live/pages.spec.ts:92:91
+
+    Error Context: ../evidence/header-test-results/pages-authenticated-header-f7de8-ort-and-menus-remain-usable/error-context.md
+
+    Error Context: ../evidence/header-test-results/pages-authenticated-header-f7de8-ort-and-menus-remain-usable/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../evidence/header-test-results/pages-authenticated-header-f7de8-ort-and-menus-remain-usable/trace.zip
+    Usage:
+
+        npx playwright show-trace ../evidence/header-test-results/pages-authenticated-header-f7de8-ort-and-menus-remain-usable/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 390px viewport and menus remain usable 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      90 |     await page.goto('/');
+      91 |     await page.evaluate(async () => { await document.fonts.ready; });
+    > 92 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+         |                                                                                           ^
+      93 |     const navigation = page.getByRole('button', { name: 'Open menu', exact: true });
+      94 |     await expect(navigation).toBeVisible();
+      95 |     await navigation.click();
+        at /src/tests/browser-live/pages.spec.ts:92:91
+
+    Error Context: ../evidence/header-test-results/pages-authenticated-header-0aedf-ort-and-menus-remain-usable/error-context.md
+
+    Error Context: ../evidence/header-test-results/pages-authenticated-header-0aedf-ort-and-menus-remain-usable/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../evidence/header-test-results/pages-authenticated-header-0aedf-ort-and-menus-remain-usable/trace.zip
+    Usage:
+
+        npx playwright show-trace ../evidence/header-test-results/pages-authenticated-header-0aedf-ort-and-menus-remain-usable/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 320px viewport and menus remain usable 
+    tests/browser-live/pages.spec.ts:87:7 › authenticated header fits a 390px viewport and menus remain usable 

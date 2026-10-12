@@ -1,0 +1,10 @@
+{
+  "synthetic": true,
+  "source": "b02345a + T007 origin helper",
+  "mode": "Next development; real disposable PostgreSQL; devnet; gates off",
+  "currentOrigin": 200,
+  "replay": 401,
+  "foreignSignedOrigin": 401,
+  "noRejectedMutation": true,
+  "foreignRequestOrigin": 403
+}

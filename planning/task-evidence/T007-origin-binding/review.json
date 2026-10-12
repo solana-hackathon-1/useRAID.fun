@@ -1,0 +1,93 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-12T16:30:59.092831+00:00",
+  "source_base": "b02345aa2752042e430f7f2ce278bf79d1498efe",
+  "red_source": "cccbb9c5f290dcacbf12a9e7396bfa3f1422b25c",
+  "red_result": "4tests/3fail1pass; actual previous-origin signin/link/rotation wrongly succeed; positive baseline passes",
+  "application_parity": "git diff cccbb9c..HEAD -- src prisma package.json package-lock.json is empty; RED remains valid after fixture-only PR191",
+  "host_dependencies": "Node22.23.1; own tmpfsPostgreSQL16 loopback55441; real22freshmigrations; installed exact unchanged root dependencies; no credentials/provider calls",
+  "resource": {
+    "container": "raid-t007-origin-20261012",
+    "id": "a809e768b8899e40a6a00e8a0752f6457167667f482ede1a9a6bb9f4822e0d91",
+    "binding": "127.0.0.1:55441",
+    "database": "useraid_test",
+    "stop": "docker stop raid-t007-origin-20261012"
+  },
+  "pre_implementation_hashes": {
+    "src/lib/wallet-auth.ts": "2293bf57d34a6f09cfe36d8b05c890f7bc29a468e355066103550df99dccc67f",
+    "src/lib/wallet-challenge-contract.ts": "ec8383610d9ff31cedfd601695b3804a60fe34c519c3fac8f12eb9418866fd9f",
+    "tests/wallet-origin-db.test.ts": "34d4a465e696eab956c5fb7d120588f7551ba254efda73606a2ccfff7d3ac5c0"
+  },
+  "independent_review": "NOT VERIFIED; author SELF-EVALUATED only",
+  "green": "5suites59pass",
+  "first_regression": "101suites1193pass/3fail; own fixture basename partial revert error corrected; unrelated image decode/studio limit5000ms timeouts will be rechecked unchanged serial after build load",
+  "consumer": "first attempt existing5000ms timeouts and script fixture escaping corrected; corrected6testsPASS, no assertion/timeout weakened; independent own installationtsx4.23.15/3packages8origin-network assertionsPASS",
+  "preview_setup": "First native ESM SDK import rejected directory resolution; corrected harness uses package CommonJS entrypoint. No application edit.",
+  "ended_utc": "2026-10-12T17:11:45.732550+00:00",
+  "elapsed_seconds": 2446.639719,
+  "scope": "T007 stored signed origin binding plus dependent T045 authenticated small-screen header reflow; partial tasks; SELF-EVALUATED",
+  "final_checks": {
+    "auth_green": "5suites59pass",
+    "initial_full_regression": "101suites1193pass/3fail; genuine failures retained; no false clean aggregate",
+    "failed_case_recheck": "3/3pass with unchanged assertions/timeouts;23cases filtered because their original full result passed; own fixture basename error fixed;2timing failures passed",
+    "consumer_fixture": "corrected6pass; independent own fresh tsx4.23.15 install/3packages origin/network assertionsPASS",
+    "header_tdd": "new320/390browsercasesRED2fail -> GREEN2pass15.8s; both menus/Escape focus/open menu overflow assertions",
+    "preview_http": "current-origin200,replay401,foreign-signed-origin401,no rejected challenge/session/wallet mutation;foreign request Origin403",
+    "preview_browser": "6desktop/mobile pages200;0observedpageerrors/nooverflow; mobile screenshot visually inspected; initial genuine header failures preserved",
+    "production_build": "corrected frozen source Next16.3.8 Webpack production exit0 (initial own fixture type error preserved)",
+    "planning": "52testsPASS233.427s",
+    "lint": "owned lint exit0",
+    "format": "owned Prettier check exit0",
+    "docs_final": "2suites88PASS",
+    "dependency_audit": "mandatory main staging workflow to run exact new source; package/lock unchanged and PR191 hosted auditPASS reused only for matching dependencies",
+    "final_lint": "all affected TS/browser files exit0"
+  },
+  "header_source_before_sha256": "36041a943bc236a513877aef6d114a8949e9877a5cae13c105a4bd59ff49d5a2",
+  "source_hashes": {
+    "docs/ai-handoff/CURRENT.md": "38320c520b54ed4dd8e32fe4980bfeca85a7262d7d2e77aaa4d678706e8687de",
+    "docs/creator-studio.md": "8cfd0cba1ccff3c772afc0a90270e1c729a0da3aa35b65b058d69953df91d795",
+    "docs/raid-wallet-links.md": "a480336fbed8090501507e3386ee31da4b7ead7bc7f903aabba4256d1dd0a29f",
+    "examples/wallet-links/README.md": "0c2b0a2a790ca18e3c65cb67f98508d4ce373dd41041372f6fbe0c3f24432c9a",
+    "planning/raid-ci-matrix.json": "382e3255309e2244e25ed46a8e7e4bcadad81e9cd9f88a09a6a446b7bcb72e64",
+    "src/app/globals.css": "61124e30cc212a0e16897f162da31f7d3effbab5219321c5bcc166c87f58c99e",
+    "src/lib/wallet-auth.ts": "845e84683e002ce7c94e002c3f8f335084e9efaab450c94477d5d2318cf42a77",
+    "src/lib/wallet-challenge-contract.ts": "1d4399ed9fc3172f9bb58ff01b21c1e46d061fd8391305af51526f943a44efbd",
+    "tests/browser-live/pages.spec.ts": "8fc49d138db1a657d8d6ab06b3c63233f46aa98b10e1a55c117389a773f5510a",
+    "tests/identity-link-boundary.test.ts": "76d1886a3b869e926d991dfd128e0df4a02cccee48b5455c3a979d342b5c1160",
+    "tests/wallet-origin-db.test.ts": "a416563c59f11ec8e02560e4286cd078d82bfd4d0fdcdc90629fc59bac81f6e4"
+  },
+  "build_product_parity": {
+    "src/lib/wallet-auth.ts": true,
+    "src/lib/wallet-challenge-contract.ts": true,
+    "src/app/globals.css": true,
+    "tests/identity-link-boundary.test.ts": true,
+    "tests/browser-live/pages.spec.ts": true,
+    "tests/wallet-origin-db.test.ts": true
+  },
+  "preview": {
+    "url": "http://localhost:3013",
+    "access": "server-local; no public forwarding",
+    "mode": "Next development/real isolated synthetic DB/devnet/all provider-money-link-fold flags off",
+    "source": "frozen source recorded in source-manifest.json; byte parity above",
+    "old_pid": 931292,
+    "final_pid": 996208,
+    "status": "STOPPED after checks",
+    "stop_commands": ["kill -TERM931292", "kill -TERM996208"],
+    "port": "verified no listener3013"
+  },
+  "cleanup": {
+    "database_id": "a809e768b8899e40a6a00e8a0752f6457167667f482ede1a9a6bb9f4822e0d91",
+    "database": "running=false; stop exit0",
+    "browser_runners": "all --rm removed; no container with owned task label running",
+    "synthetic_cookie": "temporary fixture cookie file removed",
+    "preserved": "unrelated resources/volumes/images/evidence; original raw browser traces remain local in ignored header-test-results"
+  },
+  "staging": {
+    "prior_run": "38277794427 SUCCESS, mainb02345a image sha256:b6638cef967b3db487054863cb040d8da9d05b1b7dbf5ad5369dea8feed94d74",
+    "public_http": "530/error1033",
+    "vm": "SSH192.168.101.8 timeout",
+    "new_source_rollout": "NOT VERIFIED pending publication; no VM/Cloudflare changes or credentials requested"
+  },
+  "skipped": "No repeated1196-case whole-suite after fixture-only correction; prior1193passed relevant domains + exact3failedcase recheck retained separately. Full browser matrices/real Phantom/X/UAT/independent criterion review/release assurance not supplied; affected auth/header and6page probes executed. No schema change, so migration drift not repeated;22freshbootstrapPASS.",
+  "implementation_commit": "64863264b635e5c241b5fcb15f5abeca28a36d82"
+}

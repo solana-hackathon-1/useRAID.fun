@@ -1,0 +1,9 @@
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 8.7s
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 78s
+  Running TypeScript ...
+tests/identity-link-boundary.test.ts(116,29): error TS2304: Cannot find name 'basename'.
+Failed to type check.
+
