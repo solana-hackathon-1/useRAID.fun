@@ -105,6 +105,8 @@ services:
       WATCHTOWER_POLL_INTERVAL: '300'
       WATCHTOWER_INCLUDE_RESTARTING: 'true'
       WATCHTOWER_TIMEOUT: 60s
+      # Remove superseded images after each update; each deploy is ~1.8GB.
+      WATCHTOWER_CLEANUP: 'true'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${STAGING_ROOT:-/opt/useraid-staging}/registry:/config:ro

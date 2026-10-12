@@ -1,3 +1,15 @@
+# Claude — VM restart, new IP — 2026-10-12T07:40Z
+
+Owner resized VM disk to 40G and restarted; VM now at raidstaging@192.168.101.8 (was .13, DHCP). ED25519 host key fingerprint matched the saved .13 entry (SHA256:+6xg2k3G...), so only the ed25519 key was added to known_hosts. nvme0n1 is 40G but partition p3/LVM still 17.3G: growing needs sudo password (not available to Claude) -> OWNER must run: `sudo growpart /dev/nvme0n1 3 && sudo pvresize /dev/nvme0n1p3 && sudo lvextend -r -l +100%FREE /dev/ubuntu-vg/ubuntu-lv`. Proxy had exited (cannot bind 192.168.101.13:8443); set STAGING_BIND_ADDRESS=127.0.0.1 in VM ~/useraid-staging/.env (backup .env.before-ipchange), restarted proxy only. Public tunnel uses the internal network so staging.useraid.fun /, /methodology, /api/health = 200; LAN URL https://192.168.101.13:8443 in docs/staging-deploy.md is now stale (local VM check: https://127.0.0.1:8443). Recommend DHCP reservation for the VM. All stack containers healthy.
+
+---
+
+# Claude — staging VM disk cleanup — 2026-10-12T07:35Z
+
+Owner reported VM possibly stuck/full. Found: VM healthy, new image rolled by Watchtower 07:29Z, but `/` 100% (128M free of 17G). Done on raidstaging@192.168.101.13 (owner-directed checklist): confirmed no container referenced old image sha256:6499e100...; `docker image prune -f` (2.858GB) and `docker rmi useraid:staging-20261011 useraid:staging-bootstrap-20261011` (these were the rollback bootstrap images; rollback now = `:sha-<commit>` tag from GHCR); `/` now 70%, 5.0G free. Added `WATCHTOWER_CLEANUP: 'true'` to repo compose.staging.yaml (UNCOMMITTED) and VM ~/useraid-staging/compose.yaml (backup compose.yaml.before-cleanup); recreated only the watchtower container; env verified WATCHTOWER_CLEANUP=true, healthy. Staging /, /methodology, /api/health = 200; all stack containers healthy. Cleanup actually removing superseded images is NOT yet observed (first confirm after next deploy). Stopped session-owned previews: PID 8596 (:3009) and docker raid-codex-preview-rereview-20261012, raid-claude-uifix-20261012; build copy deleted. Left untouched: PID 90243 :3000, older raid-* test DBs, compose db.
+
+---
+
 # Claude — verification + publication per owner "Do all" — 2026-10-12
 
 Owner replied "Do all" to the offered list (commit+push, Playwright/build, deploy to staging, stop preview servers); treated as authorization for those four actions only. Deploy = push to main -> GitHub Actions -> GHCR -> Watchtower (DEC-2026-10-11-01); no schema change. Gates (folds, wallet links, provider, financial) stay off.

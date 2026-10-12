@@ -2,7 +2,7 @@
 
 Owner decision: [DEC-2026-10-11-01](../RAID_AGENT_BLUEPRINT.md#029-accepted-staging-deployment-choice--11-october-2026). Bounded T005 deployment slice, AG09/AG10, M0. R15/R16/D01/D12/I05/I06/I09/I10/I12/I13; AC67/AC68/AC73–AC75. This contract changes deployment orchestration, not canonical User/Session/Raid/Job/ledger identity, permissions, accepted terms, capacity, claims or payout destinations. Existing Prisma migrations are applied unchanged to a separate staging database. Full T005 and production gates remain independent obligations.
 
-The selected VM is `raidstaging@192.168.101.13`, Ubuntu 26.04.1, ARM64, Docker 29.9.0 / Compose 5.6.0. Existing Dokploy, Traefik, Swarm and database services occupy 80/443/3000; preserve them. Staging owns `/home/raidstaging/useraid-staging`, Compose project `useraid-staging`, its default bridge network and PostgreSQL volume. Only its HTTPS proxy publishes a port: `192.168.101.13:8443`. Database, web, worker and Watchtower publish none. The private LAN URL is `https://192.168.101.13:8443`; it is not a public domain.
+The selected VM is `raidstaging@192.168.101.8` (DHCP; first recorded at `.13`, moved 12 October 2026 — reserve the address or re-check it), Ubuntu 26.04.1, ARM64, Docker 29.9.0 / Compose 5.6.0. Existing Dokploy, Traefik, Swarm and database services occupy 80/443/3000; preserve them. Staging owns `/home/raidstaging/useraid-staging`, Compose project `useraid-staging`, its default bridge network and PostgreSQL volume. Only its HTTPS proxy publishes a port: `${STAGING_BIND_ADDRESS}:8443`, set to `127.0.0.1` since the address change so a DHCP renumbering cannot stop the proxy; public traffic arrives through the Cloudflare Tunnel on the internal Docker network. Database, web, worker and Watchtower publish none. There is no LAN URL while the bind is loopback; check from the VM itself. Public access is `https://staging.useraid.fun`.
 
 ## Artifact and startup contracts
 
@@ -44,7 +44,7 @@ Repository SSH deploy keys are disabled by GitHub policy. A dedicated Ed25519 ke
 
 Compose forces `DEMO_MODE=false`, `ACCOUNT_FOLDS_ENABLED=false`, `WALLET_LINKS_ENABLED=false`, `STUDIO_SANDBOX=false`, `ALLOW_REMOTE_TEST_DB=false`, `LIVE_COLLECTION_APPROVED=false`, `X_TRACKING_V2_ENABLED=false`, `X_TRACKING_V2_SETTLEMENT_ENABLED=false`, `LAUNCH_ENABLED=false` and `PAYOUT_ENABLED=false`. Do not infer live authority from `NODE_ENV=production`, the health endpoint's legacy `mode:live` label or a successful deployment. No RPC, funding address, rate or signer is supplied. No production data is imported. Finance/provider enablement requires its separate accepted gates and configuration change.
 
-Nginx terminates HTTPS, overwrites `X-Forwarded-For` with the socket peer and forwards the canonical host/protocol; only web trusts that header. Docker DNS is refreshed so a replacement web IP does not strand the proxy. The initial certificate is private/self-signed, valid for IP `192.168.101.13` and hostname `raidstaging`; browsers need explicit trust. It expires 9 January 2027 and must be renewed before then. Do not use `curl -k` as evidence of certificate authenticity; use the recorded certificate as the CA file for verification.
+Nginx terminates HTTPS, overwrites `X-Forwarded-For` with the socket peer and forwards the canonical host/protocol; only web trusts that header. Docker DNS is refreshed so a replacement web IP does not strand the proxy. The initial certificate is private/self-signed, valid for the former IP `192.168.101.13` and hostname `raidstaging` (verify by hostname, as below); browsers need explicit trust. It expires 9 January 2027 and must be renewed before then. Do not use `curl -k` as evidence of certificate authenticity; use the recorded certificate as the CA file for verification.
 
 ## Minimal independently runnable consuming example
 
@@ -60,7 +60,7 @@ docker compose --env-file .env up -d --wait db web worker proxy
 # Start automatic updates only after private GHCR access/publication is verified.
 docker compose --env-file .env up -d watchtower
 docker compose ps
-curl --cacert tls/fullchain.pem https://192.168.101.13:8443/api/health
+curl --cacert tls/fullchain.pem --resolve raidstaging:8443:127.0.0.1 https://raidstaging:8443/api/health
 ```
 
 The initial VM bootstrap image was built from committed main `5e8080f2a4abe39854bbc00f340f288d273540bb` plus the uncommitted startup script, then loaded over SSH. Its local build ID is `sha256:fff447cc84e63e0c77cbb04b773db342898b4fb496f755ccda668d9046b1b69c`; VM Docker loaded it with OCI manifest ID `sha256:6499e100805bf00e16b301cbaaa6bc8701b45c93903a814dc766740ac13caa42`, with matching RootFS/Config. It is explicitly labeled as an uncommitted staging bootstrap; that label/source must not be represented as a published Git commit. The owner explicitly authorized scoped Git publication after preparation; the workflow becomes active on that main push. Actual publication/run identity is recorded in CURRENT.md. That initial gate is now satisfied: owner-authorized main `e492c39ef2c5356a490bb5fdcd31b12beaf4a248` passed hosted publication, and dedicated private pulls and an actual Watchtower replacement succeeded. The permanent updater runs every300seconds. See the task/checkpoint for exact runtime evidence; a future consuming host must verify its own initial access before starting the watcher.
