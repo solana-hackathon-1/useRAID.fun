@@ -42,8 +42,9 @@
     "typecheck": "fresh isolated next typegen + tsc exit0; original generated caches preserved",
     "lint": "owned source/tests/example exit0",
     "skipped": "No application/schema/dependency/config/UI bytes changed; no repeated DB/browser/Docker/build locally. Mandatory main staging source/fullDB/image/audit gates remain. No devpreview required for unwired library. Real starter/trial/persistence/assessments/UAT/independent criteria not supplied.",
-    "final_docs": "2files88PASS",
+    "final_docs": "2files90PASS",
     "format": "owned Prettier check exit0"
   },
-  "resource_cleanup": "No task-owned containers/server/DB started; CLI child processes completed. Existing stopped resources and unrelated services preserved."
+  "resource_cleanup": "No task-owned containers/server/DB started; CLI child processes completed. Existing stopped resources and unrelated services preserved.",
+  "implementation_commit": "ca75780a8dc34c1f7b8eb008b7c92e7de33b04ba"
 }
