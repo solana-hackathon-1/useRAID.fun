@@ -44,7 +44,6 @@ export const settingsInput = z
   .object({
     collectionEnabled: z.boolean(),
     maxActiveRaids: z.number().int().min(1).max(10),
-    maxCreators: z.number().int().min(1).max(5),
     monthlyBudgetCents: z.number().int().min(100).max(20000),
     cutoffCents: z.number().int().min(1).max(19000),
     dailyRequestLimit: z.number().int().min(1).max(5000),

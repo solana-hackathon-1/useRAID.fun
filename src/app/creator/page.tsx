@@ -45,8 +45,6 @@ export default async function CreatorPage({
   return (
     <StudioHome
       auth={auth}
-      approved={user.approved}
-      affiliation={user.affiliation || ''}
       available={funds.available.toString()}
       reserved={funds.reserved.toString()}
       raids={raids.map((r) => ({

@@ -78,26 +78,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
           },
         });
       } else if (action === 'creator') {
-        if (typeof b.approved !== 'boolean' || typeof b.suspended !== 'boolean')
-          throw new HttpError(400, 'Invalid creator status.');
+        if (typeof b.suspended !== 'boolean') throw new HttpError(400, 'Invalid creator status.');
         const target = await tx.user.findUniqueOrThrow({ where: { id: b.id } });
         if (target.id === user.id) throw new HttpError(400, 'You cannot change your own access.');
-        const settings = await tx.settings.upsert({
-          where: { id: 'global' },
-          create: {},
-          update: {},
-        });
-        if (
-          b.approved &&
-          !target.approved &&
-          (await tx.user.count({ where: { approved: true, role: 'CREATOR' } })) >=
-            settings.maxCreators
-        )
-          throw new HttpError(409, 'Pilot creator quota reached.');
-        await tx.user.update({
-          where: { id: b.id },
-          data: { approved: b.approved, suspended: b.suspended },
-        });
+        await tx.user.update({ where: { id: b.id }, data: { suspended: b.suspended } });
         if (b.suspended) await tx.session.deleteMany({ where: { userId: b.id } });
       } else if (action === 'raid' || action === 'post') {
         if (typeof b.hidden !== 'boolean') throw new HttpError(400, 'Invalid visibility.');

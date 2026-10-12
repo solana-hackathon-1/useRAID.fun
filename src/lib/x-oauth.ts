@@ -170,7 +170,6 @@ export async function claimAttempt(state: string, sessionHash: string | null) {
   if (!attempt) throw new OAuthError('state');
   return attempt;
 }
-let warnedAutoApprove = false;
 export async function completeConnection(attempt: OAuthAttempt, profile: XIdentity) {
   const sessionToken = random();
   await db.$transaction(
@@ -212,22 +211,9 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
         } else throw new OAuthError('identity');
       }
       const admin = adminXIds().includes(profile.id);
-      const localAutoApprove =
-        process.env.NODE_ENV !== 'production' && process.env.LOCAL_AUTO_APPROVE_CREATORS === 'true';
-      if (localAutoApprove && !warnedAutoApprove) {
-        warnedAutoApprove = true;
-        console.warn(
-          'LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.',
-        );
-      }
       // Admin comes from the environment allowlist on every sign-in; a stored ADMIN role that fell off it is demoted.
       const access = (role?: string) =>
-        admin
-          ? { role: 'ADMIN', approved: true }
-          : {
-              ...(role === 'ADMIN' ? { role: 'CREATOR' } : {}),
-              ...(localAutoApprove ? { approved: true } : {}),
-            };
+        admin ? { role: 'ADMIN' } : role === 'ADMIN' ? { role: 'CREATOR' } : {};
       if (owner) {
         // `owner` was read before the lock, so its xId may be stale. Bind only while the stored identity is
         // still unset or already this profile; a concurrent callback that bound another identity wins.
@@ -248,7 +234,6 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
             xId: profile.id,
             handle: profile.username,
             role: admin ? 'ADMIN' : 'CREATOR',
-            approved: admin || localAutoApprove,
           },
           update: {
             handle: profile.username,

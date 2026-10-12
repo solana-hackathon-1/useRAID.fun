@@ -189,7 +189,6 @@ describe('identity and external URLs', () => {
       settingsInput.safeParse({
         collectionEnabled: true,
         maxActiveRaids: 10,
-        maxCreators: 5,
         monthlyBudgetCents: 20000,
         cutoffCents: 20000,
         dailyRequestLimit: 5000,
@@ -199,7 +198,6 @@ describe('identity and external URLs', () => {
     const valid = {
       collectionEnabled: true,
       maxActiveRaids: 10,
-      maxCreators: 5,
       monthlyBudgetCents: 20000,
       cutoffCents: 18000,
       dailyRequestLimit: 5000,

@@ -111,7 +111,7 @@ suite('admin job retry', () => {
     const suspend = (id: string) =>
       POST(
         routeRequest('http://localhost:3000/api/admin/creator', {
-          body: { id, approved: true, suspended: true, reason: 'review' },
+          body: { id, suspended: true, reason: 'review' },
         }),
         routeContext({ action: 'creator' }),
       );

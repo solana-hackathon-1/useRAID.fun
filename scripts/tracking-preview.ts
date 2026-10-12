@@ -13,7 +13,7 @@ const now = new Date();
 try {
   const creator = await db.user.upsert({
     where: { xId: 'fixture-creator' },
-    create: { xId: 'fixture-creator', handle: 'local-fixture-creator', approved: true },
+    create: { xId: 'fixture-creator', handle: 'local-fixture-creator' },
     update: {},
   });
   await db.token.upsert({

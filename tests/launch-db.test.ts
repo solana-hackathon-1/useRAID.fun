@@ -145,9 +145,12 @@ suite('launch flow', () => {
   const launchRow = (id: string) => db.tokenLaunch.findUniqueOrThrow({ where: { id } });
 
   describe('preparing a launch', () => {
-    it('requires an approved creator', async () => {
-      const stranger = await createUser('stranger', false);
-      await expect(prepareLaunch(stranger.id, input)).rejects.toMatchObject({ status: 403 });
+    it('allows creators without legacy approval but rejects missing or suspended accounts', async () => {
+      await db.user.update({ where: { id: userId }, data: { approved: false } });
+      await expect(prepareLaunch(userId, input)).resolves.toMatchObject({
+        transaction: expect.any(String),
+      });
+      await expect(prepareLaunch('missing-creator', input)).rejects.toMatchObject({ status: 403 });
       await db.user.update({ where: { id: userId }, data: { suspended: true } });
       await expect(prepareLaunch(userId, input)).rejects.toMatchObject({ status: 403 });
     });

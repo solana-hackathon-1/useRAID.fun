@@ -263,6 +263,18 @@ Preserve private database/worker/Dokploy boundaries and existing server authoriz
 
 DEC-2026-10-11-03: when reconciling released main with the unfinished B2 work, the owner explicitly selected “Preserve released main sign-in behavior; adapt the unfinished B2 work.” Existing registered linked-wallet credentials remain usable independently of the new-link feature switch, and fresh same-account reauthentication is permitted. `WALLET_LINKS_ENABLED` gates new additional-wallet challenge/creation only. Preserve released denial semantics (foreign-account link409, revoked/wrong-network401, suspended403), transaction-held credential locks, whole-transaction retries, sanitized driver failures, default-off account folds and atomic first-X binding. Carry forward stronger own-session authority checks and the unfinished reusable B2 modules, while adapting their conflicting sign-in tests to this accepted contract. No new linking route/UI/revoke composition, provider/financial enablement or independent acceptance is authorized; historical B2 evidence remains bound to its original source. R04/R13/R15/R16/I05/I06/I10/I13/AC01 partial/AC02 partial/AC40/AC73–75 apply.
 
+### 02.12 Accepted owner change — 12 October 2026
+
+DEC-2026-10-12-01: the project owner directed that creating a Raid is self-serve. The pilot administrator-approval gate for creators is removed; a signed-in user with a connected X account may draft and launch a funded Raid from their own USDC balance. Only an account suspension blocks creator actions. Funding, wallet-verification, quota and rate-limit checks are unchanged, and the legacy `approved` column remains unused rather than migrated; the admin creator action controls suspension only. The same owner message directed: remove the duplicate Disconnect X item from the Studio account menu (Sign out remains), stop offering MetaMask in the wallet picker, and replace the How it works page with a short scope-and-limits page with no progress dashboard. Wallet sign-in nonces are now ASCII letters/digits only, as the Sign In With Solana grammar requires. This does not change canonical identity, capacity, escrow or any OPEN decision. Related R04/I10/AC07/AC40.
+
+---
+
+### 02.13 Accepted wallet-network correction — 12 October 2026
+
+DEC-2026-10-12-02: the owner confirmed staging and their Phantom use devnet and directed SIWS chain IDs to follow `USDC_NETWORK`: `devnet` → `devnet`, `mainnet` → `mainnet`. Unknown or unset production configuration fails closed; nonproduction retains the legacy mainnet default only when unset. Issue new challenges using that configured network. Verify the exact stored signed message and its digest; `WalletChallenge` has no separate network column, so its signed Chain ID is the immutable network binding for a pending challenge. A registered additional credential must match that stored chain. Additional-link subject, proof and allowed network use the same binding. Preserve unexpired previously issued challenges across a valid configuration change, existing sessions, identity/history, and all default-off link/financial gates; do not migrate or rewrite stored challenges/credentials. Related R04/R13/R15/R16/I05/I10/I13 and AC01/AC02/AC40/AC73–75 (T007 partial). Real Phantom behavior remains NOT VERIFIED until the owner retests after an authorized deployment.
+
+---
+
 ## 03. Vocabulary
 
 | Term                   | Exact meaning                                                                                                                                                                                                                            |

@@ -23,7 +23,7 @@ npm run db:generate
 npm run dev
 ```
 
-`npm run dev` listens on localhost only. To open the dev server from another device use `npm run dev:lan` and list that device's hostname in `ALLOWED_DEV_ORIGINS` (comma-separated, no scheme or port). `LOCAL_AUTO_APPROVE_CREATORS=true` approves every X sign-in as a creator for local testing; it is ignored when `NODE_ENV=production`, logs a warning when active, and bypasses Studio creator approval, so never rely on it outside development.
+`npm run dev` listens on localhost only. To open the dev server from another device use `npm run dev:lan` and list that device's hostname in `ALLOWED_DEV_ORIGINS` (comma-separated, no scheme or port).
 
 Open http://localhost:3000. `DEMO_MODE=true` renders illustrative campaigns without a database or provider credentials. All mutation, posting, trading, and analytics actions are disabled in demo mode. Demo names do not imply affiliation, and demo mint addresses do not identify the named assets.
 
@@ -136,11 +136,11 @@ npm run test:browser:live
 npm run test:browser:studio       # needs the Studio preview; run locally before release
 ```
 
-`test:live` starts a temporary server on port 3001 and verifies the approved-creator journey: admin approval, a saved Creator Studio draft, the launch gate refusing without X credentials and funding, the public Raid, ending it, and the X connection UI. `test:browser:live` starts one on port 3006 with fixture records for tracking, standalone Raids, administration and security. `test:browser:studio` drives the sandbox Studio. None of them moves SOL or makes X requests. Provider tests mock network responses and incur no X charges. CI runs formatting, typecheck, lint, the audit check, the Docker image smoke test, migrations with a schema-drift diff, the full database suite, and the demo and live Playwright suites. The record of what was run on this branch is in [docs/verification.md](docs/verification.md).
+`test:live` starts a temporary server on port 3001 and verifies the self-serve creator journey: a saved Creator Studio draft, the launch gate refusing without X credentials and funding, the public Raid, ending it, and the X connection UI. `test:browser:live` starts one on port 3006 with fixture records for tracking, standalone Raids, administration and security. `test:browser:studio` drives the sandbox Studio. None of them moves SOL or makes X requests. Provider tests mock network responses and incur no X charges. CI runs formatting, typecheck, lint, the audit check, the Docker image smoke test, migrations with a schema-drift diff, the full database suite, and the demo and live Playwright suites. The record of what was run on this branch is in [docs/verification.md](docs/verification.md).
 
 ## Operating defaults
 
-Five approved creators; ten scheduled/active campaigns; 24-hour default campaigns; 72-hour maximum; 5-minute collection; 1-minute active market refresh; 30-second page refresh. X-read cadence: stored posts under a day old refresh every `X_REFRESH_MINUTES` (default 30) and older ones at four times that; Studio target-post lookups are limited to `STUDIO_LOOKUPS_PER_DAY` (default 300) per creator. X budget is $200/month with a $180 application cutoff and alerts at $140/$180. Hosting target is at most $100/month and must be validated against the chosen deployment.
+Self-serve creation for connected X users; ten scheduled/active campaigns; 24-hour default campaigns; 72-hour maximum; 5-minute collection; 1-minute active market refresh; 30-second page refresh. X-read cadence: stored posts under a day old refresh every `X_REFRESH_MINUTES` (default 30) and older ones at four times that; Studio target-post lookups are limited to `STUDIO_LOOKUPS_PER_DAY` (default 300) per creator. X budget is $200/month with a $180 application cutoff and alerts at $140/$180. Hosting target is at most $100/month and must be validated against the chosen deployment.
 
 Usage accounting reserves the maximum possible response cost before each X call, then settles to returned resources when successful. Failed requests retain their reservation. Daily provider deduplication discounts are deliberately not assumed. Recorded usage is a conservative operational ceiling, not an invoice. X identity reads are accounted for too.
 

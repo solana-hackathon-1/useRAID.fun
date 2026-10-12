@@ -6,6 +6,7 @@ import type { Wallet, WalletAccount } from '@wallet-standard/base';
 import type { StandardConnectFeature } from '@wallet-standard/features';
 import type { SolanaSignMessageFeature } from '@solana/wallet-standard-features';
 import bs58 from 'bs58';
+import { selectableWallets } from '@/lib/wallet-picker';
 const rejected = (e: unknown) =>
   e instanceof Error && (e.name === 'WalletSignMessageError' || /reject/i.test(e.message));
 export function WalletLogin({
@@ -22,17 +23,7 @@ export function WalletLogin({
   const [error, setError] = useState('');
   useEffect(() => {
     const api = getWallets();
-    const refresh = () =>
-      setWallets(
-        api
-          .get()
-          .filter(
-            (w) =>
-              w.chains.includes('solana:mainnet') &&
-              'standard:connect' in w.features &&
-              'solana:signMessage' in w.features,
-          ),
-      );
+    const refresh = () => setWallets(selectableWallets(api.get()));
     refresh();
     const offA = api.on('register', refresh),
       offB = api.on('unregister', refresh);

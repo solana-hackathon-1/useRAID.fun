@@ -3,7 +3,7 @@ import { lookupPosts } from './providers/x';
 import { postId } from './domain';
 export { matchedTarget } from './studio-attribution';
 import { HttpError } from './auth-primitives';
-import { assertApprovedCreator } from './campaigns';
+import { assertCreatorAccess } from './campaigns';
 import { studioSandbox } from './usdc';
 import { rateLimit } from './auth';
 import { studioLookupsPerDay } from './config';
@@ -49,7 +49,7 @@ export async function addStudioTarget(raidId: string, userId: string, url: strin
   const raid = await db.raid.findUnique({ where: { id: raidId }, include: { creator: true } });
   if (!raid || raid.creatorId !== userId || raid.hidden)
     throw new HttpError(404, 'Raid not found.');
-  assertApprovedCreator(raid.creator);
+  assertCreatorAccess(raid.creator);
   await chargeStudioLookups(userId, 1);
   const preview = (await targetPreviews([id], raidId))[0];
   if (!preview) throw new HttpError(400, 'Target post is unavailable. Choose another public post.');

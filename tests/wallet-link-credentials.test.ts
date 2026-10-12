@@ -19,12 +19,12 @@ import {
   FIXTURE_NOW,
 } from './helpers/wallet-link-fixtures';
 import {
-  SIWS_CHAIN_ID,
+  siwsChainId,
   LINK_ADDITIONAL_STATEMENT,
   WALLET_CHALLENGE_STATEMENTS,
 } from '../src/lib/wallet-challenge-contract';
 import {
-  SIWS_CHAIN_ID as proofChain,
+  siwsChainId as proofChain,
   LINK_ADDITIONAL_STATEMENT as proofStatement,
 } from '../src/lib/wallet-link-proof';
 import { createWalletChallenge, rotateWallet } from '../src/lib/wallet-auth';
@@ -112,7 +112,7 @@ function fake(
 
 describe('B1 credential contracts using alternate injected ports', () => {
   it('publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants', () => {
-    expect(SIWS_CHAIN_ID).toBe(proofChain);
+    expect(siwsChainId).toBe(proofChain);
     expect(LINK_ADDITIONAL_STATEMENT).toBe(proofStatement);
     expect(WALLET_CHALLENGE_STATEMENTS).toEqual({
       signin: 'Sign in to useRAID.fun.',
@@ -305,7 +305,7 @@ integration('B1 credentials on real PostgreSQL', () => {
         purpose,
       );
       expect(challenge.message.split('\n')[3]).toBe(WALLET_CHALLENGE_STATEMENTS[purpose]);
-      expect(challenge.message.split('\n')[7]).toBe(`Chain ID: ${SIWS_CHAIN_ID}`);
+      expect(challenge.message.split('\n')[7]).toBe(`Chain ID: ${siwsChainId()}`);
     }
     const before = await db.walletChallenge.count();
     await expect(

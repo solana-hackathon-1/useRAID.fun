@@ -22,9 +22,8 @@ export async function sandboxUser(fixtureId?: string) {
       xId,
       handle: 'test_creator',
       role: 'ADMIN',
-      approved: !fixtureId?.startsWith('unapproved-'),
     },
-    update: { approved: !fixtureId?.startsWith('unapproved-') },
+    update: {},
   });
   await db.xAccount.upsert({
     where: { userId: user.id },

@@ -125,7 +125,7 @@ integration('X connection PostgreSQL invariants', () => {
     vi.stubEnv('X_ADMIN_USER_ID', profile.id);
     await connect();
     const user = await db.user.findUniqueOrThrow({ where: { xId: profile.id } });
-    expect(user).toMatchObject({ role: 'ADMIN', approved: true });
+    expect(user).toMatchObject({ role: 'ADMIN', approved: false });
     await db.user.update({ where: { id: user.id }, data: { suspended: true } });
     await expect(connect()).rejects.toMatchObject({ code: 'suspended' });
   });
@@ -136,7 +136,7 @@ integration('X connection PostgreSQL invariants', () => {
     await connect();
     expect(await db.user.findUniqueOrThrow({ where: { xId: profile.id } })).toMatchObject({
       role: 'CREATOR',
-      approved: true,
+      approved: false,
     });
   });
   it('demotes through the owner path as well', async () => {
@@ -211,16 +211,24 @@ integration('X connection PostgreSQL invariants', () => {
       });
     });
   });
-  it('ignores LOCAL_AUTO_APPROVE_CREATORS in production', async () => {
-    const { state } = await startAttempt(null);
-    const attempt = await claimAttempt(state, null);
-    vi.stubEnv('LOCAL_AUTO_APPROVE_CREATORS', 'true');
-    vi.stubEnv('NODE_ENV', 'production');
-    await completeConnection(attempt, profile);
-    vi.stubEnv('NODE_ENV', 'test');
-    expect((await db.user.findUniqueOrThrow({ where: { xId: profile.id } })).approved).toBe(false);
-    const again = await claimAttempt((await startAttempt(null)).state, null);
-    await completeConnection(again, { ...profile, id: '999', username: 'bob' });
-    expect((await db.user.findUniqueOrThrow({ where: { xId: '999' } })).approved).toBe(true);
-  });
+  it.each(['test', 'production'])(
+    'ignores retired creator approval configuration in %s',
+    async (mode) => {
+      const { state } = await startAttempt(null);
+      const attempt = await claimAttempt(state, null);
+      vi.stubEnv('LOCAL_AUTO_APPROVE_CREATORS', 'true');
+      vi.stubEnv('NODE_ENV', mode);
+      await completeConnection(attempt, profile);
+      vi.stubEnv('NODE_ENV', 'test');
+      expect((await db.user.findUniqueOrThrow({ where: { xId: profile.id } })).approved).toBe(
+        false,
+      );
+      const again = await claimAttempt((await startAttempt(null)).state, null);
+      await completeConnection(again, { ...profile, id: '999', username: 'bob' });
+      expect(await db.user.findUniqueOrThrow({ where: { xId: '999' } })).toMatchObject({
+        role: 'CREATOR',
+        approved: false,
+      });
+    },
+  );
 });

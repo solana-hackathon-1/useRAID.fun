@@ -81,6 +81,13 @@ function observedTransaction(
 }
 
 describe('T006 planned canonical references protect legacy absorption decisions', () => {
+  it('absorbs an empty account without copying retired creator metadata', async () => {
+    const { transaction, mutations } = observedTransaction();
+    await absorbAccount(transaction, 'keeper', 'protected');
+    expect(mutations.accountUpdate).not.toHaveBeenCalled();
+    expect(mutations.accountDelete).toHaveBeenCalledWith({ where: { id: 'protected' } });
+    expect(mutations.mergeEvent).toHaveBeenCalledOnce();
+  });
   it('keeps the existing genuinely empty account result', async () => {
     const { transaction } = observedTransaction();
     expect(await isEmptyAccount(transaction, 'protected')).toBe(true);

@@ -1,4 +1,3 @@
-import { randomBytes } from 'node:crypto';
 import { Prisma } from '@prisma/client';
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
@@ -22,9 +21,10 @@ import {
 } from './identity-storage-adapter';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { deriveWalletLinkProof } from './wallet-link-proof';
+import { siwsNonce } from './siws-nonce';
 import {
   LINK_ADDITIONAL_STATEMENT,
-  SIWS_CHAIN_ID,
+  siwsChainId,
   WALLET_CHALLENGE_STATEMENTS,
 } from './wallet-challenge-contract';
 import { walletSessionAuthority, type WalletSessionObservation } from './wallet-session-authority';
@@ -81,10 +81,11 @@ export async function createWalletChallenge(
     await requireConnectedX(db, currentUserId!);
   }
   const url = new URL(config.appUrl);
-  const nonce = randomBytes(24).toString('base64url');
+  const chainId = siwsChainId();
+  const nonce = siwsNonce();
   const issued = new Date();
   const expires = new Date(+issued + 5 * 60000);
-  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: ${SIWS_CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
+  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: ${chainId}\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
   const digest = hash(message);
   await db.walletChallenge.create({
     data: { digest, address, message, userId: currentUserId ?? null, expiresAt: expires },
@@ -111,6 +112,12 @@ function decodeSignature(signature: string) {
 }
 // The challenge is bound to the signer state and purpose it was issued for, so a signature
 // collected for an anonymous sign-in cannot link or rotate a wallet, and the reverse.
+function challengeChainId(message: string): 'devnet' | 'mainnet' {
+  const line = message.split('\n')[7];
+  if (line === 'Chain ID: devnet') return 'devnet';
+  if (line === 'Chain ID: mainnet') return 'mainnet';
+  throw new HttpError(401, 'Wallet challenge expired or signature invalid.');
+}
 async function consumeChallenge(
   tx: Prisma.TransactionClient,
   digest: string,
@@ -119,6 +126,8 @@ async function consumeChallenge(
   currentUserId: string | undefined,
   purpose: ChallengePurpose,
 ) {
+  // Fail closed on invalid deployment configuration without rewriting a pending signed intent.
+  siwsChainId();
   const key = walletAddress(address);
   const attempt = await tx.walletChallenge.findUnique({ where: { digest } });
   if (
@@ -127,10 +136,12 @@ async function consumeChallenge(
     attempt.consumedAt ||
     attempt.expiresAt <= new Date() ||
     (attempt.userId ?? undefined) !== currentUserId ||
+    hash(attempt.message) !== digest ||
     attempt.message.split('\n')[3] !== STATEMENTS[purpose] ||
     !nacl.sign.detached.verify(new TextEncoder().encode(attempt.message), bytes, key.toBytes())
   )
     throw new HttpError(401, 'Wallet challenge expired or signature invalid.');
+  challengeChainId(attempt.message);
   const consumed = await tx.walletChallenge.updateMany({
     where: { digest, consumedAt: null, expiresAt: { gt: new Date() } },
     data: { consumedAt: new Date() },
@@ -149,7 +160,7 @@ export async function verifyWalletChallenge(
   const bytes = decodeSignature(signature);
   const sessionToken = random();
   await walletTransaction(async (tx) => {
-    await consumeChallenge(
+    const attempt = await consumeChallenge(
       tx,
       digest,
       address,
@@ -162,7 +173,10 @@ export async function verifyWalletChallenge(
       // A linked credential cannot enter the legacy two-account fold path, including when revoked.
       if (currentUserId && linked.accountId !== currentUserId)
         throw new HttpError(409, 'Wallet belongs to another account.');
-      if (linked.status !== 'ACTIVE' || linked.networkIdentity !== SIWS_CHAIN_ID)
+      if (
+        linked.status !== 'ACTIVE' ||
+        linked.networkIdentity !== challengeChainId(attempt.message)
+      )
         throw new HttpError(401, 'Wallet sign-in unavailable.');
       if (linked.accountSuspended) throw new HttpError(403, 'This account is suspended.');
     }
@@ -362,18 +376,19 @@ export async function linkAdditionalWallet(
           userId,
           'link-additional',
         );
+        const chainId = challengeChainId(attempt.message);
         return linkVerifiedWallet(createPrismaIdentityTransaction(tx), {
           accountId: userId,
           actorAccountId: userId,
           requestId,
-          subject: { networkIdentity: SIWS_CHAIN_ID, address },
+          subject: { networkIdentity: chainId, address },
           proof: deriveWalletLinkProof(attempt, { signatureVerified: true }),
           // Authority is observed by the module under the subject and account locks (below).
           observeAuthority: () => observeLinkAuthority(tx, userId, currentSessionHash),
           policy: {
             domain: url.host,
             uri: url.origin,
-            walletNetworks: [SIWS_CHAIN_ID],
+            walletNetworks: [chainId],
             providers: [],
           },
           limits: LINK_LIMITS,

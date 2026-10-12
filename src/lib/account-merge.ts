@@ -76,13 +76,6 @@ export async function absorbAccount(tx: Prisma.TransactionClient, keepId: string
       });
     }
   }
-  await tx.user.update({
-    where: { id: keepId },
-    data: {
-      approved: keep.approved || drop.approved,
-      ...(keep.affiliation ? {} : { affiliation: drop.affiliation }),
-    },
-  });
   await tx.oAuthAttempt.deleteMany({ where: { userId: dropId } });
   await tx.session.deleteMany({ where: { userId: dropId } });
   await tx.user.delete({ where: { id: dropId } });

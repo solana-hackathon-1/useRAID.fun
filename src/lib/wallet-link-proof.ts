@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { IdentityLinkError } from '../identity-link';
 import { LINK_ADDITIONAL_STATEMENT } from './wallet-challenge-contract';
-export { LINK_ADDITIONAL_STATEMENT, SIWS_CHAIN_ID } from './wallet-challenge-contract';
+export { LINK_ADDITIONAL_STATEMENT, siwsChainId } from './wallet-challenge-contract';
 
 /**
  * Thin proof adapter between the host's stored wallet challenge and the pure identity preflight

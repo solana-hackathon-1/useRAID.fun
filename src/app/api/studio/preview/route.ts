@@ -4,14 +4,15 @@ import { fetchMarket } from '@/lib/providers/market';
 import { studioSandbox } from '@/lib/usdc';
 import { validMint } from '@/lib/domain';
 import { failure } from '@/lib/http';
+import { db } from '@/lib/db';
 export async function GET(request: Request) {
   try {
     const user = await requireUser();
     await rateLimit(`studio-preview:${user.id}`, 30, 60);
     const query = new URL(request.url).searchParams;
     if (query.get('type') === 'post') {
-      if (!user.approved)
-        throw new HttpError(403, 'Creator approval is required before previewing X posts.');
+      if (user.suspended || !(await db.xAccount.findUnique({ where: { userId: user.id } })))
+        throw new HttpError(403, 'Connect X to preview posts.');
       const id = targetIds([query.get('url') || ''])[0];
       await chargeStudioLookups(user.id, 1);
       const preview = (await targetPreviews([id]))[0];

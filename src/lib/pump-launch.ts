@@ -18,7 +18,7 @@ import { encryptSecret, decryptSecret, sealSecret, sealVersion } from './launch-
 import { pinMetadata, ipfsUri, verifyAsset } from './launch-ipfs';
 import { walletAddress } from './wallet-auth';
 import { verifySignedLaunch } from './launch-signatures';
-import { assertApprovedCreator } from './campaigns';
+import { assertCreatorAccess } from './campaigns';
 import type { TokenLaunch } from '@prisma/client';
 
 const optionalUrl = z
@@ -70,10 +70,10 @@ export function connection() {
   return new Connection(url, 'finalized');
 }
 const RESERVATION_MS = 20 * 60000;
-async function assertApprovedLauncher(userId: string) {
+async function assertLauncherAccess(userId: string) {
   const user = await db.user.findUnique({ where: { id: userId } });
-  if (!user) throw new HttpError(403, 'Creator approval is required.');
-  assertApprovedCreator(user);
+  if (!user) throw new HttpError(403, 'Creator account is required.');
+  assertCreatorAccess(user);
 }
 const outstanding = (userId: string, excludeId?: string) => ({
   userId,
@@ -82,7 +82,7 @@ const outstanding = (userId: string, excludeId?: string) => ({
 });
 export async function prepareLaunch(userId: string, input: unknown) {
   if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
-  await assertApprovedLauncher(userId);
+  await assertLauncherAccess(userId);
   const data = launchInput.parse(input);
   verifyAsset(data.imageUri, 'logo', userId, data.imageProof);
   if (data.bannerUri) {
@@ -178,7 +178,7 @@ export async function buildLaunchTransaction(id: string, userId: string) {
   if (launch.status === 'LIVE') return publicLaunch(launch);
   if (launch.status === 'SUBMITTED') return publicLaunch(launch);
   if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
-  await assertApprovedLauncher(userId);
+  await assertLauncherAccess(userId);
   if (!launch.reservationExpiresAt || launch.reservationExpiresAt <= new Date()) {
     await db.$transaction(async (tx) => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
@@ -291,7 +291,7 @@ export function publicLaunch(launch: {
 }
 export async function submitLaunch(id: string, userId: string, rawBase64: string) {
   if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
-  await assertApprovedLauncher(userId);
+  await assertLauncherAccess(userId);
   const settings = await db.settings.findUnique({ where: { id: 'global' } });
   if (
     !settings?.collectionEnabled ||

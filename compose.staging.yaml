@@ -18,7 +18,6 @@ x-app: &app
     DEMO_MODE: 'false'
     ACCOUNT_FOLDS_ENABLED: 'false'
     WALLET_LINKS_ENABLED: 'false'
-    LOCAL_AUTO_APPROVE_CREATORS: 'false'
     STUDIO_SANDBOX: 'false'
     ALLOW_REMOTE_TEST_DB: 'false'
     LIVE_COLLECTION_APPROVED: 'false'

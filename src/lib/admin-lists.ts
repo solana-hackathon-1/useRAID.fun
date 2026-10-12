@@ -3,7 +3,6 @@ import type { Prisma } from '@prisma/client';
 export const ADMIN_PAGE = 25;
 export type AdminListParams = {
   q?: string;
-  creators?: string;
   creatorPage?: string;
   campaignPage?: string;
   postPage?: string;
@@ -28,11 +27,10 @@ export function adminListArgs(params: AdminListParams, adminIds: string[]) {
       where: {
         AND: [
           { OR: [{ xId: null }, { xId: { notIn: adminIds } }] },
-          ...(q ? [{ OR: [{ handle: contains(q) }, { affiliation: contains(q) }] }] : []),
-          ...(params.creators === 'pending' ? [{ approved: false, affiliation: { not: '' } }] : []),
+          ...(q ? [{ handle: contains(q) }] : []),
         ],
       },
-      orderBy: [{ approved: 'asc' }, { createdAt: 'desc' }],
+      orderBy: [{ createdAt: 'desc' }],
       ...pageWindow(params.creatorPage),
     } satisfies Prisma.UserFindManyArgs,
     raids: {

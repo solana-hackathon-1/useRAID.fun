@@ -64,6 +64,37 @@ it('B2a wires only the default-off command: no route, UI, X-callback or revoke u
   }
 });
 
+it('copied challenge helper resolves its declared host dependencies and production network policy', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'raid-siws-network-consumer-'));
+  try {
+    await cp('examples/wallet-links', directory, { recursive: true, dereference: true });
+    await symlink(join(process.cwd(), 'node_modules'), join(directory, 'node_modules'), 'dir');
+    const script = `
+      import assert from 'node:assert/strict';
+      import { siwsChainId } from './lib/wallet-link-proof.ts';
+      assert.equal(siwsChainId(), 'devnet');
+      process.env.USDC_NETWORK = 'mainnet';
+      assert.equal(siwsChainId(), 'mainnet');
+      delete process.env.USDC_NETWORK;
+      assert.throws(siwsChainId, { status: 503 });
+      console.log('PASS: copied SIWS consumer');
+    `;
+    const output = execFileSync(
+      process.execPath,
+      ['--import', 'tsx', '--input-type=module', '-e', script],
+      {
+        cwd: directory,
+        encoding: 'utf8',
+        timeout: 20000,
+        env: { PATH: process.env.PATH, NODE_ENV: 'production', USDC_NETWORK: 'devnet' },
+      },
+    );
+    expect(output.trim()).toBe('PASS: copied SIWS consumer');
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 it.skipIf(process.env.RUN_DB_TESTS !== 'true')(
   'minimal external host links a second wallet using explicit dependencies',
   async () => {

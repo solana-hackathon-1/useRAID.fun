@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Plus, ArrowUpRight } from 'lucide-react';
 import { formatUsdc } from '@/lib/usdc-amount';
-import { CreatorApproval } from './creator-approval';
 import { oauthMessage } from '@/lib/oauth-messages';
 import { formatNumber } from '@/lib/format';
 
@@ -26,15 +25,11 @@ export type StudioCard = {
 };
 export function StudioHome({
   auth,
-  approved,
-  affiliation,
   available,
   reserved,
   raids,
 }: {
   auth?: string;
-  approved: boolean;
-  affiliation: string;
   available: string;
   reserved: string;
   raids: StudioCard[];
@@ -65,7 +60,6 @@ export function StudioHome({
           {oauthMessage(auth)}
         </p>
       )}
-      {!approved && <CreatorApproval initial={affiliation} />}
       <div className="studio-balance">
         <div>
           <span>Available balance</span>

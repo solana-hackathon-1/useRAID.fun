@@ -222,7 +222,6 @@ export default async function AdminPage({
           placeholder="Search creators, campaigns and posts"
           defaultValue={lists.q}
         />
-        {params.creators === 'pending' && <input type="hidden" name="creators" value="pending" />}
         <button className="button secondary small">Search</button>
       </form>
       <nav className="section-nav" aria-label="Operations sections">
@@ -445,38 +444,18 @@ export default async function AdminPage({
           )}
         </section>
         <section className="panel" id="creators">
-          <h2>Creator approvals</h2>
-          <p className="small-print">
-            {params.creators === 'pending' ? (
-              <Link href={`/admin${lists.q ? `?q=${encodeURIComponent(lists.q)}` : ''}#creators`}>
-                Show all creators
-              </Link>
-            ) : (
-              <Link
-                href={`/admin?creators=pending${lists.q ? `&q=${encodeURIComponent(lists.q)}` : ''}#creators`}
-              >
-                Show only pending requests
-              </Link>
-            )}
-          </p>
+          <h2>Creators</h2>
           {!users.length && <p>No creators match.</p>}
           {users.map((u) => (
             <div className="admin-row" key={u.id}>
               <strong>
-                @{u.handle} · {u.suspended ? 'Suspended' : u.approved ? 'Approved' : 'Pending'}
+                @{u.handle} · {u.suspended ? 'Suspended' : 'Active'}
               </strong>
-              <p>{u.affiliation || 'No affiliation submitted.'}</p>
-              <AdminAction
-                action="creator"
-                id={u.id}
-                label={u.approved ? 'Revoke approval' : 'Approve creator'}
-                values={{ approved: !u.approved, suspended: u.suspended }}
-              />
               <AdminAction
                 action="creator"
                 id={u.id}
                 label={u.suspended ? 'Restore access' : 'Suspend creator'}
-                values={{ approved: u.approved, suspended: !u.suspended }}
+                values={{ suspended: !u.suspended }}
               />
             </div>
           ))}

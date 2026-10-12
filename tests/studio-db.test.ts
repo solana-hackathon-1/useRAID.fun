@@ -454,24 +454,31 @@ suite('Studio atomic balances and settlement', () => {
       });
       return user;
     };
-    it('refuses drafts and launches from unapproved creators', async () => {
-      const stranger = await creator('unapproved-user', false);
-      await expect(saveStudioRaid(stranger, draft(['111111111']))).rejects.toMatchObject({
+    it('lets a creator without legacy approval save drafts, but refuses suspended creators', async () => {
+      const newcomer = await creator('self-serve-user', false);
+      await expect(saveStudioRaid(newcomer, draft(['111111111']))).resolves.toMatchObject({
+        id: expect.any(String),
+      });
+      const stranger = await creator('suspended-user', true);
+      await db.user.update({ where: { id: stranger.id }, data: { suspended: true } });
+      const suspended = await db.user.findUniqueOrThrow({ where: { id: stranger.id } });
+      await expect(saveStudioRaid(suspended, draft(['111111113']))).rejects.toMatchObject({
         status: 403,
       });
       expect(await db.raid.count({ where: { creatorId: stranger.id } })).toBe(0);
       const saved = await saveStudioRaid(owner, draft(['111111112']));
-      await db.user.update({ where: { id: owner.id }, data: { approved: false } });
+      await db.user.update({ where: { id: owner.id }, data: { suspended: true } });
       try {
         const revoked = await db.user.findUniqueOrThrow({ where: { id: owner.id } });
         await expect(saveStudioRaid(revoked, draft(['111111112']), saved.id)).rejects.toMatchObject(
           { status: 403 },
         );
+        // Launch hides a suspended creator's campaign as not found.
         await expect(launchStudioRaid(revoked, saved.id, '2000000', true)).rejects.toMatchObject({
-          status: 403,
+          status: 404,
         });
       } finally {
-        await db.user.update({ where: { id: owner.id }, data: { approved: true } });
+        await db.user.update({ where: { id: owner.id }, data: { suspended: false } });
       }
     });
     it('reuses fresh previews and looks up only new targets', async () => {
