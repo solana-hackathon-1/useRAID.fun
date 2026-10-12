@@ -1,0 +1,11 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ✓ tests/raider-onboarding.test.ts (17 tests) 56ms
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  23:54:35
+   Duration  412ms (transform 69ms, setup 0ms, import 188ms, tests 56ms, environment 0ms)
+
+JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-contract/green.xml

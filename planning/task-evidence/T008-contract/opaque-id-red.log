@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/raider-onboarding.test.ts (18 tests | 1 failed) 73ms
+     × retains opaque catalog identifiers from the shared InternalId contract 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/raider-onboarding.test.ts > T008 reusable orientation preparation > retains opaque catalog identifiers from the shared InternalId contract
+OnboardingContractError: INVALID_HOST_CONTRACT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:12:31
+     10| export function prepareRaiderOrientation(input: unknown, host: unknown…
+     11|   const options = RaiderOnboardingHostSchema.safeParse(host);
+     12|   if (!options.success) throw new OnboardingContractError('INVALID_HOS…
+       |                               ^
+     13|   const parsed = RaiderOrientationInputSchema.safeParse(input);
+     14|   if (!parsed.success) throw new OnboardingContractError('INVALID_INPU…
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:62:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  00:02:51
+   Duration  413ms (transform 66ms, setup 0ms, import 160ms, tests 73ms, environment 0ms)
+

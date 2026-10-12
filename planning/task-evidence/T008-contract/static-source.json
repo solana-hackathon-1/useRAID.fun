@@ -1,0 +1,12 @@
+{
+  "path": "/tmp/raid-t008-contract-static-q_wn6hct",
+  "base": "c50a60fc7d3aa8f9a6814508f954651a1c81426e",
+  "product_hashes": {
+    "src/raider-onboarding/contracts.ts": "edeed1883918ee1a95f5338a1bb95de92e3f5f3486253006a2a4c23df1aa344a",
+    "src/raider-onboarding/index.ts": "5cf74811247b2392d734aed39279886659025ed12efadd5c03352aef87183d20",
+    "tests/raider-onboarding.test.ts": "a2368b897ddb6477e623962d2af9edab254908291eff6a6f1629cc673aa136a1",
+    "tests/raider-onboarding-boundary.test.ts": "7b4ea2325ced3f80f382ebb877043ca6a09a709fc5996b894a9d371cc1ab569f",
+    "planning/raid-ci-matrix.json": "ba696aaefc8d518a05fca438735e85439d115387a856720a49197282797bcfdb"
+  },
+  "host": "own generated route/cache/types; explicitly unchanged installed root dependencies; no environment files"
+}

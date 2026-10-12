@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="17" failures="0" errors="0" time="0.055772537">
+    <testsuite name="tests/raider-onboarding.test.ts" timestamp="2026-10-12T18:09:36.292Z" hostname="ubu2" tests="17" failures="0" errors="0" skipped="0" time="0.055772537">
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; prepares a beginner route without inventing completion, rank, capacity or payment authority" time="0.031155565">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through PORTFOLIO evidence" time="0.001255396">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through TRIAL evidence" time="0.000754884">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; allows a beginner to choose a relevant trial without requiring earned rank first" time="0.000913536">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; reports unavailable starter work rather than linking an unimplemented route" time="0.001378687">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; accepts a host replacement without rewriting preferences or granting eligibility" time="0.001646514">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; normalizes an unordered interest set without mutating caller data" time="0.000883292">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.00161702">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.001367623">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000814561">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000727746">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000655288">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000790164">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action https://foreign.example/trial" time="0.001292675">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action //foreign.example/trial" time="0.004348661">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action /\foreign.example/trial" time="0.000701266">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects success-shaped unavailable capabilities" time="0.000612782">
+        </testcase>
+    </testsuite>
+</testsuites>

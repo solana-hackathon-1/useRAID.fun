@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="17" failures="11" errors="0" time="0.040932224">
+    <testsuite name="tests/raider-onboarding.test.ts" timestamp="2026-10-12T18:03:49.600Z" hostname="ubu2" tests="17" failures="11" errors="0" skipped="0" time="0.040932224">
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; prepares a beginner route without inventing completion, rank, capacity or payment authority" time="0.007104029">
+            <failure message="INVALID_INPUT" type="OnboardingContractError">
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:24:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through PORTFOLIO evidence" time="0.001208715">
+            <failure message="INVALID_INPUT" type="OnboardingContractError">
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:38:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through TRIAL evidence" time="0.000673062">
+            <failure message="INVALID_INPUT" type="OnboardingContractError">
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:38:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; allows a beginner to choose a relevant trial without requiring earned rank first" time="0.000904398">
+            <failure message="INVALID_INPUT" type="OnboardingContractError">
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:44:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; reports unavailable starter work rather than linking an unimplemented route" time="0.000804215">
+            <failure message="INVALID_INPUT" type="OnboardingContractError">
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:47:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; accepts a host replacement without rewriting preferences or granting eligibility" time="0.000762855">
+            <failure message="INVALID_INPUT" type="OnboardingContractError">
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:54:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; normalizes an unordered interest set without mutating caller data" time="0.000857481">
+            <failure message="INVALID_INPUT" type="OnboardingContractError">
+OnboardingContractError: INVALID_INPUT
+ ❯ prepareRaiderOrientation src/raider-onboarding/index.ts:10:9
+ ❯ prepare tests/raider-onboarding.test.ts:20:3
+ ❯ tests/raider-onboarding.test.ts:63:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.004362843">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.001408963">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000594705">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000565228">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000552693">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000814001">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action https://foreign.example/trial" time="0.011898095">
+            <failure message="expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;" type="AssertionError">
+AssertionError: expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;
+
+Expected: &quot;INVALID_HOST_CONTRACT&quot;
+Received: &quot;INVALID_INPUT&quot;
+
+ ❯ tests/raider-onboarding.test.ts:81:126
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action //foreign.example/trial" time="0.001855858">
+            <failure message="expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;" type="AssertionError">
+AssertionError: expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;
+
+Expected: &quot;INVALID_HOST_CONTRACT&quot;
+Received: &quot;INVALID_INPUT&quot;
+
+ ❯ tests/raider-onboarding.test.ts:81:126
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action /\foreign.example/trial" time="0.00147601">
+            <failure message="expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;" type="AssertionError">
+AssertionError: expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;
+
+Expected: &quot;INVALID_HOST_CONTRACT&quot;
+Received: &quot;INVALID_INPUT&quot;
+
+ ❯ tests/raider-onboarding.test.ts:81:126
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects success-shaped unavailable capabilities" time="0.001487228">
+            <failure message="expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;" type="AssertionError">
+AssertionError: expected [Function] to throw error including &apos;INVALID_HOST_CONTRACT&apos; but got &apos;INVALID_INPUT&apos;
+
+Expected: &quot;INVALID_HOST_CONTRACT&quot;
+Received: &quot;INVALID_INPUT&quot;
+
+ ❯ tests/raider-onboarding.test.ts:84:145
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

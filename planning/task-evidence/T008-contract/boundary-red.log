@@ -1,0 +1,78 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/tmp/raid-onboarding-consumer-uL4qE6/host.ts' imported from /tmp/raid-onboarding-consumer-uL4qE6/
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:861:10)
+    at defaultResolve (node:internal/modules/esm/resolve:985:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:747:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:783:38)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolveBaseSync (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092)
+    at resolveDirectorySync (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398)
+    at resolveTsPathsSync (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605)
+    at resolve (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:16832) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///tmp/raid-onboarding-consumer-uL4qE6/host.ts'
+}
+
+Node.js v22.23.1
+ ❯ tests/raider-onboarding-boundary.test.ts (3 tests | 2 failed) 216ms
+   × independent copied orientation host consumes declared interfaces and substitution failures 209ms
+   × same-change documentation declares the preparation-only host and protected-storage boundary 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/raider-onboarding-boundary.test.ts > independent copied orientation host consumes declared interfaces and substitution failures
+Error: Command failed: /home/rpandox/.hermes/node/bin/node /tmp/raid-onboarding-consumer-uL4qE6/node_modules/tsx/dist/cli.mjs host.ts
+node:internal/modules/esm/resolve:275
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/tmp/raid-onboarding-consumer-uL4qE6/host.ts' imported from /tmp/raid-onboarding-consumer-uL4qE6/
+    at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+    at moduleResolve (node:internal/modules/esm/resolve:861:10)
+    at defaultResolve (node:internal/modules/esm/resolve:985:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:747:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:783:38)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolveBaseSync (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092)
+    at resolveDirectorySync (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398)
+    at resolveTsPathsSync (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605)
+    at resolve (file:///srv/projects/useRAIDfun/useRAID-fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:16832) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///tmp/raid-onboarding-consumer-uL4qE6/host.ts'
+}
+
+Node.js v22.23.1
+
+ ❯ resolveBaseSync node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092
+ ❯ resolveDirectorySync node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398
+ ❯ resolveTsPathsSync node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605
+ ❯ tests/raider-onboarding-boundary.test.ts:18:20
+     16|     await cp('examples/raider-onboarding', directory, { recursive: tru…
+     17|     await symlink(join(process.cwd(), 'node_modules'), join(directory,…
+     18|     const output = execFileSync(process.execPath, [join(directory, 'no…
+       |                    ^
+     19|       cwd: directory, encoding: 'utf8', timeout: 20000,
+     20|       env: { PATH: process.env.PATH, NODE_ENV: 'test' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/raider-onboarding-boundary.test.ts > same-change documentation declares the preparation-only host and protected-storage boundary
+Error: ENOENT: no such file or directory, open 'docs/raid-raider-onboarding.md'
+ ❯ tests/raider-onboarding-boundary.test.ts:29:15
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  00:02:54
+   Duration  432ms (transform 28ms, setup 0ms, import 44ms, tests 216ms, environment 0ms)
+
