@@ -1,0 +1,191 @@
+{
+  "source_checkout": "/tmp/raid-t006-wallet-links-b1-codex-20261009",
+  "source_head": "c196ee74d74624b0089185c7b78c926e35238985",
+  "target_head": "66d6a3a05936df54c8dbca150b7c3bea6e6134be",
+  "files": {
+    "docs/raid-wallet-links.md": {
+      "sha256": "f1eeb18d58750453474d8fd7a92dc59201876ef01c2315a2c56908c0f0c37f75",
+      "symlink": null
+    },
+    "examples/wallet-links/README.md": {
+      "sha256": "be2505c8df6fe4c01bee7c57912ae64245725e11163573e56f3860d0e4c8f37f",
+      "symlink": null
+    },
+    "examples/wallet-links/host.ts": {
+      "sha256": "a9382f9b63f31e4be0aafcbdd9b69176899eb80fccb128594b975a00c1be91d7",
+      "symlink": null
+    },
+    "planning/raid-ci-matrix.json": {
+      "sha256": "b6b2c424d307be1080bae3888d76a86f6aa5c92f3560324131612def04fa5cf6",
+      "symlink": null
+    },
+    "src/identity-link/contracts.ts": {
+      "sha256": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+      "symlink": null
+    },
+    "src/identity-link/index.ts": {
+      "sha256": "3138cf36b3fccb9547ca6ebd1634c76f3b66998cc09b95daa8c67ba3d8e6dc3e",
+      "symlink": null
+    },
+    "src/lib/wallet-auth.ts": {
+      "sha256": "72c687d7b3e713d13678122291de45510baa45ba56e10ea371c70132e287e150",
+      "symlink": null
+    },
+    "src/lib/wallet-link-proof.ts": {
+      "sha256": "dd27d8b294853ece5ebc5f945e7e5e5bfa7ac10e41193cbf4ad0883054796477",
+      "symlink": null
+    },
+    "src/lib/x-oauth.ts": {
+      "sha256": "49899dc0b34ae6014a9aa03123f37936e5878baa372cb6608f930873784e1e36",
+      "symlink": null
+    },
+    "tests/identity-link-boundary.test.ts": {
+      "sha256": "1de0515d715c5e14035b2ab53a86e231a39d1f303a6473ba620383c2edfc2b5a",
+      "symlink": null
+    },
+    "docs/tasks/T006-wallet-links-b1.md": {
+      "sha256": "3d30b17b4a5e6dc467481c03106f708f62a18c4c16e8def8aea824df22c5b2ee",
+      "symlink": null
+    },
+    "examples/wallet-links/lib/wallet-challenge-contract.ts": {
+      "sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+      "symlink": "../../../src/lib/wallet-challenge-contract.ts"
+    },
+    "planning/task-evidence/T006-wallet-links-b1.json": {
+      "sha256": "13f13f7156d00139401205f11e2b3870d00e9d25c9ec2c0ca3f71175b7bad85c",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/auth-isolation-green.log": {
+      "sha256": "87bb42558f6105b983bf8e5c143860c3195b0fef41ef14ba40fd5ced0b710511",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/auth-isolation-green.xml": {
+      "sha256": "c2fe0f72e12804fbe68644a4ede8efd5477e6ecdd79db09b2aa5d22713e0eec1",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/auth-isolation-red-source/src/lib/wallet-auth.ts.snapshot": {
+      "sha256": "e62f07000987ff53738ebb4765f5080890a54405acfef4af64ca945ea9e2713f",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/auth-isolation-red-source/src/lib/x-oauth.ts.snapshot": {
+      "sha256": "39d1e4a05db2ca4362425ea7d1775eafc199dea0e43f5f77c8e19c781ac3115c",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/auth-isolation-red-source/tests/wallet-auth-isolation-db.test.ts.snapshot": {
+      "sha256": "aa38f0205b0edbad6f9dd3602ab9dfa00e208af3172b8ea70c5de812b4495ec4",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/auth-isolation-red.log": {
+      "sha256": "27f75e36c2a6666ad0dedc9b95cd934827a5e2019f7b9b041e68a0833035392a",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/auth-isolation-red.xml": {
+      "sha256": "52985b4fcd8df3a6f5d79b057250f3730cb5cc0fe01658b91d9f6614cfd8375f",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/credentials-green.xml": {
+      "sha256": "f509c22f5430adf0a54369ddc30099777ead8bf52daebd0243b1af8106762789",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/environment.json": {
+      "sha256": "ecee19e9cc9d4658d721e768dbc548b87baed615e45a8a9f058f861ba7569642",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/feature-green.xml": {
+      "sha256": "dc7816f17384abc1fd18bbb522aae8716e89c9659550e95f69371d20d1f55462",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/full-refactor.xml": {
+      "sha256": "a2c9c356116c15f2ad05f9c26dd93624e2021163340cea4e923ef0ed8b0af3a4",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/full-run.log": {
+      "sha256": "039369d81b8cd9a75314bb3101500d201b08173c97392dc993c43fe528d4bed8",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/green.xml": {
+      "sha256": "f6a2004247b314247e5060158a25b62bb8565c6ddf7e1ec77b99e4151ac8e564",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/precision-red-source/src/identity-link/index.ts.snapshot": {
+      "sha256": "e3498e2767e36b934ffe00e1b26ff6aa0e62532619390725be551a9c4f7143fd",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/precision-red-source/tests/wallet-link-credentials.test.ts.snapshot": {
+      "sha256": "1e9eb79129ec31730310ac043e885382d01076033b6d3ce7b11cffd8a0d63c82",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/precision-red.xml": {
+      "sha256": "f00e1e3aa0d1e766108636ea290b04bce852f75748f5a9124c9a2bba429e5b20",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/purpose-red-source/src/lib/wallet-auth.ts.snapshot": {
+      "sha256": "448a8ce5a2ce564671edbfe58463a0beff451835f47f573a9d8e991cf3e5dd8e",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/purpose-red-source/tests/wallet-link-credentials.test.ts.snapshot": {
+      "sha256": "5e630bd54d657fff539c3db78139c9b1720cb239fabe673c852c19f67fc39d54",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/purpose-red.xml": {
+      "sha256": "cc3139818cf683730c919d9d4c0261186b447c7f0aceef3288c1e566b3941f2b",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red-source/manifest.json": {
+      "sha256": "dbf19b2f7856fb5d213766233b49858a7e094478f164704fac76205aa279e15a",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/identity-link/contracts.ts.snapshot": {
+      "sha256": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/identity-link/index.ts.snapshot": {
+      "sha256": "8f4f4924673b179bd817a500025f697962e0fbafb1668808fafce372a7c8378d",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/lib/wallet-auth.ts.snapshot": {
+      "sha256": "887a9996e6a5f29a29fed6b9715c420ff33cd9ce6ee978a166e6c5e15a667653",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/lib/wallet-challenge-contract.ts.snapshot": {
+      "sha256": "9822b3fc0023290894f0fb4f83bde9ee10346ff582739066b48e8ead5ec2e3f4",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red-source/src/lib/wallet-link-proof.ts.snapshot": {
+      "sha256": "3a30b6f26bb543ceae8dc8124b6de149fbafec87f70aeff106612d2b5552b5dd",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red-source/tests/wallet-link-credentials.test.ts.snapshot": {
+      "sha256": "7c0cbc5377fab6b922e1d3d2831a51afef5f900078647a975060cfdc9ec1c027",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/red.xml": {
+      "sha256": "d9a487e21efd0e79244682031fb5ed130c5287ab305cff226a9d3f0a27444ac0",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/rotation-isolation-red.log": {
+      "sha256": "c4bf7c2f2abf7a2c678c4df20e1d493883e9441a2adefd3ba07ab0c304cb8320",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/rotation-isolation-red.xml": {
+      "sha256": "e2557e45e74a26232de7156c1805ebf53b62454c1eb5ce71df679e50e0e9519a",
+      "symlink": null
+    },
+    "planning/task-evidence/T006-wallet-links-b1/source-manifest.json": {
+      "sha256": "49be0e826a17e7e1ecf08d084709f8043908ba447ab1c207e12d5eef4f7e4adb",
+      "symlink": null
+    },
+    "src/lib/wallet-challenge-contract.ts": {
+      "sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+      "symlink": null
+    },
+    "tests/wallet-auth-isolation-db.test.ts": {
+      "sha256": "f2ac4f69645914ca9acd8f2b58f4f9c12f1af10d04f378d38eb73bec25fb217d",
+      "symlink": null
+    },
+    "tests/wallet-link-credentials.test.ts": {
+      "sha256": "29908694ce0fd516e09c6360638ffd2f94a133168a1324a25fa839489218d627",
+      "symlink": null
+    }
+  }
+}

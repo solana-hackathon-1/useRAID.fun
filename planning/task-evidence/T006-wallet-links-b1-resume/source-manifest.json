@@ -1,0 +1,83 @@
+{
+  "base_sha": "66d6a3a05936df54c8dbca150b7c3bea6e6134be",
+  "uncommitted_candidate": true,
+  "blueprint_sha256": "0a1a299e34b3c3a55fa2abceae3b18fbc3396b4039e5bc0b0405961f71e3335f",
+  "files": {
+    "docs/raid-wallet-links.md": {
+      "sha256": "f141f13ff8edd37a817a4f7983a6fcee4f7c018a1f022dbe93900125e51197c0",
+      "symlink": null
+    },
+    "examples/wallet-links/README.md": {
+      "sha256": "be2505c8df6fe4c01bee7c57912ae64245725e11163573e56f3860d0e4c8f37f",
+      "symlink": null
+    },
+    "examples/wallet-links/host.ts": {
+      "sha256": "a9382f9b63f31e4be0aafcbdd9b69176899eb80fccb128594b975a00c1be91d7",
+      "symlink": null
+    },
+    "planning/raid-ci-matrix.json": {
+      "sha256": "b6b2c424d307be1080bae3888d76a86f6aa5c92f3560324131612def04fa5cf6",
+      "symlink": null
+    },
+    "src/identity-link/contracts.ts": {
+      "sha256": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+      "symlink": null
+    },
+    "src/identity-link/index.ts": {
+      "sha256": "3138cf36b3fccb9547ca6ebd1634c76f3b66998cc09b95daa8c67ba3d8e6dc3e",
+      "symlink": null
+    },
+    "src/lib/wallet-auth.ts": {
+      "sha256": "7c22a4807abbc4bd4bcda4737ef5540284fae7f9a1c6f6be88dbca3813366cca",
+      "symlink": null
+    },
+    "src/lib/wallet-link-proof.ts": {
+      "sha256": "dd27d8b294853ece5ebc5f945e7e5e5bfa7ac10e41193cbf4ad0883054796477",
+      "symlink": null
+    },
+    "src/lib/x-oauth.ts": {
+      "sha256": "49899dc0b34ae6014a9aa03123f37936e5878baa372cb6608f930873784e1e36",
+      "symlink": null
+    },
+    "tests/identity-link-boundary.test.ts": {
+      "sha256": "506be7e6a10cc9f47983c7ebb45b4ddbca215108482b6fb98cda01c8a5801cd3",
+      "symlink": null
+    },
+    "docs/tasks/T006-wallet-links-b1.md": {
+      "sha256": "d86064e925856a3c8c164ee9541bdf68c70c508696a1dc99c08d61179bf538e1",
+      "symlink": null
+    },
+    "examples/wallet-links/lib/wallet-challenge-contract.ts": {
+      "sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+      "symlink": "../../../src/lib/wallet-challenge-contract.ts"
+    },
+    "src/lib/wallet-challenge-contract.ts": {
+      "sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+      "symlink": null
+    },
+    "tests/wallet-auth-isolation-db.test.ts": {
+      "sha256": "f2ac4f69645914ca9acd8f2b58f4f9c12f1af10d04f378d38eb73bec25fb217d",
+      "symlink": null
+    },
+    "tests/wallet-link-credentials.test.ts": {
+      "sha256": "1276f249914c2a7ed5d5585a75ce7d0e290e01562a2d5845eb986098814abf14",
+      "symlink": null
+    },
+    ".prettierignore": {
+      "sha256": "b3459f7ba0d0d557c5a41e3b0f47c0a4f0d3050bbf9e2f26145c52146676af5b",
+      "symlink": null
+    },
+    "docs/raid-identity-storage.md": {
+      "sha256": "d1347c140df3f4040a27fc1284d0e556a403af797d804a3603ad4a87fbbfa15e",
+      "symlink": null
+    },
+    "docs/tasks/T006-storage-independent-review-record.md": {
+      "sha256": "d24147ecd07ad893c7ff03e78d9f1175bc06afe9c223b4c6837d66ddc2d54e8a",
+      "symlink": null
+    },
+    "docs/tasks/2026-10-10-t006-b1-continuation.md": {
+      "sha256": "dc2b36ec7b4407d6608df7e9bcd54995387d990ca290fc35333072719936739b",
+      "symlink": null
+    }
+  }
+}

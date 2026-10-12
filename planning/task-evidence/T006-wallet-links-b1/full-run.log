@@ -1,0 +1,204 @@
+
+> useraid@0.1.0 test
+> vitest run --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-wallet-links-b1/full-refactor.xml
+
+
+ RUN  v4.1.11 /private/tmp/raid-t006-wallet-links-b1-codex-20261009
+
+stderr | tests/tracking-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/tracking-db.test.ts (48 tests) 2932ms
+stderr | tests/identity-link-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+{"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":146,"blocker":144,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+{"walletLinkRace":"link-then-legacy-insert","waiter":144,"blocker":146,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+{"walletLinkRace":"legacy-insert-then-link","waiter":146,"blocker":144,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at the User row lock; one participant
+{"walletLinkRace":"link-vs-link-same-account","waiter":144,"blocker":146,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+{"walletLinkRace":"link-vs-rotate-link-first","waiter":146,"blocker":144,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > rotate holding the subject vs link of that address: link waits, then reports a conflict
+{"walletLinkRace":"link-vs-rotate-rotate-first","waiter":144,"blocker":146,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+{"walletLinkRace":"link-vs-merge-as-drop","waiter":146,"blocker":144,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\"."}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+{"walletLinkRace":"link-vs-merge-delete-first","waiter":144,"blocker":146,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+{"walletLinkRace":"link-vs-merge-as-keep","waiter":146,"blocker":144,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+{"walletLinkRace":"link-vs-user-row-update","waiter":144,"blocker":146,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ ✓ tests/identity-link-db.test.ts (37 tests) 1231ms
+stderr | tests/rewards-finance.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/rewards-finance.test.ts (34 tests) 612ms
+ ✓ tests/integration.test.ts (28 tests) 592ms
+stderr | tests/studio-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/studio-db.test.ts (14 tests) 460ms
+stderr | tests/identity-storage-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > provision wins against old binary at final DELETE; entire auth transaction rolls back
+{"storageRace":true,"waiter":180,"blocker":178,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\".\"User\".\"role\", \"public\".\"User\".\"approved\", \"public\".\"User\".\"suspended\", \"public\".\"User\".\"affiliation\", \"public\".\"User\".\"createdAt\""}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > delete wins: provision blocks on User key lock then denies missing account without orphan
+{"storageRace":true,"waiter":178,"blocker":180,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > independent create/create race returns one committed identity and first provenance
+{"storageRace":true,"waiter":180,"blocker":178,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+
+ ✓ tests/identity-storage-db.test.ts (12 tests) 486ms
+ ✓ tests/identity-preflight.test.ts (48 tests) 13ms
+ ✓ tests/identity-storage.test.ts (33 tests) 8ms
+ ✓ tests/domain.test.ts (15 tests) 12ms
+ ✓ tests/identity-link-migration.test.ts (4 tests) 3341ms
+     ✓ applies twice, matches the Prisma schema with no drift, and records one row per migration  3335ms
+ ✓ tests/identity-link-boundary.test.ts (5 tests) 506ms
+   ✓ minimal external host links a second wallet using explicit dependencies  500ms
+stderr | tests/wallet-link-credentials.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held resolve-first locks
+{"credentialRace":true,"waiter":194,"blocker":192,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held revoke-first locks
+{"credentialRace":true,"waiter":192,"blocker":194,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held account-lock locks
+{"credentialRace":true,"waiter":194,"blocker":192,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ ✓ tests/wallet-link-credentials.test.ts (26 tests) 320ms
+ ✓ tests/identity-link.test.ts (31 tests) 34ms
+stderr | tests/launch-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/launch-db.test.ts (11 tests) 250ms
+ ✓ tests/money-integrity-db.test.ts (23 tests) 544ms
+stderr | tests/wallet-auth-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/wallet-auth-db.test.ts (18 tests) 608ms
+stderr | tests/usdc-ops-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/usdc-ops-db.test.ts (9 tests) 245ms
+stderr | tests/worker-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/worker-db.test.ts (15 tests) 1152ms
+       ✓ does not write a collection error onto a raid when a finance job fails  488ms
+ ✓ tests/shared-contracts.test.ts (31 tests) 16ms
+stderr | tests/tracking.test.ts > raid-specific search query > falls back to the unfiltered query when the author list exceeds the limit
+X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+ ✓ tests/tracking.test.ts (17 tests) 574ms
+     ✓ finds the same duplicate peers as the quadratic reference (v2)  304ms
+stderr | tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > ignores LOCAL_AUTO_APPROVE_CREATORS in production
+LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.
+
+ ✓ tests/x-oauth-db.test.ts (16 tests) 539ms
+ ✓ tests/x-oauth-routes.test.ts (12 tests) 11ms
+ ✓ tests/standalone-db.test.ts (5 tests) 154ms
+ ✓ tests/launch-ipfs.test.ts (11 tests) 8ms
+ ✓ tests/x-oauth.test.ts (12 tests) 39ms
+ ✓ tests/public-load-db.test.ts (6 tests) 289ms
+ ✓ tests/raid-fixtures.test.ts (9 tests) 16ms
+ ✓ tests/standalone-raids.test.ts (11 tests) 19ms
+ ✓ tests/raid-evidence.test.ts (21 tests) 11ms
+stderr | tests/launch-gate.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/launch-gate.test.ts (10 tests) 8ms
+stderr | tests/usdc-receipt.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/usdc-receipt.test.ts (6 tests) 9ms
+stderr | tests/media-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/media-db.test.ts (6 tests) 82ms
+ ✓ tests/audit-db.test.ts (3 tests) 111ms
+stderr | tests/admin-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/admin-db.test.ts (5 tests) 155ms
+ ✓ tests/wallet-link-proof.test.ts (19 tests) 7ms
+stderr | tests/studio.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/studio.test.ts (14 tests) 15ms
+stderr | tests/usdc-chain.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/usdc-chain.test.ts (3 tests) 8ms
+ ✓ tests/account-merge-canonical.test.ts (13 tests) 5ms
+ ✓ tests/braces-security.test.ts (14 tests) 9ms
+ ✓ tests/launch-crypto.test.ts (8 tests) 7ms
+ ✓ tests/refresh.test.ts (6 tests) 27ms
+ ✓ tests/wallet-routes.test.ts (11 tests) 13ms
+ ✓ tests/shared-contracts-boundary.test.ts (4 tests) 264ms
+ ✓ tests/identity-storage-boundary.test.ts (3 tests) 388ms
+   ✓ minimal external host resolves a real mapping using explicit dependencies  385ms
+ ✓ tests/report-route.test.ts (4 tests) 6ms
+ ✓ tests/shared-contracts-review.test.ts (3 tests) 7ms
+ ✓ tests/env-example.test.ts (5 tests) 18ms
+ ✓ tests/dependency-compatibility.test.ts (6 tests) 732ms
+     ✓ the image runtime can decode and resize a raster image  706ms
+ ✓ tests/rewards.test.ts (3 tests) 9ms
+ ✓ tests/docs-links.test.ts (57 tests) 333ms
+ ✓ tests/creator-route.test.ts (4 tests) 6ms
+stderr | tests/pump-launch.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/pump-launch.test.ts (2 tests) 66ms
+ ✓ tests/http.test.ts (11 tests) 7ms
+ ✓ tests/submit-route.test.ts (2 tests) 5ms
+ ✓ tests/security-headers.test.ts (5 tests) 5ms
+ ✓ tests/db-guard.test.ts (6 tests) 3ms
+ ✓ tests/deploy.test.ts (6 tests) 4ms
+ ✓ tests/identity-preflight-boundary.test.ts (1 test) 254ms
+ ✓ tests/shell-account.test.ts (4 tests) 3ms
+ ✓ tests/admin-lists.test.ts (5 tests) 2ms
+ ✓ tests/raid-fixtures-boundary.test.ts (1 test) 263ms
+ ✓ tests/discovery-rows.test.ts (4 tests) 2ms
+stderr | tests/studio-preview-route.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/studio-preview-route.test.ts (2 tests) 5ms
+ ✓ tests/auth-routes.test.ts (4 tests) 5ms
+stderr | tests/fake-solana.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ✓ tests/fake-solana.test.ts (3 tests) 32ms
+ ✓ tests/auth.test.ts (4 tests) 25ms
+ ✓ tests/audit-check.test.ts (3 tests) 2ms
+ ✓ tests/states.test.ts (3 tests) 3ms
+ ✓ tests/image-hosts.test.ts (11 tests) 2ms
+ ✓ tests/admins.test.ts (4 tests) 2ms
+ ✓ tests/format.test.ts (2 tests) 3ms
+ ✓ tests/token-data.test.ts (1 test) 3ms
+ ✓ tests/local-db.test.ts (2 tests) 2ms
+
+ Test Files  73 passed (73)
+      Tests  855 passed (855)
+   Start at  09:35:54
+   Duration  31.37s (transform 626ms, setup 0ms, import 5.82s, tests 17.94s, environment 3ms)
+
+JUNIT report written to /private/tmp/raid-t006-wallet-links-b1-codex-20261009/planning/task-evidence/T006-wallet-links-b1/full-refactor.xml

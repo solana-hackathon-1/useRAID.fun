@@ -1,0 +1,141 @@
+{
+  "start_at_utc": "2026-10-11T14:09:59.097124+00:00",
+  "agent": "Codex /root",
+  "review": "SELF-EVALUATED",
+  "source_identity": "candidate plus verified transfer-plan.json; task-owned dependencies and synthetic PostgreSQL",
+  "reused_evidence": "Final1162tests/94files,48planning,productionbuild,8browser,13HTTP and corrected visual probes; same implementation bytes",
+  "independent_review": "NOT VERIFIED",
+  "authority": "Explicit owner released-signin choice DEC-2026-10-11-03; authorized reconcile/verify local main; no new push",
+  "end_at_utc": "2026-10-11T14:16:29.995603+00:00",
+  "elapsed_seconds": 390.898,
+  "task_started_at_utc": "2026-10-11T13:49:47.462572+00:00",
+  "head": "4cc1a12e21078aa493b2b71123758cedd2ad81f2",
+  "source_manifest": "source-manifest.json",
+  "checks": [
+    {
+      "command": "RUN_DB_TESTS=true DATABASE_URL=<owned useraid_test> npm test",
+      "result": "PASS",
+      "observed": "94 files,1162 tests,0 failures/0 skipped;59.34s",
+      "evidence": "full-final.log"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_raid_*.py",
+      "result": "PASS",
+      "observed": "48 tests/10.292s",
+      "evidence": "planning-tests.log"
+    },
+    {
+      "command": "npm run typecheck -- --incremental false",
+      "result": "PASS",
+      "observed": "Candidate and transferred root exit0",
+      "evidence": [
+        "typecheck.log",
+        "root-typecheck.log"
+      ]
+    },
+    {
+      "command": "DEMO_MODE=true STUDIO_SANDBOX=false WALLET_LINKS_ENABLED=false ACCOUNT_FOLDS_ENABLED=false npm run build",
+      "result": "PASS",
+      "observed": "Next16.3.8 default Turbopack optimized production build, fresh locked runtime; no provider credentials; pure-JS bigint fallback warning",
+      "evidence": "build.log"
+    },
+    {
+      "command": "playwright test --config=/tmp/raid-auth-reconcile-20261011/browser.config.mjs",
+      "result": "PASS",
+      "observed": "8 desktop/mobile test-center tests/12.8s,0 retries",
+      "evidence": "browser.log"
+    },
+    {
+      "command": "tsx .auth-preview-probe.mts; tsx .visual-preview-probe.mts",
+      "result": "PASS",
+      "observed": "13 HTTP/render checks; additional2 hydrated visual checks with0 console/page errors, no overflow",
+      "evidence": [
+        "http-preview.json",
+        "visual-preview.json"
+      ]
+    },
+    {
+      "command": "npm run audit:check",
+      "result": "PASS",
+      "observed": "Moderate-or-higher advisories all allowlisted and unexpired",
+      "evidence": "audit.log"
+    },
+    {
+      "command": "npm run lint; eslint <changed auth/tests/example files>",
+      "result": "PASS_WITH_WARNINGS",
+      "observed": "Full initial lint0errors27warnings; one unused merged helper removed and final changed-file lint0errors0warnings.24 upstream warnings and2 prior WIP authority-hook warnings remain",
+      "evidence": [
+        "lint.log",
+        "lint-final-scoped.log"
+      ]
+    },
+    {
+      "command": "git diff --check; scoped prettier --check; source/fingerprint/schema checks",
+      "result": "PASS",
+      "observed": "No whitespace errors/conflict markers; canonical fingerprints exact; package/lock/schema/all22 migrations unchanged; all listed implementation files equal tested candidate",
+      "evidence": [
+        "root-diff-check.log",
+        "self-review-doc-format.log",
+        "source-manifest.json"
+      ]
+    },
+    {
+      "command": "transfer.py probe; transfer.py apply",
+      "result": "PASS",
+      "observed": "Disposable Git probe and actual main fast-forward,1152 prepared paths retained,1066 original file hashes unchanged before transfer except mandated checkpoint; empty staged diff/0 unmerged entries; no push/new commit",
+      "evidence": [
+        "git-probe.json",
+        "git-result.json",
+        "transfer-plan.json"
+      ]
+    }
+  ],
+  "findings_and_fixes": [
+    "Released lookup/retry/fold/first-X semantics combined with WIP reusable resolve/revoke and stronger own-session authority, explicit READ COMMITTED and locked post-wait link authority.",
+    "Conflicting flag-off/anonymous-only/single-session WIP tests adapted to explicit owner DEC-2026-10-11-03 before implementation; full original RED logs retained.",
+    "Wrong-network fixture incorrectly attempted immutable revoked-row reactivation; replaced with a distinct legitimate network reservation, preserving denial assertions.",
+    "Fold race fixture now explicitly enables folds only inside its synthetic test/finally restoration; released sanitized503 replaces the raw driver response assertion.",
+    "Merged consuming example had duplicate identifiers, already-revoked active fixture, missing copied untracked symlink, and stale expected output; corrected union preserves every original assertion and adds released lookup evidence.",
+    "Two rotation races asserted the old trigger INSERT wait. Released lookup now takes the wallet-subject advisory lock earlier; probes assert observed pg_blocking_pids there and retain409/no-mutation/unconsumed-challenge assertions.",
+    "Initial isolated npmci omitted install-links=true from .npmrc; copied exact declared host dependency configuration and clean install passed without package/lock edits.",
+    "Initial HTTP probe used GET on POST-only generic admin action and observed405. Correct GET admin/usdc retains401 assertion.",
+    "An early Playwright screenshot applied caret styles before React hydration (mismatch reported in dev log); dedicated fresh probes wait for network idle, exercise hydrated controls, preserve caret styles, and assert no console/page errors. Original screenshot retained; no application change needed.",
+    "Self-review corrected lookup DTO/lock documentation to actual account-only reservation and User FOR NO KEY UPDATE; restored incoming public Git-preparation history that original untracked overlay lacked."
+  ],
+  "not_run": [
+    "Independent combined-source security/criterion review",
+    "Full hosted CI and newly built/published Docker image",
+    "Whole demo/live/Studio browser matrices; bounded existing test-center8 run only",
+    "Real X/provider/OAuth/financial/network finality",
+    "Representative college/friend UAT or business sign-off",
+    "Global lock-protocol implementation or proof; prior rejected candidates and open design retained",
+    "B2c/B3/revoke session invalidation/durable audit/UI/feature enablement",
+    "Production release gates/backup restoration/off-host durability"
+  ],
+  "preview": {
+    "url": "http://localhost:3021/test-center",
+    "source": "/tmp/raid-auth-reconcile-20261011/candidate, byte-equal application source to root source-manifest",
+    "mode": "Next development Studio sandbox, fake X/test USDC; new link/fold flags false",
+    "pid": 78299,
+    "binding": "127.0.0.1:3021",
+    "session": 78609,
+    "database_container": "raid-auth-merge-20261011",
+    "database_container_id": "f679815182dffd119aa450c5369b189b0f043ea73e2701038038414d5509088e",
+    "database_port": "127.0.0.1:62843",
+    "databases": [
+      "useraid_test",
+      "useraid_studio_test"
+    ],
+    "runtime": "Node26.0.0/npm11.12.1/Next16.3.8/Prisma6.19.3/PostgreSQL16-alpine pinned721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "stop_server": "After confirming PID78299 still owns this cwd and port, kill -TERM 78299",
+    "stop_database": "docker stop raid-auth-merge-20261011 only when preview/review no longer needed",
+    "kept_available": true,
+    "public_staging": "https://staging.useraid.fun remains unchanged released e492 production-container staging; no new auth source deployed"
+  },
+  "completion_validator": {
+    "result": "EXPECTED_FAIL",
+    "exit_code": 1,
+    "reason": "Missing independent reviewer/named full CI/full27 criteria NOT VERIFIED; not full T006 completion",
+    "evidence": "completion-validator.log"
+  }
+}

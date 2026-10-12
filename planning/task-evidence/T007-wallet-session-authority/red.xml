@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="4" errors="0" time="0.30272325">
+    <testsuite name="tests/wallet-auth-db.test.ts" timestamp="2026-10-10T05:09:15.725Z" hostname="0xd.local" tests="22" failures="4" errors="0" skipped="18" time="0.30272325">
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; creates wallet-only user, consumes challenge once, and rejects stale challenge" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; refuses linking wallet already owned by another X identity" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; issues a Sign-In With Solana formatted challenge" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; binds a challenge to the signer state it was issued for" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not let a link signature perform a wallet rotation" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; refuses to sign a suspended owner in and creates no session" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; rotates the session and records how it was issued" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; keeps an X session an X session when the same user links a wallet" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not renew expired X authority through a wallet signature" time="0.133650792">
+            <failure message="expected &apos;x&apos; to be &apos;wallet&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;x&apos; to be &apos;wallet&apos; // Object.is equality
+
+Expected: &quot;wallet&quot;
+Received: &quot;x&quot;
+
+ ❯ tests/wallet-auth-db.test.ts:204:9
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not borrow or delete another account&apos;s live X session" time="0.024840292">
+            <failure message="expected null to deeply equal { …(4) }" type="AssertionError">
+AssertionError: expected null to deeply equal { …(4) }
+
+- Expected:
+{
+  &quot;expiresAt&quot;: 2026-10-10T05:25:55.615Z,
+  &quot;tokenHash&quot;: &quot;1f2defafd3d99336bf80dfb65cfb56a77a9417f232770813b800e97b1646e07c&quot;,
+  &quot;userId&quot;: &quot;cmv1xpplq0006oiml1hiklazb&quot;,
+  &quot;via&quot;: &quot;x&quot;,
+}
+
++ Received:
+null
+
+ ❯ tests/wallet-auth-db.test.ts:216:78
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires authenticated account context before preserving X authority" time="0.04375325">
+            <failure message="expected &apos;x&apos; to be &apos;wallet&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;x&apos; to be &apos;wallet&apos; // Object.is equality
+
+Expected: &quot;wallet&quot;
+Received: &quot;x&quot;
+
+ ❯ tests/wallet-auth-db.test.ts:229:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; normalizes unknown session authority to wallet authority" time="0.032015958">
+            <failure message="expected &apos;unexpected-provider&apos; to be &apos;wallet&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;unexpected-provider&apos; to be &apos;wallet&apos; // Object.is equality
+
+Expected: &quot;wallet&quot;
+Received: &quot;unexpected-provider&quot;
+
+ ❯ tests/wallet-auth-db.test.ts:237:7
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires an X session for administrator access" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; moves a wallet from an empty wallet-only account onto the signed-in X account" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; keeps the wallet account when the X account is the empty one" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when the wallet owner joined a Raid" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; replaces the address and records the previous one" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; keeps an existing enrollment on the wallet snapshotted when it was made" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses while a withdrawal or live deposit is open" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses an address owned by another account and a second change within 7 days" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; requires a connected X account" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

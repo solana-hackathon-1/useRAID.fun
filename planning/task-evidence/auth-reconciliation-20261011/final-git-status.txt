@@ -1,0 +1,92 @@
+## main...origin/main [ahead 2]
+ M .env.example
+ M .prettierignore
+ M RAID_AGENT_BLUEPRINT.md
+ M docs/ai-handoff/CURRENT.md
+ M docs/ai-handoff/MEMORY.md
+ M docs/raid-identity-storage.md
+ M docs/raid-wallet-links.md
+ M examples/wallet-links/README.md
+ M examples/wallet-links/host.ts
+ M next-env.d.ts
+ M planning/raid-ci-matrix.json
+ M planning/raid-scenarios.json
+ M planning/raid-task-contracts.json
+ M planning/task-evidence/vm-staging-20261011/T005-staging-incomplete.json
+ M src/app/studio-test/page.tsx
+ M src/components/shell.tsx
+ M src/identity-link/contracts.ts
+ M src/identity-link/index.ts
+ M src/lib/account-merge.ts
+ M src/lib/config.ts
+ M src/lib/wallet-auth.ts
+ M src/lib/wallet-link-proof.ts
+ M src/lib/x-oauth.ts
+ M tests/account-merge-canonical.test.ts
+ M tests/identity-link-boundary.test.ts
+ M tests/wallet-auth-db.test.ts
+?? .claude/worktrees/
+?? WARP.md
+?? docs/raid-test-center.md
+?? docs/tasks/2026-10-09-tests-human-review-audit.md
+?? docs/tasks/2026-10-10-pr-stack-verification.json
+?? docs/tasks/2026-10-10-pr-stack-verification.md
+?? docs/tasks/2026-10-10-t006-b1-continuation.md
+?? docs/tasks/2026-10-10-test-center.md
+?? docs/tasks/2026-10-11-auth-reconciliation.md
+?? docs/tasks/T006-identity-lock-protocol-design.md
+?? docs/tasks/T006-storage-independent-review-record.md
+?? docs/tasks/T006-wallet-links-b1-final-acceptance.md
+?? docs/tasks/T006-wallet-links-b1.md
+?? docs/tasks/T006-wallet-links-b2-candidate3-fixes.md
+?? docs/tasks/T006-wallet-links-b2-codex-fixes.md
+?? docs/tasks/T006-wallet-links-b2-codex-review-handoff.md
+?? docs/tasks/T006-wallet-links-b2-rereview.md
+?? examples/test-center/
+?? examples/wallet-links/lib/wallet-challenge-contract.ts
+?? planning/task-evidence/T006-wallet-links-b1-final/
+?? planning/task-evidence/T006-wallet-links-b1-resume/
+?? planning/task-evidence/T006-wallet-links-b1-review-fixes/
+?? planning/task-evidence/T006-wallet-links-b1-review/
+?? planning/task-evidence/T006-wallet-links-b1.json
+?? planning/task-evidence/T006-wallet-links-b1/
+?? planning/task-evidence/T006-wallet-links-b2-candidate/
+?? planning/task-evidence/T006-wallet-links-b2-candidate3-fixes/
+?? planning/task-evidence/T006-wallet-links-b2-codex-fixes/
+?? planning/task-evidence/T006-wallet-links-b2-rereview-fixes/
+?? planning/task-evidence/T006-wallet-links-b2a-authority/
+?? planning/task-evidence/T006-wallet-links-b2a/
+?? planning/task-evidence/T006-wallet-links-b2b/
+?? planning/task-evidence/T007-wallet-session-authority/
+?? planning/task-evidence/auth-reconciliation-20261011/
+?? planning/task-evidence/local-test-center-20261010/
+?? planning/task-evidence/vm-staging-20261011/anonymous-registry-check.log
+?? planning/task-evidence/vm-staging-20261011/bootstrap-image-parity.json
+?? planning/task-evidence/vm-staging-20261011/hosted-publication.json
+?? planning/task-evidence/vm-staging-20261011/hosted-run.log
+?? planning/task-evidence/vm-staging-20261011/post-update-http.json
+?? planning/task-evidence/vm-staging-20261011/registry-access.json
+?? planning/task-evidence/vm-staging-20261011/updater-completion-validator.log
+?? planning/task-evidence/vm-staging-20261011/updater-self-evaluation.json
+?? planning/task-evidence/vm-staging-20261011/verified-rollout.json
+?? planning/task-evidence/vm-staging-20261011/vm-after-watchtower-detail.json
+?? planning/task-evidence/vm-staging-20261011/vm-before-watchtower-detail.json
+?? planning/task-evidence/vm-staging-20261011/vm-permanent-watchtower-poll.log
+?? planning/task-evidence/vm-staging-20261011/vm-permanent-watchtower-start.log
+?? planning/task-evidence/vm-staging-20261011/vm-post-update-db-watcher.log
+?? planning/task-evidence/vm-staging-20261011/vm-private-pull.log
+?? planning/task-evidence/vm-staging-20261011/vm-watchtower-first-update-corrected.log
+?? planning/task-evidence/vm-staging-20261011/vm-watchtower-first-update.log
+?? src/app/test-center/
+?? src/components/test-center.tsx
+?? src/lib/wallet-challenge-contract.ts
+?? src/lib/wallet-session-authority.ts
+?? tests/browser-studio/test-center.spec.ts
+?? tests/identity-link-authority-hook-db.test.ts
+?? tests/wallet-auth-isolation-db.test.ts
+?? tests/wallet-link-additional-db.test.ts
+?? tests/wallet-link-authority-db.test.ts
+?? tests/wallet-link-credentials.test.ts
+?? tests/wallet-link-lock-order-db.test.ts
+?? tests/wallet-link-signin-db.test.ts
+?? tests/wallet-session-authority.test.ts

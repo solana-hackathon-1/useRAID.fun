@@ -1,0 +1,12 @@
+time="2026-10-11T11:28:26Z" level=info msg="Watchtower 1.7.1"
+time="2026-10-11T11:28:26Z" level=info msg="Using no notifications"
+time="2026-10-11T11:28:26Z" level=info msg="Only checking containers using enable label, in scope \"useraid-staging\""
+time="2026-10-11T11:28:26Z" level=info msg="Running a one time update."
+time="2026-10-11T11:28:39Z" level=info msg="Found new ghcr.io/solana-hackathon-1/useraid.fun:staging image (a0448967927e)"
+time="2026-10-11T11:28:47Z" level=info msg="Found new ghcr.io/solana-hackathon-1/useraid.fun:staging image (a0448967927e)"
+time="2026-10-11T11:28:47Z" level=info msg="Stopping /useraid-staging-web-1 (0ac897506e17) with SIGTERM"
+time="2026-10-11T11:28:48Z" level=info msg="Stopping /useraid-staging-worker-1 (0b1adb1e13ed) with SIGTERM"
+time="2026-10-11T11:28:49Z" level=info msg="Creating /useraid-staging-worker-1"
+time="2026-10-11T11:28:49Z" level=info msg="Creating /useraid-staging-web-1"
+time="2026-10-11T11:28:49Z" level=info msg="Session done" Failed=0 Scanned=2 Updated=2 notify=no
+time="2026-10-11T11:28:49Z" level=info msg="Waiting for the notification goroutine to finish" notify=no

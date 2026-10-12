@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="22" errors="0" time="0.157087375">
+    <testsuite name="tests/wallet-link-credentials.test.ts" timestamp="2026-10-09T03:44:53.308Z" hostname="0xd.local" tests="22" failures="22" errors="0" skipped="0" time="0.157087375">
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants" time="0.003550917">
+            <failure message="expected &apos;not-implemented&apos; to be &apos;mainnet&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;not-implemented&apos; to be &apos;mainnet&apos; // Object.is equality
+
+Expected: &quot;mainnet&quot;
+Received: &quot;not-implemented&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:50:27
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolves only internal account/participant context under subject then account locks, without writes" time="0.001466666">
+            <failure message="expected { source: &apos;ABSENT&apos; } to deeply equal { source: &apos;LINK&apos;, …(5) }" type="AssertionError">
+AssertionError: expected { source: &apos;ABSENT&apos; } to deeply equal { source: &apos;LINK&apos;, …(5) }
+
+- Expected
++ Received
+
+  {
+-   &quot;accountId&quot;: &quot;credentials-alice&quot;,
+-   &quot;address&quot;: &quot;3qbR1eZRqXUWroWKKYhbDmR3FfqTHfqSU8zZSxtANzYh&quot;,
+-   &quot;linkId&quot;: &quot;a1b2c3d4-0000-4000-8000-000000000001&quot;,
+-   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
+-   &quot;participantId&quot;: &quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92401&quot;,
+-   &quot;source&quot;: &quot;LINK&quot;,
++   &quot;source&quot;: &quot;ABSENT&quot;,
+  }
+
+ ❯ tests/wallet-link-credentials.test.ts:56:55
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock" time="0.000787708">
+            <failure message="expected { source: &apos;ABSENT&apos; } to match object { source: &apos;PRIMARY&apos;, …(3) }" type="AssertionError">
+AssertionError: expected { source: &apos;ABSENT&apos; } to match object { source: &apos;PRIMARY&apos;, …(3) }
+
+- Expected
++ Received
+
+  {
+-   &quot;accountId&quot;: &quot;credentials-alice&quot;,
+-   &quot;linkId&quot;: null,
+-   &quot;participantId&quot;: null,
+-   &quot;source&quot;: &quot;PRIMARY&quot;,
++   &quot;source&quot;: &quot;ABSENT&quot;,
+  }
+
+ ❯ tests/wallet-link-credentials.test.ts:64:70
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;REVOKED&quot;}" time="0.000256209">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;IDENTITY_REVOKED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;IDENTITY_REVOKED&apos; // Object.is equality
+
+Expected: &quot;IDENTITY_REVOKED&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:78:80
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;suspended&quot;:true}" time="0.000178125">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;ACCOUNT_RESTRICTED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;ACCOUNT_RESTRICTED&apos; // Object.is equality
+
+Expected: &quot;ACCOUNT_RESTRICTED&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:78:80
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:null}" time="0.00017175">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:78:80
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92402&quot;}" time="0.000160334">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:78:80
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;INVALID&quot;}" time="0.000152583">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:78:80
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;malformed&quot;:true}" time="0.000141333">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:78:80
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; revokes once, preserves permanent reservation, and repeats without another UPDATE" time="0.000498333">
+            <failure message="STORAGE_UNAVAILABLE" type="IdentityLinkError">
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ revokeWalletCredential src/identity-link/index.ts:331:9
+ ❯ tests/wallet-link-credentials.test.ts:82:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;STORAGE_UNAVAILABLE&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;actorAccountId&quot;:&quot;credentials-bob&quot;}" time="0.000190416">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;WRONG_ACTOR&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;WRONG_ACTOR&apos; // Object.is equality
+
+Expected: &quot;WRONG_ACTOR&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:96:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-bob&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000142542">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;FORBIDDEN&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;FORBIDDEN&apos; // Object.is equality
+
+Expected: &quot;FORBIDDEN&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:96:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;REVOKED&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000143292">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;AUTHENTICATION_REQUIRED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;AUTHENTICATION_REQUIRED&apos; // Object.is equality
+
+Expected: &quot;AUTHENTICATION_REQUIRED&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:96:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00.000Z&quot;}}" time="0.000126958">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;AUTHENTICATION_REQUIRED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;AUTHENTICATION_REQUIRED&apos; // Object.is equality
+
+Expected: &quot;AUTHENTICATION_REQUIRED&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:96:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;requestId&quot;:&quot;&quot;}" time="0.000103542">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;INVALID_INPUT&apos; // Object.is equality
+
+Expected: &quot;INVALID_INPUT&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:96:88
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; protects own primary and returns identical sanitized failure for missing or foreign targets" time="0.000149292">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;PRIMARY_WALLET_PROTECTED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;PRIMARY_WALLET_PROTECTED&apos; // Object.is equality
+
+Expected: &quot;PRIMARY_WALLET_PROTECTED&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:100:105
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000130292">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:106:122
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.00010025">
+            <failure message="expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;STORAGE_UNAVAILABLE&apos; to be &apos;STORAGE_CONTRACT&apos; // Object.is equality
+
+Expected: &quot;STORAGE_CONTRACT&quot;
+Received: &quot;STORAGE_UNAVAILABLE&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:106:122
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolves unmapped legacy primary without provisioning and links preserve canonical context" time="0.042811416">
+            <failure message="expected { source: &apos;ABSENT&apos; } to match object { source: &apos;PRIMARY&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { source: &apos;ABSENT&apos; } to match object { source: &apos;PRIMARY&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+-   &quot;accountId&quot;: &quot;credentials-alice&quot;,
+-   &quot;participantId&quot;: null,
+-   &quot;source&quot;: &quot;PRIMARY&quot;,
++   &quot;source&quot;: &quot;ABSENT&quot;,
+  }
+
+ ❯ tests/wallet-link-credentials.test.ts:132:71
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; existing generator uses the shared legacy vocabulary without issuing additional-link purposes" time="0.032429167">
+            <failure message="expected &apos;Sign in to useRAID.fun.&apos; to be &apos;not-implemented&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;Sign in to useRAID.fun.&apos; to be &apos;not-implemented&apos; // Object.is equality
+
+Expected: &quot;not-implemented&quot;
+Received: &quot;Sign in to useRAID.fun.&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:142:48
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; revoke keeps immutable provenance, rejects primary/foreign targets and leaves address reserved" time="0.034477084">
+            <failure message="STORAGE_UNAVAILABLE" type="IdentityLinkError">
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ revokeWalletCredential src/identity-link/index.ts:331:9
+ ❯ tests/wallet-link-credentials.test.ts:149:32
+ ❯ tests/wallet-link-credentials.test.ts:120:81
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ tests/wallet-link-credentials.test.ts:149:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;STORAGE_UNAVAILABLE&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; restricted owner cannot resolve or revoke and malformed trusted session causes no mutation" time="0.026018958">
+            <failure message="expected &apos;NO_ERROR&apos; to be &apos;ACCOUNT_RESTRICTED&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;NO_ERROR&apos; to be &apos;ACCOUNT_RESTRICTED&apos; // Object.is equality
+
+Expected: &quot;ACCOUNT_RESTRICTED&quot;
+Received: &quot;NO_ERROR&quot;
+
+ ❯ tests/wallet-link-credentials.test.ts:165:77
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

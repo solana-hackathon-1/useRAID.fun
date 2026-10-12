@@ -1,0 +1,12 @@
+
+> useraid@0.1.0 test:browser:live
+> playwright test --config=playwright.live.config.ts
+
+
+Running 44 tests using 1 worker
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+··[WebServer] TRUSTED_IP_HEADER is unset or invalid: public rate limits fall back to one shared bucket.
+·············°°°··[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·················°°°····
+  6 skipped
+  38 passed (34.8s)

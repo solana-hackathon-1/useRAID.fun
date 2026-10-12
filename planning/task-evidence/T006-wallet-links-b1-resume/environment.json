@@ -1,0 +1,16 @@
+{
+  "container_id": "87c75a57bbcf7538387017b5a439b4b35d19119d7efb5b4566dd8b3931e3212c",
+  "started_at": "2026-10-10T04:13:09.275118971Z",
+  "image_id": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+  "task_label": "T006-B1-resume",
+  "tmpfs": {
+    "/var/lib/postgresql/data": "rw,size=512m"
+  },
+  "mounts": [],
+  "port_binding": {
+    "HostIp": "127.0.0.1",
+    "HostPort": "54868"
+  },
+  "node": "v26.0.0",
+  "harness_failure": "First docker run used image ID as registry digest and failed manifest schema unsupported, no container created; corrected to local image ID."
+}

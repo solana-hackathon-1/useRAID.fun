@@ -1,0 +1,5 @@
+
+> raid-test-center-example@1.0.0 start
+> tsx host.ts
+
+Independent host rendered the read-only test center without Next.js, DB or credentials.

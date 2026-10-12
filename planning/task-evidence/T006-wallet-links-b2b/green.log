@@ -1,0 +1,11 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ✓ tests/wallet-link-signin-db.test.ts (6 tests) 338ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  15:48:56
+   Duration  621ms (transform 67ms, setup 0ms, import 187ms, tests 338ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b2b/green.xml

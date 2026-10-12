@@ -1,0 +1,42 @@
+
+> useraid@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+ ❯ tests/wallet-link-credentials.test.ts (31 tests | 2 failed) 10663ms
+     × rotation preserves cross-table subject exclusion under default repeatable read while a link commits 5109ms
+     × rotation preserves cross-table subject exclusion under default serializable while a link commits 5124ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default repeatable read while a link commits
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default serializable while a link commits
+AssertionError: expected undefined to be defined
+ ❯ tests/wallet-link-credentials.test.ts:526:24
+    524|           await new Promise((done) => setTimeout(done, 10));
+    525|         }
+    526|         expect(waiter).toBeDefined();
+       |                        ^
+    527|         await observedBlock(waiter!, blocker, /INSERT.*WalletIdentity/…
+    528|         release.resolve();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed | 93 passed (94)
+      Tests  2 failed | 1160 passed (1162)
+   Start at  19:45:37
+   Duration  69.19s (transform 775ms, setup 0ms, import 7.92s, tests 50.97s, environment 5ms)
+

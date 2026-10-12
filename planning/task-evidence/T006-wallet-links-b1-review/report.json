@@ -1,0 +1,401 @@
+{
+ "reviewer": "Claude (independent, non-author subagent)",
+ "date": "2026-10-10",
+ "verdict": "ACCEPTED WITH CONDITIONS",
+ "source": "working tree on main 66d6a3a, copied with rsync to /tmp/raid-b1-claude-review-20261010/src; final file hashes cmp-equal to the main checkout for all changed source/test files",
+ "verification": {
+  "tsc_noEmit": "exit 0",
+  "focused_7_suites": "124 passed / 0 failed / 0 skipped (wallet-link-credentials 28, wallet-auth-isolation-db 2, wallet-session-authority 11, wallet-auth-db 25, x-oauth-db 16, identity-link-boundary 5, identity-link-db 37)",
+  "full_npm_test": "84 files, 1069 passed, 0 failed, 0 errors, 0 skipped (vitest run, RUN_DB_TESTS=true)",
+  "prettier_check_owned": "clean",
+  "eslint_owned": "clean (no output)",
+  "git_diff_check": "clean",
+  "example_host": "own npm install + generate + 4 migrations on own DB useraid_wallet_links_host_test: JSON line with all 14 flags true (incl. internalCredentialContext, revokedReserved)",
+  "migrations_applied": "22 (_prisma_migrations count 22)"
+ },
+ "scope": {
+  "schema_or_migration_edits": "none (git diff HEAD --stat -- prisma empty)",
+  "blueprint_edits": "none; blueprint sha256 equals recorded 0a1a299e...",
+  "routes_ui_flags": "none added (no wallet_links_enabled / link-additional in src; src/app and src/components untouched)",
+  "client_asserted_authority": "none found; revoke/resolve take host-supplied observations (documented) and walletSessionAuthority requires authenticated===resolved===previous.userId, via==='x', unexpired"
+ },
+ "findings": [
+  {
+   "n": 1,
+   "severity": "medium",
+   "file": "src/identity-link/index.ts:105-112",
+   "summary": "validPort's READ_COMMITTED check is not covered for the ABSENT path (mutation M26 survives).",
+   "failure_scenario": "Remove the isolation clause: tests still pass because findHumanParticipant (identity-storage) re-checks isolation, but resolveWalletCredential on an ABSENT address never calls it, so a SERIALIZABLE/REPEATABLE READ port returns {source:'ABSENT'} from a snapshot observation; the module's documented per-statement-snapshot reliance is unprotected for exactly the case that lets a host provision a user.",
+   "fix": "Add a fake-port test: resolveWalletCredential(ABSENT world, tx with isolation SERIALIZABLE) must fail STORAGE_CONTRACT (and same for revoke) before any SQL; RED by deleting the clause."
+  },
+  {
+   "n": 2,
+   "severity": "medium",
+   "file": "docs/raid-wallet-links.md (lock-race paragraph); src/identity-link/index.ts:398-404",
+   "summary": "Documented 'PRIMARY observation rechecks ownership after account lock and fails closed if a merge changed it' is untested (mutation M13 survives) and likely unreachable.",
+   "failure_scenario": "Legacy absorbAccount re-points WalletIdentity.userId without the subject lock, but always deletes the dropped account; resolve's lock on the dropped (observed) account then returns ACCOUNT_NOT_FOUND or blocks the delete, so the second observation can never see a different owner via merge. The claim is untested, so a future change could remove it or rely on it silently.",
+   "fix": "Write a real PostgreSQL race test (merge holding the userId update, resolver waiting) to either demonstrate the branch is reachable or reword the doc and delete the dead check. Also test the opposite order (resolver holds drop-account lock, merge delete blocks, and a session created by the host in that tx is cascaded away) to document the host consequence."
+  },
+  {
+   "n": 3,
+   "severity": "medium",
+   "file": "src/lib/wallet-session-authority.ts; src/lib/wallet-auth.ts:140-157; docs/",
+   "summary": "R16/same-change documentation gap: the new wallet-session-authority module and the changed verifyWalletChallenge session semantics are documented only in CURRENT.md.",
+   "failure_scenario": "No docs/ page or example names walletSessionAuthority, its v1 trusted-host observation contract, the behavior changes (expired X session no longer renews X authority; a cookie session owned by another account is no longer deleted or borrowed; folding the current X account into the wallet owner yields a 'wallet' session), or the host obligation. A reusing host or B2 author cannot learn the contract; AC74 consuming example does not exercise it.",
+   "fix": "Add a short section to docs/raid-wallet-links.md (or a session-authority doc) with purpose/non-goals, contract, behavior changes and tests; extend or reference a consuming fixture."
+  },
+  {
+   "n": 4,
+   "severity": "low",
+   "file": "planning/task-evidence/T006-wallet-links-b1/source-manifest.json; T006-wallet-links-b1-resume/source-manifest.json; docs/ai-handoff/CURRENT.md",
+   "summary": "Evidence manifests are stale relative to the final tree.",
+   "failure_scenario": "sha256 in both manifests mismatch current src/lib/wallet-auth.ts (T007 change landed later), tests/wallet-link-credentials.test.ts, docs and planning/raid-ci-matrix.json; the resume verification (83 suites/1051) predates T007 (now 84/1069); CURRENT.md records test hash 4f2209f2 but the file is d09ce71f (post-prettier, acknowledged); docs/tasks/T006-wallet-links-b1.md still says 26 credential tests (now 28). A reader cannot bind the accepted results to one source.",
+   "fix": "Regenerate a single final source manifest and verification record at the review-accepted tree; keep historical records annotated."
+  },
+  {
+   "n": 5,
+   "severity": "low",
+   "file": "src/lib/wallet-auth.ts:35",
+   "summary": "Object.hasOwn guard for unsupported purposes is not pinned for prototype keys (mutation M11 survives).",
+   "failure_scenario": "Replacing it with `purpose in STATEMENTS` still passes tests; a purpose such as 'toString' would then embed function source in a persisted challenge. Current route only passes 'rotate'|undefined, so it is defense-in-depth only.",
+   "fix": "Add a test that 'toString', 'constructor' and '__proto__' reject with 400 and persist nothing."
+  },
+  {
+   "n": 6,
+   "severity": "low",
+   "file": "src/identity-link/index.ts:456-465",
+   "summary": "Revoke UPDATE predicate accountId=$2 is redundant (mutation M01 survives, equivalent given prior locked ownership check).",
+   "failure_scenario": "None observable; defense-in-depth is not exercised by any test.",
+   "fix": "Either keep and document as defense-in-depth or add an adapter test whose fake returns a foreign-row UPDATE result to prove STORAGE_CONTRACT."
+  },
+  {
+   "n": 7,
+   "severity": "low",
+   "file": "src/identity-link/index.ts:358-382,407-413",
+   "summary": "resolveWalletCredential returns the caller-supplied networkIdentity for a legacy PRIMARY without verifying it.",
+   "failure_scenario": "A PRIMARY (null network column) resolves for any network in walletNetworks, e.g. 'devnet', so the returned context claims a network never bound to that credential. Safe only because proof/network binding is T007.",
+   "fix": "Document explicitly (done partly) and add a B2/T007 test that sign-in proof network equals the configured network before a session is created."
+  },
+  {
+   "n": 8,
+   "severity": "low",
+   "file": "src/identity-link/index.ts:423-478",
+   "summary": "Revoke trusts host-supplied session and clock objects and blocks a suspended account from revoking its own leaked additional wallet.",
+   "failure_scenario": "The module cannot verify a DB Session row; a naive B2 route that builds the observation from request data would authorize revoke. ACCOUNT_RESTRICTED also prevents a restricted owner from revoking a compromised credential (tension with 28.4 safe-access intent).",
+   "fix": "B2 must read the Session row in the same transaction, use a server clock, write audit and invalidate sessions; record a decision on restricted-account revoke."
+  },
+  {
+   "n": 9,
+   "severity": "low",
+   "file": "next-env.d.ts",
+   "summary": "Generated next-env.d.ts churn is part of the working-tree manifest.",
+   "failure_scenario": "The path changes (.next/types -> .next/dev/types) from a dev server run; unrelated to B1 and would pollute a delivery.",
+   "fix": "Exclude or restore before delivery (owner action)."
+  },
+  {
+   "n": 10,
+   "severity": "low",
+   "file": "tests/wallet-link-credentials.test.ts:340; tests/wallet-auth-isolation-db.test.ts; examples/wallet-links/README.md; docs/raid-wallet-links.md",
+   "summary": "Cosmetic/hygiene.",
+   "failure_scenario": "Test title mentions a malformed trusted session that the DB test does not exercise; README B1 paragraph sits above the title; doc output list reads '`alternatePort` `sanitizedFailure`' without separator; isolation tests ALTER DATABASE default_transaction_isolation and rely on finally{} restore plus vitest fileParallelism=false, so a killed process leaves the test DB at a non-default isolation.",
+   "fix": "Rename/split test, fix wording, keep CI serial and document the ALTER DATABASE side effect."
+  }
+ ],
+ "mutations": [
+  {
+   "id": "M01",
+   "file": "src/identity-link/index.ts",
+   "mutation": "revoke UPDATE drops accountId predicate",
+   "killed": false,
+   "tests_run": "28",
+   "failures": "0",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M02",
+   "file": "src/identity-link/index.ts",
+   "mutation": "revoke session expiry <= flipped to <",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M03",
+   "file": "src/lib/wallet-session-authority.ts",
+   "mutation": "drop previous.via === 'x'",
+   "killed": true,
+   "tests_run": "36",
+   "failures": "2",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M04",
+   "file": "src/lib/wallet-session-authority.ts",
+   "mutation": "authority expiry > flipped to >=",
+   "killed": true,
+   "tests_run": "36",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M05",
+   "file": "src/lib/wallet-auth.ts",
+   "mutation": "rotateWallet loses explicit ReadCommitted",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "2",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M06",
+   "file": "src/lib/wallet-auth.ts",
+   "mutation": "verifyWalletChallenge loses explicit ReadCommitted",
+   "killed": true,
+   "tests_run": "2",
+   "failures": "2",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M07",
+   "file": "src/lib/x-oauth.ts",
+   "mutation": "completeConnection loses explicit ReadCommitted",
+   "killed": true,
+   "tests_run": "2",
+   "failures": "2",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M08",
+   "file": "src/identity-link/index.ts",
+   "mutation": "revoke skips account lock",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "2",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M09",
+   "file": "src/identity-link/index.ts",
+   "mutation": "allow PRIMARY revoke (drop PRIMARY_WALLET_PROTECTED)",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M10",
+   "file": "src/identity-link/index.ts",
+   "mutation": "drop session account equality",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M11",
+   "file": "src/lib/wallet-auth.ts",
+   "mutation": "createWalletChallenge Object.hasOwn -> 'in' (prototype keys)",
+   "killed": false,
+   "tests_run": "53",
+   "failures": "0",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M12",
+   "file": "src/lib/wallet-auth.ts",
+   "mutation": "session DELETE drops userId filter",
+   "killed": true,
+   "tests_run": "25",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M13",
+   "file": "src/identity-link/index.ts",
+   "mutation": "resolve drops post-lock owner re-observation check",
+   "killed": false,
+   "tests_run": "65",
+   "failures": "0",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M14",
+   "file": "src/identity-link/index.ts",
+   "mutation": "resolve skips subject advisory lock",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M15",
+   "file": "src/identity-link/index.ts",
+   "mutation": "revoke accepts non-ACTIVE session state",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M16",
+   "file": "src/lib/wallet-session-authority.ts",
+   "mutation": "drop authenticatedAccountId===resolved",
+   "killed": true,
+   "tests_run": "36",
+   "failures": "2",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M17",
+   "file": "src/lib/wallet-auth.ts",
+   "mutation": "replace atomic DELETE..RETURNING with read-then-deleteMany (old racy form)",
+   "killed": true,
+   "tests_run": "25",
+   "failures": "3",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M18",
+   "file": "src/identity-link/index.ts",
+   "mutation": "lockedAccount ignores suspended",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M19",
+   "file": "src/lib/wallet-session-authority.ts",
+   "mutation": "drop previous.userId===resolved",
+   "killed": true,
+   "tests_run": "36",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M20",
+   "file": "src/identity-link/index.ts",
+   "mutation": "ALREADY_REVOKED returns fresh timestamp instead of original",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M21",
+   "file": "src/identity-link/index.ts",
+   "mutation": "credentialMapping skips participant equality for LINK",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M22",
+   "file": "src/identity-link/index.ts",
+   "mutation": "revoke: foreign owner returns distinct code",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M23",
+   "file": "src/identity-link/index.ts",
+   "mutation": "credentialSubject drops walletNetworks membership check",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "2",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M26",
+   "file": "src/identity-link/index.ts",
+   "mutation": "validPort drops isolation check",
+   "killed": false,
+   "tests_run": "28",
+   "failures": "0",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M27",
+   "file": "src/lib/wallet-auth.ts",
+   "mutation": "createWalletChallenge drops unsupported-purpose rejection",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M28",
+   "file": "src/identity-link/index.ts",
+   "mutation": "resolve drops IDENTITY_REVOKED",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "3",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M29",
+   "file": "src/lib/wallet-challenge-contract.ts",
+   "mutation": "SIWS_CHAIN_ID changed to devnet",
+   "killed": true,
+   "tests_run": "77",
+   "failures": "4",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M30",
+   "file": "src/lib/wallet-challenge-contract.ts",
+   "mutation": "signin statement text changed",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M31",
+   "file": "src/identity-link/index.ts",
+   "mutation": "revoke ignores suspended owner (already M18-like but revoke path only): lockedAccount in revoke replaced by lock w/o suspended",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M32",
+   "file": "src/identity-link/index.ts",
+   "mutation": "revoke: requestId unvalidated",
+   "killed": true,
+   "tests_run": "28",
+   "failures": "1",
+   "restored_sha_verified": true
+  },
+  {
+   "id": "M33",
+   "file": "src/lib/wallet-auth.ts",
+   "mutation": "expired previous X session still honoured (now frozen in the past)",
+   "killed": true,
+   "tests_run": "25",
+   "failures": "1",
+   "restored_sha_verified": true
+  }
+ ],
+ "mutation_summary": {
+  "total": 31,
+  "killed": 27,
+  "survivors": [
+   "M01",
+   "M11",
+   "M13",
+   "M26"
+  ],
+  "note": "A first pass ran DB tests as skipped due to an env-parsing bug in my runner; M05-M08,M11-M13,M17 and M01 were rerun with RUN_DB_TESTS=true and only the rerun results are reported. M01 is an equivalent mutant."
+ },
+ "resources_created": [
+  "/tmp/raid-b1-claude-review-20261010/ (src copy, node_modules, logs, mut/, consumer/)",
+  "docker container raid-b1-claude-review-db (postgres 16 pinned image ed134ce8..., tmpfs, 127.0.0.1:58334, password in /tmp/raid-b1-claude-review-20261010/.pw mode 600), databases useraid_test and useraid_wallet_links_host_test",
+  "/tmp/wa.orig, /tmp/idx.orig, /tmp/dbg.test.ts, /tmp/dbg.out (scratch)"
+ ]
+}

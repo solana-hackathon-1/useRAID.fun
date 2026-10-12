@@ -1,0 +1,16 @@
+{
+  "local_image_id": "sha256:fff447cc84e63e0c77cbb04b773db342898b4fb496f755ccda668d9046b1b69c",
+  "vm_image_id": "sha256:6499e100805bf00e16b301cbaaa6bc8701b45c93903a814dc766740ac13caa42",
+  "same_rootfs": true,
+  "same_config": true,
+  "local_descriptor": null,
+  "vm_descriptor": {
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "digest": "sha256:6499e100805bf00e16b301cbaaa6bc8701b45c93903a814dc766740ac13caa42",
+    "size": 2388,
+    "annotations": {
+      "io.containerd.image.name": "docker.io/library/useraid:staging-20261011",
+      "org.opencontainers.image.ref.name": "staging-20261011"
+    }
+  }
+}

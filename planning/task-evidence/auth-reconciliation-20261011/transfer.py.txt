@@ -1,0 +1,93 @@
+from pathlib import Path
+import hashlib, json, os, shutil, subprocess, sys
+
+base = Path('/tmp/raid-auth-reconcile-20261011')
+root = Path('/Users/dushyant/Documents/useRAID.fun')
+candidate = base / 'candidate'
+baseline = json.loads((base / 'baseline.json').read_text())
+target = baseline['target_head']
+
+def git(where, *args):
+    return subprocess.check_output(['git', *args], cwd=where)
+
+def identity(path):
+    if path.is_symlink():
+        return {'type': 'symlink', 'target': os.readlink(path)}
+    if path.is_file():
+        return {'type': 'file', 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(), 'mode': path.stat().st_mode & 0o777}
+    return None
+
+def verify_original():
+    assert git(root, 'rev-parse', 'HEAD').decode().strip() == baseline['old_head']
+    assert git(root, 'diff', '--cached', '--name-only') == b''
+    before = json.loads(Path('/tmp/raid-git-reconcile-20261011/files-before.json').read_text())
+    drift = []
+    for name, state in before.items():
+        if name == 'docs/ai-handoff/CURRENT.md':
+            continue
+        path = root / name
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != state['sha256']:
+            drift.append(name)
+    assert not drift, f'Unplanned original drift: {drift}'
+    return len(before) - 1
+
+names = set(git(root, 'ls-tree', '-r', '--name-only', target).decode().splitlines())
+names.update(baseline['file_hashes'])
+names.update(['examples/test-center/asset-registry', 'examples/test-center/contracts', 'examples/test-center/components/test-center.tsx', 'examples/wallet-links/lib/wallet-challenge-contract.ts'])
+# Next-generated environment bindings are local build artifacts. Preserve the owner's existing
+# unfinished generated file and listeners; they do not change implementation or dependencies.
+names.discard('next-env.d.ts')
+names = sorted(names)
+for name in names:
+    assert identity(candidate / name) is not None, f'Missing prepared source: {name}'
+
+def copy_sources(destination):
+    copied = []
+    for name in names:
+        source, dest = candidate / name, destination / name
+        if identity(source) == identity(dest):
+            continue
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        if source.is_symlink():
+            if dest.is_symlink() or dest.exists():
+                dest.unlink()
+            dest.symlink_to(os.readlink(source))
+        else:
+            assert not dest.is_symlink(), f'Refusing to replace a source alias: {name}'
+            shutil.copy2(source, dest)
+        copied.append(name)
+    return copied
+
+def advance(destination):
+    # The verified combined files are already present. Updating only the index to the incoming
+    # tree lets the explicit fast-forward retain all unfinished edits as unstaged differences.
+    subprocess.run(['git', 'read-tree', target], cwd=destination, check=True)
+    result = subprocess.run(['git', '-c', 'merge.autostash=false', 'merge', '--ff-only', target], cwd=destination, check=True, capture_output=True, text=True)
+    assert git(destination, 'rev-parse', 'HEAD').decode().strip() == target
+    assert git(destination, 'diff', '--cached', '--name-only') == b''
+    assert git(destination, 'ls-files', '--unmerged') == b''
+    assert all(identity(candidate / n) == identity(destination / n) for n in names)
+    return result.stdout
+
+verified = verify_original()
+plan = [{'path': n, 'before': identity(root / n), 'after': identity(candidate / n)} for n in names if identity(root / n) != identity(candidate / n)]
+(base / 'transfer-plan.json').write_text(json.dumps({'verified_unchanged_original_files': verified, 'old_head': baseline['old_head'], 'target_head': target, 'changes': plan, 'preserved_generated_file': 'next-env.d.ts', 'no_push_or_commit': True}, indent=2) + '\n')
+
+if sys.argv[1] == 'probe':
+    probe = base / 'git-probe'
+    assert not probe.exists()
+    subprocess.run(['git', 'clone', '--shared', '--quiet', str(root), str(probe)], check=True)
+    copied = copy_sources(probe)
+    outcome = advance(probe)
+    (base / 'git-probe.json').write_text(json.dumps({'result': 'PASS', 'source_paths': len(names), 'copied_files': len(copied), 'working_source_preserved': True, 'index_empty': True, 'unmerged_entries': 0, 'output': outcome}, indent=2) + '\n')
+    print(f'Probe PASS: {len(names)} prepared paths retained; {verified} original file hashes unchanged except checkpoint.')
+elif sys.argv[1] == 'apply':
+    assert json.loads((base / 'git-probe.json').read_text())['result'] == 'PASS'
+    shutil.copy2(root / '.git/index', base / 'original-index-before')
+    os.chmod(base / 'original-index-before', 0o600)
+    copied = copy_sources(root)
+    outcome = advance(root)
+    (base / 'git-result.json').write_text(json.dumps({'result': 'PASS', 'head': target, 'copied_paths': copied, 'prepared_paths_verified': len(names), 'unstaged_work_retained': True, 'index_empty': True, 'unmerged_entries': 0, 'push_performed': False, 'commit_performed': False, 'output': outcome}, indent=2) + '\n')
+    print(f'Main fast-forward PASS; {len(copied)} prepared files transferred; all {len(names)} prepared paths equal candidate, index empty, unmerged entries zero.')
+else:
+    raise ValueError('Use probe or apply')

@@ -1,0 +1,17 @@
+
+Running 8 tests using 1 worker
+
+(node:4157) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/browser-studio/test-center.spec.ts:6:1 › test center distinguishes browser checks from backend-only implementation (918ms)
+  ✓  2 [desktop] › tests/browser-studio/test-center.spec.ts:28:1 › amount explorer uses exact arithmetic and recovers from rejected precision (2.3s)
+  ✓  3 [desktop] › tests/browser-studio/test-center.spec.ts:54:1 › capacity explorer preserves review duty and distinguishes closure from payment (314ms)
+  ✓  4 [desktop] › tests/browser-studio/test-center.spec.ts:69:1 › test center starts the existing isolated Studio flow (2.2s)
+(node:4415) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/browser-studio/test-center.spec.ts:6:1 › test center distinguishes browser checks from backend-only implementation (417ms)
+  ✓  6 [mobile] › tests/browser-studio/test-center.spec.ts:28:1 › amount explorer uses exact arithmetic and recovers from rejected precision (2.6s)
+  ✓  7 [mobile] › tests/browser-studio/test-center.spec.ts:54:1 › capacity explorer preserves review duty and distinguishes closure from payment (321ms)
+  ✓  8 [mobile] › tests/browser-studio/test-center.spec.ts:69:1 › test center starts the existing isolated Studio flow (1.4s)
+
+  8 passed (11.7s)

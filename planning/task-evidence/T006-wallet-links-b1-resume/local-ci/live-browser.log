@@ -1,0 +1,18 @@
+
+> useraid@0.1.0 test:browser:live
+> playwright test --config=playwright.live.config.ts
+
+[WebServer] (node:28439) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 44 tests using 1 worker
+(node:28440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+··[WebServer] TRUSTED_IP_HEADER is unset or invalid: public rate limits fall back to one shared bucket.
+·············°°°··[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+··(node:28512) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+···············°°°····
+  6 skipped
+  38 passed (37.0s)

@@ -1,0 +1,63 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import { request, chromium } from '@playwright/test';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { Keypair } from '@solana/web3.js';
+import nacl from 'tweetnacl';
+import bs58 from 'bs58';
+import { linkVerifiedWallet } from './src/identity-link/index.ts';
+import { createPrismaIdentityTransaction } from './src/lib/identity-storage-adapter.ts';
+import { fixtureLinkInput } from './tests/helpers/wallet-link-fixtures.ts';
+const base='http://localhost:3021';
+const database='postgresql://postgres:raid_merge_synthetic@127.0.0.1:62843/useraid_studio_test';
+const db=new PrismaClient({datasourceUrl:database,log:[]});
+const checks=[];
+const client=()=>request.newContext({baseURL:base,extraHTTPHeaders:{Origin:base}});
+const primary=Keypair.generate(), linked=Keypair.generate();
+const contexts=[];
+async function proof(c,key,expected=200){
+ const address=key.publicKey.toBase58();
+ const challengeResponse=await c.post('/api/wallet/challenge',{data:{address}});
+ assert.equal(challengeResponse.status(),200);
+ const challenge=await challengeResponse.json();
+ const signature=bs58.encode(nacl.sign.detached(new TextEncoder().encode(challenge.message),key.secretKey));
+ const response=await c.post('/api/wallet/verify',{data:{digest:challenge.digest,address,signature}});
+ assert.equal(response.status(),expected);
+ return {challenge,response};
+}
+try {
+ const c=await client(); contexts.push(c);
+ for(const path of ['/','/privacy','/creator','/api/health']){
+  const response=await c.get(path);assert.equal(response.status(),200);checks.push({path,result:'PASS'});
+ }
+ const signup=await proof(c,primary);checks.push({check:'fresh primary wallet signup over HTTP',result:'PASS'});
+ const owner=await db.walletIdentity.findUniqueOrThrow({where:{address:primary.publicKey.toBase58()}});
+ await proof(c,primary);checks.push({check:'same-account primary reauthentication over HTTP',result:'PASS'});
+ await db.$transaction(tx=>linkVerifiedWallet(createPrismaIdentityTransaction(tx),fixtureLinkInput(owner.userId,linked.publicKey.toBase58())),{isolationLevel:Prisma.TransactionIsolationLevel.ReadCommitted});
+ const before=await db.walletIdentity.findUniqueOrThrow({where:{userId:owner.userId}});
+ const second=await client();contexts.push(second);
+ await proof(second,linked);assert.equal((await db.walletIdentity.findUniqueOrThrow({where:{userId:owner.userId}})).address,before.address);
+ checks.push({check:'existing linked wallet HTTP sign-in while creation flag is false; payout wallet unchanged',result:'PASS'});
+ await proof(second,linked);checks.push({check:'same-account linked-wallet reauthentication over HTTP',result:'PASS'});
+ const fresh=await client();contexts.push(fresh);
+ const sessionsBefore=await db.session.count({where:{userId:owner.userId}});
+ await db.walletLink.update({where:{address:linked.publicKey.toBase58()},data:{status:'REVOKED',revokedAt:new Date()}});
+ const denied=await proof(fresh,linked,401);
+ assert.equal((await denied.response.json()).error,'Wallet sign-in unavailable.');
+ assert.equal(await db.session.count({where:{userId:owner.userId}}),sessionsBefore);
+ assert.equal((await db.walletChallenge.findUniqueOrThrow({where:{digest:denied.challenge.digest}})).consumedAt,null);
+ checks.push({check:'revoked linked credential HTTP401; no session or consumed challenge',result:'PASS'});
+ const admin=await fresh.get('/api/admin/usdc');assert.equal(admin.status(),401);checks.push({check:'admin unauthenticated401',result:'PASS'});
+ const absent=await fresh.post('/api/wallet/link-additional',{data:{}});assert.equal(absent.status(),404);checks.push({check:'new linking route remains absent404',result:'PASS'});
+ const browser=await chromium.launch({headless:true});
+ for(const [name,viewport] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]]){
+  const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(base+'/test-center');await page.getByRole('heading',{name:'Implementation test center'}).waitFor();
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true);assert.deepEqual(errors,[]);
+  await page.screenshot({path:'/tmp/raid-auth-reconcile-20261011/'+name+'-test-center.png',fullPage:true});
+  checks.push({check:name+' preview rendering/no overflow/no page errors',result:'PASS'});await page.close();
+ }
+ await browser.close();
+ await fs.writeFile('/tmp/raid-auth-reconcile-20261011/http-preview.json',JSON.stringify({mode:'development Studio sandbox; synthetic owned DB; default-off links/folds',checks},null,2)+'\n');
+ console.log(JSON.stringify({passed:checks.length,failed:0}));
+}finally{for(const context of contexts)await context.dispose();await db.$disconnect();}

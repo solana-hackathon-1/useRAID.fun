@@ -1,0 +1,179 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/wallet-link-signin-db.test.ts (6 tests | 5 failed) 351ms
+     × signs in as the linking account with a wallet session when the switch is on 99ms
+     × fails closed with one sanitized conflict and no new user when the switch is off 40ms
+     × never signs in through a revoked link, with the switch on or off 41ms
+     × denies a suspended owner with no session 35ms
+     × does not let a legacy link or a rotation take an address that is a sign-in link 57ms
+     ✓ keeps ordinary primary-wallet sign-in and unknown-wallet sign-up unchanged 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b sign-in through a linked wallet (flag-gated, fail closed) > signs in as the linking account with a wallet session when the switch is on
+PrismaClientKnownRequestError: 
+Invalid `prisma.walletIdentity.create()` invocation:
+
+
+Unique constraint failed on the (not available)
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:166:9
+    164|         });
+    165|         userId = user.id;
+    166|         await tx.walletIdentity.create({ data: { address, userId } });
+       |         ^
+    167|       }
+    168|       const owner = await tx.user.findUniqueOrThrow({ where: { id: use…
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:124:3
+ ❯ tests/wallet-link-signin-db.test.ts:93:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b sign-in through a linked wallet (flag-gated, fail closed) > fails closed with one sanitized conflict and no new user when the switch is off
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "status": 409,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:114:19
+    112|       (e) => e,
+    113|     );
+    114|     expect(error).toMatchObject({ status: 409 });
+       |                   ^
+    115|     expect(error.message).not.toContain(a.user.id);
+    116|     expect(error.message).not.toContain(w.address);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b sign-in through a linked wallet (flag-gated, fail closed) > never signs in through a revoked link, with the switch on or off
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "status": 409,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:135:30
+    133|       else delete process.env.WALLET_LINKS_ENABLED;
+    134|       const before = await state();
+    135|       await expect(signIn(w)).rejects.toMatchObject({ status: 409 });
+       |                              ^
+    136|       expect(await state()).toEqual(before);
+    137|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b sign-in through a linked wallet (flag-gated, fail closed) > denies a suspended owner with no session
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 403 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "status": 403,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:145:28
+    143|     await db.user.update({ where: { id: a.user.id }, data: { suspended…
+    144|     const sessions = await db.session.count();
+    145|     await expect(signIn(w)).rejects.toMatchObject({ status: 403 });
+       |                            ^
+    146|     expect(await db.session.count()).toBe(sessions);
+    147|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b sign-in through a linked wallet (flag-gated, fail closed) > does not let a legacy link or a rotation take an address that is a sign-in link
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409 }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "status": 409,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `prisma.walletIdentity.create()` invocation:
++
++
++ Unique constraint failed on the (not available)",
++   "code": "P2002",
++   "meta": {
++     "modelName": "WalletIdentity",
++     "target": null,
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:165:6
+    163|     await expect(
+    164|       rotateWallet(other.user.id, r.digest, w.sign(r.message), w.addre…
+    165|     ).rejects.toMatchObject({ status: 409 });
+       |      ^
+    166|     expect(await state()).toEqual(before);
+    167|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  15:48:33
+   Duration  829ms (transform 109ms, setup 0ms, import 364ms, tests 351ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b2b/red.xml

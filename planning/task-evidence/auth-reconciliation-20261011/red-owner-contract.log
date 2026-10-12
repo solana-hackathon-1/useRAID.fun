@@ -1,0 +1,110 @@
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+ ❯ tests/wallet-link-signin-db.test.ts (8 tests | 5 failed) 494ms
+     × keeps an existing linked credential usable when new linking is switched off 43ms
+     × never signs in through a revoked link, with the switch on or off 46ms
+     × gives revoked and wrong-network reservations the same released denial without changing state 42ms
+     × serializes two fresh signed challenges into one account with two independent wallet sessions 42ms
+     × allows same-account reauthentication while denying foreign legacy links and payout rotation 56ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > keeps an existing linked credential usable when new linking is switched off
+Error: Wallet belongs to another account.
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:156:21
+    154|           if (credential.source !== 'ABSENT') {
+    155|             if (credential.source !== 'LINK' || currentUserId || !wall…
+    156|               throw new HttpError(409, 'Wallet belongs to another acco…
+       |                     ^
+    157|             userId = credential.accountId;
+    158|           }
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:134:5
+ ❯ tests/wallet-link-signin-db.test.ts:111:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > never signs in through a revoked link, with the switch on or off
+AssertionError: expected Error: Wallet belongs to another account. { status: … } to match object { status: 401 }
+
+- Expected
++ Received
+
+- {
+-   "status": 401,
++ HttpError {
++   "status": 409,
+  }
+
+ ❯ tests/wallet-link-signin-db.test.ts:130:30
+    128|       else delete process.env.WALLET_LINKS_ENABLED;
+    129|       const before = await state();
+    130|       await expect(signIn(w)).rejects.toMatchObject({ status: 401 });
+       |                              ^
+    131|       expect(await state()).toEqual(before);
+    132|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > gives revoked and wrong-network reservations the same released denial without changing state
+PrismaClientUnknownRequestError: 
+Invalid `db.walletLink.updateMany()` invocation in
+/private/tmp/raid-auth-reconcile-20261011/candidate/tests/wallet-link-signin-db.test.ts:141:25
+
+  138 await db.walletLink.updateMany({ where: { address: w.address }, data: { status: 'REVOKED', revokedAt: new Date() } });
+  139 const before = await state(); const sessions = await db.session.count();
+  140 const revoked = await signIn(w).catch((e) => e);
+→ 141 await db.walletLink.updateMany(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23000", message: "Wallet link is immutable except ACTIVE to REVOKED", severity: "ERROR", detail: None, column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-link-signin-db.test.ts:141:5
+    139|     const before = await state(); const sessions = await db.session.co…
+    140|     const revoked = await signIn(w).catch((e) => e);
+    141|     await db.walletLink.updateMany({ where: { address: w.address }, da…
+       |     ^
+    142|     const wrongNetwork = await signIn(w).catch((e) => e);
+    143|     expect([revoked.status, wrongNetwork.status]).toEqual([401, 401]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > serializes two fresh signed challenges into one account with two independent wallet sessions
+Error: Wallet belongs to another account.
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:156:21
+    154|           if (credential.source !== 'ABSENT') {
+    155|             if (credential.source !== 'LINK' || currentUserId || !wall…
+    156|               throw new HttpError(409, 'Wallet belongs to another acco…
+       |                     ^
+    157|             userId = credential.accountId;
+    158|           }
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:134:5
+ ❯ tests/wallet-link-signin-db.test.ts:152:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > allows same-account reauthentication while denying foreign legacy links and payout rotation
+Error: Wallet belongs to another account.
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:156:21
+    154|           if (credential.source !== 'ABSENT') {
+    155|             if (credential.source !== 'LINK' || currentUserId || !wall…
+    156|               throw new HttpError(409, 'Wallet belongs to another acco…
+       |                     ^
+    157|             userId = credential.accountId;
+    158|           }
+ ❯ Proxy._transactionWithCallback ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:134:5
+ ❯ tests/wallet-link-signin-db.test.ts:178:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 3 passed (8)
+   Start at  19:35:58
+   Duration  950ms (transform 91ms, setup 0ms, import 328ms, tests 494ms, environment 0ms)
+

@@ -1,0 +1,30 @@
+[
+  {
+    "container_id": "b11d6daf30a118c5c9bf220b42ecddbdb26d0d857dfa1b84b9f8d5aa5de5918a",
+    "name": "/raid-t006-b1-ci-20261010-db-1",
+    "image_id": "sha256:ef738a34a8651d11b2bace81c55c7e2187f786b484add6c83070884340074368",
+    "started_at": "2026-10-10T04:18:43.333855459Z",
+    "status": "exited",
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "raid-t006-b1-ci-20261010_postgres",
+        "Source": "/var/lib/docker/volumes/raid-t006-b1-ci-20261010_postgres/_data",
+        "Destination": "/var/lib/postgresql/data",
+        "Driver": "local",
+        "Mode": "rw",
+        "RW": true,
+        "Propagation": ""
+      }
+    ],
+    "ports": {
+      "5432/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "55432"
+        }
+      ]
+    },
+    "compose_project": "raid-t006-b1-ci-20261010"
+  }
+]

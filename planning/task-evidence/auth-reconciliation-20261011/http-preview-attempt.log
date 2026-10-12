@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+405 !== 401
+
+    at <anonymous> (/private/tmp/raid-auth-reconcile-20261011/candidate/.auth-preview-probe.mts:50:58) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 405,
+  expected: 401,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.0.0

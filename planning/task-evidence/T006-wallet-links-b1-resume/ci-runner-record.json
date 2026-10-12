@@ -1,0 +1,9 @@
+{
+  "original_sha256": "72495b4b6ab428f11959c8e248c29f902271b269b6cbd1f3b20d1d346c7fbd5c",
+  "executed_sha256": "062e12825d0f8b78be3b7fd8cf0b972093177976d92a1c7c32ea9ff8f27dbc07",
+  "source_changes": "No product/source changes in archive. Runner substitutions only: explicit manifest instead of read-only Git calls; unique disposable compose project and Docker image tag. No branch or commit created.",
+  "runner_path": "/tmp/raid-t006-b1-ci-20261010/scripts/local-ci.sh",
+  "log_directory": "/tmp/raid-t006-b1-ci-20261010-logs",
+  "harness_correction": "Initial planning test rejected adapted runner inside candidate because original Git provenance calls were absent. Restored original scripts/local-ci.sh atomically; current executing adapted inode unchanged and archived separately. Original source/tests assertions unchanged. Rerun planning/format against restored exact repository runner; retain first failed planning log and overall first-run exit.",
+  "executed_runner_preserved": "/tmp/raid-t006-b1-ci-20261010-executed-runner.sh"
+}

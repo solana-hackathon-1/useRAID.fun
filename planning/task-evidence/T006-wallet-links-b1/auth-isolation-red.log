@@ -1,0 +1,230 @@
+
+> useraid@0.1.0 test
+> vitest run tests/wallet-auth-isolation-db.test.ts --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-wallet-links-b1/auth-isolation-red.xml
+
+
+ RUN  v4.1.11 /private/tmp/raid-t006-wallet-links-b1-codex-20261009
+
+stderr | tests/wallet-auth-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > merging an activity-free duplicate account > moves a wallet from an empty wallet-only account onto the signed-in X account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/wallet-auth.ts:112:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ Module.verifyWalletChallenge src/lib/wallet-auth.ts:93:3
+ ❯ tests/wallet-auth-db.test.ts:208:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > signs in as the existing X account and takes over the wallet of an empty wallet-only account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/x-oauth.ts:201:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ completeConnection src/lib/x-oauth.ts:176:3
+ ❯ tests/x-oauth-db.test.ts:172:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+stderr | tests/wallet-auth-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > merging an activity-free duplicate account > moves a wallet from an empty wallet-only account onto the signed-in X account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/wallet-auth.ts:112:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ Module.verifyWalletChallenge src/lib/wallet-auth.ts:93:3
+ ❯ tests/wallet-auth-db.test.ts:208:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > signs in as the existing X account and takes over the wallet of an empty wallet-only account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/x-oauth.ts:201:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ completeConnection src/lib/x-oauth.ts:176:3
+ ❯ tests/x-oauth-db.test.ts:172:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+ ❯ tests/wallet-auth-isolation-db.test.ts (2 tests | 2 failed) 1923ms
+     × preserves permitted wallet and X account folds under database default repeatable read 1027ms
+     × preserves permitted wallet and X account folds under database default serializable 895ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-auth-isolation-db.test.ts > legacy auth hosts own required READ COMMITTED instead of database defaults > preserves permitted wallet and X account folds under database default repeatable read
+Error: Command failed: /opt/homebrew/Cellar/node/26.0.0/bin/node node_modules/vitest/vitest.mjs run tests/wallet-auth-db.test.ts tests/x-oauth-db.test.ts --testNamePattern moves a wallet from an empty wallet-only account|signs in as the existing X account and takes over the wallet --reporter=default --reporter=junit --outputFile=/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-auth-isolation-Z75iiY/auth-folds.xml
+stderr | tests/wallet-auth-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > merging an activity-free duplicate account > moves a wallet from an empty wallet-only account onto the signed-in X account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/wallet-auth.ts:112:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ Module.verifyWalletChallenge src/lib/wallet-auth.ts:93:3
+ ❯ tests/wallet-auth-db.test.ts:208:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > signs in as the existing X account and takes over the wallet of an empty wallet-only account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/x-oauth.ts:201:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ completeConnection src/lib/x-oauth.ts:176:3
+ ❯ tests/x-oauth-db.test.ts:172:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ ❯ tests/wallet-auth-isolation-db.test.ts:36:24
+     34|         ).toBe(isolation);
+     35|         const report = join(directory, 'auth-folds.xml');
+     36|         const output = execFileSync(
+       |                        ^
+     37|           process.execPath,
+     38|           [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/wallet-auth-isolation-db.test.ts > legacy auth hosts own required READ COMMITTED instead of database defaults > preserves permitted wallet and X account folds under database default serializable
+Error: Command failed: /opt/homebrew/Cellar/node/26.0.0/bin/node node_modules/vitest/vitest.mjs run tests/wallet-auth-db.test.ts tests/x-oauth-db.test.ts --testNamePattern moves a wallet from an empty wallet-only account|signs in as the existing X account and takes over the wallet --reporter=default --reporter=junit --outputFile=/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-auth-isolation-PJ5rA8/auth-folds.xml
+stderr | tests/wallet-auth-db.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > merging an activity-free duplicate account > moves a wallet from an empty wallet-only account onto the signed-in X account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/wallet-auth.ts:112:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ Module.verifyWalletChallenge src/lib/wallet-auth.ts:93:3
+ ❯ tests/wallet-auth-db.test.ts:208:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > signs in as the existing X account and takes over the wallet of an empty wallet-only account
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ src/lib/identity-storage-adapter.ts:28:19
+     26|           );
+     27|           if (rows.length !== 1 || rows[0].transaction_isolation !== '…
+     28|             throw new IdentityStorageError('STORAGE_CONTRACT');
+       |                   ^
+     29|         })();
+     30|         await checked;
+ ❯ Object.query src/lib/identity-storage-adapter.ts:30:9
+ ❯ query src/identity-storage/index.ts:33:18
+ ❯ hasHumanParticipant src/identity-storage/index.ts:74:16
+ ❯ isEmptyAccount src/lib/account-merge.ts:13:7
+ ❯ src/lib/x-oauth.ts:201:11
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ completeConnection src/lib/x-oauth.ts:176:3
+ ❯ tests/x-oauth-db.test.ts:172:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ ❯ tests/wallet-auth-isolation-db.test.ts:36:24
+     34|         ).toBe(isolation);
+     35|         const report = join(directory, 'auth-folds.xml');
+     36|         const output = execFileSync(
+       |                        ^
+     37|           process.execPath,
+     38|           [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  09:39:40
+   Duration  2.08s (transform 14ms, setup 0ms, import 35ms, tests 1.92s, environment 0ms)
+
+JUNIT report written to /private/tmp/raid-t006-wallet-links-b1-codex-20261009/planning/task-evidence/T006-wallet-links-b1/auth-isolation-red.xml

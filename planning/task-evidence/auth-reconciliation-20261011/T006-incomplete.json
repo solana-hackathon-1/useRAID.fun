@@ -1,0 +1,148 @@
+{
+  "task_id": "T006",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": null,
+  "handoff": "docs/tasks/2026-10-11-auth-reconciliation.md",
+  "migration_rollback": "No migration/schema/dependency changes; default-off new link/fold gates and storage fences retained. Original non-secret source/index backup in /tmp/raid-auth-reconcile-20261011 and /tmp/raid-git-reconcile-20261011; no reset/stash/discard used.",
+  "dependency_evidence": "Existing released main plus preserved unfinished B2/test-center; source-manifest.json and owned tmpfs PostgreSQL/fresh lock runtime.",
+  "open_decisions": "DEC-2026-10-11-03 accepted owner contract. Independent new combined-source review, global lock protocol, victim-signed-link account binding, revoke scope/suspended-account policy, B2c/B3/O11/T007 still open.",
+  "release_gate_disposition": "Local Git reconciliation only, SELF-EVALUATED. Full T006/T007/UAT/production/independent acceptance NOT VERIFIED; no linking/fold enablement or push.",
+  "base_sha": "4cc1a12e21078aa493b2b71123758cedd2ad81f2",
+  "working_tree_manifest": "source-manifest.json",
+  "ci": {},
+  "tdd": {
+    "red": {
+      "command": "Owned PostgreSQL RUN_DB_TESTS=true vitest released lookup/transaction/fold/signin suites and owner-adapted wallet-link-signin suite",
+      "sha": "736964cf1445aa5d738e17c1633cf61102ad192c",
+      "evidence_url": "red-upstream.log;red-owner-contract.log",
+      "expected_failure": "Original WIP cannot preserve released lookup/retry/fold behavior or owner-selected flag-off/same-account signin",
+      "observed_failure": "Released suites31FAIL5PASS; owner-contract5FAIL3PASS before implementation; genuine failures retained",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "Owned PostgreSQL RUN_DB_TESTS=true npm test",
+      "sha": "4cc1a12e21078aa493b2b71123758cedd2ad81f2",
+      "evidence_url": "full-final.log",
+      "observed": "94files/1162PASS0FAIL0SKIP;59.34s on recorded uncommitted source",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "npm run typecheck -- --incremental false; changed-file eslint; git diff --check; scoped prettier checks",
+      "sha": "4cc1a12e21078aa493b2b71123758cedd2ad81f2",
+      "evidence_url": "root-typecheck.log;lint-final-scoped.log;root-diff-check.log;self-review-doc-format.log",
+      "observed": "Unused superseded helper removed; combined1162 regression and compiler/changed-file lint/format checks pass, documentation corrected to actual DTO/lock contracts",
+      "result": "PASS"
+    }
+  },
+  "criteria": {
+    "T006-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    },
+    "T006-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded author evidence in self-evaluation.json; no independent/full T006 criterion acceptance for this new combined source."
+    }
+  }
+}

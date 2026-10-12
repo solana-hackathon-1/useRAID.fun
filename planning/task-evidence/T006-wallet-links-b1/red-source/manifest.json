@@ -1,0 +1,13 @@
+{
+  "phase": "RED executable stubs",
+  "base_sha": "c196ee74d74624b0089185c7b78c926e35238985",
+  "timestamp": "2026-10-09T03:45:02.157565+00:00",
+  "files": {
+    "src/identity-link/contracts.ts": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+    "src/identity-link/index.ts": "8f4f4924673b179bd817a500025f697962e0fbafb1668808fafce372a7c8378d",
+    "src/lib/wallet-challenge-contract.ts": "9822b3fc0023290894f0fb4f83bde9ee10346ff582739066b48e8ead5ec2e3f4",
+    "src/lib/wallet-auth.ts": "887a9996e6a5f29a29fed6b9715c420ff33cd9ce6ee978a166e6c5e15a667653",
+    "src/lib/wallet-link-proof.ts": "3a30b6f26bb543ceae8dc8124b6de149fbafec87f70aeff106612d2b5552b5dd",
+    "tests/wallet-link-credentials.test.ts": "7c0cbc5377fab6b922e1d3d2831a51afef5f900078647a975060cfdc9ec1c027"
+  }
+}

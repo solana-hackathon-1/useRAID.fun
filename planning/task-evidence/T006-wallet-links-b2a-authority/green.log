@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 334ms
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":2141,"waiters":[2140]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":2141,"waiters":[2140]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":2141,"waiters":[2140]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":2141,"waiters":[2140]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:401","linked","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+
+ ✓ tests/wallet-link-authority-db.test.ts (9 tests) 2735ms
+     ✓ denies a session that expires naturally while the command waits for the lock  1854ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  566ms
+ ✓ tests/wallet-link-signin-db.test.ts (6 tests) 358ms
+
+ Test Files  3 passed (3)
+      Tests  22 passed (22)
+   Start at  15:51:35
+   Duration  4.18s (transform 74ms, setup 0ms, import 438ms, tests 3.43s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b2a-authority/green.xml

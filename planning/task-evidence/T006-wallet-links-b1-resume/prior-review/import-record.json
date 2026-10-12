@@ -1,0 +1,18 @@
+{
+  "planning/task-evidence/T006-wallet-links-b1-resume/prior-review/storage-review.md.snapshot": {
+    "origin": "/tmp/raid-t006-storage-independent-20261009-codex/review.md",
+    "sha256": "70145cfb19b21c5cc33730366d149077566f875a55692e494bd9c77ccf9ca1db"
+  },
+  "planning/task-evidence/T006-wallet-links-b1-resume/prior-review/storage-review.json": {
+    "origin": "/tmp/raid-t006-storage-independent-20261009-codex/review.json",
+    "sha256": "02b0f697cd1a0ec61842d71892344de757f2a60127726a1fee1a0a1fb619878e"
+  },
+  "planning/task-evidence/T006-wallet-links-b1-resume/prior-review/b1-core-checks.json": {
+    "origin": "/tmp/raid-t006-b1-independent-codex-20261009/core-checks.json",
+    "sha256": "134c577cef5fc0fa3de1180a34819dffae6e92931b285d4dbe7462b5896f8bea"
+  },
+  "planning/task-evidence/T006-wallet-links-b1-resume/prior-review/b1-core-source-manifest.json": {
+    "origin": "/tmp/raid-t006-b1-independent-codex-20261009/core-source-manifest.json",
+    "sha256": "aadaede5953f6b26d650b1b582592d320d77dfc0821767922da3948818934cc5"
+  }
+}

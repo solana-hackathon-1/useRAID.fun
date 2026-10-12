@@ -1,0 +1,72 @@
+[
+  {
+    "check": "bootstrap",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "core-baseline",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "M01-subject-lock",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M02-account-lock",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M03-revoked-resolve",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M04-mapping-owner",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M05-expired-session",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M06-foreign-owner",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M07-keep-active",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M08-primary-protection",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M09-statement-drift",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "M10-exposed-purpose",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "check": "core-restored",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "check": "feature",
+    "exit": 0,
+    "expected": 0
+  }
+]

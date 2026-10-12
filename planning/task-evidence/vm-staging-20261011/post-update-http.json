@@ -1,0 +1,27 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "tls_verified": true
+  },
+  {
+    "path": "/privacy",
+    "status": 200,
+    "tls_verified": true
+  },
+  {
+    "path": "/creator",
+    "status": 200,
+    "tls_verified": true
+  },
+  {
+    "path": "/api/health",
+    "status": 200,
+    "tls_verified": true
+  },
+  {
+    "path": "/api/admin/usdc",
+    "status": 401,
+    "tls_verified": true
+  }
+]

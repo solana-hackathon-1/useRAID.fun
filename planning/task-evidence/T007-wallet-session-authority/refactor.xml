@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="36" failures="0" errors="0" time="0.892999083">
+    <testsuite name="tests/wallet-auth-db.test.ts" timestamp="2026-10-10T05:10:32.918Z" hostname="0xd.local" tests="25" failures="0" errors="0" skipped="0" time="0.89070225">
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; creates wallet-only user, consumes challenge once, and rejects stale challenge" time="0.08422375">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; refuses linking wallet already owned by another X identity" time="0.018894041">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; issues a Sign-In With Solana formatted challenge" time="0.006574583">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; binds a challenge to the signer state it was issued for" time="0.035080166">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not let a link signature perform a wallet rotation" time="0.02656775">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; refuses to sign a suspended owner in and creates no session" time="0.029826">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; rotates the session and records how it was issued" time="0.029377958">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; keeps an X session an X session when the same user links a wallet" time="0.016374667">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not renew expired X authority through a wallet signature" time="0.033738541">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not borrow or delete another account&apos;s live X session" time="0.035276958">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires authenticated account context before preserving X authority" time="0.030838208">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; normalizes unknown session authority to wallet authority" time="0.018365791">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently revoked X session before carrying its authority forward" time="0.047663792">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;revoked&quot;,&quot;waiter&quot;:459,&quot;blocker&quot;:457}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently expired X session before carrying its authority forward" time="0.024940417">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;expired&quot;,&quot;waiter&quot;:457,&quot;blocker&quot;:459}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently downgraded X session before carrying its authority forward" time="0.031015667">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;downgraded&quot;,&quot;waiter&quot;:458,&quot;blocker&quot;:457}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires an X session for administrator access" time="0.008688333">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; moves a wallet from an empty wallet-only account onto the signed-in X account" time="0.044103667">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; keeps the wallet account when the X account is the empty one" time="0.048776292">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity" time="0.034500125">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when the wallet owner joined a Raid" time="0.035440292">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; replaces the address and records the previous one" time="0.028981958">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; keeps an existing enrollment on the wallet snapshotted when it was made" time="0.026582917">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses while a withdrawal or live deposit is open" time="0.054677709">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses an address owned by another account and a second change within 7 days" time="0.063305458">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; requires a connected X account" time="0.023765916">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-session-authority.test.ts" timestamp="2026-10-10T05:10:32.921Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.002296833">
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; preserves only a live own X session under authenticated own context" time="0.000818209">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for absent" time="0.000079209">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for foreign owner" time="0.000053083">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for foreign context" time="0.000284875">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for missing context" time="0.000083416">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for wallet provider" time="0.000057917">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for unknown provider" time="0.0000465">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for expired whole second" time="0.000043875">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for expiry equality" time="0.000059">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for invalid expiry" time="0.000070375">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for invalid clock" time="0.000037583">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,11 @@
+{
+  "user": "0xdushy4nt",
+  "scopes": "read:packages",
+  "visibility": "private",
+  "staging_version": {
+    "id": 1368788075,
+    "name": "sha256:a0448967927e2e2559ad2f8ef7f13c431e2daa6c940050aca373012a276c5331",
+    "tags": ["staging", "sha-e492c39ef2c5356a490bb5fdcd31b12beaf4a248"]
+  },
+  "token_expires_at": "2026-11-10 11:22:08 UTC"
+}

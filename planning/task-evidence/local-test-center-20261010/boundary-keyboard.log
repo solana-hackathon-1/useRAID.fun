@@ -1,0 +1,1 @@
+PASS: outside preview the route renders not-found with no controls/cards and noindex (streamed HTTP 200); disabled sandbox API HTTP 404; keyboard filter/form order work.

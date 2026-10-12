@@ -1,0 +1,70 @@
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+node:internal/modules/esm/resolve:271
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Rev8LG/lib/wallet-challenge-contract' imported from /private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Rev8LG/lib/wallet-link-proof.ts
+    at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    at moduleResolve (node:internal/modules/esm/resolve:861:10)
+    at defaultResolve (node:internal/modules/esm/resolve:988:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:700:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:717:38)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolveBaseSync (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092)
+    at resolveDirectorySync (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398)
+    at resolveTsPathsSync (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605)
+    at resolve (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:16832) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Rev8LG/lib/wallet-challenge-contract'
+}
+
+Node.js v26.0.0
+ ❯ tests/identity-link-boundary.test.ts (5 tests | 1 failed) 438ms
+   × minimal external host links a second wallet using explicit dependencies 400ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link-boundary.test.ts > minimal external host links a second wallet using explicit dependencies
+Error: Command failed: /opt/homebrew/Cellar/node/26.0.0/bin/node /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Rev8LG/node_modules/tsx/dist/cli.mjs host.ts
+node:internal/modules/esm/resolve:271
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Rev8LG/lib/wallet-challenge-contract' imported from /private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Rev8LG/lib/wallet-link-proof.ts
+    at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    at moduleResolve (node:internal/modules/esm/resolve:861:10)
+    at defaultResolve (node:internal/modules/esm/resolve:988:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:700:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:717:38)
+    at nextStep (node:internal/modules/customization_hooks:189:26)
+    at resolveBaseSync (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092)
+    at resolveDirectorySync (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398)
+    at resolveTsPathsSync (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605)
+    at resolve (file:///Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:16832) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Rev8LG/lib/wallet-challenge-contract'
+}
+
+Node.js v26.0.0
+
+ ❯ resolveBaseSync ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:11092
+ ❯ resolveDirectorySync ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:12398
+ ❯ resolveTsPathsSync ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:13605
+ ❯ tests/identity-link-boundary.test.ts:78:22
+     76|       // Explicit existing fixture runtime; independent installation i…
+     77|       await symlink(join(process.cwd(), 'node_modules'), join(director…
+     78|       const output = execFileSync(
+       |                      ^
+     79|         process.execPath,
+     80|         [join(directory, 'node_modules/tsx/dist/cli.mjs'), 'host.ts'],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 12 passed (13)
+      Tests  1 failed | 101 passed (102)
+   Start at  19:41:43
+   Duration  17.90s (transform 173ms, setup 0ms, import 1.48s, tests 14.96s, environment 1ms)
+

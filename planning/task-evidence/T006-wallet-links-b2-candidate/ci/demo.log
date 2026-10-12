@@ -1,0 +1,74 @@
+
+> useraid@0.1.0 test:browser
+> playwright test
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 50 tests using 5 workers
+[WebServer] ⨯ Error [PrismaClientInitializationError]: 
+[WebServer] Invalid `{imported module ./src/lib/db.ts}["db"].raid.findMany()` invocation in
+[WebServer] /private/tmp/raid-b2-final-ci-20261010/.next-db-down/dev/server/chunks/ssr/[root-of-the-server]__0-fnj7j._.js:149:149
+[WebServer] 
+[WebServer]   146 const now = new Date();
+[WebServer]   147 // List mode reads the latest snapshot and a short activity feed; detail pages compute from every post.
+[WebServer]   148 const detail = 'id' in filter || 'mint' in filter;
+[WebServer] → 149 const raids = await {imported module ./src/lib/db.ts}["db"].raid.findMany(
+[WebServer] Can't reach database server at `127.0.0.1:1`
+[WebServer] 
+[WebServer] Please make sure your database server is running at `127.0.0.1:1`.
+[WebServer]     at <unknown> (src/lib/data.ts:34:31)
+[WebServer]     at async loadRaids (src/lib/data.ts:34:17)
+[WebServer]   32 |   // List mode reads the latest snapshot and a short activity feed; detail pages compute from every post.
+[WebServer]   33 |   const detail = 'id' in filter || 'mint' in filter;
+[WebServer] > 34 |   const raids = await db.raid.findMany({
+[WebServer]      |                               ^
+[WebServer]   35 |     where: {
+[WebServer]   36 |       hidden: false,
+[WebServer]   37 |       status: { in: Object.keys(filter).length ? ['ACTIVE', 'ENDED'] : ['ACTIVE'] }, {
+[WebServer]   clientVersion: '6.19.3',
+[WebServer]   errorCode: undefined,
+[WebServer]   retryable: undefined,
+[WebServer]   digest: '3963917762'
+[WebServer] }
+·····[WebServer] ⨯ Error [PrismaClientInitializationError]: 
+[WebServer] Invalid `{imported module ./src/lib/db.ts}["db"].raid.findMany()` invocation in
+[WebServer] /private/tmp/raid-b2-final-ci-20261010/.next-db-down/dev/server/chunks/ssr/[root-of-the-server]__0-fnj7j._.js:149:149
+[WebServer] 
+[WebServer]   146 const now = new Date();
+[WebServer]   147 // List mode reads the latest snapshot and a short activity feed; detail pages compute from every post.
+[WebServer]   148 const detail = 'id' in filter || 'mint' in filter;
+[WebServer] → 149 const raids = await {imported module ./src/lib/db.ts}["db"].raid.findMany(
+[WebServer] Can't reach database server at `127.0.0.1:1`
+[WebServer] 
+[WebServer] Please make sure your database server is running at `127.0.0.1:1`.
+[WebServer]     at <unknown> (src/lib/data.ts:34:31)
+[WebServer]     at async loadRaids (src/lib/data.ts:34:17)
+[WebServer]   32 |   // List mode reads the latest snapshot and a short activity feed; detail pages compute from every post.
+[WebServer]   33 |   const detail = 'id' in filter || 'mint' in filter;
+[WebServer] > 34 |   const raids = await db.raid.findMany({
+[WebServer]      |                               ^
+[WebServer]   35 |     where: {
+[WebServer]   36 |       hidden: false,
+[WebServer]   37 |       status: { in: Object.keys(filter).length ? ['ACTIVE', 'ENDED'] : ['ACTIVE'] }, {
+[WebServer]   clientVersion: '6.19.3',
+[WebServer]   errorCode: undefined,
+[WebServer]   retryable: undefined,
+[WebServer]   digest: '3963917762'
+[WebServer] }
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+····[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·····[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+···[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+····°[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+···[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·····[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+·····[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+······[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+········
+  1 skipped
+  49 passed (15.0s)

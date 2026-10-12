@@ -1,0 +1,112 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":3204,"waiters":[3203]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":3204,"waiters":[3203]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":3204,"waiters":[3203]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":3204,"waiters":[3203]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:401","linked","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > makes a revoke or X disconnect that arrives after the decision wait for the link to commit
+{"authorityLateWriters":{"command":3203,"writers":[3205,3206]}}
+
+ ✓ tests/wallet-link-authority-db.test.ts (12 tests) 2988ms
+     ✓ denies a session that expires naturally while the command waits for the lock  1847ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  552ms
+ ✓ tests/wallet-link-signin-db.test.ts (8 tests) 398ms
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+{"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":3213,"blocker":3211,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+{"walletLinkRace":"link-then-legacy-insert","waiter":3211,"blocker":3213,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+{"walletLinkRace":"legacy-insert-then-link","waiter":3213,"blocker":3211,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at the User row lock; one participant
+{"walletLinkRace":"link-vs-link-same-account","waiter":3211,"blocker":3213,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+{"walletLinkRace":"link-vs-rotate-link-first","waiter":3213,"blocker":3211,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > rotate holding the subject vs link of that address: link waits, then reports a conflict
+{"walletLinkRace":"link-vs-rotate-rotate-first","waiter":3211,"blocker":3213,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+{"walletLinkRace":"link-vs-merge-as-drop","waiter":3213,"blocker":3211,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\"."}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+{"walletLinkRace":"link-vs-merge-delete-first","waiter":3211,"blocker":3213,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+{"walletLinkRace":"link-vs-merge-as-keep","waiter":3213,"blocker":3211,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+{"walletLinkRace":"link-vs-user-row-update","waiter":3211,"blocker":3213,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ ✓ tests/identity-link-db.test.ts (37 tests) 1450ms
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+{"sessionRace":"revoked","waiter":3218,"blocker":3217}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+{"sessionRace":"expired","waiter":3217,"blocker":3218}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+{"sessionRace":"downgraded","waiter":3218,"blocker":3217}
+
+ ✓ tests/wallet-auth-db.test.ts (25 tests) 738ms
+stderr | tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > ignores LOCAL_AUTO_APPROVE_CREATORS in production
+LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.
+
+ ✓ tests/x-oauth-db.test.ts (16 tests) 578ms
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 331ms
+ ✓ tests/identity-link-authority-hook-db.test.ts (9 tests) 201ms
+ ❯ tests/account-merge-canonical.test.ts (13 tests | 1 failed) 13ms
+     ✓ keeps the existing genuinely empty account result 2ms
+     ✓ a canonical HUMAN mapping makes an otherwise legacy-empty account nonempty 1ms
+     ✓ retains nonempty protection for legacy raid references 0ms
+     ✓ retains nonempty protection for legacy tokenLaunch references 1ms
+     ✓ retains nonempty protection for legacy rewardEnrollment references 1ms
+     ✓ retains nonempty protection for legacy raidEnrollment references 0ms
+     ✓ retains nonempty protection for legacy balanceEntry references 0ms
+     ✓ retains nonempty protection for legacy usdcTransfer references 0ms
+     ✓ retains nonempty protection for legacy usdcAllocation references 0ms
+     ✓ retains existing role, restriction and missing-account denials: {"role":"ADMIN"} 1ms
+     ✓ retains existing role, restriction and missing-account denials: {"suspended":true} 0ms
+     ✓ retains existing role, restriction and missing-account denials: {"missing":true} 0ms
+     × refuses mapped-account absorption before any credential/session/account/event mutation 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/account-merge-canonical.test.ts > T006 planned canonical references protect legacy absorption decisions > refuses mapped-account absorption before any credential/session/account/event mutation
+AssertionError: expected [Function] to throw error including 'Only an activity-free account can be …' but got 'tx.$queryRaw is not a function'
+
+Expected: "Only an activity-free account can be merged."
+Received: "tx.$queryRaw is not a function"
+
+ ❯ tests/account-merge-canonical.test.ts:106:68
+    104|   it('refuses mapped-account absorption before any credential/session/…
+    105|     const { transaction, mutations } = observedTransaction({ mapped: t…
+    106|     await expect(absorbAccount(transaction, 'keeper', 'protected')).re…
+       |                                                                    ^
+    107|       'Only an activity-free account can be merged.',
+    108|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 7 passed (8)
+      Tests  1 failed | 126 passed (127)
+   Start at  18:13:29
+   Duration  8.56s (transform 139ms, setup 0ms, import 1.01s, tests 6.70s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-wallet-links-b2-rereview-fixes/green.xml

@@ -1,0 +1,13 @@
+
+> useraid@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+
+ Test Files  94 passed (94)
+      Tests  1162 passed (1162)
+   Start at  19:48:47
+   Duration  59.34s (transform 827ms, setup 0ms, import 8.38s, tests 40.74s, environment 5ms)
+

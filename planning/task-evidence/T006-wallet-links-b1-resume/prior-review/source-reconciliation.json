@@ -1,0 +1,32 @@
+{
+  "src/identity-link/index.ts": {
+    "prior_sha256": "3138cf36b3fccb9547ca6ebd1634c76f3b66998cc09b95daa8c67ba3d8e6dc3e",
+    "current_sha256": "3138cf36b3fccb9547ca6ebd1634c76f3b66998cc09b95daa8c67ba3d8e6dc3e",
+    "matches_prior_review": true
+  },
+  "src/identity-link/contracts.ts": {
+    "prior_sha256": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+    "current_sha256": "d2b66bd8dcf565d50cc6d06c4e66ce279e14a613c04b66839f77454da5a6e5cf",
+    "matches_prior_review": true
+  },
+  "src/lib/wallet-challenge-contract.ts": {
+    "prior_sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+    "current_sha256": "92b66291d5dd741c93f84dd7c0d75b90d04cd4dfd18725f756143fccf06a4f34",
+    "matches_prior_review": true
+  },
+  "src/lib/wallet-auth.ts": {
+    "prior_sha256": "e62f07000987ff53738ebb4765f5080890a54405acfef4af64ca945ea9e2713f",
+    "current_sha256": "7c22a4807abbc4bd4bcda4737ef5540284fae7f9a1c6f6be88dbca3813366cca",
+    "matches_prior_review": false
+  },
+  "src/lib/wallet-link-proof.ts": {
+    "prior_sha256": "dd27d8b294853ece5ebc5f945e7e5e5bfa7ac10e41193cbf4ad0883054796477",
+    "current_sha256": "dd27d8b294853ece5ebc5f945e7e5e5bfa7ac10e41193cbf4ad0883054796477",
+    "matches_prior_review": true
+  },
+  "tests/wallet-link-credentials.test.ts": {
+    "prior_sha256": "d045b215cd634f2ae7454af9edc44805e7f1f8d6bbc555c48a567ec22a0891d5",
+    "current_sha256": "1276f249914c2a7ed5d5585a75ce7d0e290e01562a2d5845eb986098814abf14",
+    "matches_prior_review": false
+  }
+}

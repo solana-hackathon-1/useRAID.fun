@@ -1,0 +1,15 @@
+
+> useraid@0.1.0 test
+> vitest run tests/wallet-auth-db.test.ts -t expired X authority|borrow or delete|authenticated account context|unknown session authority --reporter=default --reporter=junit --outputFile=planning/task-evidence/T007-wallet-session-authority/green.xml
+
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ✓ tests/wallet-auth-db.test.ts (22 tests | 18 skipped) 178ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed | 18 skipped (22)
+   Start at  10:54:43
+   Duration  684ms (transform 85ms, setup 0ms, import 388ms, tests 178ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T007-wallet-session-authority/green.xml

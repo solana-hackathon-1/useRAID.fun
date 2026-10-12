@@ -1,0 +1,117 @@
+
+ RUN  v4.1.11 /private/tmp/raid-auth-reconcile-20261011/candidate
+
+ ❯ tests/wallet-link-signin-db.test.ts (8 tests | 1 failed) 475ms
+     × gives revoked and wrong-network reservations the same released denial without changing state 41ms
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+{"lockOrderWait":{"blocker":100,"waiter":99,"needle":"OAuthAttempt"}}
+
+ ❯ tests/wallet-link-lock-order-db.test.ts (7 tests | 1 failed) 11325ms
+       × serializes without a deadlock and fails the merge closed after the connection wins 5101ms
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+Error: Transform failed with 1 error:
+/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-To7jcY/host.ts:210:8: ERROR: The symbol "revoked" has already been declared
+    at failureErrorWithLog (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:1752:15)
+    at /Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:1019:50
+    at responseCallbacks.<computed> (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:886:9)
+    at handleIncomingPacket (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:941:12)
+    at Socket.readFromStdout (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:864:7)
+    at Socket.emit (node:events:509:20)
+    at addChunk (node:internal/streams/readable:564:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:515:3)
+    at Readable.push (node:internal/streams/readable:395:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23) {
+  name: 'TransformError'
+}
+
+Node.js v26.0.0
+ ❯ tests/identity-link-boundary.test.ts (5 tests | 1 failed) 401ms
+   × minimal external host links a second wallet using explicit dependencies 364ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link-boundary.test.ts > minimal external host links a second wallet using explicit dependencies
+Error: Command failed: /opt/homebrew/Cellar/node/26.0.0/bin/node /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-To7jcY/node_modules/tsx/dist/cli.mjs host.ts
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+Error: Transform failed with 1 error:
+/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-To7jcY/host.ts:210:8: ERROR: The symbol "revoked" has already been declared
+    at failureErrorWithLog (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:1752:15)
+    at /Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:1019:50
+    at responseCallbacks.<computed> (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:886:9)
+    at handleIncomingPacket (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:941:12)
+    at Socket.readFromStdout (/Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:864:7)
+    at Socket.emit (node:events:509:20)
+    at addChunk (node:internal/streams/readable:564:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:515:3)
+    at Readable.push (node:internal/streams/readable:395:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23) {
+  name: 'TransformError'
+}
+
+Node.js v26.0.0
+
+ ❯ failureErrorWithLog ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:1752:15
+ ❯ ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:1019:50
+ ❯ responseCallbacks.<computed> ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:886:9
+ ❯ handleIncomingPacket ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:941:12
+ ❯ Socket.readFromStdout ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/esbuild/lib/main.js:864:7
+ ❯ tests/identity-link-boundary.test.ts:78:22
+     76|       // Explicit existing fixture runtime; independent installation i…
+     77|       await symlink(join(process.cwd(), 'node_modules'), join(director…
+     78|       const output = execFileSync(
+       |                      ^
+     79|         process.execPath,
+     80|         [join(directory, 'node_modules/tsx/dist/cli.mjs'), 'host.ts'],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+Error: Expected 2 OAuthAttempt waiters, saw 1
+ ❯ attemptWaiters tests/wallet-link-lock-order-db.test.ts:117:9
+    115|     await new Promise((r) => setTimeout(r, 10));
+    116|   }
+    117|   throw new Error(`Expected ${count} OAuthAttempt waiters, saw ${seen}…
+       |         ^
+    118| }
+    119| // A wallet-only account (xId null) with a primary wallet, a live wall…
+ ❯ tests/wallet-link-lock-order-db.test.ts:330:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > gives revoked and wrong-network reservations the same released denial without changing state
+PrismaClientUnknownRequestError: 
+Invalid `db.walletLink.updateMany()` invocation in
+/private/tmp/raid-auth-reconcile-20261011/candidate/tests/wallet-link-signin-db.test.ts:154:27
+
+  151 const before = await state();
+  152 const sessions = await db.session.count();
+  153 const revoked = await signIn(w).catch((e) => e);
+→ 154 await db.walletLink.updateMany(
+Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: "23000", message: "Wallet link is immutable except ACTIVE to REVOKED", severity: "ERROR", detail: None, column: None, hint: None }), transient: false })
+ ❯ ei.handleRequestError ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:12
+ ❯ ei.handleAndLogRequestError ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a ../../../../Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/wallet-link-signin-db.test.ts:154:7
+    152|       const sessions = await db.session.count();
+    153|       const revoked = await signIn(w).catch((e) => e);
+    154|       await db.walletLink.updateMany({
+       |       ^
+    155|         where: { address: w.address },
+    156|         data: { status: 'ACTIVE', revokedAt: null, networkIdentity: 'w…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed | 10 passed (13)
+      Tests  3 failed | 99 passed (102)
+   Start at  19:39:47
+   Duration  23.85s (transform 190ms, setup 0ms, import 1.71s, tests 20.57s, environment 1ms)
+

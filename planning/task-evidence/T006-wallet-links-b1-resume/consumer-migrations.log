@@ -1,0 +1,23 @@
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_wallet_links_host_test", schema "public" at "127.0.0.1:54868"
+
+4 migrations found in prisma/migrations
+
+Applying migration `202610080000_host_user`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610080002_host_wallet_identity`
+Applying migration `202610090003_wallet_links`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610080000_host_user/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610080002_host_wallet_identity/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+      
+All migrations have been successfully applied.

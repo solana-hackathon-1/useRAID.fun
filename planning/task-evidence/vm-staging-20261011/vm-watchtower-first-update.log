@@ -1,0 +1,81 @@
+Error: unknown flag: --timeout
+Usage:
+  watchtower [flags]
+  watchtower [command]
+
+Available Commands:
+  completion     Generate the autocompletion script for the specified shell
+  help           Help about any command
+  notify-upgrade Upgrade legacy notification configuration to shoutrrr URLs
+
+Flags:
+  -a, --api-version string                          api version to use by docker client (default "1.44")
+  -c, --cleanup                                     Remove previously used images after updating
+  -d, --debug                                       Enable debug mode with verbose logging
+  -x, --disable-containers strings                  Comma-separated list of containers to explicitly exclude from watching.
+      --enable-lifecycle-hooks                      Enable the execution of commands triggered by pre- and post-update lifecycle hooks
+      --health-check                                Do health check and exit
+  -h, --help                                        help for watchtower
+  -H, --host string                                 daemon socket to connect to (default "unix:///var/run/docker.sock")
+      --http-api-metrics                            Runs Watchtower with the Prometheus metrics API enabled
+      --http-api-periodic-polls                     Also run periodic updates (specified with --interval and --schedule) if HTTP API is enabled
+      --http-api-token string                       Sets an authentication token to HTTP API requests.
+      --http-api-update                             Runs Watchtower in HTTP API mode, so that image updates must to be triggered by a request
+      --include-restarting                          Will also include restarting containers
+  -S, --include-stopped                             Will also include created and exited containers
+  -i, --interval int                                Poll interval (in seconds) (default 86400)
+  -e, --label-enable                                Watch containers where the com.centurylinklabs.watchtower.enable label is true
+      --label-take-precedence                       Label applied to containers take precedence over arguments
+  -l, --log-format string                           Sets what logging format to use for console output. Possible values: Auto, LogFmt, Pretty, JSON (default "auto")
+      --log-level string                            The maximum log level that will be written to STDERR. Possible values: panic, fatal, error, warn, info, debug or trace (default "info")
+  -m, --monitor-only                                Will only monitor for new images, not update the containers
+      --no-color                                    Disable ANSI color escape codes in log output
+      --no-pull                                     Do not pull any new images
+      --no-restart                                  Do not restart any containers
+      --no-startup-message                          Prevents watchtower from sending a startup message
+      --notification-email-delay int                Delay before sending notifications, expressed in seconds
+      --notification-email-from string              Address to send notification emails from
+      --notification-email-server string            SMTP server to send notification emails through
+      --notification-email-server-password string   SMTP server password for sending notifications
+      --notification-email-server-port int          SMTP server port to send notification emails through (default 25)
+      --notification-email-server-tls-skip-verify   Controls whether watchtower verifies the SMTP server's certificate chain and host name.
+                                                    Should only be used for testing.
+      --notification-email-server-user string       SMTP server user for sending notifications
+      --notification-email-subjecttag string        Subject prefix tag for notifications via mail
+      --notification-email-to string                Address to send notification emails to
+      --notification-gotify-tls-skip-verify         Controls whether watchtower verifies the Gotify server's certificate chain and host name.
+                                                    Should only be used for testing.
+      --notification-gotify-token string            The Gotify Application required to query the Gotify API
+      --notification-gotify-url string              The Gotify URL to send notifications to
+      --notification-log-stdout                     Write notification logs to stdout instead of logging (to stderr)
+      --notification-msteams-data                   The MSTeams notifier will try to extract log entry fields as MSTeams message facts
+      --notification-msteams-hook string            The MSTeams WebHook URL to send notifications to
+      --notification-report                         Use the session report as the notification template data
+      --notification-skip-title                     Do not pass the title param to notifications
+      --notification-slack-channel string           A string which overrides the webhook's default channel. Example: #my-custom-channel
+      --notification-slack-hook-url string          The Slack Hook URL to send notifications to
+      --notification-slack-icon-emoji string        An emoji code string to use in place of the default icon
+      --notification-slack-icon-url string          An icon image URL string to use in place of the default icon
+      --notification-slack-identifier string        A string which will be used to identify the messages coming from this watchtower instance (default "watchtower")
+      --notification-template string                The shoutrrr text/template for the messages
+      --notification-title-tag string               Title prefix tag for notifications
+      --notification-url stringArray                The shoutrrr URL to send notifications to
+  -n, --notifications strings                        Notification types to send (valid: email, slack, msteams, gotify, shoutrrr)
+      --notifications-delay int                     Delay before sending notifications, expressed in seconds
+      --notifications-hostname string               Custom hostname for notification titles
+      --notifications-level string                  The log level used for sending notifications. Possible values: panic, fatal, error, warn, info or debug (default "info")
+  -P, --porcelain string                            Write session results to stdout using a stable versioned format. Supported values: "v1"
+      --remove-volumes                              Remove attached volumes before updating
+      --revive-stopped                              Will also start stopped containers that were updated, if include-stopped is active
+      --rolling-restart                             Restart containers one at a time
+  -R, --run-once                                    Run once now and exit
+  -s, --schedule string                             The cron expression which defines when to update
+      --scope string                                Defines a monitoring scope for the Watchtower instance.
+  -t, --stop-timeout duration                       Timeout before a container is forcefully stopped (default 10s)
+  -v, --tlsverify                                   use TLS and verify the remote
+      --trace                                       Enable trace mode with very verbose logging - caution, exposes credentials
+      --warn-on-head-failure string                 When to warn about HEAD pull requests failing. Possible values: always, auto or never
+
+Use "watchtower [command] --help" for more information about a command.
+
+time="2026-10-11T11:28:07Z" level=fatal msg="unknown flag: --timeout"

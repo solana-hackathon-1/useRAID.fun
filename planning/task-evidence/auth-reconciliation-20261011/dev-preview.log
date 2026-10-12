@@ -1,0 +1,120 @@
+▲ Next.js 16.3.8 (Turbopack)
+- Local:         http://127.0.0.1:3021
+- Network:       http://127.0.0.1:3021
+✓ Ready in 246ms
+✓ Running next.config.ts took 16ms
+
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /test-center 200 in 1264ms (next.js: 1074ms, application-code: 190ms)
+ GET /test-center 200 in 31ms (next.js: 1.5ms, application-code: 29ms)
+ GET /test-center 200 in 26ms (next.js: 2ms, application-code: 24ms)
+ GET /test-center 200 in 22ms (next.js: 1.1ms, application-code: 21ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/studio/sandbox 200 in 389ms (next.js: 291ms, application-code: 98ms)
+ GET /creator 200 in 169ms (next.js: 124ms, application-code: 46ms)
+ GET /creator 200 in 40ms (next.js: 3ms, application-code: 37ms)
+ GET /creator/balance 200 in 165ms (next.js: 114ms, application-code: 50ms)
+ GET /test-center 200 in 44ms (next.js: 2.0ms, application-code: 42ms)
+ GET /creator/account 200 in 152ms (next.js: 116ms, application-code: 36ms)
+ GET /test-center 200 in 21ms (next.js: 1.2ms, application-code: 20ms)
+ GET /test-center 200 in 18ms (next.js: 1.1ms, application-code: 17ms)
+ GET /test-center 200 in 25ms (next.js: 1.0ms, application-code: 24ms)
+ GET /test-center 200 in 21ms (next.js: 4ms, application-code: 18ms)
+ POST /api/studio/sandbox 200 in 36ms (next.js: 1.5ms, application-code: 34ms)
+ GET /creator 200 in 25ms (next.js: 2ms, application-code: 23ms)
+ GET /creator 200 in 18ms (next.js: 2ms, application-code: 16ms)
+ GET /creator/balance 200 in 30ms (next.js: 3ms, application-code: 27ms)
+ GET /test-center 200 in 39ms (next.js: 1.8ms, application-code: 37ms)
+ GET /creator/account 200 in 43ms (next.js: 4ms, application-code: 39ms)
+ GET / 200 in 233ms (next.js: 197ms, application-code: 36ms)
+ GET /privacy 200 in 95ms (next.js: 76ms, application-code: 19ms)
+ GET /creator 200 in 24ms (next.js: 1.9ms, application-code: 22ms)
+ GET /api/health 200 in 67ms (next.js: 59ms, application-code: 8ms)
+ POST /api/wallet/challenge 200 in 309ms (next.js: 282ms, application-code: 27ms)
+ POST /api/wallet/verify 200 in 184ms (next.js: 115ms, application-code: 68ms)
+ POST /api/wallet/challenge 200 in 8ms (next.js: 0.8ms, application-code: 7ms)
+ POST /api/wallet/verify 200 in 20ms (next.js: 0.7ms, application-code: 20ms)
+ POST /api/wallet/challenge 200 in 6ms (next.js: 0.8ms, application-code: 5ms)
+ POST /api/wallet/verify 200 in 29ms (next.js: 1.9ms, application-code: 27ms)
+ POST /api/wallet/challenge 200 in 8ms (next.js: 0.8ms, application-code: 8ms)
+ POST /api/wallet/verify 200 in 25ms (next.js: 0.9ms, application-code: 24ms)
+ POST /api/wallet/challenge 200 in 6ms (next.js: 0.7ms, application-code: 6ms)
+ POST /api/wallet/verify 401 in 21ms (next.js: 0.7ms, application-code: 20ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /api/admin/status 405 in 752ms (next.js: 747ms, application-code: 4ms)
+ GET / 200 in 42ms (next.js: 9ms, application-code: 33ms)
+ GET /privacy 200 in 20ms (next.js: 2ms, application-code: 18ms)
+ GET /creator 200 in 20ms (next.js: 2ms, application-code: 18ms)
+ GET /api/health 200 in 4ms (next.js: 1.0ms, application-code: 3ms)
+ POST /api/wallet/challenge 200 in 7ms (next.js: 0.9ms, application-code: 6ms)
+ POST /api/wallet/verify 200 in 33ms (next.js: 0.9ms, application-code: 32ms)
+ POST /api/wallet/challenge 200 in 9ms (next.js: 0.8ms, application-code: 8ms)
+ POST /api/wallet/verify 200 in 25ms (next.js: 0.8ms, application-code: 24ms)
+ POST /api/wallet/challenge 200 in 6ms (next.js: 0.8ms, application-code: 5ms)
+ POST /api/wallet/verify 200 in 20ms (next.js: 0.6ms, application-code: 19ms)
+ POST /api/wallet/challenge 200 in 9ms (next.js: 0.7ms, application-code: 8ms)
+ POST /api/wallet/verify 200 in 24ms (next.js: 0.9ms, application-code: 23ms)
+ POST /api/wallet/challenge 200 in 7ms (next.js: 0.8ms, application-code: 6ms)
+ POST /api/wallet/verify 401 in 18ms (next.js: 0.8ms, application-code: 17ms)
+ GET /api/admin/usdc 401 in 136ms (next.js: 132ms, application-code: 5ms)
+ POST /api/wallet/link-additional 404 in 102ms (next.js: 75ms, application-code: 27ms)
+ GET /test-center 200 in 25ms (next.js: 1.9ms, application-code: 23ms)
+ GET /test-center 200 in 24ms (next.js: 1.1ms, application-code: 23ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <LoadingBoundary name="test-center/" loading={null}>
+      <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+        <RedirectBoundary>
+          <RedirectErrorBoundary router={{...}}>
+            <InnerLayoutRouter url="/test-center" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+              <SegmentViewNode type="page" pagePath="test-cente...">
+                <SegmentTrieNode>
+                <TestCenterPage>
+                  <TestCenter sandbox={true}>
+                    <div className="test-center">
+                      <header>
+                      <section>
+                      <div>
+                      <div>
+                      <div className="test-explo...">
+                        <AmountExplorer>
+                          <section id="amount-exp..." aria-labelledby="amount-hea..." className="test-panel">
+                            <span>
+                            <h2>
+                            <p>
+                            <form onSubmit={function calculate}>
+                              <label>
+                                <input
+                                  value="250.50"
+                                  maxLength={100}
+                                  inputMode="decimal"
+                                  onChange={function onChange}
+-                                 style={{caret-color:"transparent"}}
+                                >
+                              <label>
+                              <label>
+                                <input
+                                  value="60, 30, 10"
+                                  maxLength={350}
+                                  onChange={function onChange}
+-                                 style={{caret-color:"transparent"}}
+                                >
+                              ...
+                        ...
+                      ...
+              ...
+            ...
+ 
+ GET /test-center 200 in 74ms (next.js: 48ms, application-code: 26ms)
+ GET /test-center 200 in 25ms (next.js: 1.2ms, application-code: 24ms)

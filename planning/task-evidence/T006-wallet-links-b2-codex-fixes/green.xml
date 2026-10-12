@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="0" errors="0" time="5.9111825">
+    <testsuite name="tests/wallet-link-lock-order-db.test.ts" timestamp="2026-10-10T17:22:03.648Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="5.9111825">
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the Session row lock" time="2.873929375">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:326,&quot;waiter&quot;:325,&quot;needle&quot;:&quot;FROM \&quot;Session\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the XAccount row lock" time="2.810569833">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:326,&quot;waiter&quot;:325,&quot;needle&quot;:&quot;FROM \&quot;XAccount\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; does not deadlock a merge against an X reconnect of the same account" time="0.157860667">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:326,&quot;waiter&quot;:325,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:325,&quot;waiter&quot;:329,&quot;needle&quot;:&quot;pg_advisory_xact_lock&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; refuses a merge when the dropped account connected X while the merge waited for its row" time="0.064929">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:326,&quot;waiter&quot;:329,&quot;needle&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>

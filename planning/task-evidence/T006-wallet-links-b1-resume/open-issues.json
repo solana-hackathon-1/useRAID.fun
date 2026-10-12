@@ -1,0 +1,968 @@
+[
+  {
+    "number": 167,
+    "state": "OPEN",
+    "title": "[T097] Deliver funded discovery filters and comparable organic ordering",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/167"
+  },
+  {
+    "number": 166,
+    "state": "OPEN",
+    "title": "[T096] Independently audit every blueprint subsection and board linkage",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/166"
+  },
+  {
+    "number": 165,
+    "state": "OPEN",
+    "title": "[T095] Deliver manual influencer identity, draft and publication-evidence workflow",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/165"
+  },
+  {
+    "number": 164,
+    "state": "OPEN",
+    "title": "[T094] Reconcile AI prepaid service budget, unused credit and failure refunds",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/164"
+  },
+  {
+    "number": 163,
+    "state": "OPEN",
+    "title": "[T093] Separate five budgets and exact billing/receipt obligations",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/163"
+  },
+  {
+    "number": 162,
+    "state": "OPEN",
+    "title": "[T092] Implement privacy, retention and account deletion without erasing obligations",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/162"
+  },
+  {
+    "number": 161,
+    "state": "OPEN",
+    "title": "[T091] Enforce web, upload, URL and integration security boundaries",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/161"
+  },
+  {
+    "number": 160,
+    "state": "OPEN",
+    "title": "[T090] Verify provider account ownership and privacy-safe recovery evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/160"
+  },
+  {
+    "number": 159,
+    "state": "OPEN",
+    "title": "[T089] Implement versioned API contracts and scoped command authorization",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/159"
+  },
+  {
+    "number": 158,
+    "state": "OPEN",
+    "title": "[E23] Master RAID blueprint and complete delivery coverage",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/158"
+  },
+  {
+    "number": 157,
+    "state": "OPEN",
+    "title": "[U016] UAT: Operator console and release sign-off",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/157"
+  },
+  {
+    "number": 156,
+    "state": "OPEN",
+    "title": "[U015] UAT: Sponsor dashboard and bid clarity",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/156"
+  },
+  {
+    "number": 155,
+    "state": "OPEN",
+    "title": "[U014] UAT: Challenge detail, selection and follow-on work",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/155"
+  },
+  {
+    "number": 154,
+    "state": "OPEN",
+    "title": "[U013] UAT: Party builder",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/154"
+  },
+  {
+    "number": 153,
+    "state": "OPEN",
+    "title": "[U012] UAT: Payments and recovery",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/153"
+  },
+  {
+    "number": 152,
+    "state": "OPEN",
+    "title": "[U011] UAT: Submission review and dispute",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/152"
+  },
+  {
+    "number": 151,
+    "state": "OPEN",
+    "title": "[U010] UAT: Founder applicant review",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/151"
+  },
+  {
+    "number": 150,
+    "state": "OPEN",
+    "title": "[U009] UAT: My Raid workspace",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/150"
+  },
+  {
+    "number": 149,
+    "state": "OPEN",
+    "title": "[U008] UAT: Raider onboarding and profile",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/149"
+  },
+  {
+    "number": 148,
+    "state": "OPEN",
+    "title": "[U007] UAT: Raid detail and acceptance",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/148"
+  },
+  {
+    "number": 147,
+    "state": "OPEN",
+    "title": "[U006] UAT: Create-Raid wizard",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/147"
+  },
+  {
+    "number": 146,
+    "state": "OPEN",
+    "title": "[U005] UAT: Launch wizard",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/146"
+  },
+  {
+    "number": 145,
+    "state": "OPEN",
+    "title": "[U004] UAT: Guild profile and founder management",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/145"
+  },
+  {
+    "number": 144,
+    "state": "OPEN",
+    "title": "[U003] UAT: Guild directory",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/144"
+  },
+  {
+    "number": 143,
+    "state": "OPEN",
+    "title": "[U002] UAT: Raid feed",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/143"
+  },
+  {
+    "number": 142,
+    "state": "OPEN",
+    "title": "[U001] UAT: Homepage",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/142"
+  },
+  {
+    "number": 141,
+    "state": "OPEN",
+    "title": "[E22] User acceptance testing and business sign-off",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/141"
+  },
+  {
+    "number": 140,
+    "state": "OPEN",
+    "title": "[G10] Operations release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/140"
+  },
+  {
+    "number": 139,
+    "state": "OPEN",
+    "title": "[G09] Promotions release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/139"
+  },
+  {
+    "number": 138,
+    "state": "OPEN",
+    "title": "[G08] External publication release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/138"
+  },
+  {
+    "number": 137,
+    "state": "OPEN",
+    "title": "[G07] Managed execution release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/137"
+  },
+  {
+    "number": 136,
+    "state": "OPEN",
+    "title": "[G06] Private resources release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/136"
+  },
+  {
+    "number": 135,
+    "state": "OPEN",
+    "title": "[G05] Operating terms release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/135"
+  },
+  {
+    "number": 134,
+    "state": "OPEN",
+    "title": "[G04] Supported assets release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/134"
+  },
+  {
+    "number": 133,
+    "state": "OPEN",
+    "title": "[G03] Financial finality release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/133"
+  },
+  {
+    "number": 132,
+    "state": "OPEN",
+    "title": "[G02] Custody and settlement release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/132"
+  },
+  {
+    "number": 131,
+    "state": "OPEN",
+    "title": "[G01] Launch route release evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/131"
+  },
+  {
+    "number": 130,
+    "state": "OPEN",
+    "title": "[T088] Independently verify attributable reputation and appeal corrections",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/130"
+  },
+  {
+    "number": 129,
+    "state": "OPEN",
+    "title": "[T087] Independently verify core end-to-end, restore, replay and accessibility",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/129"
+  },
+  {
+    "number": 128,
+    "state": "OPEN",
+    "title": "[T086] Independently verify role capacity and renewal",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/128"
+  },
+  {
+    "number": 127,
+    "state": "OPEN",
+    "title": "[T085] Independently verify automatic channel publication recovery",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/127"
+  },
+  {
+    "number": 126,
+    "state": "OPEN",
+    "title": "[T084] Independently verify ai operator capacity, spend, tools and closure",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/126"
+  },
+  {
+    "number": 125,
+    "state": "OPEN",
+    "title": "[T083] Independently verify promotion labels, auction release and delivery recovery",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/125"
+  },
+  {
+    "number": 124,
+    "state": "OPEN",
+    "title": "[T082] Independently verify party and challenge atomicity/rights",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/124"
+  },
+  {
+    "number": 123,
+    "state": "OPEN",
+    "title": "[T081] Independently verify private visibility, provider scopes and malicious artifacts",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/123"
+  },
+  {
+    "number": 122,
+    "state": "OPEN",
+    "title": "[T080] Independently verify funding, exact assets and settlement boundaries",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/122"
+  },
+  {
+    "number": 121,
+    "state": "OPEN",
+    "title": "[T079] Independently verify canonical capacity and bounded work closure",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/121"
+  },
+  {
+    "number": 120,
+    "state": "OPEN",
+    "title": "[T078] Independently verify identity, skills and fair admission",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/120"
+  },
+  {
+    "number": 119,
+    "state": "OPEN",
+    "title": "[T077] Review public beta stability and decide GA or extended weekly beta",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/119"
+  },
+  {
+    "number": 118,
+    "state": "OPEN",
+    "title": "[T076] Define organization operator registration and scaling limits",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/118"
+  },
+  {
+    "number": 117,
+    "state": "OPEN",
+    "title": "[T075] Prepare separate real RAID token issuance release package",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/117"
+  },
+  {
+    "number": 116,
+    "state": "OPEN",
+    "title": "[T074] Design optional RAID utility and license only after owner decisions",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/116"
+  },
+  {
+    "number": 115,
+    "state": "OPEN",
+    "title": "[T073] Model funded Role periods, renewal and finite closure",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/115"
+  },
+  {
+    "number": 114,
+    "state": "OPEN",
+    "title": "[T072] Calibrate versioned reputation and skill scoring with appeals",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/114"
+  },
+  {
+    "number": 113,
+    "state": "OPEN",
+    "title": "[T071] Measure influencer delivery and capped attribution honestly",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/113"
+  },
+  {
+    "number": 112,
+    "state": "OPEN",
+    "title": "[T070] Approve channel content and deduplicate automatic publication",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/112"
+  },
+  {
+    "number": 111,
+    "state": "OPEN",
+    "title": "[T069] Validate each additional reward asset end to end",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/111"
+  },
+  {
+    "number": 110,
+    "state": "OPEN",
+    "title": "[T068] Implement approved single-asset auctions and losing-budget release",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/110"
+  },
+  {
+    "number": 109,
+    "state": "OPEN",
+    "title": "[T067] Add fully funded prize competitions with fair award finality",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/109"
+  },
+  {
+    "number": 108,
+    "state": "OPEN",
+    "title": "[T066] Route one evaluated AI task through ordinary review",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/108"
+  },
+  {
+    "number": 107,
+    "state": "OPEN",
+    "title": "[T065] Handle cancel, provider failure and orphaned run recovery",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/107"
+  },
+  {
+    "number": 106,
+    "state": "OPEN",
+    "title": "[T064] Reserve and enforce a total AI execution budget",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/106"
+  },
+  {
+    "number": 105,
+    "state": "OPEN",
+    "title": "[T063] Deploy an actual isolated runner with explicit tool/data authority",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/105"
+  },
+  {
+    "number": 104,
+    "state": "OPEN",
+    "title": "[T062] Enforce aggregate operator commitments alongside participant capacity",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/104"
+  },
+  {
+    "number": 103,
+    "state": "OPEN",
+    "title": "[T061] Register accountable AI workers and evaluated configurations",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/103"
+  },
+  {
+    "number": 102,
+    "state": "OPEN",
+    "title": "[T060] Sell labeled fixed sponsorship with delivery and refund tracking",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/102"
+  },
+  {
+    "number": 101,
+    "state": "OPEN",
+    "title": "[T059] Hand off selection winners through a separate funded main offer",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/101"
+  },
+  {
+    "number": 100,
+    "state": "OPEN",
+    "title": "[T058] Publish paid selection Challenges with frozen rights and rubric",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/100"
+  },
+  {
+    "number": 99,
+    "state": "OPEN",
+    "title": "[T057] Reserve Party capacity atomically and support valid replacement",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/99"
+  },
+  {
+    "number": 98,
+    "state": "OPEN",
+    "title": "[T056] Create Party rosters, skill coverage and member consent",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/98"
+  },
+  {
+    "number": 97,
+    "state": "OPEN",
+    "title": "[T055] Revoke task access and contain malicious artifacts safely",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/97"
+  },
+  {
+    "number": 96,
+    "state": "OPEN",
+    "title": "[T054] Provision isolated resources and reconcile effective access",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/96"
+  },
+  {
+    "number": 95,
+    "state": "OPEN",
+    "title": "[T053] Separate private teasers, brief disclosure and resource approval",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/95"
+  },
+  {
+    "number": 94,
+    "state": "OPEN",
+    "title": "[T052] Open conservative public beta and monitor the stable core",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/94"
+  },
+  {
+    "number": 93,
+    "state": "OPEN",
+    "title": "[T051] Hold V1 and public-beta entry review",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/93"
+  },
+  {
+    "number": 92,
+    "state": "OPEN",
+    "title": "[T050] Stabilize closed beta and retest cohort defects",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/92"
+  },
+  {
+    "number": 91,
+    "state": "OPEN",
+    "title": "[T049] Observe invited founder and Raider work journeys",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/91"
+  },
+  {
+    "number": 90,
+    "state": "OPEN",
+    "title": "[T048] Prepare a supported invited beta configuration and cohort",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/90"
+  },
+  {
+    "number": 89,
+    "state": "OPEN",
+    "title": "[T047] Fix alpha blockers, retest and record the alpha exit",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/89"
+  },
+  {
+    "number": 88,
+    "state": "OPEN",
+    "title": "[T046] Rehearse alpha crash, restore and adversarial boundaries",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/88"
+  },
+  {
+    "number": 87,
+    "state": "OPEN",
+    "title": "[T045] Verify core accessibility, wallet rejection and private projections",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/87"
+  },
+  {
+    "number": 86,
+    "state": "OPEN",
+    "title": "[T044] Run internal alpha core journeys and capture usability evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/86"
+  },
+  {
+    "number": 85,
+    "state": "OPEN",
+    "title": "[T043] Measure the useful work loop with honest asset-aware metrics",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/85"
+  },
+  {
+    "number": 84,
+    "state": "OPEN",
+    "title": "[T042] Add safe lifecycle notifications and user preferences",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/84"
+  },
+  {
+    "number": 83,
+    "state": "OPEN",
+    "title": "[T041] Record attributable reputation, Guild Trust and correction history",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/83"
+  },
+  {
+    "number": 82,
+    "state": "OPEN",
+    "title": "[T040] Publish incident, migration and staffed support runbooks",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/82"
+  },
+  {
+    "number": 81,
+    "state": "OPEN",
+    "title": "[T039] Protect acknowledged authorizations outside the primary failure domain",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/81"
+  },
+  {
+    "number": 80,
+    "state": "OPEN",
+    "title": "[T038] Deliver durable worker generations, retries and health signals",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/80"
+  },
+  {
+    "number": 79,
+    "state": "OPEN",
+    "title": "[T037] Validate environments, feature flags and audited configuration",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/79"
+  },
+  {
+    "number": 78,
+    "state": "OPEN",
+    "title": "[T036] Recover payout destination safely and preserve restricted claims",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/78"
+  },
+  {
+    "number": 77,
+    "state": "OPEN",
+    "title": "[T035] Implement private disputes and snapshotted financial finality",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/77"
+  },
+  {
+    "number": 76,
+    "state": "OPEN",
+    "title": "[T034] Expose payment progress and ledger-vault incidents",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/76"
+  },
+  {
+    "number": 75,
+    "state": "OPEN",
+    "title": "[T033] Allocate immutable claims and reconcile payout retries",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/75"
+  },
+  {
+    "number": 74,
+    "state": "OPEN",
+    "title": "[T032] Bind accepted terms before work and resource readiness",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/74"
+  },
+  {
+    "number": 73,
+    "state": "OPEN",
+    "title": "[T031] Verify deposits and reserve each promised obligation once",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/73"
+  },
+  {
+    "number": 72,
+    "state": "OPEN",
+    "title": "[T030] Prove selected escrow authority and protocol capability",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/72"
+  },
+  {
+    "number": 71,
+    "state": "OPEN",
+    "title": "[T029] Implement exact asset registry and bounded amount arithmetic",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/71"
+  },
+  {
+    "number": 70,
+    "state": "OPEN",
+    "title": "[T028] Verify launch artifacts and activate the right Guild relationship",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/70"
+  },
+  {
+    "number": 69,
+    "state": "OPEN",
+    "title": "[T027] Build exact launch review, signature and resume UX",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/69"
+  },
+  {
+    "number": 68,
+    "state": "OPEN",
+    "title": "[T026] Wrap the selected launch route behind a typed adapter",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/68"
+  },
+  {
+    "number": 67,
+    "state": "OPEN",
+    "title": "[T025] Support consented work amendments and member replacement contracts",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/67"
+  },
+  {
+    "number": 66,
+    "state": "OPEN",
+    "title": "[T024] Close work finitely while preserving claims and newer capacity",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/66"
+  },
+  {
+    "number": 65,
+    "state": "OPEN",
+    "title": "[T023] Accept versioned submissions and criterion-based review",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/65"
+  },
+  {
+    "number": 64,
+    "state": "OPEN",
+    "title": "[T022] Deliver My Raid and founder applicant workspaces",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/64"
+  },
+  {
+    "number": 63,
+    "state": "OPEN",
+    "title": "[T021] Route applications, offers and instant acceptance through one command",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/63"
+  },
+  {
+    "number": 62,
+    "state": "OPEN",
+    "title": "[T020] Enforce atomic one-engagement capacity and slot vacancy",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/62"
+  },
+  {
+    "number": 61,
+    "state": "OPEN",
+    "title": "[T019] Implement idempotent commands with audit and outbox",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/61"
+  },
+  {
+    "number": 60,
+    "state": "OPEN",
+    "title": "[T018] Create the founder Raid wizard and reward review",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/60"
+  },
+  {
+    "number": 59,
+    "state": "OPEN",
+    "title": "[T017] Build bounded difficulty and reward recommendations",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/59"
+  },
+  {
+    "number": 58,
+    "state": "OPEN",
+    "title": "[T016] Define immutable Raid terms and publication checks",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/58"
+  },
+  {
+    "number": 57,
+    "state": "OPEN",
+    "title": "[T015] Build safe homepage, Guild directory and public profiles",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/57"
+  },
+  {
+    "number": 56,
+    "state": "OPEN",
+    "title": "[T014] Explain structured skill eligibility and anti-spam review",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/56"
+  },
+  {
+    "number": 55,
+    "state": "OPEN",
+    "title": "[T013] Deliver public trials and authorized assessment review",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/55"
+  },
+  {
+    "number": 54,
+    "state": "OPEN",
+    "title": "[T012] Add stable skill taxonomy and evidence records",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/54"
+  },
+  {
+    "number": 53,
+    "state": "OPEN",
+    "title": "[T011] Observe holder eligibility without permission shortcuts",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/53"
+  },
+  {
+    "number": 52,
+    "state": "OPEN",
+    "title": "[T010] Verify an existing project and its canonical token",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/52"
+  },
+  {
+    "number": 51,
+    "state": "OPEN",
+    "title": "[T009] Create Guild profiles and scoped founder delegation",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/51"
+  },
+  {
+    "number": 50,
+    "state": "OPEN",
+    "title": "[T008] Build beginner and experienced Raider onboarding",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/50"
+  },
+  {
+    "number": 49,
+    "state": "OPEN",
+    "title": "[T007] Verify one-use wallet sign-in and account-link intent",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/49"
+  },
+  {
+    "number": 48,
+    "state": "OPEN",
+    "title": "[T006] Preserve canonical identity across verified wallet links",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/48"
+  },
+  {
+    "number": 47,
+    "state": "OPEN",
+    "title": "[T005] Repair baseline CI and choose the web/worker staging path",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/47"
+  },
+  {
+    "number": 42,
+    "state": "OPEN",
+    "title": "[O19] Ongoing Role contracts/cadence and operator support hours",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/42"
+  },
+  {
+    "number": 41,
+    "state": "OPEN",
+    "title": "[O18] Hosting, selected package/runtime versions, provider SLOs and budgets",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/41"
+  },
+  {
+    "number": 40,
+    "state": "OPEN",
+    "title": "[O17] Sponsored auction mechanism and reserve/charge/refund rules",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/40"
+  },
+  {
+    "number": 39,
+    "state": "OPEN",
+    "title": "[O16] Social channels and allowed APIs/automation/metrics",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/39"
+  },
+  {
+    "number": 38,
+    "state": "OPEN",
+    "title": "[O15] Organization AI-operator registration/concurrency policy",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/38"
+  },
+  {
+    "number": 37,
+    "state": "OPEN",
+    "title": "[O14] Model providers, data retention/training permissions, tool providers, price cards",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/37"
+  },
+  {
+    "number": 36,
+    "state": "OPEN",
+    "title": "[O13] GitHub organization/provider plans and supported grant mechanism",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/36"
+  },
+  {
+    "number": 35,
+    "state": "OPEN",
+    "title": "[O12] Supported jurisdictions/users and contract/service terms",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/35"
+  },
+  {
+    "number": 34,
+    "state": "OPEN",
+    "title": "[O11] Formal privacy, retention, account deletion and identity-attestation policy",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/34"
+  },
+  {
+    "number": 33,
+    "state": "OPEN",
+    "title": "[O10] Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/33"
+  },
+  {
+    "number": 32,
+    "state": "OPEN",
+    "title": "[O09] Numeric skill/score thresholds and calibration",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/32"
+  },
+  {
+    "number": 31,
+    "state": "OPEN",
+    "title": "[O08] Platform fees, launch fees, promotion prices and AI charging/refunds",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/31"
+  },
+  {
+    "number": 30,
+    "state": "OPEN",
+    "title": "[O07] Initial supported assets and extension/freeze policy",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/30"
+  },
+  {
+    "number": 29,
+    "state": "OPEN",
+    "title": "[O06] Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/29"
+  },
+  {
+    "number": 28,
+    "state": "OPEN",
+    "title": "[O05] Escrow provider/custom program and custody/upgrade authority",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/28"
+  },
+  {
+    "number": 27,
+    "state": "OPEN",
+    "title": "[O04] Any flat RAID access license after removal of rank-linked stakes",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/27"
+  },
+  {
+    "number": 26,
+    "state": "OPEN",
+    "title": "[O03] Real RAID token plan and utility activation",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/26"
+  },
+  {
+    "number": 25,
+    "state": "OPEN",
+    "title": "[O02] Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/25"
+  },
+  {
+    "number": 24,
+    "state": "OPEN",
+    "title": "[O01] Exact launch mechanism and protocol/provider",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/24"
+  },
+  {
+    "number": 23,
+    "state": "OPEN",
+    "title": "[E21] Versioned reputation and advanced Guild economy",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/23"
+  },
+  {
+    "number": 22,
+    "state": "OPEN",
+    "title": "[E20] Approved influencer channels and attribution",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/22"
+  },
+  {
+    "number": 21,
+    "state": "OPEN",
+    "title": "[E19] Accountable managed AI workers",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/21"
+  },
+  {
+    "number": 20,
+    "state": "OPEN",
+    "title": "[E18] Sponsored placement and funded auctions",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/20"
+  },
+  {
+    "number": 19,
+    "state": "OPEN",
+    "title": "[E17] Selection Challenges and prize competitions",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/19"
+  },
+  {
+    "number": 18,
+    "state": "OPEN",
+    "title": "[E16] Parties, consent and exact team rewards",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/18"
+  },
+  {
+    "number": 17,
+    "state": "OPEN",
+    "title": "[E15] Private briefs, repositories and explicit access",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/17"
+  },
+  {
+    "number": 16,
+    "state": "OPEN",
+    "title": "[E14] Public discovery, notifications, metrics and beta",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/16"
+  },
+  {
+    "number": 15,
+    "state": "OPEN",
+    "title": "[E13] Closed beta and controlled V1 release",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/15"
+  },
+  {
+    "number": 14,
+    "state": "OPEN",
+    "title": "[E12] Internal alpha and core acceptance evidence",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/14"
+  },
+  {
+    "number": 13,
+    "state": "OPEN",
+    "title": "[E11] Configuration, durability and supported operations",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/13"
+  },
+  {
+    "number": 12,
+    "state": "OPEN",
+    "title": "[E10] Disputes, finality, appeals and beneficiary recovery",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/12"
+  },
+  {
+    "number": 11,
+    "state": "OPEN",
+    "title": "[E09] Exact assets, funding, escrow and settlement",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/11"
+  },
+  {
+    "number": 10,
+    "state": "OPEN",
+    "title": "[E08] Selected token launch and verified Guild linkage",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/10"
+  },
+  {
+    "number": 9,
+    "state": "OPEN",
+    "title": "[E07] Deliverables, review, closure and workspaces",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/9"
+  },
+  {
+    "number": 8,
+    "state": "OPEN",
+    "title": "[E06] One active engagement and reliable commands",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/8"
+  },
+  {
+    "number": 7,
+    "state": "OPEN",
+    "title": "[E05] Raid creation, terms and recommendations",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/7"
+  },
+  {
+    "number": 6,
+    "state": "OPEN",
+    "title": "[E04] Skill evidence, assessment and fair admission",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/6"
+  },
+  {
+    "number": 5,
+    "state": "OPEN",
+    "title": "[E03] Guilds, founder authority and holder membership",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/5"
+  },
+  {
+    "number": 4,
+    "state": "OPEN",
+    "title": "[E02] Canonical identity and secure onboarding",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/4"
+  },
+  {
+    "number": 3,
+    "state": "OPEN",
+    "title": "[E01] Shared contracts and engineering foundation",
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/issues/3"
+  }
+]

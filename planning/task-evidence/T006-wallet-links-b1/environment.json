@@ -1,0 +1,22 @@
+{
+  "container_id": "fde7f7cb68d19f7cebabe06482cd93afe58d49135112846e7400b8755a880656",
+  "started_at": "2026-10-09T03:42:35.385627588Z",
+  "image_id": "sha256:ed134ce8cc303c24d12c4bc6f5a2a43dc7ee7bbde8f67d9f60be5cc03206eab0",
+  "task_label": "T006-B1-Codex",
+  "tmpfs": {
+    "/var/lib/postgresql/data": "rw,size=512m"
+  },
+  "mounts": [],
+  "port_binding": {
+    "5432/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "56908"
+      }
+    ]
+  },
+  "node": "v26.0.0",
+  "dependency_install": "independent npm ci --ignore-scripts --no-audit --no-fund: 514 packages",
+  "database": "useraid_test, 20 migrations; standalone useraid_wallet_links_host_test, 4 migrations",
+  "network": "loopback synthetic only"
+}

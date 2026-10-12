@@ -1,0 +1,72 @@
+
+> useraid@0.1.0 test
+> vitest run tests/wallet-link-credentials.test.ts --testNamePattern=rotation preserves --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-wallet-links-b1/rotation-isolation-red.xml
+
+
+ RUN  v4.1.11 /private/tmp/raid-t006-wallet-links-b1-codex-20261009
+
+stderr | tests/wallet-link-credentials.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under a non-default snapshot while a link commits
+{"credentialRace":true,"waiter":266,"blocker":263,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"Wall"}
+
+ ❯ tests/wallet-link-credentials.test.ts (27 tests | 1 failed | 26 skipped) 208ms
+     ↓ publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants
+     ↓ resolves only internal account/participant context under subject then account locks, without writes
+     ↓ leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock
+     ↓ resolver rejects invalid durable ownership {"status":"REVOKED"}
+     ↓ resolver rejects invalid durable ownership {"suspended":true}
+     ↓ resolver rejects invalid durable ownership {"participant":null}
+     ↓ resolver rejects invalid durable ownership {"participant":"d4bbeef1-55a8-4d8e-8d03-f3b012f92402"}
+     ↓ resolver rejects invalid durable ownership {"status":"INVALID"}
+     ↓ resolver rejects invalid durable ownership {"malformed":true}
+     ↓ revokes once, preserves permanent reservation, and repeats without another UPDATE
+     ↓ rejects untrusted caller input before SQL {"actorAccountId":"credentials-bob"}
+     ↓ rejects untrusted caller input before SQL {"session":{"accountId":"credentials-bob","state":"ACTIVE","expiresAt":"2026-10-16T09:00:00.000Z"}}
+     ↓ rejects untrusted caller input before SQL {"session":{"accountId":"credentials-alice","state":"REVOKED","expiresAt":"2026-10-16T09:00:00.000Z"}}
+     ↓ rejects untrusted caller input before SQL {"session":{"accountId":"credentials-alice","state":"ACTIVE","expiresAt":"2026-10-09T09:00:00.000Z"}}
+     ↓ rejects untrusted caller input before SQL {"now":"2026-10-09T09:00:00.100Z","session":{"accountId":"credentials-alice","state":"ACTIVE","expiresAt":"2026-10-09T09:00:00Z"}}
+     ↓ rejects untrusted caller input before SQL {"requestId":""}
+     ↓ protects own primary and returns identical sanitized failure for missing or foreign targets
+     ↓ both commands fail closed on wrong isolation, network and opaque storage failure
+     ↓ both commands fail closed on wrong isolation, network and opaque storage failure
+     ↓ resolves unmapped legacy primary without provisioning and links preserve canonical context
+     ↓ existing generator uses the shared legacy vocabulary without issuing additional-link purposes
+     ↓ revoke keeps immutable provenance, rejects primary/foreign targets and leaves address reserved
+     ↓ restricted owner cannot resolve or revoke and malformed trusted session causes no mutation
+     ↓ resolver and revoke serialize with actual held resolve-first locks
+     ↓ resolver and revoke serialize with actual held revoke-first locks
+     ↓ resolver and revoke serialize with actual held account-lock locks
+     × rotation preserves cross-table subject exclusion under a non-default snapshot while a link commits 188ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under a non-default snapshot while a link commits
+AssertionError: expected { code: 'NO_ERROR' } to deeply equal { code: 'P2002' }
+
+- Expected
++ Received
+
+  {
+-   "code": "P2002",
++   "code": "NO_ERROR",
+  }
+
+ ❯ tests/wallet-link-credentials.test.ts:480:29
+    478|       await observedBlock(waiter!,blocker,/INSERT.*WalletIdentity/s);
+    479|       release.resolve();await held;
+    480|       expect(await outcome).toEqual({code:'P2002'});
+       |                             ^
+    481|       expect((await db.walletIdentity.findUniqueOrThrow({where:{userId…
+    482|       expect((await db.walletLink.findUniqueOrThrow({where:{address:ta…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 26 skipped (27)
+   Start at  09:42:35
+   Duration  606ms (transform 77ms, setup 0ms, import 282ms, tests 208ms, environment 0ms)
+
+JUNIT report written to /private/tmp/raid-t006-wallet-links-b1-codex-20261009/planning/task-evidence/T006-wallet-links-b1/rotation-isolation-red.xml

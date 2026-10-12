@@ -1,0 +1,66 @@
+# T006 storage independent implementation review
+
+**Verdict: ACCEPTED WITH CONDITIONS for the declared bounded disposable READ COMMITTED and ordinary-DML scope. Deployment remains blocked by the host conditions below. Full T006 remains 27 NOT VERIFIED.**
+
+Reviewer: Codex `/root/review_foundation_followups`, separate non-author agent. Candidate `c196ee74d74624b0089185c7b78c926e35238985`. This supplies the previously missing independent implementation review; original proposal reports and Claude author-side assessment remain historical, untouched. It supplies no human UAT, business, release or merge approval.
+
+Scope: existing HUMAN Participant storage, Prisma adapter, mapped-account legacy merge guard, additive participant migration, retained legacy records and independently installed minimal host. No new wallet-link/sign-in/capacity/recovery feature acceptance. The candidate includes an additive UNIQUE_CONFLICT classifier and wallet-links composite index; these are separately identified.
+
+## Executed verification
+
+| Check | Actual result |
+| --- | --- |
+| Feature slice | 4 files /61 passed,0 failures/errors/skips |
+| Full candidate suite | 72 files /829 passed,0 failures/errors/skips |
+| Protection mutations | Five killed: merge guard2fails, missing User key-share1, provenance rewrite1, missing row guard2, missing restrictive FK2 |
+| Restored feature slice | 61passed,0fail/skip; exact source hashes and DB fences restored |
+| Migrations | Fresh20 candidate + repeat + no drift; separate exact19 storage + repeat + no drift |
+| Own standalone host | Own43-package install/client; own2 migrations/redeploy/no drift; all declared output flags true |
+| Static/planning | Typecheck, owned eslint, fullformat,27 planning checks pass |
+| CI readback | Seven named checks SUCCESS at c196ee7, push and PR |
+| Full T006 validator | Expected rejection exactly all27 NOT VERIFIED |
+
+Actual independent lock graphs prove the old-binary final User DELETE, provision User FOR KEY SHARE and conflicting Participant INSERT schedules on distinct backend PIDs. Tests preserve complete auth snapshots and exact legacy financial/history fixture JSON. Raw40001/40P01 are PostgreSQL-raised through Prisma and whole callbacks rollback/retry; no claim of separately induced real deadlock.
+
+## Findings and mandatory host conditions
+
+**SI01 — MEDIUM.** Legacy wallet and X composing transactions do not declare isolation. Under a database default REPEATABLE READ or SERIALIZABLE, the existing allowed empty-account merge fails STORAGE_CONTRACT even before any Participant mapping exists. Public adapter correctly fails closed; the legacy hosts do not enforce the dependency. New wallet-links off flag cannot contain this already wired legacy path.
+
+Declare READ COMMITTED on the affected composing interactive transactions and verify both existing callers under higher DB defaults, OR enforce/test runtime/deployment default for all relevant connections before any rollout. Merely describing it is insufficient. Do not remove adapter SHOW verification or edit applied migration. Root assigned separate author/reviewer fix after finding; that later source is outside this reviewed candidate.
+
+**SI02 — MEDIUM / deployment privilege condition.** Row guard does not fire for TRUNCATE. Reviewer-owned schema owner can TRUNCATE Participant CASCADE and erase mappings while User remains. Ordinary non-owner runtime role explicitly granted SELECT/INSERT/UPDATE/DELETE provisions and reads, but direct mapping delete fails23000, parent delete23503, TRUNCATE and trigger ALTER42501. Owner bypass and application-role privilege gap are distinct: actual application role could be unsafe, and has not been inspected here.
+
+Before rollout, prove runtime credentials are non-owner/non-superuser, cannot TRUNCATE relevant tables or alter/disable/drop protective objects, and separate migrator/administrative credentials. If runtime uses owner-level authority today, implement the role separation and verify it; documentation alone cannot enforce this. A separately reviewed forward TRUNCATE fence could narrow that path, but cannot protect against an authorized superuser removing it. No applied migration edits are authorized.
+
+**SI03 — LOW.** Current module docs still say uncommitted and independent review absent; old WIP correctly preserves the historical uncommitted source but must not stand as final current-source acceptance. Current doc should link this separate review with its conditions. Explicitly document legacy default isolation and TRUNCATE/runtime-role boundary. Original proposal and author-side reports must remain historical, unedited.
+
+Author records later candidate/report and these open conditions in current docs/checkpoint; retain original historical hashes and failures. Preserve full T00627 NOT VERIFIED.
+
+Higher database defaults were tested by running the two unchanged allowed legacy wallet/X merge tests in new processes. REPEATABLE READ and SERIALIZABLE each produce two STORAGE_CONTRACT failures even with no mappings. Returning to READ COMMITTED passes both. This is actual legacy-path incompatibility, not a future flag-contained feature. See isolation-probes.py, isolation-probe-results.json and the three JUnit files.
+
+Role proof is bounded: reviewer-created non-owner ordinary-DML role can provision/read and rejects mapping deletion23000, parent deletion23503, TRUNCATE/ALTER42501. Schema owner TRUNCATE CASCADE removes mapping without row trigger; the reviewer intentionally rolls back and confirms restoration. Actual application credentials were not inspected, so their privilege safety remains NOT VERIFIED. A role/configuration fix is necessary if they retain these powers; documentation alone cannot make the invariant hold.
+
+## Proposal execution outcomes
+
+- **P01: PASS at bounded READ COMMITTED scope.** One stable shared HUMAN UUID/account mapping, immutable first actor/request across sequential retry and overlapping unique-index contention; invalid/missing/foreign actor and malformed DTO inputs denied. Explicit equality is not authentication.
+- **P02: PASS for ordinary DML; SI02 host deployment condition remains NOT VERIFIED.** Validated RESTRICT FK, full-row mutation/delete guard, native UUID/defaults, allowed User profile/no-op update. Raw delete/rekey/provenance mutations rejected; dropped guard/FK tests fail. Privileged TRUNCATE bypass explicitly reproduced and separately bounded.
+- **P03: PASS under declared READ COMMITTED host; SI01 unsupported legacy defaults remain OPEN.** Mapped sources denied before durable effects; both mapped accounts and full credential snapshot retained. Unmapped empty duplicate can merge into mapped keeper via signed wallet flow. Under higher implicit defaults the allowed wallet/X path fails; no silent policy waiver.
+- **P04: PASS.** Actual independent pg_blocking_pids schedules: provision blocks old-binary final DELETE, deletion blocks FOR KEY SHARE and returns missing-account/no orphan, concurrent provisions block on account unique index and retain first ID/provenance. Lock graph rows/PIDs captured, not timing inferred.
+- **P05: PASS for synthetic preserved legacy history; no custody/finality claim.** Deep exact JSON fixtures preserve balances, transfers, enrollment, amounts/network/mint/destination/semantic keys/ownership on rejected legacy mutation. All18 old SQL plus migration lock are byte-identical to70c654f.
+- **P06: PASS for independently consumed bounded module.** Own dereferenced external host, own43-package install and generated Prisma client, separate minimal User/Participant schema, fresh2 migrations/redeploy/drift and run output all expected true. No app config/global/client/Next imports in public module. Separate full19 bootstrap catalog equals minimal host; candidate20 differs only by documented wallet-links composite index.
+- **P07: PASS for recorded bounded TDD/regression evidence; not a whole-task chronology claim.** Eight historical JUnit files and RED/GREEN source manifests available and exact hashes match. Unit RED46cases32fail includes unchanged mapped-guard semantic failures and executable storage stubs; schemaRED actual empty catalog; provision/consumerRED unimplemented storage failure. Races were authored in RED snapshot but not individually executed as historical RED; current five independent mutations prove discrimination, not recreate historical chronology. Mock SHOW/fixture setup corrections are disclosed; no weakened guard assertions. Own feature61/full829 nofail/skip; own static/planning and current exact-headCI green.
+- **P08: PASS for disposable review/resource preservation/handoff; live host conditions NOT VERIFIED.** Own labelled localhost tmpfs DB/id/image, fresh apply/redeploy/drift, source/SQL fingerprints and rollback restrictions recorded. Original source/restore IDs/start/image/tmpfs and dump429d5f... unchanged on read-only inspection. No DB queries/mutations on originals; original36-table/five-catalog fingerprint NOT freshly rerun. Actual runtime roles/default enforcement, AC68/O11/G10 remain unresolved; full T006 validator rejects27unverified.
+
+## Evidence and remaining obligations
+
+Structured detail: review.json. Current source manifest, observed lock graphs, DB provenance, CI readback, migration/consumer commands, mutant JUnit, isolation/role reproductions and historical hash verifications are adjacent. Eight original JUnit files and RED/GREEN source snapshots were recovered and verified rather than recreated. Race tests existed in the historical RED snapshot but their individual historical RED runs are not claimed. Mock SHOW/fixture corrections are visible; unchanged13 guard assertions remain.
+
+Original source/restore container IDs/start/image/tmpfs and the original dump hash429d5f484f1113b7f08074304ffd9dc89aa03f07de303b59808c8fa19243a716 match historical provenance. No queries/mutations were run on those databases. A fresh full36-table/five-catalog fingerprint was not rerun; prior evidence is not promoted into a fresh observation.
+
+- **SC01:** Resolve SI01 with actual enforced composing/deployment READ COMMITTED and independent nondefault-isolation regression verification before rollout. New linking flag alone does not contain existing legacy callers.
+- **SC02:** Resolve SI02 before any supported live rollout using actual runtime-role proof/separate migration authority; ordinary DML guards do not contain TRUNCATE-capable/owner/superuser credentials.
+- **SC03:** Current docs/evidence must link this non-author report and preserve original proposal/author-side artifacts plus genuine historical RED/GREEN and all open obligations.
+- **SC04:** No full T006 acceptance: wallet/auth integration, capacity, canonical recovery, safe beneficiary/restricted claim, durable operating custody/reconciliation and UAT/business/release remain due; all27 full task criteria NOT VERIFIED.
+- **SC05:** No live mapping enablement until approved target parity/backups/rollback constraints, actual isolation/roles and relevant AC68/G10/O11 evidence; preserve DB mapping/FK/trigger on application rollback after first acknowledged identity.
+
+No applied migration was edited. No commits/pushes/merges, board actions, provider calls, live migrations or acceptance signatures occurred. Root assigned a separate author and reviewer for SI01 after this finding; their later candidate needs its own verified delta.

@@ -1,0 +1,1368 @@
+66d6a3a05936df54c8dbca150b7c3bea6e6134be
+diff --git a/.prettierignore b/.prettierignore
+index a669bbb..6b583d5 100644
+--- a/.prettierignore
++++ b/.prettierignore
+@@ -8,3 +8,7 @@ prisma/migrations
+ AGENTS.md
+ CLAUDE.md
+ next-env.d.ts
++# Separate preserved checkouts and byte-exact historical review evidence.
++.claude/worktrees
++planning/task-evidence/T006-wallet-links-b1-resume/prior-review
++planning/task-evidence/T006-wallet-links-b1-review/
+diff --git a/docs/ai-handoff/CURRENT.md b/docs/ai-handoff/CURRENT.md
+index 9235faf..9e69213 100644
+--- a/docs/ai-handoff/CURRENT.md
++++ b/docs/ai-handoff/CURRENT.md
+@@ -1,16 +1,29 @@
+ # Shared AI handoff — CURRENT
+ 
+-Last updated: 2026-10-08T21:40:00+05:45 (Asia/Kathmandu) by Claude Sonnet 5.5.
+-Active writer: Claude (took over from Codex at owner request). Stops after this checkpoint pending independent implementation review.
+-Handoff reason: delivery checks complete; no usage-limit event.
++Last updated: 2026-10-10T11:27:00+05:45 by Claude Sonnet 5.5 (took over after Codex usage limit; implementation uncommitted).
++Active writer: Codex /root, main checkout. Historical agent/worktree ownership is inactive; no subagents are running for this continuation.
++Handoff reason: owner requested “see repo status and issues and continue building”.
+ 
+ ## Resume here
+ 
+-**T006 — canonical identity, M1: IN_PROGRESS / NOT VERIFIED.** The bounded HUMAN storage proposal and separate disposable database entry are independently accepted at `70c654f8785dc1b3a2927effe94fc879cad1d30f`. Implementation is now present **uncommitted** with genuine RED/GREEN/REFACTOR evidence. The proposal review is complete; implementation review and full delivery checks remain due. Do not restart proposal/preflight/target preparation.
++**Current task: T006 B1 integrated and isolation fix verified locally, IMPLEMENTED_UNVERIFIED / final independent review pending.** Main is `66d6a3a`; #180/#183/#182/#181 are merged by prior owner-directed Claude work. The current user request authorizes bounded implementation and verification; no branch switch, commit, push, merge, board edit or live enablement is being inferred. Git staging was empty. Preexisting checkpoint edits, generated `next-env.d.ts`, three untracked reports and `.claude/worktrees/` are preserved.
+ 
+-Next immediate step: **independent implementation review** of the exact working tree (see milestone log 2026-10-08T21:40 for what was verified and what was not run). Standalone host, module docs, migration repeat/bootstrap/drift and full 731-test suite are done; the earlier step-2 to step-5 items below are historical except where the log says otherwise. Do not restart them.
++Imported the preserved uncommitted B1 delta from `/tmp/raid-t006-wallet-links-b1-codex-20261009` (HEAD `c196ee7`) into main without changing either branch or altering the original worktree. `git apply --check` passed; all 36 untracked source files had no destination collisions; original TDD artifacts retained. Exact import hashes: `planning/task-evidence/T006-wallet-links-b1-resume/import-manifest.json`. B1 adds transaction-bound credential resolution/revoke and shared legacy challenge vocabulary; auth/session composition/routes/default-off flag/UI remain B2/B3. Prior B1 full855/feature122 results predate unfinished auth/rotation changes and are historical only.
+ 
+-Read [storage plan P01–P08](../tasks/T006-storage-plan.md), [accepted proposal review and SR01–SR05](../tasks/T006-storage-review.md), [review evidence](../../planning/task-evidence/T006-storage-review.json), and [current implementation WIP evidence](../../planning/task-evidence/T006-storage-implementation-wip.json). Original pending-review statements in the proposal are historical; the subsequent owner authorization and accepted review clear that proposal gate only.
++Current results: genuine rotation race RED→GREEN, focused160PASS, combined full1051PASS/83files, own-installed consumer and22migration bootstrap/redeploy/no-drift. Typecheck/ownedlint/planning32/format/security/build/container/legacy browser compatibility pass. Initial isolated local CI aggregate exit1 is retained (only temporary runner-adaptation planning failure; canonical runner restored and32planning checks reranPASS); no clean aggregate22-step run is claimed. Browser skips remain demo1/live6. See [continuation report](../tasks/2026-10-10-t006-b1-continuation.md) and [current evidence](../../planning/task-evidence/T006-wallet-links-b1-resume/verification.json). Next: final non-author review of current B1 manifest, then B2 auth/routes/session/audit/default-off server switch; B3 UI follows the stable server contract. Non-author final B1 review remains required and is not replaced by author verification. All27 T006 criteria remain NOT VERIFIED; T029 C02/C08/C15, runtime least privilege, O18/O11/O07/AC68/G10 and UAT gates remain open. Earlier review conclusions below apply to their recorded sources; the latest merge log supplies combined local-CI evidence and does not invalidate existing independent reports.
++
++**Current Codex orchestration:** Owner explicitly requested worker implementation → separate review → fixes → tests/CI → draft PRs and autonomous eligible work. All final seven named checks pass for #181 `8e366be`, #182 `10de27c` and #183 `c196ee7`. T019 is In Review with completion review Accepted; T029 stays In Review / Needs changes for C02/C08/C15; full T006 remains In Progress / Not reviewed, 0/27. Root published independently verified follow-ups and durable reports onto those branches; author checkouts clean. Active author `/root/plan_wallet_links_prb` owns `/tmp/raid-t006-wallet-links-b1-codex-20261009` on `codex/t006-wallet-links-b1`; separate `/root/review_t006_followup` reviews B1, and `/root/review_foundation_followups` independently reviews earlier identity storage. Root owns this main checkpoint; reviewers use separate snapshots/DBs. Connected-X owner decision is in PR183 canonical DEC-2026-10-09-01. B1 includes reusable resolver/revoke/shared legacy challenge vocabulary and newly assigned explicit READ COMMITTED legacy auth host fix; B2 routes/session composition and B3 UI remain proposed. Branch/commit/push/draft delivery authority applies; **no PR merge or live enablement**. Latest milestone entries supersede historical state.
++
++**Orchestration mode (from 2026-10-08, Claude Opus 5.5 orchestrator).** T001–T006 foundation stack merged to `main` at `101348a` (main CI run 37806624671 green). Owner authority for delegated tasks: **branch, commit, push and draft PR only — no merge**; board updates only after an independent non-author verification. Subagents: Sonnet 5.5 implementers in separate git worktrees; separate Sonnet reviewer for gates.
++
++In flight (wave 1):
++
++- Read-only reviewer: verify T001–T006 board readiness (packet validator, independent review, merge, CI) before any board edit.
++- T019 #61 implementer: branch `claude/t019-command-receipts`, migration prefix `202610090001_`, own container `raid-t019-db`.
++- T029 #71 implementer: branch `claude/t029-asset-registry`, migration prefix `202610090002_`, own container `raid-t029-db`. O07 OPEN → no production asset allowlist.
++  Next: independent review of each PR → fix → board "In Review"; then continue T006 (AC01 second-wallet integration) which unblocks T007/T009/T012.
++
++The T006 section below is historical context for the remaining T006 work.
+ 
+ ## Repository and unfinished changes
+ 
+@@ -103,3 +116,106 @@ For future milestones, update the current sections and append a brief timestamp/
+ - 2026-10-08T21:40:00+05:45 — Claude Sonnet 5.5: finished steps 2–4 and most of 5. Standalone host (own client, two host migrations from scratch, run) passed; documented `cp -RL` procedure executed literally in a fresh dir, same result. Added `docs/raid-identity-storage.md` and `examples/identity-storage/README.md` test-first (docs test in `tests/identity-storage-boundary.test.ts`, ENOENT RED → GREEN). Migration: repeat deploy no pending; fresh 19-migration bootstrap on new `useraid_t006_bootstrap_check` db; drift none on both; Participant catalog identical fresh vs accepted copy; migration body identical to reviewed proposal SQL; 18 old migrations untouched. Prettier applied to owned files; tsc, eslint (owned), prettier check pass. Full suite on `useraid_test` copy: 67 files / 731 passed / 0 fail/skip (junit hash in WIP JSON). Validator: exit 1, exactly 27 NOT VERIFIED (expected). WIP evidence JSON refreshed with new hashes. **Not run:** browser/build/docker/remote CI (no commit/push authority; build rewrites generated `next-env.d.ts`), independent implementation review. No commit/branch/merge/deploy/live migration. Originals and dump (hash 429d5f48…) untouched. **Next:** independent implementation review of exact working tree (author ≠ reviewer; Codex reviewer availability from Claude unestablished — do not fabricate); fix real findings test-first; read-only re-fingerprint of original baseline; cleanup only task-owned extras (`useraid_t006_bootstrap_check`) after review; commit/push only if owner authorizes.
+ 
+ - 2026-10-08 — Claude Sonnet 5.5: owner said Codex usage is finished and Claude must do the review. Performed owner-directed substitute review ([report](../tasks/T006-storage-implementation-review.md)): 5 mutations (merge guard, FOR KEY SHARE, ON CONFLICT provenance, trigger, FK) each killed by tests; source restored byte-for-byte, trigger/FK re-created and catalog identical to fresh bootstrap, 58/58 green. No blocking findings; low findings R1 (isolation-default dependency in legacy login), R2 (privileged owner/TRUNCATE). **This is not independent** (Claude continued the work); independence-dependent criteria stay NOT VERIFIED until owner accepts it or another reviewer signs. `useraid_t006_bootstrap_check` was dropped and rebuilt fresh (19 migrations, no drift). Still no commit/branch/merge/push/deploy. Next: owner decision on accepting the substitute review; decide on `next-env.d.ts`; commit/push only on explicit authorization; cleanup of task-owned extras after that.
++
++- 2026-10-08 — Claude: owner said "go". Committed/pushed `bd398cf`; merged #174→#179 in order into `main` with merge commits (final `101348a`); #172 auto-merged via #174 ancestry; closed superseded #173 unmerged. Main CI run 37806624671: all seven jobs success. No issue/board change, no deploy/live migration. Local `next-env.d.ts` drift left uncommitted. Full T006 (27 criteria) still NOT VERIFIED; substitute review not independent.
++
++- 2026-10-08 — Claude Opus 5.5 orchestrator: separate non-author reviewer verified T001–T006 (validators, reviews, merges, main CI 37806624671). Board: T001–T004 Done and issues #43–#46 closed with evidence comments; T005 Needs decision (O18 hosting path vs close on documented blocker — owner call); T006 In Progress (0/27); T019/T029 In Progress (delegated); T096 Ready. Reviewer carry-forward: stale T001-review.json still shows C22 FAIL (superseded by T001-C22-retest.json); T004 issue text says 72 scenarios vs 75 actual.
++
++- 2026-10-08 — orchestrator: T006 AC01 plan PR #180 reviewed by non-author agent: ACCEPTED WITH CONDITIONS WR01–WR14 (review commit 12cb3a4). PR-A (migration 202610090003_wallet_links + module, no route wiring) delegated on branch claude/t006-wallet-links-storage stacked on #180; container raid-t006-links-db.
++
++- 2026-10-08 — orchestrator, USAGE LIMIT: T029 draft PR #181 (head 86a5b8d) done by implementer, CI 7/7, needs independent non-author review next (container raid-t029-db still up on 56902). T019 implementer and T006 PR-A implementer were STOPPED mid-work at usage limit — inspect their worktrees under .claude/worktrees/ and branches claude/t019-command-receipts / claude/t006-wallet-links-storage (may be partial/unpushed) and containers raid-t019-db / raid-t006-links-db before resuming. Next: review #181; resume T019 and T006 PR-A from actual state; owner decision on T005.
++
++- 2026-10-09 — orchestrator resumed after limit: T019 PR #182 (d38a45d, CI 7/7) and T029 PR #181 (86a5b8d, CI 7/7) sent to separate non-author reviewers (containers raid-t019-review-db / raid-t029-review-db). T006 PR-A implementer resumed from its uncommitted worktree state (no migration yet).
++
++- 2026-10-09 — T029 #181 independent review ACCEPTED WITH CONDITIONS K1–K6 (f9d248e): 20 PASS/4 NA/3 NOT VERIFIED (C02,C08,C15 blocked on O07/G04/G10, T031–T033/T080). Board → In Review / Needs changes. Implementer resumed for K2/K4/K5; K3/K6 carried forward. T029 stays open.
++
++- 2026-10-09 — T019 #182 independent review ACCEPTED WITH CONDITIONS (05ef740): 19 PASS/8 NA, 14/14 mutations killed. Board → In Review / Needs changes. Implementer resumed for COND-01 packet merge + F03 test; COND-02 binds T020; COND-03 blocks live enablement.
++
++- 2026-10-09 — T006 PR-A draft #183 pushed (impl 3b4d8d4). CI static failed only on reviewer file formatting from #180; orchestrator prettier-formatted it on #180 branch (54e7e77, table separators only) and merged into #183 (68b9100). Independent review of #183 dispatched (container raid-t006-links-review-db). Owner decision needed before PR-B: WR04 step-up method (connected X vs fresh primary-wallet signature). Implementer container raid-t006-links-db still up (56904).
++
++- 2026-10-09 — T006 PR-A #183 independent review ACCEPTED WITH CONDITIONS LR01–LR07 (1b4a495). Implementer resumed for LR01/LR02 tests (kill surviving D2/D6 mutants), LR03 doc, LR07 evidence. LR06 merge order: #180 then retarget #183; resolve schema/CI-matrix conflicts vs T019/T029; no renumbering needed.
++
++- 2026-10-09T07:54:16+05:45 — Codex /root post-Claude audit at owner request. Main checkout HEAD `101348a`, branch `main` (local origin/main tracking reports behind 1); preexisting CURRENT.md edits, generated next-env.d.ts drift and untracked .claude/worktrees preserved; staging empty. Inspected Git status/diff stats/staged state and recent commits in all four implementation/plan worktrees: clean, no pending implementation edits. No branch/commit/push/merge/board action or delegation. Requirement scope: evidence/handoff §§00–04/13/33–35/39–40; no entity, permission or state-machine changes.
++  - T019 #182 remote head `ffe2683`: follow-up `b6e99f4` adds distinct-delivery test/docs; `ffe2683` merges independent review into packet. All seven named checks SUCCESS at current remote head. Re-ran `python3 scripts/verify-raid-completion.py T019 .claude/worktrees/agent-aab0b62fa4d495a51/planning/task-evidence/T019.json`: PASS (structure only, not fresh independent evidence verification). Packet records 78 feature / 811 full passes; those tests were NOT rerun by Codex. COND-02 binds T020; COND-03 still blocks live enablement.
++  - T029 #181 remote head `283f3d7`: `61938aa` adds three missed-mutant tests, stored JUnit files and docs; `bdc8101` merges review; `283f3d7` records CI. All seven named checks SUCCESS at current remote head. Re-ran validator against its `planning/task-evidence/T029.json`: expected rejection exactly C02/C08/C15 NOT VERIFIED. K3/K6 downstream obligations retained; no task closure justified.
++  - T006 PR-A #183 remote/local head `1b4a495`: LR01/LR02/LR03/LR07 fixes have NOT landed, clean implementer worktree. All seven named checks SUCCESS at this review head. Still stacked on #180 (remote `54e7e77`, seven checks SUCCESS; local plan worktree behind 2). No feature tests/mutation reruns executed in this audit; no new independent review claimed.
++  - Ordered next steps: (1) finish T006 PR-A LR01/LR02 behavior/catalog tests and D2/D6 mutation reruns, LR03 seventh-error documentation, LR07 review/evidence status; preserve genuine RED/GREEN results. (2) verify follow-up conditions at exact candidates, update board evidence only after non-author verification. (3) owner chooses WR04 (connected-X confirmation or fresh primary-wallet signature), record authoritative decision before dependent PR-B implementation. (4) merges remain owner-authorized: #180 before retargeting #183; integrate T019/T029 schema/CI-matrix changes and test all three migrations on combined head; exact-head CI. (5) PR-B must add sign-in resolution/shared constants, revoke path, typed conflicts, server-off flag, T007 AC02 gate and independent review. T029 remains open for O07/G04/G10/T031–T033/T080; T006 remains 0/27. T005/O18 owner decision remains unresolved. No live enablement authorized.
++
++## Current actionable checkpoint — Codex T006 PR-A follow-up
++
++This section supersedes stale implementation next steps above; historical evidence remains intact.
++
++- Branch/head: `claude/t006-wallet-links-storage` at `1b4a4956ce15041d33499bc5767799b5815bb46d`, existing worktree `/Users/dushyant/Documents/useRAID.fun/.claude/worktrees/agent-a72bd54d2c22fff89`. No branch change, commit, push, merge or board edit. Main remains `101348a`; existing generated next-env.d.ts drift and checkpoint edits preserved. One Codex writer, no subagents.
++- Local changed files: `tests/identity-link-db.test.ts`, `docs/raid-identity-storage.md`, `docs/raid-wallet-links.md`, `docs/tasks/T006-wallet-link-plan.md`, canonical `RAID_AGENT_BLUEPRINT.md`, `planning/raid-task-contracts.json`, `planning/raid-scenarios.json`, `planning/task-evidence/T006-wallet-links-wip.json`; new `planning/task-evidence/T006-wallet-links-followup/` (durable JUnit artifacts and exact task-container reproduction script). Staging empty. No app runtime source, migration or schema edited.
++- LR01: raw SQL INSERT after revocation must fail with SQLSTATE 23505 / WalletLink_address_key; catalog rejects partial WHERE index. LR02: raw SQL INSERT of own/foreign primary address must fail with 23505 / raid_wallet_subject_exclusive_v1. Tests use PostgreSQL GET STACKED DIAGNOSTICS because Prisma omits CONSTRAINT_NAME from raw errors; exact assertions preserved. Initial driver-message assertion failure retained, not counted as semantic RED.
++- Genuine test-gap RED: D2 partial address index causes 2 failures (catalog plus raw insert), 35 filter exclusions; D6 removal of only WalletLink exclusivity trigger causes 2 behavior failures (own/foreign primary), 35 exclusions. Restored exact unconditional index and trigger in finally blocks. GREEN: 4 selected cases pass, 33 excluded by explicit test filter. Five feature suites: 96 pass, no failures/errors/skips. Full regression: 72 files / 829 pass / 0 failures/errors/skips. First full run was 828 pass/1 stale blueprint-source hash failure; retained and fixed by refreshing scenario-plan hash, no assertion weakening. All artifacts and hashes are in follow-up evidence; initial historical RED is not recreated.
++- Static/planning: tsc --noEmit exit 0; eslint changed test exit 0; 27 Python planning tests pass; owned-file Prettier pass (full-root final check result recorded in milestone below). Completion validator still exit 1, exactly all 27 T006 criteria NOT VERIFIED. Full tests use DB flags against task-owned `raid-t006-links-db`, exact id `f40d42425c19302cba45504116d8aa9c48024285d6a3aa73047191f51a0ab74c`, start `2026-10-08T17:00:05.593139302Z`, label `raid-task=T006-links`, postgres:16, tmpfs512m/no volumes, useraid_test/20 migrations. Originals untouched. Feature migration test verifies bootstrap/redeploy/drift; catalog GREEN proves index/trigger restoration.
++- LR03: seventh UNIQUE_CONFLICT code documented, whole-transaction rollback, sanitized HTTP 409 conflict for HTTP hosts, no driver/owner disclosure, no transient retry, seven-code metrics. LR07: WIP JSON and module doc cite original non-author implementation review and retain IMPLEMENTED_UNVERIFIED / all-task NOT VERIFIED. Original reviewer reports not edited. Local follow-up acceptance is NOT independently certified.
++- OWNER DECISION: direct user response in this continuation selects **confirmation through a connected X account** for WR04. Canonical DEC-2026-10-09-01 in section 02.6 and identity section 07.2; PR-B contract/docs now specify server-confirmed account X linkage as in rotateWallet, authenticated self, fresh additional-wallet proof; wallet-only and foreign/client-asserted X denial. No policy on fresh X reauthentication is invented beyond the selected option. Payout/canonical participant/accepted work unchanged. PR-A still unwired. Planning task/scenario hashes refreshed; historical review/evidence hashes and GitHub sync readback records deliberately retain their old reviewed-source identity. Remote issue-contract synchronization not performed.
++- Not run: independent review of these follow-up tests/docs/decision contract; remote CI for this uncommitted candidate; browser/build/docker (no UI/runtime code changes); integration with T019/T029 migrations/combined-head CI; PR-B implementation. Existing remote #183 CI applies only to 1b4a495.
++- NEXT: (1) non-author verification of local LR01/LR02/LR03/LR07 fixes and durable evidence; no reviewer spawned without authorization. (2) commit/push only with explicit action authority per AGENTS.md; no auto-merge/board completion. (3) #180 before retargeting #183; integrate T019/T029 schema/matrix and all three migrations, rerun full combined-head checks. (4) separately plan/review and implement PR-B with chosen X confirmation, shared constants, linked-wallet sign-in, revoke, typed conflicts, truthful mapped-account merge copy, O11/W03 follow-up and server-off flag; T007 AC02 and instance rollout before enablement. T019 follow-up already pushed and packet passes; T029 remains blocked on C02/C08/C15; T006 0/27; T005/O18 unresolved.
++
++- 2026-10-09T08:02:11+05:45 — Codex /root: completed the local bounded PR-A follow-up described above and recorded direct owner WR04 choice. No Git actions or independent acceptance claimed.
++
++- Codex final local verification: worktree full-root `npx prettier --check .` passed; `git diff --check` passed. Working-tree changes remain uncommitted, all fixtures cleared by test hooks and database fences restored.
++
++- 2026-10-09T08:15:22+05:45 — Codex /root at owner request audited tests/human review from T001 (#43), foundation PRs #172–#179, current drafts #180–#183, original PR #1 Cloudflare failure and U001–U016 backlog. Saved [audit](../tasks/2026-10-09-tests-human-review-audit.md). Read-only GitHub confirms T001–T004 closed; T005/T006/T019/T029 open; #180–#183 all seven checks green at unchanged remote heads; no submitted GitHub PR reviews on #172–#183. Independent technical reviews in artifacts are AI reviews, not human UAT/business/release signatures. No remote/board writes; attached current PRs to chat; no agents spawned. Existing implementation edits preserved.
++  - Executed validators: T001–T005 and T019 pass structure; T006 expected rejection all27 NOT VERIFIED; T029 expected rejection only C02/C08/C15. Inspected T029 follow-up XML843 pass, T019 packet811 pass, prior-turn T006 local829 pass; no runtime suite rerun in this audit. Existing 75 scenario-plan rows all NOT VERIFIED; all16 UAT issues remain open.
++  - Audit artifact verification: docs-links suite55 pass; new report Prettier pass; git diff --check pass. Audit-only mapping §§00–04/13/16/24/28/30/33–35/39–40 and C16/C17/C18/C22; no business entity/permission/state mutation. New untracked docs/tasks/2026-10-09-tests-human-review-audit.md plus existing checkpoint changes; staging empty. No branch/commit/push/merge.
++  - Observed remote main6af995a (docs successor to local101348a): check-runs query empty; prior green37806624671 applies to101348a only. Original PR1 still has failed Cloudflare check; diagnostics/O18 remain owner work. Human actions: O18 exact host/runtime/budget/operator and signed-in provider diagnostics; PR follow-up evidence/merge decision; O07 exact assets/authority policy and O11 retention/recovery before dependent live enablement; representative U008/U012/U016 and other applicable UAT once implemented; named custodian/operator and AC68/G10 restore/release sign-off. Earlier accepted T001–T004 scope does not require whole-product UAT to be reopened.
++  - Next implementation checkpoint remains the preceding PR-A follow-up record: independent non-author verification of local fixes, authorized publish/integration/combined migrations and CI, separately reviewed PR-B using selected connected-X condition and T007 AC02. Include author-side-only storage review gap in independent full T006 review; no new acceptance or closure claimed.
++
++- 2026-10-09T08:22:39+05:45 — Codex /root answered owner UI/V1 timing query after reading delivery/sprint/phase plans, canonical section23 and live UI/release issues #50/#57/#60/#64/#69/#86/#87/#90/#93/#94 (all OPEN). Existing homepage/discovery, Raid detail, Creator Studio, balance/account, launch/token and admin page code exists; no new browser/runtime/deployment verification performed. Plan targets (illustrative 7Oct kickoff, four full-time contributors): S02 UI/discovery14–20Oct; synthetic core work loop by3Nov; internal alpha18Nov–1Dec; invited beta2–15Dec; V1 gate15Dec; public beta from16Dec conditional on exit/gates. These are unrebaselined forecasts, not proven delivery promises or current staging availability. UI is explicitly owned by T008/T015/T018/T022/T027, T045 accessibility and all16 UAT screen contracts; no need to wait until all backend work is done to deliver visible slices. Current foundations, T006 PR-B/T007, O18 staging, core capacity/work/funding and human acceptance remain prerequisites for claimed full V1. No code/board/Git actions; prior work preserved.
++
++- 2026-10-09T08:26:25+05:45 — Codex /root responded to current-pace/UI question with a concrete existing preview. Copied source/prisma/config/package/types into `/tmp/raid-ui-preview-codex-20261009`, dependency symlink only; no env files/credentials copied. Started read-only DEMO_MODE=true Next16.3.8 webpack dev server on loopback3189 (exec session93561), explicit dummy unavailable database endpoint, sanitized env, no workers/providers enabled. Root source/generated files and all DBs untouched. Homepage GET200; rendered HTML contains Preview network, Illustrative metrics, Creator studio and brand. Browser panel opening request returned queued; user can open http://127.0.0.1:3189/ directly. This proves an existing illustrative UI preview, not completed new RAID workflows or V1. No browser interaction/form/payment/UAT performed. Initial copy attempt assumed absent public directory and stopped before startup; corrected by copying only existing directories. No implementation/branch/commit/merge/board changes.
++  - Current-pace assessment: early foundation/review velocity cannot honestly be extrapolated to full UI/payment/capacity/recovery delivery. Existing UI available today; late-Oct/early-Nov synthetic core and Dec public-beta dates remain conditional plan targets, not measured commitments. Next tangible product milestone should be an integrated founder-create → Raider-accept → submit → review test flow with visible errors/identity state and accurate simulation labels.
++
++- 2026-10-09T09:30:15+05:45 — Codex /root resumed owner-authorized worker/reviewer orchestration. Reconciled main101348a behind remote docs6af995a; prior handoff/audit/next-env changes preserved. Separate non-author agents independently verified follow-ups on own snapshots/tmpfs DBs, no shared helpers: T019 full811/feature78, mutantF03 caught; T029 full843/feature110, missed M24/M26/M30 caught; T006 PR-A full829/feature96, D2 and D6 each two intended failures. All zero skips/errors on final suites; bootstrap/redeploy/drift/static/planning passed. T006 reviewer initial isolated-copy omission of tracked .env.example retained as setup failure, corrected before passing full run; not semantic RED.
++  - Root fixed two low stale review limitations (T019 and wallet-links docs); reviewers separately verified exact corrected doc hashes. Durable new non-author reports/artifacts saved on respective branches, original reviews untouched; T019 six historical XML hashes independently verified and preserved. Root doc/evidence link tests78 pass on each integration; diff-check passed. Validator T019 passes; T029 expected exactlyC02/C08/C15; T006 expected all27NOT VERIFIED. No new UAT/business/release approval.
++  - Published under existing delegated branch/commit/push/draft-PR authority and current explicit PR-delivery workflow: PR183 c196ee74d74624b0089185c7b78c926e35238985; PR182 10de27c94857acd8763bc4a07e9aa0f5e7ec520a; PR181 8e366be970f5bfc7ef5d53e596967af67fbf9a21. These author checkouts are clean. Final candidate CI in progress (183 first five named jobs green, browser running at inspection;182/181 earlier-stage jobs running). No merge/retarget/main update/live/provider/board action. Remote prior seven-green heads remain historical only.
++  - Root separately reviewed worker plan /tmp/raid-t006-prb-plan-codex-20261009/PLAN.md and accepted **B1 only**: injected transaction-bound resolver/revoke + shared challenge constants, own-installed host and real DB/TDD evidence, app routes/API purposes unchanged. PRIMARY allows absent participant without login provisioning; ACTIVE_LINK must validate canonical ownership; own active-session revoke keeps address/provenance/primary and uniformly denies missing/foreign targets. Root accepted lock/proof boundaries; result cannot authorize session after transaction. B2 host/routes/default-off flag and B3 visible account UI remain proposed and separately reviewed, including explicit session revocation composition. User connected-X choice remains DEC-2026-10-09-01; no fresh-X-session policy invented.
++  - Worker /root/plan_wallet_links_prb owns /tmp/raid-t006-wallet-links-b1-codex-20261009, branch codex/t006-wallet-links-b1, fast-forwarding from1b4a495 to committedc196ee7 before tests. Authorized isolated branch/commit/push/draft PR after independent review/tests/CI; no merges/live action. Root assigns separate B1 reviewer after implementation. Independent /root/review_foundation_followups now audits prior merged identity-storage implementation to close the explicitly recorded independence gap (read-only PR183 snapshot/new disposable DB); full T006 acceptance remains absent.
++  - NEXT: finish exact-candidate CI for181/182/183 and fix real failures; complete B1 genuine RED/GREEN/REFACTOR/docs/consumer → non-author adversarial review → fixes → full checks → push/CI → stacked draft PR on183. Then separately vetted B2 linked sign-in/X enforcement/revoke session invalidation/routes/server-off switch/T007 enablement condition, followed by visible B3 account UI. LR06 owner merge sequence and combined schemas/migrations/CI remain required. T029C02/C08/C15, T00627criteria, T005O18, O07/O11/AC68/G10 and human UAT obligations stay open. Existing read-only preview http://127.0.0.1:3189/ still returns200; no demo refresh or UI claims made.
++
++- 2026-10-09T09:42:39+05:45 — Codex /root: exact final heads #1818e366be/#18210de27c/#183c196ee7 now have all seven distinct CI jobs SUCCESS for push/PR. Updated PR bodies to remove stale no-review/no-decision claims and link follow-up evidence/remaining conditions. Board Evidence refreshed for T019/T029/T006 only after separate verification; T019 Completion review changed Needs changes→Accepted, Status remains In Review; fresh GraphQL readback confirms T029 remains Needs changes and T006 Not reviewed/full0/27. No issue closure, merge, retarget or release.
++  - B1 worker genuine RED22behavior cases → core GREEN26credential/122feature and full855/73files, no skips. Own-installed 43-package consumer/client/four migrations ran successfully on separate host DB. Separate B1 reviewer independently killed10core faults and restored26credential cases; whole-candidate review pending author auth-host delta. Original first-regression counts bind that pre-isolation source, not later changes.
++  - Prior-storage reviewer independently ran61feature/full829, standalone own install/two migrations/redeploy/drift, killedfive protection faults, verified eight historical JUnit and RED/GREEN manifests. Actual legacy wallet/X permitted fold calls fail STORAGE_CONTRACT when DB default becomes REPEATABLE READ or SERIALIZABLE; READ COMMITTED restores them. Root assigned narrow test-first explicit transaction-isolation fix to B1 sole author, including rotation's WalletIdentity fence and inspection of remaining shipped writers. Author captured semantic non-default RED (two permitted-fold failures per isolation mode) and restored own DB default in finally. Source fix does not upgrade old running binaries; rollout default/isolation gate retained.
++  - Privilege review: separate nonowner/nonsuperuser role with ordinary DML may provision/read, but mapping delete/parent delete fail and TRUNCATE/schema alteration denied. Owner TRUNCATE CASCADE does bypass row guard; test transaction rolled back. Actual live app role is unknown. Runtime must lack TRUNCATE/schema-owner/disable-trigger powers with separate migrator; no live proof/role change or new DDL claimed. Reviewer final storage report pending; all27fullT006 remain unverified.
++  - UI plan prepared read-only at /tmp/raid-t006-wallet-links-b3-plan-codex-20261009/PLAN.md (30-file pinned source manifest). Existing /creator/account can carry separate Primary wallet/payouts and Sign-in wallets controls; B2 server-derived capabilities/network labels and post-revoke primary/X reauthentication surface are prerequisites. No UI changes/browser/UAT yet; proposed B3 does not create working controls before server contract.
++  - NEXT: finish B1 auth-isolation RED/GREEN/full regression and own docs/consumer; independent final core+host review and findings fixes; authorized push→exact-candidate CI→stacked draft PR. Record storage independent review and binding role/rollout conditions in same bounded delivery. Then separately review B2 stable host/routes/session-revoke/X enforcement/default-off contract before B3 visible UI. Keep owner-controlled LR06 combined-head merge/migration/CI and OPEN/O18/O07/O11/AC68/G10/human UAT obligations visible.
++
++- 2026-10-09T23:45:00+05:45 — Claude Sonnet 5.5, owner-directed (CI scope only; no product, migration, money, permission or state-machine change; blueprint §§30/32/33.11/39–40, I13, AC75).
++  - **Main** is `3f37cc9` (fast-forwarded; supersedes the `101348a` references above). Merged this session at owner direction: #184 `ccbc24c` (by rpandox: both hosted workflows manual-only, `scripts/local-ci.sh`) and #185 `3f37cc9` (runner hardening: port preflight, `NOT RUN` records when locked Chromium is unavailable, evidence copied from an exit trap; three regression tests failed first, 32 planning tests pass). Hosted `Checks` and `RAID project status` workflows are `disabled_manually`; the project-status refresh is therefore off until run by hand. `ci-gate` can no longer report on PRs; whether branch protection requires it was not inspected. Independent review of #184/#185 is NOT done.
++  - **Local CI per exact PR head** (runner from main, fresh `raid-local-ci` DB volume per candidate, 22/22 steps exit 0 each, zero failures): #180 `54e7e77` 731 tests; #183 `c196ee7` 829; #182 `10de27c` 811; #181 `8e366be` 843. Logs `/tmp/raid-local-ci-pr{180,183,182,181}` and `/tmp/raid-local-ci-runner-fix` (runner candidate: 731 tests, demo 49/1 skipped, Studio 44, live browser 38/6 skipped). Per-branch totals are NOT a combined-head result; none of this is independent review, hosted CI, merge approval or release evidence. #183 is stacked on #180 (base `claude/t006-wallet-link-plan`). Port 3000 was free this time; an occupied port now fails the run immediately.
++  - **Not done / unchanged:** #180–#183 remain open drafts, none merged. Review conditions carried forward as in the entries above (LR01/02/03/07 verification for #183, K1–K6 for #181 with C02/C08/C15 NOT VERIFIED, COND-01..03 for #182, WR01–WR14 for #180). Integration still requires resolving `prisma/schema.prisma` and `planning/raid-ci-matrix.json`, ordering migrations 202610090001→002→003 and a combined-head full local run. T005 stays open on the O18 owner decision; T006 0/27; T004 issue still says 72 scenarios (75 actual). Codex worktrees and `.claude/worktrees/*` untouched; this file, `next-env.d.ts` and `docs/tasks/2026-10-09-tests-human-review-audit.md` remain uncommitted.
++  - NEXT (ordered): (1) owner/independent reviewer decisions on merge order #180→#183 (retarget)→#182/#181; (2) non-author verification of the conditions above, then combined-head local run; (3) O18 decision for T005; (4) PR-B/B2 for T006 per DEC-2026-10-09-01; (5) commit this checkpoint only on explicit authorization.
++
++- 2026-10-10T00:54:12+05:45 — Codex /root review takeover: remote heads match owner table; all four open drafts, no GitHub submitted reviews. Verified prior local JUnit: 731/829/811/843 cases, each zero failures/errors/skips; each results.txt contains 22 successful steps. Browser logs on each candidate show demo49 pass/1 skip, Studio44 pass, live38 pass/6 skips; exit0 is not zero browser skips. Completion validators reproduced: T019 exit0; T029 exit1 exactly C02/C08/C15; T006 exit1 all27. No implementation changes. Existing follow-up independent reports already satisfy LR01/02/03/07, COND-01, K2/K4/K5 at reviewed manifests; exact delivered-source reconciliation and fresh feature/mutation verification ongoing. New reviewer-only pinned-image tmpfs container `raid-pr-review-codex-20261010` id94d2dc51… on loopback61034, isolated source archives with own dependency installs; no original DB touched. NEXT: verify reviewed hashes/TDD artifacts, feature suites and six previously uncovered mutations; record per-condition disposition and integration blockers.
++
++- 2026-10-10T01:05:47+05:45 — Codex /root completed owner-requested review/verification of #180 54e7e77, #183 c196ee7, #182 10de27c, #181 8e366be; main HEAD3f37cc9 unchanged. New report `docs/tasks/2026-10-10-pr-stack-verification.md` and structured JSON; original reviewer reports/packets untouched. Verified 108 imported/historical artifact hash references, 941 reviewed critical-source hashes and four original wallet TDD local artifacts. Existing independent non-author reports remain the independent acceptance; root authored historical wallet follow-up tests/annotations and does not claim new independent self-acceptance.
++  - Fresh reviewer-only pinned PostgreSQL16.15/tmpfs, own dependencies/client, 20-migration bootstrap/redeploy/no-drift per implementation head: #183 feature96/full829, #182 feature78/full811, #181 feature110/full843, all zero failures/errors/skips; Python planning27 each. Six mutations caught: walletD2/D6 each2 intended failures/35 filtered; receiptsF03 one/27 filtered; assetsM24 one/21, M26 one/15, M30 one/39. Exact source/safeguards restored and full feature regressions passed. All three independently installed consuming hosts passed; DB hosts used their own clients and4/2 migrations. Prior #180 731-case JUnit and all four22-step results verified, no fourth fresh plan-only full run. Completion validators: T019exit0; T029exact C02/C08/C15 rejection; T006all27 rejection. Logs/runners/source archives `/tmp/raid-pr-review-20261010/`.
++  - LR01/02/03/07, COND-01/F03, K2/K4/K5 verified. WR04 decision recorded but enforcement/revoke/T007/rollout deferred; WR06/07 and LR04/05 still PR-B; LR06 combined integration due; COND-02/03 and K1/K3/K6 downstream/unverified. T029 stays open, fullT006 all27 NOT VERIFIED. RV01low: historical pending-review/final-CI-pending packet wording needs a current delivery annotation, preserving history. No new blocking source finding.
++  - Corrected prior anticipated-conflict claim: six pairwise and eight ordered file-only `git merge-file -p` checks exit0, no conflict markers for schema/matrix. Temporary combined schema validates; matrix94 unique paths/all14 feature registrations retained. No combined repository/head/fullCI or22-migration bootstrap created. Prior local browser results on each head: demo49pass/1skip, Studio44pass, live38pass/6skips. Exact-head historical GitHub checks also read back (seven names, all success); no fresh hostedCI. Branch-protection API403/plan restriction; policy enforcement unverified. All4 PRs linked to thread, remain open drafts/no submitted GitHub reviews.
++  - Harness-only failures retained: indentation error before artifact verification; copy-path normalization nested standalone directories and caused npmENOENT (corrected literally to source/.); first text-merge summary queried wrong matrix field (corrected). None counted as semanticRED or source defect. Original user/agent databases/dumps untouched; prior next-env.d.ts/audit/worktrees preserved; no branch/commit/push/retarget/merge/board/live actions. NEXT: actual combined candidate bootstrap/full22-stepCI with exact source+runner identity under authorized Git scope; retain consumer/PR-B/O07/O11/recovery/human gates; update RV01 delivery annotations without rewriting original evidence.
++
++- 2026-10-10T01:08:00+05:45 — Codex /root final reconciliation: during review remote #180 merged (9daaf85) and #183 retargeted to main; no action by this agent. #183/#182/#181 remain OPEN drafts; all reviewed head SHAs unchanged. Local main3f37cc9 unchanged/behind4; no pull/sync. Report/JSON updated with final remote metadata and explicit distinction from agent actions. Documentation/evidence regression76 passes/0 failures/errors/skips; Prettier, local-link checks and diff-check pass. Final Git-mode-aware src/tests/prisma byte checks match exact heads (298/292/295 entries respectively for #181/#182/#183), including directory symlinks; initial file-only checker failure recorded as harness-only. Review resources remain isolated task-owned tmpfs containers at61034/61054/61055 with original IDs recorded in report; artifacts/source/install copies retained at /tmp/raid-pr-review-20261010 for inspection. Prior databases/dumps/worktrees preserved. Next: actual combined integration candidate/fullCI and retained consumer/PR-B/live conditions; no remaining merge authorization inferred.
++
++- 2026-10-10T07:30:00+05:45 — Claude Sonnet 5.5, owner-directed ("Merge stack now"; owner explicitly authorized these merges). **Main is `66d6a3a`; this supersedes the earlier `3f37cc9`/`101348a` references and the "no PR merge" limits recorded above for these four PRs.** Merged in order: #180 `9daaf85` (plan docs only; clean; its head had passed local CI alone), then each stacked/remaining PR was retargeted/merged with `origin/main` merged into its branch first and a full 22-step local CI on that exact merged candidate before the PR merge: #183 `b0d6302` (candidate `849e9da`, 829 tests), #182 `90a7be7` (candidate `72fbdaf`, 909 tests = 829+80), #181 `66d6a3a` (candidate `b74988e`, 1021 tests = 909+112), all zero failures; every merge was conflict-free (schema and CI matrix auto-merged, matrix 94 unique paths, migrations ordered 202610090001→002→003). #183 was retargeted from `claude/t006-wallet-link-plan` to `main`. Logs: `/tmp/raid-local-ci-int-{183,182,181}`.
++  - **Honest limits:** no independent non-author review was performed. T006 PR-A review conditions LR01/02/03/07, T019 COND-01..03, and T029 K1–K6 are carried forward as unmet/NOT VERIFIED, and T029 C02/C08/C15 remain NOT VERIFIED; merging did not close them or any issue/board item. No hosted Actions (disabled); no live enablement, migration against a non-disposable database, or deploy. Wallet linking server-off flag and PR-B/B2/B3 are not implemented. Codex's B1 branch `codex/t006-wallet-links-b1` (worktree `/tmp/raid-t006-wallet-links-b1-codex-20261009`) was stacked on the pre-merge #183 head `c196ee7`; it now needs rebasing/merging onto `main` before any PR. GitHub GraphQL calls from this host intermittently timed out; #181 was readied via GraphQL retry and merged via REST (`PUT /pulls/181/merge`).
++  - Another writer (Codex) was also appending to this file during the run; its combined-head dry-run notes above are now superseded by the real combined results here. Uncommitted in the main checkout: this file, `next-env.d.ts`, `docs/tasks/2026-10-09-tests-human-review-audit.md`, `.claude/worktrees/`.
++  - NEXT: (1) non-author verification of carried-forward conditions (LR01/02/03/07, COND-01..03, K1–K6) now against `main`; (2) rebase Codex B1 onto `main` and re-review; (3) O18 decision for T005; (4) PR-B/B2 per DEC-2026-10-09-01; (5) board/issue updates only after independent verification; (6) commit this checkpoint only on explicit authorization.
++
++- 2026-10-10T09:57:56+05:45 — Codex /root takeover: reconciled stale checkpoint with actual main66d6a3a and preserved worktree B1. Read instructions/blueprint/contracts, staged/unstaged/untracked diffs and recent history; GitHub has161open issues (T001–T004 closed) and no open PRs. Hosted workflows remain disabled and no main66d6a3a hosted check was observed. Imported B1 delta with original evidence unchanged; new bounded fix maps R04/R13/R15/R16,I05/I10/I13,D13,AC01partial/AC40/AC75, §§07/13/16.13/24.6–24.7/25–28/30/32/33.5/34.1/35/39–40. User/Participant/WalletIdentity/WalletLink and WalletChallenge are affected; conflicting rotation must fully roll back primary deletion/challenge consumption/audit while committed additional ownership survives. No schema or migration change. Next: fresh disposable22-migration bootstrap and genuine RED→GREEN→regression. No tests run yet on imported main delta.
++
++- 2026-10-10T10:03:17+05:45 — Codex /root B1 milestone on main66d6a3a: fresh task-owned container87c75a57bbcf7538387017b5a439b4b35d19119d7efb5b4566dd8b3931e3212c, pinned local imageed134ce8…, start2026-10-10T04:13:09Z, tmpfs512m/no volumes/loopback54868. All22 migrations bootstrap/redeploy and schema drift pass. Same rotation/link race reproduced genuine RED (expectedP2002, actualNO_ERROR;1failure/26filtered) then GREEN(1pass/26filtered) after explicit READ COMMITTED. Refactor covers both REPEATABLE READ/SERIALIZABLE defaults with full rollback and audit assertions. Focused9suites160PASS; full83suites1051PASS,0fail/errors/skips. Typecheck/lint exit0 (root lint includes360existing warnings, many in preserved worktrees);32Python planning tests pass. Own-installed consumer43packages/own client/4fresh migrations runs with all14flags true. Final complete B1 independent review remains missing; recovered historical non-author core matches4owned core/proof files, auth/test delta differs and is not independently accepted. Storage review raw bytes copied with hashes; runtime privilege proof remains mandatory. T006 validator expected exit1/all27NOTVERIFIED. Initial format check failed52files (49preserved checkout files+3raw historical JSON); .prettierignore now excludes separate checkouts and exact-byte prior-review directory without rewriting either. Corrected first Docker harness image-ID-as-digest failure, no source defect. Next: final formatting/security and isolated current-candidate localCI/build/browser records, then final durable handoff; no Git/board/live actions.
++
++- 2026-10-10T10:12:01+05:45 — Codex /root final B1 continuation handoff: main `66d6a3a05936df54c8dbca150b7c3bea6e6134be`, staging empty, no GitHub/branch/commit/push/PR/merge/board/live action. Original author delta matches saved patch0d407b4… and all36original untracked file hashes; original checkout unchanged. Prior generatednext-env drift and untracked audit/review/worktree files preserved. Main changed/new ownership: `.prettierignore`, wallet-auth/x-oauth/shared challenge/proof, identity-link contracts/module, two new credential/isolation tests plus boundary inventory, wallet-links host/docs, identity-storage current-review annotation, CI matrix and B1 evidence/report directories. No schema/migration/blueprint edits.
++  - Actual tests: selected raceRED1fail/26filtered then sameGREEN1pass/26filtered; focused9files160PASS; full83files1051PASS twice (main + own-installed CI archive),zero failures/errors/skips. Typecheck/ownedlint32Pythonplanning/security/format pass; root lint0errors360existingwarnings (includes preservedworktrees), archive24warnings; docs/evidence final regression82PASS. All22migrations freshbootstrap/redeploy/no-drift on new pinnedtmpfs DB; standalone own43packages/client/4migrations/all14flags. Dockerbuild/runtimefiles and Nextproductionbuild pass, live-flowPASS; browsersdemo49pass/1skip,Studio44pass,live38pass/6skip. Those are existing compatibility tests, not B2/B3 UI or humanUAT. Initial localCIexit1 preserved:21/22stepsPASS, planning rejected modified provenance script; restored canonical runner and corrective32checksPASS. No clean aggregateCI claim; no assertion weakened. Root diff-check passes.
++  - Durable current report `docs/tasks/2026-10-10-t006-b1-continuation.md`; structuredphase/results/hashes under `planning/task-evidence/T006-wallet-links-b1-resume/`.357critical source/test/schema/example files equal isolated CI archive. Imported historical storage review bytes/hash and B1core probes retained;4core/proof files match prior reviewed source, auth/rotation/testdelta needs final independent review. Packetvalidatorexit1 exactly27T006NOTVERIFIED; no issue closure. Harness-only image-digest/format/runner/bytecode/main-versus-oldmatrix corrections retained separately.
++  - Resources: retain new tmpfscontainer `raid-t006-resume-20261010` id87c75a57… loopback54868 plus hostDB for review; isolated CIproject `raid-t006-b1-ci-20261010` DBstopped by runner, uniquevolume/image retained. IDs/images/mounts recorded in environment JSON. Original databases/dumps untouched. Local source/install/logs retained `/tmp/raid-t006-b1-ci-20261010`, `…-logs`, `/tmp/raid-t006-b1-resume-host-20261010`; raw key logs/JUnit copied durably.
++  - Ordered next: (1) separate non-author review of currentB1manifest and reproduced host/rotationdelta; fix real findings test-first. (2) clean aggregateCI if required for delivery; initialfailedaggregate remains visible. (3) B2 trusted same-account connectedX/freshproof/sessionprovenance+revokeinvalidation/audit/routes/default-off switch under DEC-2026-10-09-01, before B3 controls. (4) retain T007AC02,capacity/recovery/beneficiary/restrictedclaims, actualleastprivilegeruntime, O11/O18/O07/AC68/G10/humanUAT obligations. Do not infer branch/commit/push/merge/live authority from a future continuation.
++
++- 2026-10-10T11:27:00+05:45 — Claude Sonnet 5.5 takeover after Codex usage limit (owner: "continue working"). Reconciled stale checkpoint with actual tree: main `66d6a3a`, staging empty, no branch/commit/push/merge/board/live action. Found Codex's post-handoff **session-authority** work (T007 AC02 precursor; maps R04/R13/I05/I10/I13, §§07.2/28/35 AC01/AC02/AC40) already complete through RED→GREEN→REFACTOR: new `src/lib/wallet-session-authority.ts` (pure `walletSessionAuthority`, v1 trusted-host observation) + `tests/wallet-session-authority.test.ts` (11 cases), `wallet-auth.ts` now takes own session atomically via `DELETE … RETURNING` inside explicit READ COMMITTED and only preserves `via='x'` for a live own X session under authenticated own context. Evidence `planning/task-evidence/T007-wallet-session-authority/{red,green,refactor}.{log,xml}` + `red-source/`: RED = 4 intended failures in `wallet-auth-db.test.ts` (expired X authority renewed; foreign session deleted/borrowed; unauthenticated context inherited X; unknown provider value survived); GREEN 4 pass/18 filtered; REFACTOR 36 pass (adds 3 concurrent revoked/expired/downgraded session races with real `pg_blocking_pids`).
++  - My verification (disposable `raid-t006-resume-20261010`, port 54868, `useraid_test`): `tsc --noEmit` exit0; focused 6 suites 87 PASS; full `npm test` 84 files / 1069 PASS, 0 fail/skip; eslint on owned files clean; Python planning 32 PASS; `git diff --check` clean. Fixes by me: `npx prettier --write tests/wallet-auth-db.test.ts` (was the only prettier failure; formatting only, so refactor.xml hash predates it) and registered `tests/wallet-session-authority.test.ts` in `planning/raid-ci-matrix.json` (inventory + identity feature list); `prettier --check .` now clean. Final source hashes: wallet-session-authority.ts `b91152a2…`, wallet-auth.ts `097ec921…`, x-oauth.ts `49899dc0…`, test `4f2209f2…`.
++  - Not done: independent non-author review of current B1 manifest + this session-authority delta (user says a reviewer verified the frozen B1 manifest and is reviewing in a separate checkout; result not yet in repo — do not treat as accepted until its report lands); no clean aggregate 22-step local CI on current tree; full T006 27 criteria remain NOT VERIFIED; T007 AC02 only partially evidenced; `docs/raid-wallet-links.md` does not yet describe the session-authority helper (internal v1, no public contract change).
++  - NEXT: (1) wait for/ingest the separate B1 reviewer report; fix findings test-first. (2) document session-authority in wallet-links doc if reviewer/owner wants it in B1 scope. (3) clean `scripts/local-ci.sh` aggregate if delivery needed. (4) B2 per DEC-2026-10-09-01. Commit/branch/push only on explicit owner authorization.
+diff --git a/docs/raid-identity-storage.md b/docs/raid-identity-storage.md
+index cd029f1..1ff69e6 100644
+--- a/docs/raid-identity-storage.md
++++ b/docs/raid-identity-storage.md
+@@ -2,7 +2,7 @@
+ 
+ [Blueprint identity](../RAID_AGENT_BLUEPRINT.md#07-identity-and-onboarding) · [One active Raid](../RAID_AGENT_BLUEPRINT.md#13-one-active-raid) · [Module reuse](raid-module-reuse.md) · [Storage plan](tasks/T006-storage-plan.md) · [Proposal review](tasks/T006-storage-review.md) · [Identity preflight](raid-identity-preflight.md)
+ 
+-**Status: IMPLEMENTED_UNVERIFIED, uncommitted, disposable-database tested only. Full T006 and all 27 completion criteria remain NOT VERIFIED.** Independent implementation review has not happened. Nothing here is deployed, migrated on a live database or backfilled.
++**Status: IMPLEMENTED_UNVERIFIED, disposable-database tested only. Full T006 and all 27 completion criteria remain NOT VERIFIED.** The separate non-author [storage review](tasks/T006-storage-independent-review-record.md) accepted the bounded READ COMMITTED / ordinary-DML slice at `c196ee7` with host conditions. Current B1 auth-host changes still require final independent review. Nothing here is deployed, migrated on a live database or backfilled.
+ 
+ ## Purpose and non-goals
+ 
+@@ -57,7 +57,7 @@ Legacy merge guard: `src/lib/account-merge.ts` now refuses a mapped drop account
+ 
+ ## Permissions and trust boundary
+ 
+-Provisioning authorizes nothing. The host decides who may call `ensureHumanParticipant`, which must only be an authenticated account acting for itself. Treat `accountId` and participant IDs as internal authorized context: do not put them in public responses, search or logs without review. A privileged database owner can alter the schema or trigger; row-level fences do not contain that.
++Provisioning authorizes nothing. The host decides who may call `ensureHumanParticipant`, which must only be an authenticated account acting for itself. Treat `accountId` and participant IDs as internal authorized context: do not put them in public responses, search or logs without review. A privileged database owner can alter the schema or trigger; row-level fences do not contain that. Row triggers also do not protect against TRUNCATE. Before live rollout, independently prove that runtime credentials are non-owner/non-superuser and lack TRUNCATE, schema alteration and trigger-disable privileges, with separate migrator credentials (SI02). This live-role proof remains NOT VERIFIED.
+ 
+ ## Configuration names
+ 
+@@ -69,7 +69,7 @@ No secret is read by the module. The reference host and tests use these names; s
+ 
+ ## Transaction, retry and sanitized errors
+ 
+-Run every command inside one interactive transaction at READ COMMITTED. The separate read after `ON CONFLICT DO NOTHING` needs fresh statement visibility, so the port rejects other isolation levels. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or Prisma `P2010` wrapping those) retry the **entire** business transaction with the same `accountId` and `requestId`, never only the final statement. Do not catch an error inside the transaction and commit partial work. `UNIQUE_CONFLICT` classifies SQLSTATE `23505` or Prisma `P2002`, including raw-query wrappers. Hosts must handle this seventh code explicitly: roll back the whole transaction and return a sanitized conflict (HTTP 409 for HTTP hosts), without exposing driver messages, constraint details or another account's identity. Do not retry it as a transient error or remap ownership. Unknown driver or connection failures become `STORAGE_UNAVAILABLE`; the driver message is never exposed. The module has no timeout, cancellation or rate-limit of its own; the host owns them.
++Run every command inside one interactive transaction at READ COMMITTED. B1 explicitly selects it in legacy wallet verification, wallet rotation and X connection hosts; database defaults are insufficient (SI01). Nondefault-isolation regressions exercise permitted wallet/X folds and rotation-versus-link exclusion. The separate read after `ON CONFLICT DO NOTHING` needs fresh statement visibility, so the port rejects other isolation levels. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or Prisma `P2010` wrapping those) retry the **entire** business transaction with the same `accountId` and `requestId`, never only the final statement. Do not catch an error inside the transaction and commit partial work. `UNIQUE_CONFLICT` classifies SQLSTATE `23505` or Prisma `P2002`, including raw-query wrappers. Hosts must handle this seventh code explicitly: roll back the whole transaction and return a sanitized conflict (HTTP 409 for HTTP hosts), without exposing driver messages, constraint details or another account's identity. Do not retry it as a transient error or remap ownership. Unknown driver or connection failures become `STORAGE_UNAVAILABLE`; the driver message is never exposed. The module has no timeout, cancellation or rate-limit of its own; the host owns them.
+ 
+ ## Substitution and versioning
+ 
+@@ -95,7 +95,7 @@ Retention and deletion policy for provenance is OPEN (O11).
+ 
+ ## Limitations
+ 
+-- Disposable-database evidence only; no live rollout, backfill, deployed custodian or independent implementation review yet.
++- Disposable-database evidence only; historical independent storage review has binding host conditions. No live rollout, backfill or deployed custodian; final B1 delta review and actual runtime-role proof remain due.
+ - Host-loss durability, second-wallet reuse, capacity, recovery and the rest of full T006 are not delivered.
+ - Migration run on `useraid_test` of an accepted disposable copy; repeat deploy, fresh 19-migration bootstrap and Prisma drift were checked there only.
+ - `next-env.d.ts` drift in the working tree is generated Next state, not part of this module.
+diff --git a/docs/raid-wallet-links.md b/docs/raid-wallet-links.md
+index 7945265..a14e6c5 100644
+--- a/docs/raid-wallet-links.md
++++ b/docs/raid-wallet-links.md
+@@ -2,7 +2,7 @@
+ 
+ [Blueprint identity](../RAID_AGENT_BLUEPRINT.md#07-identity-and-onboarding) · [One active Raid](../RAID_AGENT_BLUEPRINT.md#13-one-active-raid) · [Wallet rotation / payout](../RAID_AGENT_BLUEPRINT.md#1613-wallet-rotation-and-payout-recovery) · [Module reuse](raid-module-reuse.md) · [Plan](tasks/T006-wallet-link-plan.md) · [Independent plan review (WR01-WR14)](tasks/T006-wallet-link-plan-review.md) · [Identity storage](raid-identity-storage.md) · [Identity preflight](raid-identity-preflight.md)
+ 
+-**Status: IMPLEMENTED_UNVERIFIED, disposable-database tested only (PR-A of two). Full T006 and all 27 completion criteria remain NOT VERIFIED. AC01 / T006-A01 are PARTIAL: the identity half (same canonical participant, history and payout rows unchanged after a second wallet is linked) is evidenced on real PostgreSQL; the capacity half has no table to assert against (gap G1) and T006-A02 stays NOT VERIFIED.** The independent non-author [PR-A implementation review](tasks/T006-wallet-links-review.md) accepted the slice with conditions LR01–LR07 at `1b4a495`. A separate [follow-up review](tasks/T006-wallet-links-followup-independent-review.md) verified LR01/LR02/LR03/LR07; LR04/LR05/LR06 remain binding. Nothing is deployed, migrated on a live database or backfilled. The user-visible outcome of AC01 (a second wallet signs in to the same account) is **not delivered by this change**: sign-in resolution, the route and the `wallet_links_enabled` flag are PR-B (WR13).
++**Status: IMPLEMENTED_UNVERIFIED, disposable-database tested only (PR-A of two). Full T006 and all 27 completion criteria remain NOT VERIFIED. AC01 / T006-A01 are PARTIAL: the identity half (same canonical participant, history and payout rows unchanged after a second wallet is linked) is evidenced on real PostgreSQL; the capacity half has no table to assert against (gap G1) and T006-A02 stays NOT VERIFIED.** The independent non-author [PR-A implementation review](tasks/T006-wallet-links-review.md) accepted the slice with conditions LR01–LR07 at `1b4a495`. A separate [follow-up review](tasks/T006-wallet-links-followup-independent-review.md) verified LR01/LR02/LR03/LR07; LR04/LR05/LR06 remain binding. Nothing is deployed, migrated on a live database or backfilled. B1 adds transaction-bound internal credential resolution and storage revocation, plus shared challenge vocabulary. The user-visible outcome of AC01 (a second wallet signs in to the same account) is **not delivered**: trusted auth/session composition, routes, the `wallet_links_enabled` switch and UI remain B2/B3, independently reviewed before enablement. See [B1 checkpoint](tasks/T006-wallet-links-b1.md).
+ 
+ ## Purpose and non-goals
+ 
+@@ -10,7 +10,7 @@ Lets one canonical account hold additional VERIFIED wallet credentials, keyed to
+ 
+ Owned requirements: R04, R13 (identity half only), R15, R16; I01, I05, I06, I07, I10, I11, I13; D01, D13; AC01 (partial). Blueprint sections 07, 13, 16.13, 24.6-24.7, 25.2, 26, 28, 32, 35.1.
+ 
+-Non-goals (not delivered here): sign-in through a linked wallet, HTTP routes, `link-additional` challenge purpose in `wallet-auth.ts`, feature flag, UI, revoke/unlink command, account recovery or merge approval (O11, W03), promotion of a link to payout wallet, provider (X) links, capacity or engagement tables, command receipts (T019), nonce/domain/network hardening (T007), backfill, login auto-provisioning.
++Non-goals (not delivered here): sign-in through a linked wallet, HTTP routes, `link-additional` challenge purpose in `wallet-auth.ts`, feature flag, UI, composed revoke/session invalidation, account recovery or merge approval (O11, W03), promotion of a link to payout wallet, provider (X) links, capacity or engagement tables, command receipts (T019), nonce/domain/network hardening (T007), backfill, login auto-provisioning.
+ 
+ ## Dependency and host contract
+ 
+@@ -30,12 +30,22 @@ flowchart LR
+ - The host supplies an `IdentityTransaction` port (`{ dialect: 'POSTGRESQL', isolation: 'READ_COMMITTED', query(sql, bindings) }`). The module owns its parameterized SQL; the host owns connection, transaction, retry, authentication, signature verification, the atomic challenge claim, the clock and the policy.
+ - Host database contract: tables `User` (text `id`, boolean `suspended`), `WalletIdentity` (`address`, unique `userId`), `Participant` and `WalletLink` from `prisma/migrations/202610080001_participant_mapping` and `prisma/migrations/202610090003_wallet_links`.
+ - Reference Prisma adapter: `src/lib/identity-storage-adapter.ts` (shared with identity-storage). This change adds SQLSTATE `23505` / Prisma `P2002` classification to `UNIQUE_CONFLICT` there, additively; existing classifications and tests are unchanged.
+-- Reference proof adapter: `src/lib/wallet-link-proof.ts` (`deriveWalletLinkProof`), the thin seam T007 can later replace (WR11). It parses `domain`, `uri`, `issuedAt` and the Chain ID strictly from the exact stored message, takes `expiresAt` from the column, requires the digest to be the SHA-256 of that message, requires the `LINK_ADDITIONAL_STATEMENT`, and never defaults any field. Anything missing or non-matching is `PROOF_INVALID`. `SIWS_CHAIN_ID` (`mainnet`) is the one shared constant the generator signs.
++- Reference proof adapter: `src/lib/wallet-link-proof.ts` (`deriveWalletLinkProof`), the thin seam T007 can later replace (WR11). It parses `domain`, `uri`, `issuedAt` and the Chain ID strictly from the exact stored message, takes `expiresAt` from the column, requires the digest to be the SHA-256 of that message, requires the `LINK_ADDITIONAL_STATEMENT`, and never defaults any field. Anything missing or non-matching is `PROOF_INVALID`. `SIWS_CHAIN_ID` (`mainnet`) and the legacy purpose statements are owned by `src/lib/wallet-challenge-contract.ts`, imported by the existing generator and re-exported by the proof adapter. The app generator still accepts only signin/link/rotate, rejecting an additional-link purpose before any write; B2 owns exposing new intent.
+ - Verified actor authority stays with the host. The module only checks `actorAccountId === accountId` (`WRONG_ACTOR`); equality of two strings cannot authenticate an HTTP assertion.
+ - Proof contract: the host claims the stored challenge with its atomic `updateMany` in the same transaction, verifies the signature, then passes a `LinkProofObservation` describing the row as it was when claimed (`consumed: false`). A thrown error must roll the whole transaction back, including the claim.
+ 
+ ## Public interface
+ 
++B1 adds `resolveWalletCredential(tx, { subject, walletNetworks })` and `revokeWalletCredential(tx, { subject, walletNetworks, accountId, actorAccountId, requestId, session, now })` without new schema or app routes. Both require the existing injected READ COMMITTED transaction. Approved networks and trusted session/clock observations come from the composing host; they are not HTTP assertions.
++
++`resolveWalletCredential` returns `{ source: 'ABSENT' }` or internal `{ source: 'PRIMARY' | 'LINK', accountId, participantId, linkId, address, networkIdentity }`. This is **transaction-bound ownership context**, not authentication or a portable session authorization. A host must verify a fresh sign-in proof independently, resolve and create a session inside the same still-live transaction, using the documented locks. Never cache or expose account/participant/link IDs publicly. A legitimate legacy PRIMARY may have `participantId: null` and never provisions a mapping on sign-in. A LINK must match its account's existing immutable HUMAN participant; revoked links, restricted owners, unsupported networks and malformed durable observations fail closed. An ABSENT observation authorizes no user creation; that remains host-owned legacy behavior, not a B1 command.
++
++`revokeWalletCredential` requires an active unexpired self-session from the trusted host, actor equality and an unsuspended account. It locks subject then account, validates immutable mapping and changes only ACTIVE→REVOKED with the injected timestamp. It returns internal `{ outcome: 'REVOKED' | 'ALREADY_REVOKED', linkId, participantId, address, networkIdentity, status: 'REVOKED', revokedAt }`. Repeating preserves the original revokedAt. A missing or foreign target returns the same sanitized IDENTITY_CONFLICT; an own primary returns PRIMARY_WALLET_PROTECTED. Existing rows and provenance remain, and an address remains reserved without automatic reactivation. Request identity is accepted for host audit composition; B1 does not persist a revocation receipt or audit event. Before any non-test acknowledgement, the composing host must durably audit and invalidate sessions in this same transaction; B2 must review the all-session versus credential-attribution choice. B1's fixture host proves storage behavior, not safe deployed revocation/session composition.
++
++Host permissions remain explicit: resolver reads belong only to a trusted composing service; revoke belongs only to the authenticated self-account. No admin override, Guild role, private access, claim redirection, primary rotation or money mutation is added. Missing/foreign revoke errors reveal no account ownership. Null primary mapping is deliberate compatibility with no-login-auto-provision, not missing link validation.
++
++The added lock races are in `tests/wallet-link-credentials.test.ts`: resolver then revoke of the same additional subject, revoke then resolver, and primary resolver holding the User lock while an additional revoke waits. They observe independent PostgreSQL PIDs and pg_blocking_pids. This proves storage serialization only; auth-session creation/invalidation and X disconnect races belong to B2. Existing legacy rotation/merge writers have not all adopted B1's account lock. A PRIMARY observation rechecks ownership after obtaining its account lock and fails closed with `IDENTITY_CONFLICT` if the owner changed while waiting. This recheck is defense in depth: it is pinned by an alternate-port test only, and has **not** been shown reachable on real PostgreSQL, because the shipped legacy merge deletes the dropped account, so a waiting resolver sees `ACCOUNT_NOT_FOUND` first (still fail closed, no context returned). The composing host must reconcile legacy writer lock compatibility before claiming credential/session revocation safety, and must treat a session created inside a resolver transaction on a dropped account as cascaded away with that account.
++
+ | Export                                                       | Behavior                                                                                                                                                                                                                                                                                                                                            |
+ | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ | `linkVerifiedWallet(tx, input)`                              | Validates input (`INVALID_INPUT`, `WRONG_ACTOR`) and the port (`STORAGE_CONTRACT`) before any SQL, then runs the lock order below. Returns `{ outcome: 'LINKED' \| 'ALREADY_LINKED', source: 'LINK' \| 'PRIMARY', linkId, participantId, networkIdentity, address, status }`.                                                                       |
+@@ -95,9 +105,9 @@ No secret is read by the module. The example host and tests use: `DATABASE_URL`
+ 
+ ## Transaction, retry and sanitized errors
+ 
+-Run every command inside one interactive transaction at READ COMMITTED; the adapter checks the actual isolation once per transaction and the module rejects other levels with `STORAGE_CONTRACT`. The lock and the exclusivity triggers rely on a per-statement snapshot taken after the advisory lock. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or `P2010` wrapping them) retry the **entire** business transaction (challenge claim included) with the same `requestId` and proof, bounded. Never catch an error inside the transaction and commit.
++Run every command inside one interactive transaction at READ COMMITTED; the adapter checks the actual isolation once per transaction and the module rejects other levels with `STORAGE_CONTRACT`. The lock and the exclusivity triggers rely on a per-statement snapshot taken after the advisory lock. B1 explicitly selects READ COMMITTED in all three affected legacy hosts: wallet verification, wallet rotation and X connection. Database-default REPEATABLE READ can retain an obsolete absence observation even after the subject lock wait; the rotation/link regression proves that the losing rotation rolls back its primary replacement, challenge consumption and audit. On `RETRY_TRANSACTION` (SQLSTATE `40001`/`40P01`, Prisma `P2034`, or `P2010` wrapping them) retry the **entire** business transaction (challenge claim included) with the same `requestId` and proof, bounded. Never catch an error inside the transaction and commit.
+ 
+-Classification is by SQLSTATE and pre-checked ownership, never by constraint name or message (WR01): Prisma's raw error carries no constraint name, its message can contain the conflicting address, and after any failure the same transaction answers `25P02`. The adapter maps `23505`/`P2002` to `UNIQUE_CONFLICT`, which the module reports as `IDENTITY_CONFLICT`. Errors carry the code only: no address, proof, owner, constraint or driver text, so `failure()` in `src/lib/http.ts` (which logs `error.message`) logs only a code. Suggested HTTP mapping for PR-B: `PROOF_INVALID`/`AUTHENTICATION_REQUIRED` 401, `FORBIDDEN`/`ACCOUNT_RESTRICTED` 403, `IDENTITY_CONFLICT`/`IDENTITY_REVOKED`/`PRIMARY_WALLET_REQUIRED`/`LINK_LIMIT_REACHED` 409, `UNSUPPORTED_IDENTITY`/`INVALID_INPUT` 422/400, `RETRY_TRANSACTION`/`STORAGE_UNAVAILABLE` 503.
++Classification is by SQLSTATE and pre-checked ownership, never by constraint name or message (WR01): Prisma's raw error carries no constraint name, its message can contain the conflicting address, and after any failure the same transaction answers `25P02`. The adapter maps `23505`/`P2002` to `UNIQUE_CONFLICT`, which the module reports as `IDENTITY_CONFLICT`. Errors carry the code only: no address, proof, owner, constraint or driver text, so `failure()` in `src/lib/http.ts` (which logs `error.message`) logs only a code. Suggested HTTP mapping for PR-B: `PROOF_INVALID`/`AUTHENTICATION_REQUIRED` 401, `FORBIDDEN`/`ACCOUNT_RESTRICTED` 403, `IDENTITY_CONFLICT`/`IDENTITY_REVOKED`/`PRIMARY_WALLET_REQUIRED`/`PRIMARY_WALLET_PROTECTED`/`LINK_LIMIT_REACHED` 409, `UNSUPPORTED_IDENTITY`/`INVALID_INPUT` 422/400, `RETRY_TRANSACTION`/`STORAGE_UNAVAILABLE` 503.
+ 
+ Command receipts (T019, AC69): a receipt replay must return the stored result **before** re-running challenge consumption or signature verification, otherwise a lost-response retry hits "challenge already used". Until T019 lands, a retry after a lost response sees the consumed-challenge error although the link exists; the list endpoint reveals it. AC69 is unverified for this command.
+ 
+@@ -115,7 +125,7 @@ Any adapter implementing `IdentityTransaction` for PostgreSQL at READ COMMITTED
+ 
+ ## Observability
+ 
+-No metrics or logs are emitted. Hosts should count the error codes and retry rate and alert on `STORAGE_CONTRACT` and sustained `STORAGE_UNAVAILABLE`. Audit: `SELECT "accountId", "address", "status", "linkRequestId", "verifiedAt" FROM "WalletLink"`. There are no receipts or outbox events; provenance is a creation audit only. Do not log addresses with account ids.
++No metrics or logs are emitted. B1 adds PRIMARY_WALLET_PROTECTED to the public typed codes; hosts must map it to a generic primary-wallet-protected HTTP409 if composing an HTTP API. Hosts should count the error codes and retry rate and alert on `STORAGE_CONTRACT` and sustained `STORAGE_UNAVAILABLE`. Audit: `SELECT "accountId", "address", "status", "linkRequestId", "verifiedAt" FROM "WalletLink"`. There are no receipts or outbox events; provenance is a creation audit only. Do not log addresses with account ids.
+ 
+ ## Failure and recovery runbook
+ 
+@@ -133,14 +143,14 @@ Retention and deletion of link provenance is OPEN (O11).
+ 
+ ## Rollout and rollback
+ 
+-Migration `202610090003_wallet_links` is additive (no backfill; unlinked accounts behave exactly as before). The later PR-B order is mandatory: (1) apply the migration, (2) deploy sign-in resolution through links to **every** instance, (3) only then enable `wallet_links_enabled`; an old instance cannot sign in with a linked wallet (it fails closed). The flag must gate the server command, not only the UI, and stays off in staging and production until a revoke path, T007 AC02 evidence and the rollout order are satisfied (WR04, WR07 d). The prefix already sorts after T019/T029; no renumbering is required. Resolve schema/CI-matrix conflicts and rerun a fresh combined migration bootstrap at merge (LR06). T003 environment audit, backup/restore rehearsal and a named custodian are still required before any non-disposable target.
++Migration `202610090003_wallet_links` is additive (no backfill; unlinked accounts behave exactly as before). The later PR-B order is mandatory: (1) apply the migration, (2) deploy sign-in resolution through links to **every** instance, (3) only then enable `wallet_links_enabled`; an old instance cannot sign in with a linked wallet (it fails closed). The flag must gate the server command, not only the UI, and stays off in staging and production until a revoke path, T007 AC02 evidence and the rollout order are satisfied (WR04, WR07 d). The prefix already sorts after T019/T029; no renumbering is required. The prior owner-directed stack merged into main `66d6a3a` with combined local CI; current B1 integration additionally bootstraps all22 migrations and checks drift on a fresh disposable database. These results are test evidence for LR06, not live rollout approval. T003 environment audit, backup/restore rehearsal and a named custodian are still required before any non-disposable target.
+ 
+ ## Limitations
+ 
+ - Disposable-database evidence only; independent technical reviews and their conditions are recorded above; no live rollout, no exact-head CI claim, no browser or accessibility check, no UAT.
+ - AC01 capacity half (G1), T006-A02, AC68/G10 durability, AC69 receipts, WR04 connected-X enforcement and revoke, WR06 copy, WR07 typed handling and the sign-in/route/flag wiring are not delivered.
+ - Uniqueness on `address` alone is stricter than the blueprint `(network, address)` tuple (conservative DEFAULT); relaxing it later is a migration.
+-- The caps are injected EXAMPLE values, not recorded decisions. The x-oauth fold path shares `isEmptyAccount`/`absorbAccount` and is covered through those helpers, not end to end.
++- The caps are injected EXAMPLE values, not recorded decisions. The X fold path shares `isEmptyAccount`/`absorbAccount`; real wallet/X fold tests also run in fresh child processes under database-default REPEATABLE READ and SERIALIZABLE. No live X provider call is made.
+ - The command is database-only: no GitHub, Solana, model or notification effect is involved.
+ 
+ ## Run the standalone consuming host
+@@ -160,13 +170,29 @@ npx prisma migrate deploy
+ npm start
+ ```
+ 
+-Expected output is one JSON line with `synthetic`, `realDatabase`, `sameParticipant`, `primaryUnchanged`, `idempotentReplay`, `foreignAddressConflict`, `primaryRequired`, `wrongActorDenied`, `proofDerived`, `alternatePort` and `sanitizedFailure` all `true`.
++Expected output is one JSON line with `synthetic`, `realDatabase`, `sameParticipant`, `primaryUnchanged`, `idempotentReplay`, `foreignAddressConflict`, `primaryRequired`, `wrongActorDenied`, `proofDerived`, `alternatePort` `sanitizedFailure`, `internalCredentialContext` and `revokedReserved` all `true`.
+ 
+ Repository tests (they truncate the target; point them only at an explicitly disposable database):
+ 
+ ```sh
+ RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL='<synthetic test URL>' \
+-  npm test -- tests/identity-link.test.ts tests/wallet-link-proof.test.ts tests/identity-link-db.test.ts tests/identity-link-migration.test.ts tests/identity-link-boundary.test.ts
++  npm test -- tests/identity-link.test.ts tests/wallet-link-proof.test.ts tests/identity-link-db.test.ts tests/identity-link-migration.test.ts tests/identity-link-boundary.test.ts tests/wallet-link-credentials.test.ts tests/wallet-auth-isolation-db.test.ts
+ ```
+ 
+ Migration check: `npx prisma migrate deploy` (a second run reports no pending migrations) and `npx prisma migrate diff --from-url "$DATABASE_URL" --to-schema-datamodel prisma/schema.prisma --exit-code` (exit 0; this needs the `map: "WalletLink_participant_fkey"` on the composite relation, WR02).
++
++## Wallet sign-in session authority (T007 AC02 precursor, internal v1)
++
++Purpose: decide which authority (`wallet` or `x`) the replacement session receives when a wallet sign-in or link is verified while the caller already holds a session. Non-goals: authentication, linked-wallet sign-in, routes, revocation, X reauthentication policy, or any client-visible capability. Maps to R04/R13, I05/I10, AC01/AC02.
++
++Contract: `walletSessionAuthority(previous, authenticatedAccountId, resolvedAccountId, now)` in `src/lib/wallet-session-authority.ts` is pure. `previous` is a trusted-host observation `{ userId, via, expiresAt }` taken by the host, never an HTTP assertion; it returns `'x'` only when the authenticated account equals the resolved account, `previous.userId` equals it, `previous.via === 'x'`, the clock is valid and `expiresAt > now`. Every other input (absent, foreign, unauthenticated context, `wallet` or unknown provider, expired or equal-to-now expiry, invalid dates) returns `'wallet'`.
++
++Behavior changes in `verifyWalletChallenge` (`src/lib/wallet-auth.ts`), all covered by `tests/wallet-auth-db.test.ts` and `tests/wallet-session-authority.test.ts`:
++
++- The caller's own session is taken atomically (`DELETE … WHERE tokenHash AND userId RETURNING`) inside an explicit READ COMMITTED transaction, so a concurrent revoke, expiry or downgrade is observed before authority is carried forward (three real-PostgreSQL race tests print `sessionRace` with waiter/blocker PIDs).
++- An expired X session no longer renews X authority through a wallet signature.
++- A cookie session owned by another account is neither deleted nor borrowed.
++- Folding the signed-in X account into the wallet owner yields a `wallet` session.
++- An unknown `via` value is normalized to `wallet`.
++
++Host obligations (B2): read the session from the database in the same transaction, use a server clock, durably audit, and invalidate sessions on revoke. The consuming example does not yet exercise this helper; that gap is recorded for B2.
+diff --git a/examples/wallet-links/README.md b/examples/wallet-links/README.md
+index 7f48aca..9fc9524 100644
+--- a/examples/wallet-links/README.md
++++ b/examples/wallet-links/README.md
+@@ -1,5 +1,7 @@
+ # Wallet links example host
+ 
++B1 also demonstrates the public internal resolver and storage revoke commands. The fixture host supplies trusted synthetic session/actor/clock/network observations and resolves inside the same transaction; it never treats a resolver result as proof or a public session token. After revoke the link stays permanently reserved, repeated revoke is a no-op, and primary payouts remain unchanged. This example has no auth session store or durable revoke audit; production session invalidation and acknowledgement belong to the separately reviewed B2 composing host. The shared challenge vocabulary is copied with the other canonical symlinks by `cp -RL`.
++
+ Minimal consuming host for the T006 wallet-link storage (additional verified wallets on one canonical HUMAN participant). Full module documentation, contracts, configuration names, lock order, retry rules and the step-by-step standalone run are in [docs/raid-wallet-links.md](../../docs/raid-wallet-links.md).
+ 
+ This directory declares its own dependencies (`package.json`), a minimal `User`/`WalletIdentity`/`Participant`/`WalletLink` schema and its own four migrations (host-owned `User` and `WalletIdentity` tables, plus the exact participant-mapping and wallet-link migrations as symlinks to the canonical SQL). `contracts`, `identity`, `identity-storage`, `identity-link`, `lib/identity-storage-adapter.ts` and `lib/wallet-link-proof.ts` are symlinks to the canonical sources; copy with `cp -RL` so the copy is self-contained. Supply `DATABASE_URL` for a disposable local database yourself; the host refuses non-local URLs and `NODE_ENV=production`. It never imports RAID configuration or `src/lib/db`.
+diff --git a/examples/wallet-links/host.ts b/examples/wallet-links/host.ts
+index bd10be1..037466f 100644
+--- a/examples/wallet-links/host.ts
++++ b/examples/wallet-links/host.ts
+@@ -6,6 +6,8 @@ import {
+   IdentityLinkError,
+   linkVerifiedWallet,
+   listWalletLinks,
++  resolveWalletCredential,
++  revokeWalletCredential,
+   type IdentityTransaction,
+ } from './identity-link';
+ import { createPrismaIdentityTransaction } from './lib/identity-storage-adapter';
+@@ -119,6 +121,58 @@ try {
+   );
+   assert.deepEqual(listed.map((row) => row.address).sort(), [second, third].sort());
+ 
++  // Internal context is transaction-bound, never authentication or a public session token.
++  // The synthetic fixture host supplies caller authority; signature/session composition is B2.
++  const subject = { address: second, networkIdentity: SIWS_CHAIN_ID };
++  const resolverInput = { subject, walletNetworks: policy.walletNetworks };
++  await db.$transaction(async (tx) => {
++    const context = await resolveWalletCredential(
++      createPrismaIdentityTransaction(tx),
++      resolverInput,
++    );
++    assert.equal(context.source, 'LINK');
++    if (context.source !== 'LINK') throw Error('Expected internal link context');
++    assert.equal(context.accountId, alice);
++    assert.equal(context.participantId, first.participantId);
++  }, options);
++  const now = new Date();
++  const revokeInput = {
++    ...resolverInput,
++    accountId: alice,
++    actorAccountId: alice,
++    requestId: 'host-revoke',
++    session: {
++      accountId: alice,
++      state: 'ACTIVE',
++      expiresAt: new Date(+now + 3600000).toISOString(),
++    },
++    now: now.toISOString(),
++  };
++  const revoked = await db.$transaction(
++    (tx) => revokeWalletCredential(createPrismaIdentityTransaction(tx), revokeInput),
++    options,
++  );
++  assert.equal(revoked.outcome, 'REVOKED');
++  assert.equal(
++    (
++      await db.$transaction(
++        (tx) => revokeWalletCredential(createPrismaIdentityTransaction(tx), revokeInput),
++        options,
++      )
++    ).outcome,
++    'ALREADY_REVOKED',
++  );
++  assert.equal(
++    await code(
++      db.$transaction(
++        (tx) => resolveWalletCredential(createPrismaIdentityTransaction(tx), resolverInput),
++        options,
++      ),
++    ),
++    'IDENTITY_REVOKED',
++  );
++  assert.deepEqual(await payout(), payoutBefore);
++
+   const alternate: IdentityTransaction = {
+     dialect: 'POSTGRESQL',
+     isolation: 'READ_COMMITTED',
+@@ -156,6 +210,8 @@ try {
+       proofDerived: true,
+       alternatePort: true,
+       sanitizedFailure: true,
++      internalCredentialContext: true,
++      revokedReserved: true,
+     }),
+   );
+ } finally {
+diff --git a/next-env.d.ts b/next-env.d.ts
+index ce4e94a..a419cbe 100644
+--- a/next-env.d.ts
++++ b/next-env.d.ts
+@@ -1,7 +1,7 @@
+ /// <reference types="next" />
+ /// <reference types="next/image-types/global" />
+-import "./.next/types/routes.d.ts";
+-import "./.next/types/root-params.d.ts";
++import "./.next/dev/types/routes.d.ts";
++import "./.next/dev/types/root-params.d.ts";
+ 
+ // NOTE: This file should not be edited
+ // see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
+diff --git a/planning/raid-ci-matrix.json b/planning/raid-ci-matrix.json
+index e05fb70..71c578f 100644
+--- a/planning/raid-ci-matrix.json
++++ b/planning/raid-ci-matrix.json
+@@ -90,8 +90,11 @@
+     "tests/usdc-ops-db.test.ts",
+     "tests/usdc-receipt.test.ts",
+     "tests/wallet-auth-db.test.ts",
++    "tests/wallet-auth-isolation-db.test.ts",
++    "tests/wallet-link-credentials.test.ts",
+     "tests/wallet-link-proof.test.ts",
+     "tests/wallet-routes.test.ts",
++    "tests/wallet-session-authority.test.ts",
+     "tests/worker-db.test.ts",
+     "tests/x-oauth-db.test.ts",
+     "tests/x-oauth-routes.test.ts",
+@@ -150,7 +153,8 @@
+         "tests/shared-contracts-review.test.ts",
+         "tests/shared-contracts.test.ts",
+         "tests/submit-route.test.ts",
+-        "tests/wallet-link-proof.test.ts"
++        "tests/wallet-link-proof.test.ts",
++        "tests/wallet-link-credentials.test.ts"
+       ],
+       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
+       "required_test_layers": [
+@@ -213,7 +217,10 @@
+         "tests/wallet-routes.test.ts",
+         "tests/x-oauth-db.test.ts",
+         "tests/x-oauth-routes.test.ts",
+-        "tests/x-oauth.test.ts"
++        "tests/x-oauth.test.ts",
++        "tests/wallet-link-credentials.test.ts",
++        "tests/wallet-auth-isolation-db.test.ts",
++        "tests/wallet-session-authority.test.ts"
+       ],
+       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
+       "required_test_layers": [
+diff --git a/src/identity-link/contracts.ts b/src/identity-link/contracts.ts
+index c141d73..87f407a 100644
+--- a/src/identity-link/contracts.ts
++++ b/src/identity-link/contracts.ts
+@@ -13,6 +13,7 @@ export type IdentityLinkCode =
+   | 'IDENTITY_CONFLICT'
+   | 'IDENTITY_REVOKED'
+   | 'PRIMARY_WALLET_REQUIRED'
++  | 'PRIMARY_WALLET_PROTECTED'
+   | 'LINK_LIMIT_REACHED'
+   | 'STORAGE_CONTRACT'
+   | 'RETRY_TRANSACTION'
+@@ -71,3 +72,38 @@ export type PublicWalletLink = Readonly<{
+   status: 'ACTIVE';
+   alreadyLinked: boolean;
+ }>;
++
++export interface ResolveWalletCredentialInput {
++  subject: { networkIdentity: string; address: string };
++  /** Host-approved network policy, not an HTTP body field. */
++  walletNetworks: readonly string[];
++}
++/** Internal context only: use inside the same live transaction; it is not authentication. */
++export type WalletCredentialContext =
++  | Readonly<{ source: 'ABSENT' }>
++  | Readonly<{
++      source: 'PRIMARY' | 'LINK';
++      accountId: string;
++      /** A PRIMARY may be a legitimate unmapped legacy account; never provision on sign-in. */
++      participantId: string | null;
++      linkId: string | null;
++      networkIdentity: string;
++      address: string;
++    }>;
++export interface RevokeWalletCredentialInput extends ResolveWalletCredentialInput {
++  accountId: string;
++  actorAccountId: string;
++  requestId: string;
++  /** Active self-session observation supplied by an authenticated host. */
++  session: unknown;
++  now: unknown;
++}
++export type RevokeWalletCredentialResult = Readonly<{
++  outcome: 'REVOKED' | 'ALREADY_REVOKED';
++  linkId: string;
++  participantId: string;
++  address: string;
++  networkIdentity: string;
++  status: 'REVOKED';
++  revokedAt: string;
++}>;
+diff --git a/src/identity-link/index.ts b/src/identity-link/index.ts
+index 76bbb05..e4cf6d7 100644
+--- a/src/identity-link/index.ts
++++ b/src/identity-link/index.ts
+@@ -20,6 +20,10 @@ import {
+   type LinkWalletResult,
+   type PublicWalletLink,
+   type WalletLinkRecord,
++  type ResolveWalletCredentialInput,
++  type WalletCredentialContext,
++  type RevokeWalletCredentialInput,
++  type RevokeWalletCredentialResult,
+ } from './contracts';
+ export * from './contracts';
+ 
+@@ -311,3 +315,164 @@ export function publicWalletLink(result: LinkWalletResult): PublicWalletLink {
+     alreadyLinked: result.outcome === 'ALREADY_LINKED',
+   });
+ }
++
++const CREDENTIAL_OWNER_SQL = `SELECT 'PRIMARY' AS "source", "userId" AS "accountId", NULL::text AS "id", NULL::text AS "participantId", NULL::text AS "status", NULL::text AS "networkIdentity", NULL::text AS "revokedAt" FROM "WalletIdentity" WHERE "address" = $1
++UNION ALL
++SELECT 'LINK', "accountId", "id"::text, "participantId"::text, "status", "networkIdentity",
++  to_char("revokedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') FROM "WalletLink" WHERE "address" = $1`;
++const CredentialOwnerRow = z.strictObject({
++  source: z.enum(['PRIMARY', 'LINK']),
++  accountId: AccountId,
++  id: z.string().nullable(),
++  participantId: z.string().nullable(),
++  status: z.string().nullable(),
++  networkIdentity: z.string().nullable(),
++  revokedAt: z.string().nullable(),
++});
++function credentialSubject(input: ResolveWalletCredentialInput) {
++  const subject = z
++    .strictObject({ networkIdentity: InternalId, address: SolanaAddress })
++    .safeParse(input?.subject);
++  const networks = z.array(InternalId).min(1).max(64).safeParse(input?.walletNetworks);
++  if (!subject.success || !networks.success) return fail('INVALID_INPUT');
++  if (!networks.data.includes(subject.data.networkIdentity)) return fail('UNSUPPORTED_IDENTITY');
++  return subject.data;
++}
++async function credentialOwner(tx: IdentityTransaction, address: string) {
++  return single(CredentialOwnerRow, await query(tx, CREDENTIAL_OWNER_SQL, [address]));
++}
++async function lockedAccount(tx: IdentityTransaction, accountId: string) {
++  const user = single(
++    z.strictObject({ id: AccountId, suspended: z.boolean() }),
++    await query(tx, USER_LOCK, [accountId]),
++  );
++  if (!user) return fail('ACCOUNT_NOT_FOUND');
++  if (user.id !== accountId) return fail('STORAGE_CONTRACT');
++  if (user.suspended) return fail('ACCOUNT_RESTRICTED');
++}
++async function credentialMapping(
++  tx: IdentityTransaction,
++  owner: z.infer<typeof CredentialOwnerRow>,
++  networkIdentity: string,
++) {
++  const participant = await findHumanParticipant(tx, owner.accountId);
++  if (owner.source === 'PRIMARY') {
++    if (
++      owner.id !== null ||
++      owner.participantId !== null ||
++      owner.status !== null ||
++      owner.networkIdentity !== null ||
++      owner.revokedAt !== null
++    )
++      return fail('STORAGE_CONTRACT');
++    return participant?.id ?? null;
++  }
++  if (
++    !owner.id ||
++    !InternalId.safeParse(owner.id).success ||
++    !participant ||
++    owner.participantId !== participant.id ||
++    !['ACTIVE', 'REVOKED'].includes(owner.status ?? '') ||
++    (owner.status === 'REVOKED') !== (owner.revokedAt !== null) ||
++    (owner.revokedAt !== null && !UtcTimestamp.safeParse(owner.revokedAt).success)
++  )
++    return fail('STORAGE_CONTRACT');
++  if (owner.networkIdentity !== networkIdentity) return fail('UNSUPPORTED_IDENTITY');
++  return participant.id;
++}
++
++/**
++ * Internal ownership context under transaction-held locks; it is not proof or authorization.
++ * The host verifies a fresh sign-in proof and creates any session inside this SAME transaction.
++ * No mapping is provisioned. PRIMARY may legitimately have a null participant. ACTIVE links
++ * must reference this account's immutable HUMAN participant. Never expose this context publicly.
++ */
++export async function resolveWalletCredential(
++  tx: IdentityTransaction,
++  input: ResolveWalletCredentialInput,
++): Promise<WalletCredentialContext> {
++  const subject = credentialSubject(input);
++  validPort(tx);
++  try {
++    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
++    const observed = await credentialOwner(tx, subject.address);
++    if (!observed) return { source: 'ABSENT' };
++    await lockedAccount(tx, observed.accountId);
++    // Legacy merge can reassign a PRIMARY userId without taking the subject lock. Never return
++    // an account chosen from an observation that changed while acquiring its account lock.
++    const owner = await credentialOwner(tx, subject.address);
++    if (!owner || owner.accountId !== observed.accountId) return fail('IDENTITY_CONFLICT');
++    const participantId = await credentialMapping(tx, owner, subject.networkIdentity);
++    if (owner.status === 'REVOKED') return fail('IDENTITY_REVOKED');
++    return Object.freeze({
++      source: owner.source,
++      accountId: owner.accountId,
++      participantId,
++      linkId: owner.id,
++      ...subject,
++    });
++  } catch (error) {
++    throw translate(error);
++  }
++}
++/**
++ * Revoke only an additional credential of a host-authenticated active self-session. The host
++ * owns durable audit and session invalidation in this same transaction before acknowledgement.
++ * No provider/X/primary-wallet or financial record changes and no address release/reactivation.
++ */
++export async function revokeWalletCredential(
++  tx: IdentityTransaction,
++  input: RevokeWalletCredentialInput,
++): Promise<RevokeWalletCredentialResult> {
++  validId(input?.accountId);
++  validId(input?.actorAccountId);
++  validId(input?.requestId);
++  if (input.accountId !== input.actorAccountId) return fail('WRONG_ACTOR');
++  const subject = credentialSubject(input);
++  const session = SessionSchema.safeParse(input.session);
++  const now = UtcTimestamp.safeParse(input.now);
++  if (!session.success || !now.success) return fail('INVALID_INPUT');
++  if (session.data.accountId !== input.accountId) return fail('FORBIDDEN');
++  if (session.data.state !== 'ACTIVE' || Date.parse(session.data.expiresAt) <= Date.parse(now.data))
++    return fail('AUTHENTICATION_REQUIRED');
++  validPort(tx);
++  try {
++    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
++    await lockedAccount(tx, input.accountId);
++    const owner = await credentialOwner(tx, subject.address);
++    if (!owner || owner.accountId !== input.accountId) return fail('IDENTITY_CONFLICT');
++    const participantId = await credentialMapping(tx, owner, subject.networkIdentity);
++    if (owner.source === 'PRIMARY') return fail('PRIMARY_WALLET_PROTECTED');
++    if (!participantId || !owner.id) return fail('STORAGE_CONTRACT');
++    if (owner.status === 'REVOKED')
++      return Object.freeze({
++        outcome: 'ALREADY_REVOKED',
++        linkId: owner.id,
++        participantId,
++        ...subject,
++        status: 'REVOKED',
++        revokedAt: owner.revokedAt!,
++      });
++    const updated = single(
++      z.strictObject({ id: z.string(), revokedAt: UtcTimestamp }),
++      await query(
++        tx,
++        `UPDATE "WalletLink" SET "status" = 'REVOKED', "revokedAt" = $3::timestamptz
++WHERE "address" = $1 AND "accountId" = $2 AND "status" = 'ACTIVE'
++RETURNING "id"::text, to_char("revokedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS "revokedAt"`,
++        [subject.address, input.accountId, now.data],
++      ),
++    );
++    if (!updated || updated.id !== owner.id) return fail('STORAGE_CONTRACT');
++    return Object.freeze({
++      outcome: 'REVOKED',
++      linkId: owner.id,
++      participantId,
++      ...subject,
++      status: 'REVOKED',
++      revokedAt: updated.revokedAt,
++    });
++  } catch (error) {
++    throw translate(error);
++  }
++}
+diff --git a/src/lib/wallet-auth.ts b/src/lib/wallet-auth.ts
+index 311d4d1..6664647 100644
+--- a/src/lib/wallet-auth.ts
++++ b/src/lib/wallet-auth.ts
+@@ -1,5 +1,5 @@
+ import { randomBytes } from 'node:crypto';
+-import type { Prisma } from '@prisma/client';
++import { Prisma } from '@prisma/client';
+ import bs58 from 'bs58';
+ import nacl from 'tweetnacl';
+ import { PublicKey } from '@solana/web3.js';
+@@ -8,6 +8,8 @@ import { config } from './config';
+ import { hash, random, HttpError } from './auth-primitives';
+ import { absorbAccount, isEmptyAccount } from './account-merge';
+ import { lockBalance } from './usdc';
++import { SIWS_CHAIN_ID, WALLET_CHALLENGE_STATEMENTS } from './wallet-challenge-contract';
++import { walletSessionAuthority, type WalletSessionObservation } from './wallet-session-authority';
+ 
+ export function walletAddress(value: string) {
+   try {
+@@ -19,11 +21,7 @@ export function walletAddress(value: string) {
+   }
+ }
+ export type ChallengePurpose = 'signin' | 'link' | 'rotate';
+-const STATEMENTS: Record<ChallengePurpose, string> = {
+-  signin: 'Sign in to useRAID.fun.',
+-  link: 'Link this wallet to your useRAID.fun account.',
+-  rotate: 'Change the wallet on your useRAID.fun account. Withdrawals pause for 24 hours.',
+-};
++const STATEMENTS: Record<ChallengePurpose, string> = WALLET_CHALLENGE_STATEMENTS;
+ const ROTATION_COOLDOWN_MS = 7 * 86400000;
+ // Canonical Sign-In With Solana text, so wallets recognise it and warn when another site relays it.
+ export async function createWalletChallenge(
+@@ -32,13 +30,13 @@ export async function createWalletChallenge(
+   purpose: ChallengePurpose = currentUserId ? 'link' : 'signin',
+ ) {
+   walletAddress(address);
+-  if ((purpose === 'signin') === !!currentUserId)
++  if (!Object.hasOwn(STATEMENTS, purpose) || (purpose === 'signin') === !!currentUserId)
+     throw new HttpError(400, 'Invalid wallet challenge.');
+   const url = new URL(config.appUrl);
+   const nonce = randomBytes(24).toString('base64url');
+   const issued = new Date();
+   const expires = new Date(+issued + 5 * 60000);
+-  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: mainnet\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
++  const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: ${SIWS_CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
+   const digest = hash(message);
+   await db.walletChallenge.create({
+     data: { digest, address, message, userId: currentUserId ?? null, expiresAt: expires },
+@@ -93,66 +91,73 @@ export async function verifyWalletChallenge(
+   walletAddress(address);
+   const bytes = decodeSignature(signature);
+   const sessionToken = random();
+-  await db.$transaction(async (tx) => {
+-    await consumeChallenge(
+-      tx,
+-      digest,
+-      address,
+-      bytes,
+-      currentUserId,
+-      currentUserId ? 'link' : 'signin',
+-    );
+-    const known = await tx.walletIdentity.findUnique({ where: { address } });
+-    let userId = currentUserId || known?.userId;
+-    if (currentUserId && known && known.userId !== currentUserId) {
+-      // A wallet-only account with no activity can be folded into the signed-in X account, or the reverse.
+-      const [currentWallet, owner] = await Promise.all([
+-        tx.walletIdentity.findUnique({ where: { userId: currentUserId } }),
+-        tx.user.findUniqueOrThrow({ where: { id: known.userId } }),
+-      ]);
+-      if (currentWallet || owner.xId)
+-        throw new HttpError(409, 'Wallet belongs to another account.');
+-      if (await isEmptyAccount(tx, owner.id)) {
+-        await absorbAccount(tx, currentUserId, owner.id);
+-        userId = currentUserId;
+-      } else if (await isEmptyAccount(tx, currentUserId)) {
+-        await absorbAccount(tx, owner.id, currentUserId);
+-        userId = owner.id;
+-      } else
+-        throw new HttpError(
+-          409,
+-          'This wallet already has its own useRAID account with activity. Sign in with the wallet instead.',
+-        );
+-    } else if (currentUserId && !known) {
+-      const currentWallet = await tx.walletIdentity.findUnique({
+-        where: { userId: currentUserId },
+-      });
+-      if (currentWallet) throw new HttpError(409, 'Account already has a wallet.');
+-      await tx.walletIdentity.create({ data: { address, userId: currentUserId } });
+-    } else if (!userId) {
+-      const user = await tx.user.create({
+-        data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
++  await db.$transaction(
++    async (tx) => {
++      await consumeChallenge(
++        tx,
++        digest,
++        address,
++        bytes,
++        currentUserId,
++        currentUserId ? 'link' : 'signin',
++      );
++      const known = await tx.walletIdentity.findUnique({ where: { address } });
++      let userId = currentUserId || known?.userId;
++      if (currentUserId && known && known.userId !== currentUserId) {
++        // A wallet-only account with no activity can be folded into the signed-in X account, or the reverse.
++        const [currentWallet, owner] = await Promise.all([
++          tx.walletIdentity.findUnique({ where: { userId: currentUserId } }),
++          tx.user.findUniqueOrThrow({ where: { id: known.userId } }),
++        ]);
++        if (currentWallet || owner.xId)
++          throw new HttpError(409, 'Wallet belongs to another account.');
++        if (await isEmptyAccount(tx, owner.id)) {
++          await absorbAccount(tx, currentUserId, owner.id);
++          userId = currentUserId;
++        } else if (await isEmptyAccount(tx, currentUserId)) {
++          await absorbAccount(tx, owner.id, currentUserId);
++          userId = owner.id;
++        } else
++          throw new HttpError(
++            409,
++            'This wallet already has its own useRAID account with activity. Sign in with the wallet instead.',
++          );
++      } else if (currentUserId && !known) {
++        const currentWallet = await tx.walletIdentity.findUnique({
++          where: { userId: currentUserId },
++        });
++        if (currentWallet) throw new HttpError(409, 'Account already has a wallet.');
++        await tx.walletIdentity.create({ data: { address, userId: currentUserId } });
++      } else if (!userId) {
++        const user = await tx.user.create({
++          data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
++        });
++        userId = user.id;
++        await tx.walletIdentity.create({ data: { address, userId } });
++      }
++      const owner = await tx.user.findUniqueOrThrow({ where: { id: userId! } });
++      if (owner.suspended) throw new HttpError(403, 'This account is suspended.');
++      // Take only this account's session atomically. A concurrent delete/update must be
++      // observed before its authority can be carried into the replacement session.
++      const previous = currentSessionHash
++        ? await tx.$queryRaw<WalletSessionObservation[]>`
++            DELETE FROM "Session"
++            WHERE "tokenHash" = ${currentSessionHash} AND "userId" = ${userId!}
++            RETURNING "userId", "via", "expiresAt"
++          `
++        : [];
++      const now = new Date();
++      await tx.session.create({
++        data: {
++          tokenHash: hash(sessionToken),
++          userId: userId!,
++          via: walletSessionAuthority(previous[0], currentUserId, userId!, now),
++          expiresAt: new Date(now.getTime() + 7 * 86400000),
++        },
+       });
+-      userId = user.id;
+-      await tx.walletIdentity.create({ data: { address, userId } });
+-    }
+-    const owner = await tx.user.findUniqueOrThrow({ where: { id: userId! } });
+-    if (owner.suspended) throw new HttpError(403, 'This account is suspended.');
+-    // Signing in again must not widen what the old session could do, nor narrow an X session.
+-    const previous = currentSessionHash
+-      ? await tx.session.findUnique({ where: { tokenHash: currentSessionHash } })
+-      : null;
+-    if (currentSessionHash)
+-      await tx.session.deleteMany({ where: { tokenHash: currentSessionHash } });
+-    await tx.session.create({
+-      data: {
+-        tokenHash: hash(sessionToken),
+-        userId: userId!,
+-        via: previous?.via ?? 'wallet',
+-        expiresAt: new Date(Date.now() + 7 * 86400000),
+-      },
+-    });
+-  });
++    },
++    { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
++  );
+   return sessionToken;
+ }
+ // Re-points payouts to a new verified wallet. The X account is the second factor, so a stolen
+@@ -165,42 +170,47 @@ export async function rotateWallet(
+ ) {
+   walletAddress(address);
+   const bytes = decodeSignature(signature);
+-  await db.$transaction(async (tx) => {
+-    await lockBalance(tx, userId);
+-    await consumeChallenge(tx, digest, address, bytes, userId, 'rotate');
+-    const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
+-    if (user.suspended) throw new HttpError(403, 'This account is suspended.');
+-    if (!(await tx.xAccount.findUnique({ where: { userId } })))
+-      throw new HttpError(403, 'Connect X before changing your wallet.');
+-    const current = await tx.walletIdentity.findUnique({ where: { userId } });
+-    if (!current) throw new HttpError(409, 'Connect a wallet first.');
+-    if (current.address === address) throw new HttpError(409, 'This is already your wallet.');
+-    if (await tx.walletIdentity.findUnique({ where: { address } }))
+-      throw new HttpError(409, 'Wallet belongs to another account.');
+-    const now = new Date();
+-    const open = await tx.usdcTransfer.count({
+-      where: {
+-        userId,
+-        OR: [
+-          { kind: 'WITHDRAWAL', status: 'REQUESTED' },
+-          { kind: 'DEPOSIT', status: 'AWAITING_TRANSFER', expiresAt: { gt: now } },
+-        ],
+-      },
+-    });
+-    if (open) throw new HttpError(409, 'Finish pending deposits and withdrawals first.');
+-    if (current.rotatedAt && +now - +current.rotatedAt < ROTATION_COOLDOWN_MS)
+-      throw new HttpError(429, 'You can change your wallet once every 7 days.');
+-    await tx.walletIdentity.delete({ where: { userId } });
+-    await tx.walletIdentity.create({
+-      data: { address, userId, previousAddress: current.address, rotatedAt: now },
+-    });
+-    await tx.moderationEvent.create({
+-      data: {
+-        actorId: userId,
+-        action: 'wallet-rotated',
+-        targetId: userId,
+-        reason: `${current.address} -> ${address}`,
+-      },
+-    });
+-  });
++  // The subject-exclusion trigger must see a link committed while it waits on the advisory lock.
++  // A database-default snapshot transaction could retain the earlier absence observation.
++  await db.$transaction(
++    async (tx) => {
++      await lockBalance(tx, userId);
++      await consumeChallenge(tx, digest, address, bytes, userId, 'rotate');
++      const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
++      if (user.suspended) throw new HttpError(403, 'This account is suspended.');
++      if (!(await tx.xAccount.findUnique({ where: { userId } })))
++        throw new HttpError(403, 'Connect X before changing your wallet.');
++      const current = await tx.walletIdentity.findUnique({ where: { userId } });
++      if (!current) throw new HttpError(409, 'Connect a wallet first.');
++      if (current.address === address) throw new HttpError(409, 'This is already your wallet.');
++      if (await tx.walletIdentity.findUnique({ where: { address } }))
++        throw new HttpError(409, 'Wallet belongs to another account.');
++      const now = new Date();
++      const open = await tx.usdcTransfer.count({
++        where: {
++          userId,
++          OR: [
++            { kind: 'WITHDRAWAL', status: 'REQUESTED' },
++            { kind: 'DEPOSIT', status: 'AWAITING_TRANSFER', expiresAt: { gt: now } },
++          ],
++        },
++      });
++      if (open) throw new HttpError(409, 'Finish pending deposits and withdrawals first.');
++      if (current.rotatedAt && +now - +current.rotatedAt < ROTATION_COOLDOWN_MS)
++        throw new HttpError(429, 'You can change your wallet once every 7 days.');
++      await tx.walletIdentity.delete({ where: { userId } });
++      await tx.walletIdentity.create({
++        data: { address, userId, previousAddress: current.address, rotatedAt: now },
++      });
++      await tx.moderationEvent.create({
++        data: {
++          actorId: userId,
++          action: 'wallet-rotated',
++          targetId: userId,
++          reason: `${current.address} -> ${address}`,
++        },
++      });
++    },
++    { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
++  );
+ }
+diff --git a/src/lib/wallet-link-proof.ts b/src/lib/wallet-link-proof.ts
+index a280b2c..13bc19f 100644
+--- a/src/lib/wallet-link-proof.ts
++++ b/src/lib/wallet-link-proof.ts
+@@ -1,5 +1,7 @@
+ import { createHash } from 'node:crypto';
+ import { IdentityLinkError } from '../identity-link';
++import { LINK_ADDITIONAL_STATEMENT } from './wallet-challenge-contract';
++export { LINK_ADDITIONAL_STATEMENT, SIWS_CHAIN_ID } from './wallet-challenge-contract';
+ 
+ /**
+  * Thin proof adapter between the host's stored wallet challenge and the pure identity preflight
+@@ -8,11 +10,6 @@ import { IdentityLinkError } from '../identity-link';
+  * generated for this digest; anything missing or non-matching is PROOF_INVALID and nothing is ever
+  * defaulted (in particular `issuedAt` is never "now").
+  */
+-export const LINK_ADDITIONAL_STATEMENT =
+-  'Add this wallet for sign-in to your useRAID.fun account. Your payout wallet does not change.';
+-/** The Chain ID the challenge generator signs today (`createWalletChallenge`). One shared constant. */
+-export const SIWS_CHAIN_ID = 'mainnet';
+-
+ export interface StoredWalletChallenge {
+   digest: string;
+   address: string;
+diff --git a/src/lib/x-oauth.ts b/src/lib/x-oauth.ts
+index 99d0162..0d5a9e6 100644
+--- a/src/lib/x-oauth.ts
++++ b/src/lib/x-oauth.ts
+@@ -1,6 +1,6 @@
+ import { createHash, timingSafeEqual } from 'node:crypto';
+ import { z } from 'zod';
+-import type { OAuthAttempt } from '@prisma/client';
++import { Prisma, type OAuthAttempt } from '@prisma/client';
+ import { db } from './db';
+ import { config } from './config';
+ import { hash, random } from './auth-primitives';
+@@ -173,103 +173,110 @@ export async function claimAttempt(state: string, sessionHash: string | null) {
+ let warnedAutoApprove = false;
+ export async function completeConnection(attempt: OAuthAttempt, profile: XIdentity) {
+   const sessionToken = random();
+-  await db.$transaction(async (tx) => {
+-    // Lock the permanent owner even for an attempted connection to a different identity.
+-    let owner = attempt.userId ? await tx.user.findUnique({ where: { id: attempt.userId } }) : null;
+-    if (attempt.userId && !owner) throw new OAuthError('session');
+-    await lockIdentity(tx, owner?.xId || profile.id);
+-    const live = await tx.oAuthAttempt.deleteMany({
+-      where: {
+-        stateHash: attempt.stateHash,
+-        consumedAt: { not: null },
+-        expiresAt: { gt: new Date() },
+-      },
+-    });
+-    if (live.count !== 1) throw new OAuthError('state');
+-    if (attempt.userId) {
+-      const session = await tx.session.findUnique({ where: { tokenHash: attempt.sessionHash! } });
+-      if (!session || session.userId !== attempt.userId || session.expiresAt <= new Date())
+-        throw new OAuthError('session');
+-      if (owner!.xId && owner!.xId !== profile.id) throw new OAuthError('identity');
+-    }
+-    let user = await tx.user.findUnique({ where: { xId: profile.id } });
+-    if (user?.suspended) throw new OAuthError('suspended');
+-    if (owner && user && owner.id !== user.id) {
+-      // Two accounts for one person: fold the one with no activity into the other.
+-      if (owner.xId || (await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
+-        throw new OAuthError('identity');
+-      if (await isEmptyAccount(tx, owner.id)) {
+-        await absorbAccount(tx, user.id, owner.id);
+-        owner = null;
+-      } else if (await isEmptyAccount(tx, user.id)) {
+-        await absorbAccount(tx, owner.id, user.id);
+-        user = null;
+-      } else throw new OAuthError('identity');
+-    }
+-    const admin = adminXIds().includes(profile.id);
+-    const localAutoApprove =
+-      process.env.NODE_ENV !== 'production' && process.env.LOCAL_AUTO_APPROVE_CREATORS === 'true';
+-    if (localAutoApprove && !warnedAutoApprove) {
+-      warnedAutoApprove = true;
+-      console.warn('LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.');
+-    }
+-    // Admin comes from the environment allowlist on every sign-in; a stored ADMIN role that fell off it is demoted.
+-    const access = (role?: string) =>
+-      admin
+-        ? { role: 'ADMIN', approved: true }
+-        : {
+-            ...(role === 'ADMIN' ? { role: 'CREATOR' } : {}),
+-            ...(localAutoApprove ? { approved: true } : {}),
+-          };
+-    user = owner
+-      ? await tx.user.update({
+-          where: { id: owner.id },
+-          data: {
+-            xId: profile.id,
+-            handle: profile.username,
+-            ...access(owner.role),
+-          },
+-        })
+-      : await tx.user.upsert({
+-          where: { xId: profile.id },
+-          create: {
+-            xId: profile.id,
+-            handle: profile.username,
+-            role: admin ? 'ADMIN' : 'CREATOR',
+-            approved: admin || localAutoApprove,
+-          },
+-          update: {
+-            handle: profile.username,
+-            ...access(user?.role),
+-          },
+-        });
+-    const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
+-    if (existing && existing.userId !== user.id) throw new OAuthError('identity');
+-    const data = {
+-      xUserId: profile.id,
+-      username: profile.username,
+-      displayName: profile.name,
+-      profileImage:
+-        profile.profile_image_url && allowedImageUrl(profile.profile_image_url)
+-          ? profile.profile_image_url
+-          : null,
+-    };
+-    await tx.xAccount.upsert({
+-      where: { userId: user.id },
+-      create: { userId: user.id, ...data },
+-      update: data,
+-    });
+-    if (attempt.sessionHash)
+-      await tx.session.deleteMany({ where: { tokenHash: attempt.sessionHash } });
+-    await tx.session.create({
+-      data: {
+-        tokenHash: hash(sessionToken),
+-        userId: user.id,
+-        via: 'x',
+-        expiresAt: new Date(Date.now() + 7 * 86400000),
+-      },
+-    });
+-  });
++  await db.$transaction(
++    async (tx) => {
++      // Lock the permanent owner even for an attempted connection to a different identity.
++      let owner = attempt.userId
++        ? await tx.user.findUnique({ where: { id: attempt.userId } })
++        : null;
++      if (attempt.userId && !owner) throw new OAuthError('session');
++      await lockIdentity(tx, owner?.xId || profile.id);
++      const live = await tx.oAuthAttempt.deleteMany({
++        where: {
++          stateHash: attempt.stateHash,
++          consumedAt: { not: null },
++          expiresAt: { gt: new Date() },
++        },
++      });
++      if (live.count !== 1) throw new OAuthError('state');
++      if (attempt.userId) {
++        const session = await tx.session.findUnique({ where: { tokenHash: attempt.sessionHash! } });
++        if (!session || session.userId !== attempt.userId || session.expiresAt <= new Date())
++          throw new OAuthError('session');
++        if (owner!.xId && owner!.xId !== profile.id) throw new OAuthError('identity');
++      }
++      let user = await tx.user.findUnique({ where: { xId: profile.id } });
++      if (user?.suspended) throw new OAuthError('suspended');
++      if (owner && user && owner.id !== user.id) {
++        // Two accounts for one person: fold the one with no activity into the other.
++        if (owner.xId || (await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
++          throw new OAuthError('identity');
++        if (await isEmptyAccount(tx, owner.id)) {
++          await absorbAccount(tx, user.id, owner.id);
++          owner = null;
++        } else if (await isEmptyAccount(tx, user.id)) {
++          await absorbAccount(tx, owner.id, user.id);
++          user = null;
++        } else throw new OAuthError('identity');
++      }
++      const admin = adminXIds().includes(profile.id);
++      const localAutoApprove =
++        process.env.NODE_ENV !== 'production' && process.env.LOCAL_AUTO_APPROVE_CREATORS === 'true';
++      if (localAutoApprove && !warnedAutoApprove) {
++        warnedAutoApprove = true;
++        console.warn(
++          'LOCAL_AUTO_APPROVE_CREATORS is on: every X sign-in is approved as a creator.',
++        );
++      }
++      // Admin comes from the environment allowlist on every sign-in; a stored ADMIN role that fell off it is demoted.
++      const access = (role?: string) =>
++        admin
++          ? { role: 'ADMIN', approved: true }
++          : {
++              ...(role === 'ADMIN' ? { role: 'CREATOR' } : {}),
++              ...(localAutoApprove ? { approved: true } : {}),
++            };
++      user = owner
++        ? await tx.user.update({
++            where: { id: owner.id },
++            data: {
++              xId: profile.id,
++              handle: profile.username,
++              ...access(owner.role),
++            },
++          })
++        : await tx.user.upsert({
++            where: { xId: profile.id },
++            create: {
++              xId: profile.id,
++              handle: profile.username,
++              role: admin ? 'ADMIN' : 'CREATOR',
++              approved: admin || localAutoApprove,
++            },
++            update: {
++              handle: profile.username,
++              ...access(user?.role),
++            },
++          });
++      const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
++      if (existing && existing.userId !== user.id) throw new OAuthError('identity');
++      const data = {
++        xUserId: profile.id,
++        username: profile.username,
++        displayName: profile.name,
++        profileImage:
++          profile.profile_image_url && allowedImageUrl(profile.profile_image_url)
++            ? profile.profile_image_url
++            : null,
++      };
++      await tx.xAccount.upsert({
++        where: { userId: user.id },
++        create: { userId: user.id, ...data },
++        update: data,
++      });
++      if (attempt.sessionHash)
++        await tx.session.deleteMany({ where: { tokenHash: attempt.sessionHash } });
++      await tx.session.create({
++        data: {
++          tokenHash: hash(sessionToken),
++          userId: user.id,
++          via: 'x',
++          expiresAt: new Date(Date.now() + 7 * 86400000),
++        },
++      });
++    },
++    { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
++  );
+   return sessionToken;
+ }
+ export async function disconnectX(userId: string) {
+diff --git a/tests/identity-link-boundary.test.ts b/tests/identity-link-boundary.test.ts
+index 1763872..541af8c 100644
+--- a/tests/identity-link-boundary.test.ts
++++ b/tests/identity-link-boundary.test.ts
+@@ -12,6 +12,8 @@ const NEW_TESTS = [
+   'tests/identity-link-migration.test.ts',
+   'tests/identity-link.test.ts',
+   'tests/wallet-link-proof.test.ts',
++  'tests/wallet-link-credentials.test.ts',
++  'tests/wallet-auth-isolation-db.test.ts',
+ ];
+ 
+ it('public link module owns SQL and contracts without an app singleton, framework or SDK', async () => {
+@@ -72,6 +74,8 @@ it.skipIf(process.env.RUN_DB_TESTS !== 'true')(
+         proofDerived: true,
+         alternatePort: true,
+         sanitizedFailure: true,
++        internalCredentialContext: true,
++        revokedReserved: true,
+       });
+     } finally {
+       await truncateAll(db);
+@@ -113,6 +117,10 @@ it('module documentation declares the R16 reuse contract and runnable consumer s
+     'DATABASE_URL',
+     'linkVerifiedWallet',
+     'listWalletLinks',
++    'resolveWalletCredential',
++    'revokeWalletCredential',
++    'transaction-bound',
++    'PRIMARY_WALLET_PROTECTED',
+     'IdentityTransaction',
+     'PRIMARY_WALLET_REQUIRED',
+     'wallet_link_guard_v1',
+diff --git a/tests/wallet-auth-db.test.ts b/tests/wallet-auth-db.test.ts
+index f1a14ff..8afa31b 100644
+--- a/tests/wallet-auth-db.test.ts
++++ b/tests/wallet-auth-db.test.ts
+@@ -186,6 +186,124 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
+       'x',
+     );
+   });
++  it('does not renew expired X authority through a wallet signature', async () => {
++    vi.stubEnv('X_ADMIN_USER_ID', 'expired-admin');
++    try {
++      const admin = await xUser('expired-admin', { role: 'ADMIN', approved: true });
++      const w = pair();
++      await walletSignIn(w, admin.id);
++      const raw = await session(admin.id, 'x');
++      await db.session.update({
++        where: { tokenHash: hash(raw) },
++        data: { expiresAt: new Date(0) },
++      });
++      // The route sees no current user for this expired cookie.
++      mocks.cookie = await walletSignIn(w, undefined, hash(raw));
++      expect(
++        (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(mocks.cookie) } })).via,
++      ).toBe('wallet');
++      await expect(requireUser(true)).rejects.toMatchObject({ status: 403 });
++    } finally {
++      vi.unstubAllEnvs();
++    }
++  });
++  it("does not borrow or delete another account's live X session", async () => {
++    const own = await xUser('own-session');
++    const foreign = await xUser('foreign-session');
++    const raw = await session(foreign.id, 'x');
++    const before = await db.session.findUniqueOrThrow({ where: { tokenHash: hash(raw) } });
++    const token = await walletSignIn(pair(), own.id, hash(raw));
++    expect(await db.session.findUnique({ where: { tokenHash: hash(raw) } })).toEqual(before);
++    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via).toBe(
++      'wallet',
++    );
++  });
++  it('requires authenticated account context before preserving X authority', async () => {
++    const own = await xUser('context-session');
++    const w = pair();
++    await walletSignIn(w, own.id);
++    const raw = await session(own.id, 'x');
++    const token = await walletSignIn(w, undefined, hash(raw));
++    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via).toBe(
++      'wallet',
++    );
++  });
++  it('normalizes unknown session authority to wallet authority', async () => {
++    const own = await xUser('unknown-session');
++    const raw = await session(own.id, 'unexpected-provider');
++    const token = await walletSignIn(pair(), own.id, hash(raw));
++    expect((await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via).toBe(
++      'wallet',
++    );
++  });
++  it.each(['revoked', 'expired', 'downgraded'] as const)(
++    'observes a concurrently %s X session before carrying its authority forward',
++    async (change) => {
++      const own = await xUser(`race-session-${change}`);
++      const raw = await session(own.id, 'x');
++      let ready!: () => void;
++      let release!: () => void;
++      const started = new Promise<void>((done) => {
++        ready = done;
++      });
++      const gate = new Promise<void>((done) => {
++        release = done;
++      });
++      let blocker = 0;
++      const held = db.$transaction(
++        async (tx) => {
++          blocker = (await tx.$queryRaw<{ pid: number }[]>`SELECT pg_backend_pid() AS pid`)[0].pid;
++          const where = { tokenHash: hash(raw) };
++          if (change === 'revoked') await tx.session.delete({ where });
++          else
++            await tx.session.update({
++              where,
++              data: change === 'expired' ? { expiresAt: new Date(0) } : { via: 'wallet' },
++            });
++          ready();
++          await gate;
++        },
++        { timeout: 15000 },
++      );
++      void held.catch(() => ready());
++      let signingIn: Promise<string> | undefined;
++      try {
++        await started;
++        signingIn = walletSignIn(pair(), own.id, hash(raw));
++        const deadline = Date.now() + 5000;
++        let observed = false;
++        while (Date.now() < deadline) {
++          const blocked = await db.$queryRaw<{ pid: number; query: string }[]>`
++            SELECT pid, query FROM pg_stat_activity
++            WHERE ${blocker}::integer = ANY(pg_blocking_pids(pid))
++          `;
++          const row = blocked.find((entry) =>
++            /DELETE FROM "(?:public"\.)?"?Session"?/s.test(entry.query),
++          );
++          if (row) {
++            expect(row.pid).not.toBe(blocker);
++            console.info(JSON.stringify({ sessionRace: change, waiter: row.pid, blocker }));
++            observed = true;
++            break;
++          }
++          await new Promise((done) => setTimeout(done, 10));
++        }
++        expect(observed, 'actual Session DELETE blocked by an independent transaction').toBe(true);
++        release();
++        await held;
++        const token = await signingIn;
++        expect(
++          (await db.session.findUniqueOrThrow({ where: { tokenHash: hash(token) } })).via,
++        ).toBe('wallet');
++        expect(await db.session.findUnique({ where: { tokenHash: hash(raw) } })).toBeNull();
++      } finally {
++        release();
++        await held;
++        await signingIn;
++      }
++    },
++    20000,
++  );
+   it('requires an X session for administrator access', async () => {
+     vi.stubEnv('X_ADMIN_USER_ID', 'wallet-admin');
+     const admin = await xUser('wallet-admin', { role: 'ADMIN', approved: true });
+v26.0.0
+Python 3.12.4

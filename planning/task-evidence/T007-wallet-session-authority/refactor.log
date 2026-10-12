@@ -1,0 +1,25 @@
+
+> useraid@0.1.0 test
+> vitest run tests/wallet-auth-db.test.ts tests/wallet-session-authority.test.ts --reporter=default --reporter=junit --outputFile=planning/task-evidence/T007-wallet-session-authority/refactor.xml
+
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+{"sessionRace":"revoked","waiter":459,"blocker":457}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+{"sessionRace":"expired","waiter":457,"blocker":459}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+{"sessionRace":"downgraded","waiter":458,"blocker":457}
+
+ ✓ tests/wallet-auth-db.test.ts (25 tests) 891ms
+ ✓ tests/wallet-session-authority.test.ts (11 tests) 2ms
+
+ Test Files  2 passed (2)
+      Tests  36 passed (36)
+   Start at  10:55:31
+   Duration  1.43s (transform 82ms, setup 0ms, import 319ms, tests 893ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T007-wallet-session-authority/refactor.xml

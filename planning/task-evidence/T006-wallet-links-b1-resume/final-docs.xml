@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="82" failures="0" errors="0" time="0.334965375">
+    <testsuite name="tests/docs-links.test.ts" timestamp="2026-10-10T04:25:54.114Z" hostname="0xd.local" tests="61" failures="0" errors="0" skipped="0" time="0.324039667">
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; README.md: relative links and anchors resolve" time="0.001299375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; README.md: every npm script it names exists" time="0.000160125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/coming-soon-deploy.md: relative links and anchors resolve" time="0.000126125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/coming-soon-deploy.md: every npm script it names exists" time="0.000080875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/creator-studio.md: relative links and anchors resolve" time="0.00005925">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/creator-studio.md: every npm script it names exists" time="0.000055583">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/fix-branch-report.md: relative links and anchors resolve" time="0.000064708">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/fix-branch-report.md: every npm script it names exists" time="0.000061083">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/operations.md: relative links and anchors resolve" time="0.000086">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/operations.md: every npm script it names exists" time="0.000083125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-assignment.md: relative links and anchors resolve" time="0.000063458">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-assignment.md: every npm script it names exists" time="0.000051084">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-task-contracts.md: relative links and anchors resolve" time="0.144291333">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-task-contracts.md: every npm script it names exists" time="0.000133959">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-asset-registry.md: relative links and anchors resolve" time="0.001172375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-asset-registry.md: every npm script it names exists" time="0.0000375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-blueprint-project-map.md: relative links and anchors resolve" time="0.136139958">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-blueprint-project-map.md: every npm script it names exists" time="0.000395375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-ci-plan.md: relative links and anchors resolve" time="0.000055791">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-ci-plan.md: every npm script it names exists" time="0.000041209">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-command-receipts.md: relative links and anchors resolve" time="0.001606042">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-command-receipts.md: every npm script it names exists" time="0.000047708">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-coverage.md: relative links and anchors resolve" time="0.02403425">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-coverage.md: every npm script it names exists" time="0.000108125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-timeline.md: relative links and anchors resolve" time="0.002281166">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-timeline.md: every npm script it names exists" time="0.000057">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-development-phases.md: relative links and anchors resolve" time="0.000847458">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-development-phases.md: every npm script it names exists" time="0.000044792">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-preflight.md: relative links and anchors resolve" time="0.001973041">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-preflight.md: every npm script it names exists" time="0.000029375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-storage.md: relative links and anchors resolve" time="0.001056625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-storage.md: every npm script it names exists" time="0.000027416">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-module-reuse.md: relative links and anchors resolve" time="0.000532">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-module-reuse.md: every npm script it names exists" time="0.000031875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-plan-verification.md: relative links and anchors resolve" time="0.000037667">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-plan-verification.md: every npm script it names exists" time="0.000026625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-backlog.md: relative links and anchors resolve" time="0.000076">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-backlog.md: every npm script it names exists" time="0.000070708">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-guide.md: relative links and anchors resolve" time="0.000349625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-guide.md: every npm script it names exists" time="0.000031292">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-status.md: relative links and anchors resolve" time="0.000037625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-status.md: every npm script it names exists" time="0.000037792">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-shared-contracts.md: relative links and anchors resolve" time="0.000053083">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-shared-contracts.md: every npm script it names exists" time="0.00003325">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-sprint-plan.md: relative links and anchors resolve" time="0.001542584">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-sprint-plan.md: every npm script it names exists" time="0.000042166">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-task-progress.md: relative links and anchors resolve" time="0.000208542">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-task-progress.md: every npm script it names exists" time="0.000032875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-fixtures.md: relative links and anchors resolve" time="0.000054292">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-fixtures.md: every npm script it names exists" time="0.000028167">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-uat-plan.md: relative links and anchors resolve" time="0.0000445">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-uat-plan.md: every npm script it names exists" time="0.000030666">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-wallet-links.md: relative links and anchors resolve" time="0.002395875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-wallet-links.md: every npm script it names exists" time="0.000075959">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/standalone-raids.md: relative links and anchors resolve" time="0.0000235">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/standalone-raids.md: every npm script it names exists" time="0.000023833">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/verification.md: relative links and anchors resolve" time="0.000029625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/verification.md: every npm script it names exists" time="0.000037208">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/x-tracking.md: relative links and anchors resolve" time="0.000073125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/x-tracking.md: every npm script it names exists" time="0.00002825">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; states the release policies" time="0.000295417">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raid-evidence.test.ts" timestamp="2026-10-10T04:25:54.117Z" hostname="0xd.local" tests="21" failures="0" errors="0" skipped="0" time="0.010925708">
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; records exact SHA/environment/scenario/result and preserves fixture-only assurance" time="0.002620042">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata candidateSha" time="0.000315208">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata scenarioId" time="0.000107792">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata environment" time="0.00007475">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata tester" time="0.000082625">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata expected" time="0.000073333">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata observed" time="0.000069584">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata evidenceRef" time="0.000080209">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects missing executed metadata executedAt" time="0.000094167">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects invalid SHA abc" time="0.000127958">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects invalid SHA AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" time="0.000064041">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects invalid SHA gggggggggggggggggggggggggggggggggggggggg" time="0.000051458">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects PASS without an execution, invented production environment or approval fields" time="0.000167416">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; accepts honest planned/blocked/skipped evidence without labeling execution" time="0.000087625">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; rejects fixture PASS as a DB/program/provider/recovery scenario result" time="0.000172792">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; validates an actually executed result at its required environment without granting release approval" time="0.000062416">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; requires every assurance layer before a combined money scenario can PASS" time="0.000143125">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 evidence cannot promote fixtures into actual scenario assurance &gt; cannot attach external assurance layers to a fixture-only check" time="0.00005275">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 canonical scenario responsibility and environment plan &gt; covers all 75 current canonical scenarios including the three reuse/TDD additions" time="0.002934792">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 canonical scenario responsibility and environment plan &gt; rejects missing, duplicate or falsely passing planned scenarios" time="0.00212125">
+        </testcase>
+        <testcase classname="tests/raid-evidence.test.ts" name="T004 canonical scenario responsibility and environment plan &gt; requires real boundaries for capacity races, chain money, private payloads and durability" time="0.000658917">
+        </testcase>
+    </testsuite>
+</testsuites>

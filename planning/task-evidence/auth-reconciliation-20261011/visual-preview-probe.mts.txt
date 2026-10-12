@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {chromium} from '@playwright/test';
+const browser=await chromium.launch({headless:true});const results=[];
+try {
+ for(const [name,viewport] of [['desktop',{width:1440,height:1000}],['mobile',{width:390,height:844}]] as const){
+  const page=await browser.newPage({viewport});const problems:string[]=[];
+  page.on('console',message=>{if(message.type()==='error')problems.push(message.text());});
+  page.on('pageerror',error=>problems.push(error.message));
+  await page.goto('http://localhost:3021/test-center');await page.waitForLoadState('networkidle');
+  await page.getByRole('button',{name:'Backend checks',exact:true}).click();
+  await page.getByRole('button',{name:'All checks',exact:true}).click();
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),true);
+  await page.screenshot({path:'/tmp/raid-auth-reconcile-20261011/'+name+'-test-center.png',fullPage:true,caret:'initial'});
+  assert.deepEqual(problems,[]);results.push({viewport:name,result:'PASS',consoleErrors:0,pageErrors:0,overflow:false,hydratedControlsVerified:true});await page.close();
+ }
+ await fs.writeFile('/tmp/raid-auth-reconcile-20261011/visual-preview.json',JSON.stringify(results,null,2)+'\n');console.log(JSON.stringify(results));
+}finally{await browser.close();}

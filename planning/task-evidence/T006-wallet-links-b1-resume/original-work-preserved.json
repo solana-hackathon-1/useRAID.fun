@@ -1,0 +1,9 @@
+{
+  "original_tracked_patch_sha256": "0d407b4bde51999ca8000ae3fdff3e73e61783ca2657de3872e84e7c3facd31e",
+  "saved_initial_patch_matches": true,
+  "original_untracked_files_match_initial_import": 36,
+  "original_head": "c196ee74d74624b0089185c7b78c926e35238985",
+  "main_head": "66d6a3a05936df54c8dbca150b7c3bea6e6134be",
+  "staging_empty": true,
+  "harness_correction": "Initial preservation comparison used effective imported-main hashes for tracked source files; combined CI matrix legitimately differs from old B1 base. Corrected to original saved patch equality plus untracked hashes. No source worktree mutation."
+}
