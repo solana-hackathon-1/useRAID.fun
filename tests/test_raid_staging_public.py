@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 import unittest
 import uuid
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 NGINX = 'nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236'
@@ -52,6 +53,28 @@ class PublicStagingComposition(unittest.TestCase):
 
 
 class PublicStagingProxy(unittest.TestCase):
+    def test_fixture_supports_daemons_requiring_explicit_static_ip_subnets(self):
+        real_run = subprocess.run
+        configured = set()
+
+        def older_daemon(args, **kwargs):
+            if args[:3] == ['docker', 'network', 'create']:
+                if '--subnet' in args:
+                    configured.add(args[-1])
+            elif args[:3] == ['docker', 'network', 'rm']:
+                configured.discard(args[-1])
+            elif args[:2] == ['docker', 'run'] and '--ip' in args:
+                network = args[args.index('--network') + 1]
+                if network not in configured:
+                    return subprocess.CompletedProcess(args, 125, '',
+                        'user specified IP address is supported only when connecting to '
+                        'networks with user configured subnets')
+            return real_run(args, **kwargs)
+
+        # Exercise the real proxy fixture under the exact observed hosted-daemon constraint.
+        with patch.object(subprocess, 'run', side_effect=older_daemon):
+            self.test_real_proxy_trusts_only_connector_and_preserves_public_origin()
+
     def test_real_proxy_trusts_only_connector_and_preserves_public_origin(self):
         source = (ROOT / 'deploy/staging/nginx-public.conf').read_text()
         prefix = 'raid-public-contract-' + uuid.uuid4().hex[:10]
@@ -73,6 +96,10 @@ class PublicStagingProxy(unittest.TestCase):
                 subnet = next(ipaddress.ip_network(pool['Subnet']) for pool in pools
                     if ipaddress.ip_network(pool['Subnet']).version == 4)
                 self.assertGreater(subnet.num_addresses, 6)
+                # Older daemons require explicit IPAM for static --ip. Reserve the unused
+                # Docker-selected pool with that form before attaching any fixture containers.
+                docker('network', 'rm', network)
+                docker('network', 'create', '--subnet', str(subnet), network)
                 proxy_ip, trusted_ip, untrusted_ip, upstream_ip = (
                     str(subnet[index]) for index in [2, 3, 4, 5])
                 # Change only synthetic peer/listen addresses, retaining all trust directives.

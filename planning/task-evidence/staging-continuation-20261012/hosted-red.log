@@ -1,0 +1,81 @@
+publish	Install and check source	﻿2026-10-12T16:19:36.7469938Z ##[group]Run npm ci
+publish	Install and check source	2026-10-12T16:19:36.7470417Z ^[[36;1mnpm ci^[[0m
+publish	Install and check source	2026-10-12T16:19:36.7470885Z ^[[36;1mpython3 -m unittest discover -s tests -p 'test_raid_*.py'^[[0m
+publish	Install and check source	2026-10-12T16:19:36.7471284Z ^[[36;1mnpm run db:generate^[[0m
+publish	Install and check source	2026-10-12T16:19:36.7471552Z ^[[36;1mnpm run typecheck^[[0m
+publish	Install and check source	2026-10-12T16:19:36.7471902Z ^[[36;1mnpm run lint^[[0m
+publish	Install and check source	2026-10-12T16:19:36.7472141Z ^[[36;1mnpm run audit:check^[[0m
+publish	Install and check source	2026-10-12T16:19:36.7611251Z shell: /usr/bin/bash -e {0}
+publish	Install and check source	2026-10-12T16:19:36.7611773Z env:
+publish	Install and check source	2026-10-12T16:19:36.7612412Z   DATABASE_URL: ***localhost:5432/useraid_test
+publish	Install and check source	2026-10-12T16:19:36.7612788Z   RUN_DB_TESTS: true
+publish	Install and check source	2026-10-12T16:19:36.7613158Z   DEMO_MODE: false
+publish	Install and check source	2026-10-12T16:19:36.7613397Z   ACCOUNT_FOLDS_ENABLED: false
+publish	Install and check source	2026-10-12T16:19:36.7614244Z   WALLET_LINKS_ENABLED: false
+publish	Install and check source	2026-10-12T16:19:36.7614574Z   LIVE_COLLECTION_APPROVED: false
+publish	Install and check source	2026-10-12T16:19:36.7614957Z   X_TRACKING_V2_SETTLEMENT_ENABLED: false
+publish	Install and check source	2026-10-12T16:19:36.7615268Z   LAUNCH_ENABLED: false
+publish	Install and check source	2026-10-12T16:19:36.7615509Z   PAYOUT_ENABLED: false
+publish	Install and check source	2026-10-12T16:19:36.7615897Z ##[endgroup]
+publish	Install and check source	2026-10-12T16:19:43.2446836Z npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+publish	Install and check source	2026-10-12T16:19:56.9895158Z 
+publish	Install and check source	2026-10-12T16:19:56.9896550Z added 516 packages, and audited 517 packages in 20s
+publish	Install and check source	2026-10-12T16:19:56.9910752Z 
+publish	Install and check source	2026-10-12T16:19:56.9934508Z 177 packages are looking for funding
+publish	Install and check source	2026-10-12T16:19:56.9948697Z   run `npm fund` for details
+publish	Install and check source	2026-10-12T16:19:56.9950180Z 
+publish	Install and check source	2026-10-12T16:19:56.9950679Z 8 high severity vulnerabilities
+publish	Install and check source	2026-10-12T16:19:56.9957066Z 
+publish	Install and check source	2026-10-12T16:19:56.9957945Z To address issues that do not require attention, run:
+publish	Install and check source	2026-10-12T16:19:56.9960037Z   npm audit fix
+publish	Install and check source	2026-10-12T16:19:56.9972915Z 
+publish	Install and check source	2026-10-12T16:19:56.9973903Z To address all issues (including breaking changes), run:
+publish	Install and check source	2026-10-12T16:19:56.9974728Z   npm audit fix --force
+publish	Install and check source	2026-10-12T16:19:56.9974964Z 
+publish	Install and check source	2026-10-12T16:19:56.9975120Z Run `npm audit` for details.
+publish	Install and check source	2026-10-12T16:20:06.3371844Z ..............................................F....
+publish	Install and check source	2026-10-12T16:20:06.3373047Z ======================================================================
+publish	Install and check source	2026-10-12T16:20:06.3374795Z FAIL: test_real_proxy_trusts_only_connector_and_preserves_public_origin (test_raid_staging_public.PublicStagingProxy.test_real_proxy_trusts_only_connector_and_preserves_public_origin)
+publish	Install and check source	2026-10-12T16:20:06.3376049Z ----------------------------------------------------------------------
+publish	Install and check source	2026-10-12T16:20:06.3376819Z Traceback (most recent call last):
+publish	Install and check source	2026-10-12T16:20:06.3377859Z   File "/home/runner/work/useRAID.fun/useRAID.fun/tests/test_raid_staging_public.py", line 84, in test_real_proxy_trusts_only_connector_and_preserves_public_origin
+publish	Install and check source	2026-10-12T16:20:06.3379437Z     docker('run', '-d', '--name', upstream, '--network', network, '--ip',
+publish	Install and check source	2026-10-12T16:20:06.3380282Z   File "/home/runner/work/useRAID.fun/useRAID.fun/tests/test_raid_staging_public.py", line 64, in docker
+publish	Install and check source	2026-10-12T16:20:06.3381132Z     self.assertEqual(result.returncode, 0, result.stderr)
+publish	Install and check source	2026-10-12T16:20:06.3382247Z AssertionError: 125 != 0 : Unable to find image 'node:22-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392' locally
+publish	Install and check source	2026-10-12T16:20:06.3383823Z docker.io/library/node@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392: Pulling from library/node
+publish	Install and check source	2026-10-12T16:20:06.3384866Z c75f989a229d: Pulling fs layer
+publish	Install and check source	2026-10-12T16:20:06.3385352Z 8d752b15e163: Pulling fs layer
+publish	Install and check source	2026-10-12T16:20:06.3385985Z a7d3259c0556: Pulling fs layer
+publish	Install and check source	2026-10-12T16:20:06.3386559Z aa7268e3e147: Pulling fs layer
+publish	Install and check source	2026-10-12T16:20:06.3386996Z a8e3f40b26e8: Pulling fs layer
+publish	Install and check source	2026-10-12T16:20:06.3387535Z aa7268e3e147: Waiting
+publish	Install and check source	2026-10-12T16:20:06.3387941Z a8e3f40b26e8: Waiting
+publish	Install and check source	2026-10-12T16:20:06.3388501Z 8d752b15e163: Verifying Checksum
+publish	Install and check source	2026-10-12T16:20:06.3389005Z 8d752b15e163: Download complete
+publish	Install and check source	2026-10-12T16:20:06.3389589Z c75f989a229d: Verifying Checksum
+publish	Install and check source	2026-10-12T16:20:06.3390098Z c75f989a229d: Download complete
+publish	Install and check source	2026-10-12T16:20:06.3390578Z a7d3259c0556: Verifying Checksum
+publish	Install and check source	2026-10-12T16:20:06.3391640Z a7d3259c0556: Download complete
+publish	Install and check source	2026-10-12T16:20:06.3392138Z aa7268e3e147: Verifying Checksum
+publish	Install and check source	2026-10-12T16:20:06.3392714Z aa7268e3e147: Download complete
+publish	Install and check source	2026-10-12T16:20:06.3393222Z a8e3f40b26e8: Verifying Checksum
+publish	Install and check source	2026-10-12T16:20:06.3394056Z a8e3f40b26e8: Download complete
+publish	Install and check source	2026-10-12T16:20:06.3394594Z c75f989a229d: Pull complete
+publish	Install and check source	2026-10-12T16:20:06.3395029Z 8d752b15e163: Pull complete
+publish	Install and check source	2026-10-12T16:20:06.3395546Z a7d3259c0556: Pull complete
+publish	Install and check source	2026-10-12T16:20:06.3396001Z aa7268e3e147: Pull complete
+publish	Install and check source	2026-10-12T16:20:06.3396504Z a8e3f40b26e8: Pull complete
+publish	Install and check source	2026-10-12T16:20:06.3397214Z Digest: sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+publish	Install and check source	2026-10-12T16:20:06.3398145Z Status: Downloaded newer image for node@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+publish	Install and check source	2026-10-12T16:20:06.3399357Z docker: Error response from daemon: invalid config for network raid-public-contract-dfe85722a0-net: invalid endpoint settings:
+publish	Install and check source	2026-10-12T16:20:06.3400414Z user specified IP address is supported only when connecting to networks with user configured subnets
+publish	Install and check source	2026-10-12T16:20:06.3400986Z 
+publish	Install and check source	2026-10-12T16:20:06.3401283Z Run 'docker run --help' for more information
+publish	Install and check source	2026-10-12T16:20:06.3401637Z 
+publish	Install and check source	2026-10-12T16:20:06.3401746Z 
+publish	Install and check source	2026-10-12T16:20:06.3402125Z ----------------------------------------------------------------------
+publish	Install and check source	2026-10-12T16:20:06.3402685Z Ran 51 tests in 9.157s
+publish	Install and check source	2026-10-12T16:20:06.3402961Z 
+publish	Install and check source	2026-10-12T16:20:06.3403216Z FAILED (failures=1)
+publish	Install and check source	2026-10-12T16:20:06.3541396Z ##[error]Process completed with exit code 1.
