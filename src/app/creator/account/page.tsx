@@ -42,6 +42,11 @@ export default async function AccountPage({
         <Link className="inline-link" href="/creator/guild-drafts/new">
           Create a private Guild draft
         </Link>
+        <p>
+          <Link className="inline-link" href="/creator/guild-drafts">
+            My private drafts
+          </Link>
+        </p>
       </section>
       <section className="studio-section">
         <h2>Work preferences</h2>

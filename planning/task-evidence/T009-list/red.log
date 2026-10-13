@@ -1,0 +1,197 @@
+41ae3a92e144c905bdfa408a27ae8c4f5c78d855e318ef067f521fc8363357a2
+OWNED DATABASE: raid-t009-list-auto-20261013 loopback port 32801
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32801"
+
+24 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+xxxxx
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-list-db.test.ts > T009D1 private own bounded draft listing > returns a private empty page without creating command/audit rows
+Error: Own draft list not implemented
+ ❯ listGuildDrafts src/guild-profiles/draft-storage.ts:216:9
+    214|   _input: unknown,
+    215| ): Promise<unknown> {
+    216|   throw Error('Own draft list not implemented');
+       |         ^
+    217| }
+    218|
+ ❯ tests/guild-draft-list-db.test.ts:27:37
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-list-db.test.ts:55:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/guild-draft-list-db.test.ts > T009D1 private own bounded draft listing > paginates current own versions in immutable creation order and never serializes another owner
+Error: Own draft list not implemented
+ ❯ listGuildDrafts src/guild-profiles/draft-storage.ts:216:9
+    214|   _input: unknown,
+    215| ): Promise<unknown> {
+    216|   throw Error('Own draft list not implemented');
+       |         ^
+    217| }
+    218|
+ ❯ tests/guild-draft-list-db.test.ts:27:37
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-list-db.test.ts:67:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/guild-draft-list-db.test.ts > T009D1 private own bounded draft listing > keeps unrelated newest creations out of a continuation page and binds cursor to its own account
+Error: Own draft list not implemented
+ ❯ listGuildDrafts src/guild-profiles/draft-storage.ts:216:9
+    214|   _input: unknown,
+    215| ): Promise<unknown> {
+    216|   throw Error('Own draft list not implemented');
+       |         ^
+    217| }
+    218|
+ ❯ tests/guild-draft-list-db.test.ts:27:37
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-list-db.test.ts:87:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/guild-draft-list-db.test.ts > T009D1 private own bounded draft listing > rejects unbounded/invalid inputs and forged identity rather than widening owner scope
+AssertionError: expected Error: Own draft list not implemented to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "Own draft list not implemented",
+  }
+
+ ❯ tests/guild-draft-list-db.test.ts:106:35
+    104|       { cursor: null, pageSize: 1, accountId: b.accountId },
+    105|     ])
+    106|       await expect(list(a, input)).rejects.toMatchObject({ code: 'INVA…
+       |                                   ^
+    107|     await expect(list({ ...a, actorAccountId: b.accountId })).rejects.…
+    108|       code: 'WRONG_ACTOR',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/guild-draft-list-db.test.ts > T009D1 private own bounded draft listing > requires a current unexpired own session and denies restricted owners
+AssertionError: expected Error: Own draft list not implemented to match object { code: 'UNAUTHENTICATED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "UNAUTHENTICATED",
++ Error {
++   "message": "Own draft list not implemented",
+  }
+
+ ❯ tests/guild-draft-list-db.test.ts:121:26
+    119|       data: { expiresAt: new Date(0) },
+    120|     });
+    121|     await expect(list(a)).rejects.toMatchObject({ code: 'UNAUTHENTICAT…
+       |                          ^
+    122|     const b = await actor();
+    123|     await db.user.update({ where: { id: b.accountId }, data: { suspend…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed (5)
+   Start at  14:16:03
+   Duration  1.24s (transform 165ms, setup 0ms, import 330ms, tests 755ms, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t009-list-auto-20261013

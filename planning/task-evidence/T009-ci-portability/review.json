@@ -25,5 +25,20 @@
     "completion": "FullT009 all28criteria/sevennamedchecks NOT VERIFIED; expectedvalidator1, no independentacceptance"
   },
   "resources": "Owned tmpfsraid-t009-ci-auto-20261013 8c858971... finallySTOP0/inspectfalse; no browser/server/resources outstanding; unrelatedservices/volumes/images/history/evidence preserved",
-  "implementation_commit": "36e4bc669b04d12b072c75415bd51324aa53ea2b"
+  "implementation_commit": "36e4bc669b04d12b072c75415bd51324aa53ea2b",
+  "hosted": {
+    "run": 38368727580,
+    "source": "535abaaddcfff21610375ba3f91dbff8d8702342",
+    "conclusion": "SUCCESS",
+    "raw": "hosted-success.log.gz",
+    "observed": "Actualfull/nativeARMimage/runtime/privateGHCR/16browser/cleanup retained; counts/digest from rawlog",
+    "test_files": 121,
+    "tests": 1359,
+    "orientation_browser": 8,
+    "orientation_seconds": 37.4,
+    "guild_browser": 8,
+    "guild_seconds": 58.4,
+    "digest": "sha256:d4e60bdb3a5eb7eef83bdcc01de030277fbf4b14cd2341cfa6d1faaba19abaea",
+    "cleanup": "PASS"
+  }
 }

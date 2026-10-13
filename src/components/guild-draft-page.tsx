@@ -54,6 +54,11 @@ export async function GuildDraftPage({ id }: { id?: string }) {
       <Link className="studio-back" href="/creator/account">
         ← Account
       </Link>
+      <p>
+        <Link className="inline-link" href="/creator/guild-drafts">
+          My private drafts
+        </Link>
+      </p>
       <header className="studio-heading">
         <div>
           <h1>Private Guild draft</h1>

@@ -1,0 +1,31 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-discovery.test.ts > isolates eight owned Guild form cases and requires them before staging publication
+AssertionError: expected [ 'guild-drafts.spec.ts:', …(9) ] to have a length of 8 but got 10
+
+- Expected
++ Received
+
+- 8
++ 10
+
+ ❯ tests/guild-draft-discovery.test.ts:19:5
+     17|   expect(
+     18|     discover('playwright.guild-drafts.config.ts').match(/guild-drafts\…
+     19|   ).toHaveLength(8);
+       |     ^
+     20|   const workflow = await readFile('.github/workflows/staging-image.yml…
+     21|   expect(workflow).toContain('test --config=playwright.guild-drafts.co…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:22:48
+   Duration  2.26s (transform 27ms, setup 0ms, import 46ms, tests 2.03s, environment 0ms)
