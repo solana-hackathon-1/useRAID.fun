@@ -1,0 +1,20 @@
+import type { CommandReceiptTransaction } from '../command-receipts';
+export interface SkillTaxonomyActor { accountId: string; sessionHash: string }
+export interface SkillTaxonomyStorageOptions {
+  allowNewWrites: boolean;
+  canPublish: (actor: Readonly<{ accountId: string; xId: string }>) => boolean;
+}
+export async function publishSkillTaxonomy(
+  _tx: CommandReceiptTransaction,
+  _command: { actor: SkillTaxonomyActor; input: unknown; idempotencyKey: string; requestId: string },
+  _options: SkillTaxonomyStorageOptions,
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./contracts').PublishedSkillTaxonomy }> {
+  throw Error('NOT_IMPLEMENTED');
+}
+export async function readPublishedSkillTaxonomy(
+  _tx: CommandReceiptTransaction,
+  _actor: SkillTaxonomyActor,
+  _id: string,
+): Promise<import('./contracts').PublishedSkillTaxonomy | null> {
+  throw Error('NOT_IMPLEMENTED');
+}

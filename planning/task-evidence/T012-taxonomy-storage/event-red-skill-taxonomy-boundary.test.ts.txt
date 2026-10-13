@@ -1,0 +1,7 @@
+import { expect, it } from 'vitest';
+import { EventEnvelopeSchema } from '../src/contracts/protocol';
+it('accepts an identifier-only skill taxonomy audit while rejecting catalog bodies and rank assertions', () => {
+  const event = { eventId: 'e', type: 'skill.taxonomy_published.v1', aggregateId: 'catalog', aggregateVersion: 1, occurredAt: '2026-10-14T00:00:00Z', actorId: 'admin', guildId: null, correlationId: 'r', payload: { skillTaxonomyVersionId: 'version' } };
+  expect(EventEnvelopeSchema.safeParse(event).success).toBe(true);
+  for (const field of ['skills', 'assessedRank', 'claimedLevel', 'evidence']) expect(EventEnvelopeSchema.safeParse({ ...event, payload: { ...event.payload, [field]: 'private' } }).success).toBe(false);
+});

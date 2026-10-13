@@ -30,6 +30,7 @@ model User {
   raiderPreferences RaiderPreferences?
   raiderPreferenceVersions RaiderPreferenceVersion[]
   guildDrafts GuildDraft[]
+  skillTaxonomyVersions SkillTaxonomyVersion[]
 }
 // Immutable HUMAN foundation; checks/row guard live in the additive SQL migration.
 model Participant {
@@ -643,6 +644,7 @@ model CommandReceipt {
   orientationVersion RaiderPreferenceVersion?
   guildDraftVersion GuildDraftVersion?
   projectProposalVersion GuildProjectProposalVersion?
+  skillTaxonomyVersion SkillTaxonomyVersion?
   @@unique([actorId, commandKind, idempotencyKey])
 }
 model InboxDelivery {
@@ -772,4 +774,29 @@ model GuildProjectProposalVersion {
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProjectProposalVersion_receipt_fkey")
   @@unique([guildDraftId, revision], map: "GuildProjectProposalVersion_revision_key")
   @@unique([id, guildDraftId, ownerAccountId, revision], map: "GuildProjectProposalVersion_pointer_key")
+}
+
+// Admin-published catalog history; validation/immutability/receipt guards live in additive SQL.
+model SkillTaxonomy {
+  id String @id
+  revision Int
+  currentVersionId String @db.Uuid
+  currentVersion SkillTaxonomyVersion @relation("SkillTaxonomyPointer", fields: [currentVersionId, id, revision], references: [id, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomy_version_fkey")
+  versions SkillTaxonomyVersion[] @relation("SkillTaxonomyHistory")
+}
+model SkillTaxonomyVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  taxonomyId String
+  revision Int
+  skills Json @db.JsonB
+  receiptId String @unique(map: "SkillTaxonomyVersion_receiptId_key") @db.Uuid
+  publishedByAccountId String
+  requestId String
+  publishedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  taxonomy SkillTaxonomy @relation("SkillTaxonomyHistory", fields: [taxonomyId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_catalog_fkey")
+  currentFor SkillTaxonomy[] @relation("SkillTaxonomyPointer")
+  publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_actor_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_receipt_fkey")
+  @@unique([taxonomyId, revision], map: "SkillTaxonomyVersion_revision_key")
+  @@unique([id, taxonomyId, revision], map: "SkillTaxonomyVersion_pointer_key")
 }

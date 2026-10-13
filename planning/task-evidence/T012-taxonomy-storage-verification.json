@@ -1,0 +1,250 @@
+{
+  "task_id": "T012",
+  "scope": "T012B1 actual authorized durable taxonomy; full T012 remains NOT VERIFIED",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md",
+  "migration_rollback": "Additive26th migration; no backfill/seed. Disable new writes; preserve published versions/receipts; destructive downgrade unsupported.",
+  "dependency_evidence": [
+    "ActualownedPG16/privateaudit/receipt/currentadmin/session/SQLguards/races verified inregression.log",
+    "Own20package driver host+26DDLfreshmigrations/schema drift no difference in consumer.log",
+    "T002/T006 full independent assurance and fullT012 claims/assessment/revocation/HTTP/UI/release remainNOTVERIFIED"
+  ],
+  "open_decisions": [
+    "Real evaluator/rubric/verified assessment/reassessment/revocation policy and full independent/UAT/release evidence absent",
+    "Actual root catalog composition/canonical private claims and evidence next, no flags/seed/real admin adopted"
+  ],
+  "release_gate_disposition": "Bounded staging storage only; no verified rank/access/grant/provider/money/capacity/live enablement",
+  "code_source_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+  "source_identity": "Uncommitted T012B1 changes over d023; source hashes in T012-taxonomy-storage/review.json, not a clean HEAD claim",
+  "criteria": {
+    "T012-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    },
+    "T012-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Bounded durable catalog tested; full criterion including actual claims/assessments/history/independent review/UAT/release remains missing",
+      "evidence": "docs/tasks/2026-10-14-T012-taxonomy-storage.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "python3 /tmp/raid-t012-taxonomy-db-run.py node_modules/.bin/vitest run tests/skill-taxonomy-db.test.ts",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-storage/red.log",
+      "observed": "19 actualFAIL beforeimplementation/DDL, exact sources retained",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "python3 /tmp/raid-t012-taxonomy-db-run.py node_modules/.bin/vitest run affected skill/receipt/shared tests",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-storage/regression.log",
+      "observed": "8files172PASS13.76s after actual migration/audit/harness fixes",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "node_modules/.bin/vitest run affected boundaries/docs",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-storage/boundary-docs.log",
+      "observed": "9files211PASS1existing skip5.45s; source formatted without assertion changes",
+      "result": "PASS"
+    }
+  },
+  "candidate_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+  "verification_environment": "Owned PostgreSQL16.15 / Node22 / independent own20package pg host; root fixtures; no live credentials",
+  "repository_facts": [
+    "T012A pure candidate contracts retained; actual catalog storage additive26th migration/current policy/session/receipt/history/private audit",
+    "19 DB behavior RED plus1 event RED, exact sources archived before edits; actual integration and fixture failures retained",
+    "172 realPG regression PASS; private canonical claim/evidence storage/assessment/revocation/HTTP/UI remain missing"
+  ]
+}

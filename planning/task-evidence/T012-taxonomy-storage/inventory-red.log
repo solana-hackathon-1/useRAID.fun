@@ -1,0 +1,15 @@
+.F...
+======================================================================
+FAIL: test_ci_inventory_covers_every_current_test_file_and_epic (tests.test_raid_requirements.ReusableModuleContract)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/projects/useRAIDfun/useRAID-fun/tests/test_raid_requirements.py", line 31, in test_ci_inventory_covers_every_current_test_file_and_epic
+    self.assertEqual(set(matrix['test_files']), files)
+AssertionError: Items in the second set but not the first:
+'tests/skill-taxonomy-db.test.ts'
+'tests/skill-taxonomy-boundary.test.ts'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.094s
+
+FAILED (failures=1)

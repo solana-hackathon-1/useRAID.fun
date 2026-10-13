@@ -50,5 +50,18 @@
     "result": "NOT VERIFIED: failedbeforeanystep/payment-spendinglimitannotation",
     "new_image": "NOT PUBLISHED for148",
     "manual_checks": "NOT RUN underunchangedaccountblock, originalworkflowdisabled_manually verified"
+  },
+  "latest_candidate_verification": {
+    "head": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+    "staging": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38418621907",
+    "checks": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+    "result": "SUCCESS",
+    "checks_observed": "135files1603PASS/49demo1skip+52Studio+8orientation+10Guild+10proposal+42live6skips/build/live-flow",
+    "staging_observed": "135files1603/8orientation41.4s+10Guild1.4m+10proposal1.0m/nativeARMimage/runtime/GHCR/cleanup",
+    "digest": "fb982407cba13e1f0ea74370a0bb0691f031d0c679eb7ce050bb35610f7f3d40",
+    "source_basis": "Boundedcodebytesunchangedinlatestcombinedcandidate; historicalblockedruns notretrospectiveSUCCESS",
+    "restoration": "Originalmanualworkflowdisabled_manually restored andAPIverified afterowned38419201025",
+    "evidence": "planning/task-evidence/T012-skill-claims/hosted-checks-success.log.gz andhosted-staging-success.log.gz",
+    "public_access": "ReadonlyafterimageHTTP530/error1033; currentVMrollout remainsnotverified"
   }
 }

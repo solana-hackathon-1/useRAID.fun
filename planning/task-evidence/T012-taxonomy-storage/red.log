@@ -1,0 +1,332 @@
+9f54300c41eabaa65201f90d02d4da1f3de9f2566cfda65a4184059a8099be44
+OWNED DATABASE: raid-t012-taxonomy-auto-20261014 loopback port 32826
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32826"
+
+25 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-taxonomy-db.test.ts (19 tests | 19 failed) 2554ms
+     × publishes an actual actor-attributed immutable catalog and private audit without any outbox 150ms
+     × reads absent catalogs as null and lets a current ordinary account read saved catalog data 84ms
+     × retains original receipts and historical snapshots after rename/retirement and writes disabled 123ms
+     × rejects publication and replay when current role authority is removed 94ms
+     × rejects publication and replay when current xId authority is removed 106ms
+     × rejects publication and replay when current allowlist authority is removed 100ms
+     × rejects publication and replay when current suspended authority is removed 142ms
+     × denies foreign sessions on publish, replay and read 172ms
+     × denies expired sessions on publish, replay and read 198ms
+     × denies revoked sessions on publish, replay and read 159ms
+     × denies invalid-via sessions on publish, replay and read 139ms
+     × denies role-only/ordinary/holder-like actors, and exposes digest conflicts only to current authorized publishers 169ms
+     × rejects loss or reassignment of stable id history without prepared effects 144ms
+     × rejects loss or reassignment of stable domain history without prepared effects 160ms
+     × rejects loss or reassignment of stable alias history without prepared effects 140ms
+     × rejects stale revisions/new disabled writes and rejects client publication/admin fields 161ms
+     × serializes two different admins at revision 0 with exactly one winner 123ms
+     × serializes two different admins at revision 1 with exactly one winner 96ms
+     × concurrent same-identity retries publish one immutable result 90ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > publishes an actual actor-attributed immutable catalog and private audit without any outbox
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:29:38
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > reads absent catalogs as null and lets a current ordinary account read saved catalog data
+Error: NOT_IMPLEMENTED
+ ❯ readPublishedSkillTaxonomy src/skills/taxonomy-storage.ts:19:9
+     17|   _id: string,
+     18| ): Promise<import('./contracts').PublishedSkillTaxonomy | null> {
+     19|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     20| }
+     21|
+ ❯ tests/skill-taxonomy-db.test.ts:22:89
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:39:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > retains original receipts and historical snapshots after rename/retirement and writes disabled
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:44:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects publication and replay when current role authority is removed
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects publication and replay when current xId authority is removed
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects publication and replay when current allowlist authority is removed
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects publication and replay when current suspended authority is removed
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:53:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > denies foreign sessions on publish, replay and read
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > denies expired sessions on publish, replay and read
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > denies revoked sessions on publish, replay and read
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > denies invalid-via sessions on publish, replay and read
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:62:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > denies role-only/ordinary/holder-like actors, and exposes digest conflicts only to current authorized publishers
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'FORBIDDEN' }
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/skill-taxonomy-db.test.ts:70:43
+     68|   });
+     69|   it('denies role-only/ordinary/holder-like actors, and exposes digest…
+     70|     await expect(save(await actor(false))).rejects.toMatchObject({ cod…
+       |                                           ^
+     71|     const a = await actor(), key = randomUUID(); await save(a, body(),…
+     72|     await expect(save(a, body(1), key)).rejects.toMatchObject({ code: …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects loss or reassignment of stable id history without prepared effects
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects loss or reassignment of stable domain history without prepared effects
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects loss or reassignment of stable alias history without prepared effects
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:77:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rejects stale revisions/new disabled writes and rejects client publication/admin fields
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:86:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > serializes two different admins at revision 0 with exactly one winner
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/skill-taxonomy-db.test.ts:95:58
+     93|     const a = await actor(), b = await actor(); if (revision) await sa…
+     94|     const result = await Promise.allSettled([save(a, body(revision)), …
+     95|     expect(result.filter(r => r.status === 'fulfilled')).toHaveLength(…
+       |                                                          ^
+     96|     const rejected = result.find(r => r.status === 'rejected');
+     97|     expect(rejected).toMatchObject({ reason: { code: 'REVISION_CHANGED…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > serializes two different admins at revision 1 with exactly one winner
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:93:63
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > concurrent same-identity retries publish one immutable result
+Error: NOT_IMPLEMENTED
+ ❯ publishSkillTaxonomy src/skills/taxonomy-storage.ts:12:9
+     10|   _options: SkillTaxonomyStorageOptions,
+     11| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; taxonomy: import('./cont…
+     12|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14| export async function readPublishedSkillTaxonomy(
+ ❯ tests/skill-taxonomy-db.test.ts:21:141
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-db.test.ts:103:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  19 failed (19)
+   Start at  04:51:29
+   Duration  3.16s (transform 171ms, setup 0ms, import 380ms, tests 2.55s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t012-taxonomy-auto-20261014

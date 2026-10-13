@@ -1,0 +1,15 @@
+.....E................
+======================================================================
+ERROR: tests/test_raid_planning (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: tests/test_raid_planning
+Traceback (most recent call last):
+  File "/home/rpandox/tools/miniconda/lib/python3.9/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'tests/test_raid_planning'
+
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.149s
+
+FAILED (errors=1)

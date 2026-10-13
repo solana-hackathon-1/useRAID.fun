@@ -185,46 +185,46 @@
   },
   "ci": {
     "planning-contracts": {
-      "result": "NOT VERIFIED",
-      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
-      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
+      "result": "SUCCESS",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "observed": "Exactlatestcandidate allsevenSUCCESS/135files1603; codeforboundedfeature unchangedatcurrenthead, olderblockedcandidates notretroactivelypassed"
     },
     "static": {
-      "result": "NOT VERIFIED",
-      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
-      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
+      "result": "SUCCESS",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "observed": "Exactlatestcandidate allsevenSUCCESS/135files1603; codeforboundedfeature unchangedatcurrenthead, olderblockedcandidates notretroactivelypassed"
     },
     "dependency-security": {
-      "result": "NOT VERIFIED",
-      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
-      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
+      "result": "SUCCESS",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "observed": "Exactlatestcandidate allsevenSUCCESS/135files1603; codeforboundedfeature unchangedatcurrenthead, olderblockedcandidates notretroactivelypassed"
     },
     "test": {
-      "result": "NOT VERIFIED",
-      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
-      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
+      "result": "SUCCESS",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "observed": "Exactlatestcandidate allsevenSUCCESS/135files1603; codeforboundedfeature unchangedatcurrenthead, olderblockedcandidates notretroactivelypassed"
     },
     "docker": {
-      "result": "NOT VERIFIED",
-      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
-      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
+      "result": "SUCCESS",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "observed": "Exactlatestcandidate allsevenSUCCESS/135files1603; codeforboundedfeature unchangedatcurrenthead, olderblockedcandidates notretroactivelypassed"
     },
     "browser": {
-      "result": "NOT VERIFIED",
-      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
-      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
+      "result": "SUCCESS",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "observed": "Exactlatestcandidate allsevenSUCCESS/135files1603; codeforboundedfeature unchangedatcurrenthead, olderblockedcandidates notretroactivelypassed"
     },
     "ci-gate": {
-      "result": "NOT VERIFIED",
-      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
-      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
+      "result": "SUCCESS",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "observed": "Exactlatestcandidate allsevenSUCCESS/135files1603; codeforboundedfeature unchangedatcurrenthead, olderblockedcandidates notretroactivelypassed"
     }
   },
   "tdd": {
@@ -252,9 +252,11 @@
     }
   },
   "post_merge_staging": {
-    "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
-    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38407477051",
-    "result": "NOT VERIFIED",
-    "observed": "Nojobstep/imagepublication; actualbilling annotation preserved"
+    "result": "SUCCESS",
+    "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38418621907",
+    "observed": "135files1603/28browser/nativeARMimage/runtime/GHCR/cleanup",
+    "image_digest": "fb982407cba13e1f0ea74370a0bb0691f031d0c679eb7ce050bb35610f7f3d40",
+    "scope": "Latestcombinedcandidate; older0d/148billingfailures remainretained"
   }
 }
