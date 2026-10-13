@@ -1,0 +1,51 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/guild-profiles.test.ts (30 tests | 2 failed) 46ms
+   × ignores foreign, revoked, expired or future grants {"validFrom":"2026-10-14T00:00:00.000Z"} 6ms
+   × compares equal UTC instants across valid timestamp precisions at grant boundaries 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-profiles.test.ts > ignores foreign, revoked, expired or future grants {"validFrom":"2026-10-14T00:00:00.000Z"}
+GuildProfileContractError: INVALID_HOST_CONTRACT
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:47:30
+     45| export function evaluateGuildProfilePermission(facts: unknown, request…
+     46|   const parsed = GuildProfilePermissionFactsSchema.safeParse(facts);
+     47|   if (!parsed.success) throw new GuildProfileContractError('INVALID_HO…
+       |                              ^
+     48|   const command = GuildProfilePermissionRequestSchema.safeParse(reques…
+     49|   if (!command.success) throw new GuildProfileContractError('INVALID_I…
+ ❯ tests/guild-profiles.test.ts:200:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/guild-profiles.test.ts > compares equal UTC instants across valid timestamp precisions at grant boundaries
+AssertionError: expected { version: 'v1', allowed: true, …(4) } to match object { allowed: false, …(1) }
+(4 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "allowed": false,
+-   "reason": "PERMISSION_NOT_GRANTED",
++   "allowed": true,
++   "reason": "ALLOWED",
+  }
+
+ ❯ tests/guild-profiles.test.ts:213:5
+    211|       request,
+    212|     ),
+    213|   ).toMatchObject({ allowed: false, reason: 'PERMISSION_NOT_GRANTED' }…
+       |     ^
+    214|   expect(
+    215|     evaluateGuildProfilePermission(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 28 passed (30)
+   Start at  11:32:05
+   Duration  507ms (transform 126ms, setup 0ms, import 277ms, tests 46ms, environment 0ms)

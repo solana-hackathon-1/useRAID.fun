@@ -1,0 +1,192 @@
+{
+  "task_id": "T009",
+  "scope": "T009A unwired draft/public projection/informational profile permission contract only",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "bf6a131ff091babd4986d08eaec798f49847a2c7",
+  "source_identity": "Published bounded implementation bf6a131ff091babd4986d08eaec798f49847a2c7; actual executed working-tree hashes/source-base and genuine phase identities remain in review/TDD evidence",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T009-contract.md",
+  "migration_rollback": "No migration/store/API or activation; remove only unwired module. Future acknowledged ownership/grants/history require reviewed retention/recovery",
+  "dependency_evidence": [
+    "Shared GuildSchema/PublicGuildSchema/IDs unchanged and covered by actual31shared cases",
+    "Identity/control/storage dependencies remain incomplete for full liveGuild; main5461 source/DB109files1266cases/8browser/image/cleanup actualPASS",
+    "T009-contract own6pkg consumer/source hashes and meaningfulRED/GREEN/159regression"
+  ],
+  "open_decisions": [
+    "No actualprojectcontrol/verifiedFounder/token relationship supplied here",
+    "O11/G10 privacy/retention/recovery, independent/UAT/fullactual authorization/storage remainNOTVERIFIED"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging source only; no actualGuild/profile/role/Founder/token/treasury/privateaccess/ownership activation; full independent/UAT and real authorization/storage evidence absent",
+  "criteria": {
+    "T009-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-W04": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    },
+    "T009-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded pure-contract tests/own installed consumer/typecheck evidence; full actual-store/API/project-proof criterion and independent T009 acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-contract.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "vitest run tests/guild-profiles.test.ts",
+      "sha": "5461fb3ac230a1a31a254e7da7c3dc3f615a235d",
+      "source_identity": "Base main plus then-uncommitted executable stub/new tests; no cleanHEAD or retrospectiveREDcommit claim",
+      "evidence_url": "planning/task-evidence/T009-contract/red.log",
+      "expected_failure": "Draft/projection/profilepolicy not implemented",
+      "observed_failure": "29tests28fail1negativebaselinepass",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "vitest run tests/guild-profiles.test.ts",
+      "sha": "5461fb3ac230a1a31a254e7da7c3dc3f615a235d",
+      "source_identity": "Uncommitted implementation over main; exact final hashes in review.json",
+      "evidence_url": "planning/task-evidence/T009-contract/green-corrected.log",
+      "observed": "30PASS after actual clock/fixture corrections, additional boundaryRED retained separately",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "vitest run guildprofiles/boundary/shared/docs/evidence",
+      "sha": "5461fb3ac230a1a31a254e7da7c3dc3f615a235d",
+      "source_identity": "Uncommitted final contract/test/doc source over main, hashbound record",
+      "evidence_url": "planning/task-evidence/T009-contract/regression.log",
+      "observed": "5files159PASS incl33domain and boundary",
+      "result": "PASS"
+    }
+  },
+  "ci": {}
+}

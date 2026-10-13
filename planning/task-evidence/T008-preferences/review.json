@@ -96,5 +96,14 @@
     "browser-isolation-red.log",
     "discovery-red.log"
   ],
-  "implementation_commit": "8cb769656b3ffb7135d12fb1829e3891fbea4e02"
+  "implementation_commit": "8cb769656b3ffb7135d12fb1829e3891fbea4e02",
+  "hosted_staging": {
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38352102034",
+    "source": "5461fb3ac230a1a31a254e7da7c3dc3f615a235d",
+    "result": "SUCCESS",
+    "tests": "109files1266PASS and8desktop/mobilePASS38.7s",
+    "gates": "source/audit/DB/migrations/application/isolatedbrowser/productionimage/runtime/privateGHCR/cleanupPASS",
+    "digest": "sha256:b8258aba23e64deb8ea6adce2e5bacfb9d21c14a979250b99074e65eeebfe225",
+    "ingress": "Observed530/error1033; image publication does not prove healthy ingress"
+  }
 }

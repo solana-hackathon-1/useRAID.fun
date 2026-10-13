@@ -1,0 +1,48 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-13T06:04:29.965546+00:00",
+  "source_base": "5461fb3ac230a1a31a254e7da7c3dc3f615a235d",
+  "scope": "T009A pure public draft/projection and informational scoped profile policy; no store/API/grant/projectverification activation",
+  "requirements": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R10",
+    "R15",
+    "R16",
+    "I06",
+    "I07",
+    "I10",
+    "I13",
+    "AC07 partial",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "independent_review": "NOT VERIFIED; no additional agents authorized",
+  "remaining": "ActualGuildstorage/authorizedAPI/revoke/ownership-change/projectattestation/publicactivation/businessprivacy/recovery/UAT/fullcriterion evidence absent",
+  "ended_utc": "2026-10-13T06:12:48.319699+00:00",
+  "elapsed_seconds": 498.354153,
+  "source_hashes": {
+    "src/guild-profiles/index.ts": "c6d9a779d77cf86d8d942c17bcabdde5ce7ed1c66e60cf2015c8990dc766f5a4",
+    "src/guild-profiles/contracts.ts": "7aca05ada1d1c093316f6ee4a3067d6cc5e996f0fa15f4a09f2de48c846a433a",
+    "tests/guild-profiles-boundary.test.ts": "015fea234e33152cf14e1467c779f8d9767bb5a025e7754c6d8e2a1d6236e37e",
+    "tests/guild-profiles.test.ts": "8d93699c70ceb12f925b095559f59b72d10aaa9a91cfc9cac873acb83767e914",
+    "examples/guild-profiles/host.ts": "f3679b025ed731d1d0b0504a57a436c1c5a8c53e44a21b77bc05c107d573a44c",
+    "examples/guild-profiles/package.json": "21960f0948e1163ee939c64fde3da1c544786c75099409ba9490059a1f2fbc75"
+  },
+  "checks": {
+    "regression": "5files159PASS incl33domain/preparation/privacy/temporal/membership cases",
+    "independent_consumer": "Own6-package install zod4.6.5/bs586.0.0/tsx4.23.15, copied canonical entrypoints/contracts; no app/runtime environment/DB; examplePASS",
+    "typecheck_lint_format": "Owned frozen-source tscNoEmit/ownedlint/formatPASS",
+    "planning": "Affected requirement/inventory5PASS; unchanged main5461fullplanning/source/DB/build/browser/image evidence reused only for matching unchanged relevant boundaries",
+    "final_docs": "3files95PASS (actual docs-final.log; earlier assumed94 corrected)",
+    "red": "Executable stub29cases28fail1pass before implementation; laterclock/precision/duplicateID/memberUnknown failures before fixes",
+    "failures": "First green28pass1invalidfuturefixture; fixed validinterval retains denialassertion. Laterredfailures preserved. No assertion/timeoutraised or weakened",
+    "skipped": "No schema/API/app/SDK/env/runtimeactivation change; no redundant DB/browser/productionbuild locally for unwired pure module. Actualstore/API/projectproof/crossGuildwrite/UAT/recovery/independent criterion evidence absent",
+    "completion": "Expected fullT009 validator exit1; all fullcriteriaNOTVERIFIED; no self-issued approval"
+  },
+  "resources": "No task-owned runtime server/container started; CLI consumers completed; priorfixtures STOPPED, unrelated services/volumes/images/evidence retained.",
+  "implementation_commit": "bf6a131ff091babd4986d08eaec798f49847a2c7"
+}

@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/guild-profiles.test.ts (33 tests | 1 failed) 35ms
+   × preserves explicit profile permissions when holder eligibility is unknown 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-profiles.test.ts > preserves explicit profile permissions when holder eligibility is unknown
+GuildProfileContractError: INVALID_HOST_CONTRACT
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:47:30
+     45| export function evaluateGuildProfilePermission(facts: unknown, request…
+     46|   const parsed = GuildProfilePermissionFactsSchema.safeParse(facts);
+     47|   if (!parsed.success) throw new GuildProfileContractError('INVALID_HO…
+       |                              ^
+     48|   const command = GuildProfilePermissionRequestSchema.safeParse(reques…
+     49|   if (!command.success) throw new GuildProfileContractError('INVALID_I…
+ ❯ tests/guild-profiles.test.ts:243:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 32 passed (33)
+   Start at  11:41:58
+   Duration  422ms (transform 111ms, setup 0ms, import 217ms, tests 35ms, environment 0ms)

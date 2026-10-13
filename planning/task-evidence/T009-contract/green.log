@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/guild-profiles.test.ts (29 tests | 1 failed) 34ms
+   × ignores foreign, revoked, expired or future grants {"validFrom":"2026-10-14T00:00:00.000Z"} 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-profiles.test.ts > ignores foreign, revoked, expired or future grants {"validFrom":"2026-10-14T00:00:00.000Z"}
+GuildProfileContractError: INVALID_HOST_CONTRACT
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:47:30
+     45| export function evaluateGuildProfilePermission(facts: unknown, request…
+     46|   const parsed = GuildProfilePermissionFactsSchema.safeParse(facts);
+     47|   if (!parsed.success) throw new GuildProfileContractError('INVALID_HO…
+       |                              ^
+     48|   const command = GuildProfilePermissionRequestSchema.safeParse(reques…
+     49|   if (!command.success) throw new GuildProfileContractError('INVALID_I…
+ ❯ tests/guild-profiles.test.ts:200:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 28 passed (29)
+   Start at  11:31:03
+   Duration  425ms (transform 112ms, setup 0ms, import 221ms, tests 34ms, environment 0ms)
