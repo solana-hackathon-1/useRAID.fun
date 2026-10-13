@@ -1,0 +1,52 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/proposal-control.test.ts (37 tests | 2 failed | 34 skipped) 88ms
+   × rejects sub-millisecond snapshot precision before constructing signed bytes 21ms
+   × rejects a current timestamp whose precision would otherwise be lost during normalization 36ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/proposal-control.test.ts > rejects sub-millisecond snapshot precision before constructing signed bytes
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/proposal-control.test.ts:280:139
+    278| });
+    279| it('rejects sub-millisecond snapshot precision before constructing sig…
+    280|   expect(() => createProjectProposalControlMessage({ ...context, propo…
+       |                                                                                                                                           ^
+    281| });
+    282| it('rejects a current timestamp whose precision would otherwise be los…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/proposal-control.test.ts > rejects a current timestamp whose precision would otherwise be lost during normalization
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/proposal-control.test.ts:283:110
+    281| });
+    282| it('rejects a current timestamp whose precision would otherwise be los…
+    283|   expect(() => evaluate({ ...facts, proposal: { ...proposal, recordedA…
+       |                                                                                                              ^
+    284| });
+    285| it('normalizes equivalent UUID case and timestamp spellings without ch…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed | 34 skipped (37)
+   Start at  18:39:10
+   Duration  600ms (transform 157ms, setup 0ms, import 338ms, tests 88ms, environment 0ms)

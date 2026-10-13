@@ -79,5 +79,28 @@
   "ended_utc": "2026-10-13T12:39:42.102613+00:00",
   "elapsed_seconds": 756.574894,
   "remaining": "Boundedpublication/newmainmandatoryStaging+sevenChecks thennextdependency-readyslice; fullparentacceptance andactualprojectauthority/provider/nonce/recognizedhistory/UAT/releasegates stillunverified",
-  "implementation_commit": "63358b6fe31298c075590e694a828c53b2023ad6"
+  "implementation_commit": "63358b6fe31298c075590e694a828c53b2023ad6",
+  "post_merge_checks": {
+    "head": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+    "result": "SUCCESS",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+    "jobs": [
+      "dependency-security",
+      "browser",
+      "static",
+      "docker",
+      "test",
+      "planning-contracts",
+      "ci-gate"
+    ],
+    "observed": "129files1509PASS/49demo1skip+52Studio+8orientation+10Guild+10proposal+42live6skips, productionbuild/live-flowPASS",
+    "restoration": "OriginalChecksdisabled_manually restoredCLI/APIverified"
+  },
+  "post_merge_staging": {
+    "head": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+    "result": "SUCCESS",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399204400",
+    "observed": "129files1509PASS/28browser/nativeARMimage/runtime/GHCR/cleanup",
+    "digest": "5b17c2896e056552686ccc80b63dbd48529b7a7503676aab3f0e461e05274d80"
+  }
 }

@@ -1,0 +1,334 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/proposal-control.test.ts (28 tests | 26 failed) 230ms
+   × binds a real signature to a saved pending proposal and still grants no authority or durable effect 20ms
+   × canonically signs the complete saved snapshot with a separate v2 purpose and deterministic object order 1ms
+   × accepts the same v2 bytes with an independently implemented Node crypto adapter 13ms
+   × rejects a changed current identity before crypto 7ms
+   × rejects a changed current proposal revision before crypto 8ms
+   × rejects a changed current draft snapshot before crypto 8ms
+   × rejects a changed current recorded time before crypto 8ms
+   × rejects a changed current references before crypto 5ms
+   × rejects a changed current candidate asset before crypto 5ms
+   × rejects an absent current proposal before crypto 6ms
+   × retains the v1 current session denial before signature verification 14ms
+   × retains the v1 current restriction denial before signature verification 5ms
+   × retains the v1 current owner denial before signature verification 5ms
+   × retains the v1 current draft revision denial before signature verification 4ms
+   × retains the v1 current origin denial before signature verification 4ms
+   × retains the v1 current challenge denial before signature verification 4ms
+   × retains the v1 current expiry denial before signature verification 4ms
+   × retains the v1 current policy denial before signature verification 7ms
+   × retains the v1 current authority denial before signature verification 7ms
+   × retains the v1 current evidence denial before signature verification 11ms
+   × rejects malformed or incoherent host context without creating a signable message 3ms
+   × rejects malformed or incoherent host context without creating a signable message 1ms
+   × rejects malformed or incoherent host context without creating a signable message 1ms
+   × rejects malformed or incoherent host context without creating a signable message 1ms
+   × rejects malformed or incoherent host context without creating a signable message 1ms
+   × does not consume the nonce; repeated AVAILABLE evaluations remain informational 5ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 26 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/proposal-control.test.ts > binds a real signature to a saved pending proposal and still grants no authority or durable effect
+AssertionError: expected { version: 'v2', …(2) } to deeply equal { version: 'v2', …(13) }
+
+- Expected
++ Received
+
+  {
+-   "activatesToken": false,
+-   "challengeId": "synthetic-proposal-challenge",
+-   "consumesNonce": false,
+-   "createsPermissionGrant": false,
+-   "founderControlVerified": false,
+-   "informational": true,
+-   "isAuthorizationToken": false,
+-   "persisted": false,
+-   "proposalId": "22222222-2222-4222-8222-222222222222",
+-   "proposalRevision": 3,
+-   "reason": "SIGNATURE_BOUND",
+-   "recognizesGuild": false,
+-   "state": "SIGNATURE_BOUND",
++   "reason": "SIGNATURE_INVALID",
++   "state": "REJECTED",
+    "version": "v2",
+  }
+
+ ❯ tests/proposal-control.test.ts:20:22
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > canonically signs the complete saved snapshot with a separate v2 purpose and deterministic object order
+AssertionError: expected 'UNIMPLEMENTED proposal control message' to match /^RAID existing-project proposal contr…/
+
+- Expected:
+/^RAID existing-project proposal control attestation v2\n/
+
++ Received:
+"UNIMPLEMENTED proposal control message"
+
+ ❯ tests/proposal-control.test.ts:25:19
+     23| it('canonically signs the complete saved snapshot with a separate v2 p…
+     24|   const message = createProjectProposalControlMessage(context);
+     25|   expect(message).toMatch(/^RAID existing-project proposal control att…
+       |                   ^
+     26|   expect(message).toContain(proposal.id);
+     27|   expect(message).toContain('https://public.example/project');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > accepts the same v2 bytes with an independently implemented Node crypto adapter
+AssertionError: expected 'SIGNATURE_INVALID' to be 'SIGNATURE_BOUND' // Object.is equality
+
+Expected: "SIGNATURE_BOUND"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:39:64
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > rejects a changed current identity before crypto
+ FAIL  tests/proposal-control.test.ts > rejects a changed current proposal revision before crypto
+ FAIL  tests/proposal-control.test.ts > rejects a changed current draft snapshot before crypto
+ FAIL  tests/proposal-control.test.ts > rejects a changed current recorded time before crypto
+ FAIL  tests/proposal-control.test.ts > rejects a changed current references before crypto
+ FAIL  tests/proposal-control.test.ts > rejects a changed current candidate asset before crypto
+AssertionError: expected 'SIGNATURE_INVALID' to be 'PROPOSAL_CHANGED' // Object.is equality
+
+Expected: "PROPOSAL_CHANGED"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:50:146
+     48| ] as const) it('rejects a changed current ' + name + ' before crypto',…
+     49|   const verify = vi.fn(() => true);
+     50|   expect(evaluate({ ...facts, proposal: { ...proposal, ...patch } }, s…
+       |                                                                                                                                                  ^
+     51|   expect(verify).not.toHaveBeenCalled();
+     52| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > rejects an absent current proposal before crypto
+AssertionError: expected 'SIGNATURE_INVALID' to be 'PROPOSAL_CHANGED' // Object.is equality
+
+Expected: "PROPOSAL_CHANGED"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:55:125
+     53| it('rejects an absent current proposal before crypto', () => {
+     54|   const verify = vi.fn(() => true);
+     55|   expect(evaluate({ ...facts, proposal: null }, signed(), context, { v…
+       |                                                                                                                             ^
+     56|   expect(verify).not.toHaveBeenCalled();
+     57| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current session denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'AUTHENTICATION_REQUIRED' // Object.is equality
+
+Expected: "AUTHENTICATION_REQUIRED"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current restriction denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'ACCOUNT_RESTRICTED' // Object.is equality
+
+Expected: "ACCOUNT_RESTRICTED"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current owner denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'RESOURCE_UNAVAILABLE' // Object.is equality
+
+Expected: "RESOURCE_UNAVAILABLE"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current draft revision denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'REVISION_CHANGED' // Object.is equality
+
+Expected: "REVISION_CHANGED"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current origin denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'ORIGIN_MISMATCH' // Object.is equality
+
+Expected: "ORIGIN_MISMATCH"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current challenge denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'CHALLENGE_UNAVAILABLE' // Object.is equality
+
+Expected: "CHALLENGE_UNAVAILABLE"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current expiry denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'CHALLENGE_EXPIRED' // Object.is equality
+
+Expected: "CHALLENGE_EXPIRED"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current policy denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'POLICY_UNAVAILABLE' // Object.is equality
+
+Expected: "POLICY_UNAVAILABLE"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current authority denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'AUTHORITY_UNAVAILABLE' // Object.is equality
+
+Expected: "AUTHORITY_UNAVAILABLE"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > retains the v1 current evidence denial before signature verification
+AssertionError: expected 'SIGNATURE_INVALID' to be 'PUBLIC_EVIDENCE_UNAVAILABLE' // Object.is equality
+
+Expected: "PUBLIC_EVIDENCE_UNAVAILABLE"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:71:145
+     69| ] as const) it('retains the v1 current ' + name + ' denial before sign…
+     70|   const verify = vi.fn(() => true);
+     71|   expect(evaluate({ ...facts, control: { ...oldFacts, ...patch } }, si…
+       |                                                                                                                                                 ^
+     72|   expect(verify).not.toHaveBeenCalled();
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > rejects malformed or incoherent host context without creating a signable message
+ FAIL  tests/proposal-control.test.ts > rejects malformed or incoherent host context without creating a signable message
+ FAIL  tests/proposal-control.test.ts > rejects malformed or incoherent host context without creating a signable message
+ FAIL  tests/proposal-control.test.ts > rejects malformed or incoherent host context without creating a signable message
+ FAIL  tests/proposal-control.test.ts > rejects malformed or incoherent host context without creating a signable message
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/proposal-control.test.ts:81:79
+     79|   { proposal: { ...proposal, founderControlVerified: true } },
+     80| ]) it('rejects malformed or incoherent host context without creating a…
+     81|   expect(() => createProjectProposalControlMessage({ ...context, ...pa…
+       |                                                                               ^
+     82| });
+     83| it('rejects a replaced signed reference snapshot even if it is now the…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/26]⎯
+
+ FAIL  tests/proposal-control.test.ts > does not consume the nonce; repeated AVAILABLE evaluations remain informational
+AssertionError: expected 'SIGNATURE_INVALID' to be 'SIGNATURE_BOUND' // Object.is equality
+
+Expected: "SIGNATURE_BOUND"
+Received: "SIGNATURE_INVALID"
+
+ ❯ tests/proposal-control.test.ts:88:29
+     86| });
+     87| it('does not consume the nonce; repeated AVAILABLE evaluations remain …
+     88|   expect(evaluate().reason).toBe('SIGNATURE_BOUND');
+       |                             ^
+     89|   expect(evaluate().reason).toBe('SIGNATURE_BOUND');
+     90| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/26]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  26 failed | 2 passed (28)
+   Start at  18:32:00
+   Duration  723ms (transform 109ms, setup 0ms, import 271ms, tests 230ms, environment 0ms)

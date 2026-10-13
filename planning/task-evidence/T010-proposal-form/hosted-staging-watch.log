@@ -1,0 +1,649 @@
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 1 minute ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 1 minute ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 1 minute ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 2 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 2 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 2 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 3 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 3 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 4 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 4 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 4 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  * Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 5 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 5 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 5 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 6 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 6 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 7 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 7 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 7 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 8 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 8 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 8 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 9 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 9 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 9 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 10 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  * Build production image without deployment secrets
+  * Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Staging image · 38399204400
+Triggered via push about 10 minutes ago
+
+JOBS
+* publish (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  ✓ Build production image without deployment secrets
+  ✓ Runtime image smoke
+  * Publish checked revision to private GHCR
+  * Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  * Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  * Stop containers
+✓ main Staging image · 38399204400
+Triggered via push about 11 minutes ago
+
+JOBS
+✓ publish in 10m44s (ID 115302158481)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Install and check source
+  ✓ Verify database and application contracts
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  ✓ Build production image without deployment secrets
+  ✓ Runtime image smoke
+  ✓ Publish checked revision to private GHCR
+  ✓ Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+  ✓ Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+  ✓ Stop containers
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+publish: .github#2
+
+! Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element
+publish: src/components/x-connection.tsx#27
+
+! Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element
+publish: src/components/wallet-login.tsx#106
+
+! Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element
+publish: src/components/ui.tsx#23
+
+! Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element
+publish: src/components/studio-home.tsx#104
+
+! Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element
+publish: src/components/studio-editor.tsx#358
+
+! React Hook useEffect has a missing dependency: 'lookupToken'. Either include it or remove the dependency array
+publish: src/components/studio-editor.tsx#96
+
+! Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element
+publish: src/components/studio-account-menu.tsx#60
+
+! Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element
+publish: src/app/tokens/[mint]/page.tsx#38
+
+! Do not use an `<a>` element to navigate to `/api/auth/x/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages
+publish: src/app/admin/page.tsx#77
+
+! 'error' is defined but never used
+publish: scripts/tracking-audit.ts#14

@@ -5,10 +5,10 @@ import {
   ProjectControlFactsSchema,
   ProjectControlProofInputSchema,
   ProjectControlContractError,
+  ProjectControlSignatureVerifierSchema,
   type ProjectControlContext,
   type ProjectControlProofResult,
   type ProjectControlReason,
-  type ProjectControlVerificationInput,
 } from './control-attestation-contracts';
 export * from './control-attestation-contracts';
 
@@ -59,13 +59,6 @@ function encode(context: ProjectControlContext): string {
 export function createProjectControlMessage(context: unknown): string {
   return encode(parseHost(ProjectControlContextSchema, context));
 }
-const VerifierSchema = z.strictObject({
-  version: z.literal('v1'),
-  algorithm: z.literal('ED25519'),
-  verify: z.custom<(input: ProjectControlVerificationInput) => unknown>(
-    (v) => typeof v === 'function',
-  ),
-});
 /** Informational only. Host must independently reauthorize/atomically consume proof before recognition. */
 export function evaluateProjectControlProof(
   contextValue: unknown,
@@ -77,7 +70,7 @@ export function evaluateProjectControlProof(
   const facts = parseHost(ProjectControlFactsSchema, factsValue);
   const parsedInput = ProjectControlProofInputSchema.safeParse(inputValue);
   if (!parsedInput.success) throw new ProjectControlContractError('INVALID_INPUT');
-  const verifier = parseHost(VerifierSchema, verifierValue);
+  const verifier = parseHost(ProjectControlSignatureVerifierSchema, verifierValue);
   const result = (reason: ProjectControlReason): ProjectControlProofResult =>
     Object.freeze({
       version: 'v1',

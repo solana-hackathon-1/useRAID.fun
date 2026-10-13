@@ -1,0 +1,246 @@
+{
+  "task_id": "T010",
+  "scope": "T010D coexisting proposal-bound informational control proof and replaceable crypto/current snapshot contracts",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "code_source_sha": "ddadaa05446c2352190ee251d7d85348003bb368",
+  "source_identity": "Bounded implementation ddadaa05446c2352190ee251d7d85348003bb368; actual phase histories andfinal hashes retained withoutclaimingbase423 containsnewREDtests",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T010-proposal-control.md",
+  "migration_rollback": "No DDL/root route/signing UI/flags; remove unused informationalv2 withoutreinterpretingv1 signedbytes or deleting25-schema proposal/private receipt history",
+  "dependency_evidence": [
+    "ExactPR205 main423 Staging38399204400 and allsevenChecks38399231606 SUCCESS129files1509/fullbrowser/nativeARMproduction/runtime/GHCR/cleanup",
+    "Independent own7package crypto host withactualNaCl andalternateNode v1/v2/currentproposal/crossprotocol/noauthority PASS",
+    "Actualapprovedcurrentauthority/evidence/atomicnonce/recognizedasset/history/provider/fundedflow/independentUAT missing"
+  ],
+  "open_decisions": [
+    "Actualapprovedcontrol/policy/evidence/atomiccurrentproposalnonce/recognizedasset uniqueness/history/provider/fundedflow/independentUAT/O11/G01\u2013G10 remainunverified"
+  ],
+  "release_gate_disposition": "Ownerboundedstagingprivatepending prepAPIonly/defaultoff; no projectapproval/Founder/Guild/token/grant/public/capacity/money/provider enablement",
+  "criteria": {
+    "T010-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    },
+    "T010-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlycoexistinginformationalv2 completependingproposal/currentpolicy-facts/signaturebinding verified; fullrecognition/history/nonce/provider/fundedflow andindependentreview/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-control.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "node node_modules/vitest/vitest.mjs run tests/proposal-control.test.ts",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "planning/task-evidence/T010-proposal-control/red.log",
+      "expected_failure": "Executablev2stub cannot bind newproposal/currentfacts or enforceexistingdenials",
+      "observed_failure": "26FAIL2PASS beforev2schema/implementation; uncommitted stub/tests relativebase423, exacttest bytes retained",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "vitest proposal-control/project-control-attestation/project-control-boundary",
+      "sha": "ddadaa05446c2352190ee251d7d85348003bb368",
+      "evidence_url": "planning/task-evidence/T010-proposal-control/green.log",
+      "observed": "3files101PASS2.31s initialv1/v2 implementation",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "vitest proposal-control/newboundary/v1attestation/oldboundary anddocs/contracts; owncrypto consumer/types/lint/format",
+      "sha": "ddadaa05446c2352190ee251d7d85348003bb368",
+      "evidence_url": "planning/task-evidence/T010-proposal-control/review.json",
+      "observed": "4files108PASS2.78s; meaningfulprecision2FAIL1PASS (numericUUIDfixturevacuous)\u2192correctletterUUID\u21923FAIL\u2192final4files111PASS2.56s; docs6files223PASS5.03s/requirements5PASS",
+      "result": "PASS"
+    }
+  }
+}

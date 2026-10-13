@@ -8,6 +8,10 @@ import {
   type ProjectControlSignatureVerifier,
 } from './guild-profiles/control-attestation';
 import { ed25519ProjectControlVerifier } from './guild-profiles/ed25519-control-verifier';
+import {
+  createProjectProposalControlMessage,
+  evaluateProjectProposalControlProof,
+} from './guild-profiles/proposal-control';
 // Deterministic disposable synthetic fixture, never an approved live project/key/policy.
 const key = nacl.sign.keyPair.fromSeed(new Uint8Array(32).fill(23));
 const assetId = {
@@ -138,6 +142,77 @@ assert.deepEqual(
   evaluateProjectControlProof(context, facts, proof, alternate),
   evaluateProjectControlProof(context, facts, proof, ed25519ProjectControlVerifier),
 );
+const proposal = {
+  version: 'v1',
+  id: '22222222-2222-4222-8222-222222222222',
+  guildDraftId: context.guildDraftId,
+  revision: 2,
+  draftRevision: context.draftRevision,
+  recordedAt: '2026-10-13T08:59:00Z',
+  projectType: 'EXISTING_PROJECT',
+  state: 'PENDING_VERIFICATION',
+  persisted: true,
+  candidateToken: assetId,
+  publicEvidenceRefs: ['https://public.example/project'],
+  founderControlVerified: false,
+  recognizesGuild: false,
+  activatesToken: false,
+  createsPermissionGrant: false,
+  publicProfileApproved: false,
+};
+const proposalContext = {
+  version: 'v2',
+  purpose: 'EXISTING_PROJECT_PROPOSAL_CONTROL',
+  control: context,
+  proposal,
+};
+const proposalFacts = { version: 'v2', control: facts, proposal };
+const proposalProof = {
+  signature: bs58.encode(
+    nacl.sign.detached(
+      new TextEncoder().encode(createProjectProposalControlMessage(proposalContext)),
+      key.secretKey,
+    ),
+  ),
+};
+for (const adapter of [ed25519ProjectControlVerifier, alternate]) {
+  const bound = evaluateProjectProposalControlProof(
+    proposalContext,
+    proposalFacts,
+    proposalProof,
+    adapter,
+  );
+  assert.equal(bound.reason, 'SIGNATURE_BOUND');
+  assert.equal(bound.proposalRevision, 2);
+  assert.equal(bound.consumesNonce, false);
+  assert.equal(bound.founderControlVerified, false);
+  assert.equal(
+    evaluateProjectProposalControlProof(
+      proposalContext,
+      { ...proposalFacts, proposal: { ...proposal, revision: 3 } },
+      proposalProof,
+      adapter,
+    ).reason,
+    'PROPOSAL_CHANGED',
+  );
+  assert.equal(
+    evaluateProjectProposalControlProof(
+      proposalContext,
+      { ...proposalFacts, proposal: null },
+      proposalProof,
+      adapter,
+    ).reason,
+    'PROPOSAL_CHANGED',
+  );
+  assert.equal(
+    evaluateProjectProposalControlProof(proposalContext, proposalFacts, proof, adapter).reason,
+    'SIGNATURE_INVALID',
+  );
+  assert.equal(
+    evaluateProjectControlProof(context, facts, proposalProof, adapter).reason,
+    'SIGNATURE_INVALID',
+  );
+}
 console.log(
   JSON.stringify({
     synthetic: true,
@@ -147,5 +222,7 @@ console.log(
     expiryRevocationPolicyEvidenceAndTenantDenied: true,
     noAuthorityOrPersistence: true,
     noAtomicReplayClaim: true,
+    proposalV2CurrentSnapshotBound: true,
+    unchangedV1AndCrossVersionReplayDenied: true,
   }),
 );

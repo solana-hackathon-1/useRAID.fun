@@ -1,0 +1,653 @@
+{
+  "conclusion": "success",
+  "headSha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+  "jobs": [
+    {
+      "completedAt": "2026-10-13T12:42:48Z",
+      "conclusion": "success",
+      "databaseId": 115302255567,
+      "name": "dependency-security",
+      "startedAt": "2026-10-13T12:42:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:42:11Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:42:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:14Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-13T12:42:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:19Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "startedAt": "2026-10-13T12:42:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:44Z",
+          "conclusion": "success",
+          "name": "Run npm ci",
+          "number": 4,
+          "startedAt": "2026-10-13T12:42:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:45Z",
+          "conclusion": "success",
+          "name": "Run npm run audit:check",
+          "number": 5,
+          "startedAt": "2026-10-13T12:42:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:45Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 9,
+          "startedAt": "2026-10-13T12:42:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:45Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 10,
+          "startedAt": "2026-10-13T12:42:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:45Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "startedAt": "2026-10-13T12:42:45Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606/job/115302255567"
+    },
+    {
+      "completedAt": "2026-10-13T12:53:49Z",
+      "conclusion": "success",
+      "databaseId": 115302255846,
+      "name": "browser",
+      "startedAt": "2026-10-13T12:42:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:42:10Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:42:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:29Z",
+          "conclusion": "success",
+          "name": "Initialize containers",
+          "number": 2,
+          "startedAt": "2026-10-13T12:42:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:31Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 3,
+          "startedAt": "2026-10-13T12:42:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:36Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 4,
+          "startedAt": "2026-10-13T12:42:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:03Z",
+          "conclusion": "success",
+          "name": "Run npm ci",
+          "number": 5,
+          "startedAt": "2026-10-13T12:42:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:05Z",
+          "conclusion": "success",
+          "name": "Run npm run db:generate",
+          "number": 6,
+          "startedAt": "2026-10-13T12:43:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:07Z",
+          "conclusion": "success",
+          "name": "Run npm run db:migrate",
+          "number": 7,
+          "startedAt": "2026-10-13T12:43:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:31Z",
+          "conclusion": "success",
+          "name": "Run npx playwright install --with-deps chromium",
+          "number": 8,
+          "startedAt": "2026-10-13T12:43:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:45:07Z",
+          "conclusion": "success",
+          "name": "Demo browser suite",
+          "number": 9,
+          "startedAt": "2026-10-13T12:43:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:47:55Z",
+          "conclusion": "success",
+          "name": "Studio desktop and mobile suite",
+          "number": 10,
+          "startedAt": "2026-10-13T12:45:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:47:56Z",
+          "conclusion": "success",
+          "name": "Stop isolated Studio database",
+          "number": 11,
+          "startedAt": "2026-10-13T12:47:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:48:47Z",
+          "conclusion": "success",
+          "name": "Raider orientation desktop and mobile suite",
+          "number": 12,
+          "startedAt": "2026-10-13T12:47:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:50:35Z",
+          "conclusion": "success",
+          "name": "Guild draft desktop and mobile suite",
+          "number": 13,
+          "startedAt": "2026-10-13T12:48:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:00Z",
+          "conclusion": "success",
+          "name": "Project proposal desktop and mobile suite",
+          "number": 14,
+          "startedAt": "2026-10-13T12:50:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:47Z",
+          "conclusion": "success",
+          "name": "Production build",
+          "number": 15,
+          "startedAt": "2026-10-13T12:52:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:53Z",
+          "conclusion": "success",
+          "name": "Database-backed browser journey",
+          "number": 16,
+          "startedAt": "2026-10-13T12:52:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:45Z",
+          "conclusion": "success",
+          "name": "Live browser suite",
+          "number": 17,
+          "startedAt": "2026-10-13T12:52:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:45Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 18,
+          "startedAt": "2026-10-13T12:53:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:45Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 34,
+          "startedAt": "2026-10-13T12:53:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:46Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 35,
+          "startedAt": "2026-10-13T12:53:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:46Z",
+          "conclusion": "success",
+          "name": "Stop containers",
+          "number": 36,
+          "startedAt": "2026-10-13T12:53:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:46Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 37,
+          "startedAt": "2026-10-13T12:53:46Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606/job/115302255846"
+    },
+    {
+      "completedAt": "2026-10-13T12:43:28Z",
+      "conclusion": "success",
+      "databaseId": 115302256035,
+      "name": "static",
+      "startedAt": "2026-10-13T12:42:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:42:10Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:42:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:14Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-13T12:42:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:19Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "startedAt": "2026-10-13T12:42:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:40Z",
+          "conclusion": "success",
+          "name": "Run npm ci",
+          "number": 4,
+          "startedAt": "2026-10-13T12:42:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:42Z",
+          "conclusion": "success",
+          "name": "Run npm run db:generate",
+          "number": 5,
+          "startedAt": "2026-10-13T12:42:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:55Z",
+          "conclusion": "success",
+          "name": "Run npm run format:check",
+          "number": 6,
+          "startedAt": "2026-10-13T12:42:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:10Z",
+          "conclusion": "success",
+          "name": "Run npm run typecheck",
+          "number": 7,
+          "startedAt": "2026-10-13T12:42:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:24Z",
+          "conclusion": "success",
+          "name": "Run npm run lint",
+          "number": 8,
+          "startedAt": "2026-10-13T12:43:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:25Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 15,
+          "startedAt": "2026-10-13T12:43:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:25Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 16,
+          "startedAt": "2026-10-13T12:43:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:25Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-10-13T12:43:25Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606/job/115302256035"
+    },
+    {
+      "completedAt": "2026-10-13T12:44:02Z",
+      "conclusion": "success",
+      "databaseId": 115302256135,
+      "name": "docker",
+      "startedAt": "2026-10-13T12:42:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:42:11Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:42:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:14Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-13T12:42:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:57Z",
+          "conclusion": "success",
+          "name": "Run docker build -t useraid:ci .",
+          "number": 3,
+          "startedAt": "2026-10-13T12:42:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:59Z",
+          "conclusion": "success",
+          "name": "Runtime image smoke test",
+          "number": 4,
+          "startedAt": "2026-10-13T12:43:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:59Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 8,
+          "startedAt": "2026-10-13T12:43:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:59Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 9,
+          "startedAt": "2026-10-13T12:43:59Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606/job/115302256135"
+    },
+    {
+      "completedAt": "2026-10-13T12:47:03Z",
+      "conclusion": "success",
+      "databaseId": 115302256142,
+      "name": "test",
+      "startedAt": "2026-10-13T12:42:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:42:11Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:42:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:34Z",
+          "conclusion": "success",
+          "name": "Initialize containers",
+          "number": 2,
+          "startedAt": "2026-10-13T12:42:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:37Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 3,
+          "startedAt": "2026-10-13T12:42:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:42Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 4,
+          "startedAt": "2026-10-13T12:42:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:12Z",
+          "conclusion": "success",
+          "name": "Run npm ci",
+          "number": 5,
+          "startedAt": "2026-10-13T12:42:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:14Z",
+          "conclusion": "success",
+          "name": "Run npm run db:generate",
+          "number": 6,
+          "startedAt": "2026-10-13T12:43:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:16Z",
+          "conclusion": "success",
+          "name": "Run npm run db:migrate",
+          "number": 7,
+          "startedAt": "2026-10-13T12:43:14Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:19Z",
+          "conclusion": "success",
+          "name": "Schema drift check",
+          "number": 8,
+          "startedAt": "2026-10-13T12:43:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:46:58Z",
+          "conclusion": "success",
+          "name": "All unit and real-database tests",
+          "number": 9,
+          "startedAt": "2026-10-13T12:43:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:46:59Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 10,
+          "startedAt": "2026-10-13T12:46:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:46:59Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 18,
+          "startedAt": "2026-10-13T12:46:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:46:59Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 19,
+          "startedAt": "2026-10-13T12:46:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:47:00Z",
+          "conclusion": "success",
+          "name": "Stop containers",
+          "number": 20,
+          "startedAt": "2026-10-13T12:46:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:47:00Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 21,
+          "startedAt": "2026-10-13T12:47:00Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606/job/115302256142"
+    },
+    {
+      "completedAt": "2026-10-13T12:42:27Z",
+      "conclusion": "success",
+      "databaseId": 115302256387,
+      "name": "planning-contracts",
+      "startedAt": "2026-10-13T12:42:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:42:09Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:42:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:11Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-13T12:42:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:11Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "startedAt": "2026-10-13T12:42:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:25Z",
+          "conclusion": "success",
+          "name": "Verify requirement and completion contracts",
+          "number": 4,
+          "startedAt": "2026-10-13T12:42:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:25Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 7,
+          "startedAt": "2026-10-13T12:42:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:25Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 8,
+          "startedAt": "2026-10-13T12:42:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:25Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 9,
+          "startedAt": "2026-10-13T12:42:25Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606/job/115302256387"
+    },
+    {
+      "completedAt": "2026-10-13T12:54:01Z",
+      "conclusion": "success",
+      "databaseId": 115307310810,
+      "name": "ci-gate",
+      "startedAt": "2026-10-13T12:53:58Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:53:59Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:53:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:59Z",
+          "conclusion": "success",
+          "name": "Reject failed, skipped or cancelled required checks",
+          "number": 2,
+          "startedAt": "2026-10-13T12:53:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:53:59Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 3,
+          "startedAt": "2026-10-13T12:53:59Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606/job/115307310810"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606"
+}

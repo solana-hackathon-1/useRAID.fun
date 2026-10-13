@@ -15,8 +15,7 @@
     "Actual project authority/evidence/nonce/recognition/provider/fundedflow/independentUAT remain missing"
   ],
   "open_decisions": [
-    "05.6/O01/O02/O05/O06/O07/O11 currentprojectcontrol/publicevidence/adoption missing",
-    "Proposal-version challenge/nonce/recognizedasset uniqueness/history/provider/UI/independentUAT/G01\u2013G10 notverified"
+    "Actualapprovedcontrol/policy/evidence/atomiccurrentproposalnonce/recognizedasset uniqueness/history/provider/fundedflow/independentUAT/O11/G01\u2013G10 remainunverified"
   ],
   "release_gate_disposition": "Ownerboundedstagingprivatepending prepAPIonly/defaultoff; no projectapproval/Founder/Guild/token/grant/public/capacity/money/provider enablement",
   "criteria": {
@@ -185,46 +184,46 @@
   },
   "ci": {
     "planning-contracts": {
-      "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
-      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+      "result": "SUCCESS",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+      "observed": "planning-contracts completed successfully at exact423; rawpairedlogs retained"
     },
     "static": {
-      "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
-      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+      "result": "SUCCESS",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+      "observed": "static completed successfully at exact423; rawpairedlogs retained"
     },
     "dependency-security": {
-      "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
-      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+      "result": "SUCCESS",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+      "observed": "dependency-security completed successfully at exact423; rawpairedlogs retained"
     },
     "test": {
-      "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
-      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+      "result": "SUCCESS",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+      "observed": "test completed successfully at exact423; rawpairedlogs retained"
     },
     "docker": {
-      "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
-      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+      "result": "SUCCESS",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+      "observed": "docker completed successfully at exact423; rawpairedlogs retained"
     },
     "browser": {
-      "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
-      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+      "result": "SUCCESS",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+      "observed": "browser completed successfully at exact423; rawpairedlogs retained"
     },
     "ci-gate": {
-      "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
-      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+      "result": "SUCCESS",
+      "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399231606",
+      "observed": "ci-gate completed successfully at exact423; rawpairedlogs retained"
     }
   },
   "tdd": {
@@ -250,5 +249,12 @@
       "observed": "SixaffectedpagebrowserPASS1.6m,4matchingadversePASSreused; final150+11regression/5requirements/strictbuild-types/lint/wholeformatter/independentPG-andReact PASS",
       "result": "PASS"
     }
+  },
+  "post_merge_staging": {
+    "result": "SUCCESS",
+    "sha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399204400",
+    "observed": "129files1509PASS/8orientation47.3s+10Guild1.4m+10proposal1.1m/nativeARMproduction/runtime/GHCR/cleanup",
+    "image_digest": "5b17c2896e056552686ccc80b63dbd48529b7a7503676aab3f0e461e05274d80"
   }
 }

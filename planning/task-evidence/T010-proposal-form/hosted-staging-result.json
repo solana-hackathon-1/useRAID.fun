@@ -1,0 +1,147 @@
+{
+  "conclusion": "success",
+  "headSha": "4230fbd0be167f63c471fba1b93e6215080a47a2",
+  "jobs": [
+    {
+      "completedAt": "2026-10-13T12:52:52Z",
+      "conclusion": "success",
+      "databaseId": 115302158481,
+      "name": "publish",
+      "startedAt": "2026-10-13T12:42:08Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-13T12:42:10Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-13T12:42:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:28Z",
+          "conclusion": "success",
+          "name": "Initialize containers",
+          "number": 2,
+          "startedAt": "2026-10-13T12:42:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:30Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 3,
+          "startedAt": "2026-10-13T12:42:28Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:42:35Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 4,
+          "startedAt": "2026-10-13T12:42:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:43:59Z",
+          "conclusion": "success",
+          "name": "Install and check source",
+          "number": 5,
+          "startedAt": "2026-10-13T12:42:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:46:44Z",
+          "conclusion": "success",
+          "name": "Verify database and application contracts",
+          "number": 6,
+          "startedAt": "2026-10-13T12:43:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:48:06Z",
+          "conclusion": "success",
+          "name": "Raider orientation desktop and mobile suite",
+          "number": 7,
+          "startedAt": "2026-10-13T12:46:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:49:32Z",
+          "conclusion": "success",
+          "name": "Guild draft desktop and mobile suite",
+          "number": 8,
+          "startedAt": "2026-10-13T12:48:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:50:41Z",
+          "conclusion": "success",
+          "name": "Project proposal desktop and mobile suite",
+          "number": 9,
+          "startedAt": "2026-10-13T12:49:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:13Z",
+          "conclusion": "success",
+          "name": "Build production image without deployment secrets",
+          "number": 10,
+          "startedAt": "2026-10-13T12:50:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:16Z",
+          "conclusion": "success",
+          "name": "Runtime image smoke",
+          "number": 11,
+          "startedAt": "2026-10-13T12:52:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:50Z",
+          "conclusion": "success",
+          "name": "Publish checked revision to private GHCR",
+          "number": 12,
+          "startedAt": "2026-10-13T12:52:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:50Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "number": 22,
+          "startedAt": "2026-10-13T12:52:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:50Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 23,
+          "startedAt": "2026-10-13T12:52:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:51Z",
+          "conclusion": "success",
+          "name": "Stop containers",
+          "number": 24,
+          "startedAt": "2026-10-13T12:52:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-13T12:52:51Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 25,
+          "startedAt": "2026-10-13T12:52:51Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399204400/job/115302158481"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38399204400"
+}

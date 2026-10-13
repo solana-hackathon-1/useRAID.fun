@@ -1,0 +1,2871 @@
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 1 minute ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  * Run npm ci
+  * Run npm run db:generate
+  * Run npm run db:migrate
+  * Run npx playwright install --with-deps chromium
+  * Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+* static (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  * Run npm run typecheck
+  * Run npm run lint
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* docker (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  * Run docker build -t useraid:ci .
+  * Runtime image smoke test
+  * Post Run actions/checkout@v4
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  * Run npm ci
+  * Run npm run db:generate
+  * Run npm run db:migrate
+  * Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 1 minute ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  * Run npx playwright install --with-deps chromium
+  * Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+* static (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  * Run npm run lint
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* docker (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  * Run docker build -t useraid:ci .
+  * Runtime image smoke test
+  * Post Run actions/checkout@v4
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 1 minute ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  * Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* docker (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  * Run docker build -t useraid:ci .
+  * Runtime image smoke test
+  * Post Run actions/checkout@v4
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 2 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  * Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 2 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  * Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 2 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  * Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 3 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 3 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 4 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 4 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 4 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* test (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  * All unit and real-database tests
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 5 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 5 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  * Studio desktop and mobile suite
+  * Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 5 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 6 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 6 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  * Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 7 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 7 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 7 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 8 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 8 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  * Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 8 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 9 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 9 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  * Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 10 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 10 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  * Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 10 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  ✓ Production build
+  * Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 11 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  ✓ Production build
+  ✓ Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 11 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* browser (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  ✓ Production build
+  ✓ Database-backed browser journey
+  * Live browser suite
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+  * Stop containers
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* main Checks · 38399231606
+Triggered via workflow_dispatch about 11 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ browser in 11m41s (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  ✓ Production build
+  ✓ Database-backed browser journey
+  ✓ Live browser suite
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* ci-gate (ID 115307310810)
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
+
+✓ main Checks · 38399231606
+Triggered via workflow_dispatch about 12 minutes ago
+
+JOBS
+✓ dependency-security in 40s (ID 115302255567)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run audit:check
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ browser in 11m41s (ID 115302255846)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Run npx playwright install --with-deps chromium
+  ✓ Demo browser suite
+  ✓ Studio desktop and mobile suite
+  ✓ Stop isolated Studio database
+  ✓ Raider orientation desktop and mobile suite
+  ✓ Guild draft desktop and mobile suite
+  ✓ Project proposal desktop and mobile suite
+  ✓ Production build
+  ✓ Database-backed browser journey
+  ✓ Live browser suite
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ static in 1m20s (ID 115302256035)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run format:check
+  ✓ Run npm run typecheck
+  ✓ Run npm run lint
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ docker in 1m54s (ID 115302256135)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run docker build -t useraid:ci .
+  ✓ Runtime image smoke test
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ test in 4m55s (ID 115302256142)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run db:generate
+  ✓ Run npm run db:migrate
+  ✓ Schema drift check
+  ✓ All unit and real-database tests
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Stop containers
+  ✓ Complete job
+✓ planning-contracts in 19s (ID 115302256387)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-python@v5
+  ✓ Verify requirement and completion contracts
+  ✓ Post Run actions/setup-python@v5
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+✓ ci-gate in 3s (ID 115307310810)
+  ✓ Set up job
+  ✓ Reject failed, skipped or cancelled required checks
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+dependency-security: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+dependency-security: .github#1
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+planning-contracts: .github#2
+
+- "The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748"
+planning-contracts: .github#1
