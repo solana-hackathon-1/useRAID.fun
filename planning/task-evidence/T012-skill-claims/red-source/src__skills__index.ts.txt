@@ -1,0 +1,4 @@
+/** Executable test-first stubs. No taxonomy publication or assessed rank. */
+export function prepareSkillTaxonomyUpdate(_previous: unknown, _input: unknown) { return null; }
+export function resolveSkillAlias(_catalog: unknown, _alias: unknown) { return null; }
+export function prepareSkillClaim(_context: unknown, _input: unknown) { return null; }

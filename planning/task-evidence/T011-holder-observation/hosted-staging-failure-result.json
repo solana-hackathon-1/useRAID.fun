@@ -1,0 +1,18 @@
+{
+  "conclusion": "failure",
+  "headSha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+  "jobs": [
+    {
+      "completedAt": "2026-10-13T13:44:52Z",
+      "conclusion": "failure",
+      "databaseId": 115330770622,
+      "name": "publish",
+      "startedAt": "2026-10-13T13:44:48Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38407477051/job/115330770622"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38407477051"
+}

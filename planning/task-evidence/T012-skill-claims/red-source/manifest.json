@@ -1,0 +1,9 @@
+{
+  "base": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+  "phase": "RED-beforeimplementation, actualuncommittedstubs/tests",
+  "hashes": {
+    "src/skills/index.ts": "420e19124e154134f1eb817ca4fc019587046427b2f832c210f37fd4e5082594",
+    "tests/skill-claims.test.ts": "75122b1695e9cfd115a888b245ed1783a1e0375a6847b256e4fb16d9594afff7",
+    "docs/tasks/2026-10-13-T012-skill-claims.md": "1b69f07ac1448a4ace9cb78fc500c532942198c368344d74146f00272e8c249e"
+  }
+}

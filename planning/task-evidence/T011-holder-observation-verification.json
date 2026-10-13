@@ -186,38 +186,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
+      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
+      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
+      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
+      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
+      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
+      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit",
+      "observed": "Notredispatchedunderknownunchangedbillingblock; requirednamedCI SUCCESS absent"
     }
   },
   "tdd": {
@@ -243,5 +250,11 @@
       "observed": "4files59PASS thenmeaningfulprovenance2RED1PASS\u2192final4files62PASS; final6files176PASS6.27s/5requirements/strictTSC/lint/ownclean6packageconsumerPASS",
       "result": "PASS"
     }
+  },
+  "post_merge_staging": {
+    "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38407477051",
+    "result": "NOT VERIFIED",
+    "observed": "Nojobstep/imagepublication; actualbilling annotation preserved"
   }
 }

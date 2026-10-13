@@ -1,0 +1,247 @@
+{
+  "task_id": "T012",
+  "scope": "T012A stabletaxonomy/adminupdatecandidate andcurrentcanonicalHUMAN privateunverifiedclaim preparation",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T012-skill-claims.md",
+  "migration_rollback": "No Root/DDL/provider/assessment/persistence/UI/flags; removeunusedpreparation whilepreservingexistingidentity/work/claims andfutureimmutablecatalog/evidence history",
+  "dependency_evidence": [
+    "T002/T006 sharedcontracts/canonicalidentity sourceexist, fullindependentassurance unverified; no claimthat hardparentacceptance passed",
+    "Ownclean six-package Node catalog/claim consuming host PASS; actualRootassessment/evidence/persistence missing",
+    "PR207 exact148 Staging38407477051 failedbeforestepsbilling, namedCI notredispatchedunderknownunchangedblock; lastimage423only"
+  ],
+  "open_decisions": [
+    "Actualadmincatalog publication/privateclaims-evidence persistence/approvedrubric-evaluator-currentverification/confidence-sample/reassessment-revocation history absent",
+    "T002/T006 independent acceptance/Rooteligibility/privatecode/UAT/releasegates unverified"
+  ],
+  "release_gate_disposition": "Independent reversibleprivateclaim/taxonomycandidates only; no publication/assessment/rank/grant/provider/money/capacity enablement orfakehostedCI",
+  "code_source_sha": "07a2b49bcf0dce7947d487c44da40f8101e790ee",
+  "source_identity": "Bounded implementation 07a2b49bcf0dce7947d487c44da40f8101e790ee; actualRED relative148 plusinitialstubs/testsmanifest, no cleanHEAD newtestclaim",
+  "criteria": {
+    "T012-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    },
+    "T012-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/11/13/16/23\u201330/35/39",
+      "observed": "Onlystablecatalog/prospectiveupdates/privateunverifiedcanonicalHUMAN claims andownsynthetichost tested; actualpublication/evidence/assessment/store/history/release/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T012-skill-claims.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT012candidatepublished; knownpreviousaccountpayment/spendinglimit preventsjobstartup"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT012candidatepublished; knownpreviousaccountpayment/spendinglimit preventsjobstartup"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT012candidatepublished; knownpreviousaccountpayment/spendinglimit preventsjobstartup"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT012candidatepublished; knownpreviousaccountpayment/spendinglimit preventsjobstartup"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT012candidatepublished; knownpreviousaccountpayment/spendinglimit preventsjobstartup"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT012candidatepublished; knownpreviousaccountpayment/spendinglimit preventsjobstartup"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT012candidatepublished; knownpreviousaccountpayment/spendinglimit preventsjobstartup"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "node node_modules/vitest/vitest.mjs run tests/skill-claims.test.ts",
+      "sha": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+      "evidence_url": "planning/task-evidence/T012-skill-claims/red.log",
+      "expected_failure": "Executablestubs cannotresolvealiases/preservehistory/produceunverifiedselfclaims/rejectauthorityfields",
+      "observed_failure": "19genuineFAIL beforemodule/schema; actualuncommitted source/testmanifest red-source/manifest.json",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "vitest skill-claims",
+      "sha": "07a2b49bcf0dce7947d487c44da40f8101e790ee",
+      "evidence_url": "planning/task-evidence/T012-skill-claims/green.log",
+      "observed": "19PASS aftermodule/schema implementation",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "vitest skill-claims/newboundary/docs; ownedstrictTSC/lint/owncleanconsumer",
+      "sha": "07a2b49bcf0dce7947d487c44da40f8101e790ee",
+      "evidence_url": "planning/task-evidence/T012-skill-claims/review.json",
+      "observed": "2files22PASS808ms;4files138PASS2.99s/5requirements/strictTSC/lint/ownclean6packagehostPASS",
+      "result": "PASS"
+    }
+  }
+}

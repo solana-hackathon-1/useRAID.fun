@@ -1,0 +1,250 @@
+import { expect, it } from 'vitest';
+import { prepareSkillTaxonomyUpdate, resolveSkillAlias, prepareSkillClaim } from '../src/skills';
+const frontend = {
+  id: 'skill_frontend',
+  domain: 'software.frontend',
+  name: 'Frontend',
+  status: 'ACTIVE',
+  aliases: ['frontend', 'web-ui'],
+};
+const solana = {
+  id: 'skill_solana',
+  domain: 'blockchain.solana',
+  name: 'Solana programs',
+  status: 'ACTIVE',
+  aliases: ['solana-programs'],
+};
+const catalog = {
+  version: 'v1',
+  id: 'synthetic-taxonomy',
+  revision: 2,
+  state: 'PUBLISHED',
+  publishedByAccountId: 'synthetic-admin',
+  publishedAt: '2026-10-13T12:00:00Z',
+  skills: [frontend, solana],
+};
+const context = {
+  version: 'v1',
+  now: '2026-10-13T13:00:00Z',
+  actorAccountId: 'self',
+  actorSessionAuthorized: true,
+  actorRestricted: false,
+  participant: { kind: 'HUMAN', id: 'canonical-human', accountId: 'self' },
+  taxonomy: catalog,
+};
+const input = {
+  skillId: frontend.id,
+  claimedLevel: ' S ',
+  supportingReferences: [' https://public.example/portfolio '],
+};
+const update = (skills: unknown = catalog.skills, expectedRevision = 2) =>
+  prepareSkillTaxonomyUpdate(catalog, { taxonomyId: catalog.id, expectedRevision, skills });
+it('resolves stable normalized aliases while keeping frontend separate from Solana', () => {
+  expect(resolveSkillAlias(catalog, ' WEB-UI ')).toMatchObject({
+    skillId: frontend.id,
+    domain: frontend.domain,
+    taxonomyReference: { recordId: catalog.id, revision: 2 },
+  });
+  expect(resolveSkillAlias(catalog, 'solana-programs')).toMatchObject({
+    skillId: solana.id,
+    domain: solana.domain,
+  });
+});
+it('prepares a claim tied to the canonical human without creating assessed rank or authority', () => {
+  const value = prepareSkillClaim(context, input);
+  expect(value).toEqual({
+    version: 'v1',
+    state: 'CLAIMED',
+    participantId: 'canonical-human',
+    skillId: frontend.id,
+    skillDomain: frontend.domain,
+    taxonomyReference: { recordId: catalog.id, revision: 2 },
+    preparedAt: '2026-10-13T13:00:00.000Z',
+    claimedLevel: 'S',
+    supportingReferences: ['https://public.example/portfolio'],
+    assessedRank: null,
+    rubric: null,
+    evaluator: null,
+    confidence: null,
+    sampleSize: 0,
+    issuedAt: null,
+    reassessmentAt: null,
+    assessmentHistory: [],
+    informational: true,
+    isAuthorizationToken: false,
+    persisted: false,
+    verifiesSkill: false,
+    createsPermissionGrant: false,
+    consumesCapacity: false,
+  });
+  expect(Object.isFrozen(value)).toBe(true);
+});
+it('does not derive a verified rank from any claimed level or purchased wealth fields', () => {
+  for (const claimedLevel of ['E', 'S', 'I bought tokens'])
+    expect(prepareSkillClaim(context, { ...input, claimedLevel })).toMatchObject({
+      state: 'CLAIMED',
+      assessedRank: null,
+      verifiesSkill: false,
+    });
+  for (const field of ['walletValue', 'tokenBalance', 'verified', 'assessedRank', 'participantId'])
+    expect(() =>
+      prepareSkillClaim(context, { ...input, [field]: field === 'verified' ? true : 'S' }),
+    ).toThrow('INVALID_INPUT');
+});
+it('keeps canonical identity across alternative login credentials without accepting client identity fields', () => {
+  expect(prepareSkillClaim(context, input)).toMatchObject({
+    participantId: context.participant.id,
+  });
+  expect(() => prepareSkillClaim(context, { ...input, wallet: 'another-wallet' })).toThrow(
+    'INVALID_INPUT',
+  );
+});
+it('denies unauthenticated, foreign, restricted and unsupported participant claim contexts', () => {
+  expect(() => prepareSkillClaim({ ...context, actorSessionAuthorized: false }, input)).toThrow(
+    'AUTHENTICATION_REQUIRED',
+  );
+  expect(() => prepareSkillClaim({ ...context, actorAccountId: 'foreign' }, input)).toThrow(
+    'FORBIDDEN',
+  );
+  expect(() => prepareSkillClaim({ ...context, actorRestricted: true }, input)).toThrow(
+    'ACCOUNT_RESTRICTED',
+  );
+  expect(() =>
+    prepareSkillClaim(
+      { ...context, participant: { kind: 'AI_AGENT', id: 'agent', operatorId: 'operator' } },
+      input,
+    ),
+  ).toThrow('RESOURCE_UNAVAILABLE');
+});
+it('keeps retired/unknown categories unavailable for new claims and alias resolution', () => {
+  const retired = { ...catalog, skills: [{ ...frontend, status: 'RETIRED' }, solana] };
+  expect(() => resolveSkillAlias(retired, 'frontend')).toThrow('SKILL_UNAVAILABLE');
+  expect(() => prepareSkillClaim({ ...context, taxonomy: retired }, input)).toThrow(
+    'SKILL_UNAVAILABLE',
+  );
+  expect(() => prepareSkillClaim(context, { ...input, skillId: 'unknown' })).toThrow(
+    'SKILL_UNAVAILABLE',
+  );
+});
+it('prepares a renamed category while preserving stable IDs/domains/old aliases without publishing', () => {
+  expect(
+    update([
+      { ...frontend, name: 'Web interfaces', aliases: [...frontend.aliases, 'web-interfaces'] },
+      solana,
+    ]),
+  ).toMatchObject({
+    state: 'TAXONOMY_UPDATE_PROPOSAL',
+    publishesTaxonomy: false,
+    persisted: false,
+    taxonomy: {
+      id: catalog.id,
+      revision: 3,
+      skills: [
+        { ...frontend, name: 'Web interfaces', aliases: [...frontend.aliases, 'web-interfaces'] },
+        solana,
+      ],
+    },
+  });
+});
+it('never removes prior IDs or aliases or reassigns an existing semantic domain', () => {
+  expect(() => update([solana])).toThrow('HISTORY_CONFLICT');
+  expect(() => update([{ ...frontend, aliases: ['new-alias'] }, solana])).toThrow(
+    'HISTORY_CONFLICT',
+  );
+  expect(() => update([{ ...frontend, domain: solana.domain }, solana])).toThrow(
+    'HISTORY_CONFLICT',
+  );
+});
+it('allows retirement without erasing old identifiers or altering an already prepared claim', () => {
+  const claim = prepareSkillClaim(context, input),
+    before = structuredClone(claim);
+  expect(update([{ ...frontend, status: 'RETIRED' }, solana])).toMatchObject({
+    taxonomy: { revision: 3, skills: [{ ...frontend, status: 'RETIRED' }, solana] },
+  });
+  expect(claim).toEqual(before);
+});
+it('requires matching catalog identity and revision rather than silently rebasing', () => {
+  expect(() => update(catalog.skills, 1)).toThrow('REVISION_CHANGED');
+  expect(() =>
+    prepareSkillTaxonomyUpdate(catalog, {
+      taxonomyId: 'other-taxonomy',
+      expectedRevision: 2,
+      skills: catalog.skills,
+    }),
+  ).toThrow('REVISION_CHANGED');
+});
+it('supports only an explicit first revision bootstrap candidate', () => {
+  expect(
+    prepareSkillTaxonomyUpdate(null, {
+      taxonomyId: 'new-taxonomy',
+      expectedRevision: 0,
+      skills: [frontend],
+    }),
+  ).toMatchObject({ persisted: false, taxonomy: { id: 'new-taxonomy', revision: 1 } });
+  expect(() =>
+    prepareSkillTaxonomyUpdate(null, {
+      taxonomyId: 'new-taxonomy',
+      expectedRevision: 2,
+      skills: [frontend],
+    }),
+  ).toThrow('REVISION_CHANGED');
+});
+for (const skills of [
+  [frontend, { ...solana, id: frontend.id }],
+  [frontend, { ...solana, aliases: [' WEB-UI '] }],
+  [{ ...frontend, aliases: ['frontend', ' FRONTEND '] }, solana],
+])
+  it('rejects duplicate canonical IDs or normalized aliases before ambiguous resolution', () => {
+    expect(() => resolveSkillAlias({ ...catalog, skills }, 'frontend')).toThrow(
+      'INVALID_HOST_CONTRACT',
+    );
+    expect(() => update(skills)).toThrow('INVALID_INPUT');
+  });
+for (const reference of [
+  'http://public.example/proof',
+  'https://user:password@public.example/proof',
+  'not-a-url',
+])
+  it('rejects malformed or credentialed supporting references', () => {
+    expect(() =>
+      prepareSkillClaim(context, { ...input, supportingReferences: [reference] }),
+    ).toThrow('INVALID_INPUT');
+  });
+it('keeps a claim without evidence unverified and rejects normalized duplicate references', () => {
+  expect(prepareSkillClaim(context, { ...input, supportingReferences: [] })).toMatchObject({
+    assessedRank: null,
+    sampleSize: 0,
+  });
+  expect(() =>
+    prepareSkillClaim(context, {
+      ...input,
+      supportingReferences: ['https://public.example', 'https://public.example/'],
+    }),
+  ).toThrow('INVALID_INPUT');
+});
+it('rejects unapproved catalog shape and caller approval fields, preserving actual source records', () => {
+  expect(() =>
+    prepareSkillClaim({ ...context, taxonomy: { ...catalog, state: 'DRAFT' } }, input),
+  ).toThrow('INVALID_HOST_CONTRACT');
+  expect(() => update([{ ...frontend, assessedRank: 'S' }, solana])).toThrow('INVALID_INPUT');
+  const original = structuredClone(catalog);
+  prepareSkillClaim(context, input);
+  update();
+  expect(catalog).toEqual(original);
+});
+it('rejects future-published catalogs and timestamps with unsupported precision', () => {
+  expect(() => prepareSkillClaim({ ...context, now: '2026-10-13T11:59:59Z' }, input)).toThrow(
+    'INVALID_HOST_CONTRACT',
+  );
+  expect(() =>
+    prepareSkillClaim({ ...context, now: '2026-10-13T13:00:00.000001Z' }, input),
+  ).toThrow('INVALID_HOST_CONTRACT');
+});
+it('rejects a revision increment that cannot be represented exactly', () => {
+  expect(() =>
+    prepareSkillTaxonomyUpdate(
+      { ...catalog, revision: Number.MAX_SAFE_INTEGER },
+      { taxonomyId: catalog.id, expectedRevision: Number.MAX_SAFE_INTEGER, skills: catalog.skills },
+    ),
+  ).toThrow('REVISION_CHANGED');
+});

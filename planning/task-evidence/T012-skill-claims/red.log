@@ -1,0 +1,411 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-claims.test.ts (19 tests | 19 failed) 34ms
+   × resolves stable normalized aliases while keeping frontend separate from Solana 12ms
+   × prepares a claim tied to the canonical human without creating assessed rank or authority 2ms
+   × does not derive a verified rank from any claimed level or purchased wealth fields 1ms
+   × keeps canonical identity across alternative login credentials without accepting client identity fields 1ms
+   × denies unauthenticated, foreign, restricted and unsupported participant claim contexts 2ms
+   × keeps retired/unknown categories unavailable for new claims and alias resolution 1ms
+   × prepares a renamed category while preserving stable IDs/domains/old aliases without publishing 1ms
+   × never removes prior IDs or aliases or reassigns an existing semantic domain 2ms
+   × allows retirement without erasing old identifiers or altering an already prepared claim 2ms
+   × requires matching catalog identity and revision rather than silently rebasing 1ms
+   × supports only an explicit first revision bootstrap candidate 1ms
+   × rejects duplicate canonical IDs or normalized aliases before ambiguous resolution 1ms
+   × rejects duplicate canonical IDs or normalized aliases before ambiguous resolution 1ms
+   × rejects duplicate canonical IDs or normalized aliases before ambiguous resolution 1ms
+   × rejects malformed or credentialed supporting references 1ms
+   × rejects malformed or credentialed supporting references 1ms
+   × rejects malformed or credentialed supporting references 1ms
+   × keeps a claim without evidence unverified and rejects normalized duplicate references 1ms
+   × rejects unapproved catalog shape and caller approval fields, preserving actual source records 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-claims.test.ts > resolves stable normalized aliases while keeping frontend separate from Solana
+AssertionError: expected null to match object { skillId: 'skill_frontend', …(2) }
+
+- Expected:
+{
+  "domain": "software.frontend",
+  "skillId": "skill_frontend",
+  "taxonomyReference": {
+    "recordId": "synthetic-taxonomy",
+    "revision": 2,
+  },
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:10:50
+      8| const update = (skills: unknown = catalog.skills, expectedRevision = 2…
+      9| it('resolves stable normalized aliases while keeping frontend separate…
+     10|   expect(resolveSkillAlias(catalog, ' WEB-UI ')).toMatchObject({ skill…
+       |                                                  ^
+     11|   expect(resolveSkillAlias(catalog, 'solana-programs')).toMatchObject(…
+     12| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > prepares a claim tied to the canonical human without creating assessed rank or authority
+AssertionError: expected null to deeply equal { version: 'v1', …(22) }
+
+- Expected:
+{
+  "assessedRank": null,
+  "assessmentHistory": [],
+  "claimedLevel": "S",
+  "confidence": null,
+  "consumesCapacity": false,
+  "createsPermissionGrant": false,
+  "evaluator": null,
+  "informational": true,
+  "isAuthorizationToken": false,
+  "issuedAt": null,
+  "participantId": "canonical-human",
+  "persisted": false,
+  "preparedAt": "2026-10-13T13:00:00.000Z",
+  "reassessmentAt": null,
+  "rubric": null,
+  "sampleSize": 0,
+  "skillDomain": "software.frontend",
+  "skillId": "skill_frontend",
+  "state": "CLAIMED",
+  "supportingReferences": [
+    "https://public.example/portfolio",
+  ],
+  "taxonomyReference": {
+    "recordId": "synthetic-taxonomy",
+    "revision": 2,
+  },
+  "verifiesSkill": false,
+  "version": "v1",
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:15:17
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > does not derive a verified rank from any claimed level or purchased wealth fields
+AssertionError: expected null to match object { state: 'CLAIMED', …(2) }
+
+- Expected:
+{
+  "assessedRank": null,
+  "state": "CLAIMED",
+  "verifiesSkill": false,
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:19:124
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > keeps canonical identity across alternative login credentials without accepting client identity fields
+AssertionError: expected null to match object { participantId: 'canonical-human' }
+
+- Expected:
+{
+  "participantId": "canonical-human",
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:23:45
+     21| });
+     22| it('keeps canonical identity across alternative login credentials with…
+     23|   expect(prepareSkillClaim(context, input)).toMatchObject({ participan…
+       |                                             ^
+     24|   expect(() => prepareSkillClaim(context, { ...input, wallet: 'another…
+     25| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > denies unauthenticated, foreign, restricted and unsupported participant claim contexts
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-claims.test.ts:27:89
+     25| });
+     26| it('denies unauthenticated, foreign, restricted and unsupported partic…
+     27|   expect(() => prepareSkillClaim({ ...context, actorSessionAuthorized:…
+       |                                                                                         ^
+     28|   expect(() => prepareSkillClaim({ ...context, actorAccountId: 'foreig…
+     29|   expect(() => prepareSkillClaim({ ...context, actorRestricted: true }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > keeps retired/unknown categories unavailable for new claims and alias resolution
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-claims.test.ts:34:56
+     32| it('keeps retired/unknown categories unavailable for new claims and al…
+     33|   const retired = { ...catalog, skills: [{ ...frontend, status: 'RETIR…
+     34|   expect(() => resolveSkillAlias(retired, 'frontend')).toThrow('SKILL_…
+       |                                                        ^
+     35|   expect(() => prepareSkillClaim({ ...context, taxonomy: retired }, in…
+     36|   expect(() => prepareSkillClaim(context, { ...input, skillId: 'unknow…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > prepares a renamed category while preserving stable IDs/domains/old aliases without publishing
+AssertionError: expected null to match object { …(4) }
+
+- Expected:
+{
+  "persisted": false,
+  "publishesTaxonomy": false,
+  "state": "TAXONOMY_UPDATE_PROPOSAL",
+  "taxonomy": {
+    "id": "synthetic-taxonomy",
+    "revision": 3,
+    "skills": [
+      {
+        "aliases": [
+          "frontend",
+          "web-ui",
+          "web-interfaces",
+        ],
+        "domain": "software.frontend",
+        "id": "skill_frontend",
+        "name": "Web interfaces",
+        "status": "ACTIVE",
+      },
+      {
+        "aliases": [
+          "solana-programs",
+        ],
+        "domain": "blockchain.solana",
+        "id": "skill_solana",
+        "name": "Solana programs",
+        "status": "ACTIVE",
+      },
+    ],
+  },
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:39:119
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > never removes prior IDs or aliases or reassigns an existing semantic domain
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-claims.test.ts:42:34
+     40| });
+     41| it('never removes prior IDs or aliases or reassigns an existing semant…
+     42|   expect(() => update([solana])).toThrow('HISTORY_CONFLICT');
+       |                                  ^
+     43|   expect(() => update([{ ...frontend, aliases: ['new-alias'] }, solana…
+     44|   expect(() => update([{ ...frontend, domain: solana.domain }, solana]…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > allows retirement without erasing old identifiers or altering an already prepared claim
+AssertionError: expected null to match object { taxonomy: { revision: 3, …(1) } }
+
+- Expected:
+{
+  "taxonomy": {
+    "revision": 3,
+    "skills": [
+      {
+        "aliases": [
+          "frontend",
+          "web-ui",
+        ],
+        "domain": "software.frontend",
+        "id": "skill_frontend",
+        "name": "Frontend",
+        "status": "RETIRED",
+      },
+      {
+        "aliases": [
+          "solana-programs",
+        ],
+        "domain": "blockchain.solana",
+        "id": "skill_solana",
+        "name": "Solana programs",
+        "status": "ACTIVE",
+      },
+    ],
+  },
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:48:64
+     46| it('allows retirement without erasing old identifiers or altering an a…
+     47|   const claim = prepareSkillClaim(context, input), before = structured…
+     48|   expect(update([{ ...frontend, status: 'RETIRED' }, solana])).toMatch…
+       |                                                                ^
+     49|   expect(claim).toEqual(before);
+     50| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > requires matching catalog identity and revision rather than silently rebasing
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-claims.test.ts:52:43
+     50| });
+     51| it('requires matching catalog identity and revision rather than silent…
+     52|   expect(() => update(catalog.skills, 1)).toThrow('REVISION_CHANGED');
+       |                                           ^
+     53|   expect(() => prepareSkillTaxonomyUpdate(catalog, { taxonomyId: 'othe…
+     54| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > supports only an explicit first revision bootstrap candidate
+AssertionError: expected null to match object { Object (persisted, taxonomy) }
+
+- Expected:
+{
+  "persisted": false,
+  "taxonomy": {
+    "id": "new-taxonomy",
+    "revision": 1,
+  },
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:56:117
+     54| });
+     55| it('supports only an explicit first revision bootstrap candidate', () …
+     56|   expect(prepareSkillTaxonomyUpdate(null, { taxonomyId: 'new-taxonomy'…
+       |                                                                                                                     ^
+     57|   expect(() => prepareSkillTaxonomyUpdate(null, { taxonomyId: 'new-tax…
+     58| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > rejects duplicate canonical IDs or normalized aliases before ambiguous resolution
+ FAIL  tests/skill-claims.test.ts > rejects duplicate canonical IDs or normalized aliases before ambiguous resolution
+ FAIL  tests/skill-claims.test.ts > rejects duplicate canonical IDs or normalized aliases before ambiguous resolution
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-claims.test.ts:64:71
+     62|   [{ ...frontend, aliases: ['frontend', ' FRONTEND '] }, solana],
+     63| ]) it('rejects duplicate canonical IDs or normalized aliases before am…
+     64|   expect(() => resolveSkillAlias({ ...catalog, skills }, 'frontend')).…
+       |                                                                       ^
+     65|   expect(() => update(skills)).toThrow('INVALID_INPUT');
+     66| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > rejects malformed or credentialed supporting references
+ FAIL  tests/skill-claims.test.ts > rejects malformed or credentialed supporting references
+ FAIL  tests/skill-claims.test.ts > rejects malformed or credentialed supporting references
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-claims.test.ts:68:93
+     66| });
+     67| for (const reference of ['http://public.example/proof', 'https://user:…
+     68|   expect(() => prepareSkillClaim(context, { ...input, supportingRefere…
+       |                                                                                             ^
+     69| });
+     70| it('keeps a claim without evidence unverified and rejects normalized d…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > keeps a claim without evidence unverified and rejects normalized duplicate references
+AssertionError: expected null to match object { assessedRank: null, sampleSize: +0 }
+
+- Expected:
+{
+  "assessedRank": null,
+  "sampleSize": 0,
+}
+
++ Received:
+null
+
+ ❯ tests/skill-claims.test.ts:71:78
+     69| });
+     70| it('keeps a claim without evidence unverified and rejects normalized d…
+     71|   expect(prepareSkillClaim(context, { ...input, supportingReferences: …
+       |                                                                              ^
+     72|   expect(() => prepareSkillClaim(context, { ...input, supportingRefere…
+     73| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯
+
+ FAIL  tests/skill-claims.test.ts > rejects unapproved catalog shape and caller approval fields, preserving actual source records
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-claims.test.ts:75:100
+     73| });
+     74| it('rejects unapproved catalog shape and caller approval fields, prese…
+     75|   expect(() => prepareSkillClaim({ ...context, taxonomy: { ...catalog,…
+       |                                                                                                    ^
+     76|   expect(() => update([{ ...frontend, assessedRank: 'S' }, solana])).t…
+     77|   const original = structuredClone(catalog);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/19]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  19 failed (19)
+   Start at  19:41:20
+   Duration  349ms (transform 54ms, setup 0ms, import 72ms, tests 34ms, environment 0ms)
