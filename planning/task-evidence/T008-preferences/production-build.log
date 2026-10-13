@@ -1,0 +1,78 @@
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 36ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 23.6s
+  Running TypeScript ...
+  Finished TypeScript in 30.5s ...
+  Collecting page data using 3 workers ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  Generating static pages using 3 workers (0/18) ...
+  Generating static pages using 3 workers (4/18)
+  Generating static pages using 3 workers (8/18)
+  Generating static pages using 3 workers (13/18)
+✓ Generating static pages using 3 workers (18/18) in 267ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /admin
+├ ƒ /api/admin/[action]
+├ ƒ /api/admin/payments
+├ ƒ /api/admin/usdc
+├ ƒ /api/auth/[action]
+├ ƒ /api/auth/x
+├ ƒ /api/auth/x/callback
+├ ƒ /api/auth/x/disconnect
+├ ƒ /api/balance
+├ ƒ /api/balance/[action]
+├ ƒ /api/discovery
+├ ƒ /api/events
+├ ƒ /api/health
+├ ƒ /api/launch/[id]
+├ ƒ /api/launch/[id]/enroll
+├ ƒ /api/launch/[id]/renew
+├ ƒ /api/launch/[id]/retry
+├ ƒ /api/launch/[id]/submit
+├ ƒ /api/launch/prepare
+├ ƒ /api/launch/upload
+├ ƒ /api/media/[id]
+├ ƒ /api/raids
+├ ƒ /api/raids/[id]
+├ ƒ /api/raids/[id]/brief
+├ ƒ /api/raids/[id]/disputes
+├ ƒ /api/raids/[id]/enroll
+├ ƒ /api/raids/[id]/fund
+├ ƒ /api/raids/[id]/report
+├ ƒ /api/raids/[id]/resolve
+├ ƒ /api/raids/[id]/submit
+├ ƒ /api/studio/image
+├ ƒ /api/studio/preview
+├ ƒ /api/studio/quote
+├ ƒ /api/studio/sandbox
+├ ƒ /api/tokens/[mint]
+├ ƒ /api/v1/me/orientation
+├ ƒ /api/wallet/challenge
+├ ƒ /api/wallet/verify
+├ ƒ /creator
+├ ƒ /creator/account
+├ ƒ /creator/balance
+├ ƒ /creator/new
+├ ƒ /creator/raids/[id]
+├ ○ /icon.svg
+├ ƒ /launch
+├ ƒ /methodology
+├ ƒ /privacy
+├ ƒ /raider/onboarding
+├ ƒ /raids/[id]
+├ ƒ /studio-test
+├ ƒ /test-center
+└ ƒ /tokens/[mint]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand

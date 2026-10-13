@@ -1,0 +1,167 @@
+raid-t008-preferences-auto-20261013
+OWNED DATABASE: raid-t008-preferences-auto-20261013 loopback port 32772
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32772"
+
+23 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+OWNED PREVIEW SOURCE /tmp/raid-t008-ui-source-wpfte3uh
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 2 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  1 [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps (22.3s)
+  ✘  2 [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps (7.5s)
+
+
+  1) [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Raider orientation', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Raider orientation', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Raider orientation', exact: true })
+
+
+      37 |   await expect(
+      38 |     page.getByRole('heading', { name: 'Raider orientation', exact: true }),
+    > 39 |   ).toBeVisible();
+         |     ^
+      40 |   await fill(page);
+      41 |   await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+      42 |   await expect(page.getByRole('status')).toContainText('Preferences saved');
+        at /work/tests/browser-live/raider-onboarding.spec.ts:39:5
+
+    Error Context: test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-desktop/error-context.md
+
+    Error Context: test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Raider orientation', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Raider orientation', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Raider orientation', exact: true })
+
+
+      37 |   await expect(
+      38 |     page.getByRole('heading', { name: 'Raider orientation', exact: true }),
+    > 39 |   ).toBeVisible();
+         |     ^
+      40 |   await fill(page);
+      41 |   await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+      42 |   await expect(page.getByRole('status')).toContainText('Preferences saved');
+        at /work/tests/browser-live/raider-onboarding.spec.ts:39:5
+
+    Error Context: test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-mobile/error-context.md
+
+    Error Context: test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding/raider-onboarding-saves-pr-3d0c5-and-shows-honest-next-steps-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
+    [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t008-ui-source-wpfte3uh/test-results
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

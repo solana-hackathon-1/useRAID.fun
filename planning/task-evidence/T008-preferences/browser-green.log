@@ -1,0 +1,253 @@
+raid-t008-preferences-auto-20261013
+OWNED DATABASE: raid-t008-preferences-auto-20261013 loopback port 32776
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32776"
+
+23 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+OWNED PREVIEW SOURCE /tmp/raid-t008-ui-source-xzr_8u1i
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 6 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  1 [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps (13.5s)
+  ✘  2 [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once (4.6s)
+  ✘  3 [desktop] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft (3.2s)
+  ✓  4 [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps (5.7s)
+  ✘  5 [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once (3.2s)
+  ✘  6 [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft (3.1s)
+
+
+  1) [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "Retry"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">The save could not be confirmed. Retry with the s…</p> aka getByText('The save could not be')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        5 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      78 |   });
+      79 |   await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    > 80 |   await expect(page.getByRole('alert')).toContainText('Retry');
+         |                                         ^
+      81 |   await expect(page.getByLabel('Timezone', { exact: true })).toHaveValue('Asia/Kathmandu');
+      82 |   await page.getByRole('button', { name: 'Retry save', exact: true }).click();
+      83 |   await expect(page.getByRole('status')).toContainText('Preferences saved');
+        at /work/tests/browser-live/raider-onboarding.spec.ts:80:41
+
+    Error Context: test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/error-context.md
+
+    Error Context: test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "changed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">Saved preferences changed. Reload the saved revis…</p> aka getByText('Saved preferences changed.')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      112 |   });
+      113 |   await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    > 114 |   await expect(page.getByRole('alert')).toContainText('changed');
+          |                                         ^
+      115 |   await expect(page.getByLabel('Portfolio URL (optional)')).toHaveValue(
+      116 |     'https://portfolio.example/fixture',
+      117 |   );
+        at /work/tests/browser-live/raider-onboarding.spec.ts:114:41
+
+    Error Context: test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-desktop/error-context.md
+
+    Error Context: test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "Retry"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">The save could not be confirmed. Retry with the s…</p> aka getByText('The save could not be')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        3 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      78 |   });
+      79 |   await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    > 80 |   await expect(page.getByRole('alert')).toContainText('Retry');
+         |                                         ^
+      81 |   await expect(page.getByLabel('Timezone', { exact: true })).toHaveValue('Asia/Kathmandu');
+      82 |   await page.getByRole('button', { name: 'Retry save', exact: true }).click();
+      83 |   await expect(page.getByRole('status')).toContainText('Preferences saved');
+        at /work/tests/browser-live/raider-onboarding.spec.ts:80:41
+
+    Error Context: test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-mobile/error-context.md
+
+    Error Context: test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "changed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">Saved preferences changed. Reload the saved revis…</p> aka getByText('Saved preferences changed.')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      112 |   });
+      113 |   await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    > 114 |   await expect(page.getByRole('alert')).toContainText('changed');
+          |                                         ^
+      115 |   await expect(page.getByLabel('Portfolio URL (optional)')).toHaveValue(
+      116 |     'https://portfolio.example/fixture',
+      117 |   );
+        at /work/tests/browser-live/raider-onboarding.spec.ts:114:41
+
+    Error Context: test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-mobile/error-context.md
+
+    Error Context: test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding/raider-onboarding-experien-f1971-ed-save-preserves-the-draft-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
+    [desktop] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
+    [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
+    [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
+  2 passed (52.2s)
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t008-ui-source-xzr_8u1i/test-results
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

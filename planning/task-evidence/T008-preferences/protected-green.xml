@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="41" failures="0" errors="0" time="3.647535392">
+    <testsuite name="tests/raider-onboarding-db.test.ts" timestamp="2026-10-13T00:57:30.148Z" hostname="ubu2" tests="23" failures="0" errors="0" skipped="0" time="3.522441933">
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; has additive private projection/version tables and restrictive references" time="0.125387796">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; creates a private recorded version for its own wallet session without granting skill or capacity" time="0.10656407">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences" time="0.122389036">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays the immutable original response after later updates and rejects changed bodies" time="0.168342119">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays its original version after host catalog retirement while new unsupported interests fail closed" time="0.134031307">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; blocks new writes but preserves original replay when the host disables creation" time="0.131395852">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; serializes duplicate receipts and same-revision competing writes without partial effects" time="0.182954175">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rolls back a failed transaction and retries the whole original command identity" time="0.136186173">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted actorAccountId and foreign authority without any mutation" time="0.137590283">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted accountId and foreign authority without any mutation" time="0.086814073">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted sessionHash and foreign authority without any mutation" time="0.09038243">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority rank" time="0.085889498">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority accountId" time="0.085302157">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority sessionHash" time="0.104949248">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority verified" time="0.085126575">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority reservesCapacity" time="0.111869832">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects suspended and expired authority including reads and receipt replay" time="0.154715859">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks expire committed during an observed account lock wait" time="0.314666581">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:97,&quot;waiter&quot;:95,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks revoke committed during an observed account lock wait" time="0.158222273">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:97,&quot;waiter&quot;:95,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks suspend committed during an observed account lock wait" time="0.156845954">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:97,&quot;waiter&quot;:95,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; checks the database clock after the real Session lock wait rather than transaction start" time="0.356363485">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:97,&quot;waiter&quot;:95,&quot;query&quot;:&quot;FOR SHARE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects unaudited versions, foreign participant provenance and injected stored privilege fields at commit" time="0.253975116">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; guards immutable versions, provenance, revision pointers and unaudited direct changes" time="0.214396366">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raider-onboarding-host.test.ts" timestamp="2026-10-13T00:57:30.155Z" hostname="ubu2" tests="6" failures="0" errors="0" skipped="0" time="0.018985966">
+        <testcase classname="tests/raider-onboarding-host.test.ts" name="requires exact default-off flag and a valid explicit host catalog for new writes" time="0.010550117">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-host.test.ts" name="fails closed on invalid catalog &quot;&quot; while preserving owned reads" time="0.00132541">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-host.test.ts" name="fails closed on invalid catalog &quot;invalid&quot; while preserving owned reads" time="0.000892899">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-host.test.ts" name="fails closed on invalid catalog &quot;[]&quot; while preserving owned reads" time="0.001237311">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-host.test.ts" name="fails closed on invalid catalog &quot;[{\&quot;id\&quot;:\&quot;qa\&quot;,\&quot;label\&quot;:\&quot;QA\&quot;},{\&quot;id\&quot;:\&quot;qa\&quot;,\&quot;label\&quot;:\&quot;Other\&quot;}]&quot; while preserving owned reads" time="0.001178758">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-host.test.ts" name="fails closed on invalid catalog &quot;[{\&quot;id\&quot;:\&quot;qa\&quot;,\&quot;label\&quot;:\&quot;QA\&quot;,\&quot;rank\&quot;:\&quot;S\&quot;}]&quot; while preserving owned reads" time="0.001251438">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raider-onboarding-routes.test.ts" timestamp="2026-10-13T00:57:30.156Z" hostname="ubu2" tests="12" failures="0" errors="0" skipped="0" time="0.106107493">
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="resolves account and session only from the own server cookie and returns private no-store data" time="0.072570735">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="denies missing authentication and missing own cookie without a storage call" time="0.002787712">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="rejects foreign request origins, injected fields and invalid keys before saving" time="0.006324334">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="bounds streamed input even when content-length is absent or lies" time="0.001689319">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="denies malformed JSON and non-JSON content without forwarding private details" time="0.001576714">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="maps REVISION_CONFLICT to a sanitized error" time="0.00214817">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="maps ACCOUNT_RESTRICTED to a sanitized error" time="0.001519455">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="maps UNAUTHENTICATED to a sanitized error" time="0.00117686">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="maps STORAGE_UNAVAILABLE to a sanitized error" time="0.001629119">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="maps idempotency conflicts, retryable storage failures and rate denial" time="0.002464746">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="never logs an unknown driver failure or its private message" time="0.002159633">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-routes.test.ts" name="times out a stalled request stream and releases its owned reader" time="0.007458435">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, it } from 'vitest';
 
-it('orientation preparation has no application singleton, identity mutation or privileged SDK', async () => {
+it('onboarding entry points have no application singleton, framework or privileged SDK', async () => {
   for (const name of await readdir('src/raider-onboarding')) {
     const source = await readFile(join('src/raider-onboarding', name), 'utf8');
     expect(source).not.toMatch(

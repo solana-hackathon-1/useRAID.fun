@@ -27,6 +27,8 @@ model User {
   mediaAssets MediaAsset[]
   participant Participant?
   walletLinks WalletLink[]
+  raiderPreferences RaiderPreferences?
+  raiderPreferenceVersions RaiderPreferenceVersion[]
 }
 // Immutable HUMAN foundation; checks/row guard live in the additive SQL migration.
 model Participant {
@@ -38,6 +40,8 @@ model Participant {
   provisionRequestId String
   account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   walletLinks WalletLink[]
+  raiderPreferences RaiderPreferences[]
+  raiderPreferenceVersions RaiderPreferenceVersion[]
   @@unique([id, accountId])
 }
 // Additional verified wallet credentials; checks, guard and exclusivity triggers live in the SQL migration.
@@ -635,6 +639,7 @@ model CommandReceipt {
   resultRef String?
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   auditEvents AuditEvent[]
+  orientationVersion RaiderPreferenceVersion?
   @@unique([actorId, commandKind, idempotencyKey])
 }
 model InboxDelivery {
@@ -673,4 +678,32 @@ model OutboxEvent {
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   event AuditEvent @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   @@index([createdAt])
+}
+
+// Private unpaid orientation. Payload/identity/revision/commit guards live in the additive SQL migration.
+model RaiderPreferenceVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId String
+  participantId String @db.Uuid
+  revision Int
+  preferences Json @db.JsonB
+  receiptId String @unique(map: "RaiderPreferenceVersion_receiptId_key") @db.Uuid
+  actorAccountId String
+  requestId String
+  recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferenceVersion_account_fkey")
+  participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferenceVersion_participant_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferenceVersion_receipt_fkey")
+  currentProjections RaiderPreferences[]
+  @@unique([accountId, revision], map: "RaiderPreferenceVersion_account_revision_key")
+  @@unique([id, accountId, participantId, revision], map: "RaiderPreferenceVersion_pointer_key")
+}
+model RaiderPreferences {
+  accountId String @id
+  participantId String @db.Uuid
+  revision Int
+  currentVersionId String @db.Uuid
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferences_account_fkey")
+  participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferences_participant_fkey")
+  currentVersion RaiderPreferenceVersion @relation(fields: [currentVersionId, accountId, participantId, revision], references: [id, accountId, participantId, revision], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferences_version_fkey")
 }

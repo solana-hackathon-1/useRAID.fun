@@ -1,0 +1,185 @@
+{
+  "task_id": "T008",
+  "scope": "T008B protected private preferences/storage/API/form; bounded staging source only, real starter/trial/assessment and full acceptance missing",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "8cb769656b3ffb7135d12fb1829e3891fbea4e02",
+  "source_identity": "Implementation commit 8cb769656b3ffb7135d12fb1829e3891fbea4e02; product hashes/verified build parity in T008-preferences/review.json. Subsequent evidence/metadata only.",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T008-preferences.md",
+  "migration_rollback": "Additive202610130001; no prior migration rewrite/backfill; disable newwrites and retain acknowledged versions/projection/receipt/audit/HUMAN mapping on application rollback",
+  "dependency_evidence": [
+    "T007 bounded mainc50a60f exact hosted1196passes; fullT006/T007 independent acceptance remains absent",
+    "T008-contract actualRED/GREEN/refactor/146regression/independent consuming-host evidence"
+  ],
+  "open_decisions": [
+    "Protected preference/privacy/retention/recovery and skill/trial/capacity/payout dependencies remain unresolved for full feature"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging publication only; newwrites defaultoff; ownedreads/originalreplay preserved. No actual starter/trial/rank/paidwork/provider/financial enablement. Public ingress/independent/UAT/O11/G10 remain NOTVERIFIED",
+  "criteria": {
+    "T008-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    },
+    "T008-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Protected private-preference tests/build/realDB/browser/independent host supply bounded evidence; complete criterion and independent full T008 acceptance absent.",
+      "evidence": "docs/tasks/2026-10-13-T008-preferences.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "python3 /tmp/raid-t008-db-run.py node_modules/.bin/vitest run tests/raider-onboarding-db.test.ts -t \"has additive|creates a private\"",
+      "sha": "a2b93b7304763ea91c8b3b611b796c945c62ad74",
+      "source_identity": "Base a2b93b7 plus then-uncommitted tests/executable stub; no standalone preimplementation commit. Genuine logs/XML preserved, not represented as tested clean HEAD.",
+      "evidence_url": "planning/task-evidence/T008-preferences/red.log",
+      "expected_failure": "Private projection/version absent and executable storage stub refuses saving",
+      "observed_failure": "2fail18filtered: catalog empty and STORAGE_UNAVAILABLE",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "vitest run protected storage/routes/host",
+      "sha": "a2b93b7304763ea91c8b3b611b796c945c62ad74",
+      "source_identity": "Then-uncommitted implementation over base, genuine logs/XML; not clean HEAD",
+      "evidence_url": "planning/task-evidence/T008-preferences/protected-green.log",
+      "observed": "41PASS (23DB12routes6host)",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "python3 /tmp/raid-t008-db-run.py node_modules/.bin/vitest run --reporter=default --reporter=junit",
+      "sha": "a2b93b7304763ea91c8b3b611b796c945c62ad74",
+      "source_identity": "Uncommitted final product over base, product parity with verified build recorded; later metadata/discovery checks separate",
+      "evidence_url": "planning/task-evidence/T008-preferences/regression.log",
+      "observed": "108files1265PASS;8browser+99targeteddelivery separate",
+      "result": "PASS"
+    }
+  },
+  "ci": {}
+}

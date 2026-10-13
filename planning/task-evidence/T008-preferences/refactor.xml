@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="72" failures="0" errors="0" time="3.16731205">
+    <testsuite name="tests/raider-onboarding-db.test.ts" timestamp="2026-10-13T00:41:41.724Z" hostname="ubu2" tests="22" failures="0" errors="0" skipped="0" time="3.046206026">
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; has additive private projection/version tables and restrictive references" time="0.13631201">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; creates a private recorded version for its own wallet session without granting skill or capacity" time="0.099668139">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences" time="0.121355725">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays the immutable original response after later updates and rejects changed bodies" time="0.151271935">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays its original version after host catalog retirement while new unsupported interests fail closed" time="0.125122303">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; serializes duplicate receipts and same-revision competing writes without partial effects" time="0.154796345">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rolls back a failed transaction and retries the whole original command identity" time="0.130553709">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted actorAccountId and foreign authority without any mutation" time="0.08757545">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted accountId and foreign authority without any mutation" time="0.081573409">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted sessionHash and foreign authority without any mutation" time="0.0874516">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority rank" time="0.081936337">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority accountId" time="0.08331567">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority sessionHash" time="0.083002406">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority verified" time="0.095431962">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority reservesCapacity" time="0.09337053">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects suspended and expired authority including reads and receipt replay" time="0.12075537">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks expire committed during an observed account lock wait" time="0.25628272">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:104,&quot;waiter&quot;:102,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks revoke committed during an observed account lock wait" time="0.142822879">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:104,&quot;waiter&quot;:102,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks suspend committed during an observed account lock wait" time="0.113613825">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:104,&quot;waiter&quot;:102,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; checks the database clock after the real Session lock wait rather than transaction start" time="0.32222525">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:104,&quot;waiter&quot;:102,&quot;query&quot;:&quot;FOR SHARE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects unaudited versions, foreign participant provenance and injected stored privilege fields at commit" time="0.27693193">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; guards immutable versions, provenance, revision pointers and unaudited direct changes" time="0.190167235">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raider-onboarding-event.test.ts" timestamp="2026-10-13T00:41:41.732Z" hostname="ubu2" tests="1" failures="0" errors="0" skipped="0" time="0.009800405">
+        <testcase classname="tests/raider-onboarding-event.test.ts" name="supports the identifier-only private onboarding audit without copying preferences" time="0.007723401">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raider-onboarding.test.ts" timestamp="2026-10-13T00:41:41.732Z" hostname="ubu2" tests="18" failures="0" errors="0" skipped="0" time="0.055094712">
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; prepares a beginner route without inventing completion, rank, capacity or payment authority" time="0.034099218">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through PORTFOLIO evidence" time="0.001348066">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; routes experienced newcomers directly through TRIAL evidence" time="0.000855069">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; allows a beginner to choose a relevant trial without requiring earned rank first" time="0.001009566">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; reports unavailable starter work rather than linking an unimplemented route" time="0.001568711">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; accepts a host replacement without rewriting preferences or granting eligibility" time="0.001830018">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; retains opaque catalog identifiers from the shared InternalId contract" time="0.00115582">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; normalizes an unordered interest set without mutating caller data" time="0.001274801">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.001705363">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000968801">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000702307">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000630219">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000562306">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects invalid or privilege-bearing input without echoing private values" time="0.000935673">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action https://foreign.example/trial" time="0.001385993">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action //foreign.example/trial" time="0.000472457">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects an external or ambiguous host action /\foreign.example/trial" time="0.000372121">
+        </testcase>
+        <testcase classname="tests/raider-onboarding.test.ts" name="T008 reusable orientation preparation &gt; rejects success-shaped unavailable capabilities" time="0.000442296">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/shared-contracts.test.ts" timestamp="2026-10-13T00:41:41.735Z" hostname="ubu2" tests="31" failures="0" errors="0" skipped="0" time="0.056210907">
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 canonical identity and public boundary &gt; keeps account, participant, Guild and terms identifiers distinct" time="0.005248276">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 canonical identity and public boundary &gt; requires the accountable identity appropriate to each participant kind" time="0.005769342">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 canonical identity and public boundary &gt; supports a pending Guild without a token and rejects private public fields" time="0.002720179">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; requires mint/program for tokens and forbids either on native SOL" time="0.004332067">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; never keys an asset by display ticker or policy revision" time="0.00440854">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1" time="0.000615263">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1.5" time="0.000423491">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount -1" time="0.000395305">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1.5" time="0.000727339">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 1e6" time="0.000413418">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount " time="0.000403821">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount 01" time="0.000263894">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects noncanonical raw amount +1" time="0.000232388">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; round trips large amounts exactly and handles zero/precision without float arithmetic" time="0.0011103">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount -1" time="0.000393418">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 1e6" time="0.000216306">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 1.0000001" time="0.00026892">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount  1" time="0.00021143">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount .5" time="0.000174521">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 1." time="0.000165912">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; rejects invalid display amount 01" time="0.000162457">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 exact instrument and amount contracts &gt; uses host bounds and checked precision" time="0.001578625">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 accepted terms and engagement references &gt; freezes parsed terms, roster, rewards and policy snapshots" time="0.004267635">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 accepted terms and engagement references &gt; rejects duplicate members, unassigned beneficiaries and unbounded/reversed deadlines" time="0.002975992">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 accepted terms and engagement references &gt; binds exactly one execution source and terms to the same Guild" time="0.006769978">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; keeps listing, money, work, access, dispute, transaction and run vocabularies separate" time="0.001323071">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; holds capacity through setup/review and releases terminal work independently of money" time="0.000645606">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; assigns lifecycle mutation to an explicit domain command owner with authority and guard contracts" time="0.002199245">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; plans the same source/operator/participant lock order for all input permutations" time="0.002140967">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; validates retry context without letting a receipt replace authorization" time="0.001526503">
+        </testcase>
+        <testcase classname="tests/shared-contracts.test.ts" name="T002 state, command, error and locking contracts &gt; emits stable safe error envelopes without private exception content" time="0.000742999">
+        </testcase>
+    </testsuite>
+</testsuites>
