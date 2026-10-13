@@ -1,0 +1,19 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-http-boundary.test.ts > documents replaceable authenticated private HTTP contracts and provides an independently installed consumer
+Error: ENOENT: no such file or directory, open 'docs/raid-guild-draft-http.md'
+ ❯ tests/guild-draft-http-boundary.test.ts:4:12
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  12:40:41
+   Duration  587ms (transform 77ms, setup 0ms, import 124ms, tests 16ms, environment 0ms)

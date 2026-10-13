@@ -1,0 +1,192 @@
+{
+  "task_id": "T009",
+  "scope": "T009C1 private authenticated HTTP command/read transport and portable consuming host; no UI/real Guild authority",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "016986125dbe957ff165fbc1c4328ae5e3965b15",
+  "source_identity": "Bounded implementation 016986125dbe957ff165fbc1c4328ae5e3965b15; actual beforecommit source hashes/pre-DDLphase identities retained; fulltask incomplete",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T009-draft-http.md",
+  "migration_rollback": "No new migration; unwire HTTP only, preserve acknowledged private drafts/versions/receipts/audit pending reviewed retention/recovery",
+  "dependency_evidence": [
+    "PR196exact7e5bad7 hosted114files1329+8browser/24migrations/source/build/runtime/privateimage/cleanupPASS",
+    "Own20-package pg host/portableRequestResponse and actual owned NextdevelopmentHTTP preview PASS",
+    "Unresolved real projectFounder/grants/public/UI and independent/UAT/recovery gate dependencies remain open"
+  ],
+  "open_decisions": [
+    "No actualprojectcontrol/verifiedFounder/token relationship supplied here",
+    "O11/G10 privacy/retention/recovery, independent/UAT/fullactual authorization/storage remainNOTVERIFIED"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging source only; no actualGuild/profile/role/Founder/token/treasury/privateaccess/ownership activation; full independent/UAT and real authorization/storage evidence absent",
+  "criteria": {
+    "T009-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-W04": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    },
+    "T009-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Bounded private HTTP/store/host/preview evidence only; full GuildFounder/project/grant/public/UI/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-http.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "vitest run guilddraft routes/host",
+      "sha": "7e5bad78dce472e883cf3efd688b847dc448beca",
+      "source_identity": "Then-uncommitted executable stubs/tests before HTTP implementation; no cleanHEAD/retrospectivecommit claim",
+      "evidence_url": "planning/task-evidence/T009-http/red.log",
+      "result": "FAIL",
+      "expected_failure": "PrivateHTTP/context/body/configuration not implemented",
+      "observed_failure": "19cases17FAIL2baselinePASS"
+    },
+    "green": {
+      "command": "vitest routes/host/orientation/shared",
+      "sha": "7e5bad78dce472e883cf3efd688b847dc448beca",
+      "source_identity": "Uncommitted coreHTTP over base, actual initialGREEN",
+      "evidence_url": "planning/task-evidence/T009-http/green.log",
+      "result": "PASS",
+      "observed": "4files62PASS; later responsebindingRED/GREEN retained"
+    },
+    "refactor": {
+      "command": "Affected11file regression then envdoc correction and finaldocs/env",
+      "sha": "7e5bad78dce472e883cf3efd688b847dc448beca",
+      "source_identity": "Exact final core hashes;207unchangedpassing checks reused; final4files104docs/envPASS, 5targetedenvPASS and portablehost/realHTTPpreview",
+      "evidence_url": "planning/task-evidence/T009-http/docs-final.log",
+      "result": "PASS",
+      "observed": "Initial207PASS1envdocFAIL preserved, fixed documented dependency with assertions unchanged; final104docs/envPASS"
+    }
+  },
+  "ci": {}
+}

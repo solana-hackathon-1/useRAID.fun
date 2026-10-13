@@ -1,0 +1,31 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+·················x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > rejects a valid DTO that belongs to another requested draft or command snapshot
+AssertionError: expected 200 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 200
+
+ ❯ tests/guild-draft-routes.test.ts:249:32
+    247| it('rejects a valid DTO that belongs to another requested draft or com…
+    248|   mocks.state.mockResolvedValue({version:'v1',draft:{...draft,id:'2222…
+    249|   expect((await get()).status).toBe(503);
+       |                                ^
+    250|   mocks.save.mockResolvedValue({status:'EXECUTED',draft:{...draft,prof…
+    251|   expect((await post()).status).toBe(503);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  12:37:56
+   Duration  680ms (transform 228ms, setup 0ms, import 415ms, tests 97ms, environment 0ms)

@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+············································································································x···································································································
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/env-example.test.ts > .env.example > documents every variable the application reads
+AssertionError: expected [ 'GUILD_DRAFT_HTTP_PREVIEW_URL' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "GUILD_DRAFT_HTTP_PREVIEW_URL",
++ ]
+
+ ❯ tests/env-example.test.ts:34:21
+     32|     }
+     33|     const missing = [...used].filter((name) => !documented.has(name) &…
+     34|     expect(missing).toEqual([]);
+       |                     ^
+     35|   });
+     36|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 10 passed (11)
+      Tests  1 failed | 207 passed (208)
+   Start at  12:45:31
+   Duration  5.82s (transform 493ms, setup 0ms, import 1.78s, tests 1.70s, environment 2ms)
