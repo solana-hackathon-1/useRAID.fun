@@ -4,8 +4,8 @@
   "status": "IN_PROGRESS",
   "implementer": "Codex /root",
   "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
-  "code_source_sha": null,
-  "source_identity": "UNCOMMITTED relative to main547f0fb4ded38c4d372036a5ebeac1b9292c870d; genuine missing-page browser RED/first loader failure/final hashes recorded separately",
+  "code_source_sha": "63358b6fe31298c075590e694a828c53b2023ad6",
+  "source_identity": "Bounded implementation 63358b6fe31298c075590e694a828c53b2023ad6; actualRED tests/config uncommitted relative to547 and originalfirstGREEN/source snapshots preserved",
   "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
   "handoff": "docs/tasks/2026-10-13-T010-proposal-form.md",
   "migration_rollback": "No DDL; remove UI/root loader/link, preserve existing25-schema immutable proposal history/private receipts/API replay",
@@ -238,14 +238,14 @@
     },
     "green": {
       "command": "Same two owner cases after explicit readGuildDraft import, plus eight adverse cases",
-      "sha": null,
+      "sha": "63358b6fe31298c075590e694a828c53b2023ad6",
       "evidence_url": "planning/task-evidence/T010-proposal-form/browser-loader-fixed.log",
       "observed": "2PASS45.4s plus8PASS1.5m; first implemented2FAIL preserved, same assertions/timeouts",
       "result": "PASS"
     },
     "refactor": {
       "command": "Affected six page cases after moving JSX outside try; types/lint/production build/independent consumer/regression",
-      "sha": null,
+      "sha": "63358b6fe31298c075590e694a828c53b2023ad6",
       "evidence_url": "planning/task-evidence/T010-proposal-form/review.json",
       "observed": "SixaffectedpagebrowserPASS1.6m,4matchingadversePASSreused; final150+11regression/5requirements/strictbuild-types/lint/wholeformatter/independentPG-andReact PASS",
       "result": "PASS"
