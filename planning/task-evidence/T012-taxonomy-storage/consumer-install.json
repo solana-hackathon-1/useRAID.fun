@@ -1,0 +1,8 @@
+{
+  "command": "npm ci --no-audit --no-fund",
+  "source": "/tmp/raid-t012-taxonomy-consumer-cpituc8n",
+  "result": "PASS",
+  "exit_code": 0,
+  "observed": "Actual tool command added20packages947ms; own node_modules, no Root dependency symlink",
+  "lock_sha256": "01797af61f1f34e914fa07fd708ac2a22fdddeadc86a8f10ead941daa56b22f7"
+}

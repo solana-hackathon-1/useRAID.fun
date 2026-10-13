@@ -1,0 +1,108 @@
+import { beforeAll, beforeEach, afterAll, describe, expect, it } from 'vitest';
+import { randomUUID } from 'node:crypto';
+import { db } from '../src/lib/db';
+import { hash } from '../src/lib/auth-primitives';
+import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
+import { publishSkillTaxonomy, readPublishedSkillTaxonomy, type SkillTaxonomyActor } from '../src/skills/taxonomy-storage';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
+const skills = [{ id: 'frontend', domain: 'software.frontend', name: 'Frontend', status: 'ACTIVE', aliases: ['frontend', 'web-ui'] }, { id: 'solana', domain: 'blockchain.solana', name: 'Solana', status: 'ACTIVE', aliases: ['solana'] }];
+const id = 'synthetic-catalog';
+let allowed = new Set<string>();
+async function actor(admin = true, patch = {}) {
+  const xId = 'synthetic-' + randomUUID();
+  const user = await db.user.create({ data: { handle: 'synthetic', role: admin ? 'ADMIN' : 'CREATOR', xId, ...patch } });
+  allowed.add(xId);
+  const sessionHash = hash(randomUUID());
+  await db.session.create({ data: { tokenHash: sessionHash, userId: user.id, via: 'wallet', expiresAt: new Date(Date.now() + 60000) } });
+  return { accountId: user.id, sessionHash };
+}
+const body = (expectedRevision = 0, categories: unknown = skills) => ({ taxonomyId: id, expectedRevision, skills: categories });
+const save = (a: SkillTaxonomyActor, input: unknown = body(), key = randomUUID(), allowNewWrites = true) => runCommandTransaction(db, tx => publishSkillTaxonomy(tx, { actor: a, input, idempotencyKey: key, requestId: 'synthetic-request' }, { allowNewWrites, canPublish: user => allowed.has(user.xId) }));
+const read = (a: SkillTaxonomyActor, catalogId = id) => runCommandTransaction(db, tx => readPublishedSkillTaxonomy(tx, a, catalogId));
+const counts = () => db.$queryRawUnsafe<{ versions: number; receipts: number; audits: number; outbox: number }[]>(`SELECT (SELECT count(*)::int FROM "SkillTaxonomyVersion") versions,(SELECT count(*)::int FROM "CommandReceipt") receipts,(SELECT count(*)::int FROM "AuditEvent") audits,(SELECT count(*)::int FROM "OutboxEvent") outbox`);
+integration('T012B1 durable authorized taxonomy', () => {
+  beforeAll(() => assertTestDatabase());
+  beforeEach(async () => { await truncateAll(db); allowed = new Set(); });
+  afterAll(() => db.$disconnect());
+  it('publishes an actual actor-attributed immutable catalog and private audit without any outbox', async () => {
+    const a = await actor(), value = await save(a);
+    expect(value.status).toBe('EXECUTED');
+    expect(value.taxonomy).toMatchObject({ version: 'v1', id, revision: 1, state: 'PUBLISHED', publishedByAccountId: a.accountId, skills });
+    expect(Number.isNaN(Date.parse(value.taxonomy.publishedAt))).toBe(false);
+    expect(Object.isFrozen(value.taxonomy)).toBe(true);
+    expect(await counts()).toEqual([{ versions: 1, receipts: 1, audits: 1, outbox: 0 }]);
+    expect(await read(a)).toEqual(value.taxonomy);
+  });
+  it('reads absent catalogs as null and lets a current ordinary account read saved catalog data', async () => {
+    const ordinary = await actor(false);
+    expect(await read(ordinary)).toBeNull();
+    const first = await save(await actor());
+    expect(await read(ordinary)).toEqual(first.taxonomy);
+  });
+  it('retains original receipts and historical snapshots after rename/retirement and writes disabled', async () => {
+    const a = await actor(), key = randomUUID(), first = await save(a, body(), key);
+    const changed = [{ ...skills[0], name: 'Web interfaces', status: 'RETIRED', aliases: [...skills[0].aliases, 'react-ui'] }, skills[1]];
+    const second = await save(a, body(1, changed));
+    expect(second.taxonomy).toMatchObject({ revision: 2, skills: changed });
+    expect(await save(a, body(), key, false)).toEqual({ status: 'REPLAYED', taxonomy: first.taxonomy });
+    expect(await read(a)).toEqual(second.taxonomy);
+    expect(await counts()).toEqual([{ versions: 2, receipts: 2, audits: 2, outbox: 0 }]);
+  });
+  it.each(['role', 'xId', 'allowlist', 'suspended'])('rejects publication and replay when current %s authority is removed', async field => {
+    const a = await actor(), key = randomUUID(); await save(a, body(), key);
+    if (field === 'allowlist') allowed.clear();
+    else await db.user.update({ where: { id: a.accountId }, data: field === 'role' ? { role: 'CREATOR' } : field === 'xId' ? { xId: null } : { suspended: true } });
+    const code = field === 'suspended' ? 'ACCOUNT_RESTRICTED' : 'FORBIDDEN';
+    await expect(save(a, body(), key, false)).rejects.toMatchObject({ code });
+    await expect(save(a, body(1))).rejects.toMatchObject({ code });
+    expect(await counts()).toEqual([{ versions: 1, receipts: 1, audits: 1, outbox: 0 }]);
+  });
+  it.each(['foreign', 'expired', 'revoked', 'invalid-via'])('denies %s sessions on publish, replay and read', async kind => {
+    const a = await actor(), key = randomUUID(); await save(a, body(), key);
+    if (kind === 'foreign') a.sessionHash = (await actor()).sessionHash;
+    if (kind === 'expired') await db.session.update({ where: { tokenHash: a.sessionHash }, data: { expiresAt: new Date(0) } });
+    if (kind === 'revoked') await db.session.delete({ where: { tokenHash: a.sessionHash } });
+    if (kind === 'invalid-via') await db.session.update({ where: { tokenHash: a.sessionHash }, data: { via: 'forged' } });
+    for (const work of [save(a, body(), key), save(a, body(1)), read(a)]) await expect(work).rejects.toMatchObject({ code: 'AUTHENTICATION_REQUIRED' });
+  });
+  it('denies role-only/ordinary/holder-like actors, and exposes digest conflicts only to current authorized publishers', async () => {
+    await expect(save(await actor(false))).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const a = await actor(), key = randomUUID(); await save(a, body(), key);
+    await expect(save(a, body(1), key)).rejects.toMatchObject({ code: 'IDEMPOTENCY_KEY_REUSED' });
+    allowed.clear();
+    await expect(save(a, body(1), key)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  });
+  it.each(['id', 'domain', 'alias'])('rejects loss or reassignment of stable %s history without prepared effects', async field => {
+    const a = await actor(); await save(a);
+    const changed = skills.map(s => ({ ...s, aliases: [...s.aliases] }));
+    if (field === 'id') changed.shift();
+    if (field === 'domain') changed[0].domain = 'blockchain.solana';
+    if (field === 'alias') changed[0].aliases = ['new-alias'];
+    await expect(save(a, body(1, changed))).rejects.toMatchObject({ code: 'HISTORY_CONFLICT' });
+    expect(await counts()).toEqual([{ versions: 1, receipts: 1, audits: 1, outbox: 0 }]);
+  });
+  it('rejects stale revisions/new disabled writes and rejects client publication/admin fields', async () => {
+    const a = await actor(); await save(a);
+    await expect(save(a)).rejects.toMatchObject({ code: 'REVISION_CHANGED' });
+    await expect(save(a, body(1), randomUUID(), false)).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
+    for (const field of ['publishedByAccountId', 'publishedAt', 'isAdmin', 'state', 'assessedRank']) await expect(save(a, { ...body(1), [field]: 'forged' })).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    expect(await counts()).toEqual([{ versions: 1, receipts: 1, audits: 1, outbox: 0 }]);
+  });
+  it.each([0, 1])('serializes two different admins at revision %i with exactly one winner', async revision => {
+    const a = await actor(), b = await actor(); if (revision) await save(a);
+    const result = await Promise.allSettled([save(a, body(revision)), save(b, body(revision))]);
+    expect(result.filter(r => r.status === 'fulfilled')).toHaveLength(1);
+    const rejected = result.find(r => r.status === 'rejected');
+    expect(rejected).toMatchObject({ reason: { code: 'REVISION_CHANGED' } });
+    expect((await read(a))?.revision).toBe(revision + 1);
+    expect(await counts()).toEqual([{ versions: revision + 1, receipts: revision + 1, audits: revision + 1, outbox: 0 }]);
+  });
+  it('concurrent same-identity retries publish one immutable result', async () => {
+    const a = await actor(), key = randomUUID();
+    const results = await Promise.all([save(a, body(), key), save(a, body(), key)]);
+    expect(results.map(r => r.status).sort()).toEqual(['EXECUTED', 'REPLAYED']);
+    expect(results[0].taxonomy).toEqual(results[1].taxonomy);
+    expect(await counts()).toEqual([{ versions: 1, receipts: 1, audits: 1, outbox: 0 }]);
+  });
+});

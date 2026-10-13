@@ -1,0 +1,978 @@
+{
+  "run": {
+    "id": 38419201025,
+    "name": "Checks",
+    "node_id": "WFR_kwLOUuASEc8AAAAI8fZ8AQ",
+    "head_branch": "main",
+    "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+    "path": ".github/workflows/checks.yml",
+    "display_title": "Checks",
+    "run_number": 125,
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "workflow_id": 368182197,
+    "check_suite_id": 104098334619,
+    "check_suite_node_id": "CS_kwDOUuASEc8AAAAYPL6Hmw",
+    "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+    "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+    "pull_requests": [],
+    "created_at": "2026-10-13T15:06:39Z",
+    "updated_at": "2026-10-13T15:18:44Z",
+    "actor": {
+      "login": "rpandox",
+      "id": 88703488,
+      "node_id": "MDQ6VXNlcjg4NzAzNDg4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/88703488?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rpandox",
+      "html_url": "https://github.com/rpandox",
+      "followers_url": "https://api.github.com/users/rpandox/followers",
+      "following_url": "https://api.github.com/users/rpandox/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rpandox/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rpandox/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rpandox/subscriptions",
+      "organizations_url": "https://api.github.com/users/rpandox/orgs",
+      "repos_url": "https://api.github.com/users/rpandox/repos",
+      "events_url": "https://api.github.com/users/rpandox/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rpandox/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "run_attempt": 1,
+    "referenced_workflows": [],
+    "run_started_at": "2026-10-13T15:06:39Z",
+    "triggering_actor": {
+      "login": "rpandox",
+      "id": 88703488,
+      "node_id": "MDQ6VXNlcjg4NzAzNDg4",
+      "avatar_url": "https://avatars.githubusercontent.com/u/88703488?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/rpandox",
+      "html_url": "https://github.com/rpandox",
+      "followers_url": "https://api.github.com/users/rpandox/followers",
+      "following_url": "https://api.github.com/users/rpandox/following{/other_user}",
+      "gists_url": "https://api.github.com/users/rpandox/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/rpandox/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/rpandox/subscriptions",
+      "organizations_url": "https://api.github.com/users/rpandox/orgs",
+      "repos_url": "https://api.github.com/users/rpandox/repos",
+      "events_url": "https://api.github.com/users/rpandox/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/rpandox/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "jobs_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/jobs",
+    "logs_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/logs",
+    "check_suite_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-suites/104098334619",
+    "artifacts_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/artifacts",
+    "cancel_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/cancel",
+    "rerun_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/rerun",
+    "previous_attempt_url": null,
+    "workflow_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/workflows/368182197",
+    "head_commit": {
+      "id": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "tree_id": "c3cfbe23ba2863ddbdf7c3dad30e09b66674771c",
+      "message": "Merge pull request #208 from solana-hackathon-1/codex/t006-linked-wallet-signin\n\nPreserve skill taxonomy identity and prepare private unverified claims",
+      "timestamp": "2026-10-13T15:02:34Z",
+      "author": {
+        "name": "Roshan Pandey",
+        "email": "88703488+rpandox@users.noreply.github.com"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com"
+      }
+    },
+    "repository": {
+      "id": 1390416401,
+      "node_id": "R_kgDOUuASEQ",
+      "name": "useRAID.fun",
+      "full_name": "solana-hackathon-1/useRAID.fun",
+      "private": true,
+      "owner": {
+        "login": "solana-hackathon-1",
+        "id": 338567802,
+        "node_id": "O_kgDOFC4ieg",
+        "avatar_url": "https://avatars.githubusercontent.com/u/338567802?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/solana-hackathon-1",
+        "html_url": "https://github.com/solana-hackathon-1",
+        "followers_url": "https://api.github.com/users/solana-hackathon-1/followers",
+        "following_url": "https://api.github.com/users/solana-hackathon-1/following{/other_user}",
+        "gists_url": "https://api.github.com/users/solana-hackathon-1/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/solana-hackathon-1/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/solana-hackathon-1/subscriptions",
+        "organizations_url": "https://api.github.com/users/solana-hackathon-1/orgs",
+        "repos_url": "https://api.github.com/users/solana-hackathon-1/repos",
+        "events_url": "https://api.github.com/users/solana-hackathon-1/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/solana-hackathon-1/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun",
+      "description": "Solana community attention discovery and campaign platform",
+      "fork": false,
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun",
+      "forks_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/forks",
+      "keys_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/teams",
+      "hooks_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/hooks",
+      "issue_events_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/events",
+      "assignees_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/tags",
+      "blobs_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/languages",
+      "stargazers_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/stargazers",
+      "contributors_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/contributors",
+      "subscribers_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/subscribers",
+      "subscription_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/subscription",
+      "commits_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/merges",
+      "archive_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/downloads",
+      "issues_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/labels{/name}",
+      "releases_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/deployments"
+    },
+    "head_repository": {
+      "id": 1390416401,
+      "node_id": "R_kgDOUuASEQ",
+      "name": "useRAID.fun",
+      "full_name": "solana-hackathon-1/useRAID.fun",
+      "private": true,
+      "owner": {
+        "login": "solana-hackathon-1",
+        "id": 338567802,
+        "node_id": "O_kgDOFC4ieg",
+        "avatar_url": "https://avatars.githubusercontent.com/u/338567802?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/solana-hackathon-1",
+        "html_url": "https://github.com/solana-hackathon-1",
+        "followers_url": "https://api.github.com/users/solana-hackathon-1/followers",
+        "following_url": "https://api.github.com/users/solana-hackathon-1/following{/other_user}",
+        "gists_url": "https://api.github.com/users/solana-hackathon-1/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/solana-hackathon-1/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/solana-hackathon-1/subscriptions",
+        "organizations_url": "https://api.github.com/users/solana-hackathon-1/orgs",
+        "repos_url": "https://api.github.com/users/solana-hackathon-1/repos",
+        "events_url": "https://api.github.com/users/solana-hackathon-1/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/solana-hackathon-1/received_events",
+        "type": "Organization",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun",
+      "description": "Solana community attention discovery and campaign platform",
+      "fork": false,
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun",
+      "forks_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/forks",
+      "keys_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/keys{/key_id}",
+      "collaborators_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/collaborators{/collaborator}",
+      "teams_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/teams",
+      "hooks_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/hooks",
+      "issue_events_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/issues/events{/number}",
+      "events_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/events",
+      "assignees_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/assignees{/user}",
+      "branches_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/branches{/branch}",
+      "tags_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/tags",
+      "blobs_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/blobs{/sha}",
+      "git_tags_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/tags{/sha}",
+      "git_refs_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/refs{/sha}",
+      "trees_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/trees{/sha}",
+      "statuses_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/statuses/{sha}",
+      "languages_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/languages",
+      "stargazers_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/stargazers",
+      "contributors_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/contributors",
+      "subscribers_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/subscribers",
+      "subscription_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/subscription",
+      "commits_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/commits{/sha}",
+      "git_commits_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/git/commits{/sha}",
+      "comments_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/comments{/number}",
+      "issue_comment_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/issues/comments{/number}",
+      "contents_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/contents/{+path}",
+      "compare_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/compare/{base}...{head}",
+      "merges_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/merges",
+      "archive_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/{archive_format}{/ref}",
+      "downloads_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/downloads",
+      "issues_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/issues{/number}",
+      "pulls_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/pulls{/number}",
+      "milestones_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/milestones{/number}",
+      "notifications_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/notifications{?since,all,participating}",
+      "labels_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/labels{/name}",
+      "releases_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/releases{/id}",
+      "deployments_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/deployments"
+    }
+  },
+  "jobs": [
+    {
+      "id": 115371713946,
+      "run_id": 38419201025,
+      "workflow_name": "Checks",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUuASEc8AAAAa3LClmg",
+      "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/jobs/115371713946",
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/job/115371713946",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-13T15:06:41Z",
+      "started_at": "2026-10-13T15:06:43Z",
+      "completed_at": "2026-10-13T15:10:17Z",
+      "name": "test",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-13T15:06:44Z",
+          "completed_at": "2026-10-13T15:06:45Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-13T15:06:45Z",
+          "completed_at": "2026-10-13T15:07:01Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-13T15:07:01Z",
+          "completed_at": "2026-10-13T15:07:03Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-13T15:07:03Z",
+          "completed_at": "2026-10-13T15:07:06Z"
+        },
+        {
+          "name": "Run npm ci",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-13T15:07:06Z",
+          "completed_at": "2026-10-13T15:07:35Z"
+        },
+        {
+          "name": "Run npm run db:generate",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-13T15:07:35Z",
+          "completed_at": "2026-10-13T15:07:37Z"
+        },
+        {
+          "name": "Run npm run db:migrate",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-13T15:07:37Z",
+          "completed_at": "2026-10-13T15:07:39Z"
+        },
+        {
+          "name": "Schema drift check",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-13T15:07:39Z",
+          "completed_at": "2026-10-13T15:07:41Z"
+        },
+        {
+          "name": "All unit and real-database tests",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-13T15:07:41Z",
+          "completed_at": "2026-10-13T15:10:12Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-13T15:10:12Z",
+          "completed_at": "2026-10-13T15:10:14Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-13T15:10:14Z",
+          "completed_at": "2026-10-13T15:10:14Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-13T15:10:14Z",
+          "completed_at": "2026-10-13T15:10:14Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-13T15:10:14Z",
+          "completed_at": "2026-10-13T15:10:14Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-13T15:10:15Z",
+          "completed_at": "2026-10-13T15:10:15Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-runs/115371713946",
+      "labels": ["ubuntu-latest"],
+      "runner_id": 1000000863,
+      "runner_name": "GitHub Actions 1000000863",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 115371714349,
+      "run_id": 38419201025,
+      "workflow_name": "Checks",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUuASEc8AAAAa3LCnLQ",
+      "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/jobs/115371714349",
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/job/115371714349",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-13T15:06:41Z",
+      "started_at": "2026-10-13T15:06:43Z",
+      "completed_at": "2026-10-13T15:07:06Z",
+      "name": "planning-contracts",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-13T15:06:44Z",
+          "completed_at": "2026-10-13T15:06:46Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-13T15:06:46Z",
+          "completed_at": "2026-10-13T15:06:48Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-13T15:06:48Z",
+          "completed_at": "2026-10-13T15:06:48Z"
+        },
+        {
+          "name": "Verify requirement and completion contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-13T15:06:48Z",
+          "completed_at": "2026-10-13T15:07:04Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-13T15:07:04Z",
+          "completed_at": "2026-10-13T15:07:04Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-13T15:07:04Z",
+          "completed_at": "2026-10-13T15:07:05Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-13T15:07:05Z",
+          "completed_at": "2026-10-13T15:07:05Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-runs/115371714349",
+      "labels": ["ubuntu-latest"],
+      "runner_id": 1000000864,
+      "runner_name": "GitHub Actions 1000000864",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 115371714441,
+      "run_id": 38419201025,
+      "workflow_name": "Checks",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUuASEc8AAAAa3LCniQ",
+      "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/jobs/115371714441",
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/job/115371714441",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-13T15:06:41Z",
+      "started_at": "2026-10-13T15:06:43Z",
+      "completed_at": "2026-10-13T15:18:36Z",
+      "name": "browser",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-13T15:06:44Z",
+          "completed_at": "2026-10-13T15:06:46Z"
+        },
+        {
+          "name": "Initialize containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-13T15:06:46Z",
+          "completed_at": "2026-10-13T15:07:03Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-13T15:07:03Z",
+          "completed_at": "2026-10-13T15:07:05Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-13T15:07:05Z",
+          "completed_at": "2026-10-13T15:07:07Z"
+        },
+        {
+          "name": "Run npm ci",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-13T15:07:07Z",
+          "completed_at": "2026-10-13T15:07:39Z"
+        },
+        {
+          "name": "Run npm run db:generate",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-13T15:07:39Z",
+          "completed_at": "2026-10-13T15:07:41Z"
+        },
+        {
+          "name": "Run npm run db:migrate",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-13T15:07:41Z",
+          "completed_at": "2026-10-13T15:07:43Z"
+        },
+        {
+          "name": "Run npx playwright install --with-deps chromium",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-13T15:07:43Z",
+          "completed_at": "2026-10-13T15:08:08Z"
+        },
+        {
+          "name": "Demo browser suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-13T15:08:08Z",
+          "completed_at": "2026-10-13T15:09:45Z"
+        },
+        {
+          "name": "Studio desktop and mobile suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-13T15:09:45Z",
+          "completed_at": "2026-10-13T15:12:39Z"
+        },
+        {
+          "name": "Stop isolated Studio database",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-13T15:12:39Z",
+          "completed_at": "2026-10-13T15:12:40Z"
+        },
+        {
+          "name": "Raider orientation desktop and mobile suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-13T15:12:40Z",
+          "completed_at": "2026-10-13T15:13:35Z"
+        },
+        {
+          "name": "Guild draft desktop and mobile suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-13T15:13:35Z",
+          "completed_at": "2026-10-13T15:15:22Z"
+        },
+        {
+          "name": "Project proposal desktop and mobile suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-13T15:15:22Z",
+          "completed_at": "2026-10-13T15:16:47Z"
+        },
+        {
+          "name": "Production build",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-13T15:16:47Z",
+          "completed_at": "2026-10-13T15:17:35Z"
+        },
+        {
+          "name": "Database-backed browser journey",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-13T15:17:35Z",
+          "completed_at": "2026-10-13T15:17:41Z"
+        },
+        {
+          "name": "Live browser suite",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-13T15:17:41Z",
+          "completed_at": "2026-10-13T15:18:33Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-13T15:18:33Z",
+          "completed_at": "2026-10-13T15:18:33Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 34,
+          "started_at": "2026-10-13T15:18:33Z",
+          "completed_at": "2026-10-13T15:18:33Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 35,
+          "started_at": "2026-10-13T15:18:33Z",
+          "completed_at": "2026-10-13T15:18:34Z"
+        },
+        {
+          "name": "Stop containers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 36,
+          "started_at": "2026-10-13T15:18:34Z",
+          "completed_at": "2026-10-13T15:18:34Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 37,
+          "started_at": "2026-10-13T15:18:34Z",
+          "completed_at": "2026-10-13T15:18:34Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-runs/115371714441",
+      "labels": ["ubuntu-latest"],
+      "runner_id": 1000000865,
+      "runner_name": "GitHub Actions 1000000865",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 115371714477,
+      "run_id": 38419201025,
+      "workflow_name": "Checks",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUuASEc8AAAAa3LCnrQ",
+      "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/jobs/115371714477",
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/job/115371714477",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-13T15:06:41Z",
+      "started_at": "2026-10-13T15:06:43Z",
+      "completed_at": "2026-10-13T15:08:42Z",
+      "name": "docker",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-13T15:06:44Z",
+          "completed_at": "2026-10-13T15:06:45Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-13T15:06:45Z",
+          "completed_at": "2026-10-13T15:06:49Z"
+        },
+        {
+          "name": "Run docker build -t useraid:ci .",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-13T15:06:49Z",
+          "completed_at": "2026-10-13T15:08:37Z"
+        },
+        {
+          "name": "Runtime image smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-13T15:08:37Z",
+          "completed_at": "2026-10-13T15:08:40Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-13T15:08:40Z",
+          "completed_at": "2026-10-13T15:08:40Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-13T15:08:40Z",
+          "completed_at": "2026-10-13T15:08:40Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-runs/115371714477",
+      "labels": ["ubuntu-latest"],
+      "runner_id": 1000000866,
+      "runner_name": "GitHub Actions 1000000866",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 115371714542,
+      "run_id": 38419201025,
+      "workflow_name": "Checks",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUuASEc8AAAAa3LCn7g",
+      "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/jobs/115371714542",
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/job/115371714542",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-13T15:06:41Z",
+      "started_at": "2026-10-13T15:06:43Z",
+      "completed_at": "2026-10-13T15:07:22Z",
+      "name": "dependency-security",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-13T15:06:44Z",
+          "completed_at": "2026-10-13T15:06:46Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-13T15:06:46Z",
+          "completed_at": "2026-10-13T15:06:48Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-13T15:06:48Z",
+          "completed_at": "2026-10-13T15:06:52Z"
+        },
+        {
+          "name": "Run npm ci",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-13T15:06:52Z",
+          "completed_at": "2026-10-13T15:07:19Z"
+        },
+        {
+          "name": "Run npm run audit:check",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-13T15:07:19Z",
+          "completed_at": "2026-10-13T15:07:20Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-13T15:07:20Z",
+          "completed_at": "2026-10-13T15:07:20Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-13T15:07:20Z",
+          "completed_at": "2026-10-13T15:07:20Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-13T15:07:20Z",
+          "completed_at": "2026-10-13T15:07:20Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-runs/115371714542",
+      "labels": ["ubuntu-latest"],
+      "runner_id": 1000000867,
+      "runner_name": "GitHub Actions 1000000867",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 115371714690,
+      "run_id": 38419201025,
+      "workflow_name": "Checks",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUuASEc8AAAAa3LCogg",
+      "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/jobs/115371714690",
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/job/115371714690",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-13T15:06:41Z",
+      "started_at": "2026-10-13T15:06:43Z",
+      "completed_at": "2026-10-13T15:08:28Z",
+      "name": "static",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-13T15:06:44Z",
+          "completed_at": "2026-10-13T15:06:45Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-13T15:06:45Z",
+          "completed_at": "2026-10-13T15:06:47Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-13T15:06:47Z",
+          "completed_at": "2026-10-13T15:06:56Z"
+        },
+        {
+          "name": "Run npm ci",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-13T15:06:56Z",
+          "completed_at": "2026-10-13T15:07:24Z"
+        },
+        {
+          "name": "Run npm run db:generate",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-13T15:07:24Z",
+          "completed_at": "2026-10-13T15:07:26Z"
+        },
+        {
+          "name": "Run npm run format:check",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-13T15:07:26Z",
+          "completed_at": "2026-10-13T15:07:45Z"
+        },
+        {
+          "name": "Run npm run typecheck",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-13T15:07:45Z",
+          "completed_at": "2026-10-13T15:08:06Z"
+        },
+        {
+          "name": "Run npm run lint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-13T15:08:06Z",
+          "completed_at": "2026-10-13T15:08:25Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-13T15:08:25Z",
+          "completed_at": "2026-10-13T15:08:25Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-13T15:08:25Z",
+          "completed_at": "2026-10-13T15:08:25Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-13T15:08:25Z",
+          "completed_at": "2026-10-13T15:08:25Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-runs/115371714690",
+      "labels": ["ubuntu-latest"],
+      "runner_id": 1000000868,
+      "runner_name": "GitHub Actions 1000000868",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 115377761266,
+      "run_id": 38419201025,
+      "workflow_name": "Checks",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/runs/38419201025",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUuASEc8AAAAa3Qzr8g",
+      "head_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/actions/jobs/115377761266",
+      "html_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38419201025/job/115377761266",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-13T15:18:36Z",
+      "started_at": "2026-10-13T15:18:39Z",
+      "completed_at": "2026-10-13T15:18:42Z",
+      "name": "ci-gate",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-13T15:18:40Z",
+          "completed_at": "2026-10-13T15:18:40Z"
+        },
+        {
+          "name": "Reject failed, skipped or cancelled required checks",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-13T15:18:40Z",
+          "completed_at": "2026-10-13T15:18:40Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-13T15:18:40Z",
+          "completed_at": "2026-10-13T15:18:40Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/solana-hackathon-1/useRAID.fun/check-runs/115377761266",
+      "labels": ["ubuntu-latest"],
+      "runner_id": 1000000869,
+      "runner_name": "GitHub Actions 1000000869",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-13T23:06:43.666119+00:00",
+  "base": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+  "files": {
+    "src/skills/taxonomy-storage.ts": "47605583e1f16d43daae69450ebde850b8462e39d8a60c144097fde8232bed06",
+    "tests/skill-taxonomy-db.test.ts": "ad5289d7b94c58a9affba9794f53b1140f3a7c07d957b01268023482d2616431"
+  },
+  "command": "python3 /tmp/raid-t012-taxonomy-db-run.py node_modules/.bin/vitest run tests/skill-taxonomy-db.test.ts"
+}

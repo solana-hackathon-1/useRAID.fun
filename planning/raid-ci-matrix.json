@@ -119,6 +119,8 @@
     "tests/siws-nonce.test.ts",
     "tests/skill-claims-boundary.test.ts",
     "tests/skill-claims.test.ts",
+    "tests/skill-taxonomy-boundary.test.ts",
+    "tests/skill-taxonomy-db.test.ts",
     "tests/standalone-db.test.ts",
     "tests/standalone-raids.test.ts",
     "tests/states.test.ts",
@@ -441,7 +443,12 @@
         "browser",
         "ci-gate"
       ],
-      "existing_test_files": ["tests/skill-claims-boundary.test.ts", "tests/skill-claims.test.ts"],
+      "existing_test_files": [
+        "tests/skill-claims-boundary.test.ts",
+        "tests/skill-claims.test.ts",
+        "tests/skill-taxonomy-boundary.test.ts",
+        "tests/skill-taxonomy-db.test.ts"
+      ],
       "implementation_status": "DOMAIN_TESTS_NOT_IMPLEMENTED",
       "required_test_layers": [
         "unit and boundary contract",

@@ -21,7 +21,7 @@ export const EventEnvelopeSchema = z
     type: z
       .string()
       .regex(
-        /^(identity|guild|launch|work|treasury|access|challenge|execution)\.[a-z][a-z_]*\.v1$/,
+        /^(identity|guild|skill|launch|work|treasury|access|challenge|execution)\.[a-z][a-z_]*\.v1$/,
       ),
     aggregateId: InternalId,
     aggregateVersion: Revision,
@@ -39,6 +39,7 @@ export const EventEnvelopeSchema = z
         orientationVersionId: InternalId.optional(),
         guildDraftVersionId: InternalId.optional(),
         projectProposalVersionId: InternalId.optional(),
+        skillTaxonomyVersionId: InternalId.optional(),
       })
       .readonly(),
   })
