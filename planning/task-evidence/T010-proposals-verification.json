@@ -1,0 +1,242 @@
+{
+  "task_id": "T010",
+  "scope": "T010B ownerprivate pendingexisting-project proposalversions/receipt/SQLguards; no recognition/approval",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent fullcriterionreview missing",
+  "code_source_sha": "55e264bad5192ce744195c8a2945b73d8bb6e9b3",
+  "source_identity": "Bounded implementation 55e264bad5192ce744195c8a2945b73d8bb6e9b3; finalsourcehashes andactualRED/GREEN identities retained, no fullparentacceptance",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T010-project-proposals.md",
+  "migration_rollback": "Additive25thDDL/nobackfill; immutablependinghistory/receipts/audit retained, removeunusedcallersonly; droppingdatarequiresreviewedretention/recovery",
+  "dependency_evidence": [
+    "ProtectedownGuildDraft/currentCookie/receipts and actual25freshmigrations/DDLdrift",
+    "Own20package pgminimalhost+realSQL/privacy/expiry/races/replay/whole-retry proofs",
+    "Previousmain23bff allsevennamedChecks+Staging125files1443/wholebrowser/nativeARM/runtime/GHCR/cleanupSUCCESS onlyformatchingunchangedboundaries",
+    "Actual approvedexisting-project policy/authority/evidence/nonce/recognition history/provider/fundedflow/independentUAT missing"
+  ],
+  "open_decisions": [
+    "05.6/O01/O02/O05/O06/O07/O11 actualprojectcontrol/public-evidence/adoption unresolved",
+    "Currentproposal-version binding/nonce consumption/recognizedGuild uniqueness/history/review/APIUI/independentUAT/G01\u2013G10 unverified"
+  ],
+  "release_gate_disposition": "Ownerboundedstagingprivatepending preparationonly; no project/token/Guild/Founder/grant/public/capacity/money/provider enablement",
+  "criteria": {
+    "T010-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    },
+    "T010-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/09/13/16/24\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending storageproven; fullrealrecognition/history/nonce/provider/fundedflow/independent evidenceabsent",
+      "evidence": "docs/tasks/2026-10-13-T010-project-proposals.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "command": "python3 /tmp/raid-t010-proposals-db-run.py vitest run tests/project-proposal-db.test.ts",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "source_phase": "Base23bff plus then-uncommitted executableNOT_IMPLEMENTEDstub+12newbehaviorcases beforeDDL/code",
+      "evidence_url": "planning/task-evidence/T010-proposals/red.log.gz",
+      "expected_failure": "Privateproposal persistence/read/replay/race notimplemented",
+      "observed_failure": "12FAIL beforeDDL/storage, ownedfixturestop0"
+    },
+    "green": {
+      "result": "PASS",
+      "command": "OwnedrealPG proposal/draft/SQL/migration regressions; finalproposal suite",
+      "sha": "55e264bad5192ce744195c8a2945b73d8bb6e9b3",
+      "evidence_url": "planning/task-evidence/T010-proposals/final-proposal-regression.log.gz",
+      "observed": "Initial33PASS; extended47 first46PASS1fixture validationfail retained\u2192sameguardassertion1PASS; final22proposalPASS7.67s/matching25unchangedregressions reused"
+    },
+    "refactor": {
+      "result": "PASS",
+      "command": "Own20package pgconsumer,6affectedcontract-doc191cases/5requirements/freshclient/types/lint",
+      "sha": "55e264bad5192ce744195c8a2945b73d8bb6e9b3",
+      "evidence_url": "planning/task-evidence/T010-proposals/independent-consumer.log.gz",
+      "observed": "OwnminimalPGhost realstore/replay/retry/authprivacy/noauthority/outboxPASS;191contracts/docs+5requirements/client/typegen/TSC/lintPASS; cleanupstop0"
+    }
+  }
+}

@@ -1,0 +1,319 @@
+21e1388ba569bc348f323e4dd7a93d312753d07816fc5a4c3253ce385151a2f5
+OWNED DATABASE: raid-t010-proposals-auto-20261013 loopback port 32809
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32809"
+
+24 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/project-proposal-db.test.ts (12 tests | 12 failed) 3260ms
+     × persists an owner-attributed pending exact-asset proposal without recognizing a Guild or granting authority 437ms
+     × reads null only for an authenticated own draft that has no proposal 328ms
+     × returns original immutable proposal after edits and preserves old candidate/evidence history 280ms
+     × rejects changed-body key reuse and stale proposal revision with no partial effects 231ms
+     × checks expected current draft revision while original proposal receipts remain replayable 285ms
+     × denies unknown/foreign draft reads and writes identically without leaking another proposal 221ms
+     × requires current cookie session on read, write and receipt replay 268ms
+     × denies restricted/wrong actors and never uses global role or holder status 229ms
+     × allows reads/original receipt replay with new writes disabled 274ms
+     × normalizes reference URLs and rejects credentials/duplicates/non-HTTPS/authority injection 229ms
+     × allows competing pending claims for the same exact token without falsely recognizing either project 253ms
+     × serializes same-revision proposals to one winner and one exact revision conflict 216ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > persists an owner-attributed pending exact-asset proposal without recognizing a Guild or granting authority
+Error: NOT_IMPLEMENTED
+ ❯ saveGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:3:9
+      1| /** Executable test-first storage stub; no proposal persistence exists…
+      2| export async function saveGuildProjectProposal(_tx: unknown, _command:…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+ ❯ tests/project-proposal-db.test.ts:17:117
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:23:73
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > reads null only for an authenticated own draft that has no proposal
+Error: NOT_IMPLEMENTED
+ ❯ readGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:6:9
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/project-proposal-db.test.ts:18:76
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:29:131
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > returns original immutable proposal after edits and preserves old candidate/evidence history
+Error: NOT_IMPLEMENTED
+ ❯ saveGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:3:9
+      1| /** Executable test-first storage stub; no proposal persistence exists…
+      2| export async function saveGuildProjectProposal(_tx: unknown, _command:…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+ ❯ tests/project-proposal-db.test.ts:17:117
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:31:77
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > rejects changed-body key reuse and stale proposal revision with no partial effects
+Error: NOT_IMPLEMENTED
+ ❯ saveGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:3:9
+      1| /** Executable test-first storage stub; no proposal persistence exists…
+      2| export async function saveGuildProjectProposal(_tx: unknown, _command:…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+ ❯ tests/project-proposal-db.test.ts:17:117
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:34:162
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > checks expected current draft revision while original proposal receipts remain replayable
+Error: NOT_IMPLEMENTED
+ ❯ saveGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:3:9
+      1| /** Executable test-first storage stub; no proposal persistence exists…
+      2| export async function saveGuildProjectProposal(_tx: unknown, _command:…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+ ❯ tests/project-proposal-db.test.ts:17:117
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:35:184
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > denies unknown/foreign draft reads and writes identically without leaking another proposal
+Error: NOT_IMPLEMENTED
+ ❯ saveGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:3:9
+      1| /** Executable test-first storage stub; no proposal persistence exists…
+      2| export async function saveGuildProjectProposal(_tx: unknown, _command:…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+ ❯ tests/project-proposal-db.test.ts:17:117
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:36:147
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > requires current cookie session on read, write and receipt replay
+Error: NOT_IMPLEMENTED
+ ❯ saveGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:3:9
+      1| /** Executable test-first storage stub; no proposal persistence exists…
+      2| export async function saveGuildProjectProposal(_tx: unknown, _command:…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+ ❯ tests/project-proposal-db.test.ts:17:117
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:37:145
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > denies restricted/wrong actors and never uses global role or holder status
+PrismaClientKnownRequestError:
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "GuildProjectProposal" does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ counts tests/project-proposal-db.test.ts:19:37
+
+ ❯ tests/project-proposal-db.test.ts:38:144
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > allows reads/original receipt replay with new writes disabled
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'WRITES_DISABLED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "WRITES_DISABLED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/project-proposal-db.test.ts:39:185
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > normalizes reference URLs and rejects credentials/duplicates/non-HTTPS/authority injection
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/project-proposal-db.test.ts:40:584
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > allows competing pending claims for the same exact token without falsely recognizing either project
+Error: NOT_IMPLEMENTED
+ ❯ saveGuildProjectProposal src/guild-profiles/project-proposal-storage.ts:3:9
+      1| /** Executable test-first storage stub; no proposal persistence exists…
+      2| export async function saveGuildProjectProposal(_tx: unknown, _command:…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readGuildProjectProposal(_tx: unknown, _actor: u…
+ ❯ tests/project-proposal-db.test.ts:17:117
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/project-proposal-db.test.ts:41:192
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/12]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > serializes same-revision proposals to one winner and one exact revision conflict
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/project-proposal-db.test.ts:42:297
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/12]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  12 failed (12)
+   Start at  16:08:24
+   Duration  4.01s (transform 259ms, setup 0ms, import 556ms, tests 3.26s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t010-proposals-auto-20261013

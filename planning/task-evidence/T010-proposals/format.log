@@ -1,0 +1,5 @@
+src/guild-profiles/project-proposal-storage.ts 164ms
+src/guild-profiles/project-proposal-contracts.ts 42ms
+src/contracts/protocol.ts 50ms (unchanged)
+tests/project-proposal-db.test.ts 127ms
+docs/tasks/2026-10-13-T010-project-proposals.md 63ms (unchanged)

@@ -45,5 +45,29 @@
     "docs/tasks/2026-10-13-T010-checks-repair.md": "f69dd04e73f0edadb90328411d6a78cddc8e96616583607e67b3a20a88cd595d",
     "planning/task-evidence/T010-checks-repair/json-originals.json": "ea2f6c447d00a834ada5e23323b01d87c3a91dbcc77cb07a807027ff87d6d031"
   },
-  "implementation_commit": "a9dce93338b839666d706b82ba48caed024906cf"
+  "implementation_commit": "a9dce93338b839666d706b82ba48caed024906cf",
+  "post_merge_checks": {
+    "head": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+    "result": "SUCCESS",
+    "jobs": [
+      "planning-contracts",
+      "static",
+      "dependency-security",
+      "test",
+      "docker",
+      "browser",
+      "ci-gate"
+    ],
+    "raw_log": "hosted-final-success.log.gz",
+    "restoration": "Checks disabled_manually restored/APIverified afterownedrun; no YAMLtrigger/raid-status change"
+  },
+  "post_merge_staging": {
+    "head": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382302373",
+    "result": "SUCCESS",
+    "observed": "125files1443PASS/8orientation38.1s+10Guild1.3m/nativeARMimage/runtime/privateGHCR/cleanup",
+    "digest": "sha256:fee97157d5777f953d829efd24aa945e0278a523fee2948b3b5d9aadbf53a979",
+    "raw_log": "hosted-staging-final-success.log.gz"
+  }
 }

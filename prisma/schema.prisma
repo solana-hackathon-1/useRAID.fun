@@ -642,6 +642,7 @@ model CommandReceipt {
   auditEvents AuditEvent[]
   orientationVersion RaiderPreferenceVersion?
   guildDraftVersion GuildDraftVersion?
+  projectProposalVersion GuildProjectProposalVersion?
   @@unique([actorId, commandKind, idempotencyKey])
 }
 model InboxDelivery {
@@ -718,6 +719,7 @@ model GuildDraft {
   currentVersionId String @db.Uuid
   owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_owner_fkey")
   versions GuildDraftVersion[] @relation("GuildDraftHistory")
+  projectProposal GuildProjectProposal?
   currentVersion GuildDraftVersion @relation("GuildDraftCurrent", fields: [currentVersionId, id, ownerAccountId, revision], references: [id, guildDraftId, ownerAccountId, revision], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_version_fkey")
   @@unique([id, ownerAccountId], map: "GuildDraft_owner_key")
   @@index([ownerAccountId])
@@ -734,7 +736,40 @@ model GuildDraftVersion {
   recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   draft GuildDraft @relation("GuildDraftHistory", fields: [guildDraftId, ownerAccountId], references: [id, ownerAccountId], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraftVersion_draft_fkey")
   currentProjections GuildDraft[] @relation("GuildDraftCurrent")
+  projectProposals GuildProjectProposalVersion[] @relation("ProjectProposalDraft")
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraftVersion_receipt_fkey")
   @@unique([guildDraftId, revision], map: "GuildDraftVersion_draft_revision_key")
   @@unique([id, guildDraftId, ownerAccountId, revision], map: "GuildDraftVersion_pointer_key")
+}
+
+// Pending self-described project claims never create a verified Guild/token relationship.
+model GuildProjectProposal {
+  guildDraftId String @id @db.Uuid
+  ownerAccountId String
+  revision Int
+  currentVersionId String @db.Uuid
+  draft GuildDraft @relation(fields: [guildDraftId, ownerAccountId], references: [id, ownerAccountId], onDelete: Restrict, onUpdate: Restrict, map: "GuildProjectProposal_draft_fkey")
+  versions GuildProjectProposalVersion[] @relation("ProjectProposalHistory")
+  currentVersion GuildProjectProposalVersion @relation("ProjectProposalCurrent", fields: [currentVersionId, guildDraftId, ownerAccountId, revision], references: [id, guildDraftId, ownerAccountId, revision], onDelete: Restrict, onUpdate: Restrict, map: "GuildProjectProposal_version_fkey")
+  @@unique([guildDraftId, ownerAccountId], map: "GuildProjectProposal_owner_key")
+}
+model GuildProjectProposalVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildDraftId String @db.Uuid
+  ownerAccountId String
+  revision Int
+  draftVersionId String @db.Uuid
+  draftRevision Int
+  candidateToken Json @db.JsonB
+  publicEvidenceRefs Json @db.JsonB
+  receiptId String @unique(map: "GuildProjectProposalVersion_receiptId_key") @db.Uuid
+  actorAccountId String
+  requestId String
+  recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  proposal GuildProjectProposal @relation("ProjectProposalHistory", fields: [guildDraftId, ownerAccountId], references: [guildDraftId, ownerAccountId], onDelete: Restrict, onUpdate: Restrict, map: "GuildProjectProposalVersion_proposal_fkey")
+  currentProjections GuildProjectProposal[] @relation("ProjectProposalCurrent")
+  draftSnapshot GuildDraftVersion @relation("ProjectProposalDraft", fields: [draftVersionId, guildDraftId, ownerAccountId, draftRevision], references: [id, guildDraftId, ownerAccountId, revision], onDelete: Restrict, onUpdate: Restrict, map: "GuildProjectProposalVersion_draft_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProjectProposalVersion_receipt_fkey")
+  @@unique([guildDraftId, revision], map: "GuildProjectProposalVersion_revision_key")
+  @@unique([id, guildDraftId, ownerAccountId, revision], map: "GuildProjectProposalVersion_pointer_key")
 }

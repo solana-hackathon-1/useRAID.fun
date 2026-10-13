@@ -157,32 +157,46 @@
   },
   "ci": {
     "planning-contracts": {
-      "result": "NOT VERIFIED",
-      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "static": {
-      "result": "NOT VERIFIED",
-      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "dependency-security": {
-      "result": "NOT VERIFIED",
-      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "test": {
-      "result": "NOT VERIFIED",
-      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "docker": {
-      "result": "NOT VERIFIED",
-      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "browser": {
-      "result": "NOT VERIFIED",
-      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "ci-gate": {
-      "result": "NOT VERIFIED",
-      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     }
   },
   "tdd": {

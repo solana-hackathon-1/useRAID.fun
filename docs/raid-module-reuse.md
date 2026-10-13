@@ -86,3 +86,7 @@ This is a required future consuming example, not a claim that an auth package or
 ## Existing-project signed control proof
 
 T010A owns [the informational control-proof contract](raid-project-control.md) and [independent crypto host](../examples/project-control/README.md). Inject trusted current account/draft/origin/clock and approved versioned project authority/public evidence, plus local Ed25519 verification. Exact purpose/nonce/asset/request binding and adverse outcomes are tested with an alternate Node verifier. No actual approval, nonce consumption, recognized Guild, Founder/grant, public or financial authority is implied; those dependent contracts remain NOT VERIFIED.
+
+## Private existing-project proposal storage
+
+T010B owns [pending proposal contracts](raid-project-proposals.md) and [independent minimal PostgreSQL host](../examples/project-proposals/README.md). Inject current own cookie identity, exact guarded transaction/whole retries and explicit new-write configuration. Persisted pending candidates/references never grant Founder/token/Guild/public/grant authority. Actual SQL lock/expiry/replay/provenance and no-outbox boundaries are verified separately from approved project recognition and independent UAT.

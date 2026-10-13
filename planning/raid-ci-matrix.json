@@ -85,6 +85,7 @@
     "tests/production-test-boundary.test.ts",
     "tests/project-control-attestation.test.ts",
     "tests/project-control-boundary.test.ts",
+    "tests/project-proposal-db.test.ts",
     "tests/public-load-db.test.ts",
     "tests/pump-launch.test.ts",
     "tests/raid-evidence.test.ts",
@@ -377,7 +378,8 @@
         "tests/production-test-boundary-host.test.ts",
         "tests/production-test-boundary.test.ts",
         "tests/project-control-attestation.test.ts",
-        "tests/project-control-boundary.test.ts"
+        "tests/project-control-boundary.test.ts",
+        "tests/project-proposal-db.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
