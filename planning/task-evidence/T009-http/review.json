@@ -69,5 +69,6 @@
     "access": "workspace-local/no public forwarding; stopped after checks per owner direction",
     "result": "Actual successful HTTP checks in preview-corrected.log, development server log retained"
   },
-  "resources": "Owned Next stopped0 and removed0; owned raid-t009-http-auto-20261013 ID41572d9e72b149988505bc19e348b3a97a2bcb46cdae0848c8133dfa387a5d39 finallySTOP0 eachrun/lastinspectfalse; no owned listener/server/container running; own CLI pools completed; unrelated services/volumes/images/data/evidence retained"
+  "resources": "Owned Next stopped0 and removed0; owned raid-t009-http-auto-20261013 ID41572d9e72b149988505bc19e348b3a97a2bcb46cdae0848c8133dfa387a5d39 finallySTOP0 eachrun/lastinspectfalse; no owned listener/server/container running; own CLI pools completed; unrelated services/volumes/images/data/evidence retained",
+  "implementation_commit": "016986125dbe957ff165fbc1c4328ae5e3965b15"
 }
