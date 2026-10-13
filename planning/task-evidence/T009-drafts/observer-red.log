@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+x·
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/lock-observation.test.ts > waits for the required statement after a blocking PID becomes visible during activity refresh
+AssertionError: expected [ { …(2) }, { …(2) } ] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+  [
+    {
+      "blockers": [
+        101,
+      ],
++     "query": "SHOW transaction_isolation",
++   },
++   {
++     "blockers": [
++       101,
++     ],
+      "query": "SELECT pg_advisory_xact_lock(hashtextextended($1,0))",
+    },
+  ]
+
+ ❯ tests/lock-observation.test.ts:8:92
+      6|     {query:'SELECT pg_advisory_xact_lock(hashtextextended($1,0))',bloc…
+      7|   ];
+      8|   expect(samples.filter(row=>matchesBlockingObservation(row,101,/pg_ad…
+       |                                                                                            ^
+      9| });
+     10| it('does not accept the right statement without the actual expected bl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  12:24:22
+   Duration  233ms (transform 30ms, setup 0ms, import 46ms, tests 14ms, environment 0ms)

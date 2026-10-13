@@ -1,0 +1,163 @@
+raid-t009-drafts-auto-20261013
+OWNED DATABASE: raid-t009-drafts-auto-20261013 loopback port 32785
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32785"
+
+24 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+·····················stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks expire committed during an observed account lock wait
+{"orientationLock":{"blocker":103,"waiter":102,"query":"FOR NO KEY UPDATE"}}
+
+·stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks revoke committed during an observed account lock wait
+{"orientationLock":{"blocker":103,"waiter":102,"query":"FOR NO KEY UPDATE"}}
+
+·stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks suspend committed during an observed account lock wait
+{"orientationLock":{"blocker":103,"waiter":102,"query":"FOR NO KEY UPDATE"}}
+
+·stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > checks the database clock after the real Session lock wait rather than transaction start
+{"orientationLock":{"blocker":103,"waiter":102,"query":"FOR SHARE"}}
+
+················stdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks session revocation after a real session lock wait
+{"guildDraftLock":{"blocker":107,"waiter":105,"query":"Session"}}
+
+·stdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks restriction after a real account lock wait
+{"guildDraftLock":{"blocker":107,"waiter":105,"query":"User"}}
+
+·stdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks expiry using the database clock after an actual draft row lock wait
+{"guildDraftLock":{"blocker":107,"waiter":105,"query":"GuildDraft"}}
+
+·····xstdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > denies replay after a real current-session lock wait and committed revocation
+{"guildDraftLock":{"blocker":107,"waiter":105,"query":"Session"}}
+
+·········stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > blocks the second identical command on the first backend, then replays it
+{"receiptRace":true,"waiter":111,"blocker":112,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+··stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > lets the waiting command execute when the first one rolls back
+{"receiptRace":true,"waiter":112,"blocker":111,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > reports a conflict, not a replay, when the waiting command has another payload
+{"receiptRace":true,"waiter":111,"blocker":112,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+·······stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > inbound provider deliveries (AC32 foundation) > blocks the duplicate on the first backend while the first handler is open
+{"receiptRace":true,"waiter":112,"blocker":115,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+············································
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > rejects a finalized receipt whose audit references a different draft
+AssertionError: expected PrismaClientUnknownRequestError{ …(5) } to match object { code: 'P2010', …(1) }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "P2010",
+-   "meta": {
+-     "code": "23000",
+-   },
++ PrismaClientUnknownRequestError {
++   "message": "Error in connector: Error querying the database: ERROR: Guild draft version requires its finalized owner receipt/private audit/projection",
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientUnknownRequestError",
+  }
+
+ ❯ tests/guild-draft-db.test.ts:448:6
+    446|         ),
+    447|       ),
+    448|     ).rejects.toMatchObject({ code: 'P2010', meta: { code: '23000' } }…
+       |      ^
+    449|     expect(await counts()).toEqual({ drafts: 1, versions: 1, receipts:…
+    450|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 109 passed (110)
+   Start at  12:15:45
+   Duration  20.65s (transform 336ms, setup 0ms, import 1.03s, tests 18.78s, environment 1ms)
+
+OWNED CLEANUP: 0 raid-t009-drafts-auto-20261013

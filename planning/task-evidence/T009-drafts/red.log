@@ -1,0 +1,385 @@
+5f993a696798c212500947f58398f233aa9cbe2c8ac6a2e8933a114aba6cdd17
+OWNED DATABASE: raid-t009-drafts-auto-20261013 loopback port 32783
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32783"
+
+23 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+xxxxxxxxxxxxstdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks restriction after a real account lock wait
+{"guildDraftLock":{"blocker":91,"waiter":89,"query":"Session"}}
+
+xxxx
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > has additive draft/version tables rather than assigning legacy creator privileges
+AssertionError: expected [] to deeply equal [ 'GuildDraft', 'GuildDraftVersion' ]
+
+- Expected
++ Received
+
+- [
+-   "GuildDraft",
+-   "GuildDraftVersion",
+- ]
++ []
+
+ ❯ tests/guild-draft-db.test.ts:55:35
+     53|   it('has additive draft/version tables rather than assigning legacy c…
+     54|     const rows = await db.$queryRawUnsafe<{name:string}[]>(`SELECT tab…
+     55|     expect(rows.map(r => r.name)).toEqual(['GuildDraft','GuildDraftVer…
+       |                                   ^
+     56|   });
+     57|   it('privately records an unverified owner draft with audit and leave…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > privately records an unverified owner draft with audit and leaves user/history/money unchanged
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:59:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > updates sequentially and replays the immutable original after later versions
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:72:44
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > returns the same private absence for unknown and foreign draft reads/writes
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:79:65
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > rejects injected authority/private fields and invalid creation/revision combinations
+AssertionError: expected Error: Guild draft storage not implemented to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "Guild draft storage not implemented",
+  }
+
+ ❯ tests/guild-draft-db.test.ts:88:226
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > rejects stale revisions and changing a stable persisted slug without partial receipts
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:92:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > serializes duplicate commands to one draft/version/audit even when acknowledgment is lost
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:98:42
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > serializes same-slug creation across accounts and rolls back the loser entirely
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/guild-draft-db.test.ts:104:55
+    102|   it('serializes same-slug creation across accounts and rolls back the…
+    103|     const a=await actor(),other=await actor(); const results=await Pro…
+    104|     expect(results.filter(r=>r.status==='fulfilled')).toHaveLength(1);
+       |                                                       ^
+    105|     expect(results.find(r=>r.status==='rejected')).toMatchObject({reas…
+    106|     expect(await counts()).toEqual({drafts:1,versions:1,receipts:1,aud…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > allows only one concurrent update at an expected revision
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:109:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > disables new writes while retaining owned reads and original authenticated replay
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:114:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > requires the exact live current own wallet/X session for save/read/replay
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:120:53
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > denies expired sessions, unsupported login methods and restricted owners
+AssertionError: expected Error: Guild draft storage not implemented to match object { code: 'UNAUTHENTICATED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "UNAUTHENTICATED",
++ Error {
++   "message": "Guild draft storage not implemented",
+  }
+
+ ❯ tests/guild-draft-db.test.ts:130:26
+    128|   it('denies expired sessions, unsupported login methods and restricte…
+    129|     const a=await actor(); await db.session.update({where:{tokenHash:a…
+    130|     await expect(save(a)).rejects.toMatchObject({code:'UNAUTHENTICATED…
+       |                          ^
+    131|     const bad=await actor('unverified');await expect(save(bad)).reject…
+    132|     const restricted=await actor();await db.user.update({where:{id:res…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks session revocation after a real session lock wait
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/guild-draft-db.test.ts:135:3
+    133|     expect(await counts()).toEqual({drafts:0,versions:0,receipts:0,aud…
+    134|   });
+    135|   it('checks session revocation after a real session lock wait', async…
+       |   ^
+    136|     const a=await actor(),held=await hold(a,'Session'); const pending=…
+    137|     try {await blocked(held.pid,'Session');await held.mutate('DELETE F…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks restriction after a real account lock wait
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/guild-draft-db.test.ts:140:3
+    138|     expect(await pending).toMatchObject({error:{code:'UNAUTHENTICATED'…
+    139|   });
+    140|   it('checks restriction after a real account lock wait', async () => {
+       |   ^
+    141|     const a=await actor(),held=await hold(a,'User');const pending=save…
+    142|     try {await blocked(held.pid,'User');await held.mutate('UPDATE "Use…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks expiry using the database clock after an actual draft row lock wait
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:22:135
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:146:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/16]⎯
+
+ FAIL  tests/guild-draft-db.test.ts > T009B private own Guild draft storage > retries the whole rolled-back command and commits exactly one next version
+Error: Guild draft storage not implemented
+ ❯ saveGuildDraft src/guild-profiles/draft-storage.ts:5:9
+      3| export interface GuildDraftCommand { actor: GuildDraftActor; input: un…
+      4| export async function saveGuildDraft(_tx: CommandReceiptTransaction, _…
+      5|   throw new Error('Guild draft storage not implemented');
+       |         ^
+      6| }
+      7| export async function readGuildDraft(_tx: CommandReceiptTransaction, _…
+ ❯ tests/guild-draft-db.test.ts:153:78
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/guild-draft-db.test.ts:153:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/16]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  16 failed (16)
+   Start at  12:08:05
+   Duration  12.20s (transform 169ms, setup 0ms, import 337ms, tests 11.63s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t009-drafts-auto-20261013

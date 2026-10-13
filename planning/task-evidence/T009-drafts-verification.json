@@ -1,0 +1,193 @@
+{
+  "task_id": "T009",
+  "scope": "T009B protected own private drafts/version/receipt/audit foundation; no actual Guild/Founder/grant/public activation/API/UI",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "47b79b1a9a77ee343f93bfabd5595527c6e9e473",
+  "source_identity": "Base main plus uncommitted source hashes in T009-drafts/review.json; no clean-HEAD result claim",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T009-draft-storage.md",
+  "migration_rollback": "Additive202610130002_guild_drafts; remove unwired code only, retain acknowledged private draft versions/receipts/audit pending reviewed retention/recovery",
+  "dependency_evidence": [
+    "Existing shared Guild/ID/receipt/session contracts reused; independent pg host uses minimal declared tables and actual own migrations",
+    "T009A main47b79b1 bounded contract source gates passed; failed unknown-blob registry publication repeat pending",
+    "T009B genuine16RED\u219216GREEN, directSQL/whole retry/clock/session/unique conflict and own20pkg consumer actual evidence"
+  ],
+  "open_decisions": [
+    "No actualprojectcontrol/verifiedFounder/token relationship supplied here",
+    "O11/G10 privacy/retention/recovery, independent/UAT/fullactual authorization/storage remainNOTVERIFIED"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging source only; no actualGuild/profile/role/Founder/token/treasury/privateaccess/ownership activation; full independent/UAT and real authorization/storage evidence absent",
+  "criteria": {
+    "T009-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-W04": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    },
+    "T009-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Private own draft DB/SQL/session-lock/revision/replay/consumer evidence only; actual Guild/projectFounder/grants/public/API/UI and independent full acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-storage.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "vitest run tests/guild-draft-db.test.ts",
+      "sha": "47b79b1a9a77ee343f93bfabd5595527c6e9e473",
+      "source_identity": "Base47b79b1 plus then-uncommitted executable stub/tests before DDL/service",
+      "evidence_url": "planning/task-evidence/T009-drafts/red.log",
+      "observed": "16FAIL16total; missing tables/unimplemented real behavior",
+      "result": "FAIL",
+      "expected_failure": "Private own draft tables/save/read/authorization/revision/replay not implemented",
+      "observed_failure": "16/16 genuine failures against pre-DDL executable stub and catalog"
+    },
+    "green": {
+      "command": "vitest run tests/guild-draft-db.test.ts",
+      "sha": "47b79b1a9a77ee343f93bfabd5595527c6e9e473",
+      "source_identity": "Then-uncommitted migration/service over base; actual first behavior GREEN",
+      "evidence_url": "planning/task-evidence/T009-drafts/green.log",
+      "observed": "16PASS with actual User/Session/Draft locks",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "vitest full frozen-source suite then affected wallet/observer after genuine observationRED correction",
+      "sha": "47b79b1a9a77ee343f93bfabd5595527c6e9e473",
+      "source_identity": "Full snapshot product/test hashes plus final test-only observation helper; full1326passing results reused only for unchanged source; final affected33PASS",
+      "evidence_url": "planning/task-evidence/T009-drafts/observer-green.log",
+      "observed": "Full1326PASS1FAIL retained; final corrected affected2files33PASS; all21draft tests passed in fullrun; no clean fullsuite claim",
+      "result": "PASS"
+    }
+  },
+  "ci": {}
+}
