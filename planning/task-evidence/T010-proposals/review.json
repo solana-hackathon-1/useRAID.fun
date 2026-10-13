@@ -59,5 +59,29 @@
     "examples/project-proposals/README.md": "5de361f0ba673aac78577e21e5ed59a3bcec33113b2b0c250b08b3c939a5819f",
     "planning/raid-ci-matrix.json": "0eaa6af5aeb9c865efd74efbdda97e67ed17b99e22bcbb120509fa055a03859f"
   },
-  "implementation_commit": "55e264bad5192ce744195c8a2945b73d8bb6e9b3"
+  "implementation_commit": "55e264bad5192ce744195c8a2945b73d8bb6e9b3",
+  "post_merge_staging": {
+    "head": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38388488782",
+    "result": "SUCCESS",
+    "observed": "126files1467PASS;8orientation38.8s+10Guild1.3m/nativeARMproduction/runtime/privateGHCR/cleanup",
+    "digest": "sha256:206d8cb4a8f3382ac3baa6b5683e77550dcc52abeb9126f4cda3abfa912cbc04",
+    "raw_log": "hosted-staging-success.log.gz"
+  },
+  "post_merge_named_checks": {
+    "head": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+    "result": "SUCCESS",
+    "jobs": [
+      "planning-contracts",
+      "static",
+      "dependency-security",
+      "test",
+      "docker",
+      "browser",
+      "ci-gate"
+    ],
+    "raw_log": "hosted-checks-success.log.gz",
+    "restoration": "Original Checks disabled_manually restored/APIverified afterownedrun; no YAMLtrigger/raid-statuschange"
+  }
 }

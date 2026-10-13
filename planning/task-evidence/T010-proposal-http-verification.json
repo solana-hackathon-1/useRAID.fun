@@ -1,0 +1,241 @@
+{
+  "task_id": "T010",
+  "scope": "T010C1 protectedpendingproposal HTTP/rootprivatecomposedhost/client-safe schemas",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "code_source_sha": "36ef864380d59fa6aed0becf3563c5212fc1a99e",
+  "source_identity": "Bounded implementation 36ef864380d59fa6aed0becf3563c5212fc1a99e; actualtest-phase/preview/consumer identities/sourcehashes retained, fullparent incomplete",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T010-proposal-http.md",
+  "migration_rollback": "No newDDL; removeunusedrootroute/wiring butpreserve25-schema pendinghistory/receipts/audit; sharederrorsbackcompat andexistingconsumeraliases retained",
+  "dependency_evidence": [
+    "MainB exactb3 actual126files1467/18browser/nativeARMimage/runtime/GHCR/cleanup+allsevennamedchecksSUCCESS",
+    "RealownedNextSynthetic API currentcookie/permissions/Resource/bindings/noauthority andportableindependentlyinstalled20packagePG/23packageoldGuildhost PASS",
+    "Actualprojectauthority/policy/publicevidence/nonce/recognition/history/provider/fundedflow/independentUAT missing"
+  ],
+  "open_decisions": [
+    "05.6/O01/O02/O05/O06/O07/O11 currentprojectcontrol/publicevidence/adoption missing",
+    "Proposal-version challenge/nonce/recognizedasset uniqueness/history/provider/UI/independentUAT/G01\u2013G10 notverified"
+  ],
+  "release_gate_disposition": "Ownerboundedstagingprivatepending prepAPIonly/defaultoff; no projectapproval/Founder/Guild/token/grant/public/capacity/money/provider enablement",
+  "criteria": {
+    "T010-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    },
+    "T010-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Onlyprivatepending HTTP/factory/rootauth/example verified; fullrecognition/history/nonce/provider/fundedflow/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-http.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "command": "node node_modules/vitest/vitest.mjs run tests/project-proposal-http.test.ts",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "source_phase": "Baseb3 plus then-uncommitted executable501stub/new33HTTPcases; additional1sharedcachemutationRED beforefreeze",
+      "evidence_url": "planning/task-evidence/T010-proposal-http/red.log.gz",
+      "expected_failure": "New protected proposalHTTP behavior/host/route notimplemented",
+      "observed_failure": "33FAIL beforeHTTPfactory/host/route;1mutablecacheprivacyFAIL beforefreeze"
+    },
+    "green": {
+      "result": "PASS",
+      "command": "Affected7file HTTP/rootflags/privatecache/body/env/boundary regression andrealownedNextAPI",
+      "sha": "36ef864380d59fa6aed0becf3563c5212fc1a99e",
+      "evidence_url": "planning/task-evidence/T010-proposal-http/final-http-regression.log.gz",
+      "observed": "64PASS3.37s; actualfinalNextAPI currentcookie/actions/denials/privacy/counters/noauthorityPASS; envmissingflagfixed withsame assertion"
+    },
+    "refactor": {
+      "result": "PASS",
+      "command": "Owned20pkgPG and23pkgoldhost; freshcorrectedtypes+productionbuild/lint/5requirements/118docs",
+      "sha": "36ef864380d59fa6aed0becf3563c5212fc1a99e",
+      "evidence_url": "planning/task-evidence/T010-proposal-http/independent-consumer-final.log.gz",
+      "observed": "BothindependentconsumersPASS, immutablecache/header/status/prototypecompat preserved; missingoldexampledependencyfix/noexclusion; correctedTSC/productionbuild/118docs/5requirements/lintPASS/cleanupstop0"
+    }
+  }
+}

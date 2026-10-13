@@ -186,32 +186,46 @@
   },
   "ci": {
     "planning-contracts": {
-      "result": "NOT VERIFIED",
-      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+      "result": "SUCCESS",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+      "observed": "Actual successful namedjob on sameproposal candidate; fullparent independent/applicable acceptancecriteria remainNOTVERIFIED"
     },
     "static": {
-      "result": "NOT VERIFIED",
-      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+      "result": "SUCCESS",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+      "observed": "Actual successful namedjob on sameproposal candidate; fullparent independent/applicable acceptancecriteria remainNOTVERIFIED"
     },
     "dependency-security": {
-      "result": "NOT VERIFIED",
-      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+      "result": "SUCCESS",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+      "observed": "Actual successful namedjob on sameproposal candidate; fullparent independent/applicable acceptancecriteria remainNOTVERIFIED"
     },
     "test": {
-      "result": "NOT VERIFIED",
-      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+      "result": "SUCCESS",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+      "observed": "Actual successful namedjob on sameproposal candidate; fullparent independent/applicable acceptancecriteria remainNOTVERIFIED"
     },
     "docker": {
-      "result": "NOT VERIFIED",
-      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+      "result": "SUCCESS",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+      "observed": "Actual successful namedjob on sameproposal candidate; fullparent independent/applicable acceptancecriteria remainNOTVERIFIED"
     },
     "browser": {
-      "result": "NOT VERIFIED",
-      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+      "result": "SUCCESS",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+      "observed": "Actual successful namedjob on sameproposal candidate; fullparent independent/applicable acceptancecriteria remainNOTVERIFIED"
     },
     "ci-gate": {
-      "result": "NOT VERIFIED",
-      "observed": "Actualnewproposal candidate notpublished; oldmain23bff namedSUCCESS cannotprove newDDL/storage"
+      "result": "SUCCESS",
+      "sha": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38389100662",
+      "observed": "Actual successful namedjob on sameproposal candidate; fullparent independent/applicable acceptancecriteria remainNOTVERIFIED"
     }
   },
   "tdd": {
