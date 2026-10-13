@@ -2,7 +2,7 @@
   "label": "SELF-EVALUATED",
   "started_utc": "2026-10-13T11:44:53.897015+00:00",
   "source_base": "b3a86c44132f4d00144dcb486cac46e0ff122cfe",
-  "source_identity": "Uncommitted proposalHTTP/client-safe schemas/sharedimmutable errors/roothost+cookie composition/dynamicroute/env/tests/example/docs/inventory pluspreservedBpostCI records/checkpoint",
+  "source_identity": "Bounded implementation 36ef864380d59fa6aed0becf3563c5212fc1a99e; actualRED stub/cachefailure andfinalsourcehashes/preview/consumer preserved, fulltask incomplete",
   "scope": "Private own existing-project pending preparation API only; no approval/nonce/Guild/token/grant/public/money/capacity effect or renderedUI",
   "requirements": [
     "R01",
@@ -71,5 +71,6 @@
     "examples/guild-drafts/guild-profiles/http-errors.ts": "7dba588787e12f4d2fa67d6fc2b6be41f3c062ee4cac6855c6025980f36129d5",
     ".env.example": "d371e7423402de83234c17f194821f5c9a285ae0b2447e21388e9996dac0efb5",
     "planning/raid-ci-matrix.json": "2fa7d17984105609b7e31865ccf20c14c715ee160f3191f1889f1ff55efa0712"
-  }
+  },
+  "implementation_commit": "36ef864380d59fa6aed0becf3563c5212fc1a99e"
 }
