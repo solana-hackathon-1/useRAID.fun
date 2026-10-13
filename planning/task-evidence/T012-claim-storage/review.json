@@ -1,0 +1,70 @@
+{
+  "started_utc": "2026-10-13T23:34:53.532730+00:00",
+  "source_base": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+  "label": "SELF-EVALUATED",
+  "independent_review": "NOT VERIFIED",
+  "scope": "T012B2 private claimant-controlled durableversions; noassessment/rank/historyreset",
+  "requirements": ["R04", "R06", "R12", "R15", "R16", "D07", "D13", "I05", "I06", "I10", "I13"],
+  "checks": {
+    "red": "22DB+1eventfail first/exactphasesources",
+    "green": "23PASS5.43s\u2192187realPGregression23.35s",
+    "boundary_docs": "10files218PASS1existing skip7.18s",
+    "planning": "All52PythonplanningPASS49.832s",
+    "consumer": "Own20package cleaninstall+realcanonicalHuman/catalog/privateclaim/retirement-replay/revokedSessionPGhostPASS;27migrations/schemaNoDifference",
+    "static": "Owned exact frozen source schemaValidate/client/Nexttypegen/strictfullTSC/productionWebpackbuild PASS",
+    "full_suite": "Final139files1702PASS209.88s exactfrozenRoot source +ownedrealPG aftertargeted26PASS fixturecorrection; first1701PASS1timeoutFAIL retained",
+    "lint": "ESLintzero PASS",
+    "source_identity": "All26priorDDLbytesunchanged; finalRoot code/tests/schema exactlymatchfrozen strictTSC/productionbuild/fulltestsource",
+    "format": "Freshwholetracked+WIPformatterPASS; updatedfixture/reviewtargetformatPASS, no ignoredRootowned evidence changed",
+    "completion": "Actual fullvalidator exit1 exactly27NOTVERIFIEDcriteria+7newcandidateCI, noTDDmetadata errors",
+    "studio_fixture": "Actual3files26PASS11.09s, scopedfailure/perintentcounts/3RPCcall assertions and original5s deadline; strictTSCafterfixture+ESLintzero+targetformatPASS"
+  },
+  "findings": [
+    "Consumer preparation initially omittedclaimsSQLwhenextendingaformattedarray; caughtstaticinspectionbeforeexecutionandfixedexplicitdependency",
+    "Fullsuite139files1701PASS1StudioTimeout222.48s: existingdepositlimitfixture intentionallyawaited realexample.invalid RPCfailure aftercommittedintent. Scoped genesis failure replaces externalDNS dependency, stronger exactfailure/per-intentcounts/3calls assertions, original5s deadline/moneyimplementation unchanged. Actualoriginaltest snapshot/fullfailure retained; targetedretest/fullretry required."
+  ],
+  "resource_ownership": "AllownednewclaimPG runs finallystop0 inclfailed/fullretry; poolsdisconnected. raid-t012-claims-auto-20261014 andraid-t012-taxonomy-auto-20261014 actualRunningfalse; oldsources/logs/images/unrelatedservices/data preserved.",
+  "preview": "No browser-visible change/newserver; RootAPI/UI laterneedsownedsyntheticpreview",
+  "source_hashes": {
+    "src/skills/claim-storage.ts": "e2be974e2df499698796e5269313317c48590c6e2dfcb2ece6cc1d60bc806716",
+    "src/skills/claim-storage-contracts.ts": "8e4df039cdb79c03914e2144c940fb4300e788f36d78f5a5ea635dee670adf38",
+    "src/skills/index.ts": "2c58b145d8171dfe0fe29d9220214c400068ba638e0f4fcf80b47fd11199b562",
+    "src/skills/contracts.ts": "01b4dc528f3d939d982783648f57c7a1184b77a567764136c6c51983f214b60b",
+    "src/skills/taxonomy-storage.ts": "c9eff47886180be2328afd7f650985397fcd136732e4d6c046e1d81fc8d0aeaf",
+    "src/skills/taxonomy-storage-contracts.ts": "10b0b65295f003593c95ecd77271ff1bc243e2c39716b256e150a231ba038174",
+    "src/contracts/protocol.ts": "6f8cefce96a67ffd5fe4bb1e782ee1039cd5164c8ddd86809dde27a0e21954d4",
+    "prisma/schema.prisma": "a7a67ebb5e6ee703b6224e04f1866ca84dd58fbbb8f06b0153d050b0109dac53",
+    "prisma/migrations/202610140002_skill_claims/migration.sql": "1ed594139aaed47e9492dc5395e2883fb33e6c7d03259373a161b592e6edc4b2",
+    "tests/skill-claim-storage-db.test.ts": "2b2d1bac76ab4a8afdda61ff9e2d12528151afb4bed94170f7a47cbb392f75f6",
+    "tests/skill-claim-storage-boundary.test.ts": "520639d118ec3fa2d004d0b80e09799dba3934d059db58293f0bf247d8807cca",
+    "docs/raid-skill-claim-storage.md": "a79b957d7cf4b4c1883f263203f15ef50efcb36fbdf21d4c6b3a16a910276877",
+    "docs/raid-skill-claims.md": "09b2a2768a69e0fedfd4ec57720841c8efa3ca92cd985d5a94b2e1a4857c4320",
+    "docs/raid-module-reuse.md": "27ff4bb34cacb5e541d51af0c4e3ae035800dd3efe03e6e7263c49c55965b35c",
+    "planning/raid-ci-matrix.json": "639c4ee98188c1d5724911847032a02f8c7be648995dc4b6890a673cb519536f",
+    "examples/skill-claim-storage/schema.sql": "12cc15caa3cb8a7a7609ae7365c9f291dda5df63b69e0235a8f603a586e8d89f",
+    "examples/skill-claim-storage/migrate.ts": "b284bb3e65b1d17d73cd9b02e3a3a707b9e97e11d05138a70e68de073c11f0e0",
+    "examples/skill-claim-storage/package.json": "6e069cf8f633dd9453fea291cf550fa09d68c89fd020e0f4c84af4f5d8d53a85",
+    "examples/skill-claim-storage/package-lock.json": "522f04a104c288a276e84be79fd64e479b0bbb66c6f7ed5495c9e5445d914277",
+    "examples/skill-claim-storage/host.ts": "d06ff5e938934520ef96a3332a466ae4670aedc597bbaf675c26fc2995b84391",
+    "examples/skill-claim-storage/participant-index.sql": "15f3c751a563de43186d1f0be62e105ad86e45d8b4819f2d03ceef13992339f8",
+    "examples/skill-claim-storage/connection.ts": "7c1fab01d30234a309847934f3f9d83d85b2ec2e2bcd59e44e712951465caad0",
+    "examples/skill-claim-storage/README.md": "b83f953f96719a4fd81526a1ff0156a487d4efe553a99403bbb350f1a85e1900",
+    "tests/studio-db.test.ts": "ddd634a1607092f08015860d89509e610da0cff46bc1b1081c4c2b9d9d13338a"
+  },
+  "ended_utc": "2026-10-13T23:56:27.290552+00:00",
+  "elapsed_seconds": 1293.757822,
+  "resources": [
+    {
+      "id": "dc48f6b7962e99b9db6f1003084d82410f9d0ac749983ff00db18a6bb470196b",
+      "name": "raid-t012-claims-auto-20261014",
+      "label": "T012-claims",
+      "running": false
+    },
+    {
+      "id": "9f54300c41eabaa65201f90d02d4da1f3de9f2566cfda65a4184059a8099be44",
+      "name": "raid-t012-taxonomy-auto-20261014",
+      "label": "T012-taxonomy",
+      "running": false
+    }
+  ]
+}

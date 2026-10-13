@@ -29,3 +29,5 @@ Genuine19behavior failures preceded implementation; first19GREEN and21behaviors+
 ## Durable catalog dependency
 
 [T012B1 authorized taxonomy storage](raid-skill-taxonomy-storage.md) now supplies actual immutable catalog publication/read commands through an injected current admin policy and PostgreSQL transaction. [Its independent host](../examples/skill-taxonomy/README.md) consumes a saved catalog in this pure preparer; the older T012A catalog fixture remains a trusted preparation example. Root endpoints, canonical private claim/evidence persistence, assessment/reassessment/revocation and verified admission remain separate unverified work. Do not overwrite documented assessments with the preparer’s null fields.
+
+[Private canonical claim persistence](raid-skill-claim-storage.md) stores only claimant-controlled fields and exact catalog/canonical identity provenance. Its saved DTO excludes assessedRank and assessmentHistory so these separate records cannot be reset by a self-report. Actual assessment authority, evidence artifacts, reassessment/revocation and protected root UI remain unverified.

@@ -1,0 +1,7 @@
+import type { CommandReceiptTransaction } from '../command-receipts';
+import type { SkillTaxonomyActor } from './taxonomy-storage-contracts';
+export interface StoredSkillClaim {
+  id: string; revision: number; participantId: string; skillId: string; claimedLevel: string;
+}
+export async function saveSkillClaim(_tx:CommandReceiptTransaction,_command:{actor:SkillTaxonomyActor;input:unknown;idempotencyKey:string;requestId:string},_options:{allowNewWrites:boolean}):Promise<{status:'EXECUTED'|'REPLAYED';claim:StoredSkillClaim}> { throw Error('NOT_IMPLEMENTED'); }
+export async function readSkillClaim(_tx:CommandReceiptTransaction,_actor:SkillTaxonomyActor,_skillId:string):Promise<StoredSkillClaim|null> { throw Error('NOT_IMPLEMENTED'); }

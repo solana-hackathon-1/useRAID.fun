@@ -1,0 +1,94 @@
+import { randomUUID } from 'node:crypto';
+import { beforeAll,beforeEach,afterAll,describe,it,expect } from 'vitest';
+import { db } from '../src/lib/db';
+import { hash } from '../src/lib/auth-primitives';
+import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
+import { publishSkillTaxonomy, type SkillTaxonomyActor } from '../src/skills/taxonomy-storage';
+import { saveSkillClaim,readSkillClaim } from '../src/skills/claim-storage';
+import { assertTestDatabase,truncateAll } from './helpers/db-guard';
+const integration=process.env.RUN_DB_TESTS==='true'?describe:describe.skip;
+const category={id:'frontend',domain:'software.frontend',name:'Frontend',status:'ACTIVE',aliases:['frontend','web-ui']};
+const catalogId='synthetic-skills';
+async function actor(mapping=true,admin=false) {
+ const user=await db.user.create({data:{handle:'synthetic-claim',role:admin?'ADMIN':'CREATOR',xId:admin?'synthetic-'+randomUUID():null}});
+ const sessionHash=hash(randomUUID());await db.session.create({data:{tokenHash:sessionHash,userId:user.id,via:'wallet',expiresAt:new Date(Date.now()+60000)}});
+ const p=mapping?await db.participant.create({data:{accountId:user.id,provisionActorAccountId:user.id,provisionRequestId:'synthetic-provision'}}):null;
+ return {accountId:user.id,sessionHash,participantId:p?.id??null};
+}
+const catalog=(expectedRevision=0,skills:unknown=[category],id=catalogId)=>runCommandTransaction(db,async tx=>{
+ const a=await actor(false,true);
+ return publishSkillTaxonomy(tx,{actor:{accountId:a.accountId,sessionHash:a.sessionHash},input:{taxonomyId:id,expectedRevision,skills},idempotencyKey:randomUUID(),requestId:'synthetic-catalog'}, {allowNewWrites:true,canPublish:()=>true});
+});
+const body=(expectedClaimRevision=0,expectedTaxonomyRevision=1,extra={})=>({taxonomyId:catalogId,expectedTaxonomyRevision,expectedClaimRevision,skillId:category.id,claimedLevel:' S ',supportingReferences:[' https://public.example/portfolio '],...extra});
+const identity=(a:SkillTaxonomyActor)=>({accountId:a.accountId,sessionHash:a.sessionHash});
+const save=(a:SkillTaxonomyActor,input:unknown=body(),key=randomUUID(),allowNewWrites=true)=>runCommandTransaction(db,tx=>saveSkillClaim(tx,{actor:identity(a),input,idempotencyKey:key,requestId:'synthetic-claim-request'},{allowNewWrites}));
+const read=(a:SkillTaxonomyActor,skillId=category.id)=>runCommandTransaction(db,tx=>readSkillClaim(tx,identity(a),skillId));
+const counts=()=>db.$queryRawUnsafe<{claims:number;versions:number;receipts:number;audits:number;outbox:number}[]>(`SELECT (SELECT count(*)::int FROM "SkillClaim") claims,(SELECT count(*)::int FROM "SkillClaimVersion") versions,(SELECT count(*)::int FROM "CommandReceipt" WHERE "commandKind"='SaveSkillClaim') receipts,(SELECT count(*)::int FROM "AuditEvent" WHERE "eventType"='skill.claim_recorded.v1') audits,(SELECT count(*)::int FROM "OutboxEvent") outbox`);
+integration('T012B2 private canonical unverified claim storage',()=>{
+ beforeAll(()=>assertTestDatabase());
+ beforeEach(async()=>{await truncateAll(db);await catalog();});
+ afterAll(()=>db.$disconnect());
+ it('stores an actual canonical private claim and normalized references without inventing assessment authority',async()=>{
+  const a=await actor(),r=await save(a);
+  expect(r.status).toBe('EXECUTED');expect(r.claim).toMatchObject({version:'v1',revision:1,state:'CLAIMED',participantId:a.participantId,skillId:'frontend',skillDomain:'software.frontend',claimedLevel:'S',supportingReferences:['https://public.example/portfolio'],taxonomyReference:{recordId:catalogId,revision:1},persisted:true,verifiesSkill:false,createsPermissionGrant:false,consumesCapacity:false,isAuthorizationToken:false});
+  expect(Object.isFrozen(r.claim)).toBe(true);for(const field of ['assessedRank','assessmentHistory','rubric','evaluator','confidence'])expect(r.claim).not.toHaveProperty(field);
+  expect(await read(a)).toEqual(r.claim);expect(await counts()).toEqual([{claims:1,versions:1,receipts:1,audits:1,outbox:0}]);
+ });
+ it('keeps one canonical claim across independent wallet and X session credentials',async()=>{
+  const a=await actor(),first=await save(a),other=hash(randomUUID());
+  await db.session.create({data:{tokenHash:other,userId:a.accountId,via:'x',expiresAt:new Date(Date.now()+60000)}});
+  const second=await save({...a,sessionHash:other},body(1,1,{claimedLevel:'Updated claim',supportingReferences:[]}));
+  expect(second.claim).toMatchObject({id:first.claim.id,participantId:a.participantId,revision:2,claimedLevel:'Updated claim'});
+  expect(await counts()).toEqual([{claims:1,versions:2,receipts:2,audits:2,outbox:0}]);
+ });
+ it('replays the original immutable result after a later claim/catalog retirement and writes disabled',async()=>{
+  const a=await actor(),key=randomUUID(),first=await save(a,body(),key);
+  const second=await save(a,body(1,1,{claimedLevel:'C'}));await catalog(1,[{...category,status:'RETIRED'}]);
+  expect(await save(a,body(),key,false)).toEqual({status:'REPLAYED',claim:first.claim});
+  expect(await read(a)).toEqual(second.claim);await expect(save(a,body(2,2))).rejects.toMatchObject({code:'SKILL_UNAVAILABLE'});
+  expect(await counts()).toEqual([{claims:1,versions:2,receipts:2,audits:2,outbox:0}]);
+ });
+ it('rejects unknown skill/catalog/missing canonical mapping without provisioning or prepared effects',async()=>{
+  const a=await actor();
+  await expect(save(a,body(0,1,{skillId:'solana'}))).rejects.toMatchObject({code:'SKILL_UNAVAILABLE'});
+  await expect(save(a,body(0,1,{taxonomyId:'unknown'}))).rejects.toMatchObject({code:'RESOURCE_UNAVAILABLE'});
+  const missing=await actor(false);await expect(save(missing)).rejects.toMatchObject({code:'RESOURCE_UNAVAILABLE'});await expect(read(missing)).rejects.toMatchObject({code:'RESOURCE_UNAVAILABLE'});
+  expect(await db.participant.findUnique({where:{accountId:missing.accountId}})).toBeNull();expect(await counts()).toEqual([{claims:0,versions:0,receipts:0,audits:0,outbox:0}]);
+ });
+ it.each(['expired','revoked','foreign','unsupported','restricted'])('denies current %s authority on save/read/original replay',async kind=>{
+  const a=await actor(),key=randomUUID();await save(a,body(),key);
+  if(kind==='expired')await db.session.update({where:{tokenHash:a.sessionHash},data:{expiresAt:new Date(0)}});
+  if(kind==='revoked')await db.session.delete({where:{tokenHash:a.sessionHash}});
+  if(kind==='foreign')a.sessionHash=(await actor()).sessionHash;
+  if(kind==='unsupported')await db.session.update({where:{tokenHash:a.sessionHash},data:{via:'forged'}});
+  if(kind==='restricted')await db.user.update({where:{id:a.accountId},data:{suspended:true}});
+  const code=kind==='restricted'?'ACCOUNT_RESTRICTED':'AUTHENTICATION_REQUIRED';await Promise.all([save(a,body(1)),save(a,body(),key,false),read(a)].map(work=>expect(work).rejects.toMatchObject({code})));
+  expect(await counts()).toEqual([{claims:1,versions:1,receipts:1,audits:1,outbox:0}]);
+ });
+ it('keeps other canonical participants private and permits empty own history',async()=>{
+  const a=await actor(),b=await actor();expect(await read(a)).toBeNull();await save(a);expect(await read(b)).toBeNull();expect(await read(a,'another-skill')).toBeNull();
+ });
+ it.each(['participantId','accountId','wallet','verified','assessedRank','rubric','assessmentHistory','recordedAt'])('rejects claimant-injected %s authority',async field=>{
+  const a=await actor();await expect(save(a,body(0,1,{[field]:'forged'}))).rejects.toMatchObject({code:'INVALID_INPUT'});expect(await counts()).toEqual([{claims:0,versions:0,receipts:0,audits:0,outbox:0}]);
+ });
+ it('pins current catalog and claim revisions and original-body digest without leaking stale conflicts after expiry',async()=>{
+  const a=await actor(),key=randomUUID();await save(a,body(),key);
+  await expect(save(a)).rejects.toMatchObject({code:'REVISION_CHANGED'});await expect(save(a,body(1,2))).rejects.toMatchObject({code:'REVISION_CHANGED'});
+  await expect(save(a,body(1),key)).rejects.toMatchObject({code:'IDEMPOTENCY_KEY_REUSED'});
+  await db.session.delete({where:{tokenHash:a.sessionHash}});await expect(save(a,body(1),key)).rejects.toMatchObject({code:'AUTHENTICATION_REQUIRED'});
+ });
+ it('rejects new writes disabled and invalid references while preserving private original receipts',async()=>{
+  const a=await actor();await expect(save(a,body(),randomUUID(),false)).rejects.toMatchObject({code:'WRITES_DISABLED'});
+  for(const supportingReferences of [['http://public.example'],['https://u:secret@public.example'],['https://public.example','https://public.example/']])await expect(save(a,body(0,1,{supportingReferences}))).rejects.toMatchObject({code:'INVALID_INPUT'});
+  expect(await counts()).toEqual([{claims:0,versions:0,receipts:0,audits:0,outbox:0}]);
+ });
+ it('serializes competing initial claims and same-identity retries without extra records',async()=>{
+  const a=await actor(),r=await Promise.allSettled([save(a),save(a)]);expect(r.filter(x=>x.status==='fulfilled')).toHaveLength(1);expect(r.find(x=>x.status==='rejected')).toMatchObject({reason:{code:'REVISION_CHANGED'}});
+  const key=randomUUID(),values=await Promise.all([save(a,body(1),key),save(a,body(1),key)]);expect(values.map(x=>x.status).sort()).toEqual(['EXECUTED','REPLAYED']);expect(values[0].claim).toEqual(values[1].claim);
+  expect(await counts()).toEqual([{claims:1,versions:2,receipts:2,audits:2,outbox:0}]);
+ });
+ it('preserves original domain and catalog identity instead of moving a claim to another catalog',async()=>{
+  const a=await actor();await save(a);await catalog(0,[category],'other-catalog');await expect(save(a,body(1,1,{taxonomyId:'other-catalog'}))).rejects.toMatchObject({code:'HISTORY_CONFLICT'});
+  expect(await counts()).toEqual([{claims:1,versions:1,receipts:1,audits:1,outbox:0}]);
+ });
+});

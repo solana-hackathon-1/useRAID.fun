@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-13T23:30:55.062229+00:00",
+  "base": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+  "files": {
+    "src/contracts/protocol.ts": "b47066a25ff53979f9a15fae25876987a3fdb0a14825842da47902abf2582a6e",
+    "tests/skill-claim-storage-boundary.test.ts": "bbef6ca345031dd52457c030e7cd2265c15a7f5714ed2f649c860a7bdafdbc07"
+  }
+}

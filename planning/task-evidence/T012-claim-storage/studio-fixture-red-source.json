@@ -1,0 +1,5 @@
+{
+  "base": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+  "sha256": "3465c0687b124c46d171d6fa1691a28e38cca646bb3f4f0ac997fe1f5bfa3547",
+  "observed": "Fullsuite 1701PASS1StudioTimeout5s, createDeposit intentionallyconnectshttps://example.invalid aftercommittingintent; DNS unavailable makesfixturefailureslow"
+}

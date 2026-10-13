@@ -1,0 +1,7 @@
+import { expect,it } from 'vitest';
+import { EventEnvelopeSchema } from '../src/contracts/protocol';
+it('records skill claim versions only through identifier-only private audit references',()=>{
+ const event={eventId:'e',type:'skill.claim_recorded.v1',aggregateId:'claim',aggregateVersion:1,occurredAt:'2026-10-14T00:00:00Z',actorId:'self',guildId:null,correlationId:'r',payload:{skillClaimVersionId:'version'}};
+ expect(EventEnvelopeSchema.safeParse(event).success).toBe(true);
+ for(const field of ['claimedLevel','supportingReferences','assessedRank','assessmentHistory'])expect(EventEnvelopeSchema.safeParse({...event,payload:{...event.payload,[field]:'private'}}).success).toBe(false);
+});

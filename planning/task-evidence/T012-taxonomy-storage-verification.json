@@ -186,38 +186,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484067426",
+      "observed": "ActualjobFAIL before0steps; accountpayments/spendinglimit annotation, no sourcechecks executed"
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484067426",
+      "observed": "ActualjobFAIL before0steps; accountpayments/spendinglimit annotation, no sourcechecks executed"
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484067426",
+      "observed": "ActualjobFAIL before0steps; accountpayments/spendinglimit annotation, no sourcechecks executed"
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484067426",
+      "observed": "ActualjobFAIL before0steps; accountpayments/spendinglimit annotation, no sourcechecks executed"
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484067426",
+      "observed": "ActualjobFAIL before0steps; accountpayments/spendinglimit annotation, no sourcechecks executed"
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484067426",
+      "observed": "ActualjobFAIL before0steps; accountpayments/spendinglimit annotation, no sourcechecks executed"
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New T012B1 source not published yet; prior d023 CI does not verify new storage"
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484067426",
+      "observed": "ActualjobFAIL before0steps; accountpayments/spendinglimit annotation, no sourcechecks executed"
     }
   },
   "tdd": {
@@ -251,5 +258,14 @@
     "T012A pure candidate contracts retained; actual catalog storage additive26th migration/current policy/session/receipt/history/private audit",
     "19 DB behavior RED plus1 event RED, exact sources archived before edits; actual integration and fixture failures retained",
     "172 realPG regression PASS; private canonical claim/evidence storage/assessment/revocation/HTTP/UI remain missing"
-  ]
+  ],
+  "post_merge_staging": {
+    "result": "NOT VERIFIED",
+    "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38484005795",
+    "observed": "PublishjobFAILED before0steps; accountpayments/spendinglimit annotation",
+    "new_image": "NOT PUBLISHED",
+    "last_verified_image": "d023/fb982407cba13e1f0ea74370a0bb0691f031d0c679eb7ce050bb35610f7f3d40",
+    "workflow_restoration": "Originaldisabled_manually restored/APIverified afterownedfailedrun"
+  }
 }

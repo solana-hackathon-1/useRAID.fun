@@ -1,0 +1,10 @@
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK schema-validate
+schema-validate PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK client
+client PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK typegen
+typegen PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK typecheck
+typecheck PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK production-build
+production-build PASS
