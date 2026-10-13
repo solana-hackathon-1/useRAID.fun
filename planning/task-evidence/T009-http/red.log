@@ -1,0 +1,299 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+xxxxxxxxxxxxx·xx·xx
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-host.test.ts > requires an exact explicit default-off non-demo write switch and passes it to the storage command without blocking replay
+Error: Draft transport host not implemented
+ ❯ Module.saveDraft src/lib/guild-draft-host.ts:6:84
+      4| }
+      5| export async function readGuildDraftState(_actor:GuildDraftActor,_id:s…
+      6| export async function saveDraft(_command:GuildDraftCommand):Promise<un…
+       |                                                                                    ^
+      7|
+ ❯ tests/guild-draft-host.test.ts:25:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  tests/guild-draft-host.test.ts > keeps owned read and write configuration independent when creation is disabled
+Error: Draft transport host not implemented
+ ❯ Module.readGuildDraftState src/lib/guild-draft-host.ts:5:101
+      3|   return {writesAvailable:false,unavailableReason:'DISABLED'};
+      4| }
+      5| export async function readGuildDraftState(_actor:GuildDraftActor,_id:s…
+       |                                                                                                     ^
+      6| export async function saveDraft(_command:GuildDraftCommand):Promise<un…
+      7|
+ ❯ tests/guild-draft-host.test.ts:30:63
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > resolves account and session only from the own server cookie and returns private no-store data
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:54:27
+     52| it('resolves account and session only from the own server cookie and r…
+     53|   const response = await get();
+     54|   expect(response.status).toBe(200);
+       |                           ^
+     55|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     56|   expect(response.headers.get('vary')).toContain('Cookie');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > denies missing authentication and missing own cookie without a storage call
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:79:32
+     77| it('denies missing authentication and missing own cookie without a sto…
+     78|   mocks.user.mockRejectedValue(new HttpError(401, 'Sign in'));
+     79|   expect((await get()).status).toBe(401);
+       |                                ^
+     80|   expect((await post()).status).toBe(401);
+     81|   mocks.user.mockResolvedValue({ id: 'synthetic-self' });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > rejects foreign request origins, injected fields and invalid keys before saving
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:88:69
+     86| });
+     87| it('rejects foreign request origins, injected fields and invalid keys …
+     88|   expect((await post(input, {}, 'https://foreign.invalid')).status).to…
+       |                                                                     ^
+     89|   for (const body of [
+     90|     { ...input, actorId: 'foreign' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > bounds streamed input even when content-length is absent or lies
+AssertionError: expected 503 to be 413 // Object.is equality
+
+- Expected
++ Received
+
+- 413
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:109:29
+    107|       }),
+    108|     );
+    109|     expect(response.status).toBe(413);
+       |                             ^
+    110|   }
+    111|   expect(mocks.save).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > denies malformed JSON and non-JSON content without forwarding private details
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:125:5
+    123|       )
+    124|     ).status,
+    125|   ).toBe(422);
+       |     ^
+    126|   expect((await post(input, { 'Content-Type': 'text/plain' })).status)…
+    127|   expect(mocks.save).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > maps REVISION_CONFLICT to a sanitized error
+ FAIL  tests/guild-draft-routes.test.ts > maps SLUG_UNAVAILABLE to a sanitized error
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:140:27
+    138|   mocks.save.mockRejectedValue(new GuildDraftStorageError(code));
+    139|   const response = await post();
+    140|   expect(response.status).toBe(status);
+       |                           ^
+    141|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    142|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > maps ACCOUNT_RESTRICTED to a sanitized error
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:140:27
+    138|   mocks.save.mockRejectedValue(new GuildDraftStorageError(code));
+    139|   const response = await post();
+    140|   expect(response.status).toBe(status);
+       |                           ^
+    141|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    142|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > maps UNAUTHENTICATED to a sanitized error
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:140:27
+    138|   mocks.save.mockRejectedValue(new GuildDraftStorageError(code));
+    139|   const response = await post();
+    140|   expect(response.status).toBe(status);
+       |                           ^
+    141|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    142|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > maps STORAGE_UNAVAILABLE to a sanitized error
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ tests/guild-draft-routes.test.ts:141:49
+    139|   const response = await post();
+    140|   expect(response.status).toBe(status);
+    141|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+    142|   expect(await response.json()).toMatchObject({
+    143|     error: { code: expect.any(String), requestId: expect.any(String) },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > maps NOT_FOUND to a sanitized error
+AssertionError: expected 503 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:140:27
+    138|   mocks.save.mockRejectedValue(new GuildDraftStorageError(code));
+    139|   const response = await post();
+    140|   expect(response.status).toBe(status);
+       |                           ^
+    141|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    142|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > maps SLUG_IMMUTABLE to a sanitized error
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:140:27
+    138|   mocks.save.mockRejectedValue(new GuildDraftStorageError(code));
+    139|   const response = await post();
+    140|   expect(response.status).toBe(status);
+       |                           ^
+    141|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    142|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > maps idempotency conflicts, retryable storage failures and rate denial
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:148:33
+    146| it('maps idempotency conflicts, retryable storage failures and rate de…
+    147|   mocks.save.mockRejectedValue(new CommandReceiptError('IDEMPOTENCY_KE…
+    148|   expect((await post()).status).toBe(409);
+       |                                 ^
+    149|   mocks.save.mockRejectedValue(new CommandReceiptError('RETRY_TRANSACT…
+    150|   expect((await post()).status).toBe(503);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > times out a stalled request stream and releases its owned reader
+AssertionError: expected 503 to be 408 // Object.is equality
+
+- Expected
++ Received
+
+- 408
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:191:37
+    189|     const response = POST(request);
+    190|     await vi.advanceTimersByTimeAsync(5001);
+    191|     expect((await response).status).toBe(408);
+       |                                     ^
+    192|     expect(mocks.save).not.toHaveBeenCalled();
+    193|   } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/17]⎯
+
+ FAIL  tests/guild-draft-routes.test.ts > authenticates before resource parsing and returns private uniform absence for missing or foreign drafts
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/guild-draft-routes.test.ts:199:43
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/17]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  17 failed | 2 passed (19)
+   Start at  12:34:43
+   Duration  1.96s (transform 483ms, setup 0ms, import 862ms, tests 228ms, environment 1ms)

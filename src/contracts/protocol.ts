@@ -49,6 +49,7 @@ export const ERROR_CONTRACT = {
   FORBIDDEN: [403, 'This action is not permitted.', false],
   NOT_FOUND: [404, 'Not found.', false],
   REVISION_CHANGED: [409, 'Refresh the current record before continuing.', false],
+  DRAFT_SLUG_UNAVAILABLE: [409, 'That draft URL is unavailable. Choose another.', false],
   MISSING_VERIFIED_SKILL: [403, 'Relevant verified skill is required.', false],
   MINIMUM_RANK_NOT_MET: [403, 'The required skill rank is not met.', false],
   APPROVAL_REQUIRED: [403, 'Approval is required.', false],

@@ -1,0 +1,22 @@
+▲ Next.js 16.3.8 (Turbopack)
+- Local:         http://127.0.0.1:3015
+- Network:       http://127.0.0.1:3015
+✓ Ready in 735ms
+✓ Running next.config.ts took 109ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+
+ GET /api/health 200 in 908ms (next.js: 603ms, application-code: 305ms)
+ POST /api/v1/guild-drafts 200 in 1348ms (next.js: 1187ms, application-code: 161ms)
+ GET /api/v1/guild-drafts/1fadfbea-a3b6-4c3e-b43e-6d4414f4d26b 200 in 1049ms (next.js: 1024ms, application-code: 25ms)
+ GET /api/v1/guild-drafts/1fadfbea-a3b6-4c3e-b43e-6d4414f4d26b 401 in 33ms (next.js: 15ms, application-code: 19ms)
+ GET /api/v1/guild-drafts/1fadfbea-a3b6-4c3e-b43e-6d4414f4d26b 404 in 30ms (next.js: 4ms, application-code: 26ms)
+ GET /api/v1/guild-drafts/13b8e1be-a9b5-4eab-9051-f26ee35bc669 404 in 21ms (next.js: 4ms, application-code: 17ms)
+ POST /api/v1/guild-drafts 200 in 59ms (next.js: 4ms, application-code: 55ms)
+ POST /api/v1/guild-drafts 200 in 42ms (next.js: 7ms, application-code: 34ms)
+ POST /api/v1/guild-drafts 409 in 59ms (next.js: 4ms, application-code: 55ms)
+ POST /api/v1/guild-drafts 403 in 14ms (next.js: 4ms, application-code: 9ms)
+ POST /api/v1/guild-drafts 422 in 39ms (next.js: 3ms, application-code: 36ms)

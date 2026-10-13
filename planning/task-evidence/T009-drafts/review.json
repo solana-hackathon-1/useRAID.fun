@@ -63,5 +63,18 @@
   "remaining": "Full T009 criterion evidence, actual projectcontrol/Founder/grants/public media/links/API/UI, independent review/UAT, O11/G10/privacy/recovery not supplied",
   "ended_utc": "2026-10-13T06:42:37.831874+00:00",
   "elapsed_seconds": 532.837463,
-  "implementation_commit": "5209c6d56b5acabd080a1db621088b2bbee8468d"
+  "implementation_commit": "5209c6d56b5acabd080a1db621088b2bbee8468d",
+  "hosted": {
+    "run": 38358678287,
+    "source": "7e5bad78dce472e883cf3efd688b847dc448beca",
+    "conclusion": "SUCCESS",
+    "log": "hosted-success.log.gz",
+    "observed": "Actual final fullsource/database/browser/build/runtime/privateGHCR/cleanup results retained in raw log; full independent acceptance still absent",
+    "test_files": 114,
+    "tests": 1329,
+    "browser_tests": 8,
+    "browser_seconds": 39.0,
+    "digest": "sha256:c1748be9c637774268ea267e711d6b36b46c098585b9b6e1f7347d840c097024",
+    "cleanup": "PASS"
+  }
 }

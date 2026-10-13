@@ -1,3 +1,4 @@
+import { createGuildDraftHandlers, GuildDraftHttpError } from './guild-profiles/http';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
 import { pool } from './connection';
@@ -133,10 +134,76 @@ try {
   } finally {
     check.release();
   }
+  let httpActor = actor;
+  const http = createGuildDraftHandlers({
+    version: 'v1',
+    actor: async () => httpActor,
+    requestId: () => randomUUID(),
+    checkOrigin: (request) => {
+      if (request.headers.get('origin') !== 'http://synthetic.local')
+        throw new GuildDraftHttpError(403);
+    },
+    rateLimit: async () => {
+      /* Synthetic host fixture only; real hosts supply a persistent limiter. */
+    },
+    read: async (a, target) => ({
+      version: 'v1',
+      draft: await transaction((tx) => readGuildDraft(tx, a, target)),
+      writesAvailable: true,
+      unavailableReason: null,
+    }),
+    save: (command) => transaction((tx) => saveGuildDraft(tx, command, { allowNewWrites: true })),
+  });
+  const httpBody = {
+    guildDraftId: null,
+    expectedRevision: 0,
+    profile: { ...profile, slug: 'http-' + randomUUID() },
+  };
+  const request = () =>
+    new Request('http://synthetic.local/api/v1/guild-drafts', {
+      method: 'POST',
+      headers: {
+        Origin: 'http://synthetic.local',
+        'Content-Type': 'application/json',
+        'Idempotency-Key': 'http-' + id,
+      },
+      body: JSON.stringify(httpBody),
+    });
+  const created = await http.POST(request());
+  assert.equal(created.status, 200);
+  assert.equal(created.headers.get('cache-control'), 'private, no-store');
+  const createdBody = await created.json();
+  assert.equal(createdBody.draft.founderControlVerified, false);
+  const replay = await http.POST(request());
+  assert.equal(replay.status, 200);
+  assert.deepEqual(await replay.json(), { ...createdBody, status: 'REPLAYED' });
+  const ownRead = await http.GET(new Request('http://synthetic.local'), createdBody.draft.id);
+  assert.equal(ownRead.status, 200);
+  assert.deepEqual((await ownRead.json()).draft, createdBody.draft);
+  httpActor = { ...actor, sessionHash: 'b'.repeat(64) };
+  const sessionDenied = await http.GET(new Request('http://synthetic.local'), createdBody.draft.id);
+  assert.equal(sessionDenied.status, 401);
+  assert(!JSON.stringify(await sessionDenied.json()).includes(httpBody.profile.description));
+  httpActor = actor;
+  const originDenied = await http.POST(
+    new Request('http://synthetic.local', {
+      method: 'POST',
+      headers: {
+        Origin: 'https://foreign.invalid',
+        'Content-Type': 'application/json',
+        'Idempotency-Key': 'denied',
+      },
+      body: JSON.stringify(httpBody),
+    }),
+  );
+  assert.equal(originDenied.status, 403);
   console.log(
     JSON.stringify({
       synthetic: true,
       realDatabase: true,
+      portableHttpSaveReplayRead: true,
+      httpPrivateHeadersAndOrigin: true,
+      httpForeignSessionDenied: true,
       ownSchema: true,
       alternatePgPort: true,
       privateRead: true,
