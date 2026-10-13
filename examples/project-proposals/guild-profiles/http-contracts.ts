@@ -1,0 +1,1 @@
+../../../src/guild-profiles/http-contracts.ts

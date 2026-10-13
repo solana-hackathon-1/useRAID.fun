@@ -20,6 +20,8 @@ The first full attempt was interrupted with exit 143 after prolonged PostgreSQL 
 
 ## Completed local attempt and remaining browser boundary
 
+T010C2 adds a separate mandatory project-proposal desktop/mobile suite to both hosted Checks and Staging before production build/image publication. `playwright.project-proposals.config.ts` owns a synthetic loopback Next development server (default3018), dedicated PostgreSQL fixture and current cookie flow; ten cases cover private pending saves/recovery/access boundaries. `PROJECT_PROPOSAL_BROWSER_URL` selects an available loopback port. No live provider, financial feature or existing listener is enabled or reused. Evidence and cleanup follow the PR template; [the form contract](../raid-project-proposal-form.md) declares host dependencies and limits.
+
 Second attempt: `/tmp/raid-local-ci-20261009-191705`, recorded main SHA plus working diff (subsequently published as 714d928). All 29 planning tests passed; formatting, route generation, typecheck, lint, configured audit, real migrations/drift, production build, Docker image and both runtime smoke checks passed. Vitest: **67 suites, 731 tests, zero failures/errors/skips**, with JUnit retained. This is main plus the CI change, not verification of the four feature PR heads.
 
 Aggregate command exited **1**. Demo suite could not start because an existing server occupies port 3000; it was preserved. Studio: 44 setup failures because locked Chromium headless shell revision1243 is absent. Live browser: 32 failures,6 skipped,6 passed; live-flow also failed on missing Chromium. These do not establish browser user-flow behavior. No assertions, retries, test timeouts, release gates or branch protection were weakened.

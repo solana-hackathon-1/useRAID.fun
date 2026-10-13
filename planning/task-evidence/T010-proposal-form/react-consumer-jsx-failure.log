@@ -1,0 +1,24 @@
+
+> raid-project-proposal-example@1.0.0 form
+> tsx form-example.tsx
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+Error: Transform failed with 1 error:
+/tmp/raid-t010-proposal-consumer-ns_rruub/form-example.tsx:6:358: ERROR: Unexpected ">"
+    at failureErrorWithLog (/tmp/raid-t010-proposal-consumer-ns_rruub/node_modules/esbuild/lib/main.js:1752:15)
+    at /tmp/raid-t010-proposal-consumer-ns_rruub/node_modules/esbuild/lib/main.js:1019:50
+    at responseCallbacks.<computed> (/tmp/raid-t010-proposal-consumer-ns_rruub/node_modules/esbuild/lib/main.js:886:9)
+    at handleIncomingPacket (/tmp/raid-t010-proposal-consumer-ns_rruub/node_modules/esbuild/lib/main.js:941:12)
+    at Socket.readFromStdout (/tmp/raid-t010-proposal-consumer-ns_rruub/node_modules/esbuild/lib/main.js:864:7)
+    at Socket.emit (node:events:519:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23) {
+  name: 'TransformError'
+}
+
+Node.js v22.23.1

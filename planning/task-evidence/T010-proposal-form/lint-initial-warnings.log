@@ -1,0 +1,117 @@
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx
+  38:7   warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx:38:7
+  36 |       throw Error('Wrong private resource');
+  37 |     return (
+> 38 |       <div className="studio">
+     |       ^^^^^^^^^^^^^^^^^^^^^^^^
+> 39 |         <Link className="studio-back" href={'/creator/guild-drafts/' + draft.id}>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 40 |           ← Private draft
+     …
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 48 |         <ProjectProposalForm state={state} draftRevision={draft.revision} />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 49 |       </div>
+     | ^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  50 |     );
+  51 |   } catch {
+  52 |     return (  react-hooks/error-boundaries
+  39:9   warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx:39:9
+  37 |     return (
+  38 |       <div className="studio">
+> 39 |         <Link className="studio-back" href={'/creator/guild-drafts/' + draft.id}>
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 40 |           ← Private draft
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 41 |         </Link>
+     | ^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  42 |         <header className="studio-heading">
+  43 |           <div>
+  44 |             <h1>Private existing-project proposal</h1>                                                                                                                                                                                                                                               react-hooks/error-boundaries
+  42:9   warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx:42:9
+  40 |           ← Private draft
+  41 |         </Link>
+> 42 |         <header className="studio-heading">
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 43 |           <div>
+     | ^^^^^^^^^^^^^^^
+> 44 |             <h1>Private existing-project proposal</h1>
+     | ^^^^^^^^^^^^^^^
+> 45 |             <p>Prepare a token relationship and supporting references for later verification.</p>
+     | ^^^^^^^^^^^^^^^
+> 46 |           </div>
+     | ^^^^^^^^^^^^^^^
+> 47 |         </header>
+     | ^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  48 |         <ProjectProposalForm state={state} draftRevision={draft.revision} />
+  49 |       </div>
+  50 |     );                                                                                           react-hooks/error-boundaries
+  43:11  warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx:43:11
+  41 |         </Link>
+  42 |         <header className="studio-heading">
+> 43 |           <div>
+     |           ^^^^^
+> 44 |             <h1>Private existing-project proposal</h1>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 45 |             <p>Prepare a token relationship and supporting references for later verification.</p>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 46 |           </div>
+     | ^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  47 |         </header>
+  48 |         <ProjectProposalForm state={state} draftRevision={draft.revision} />
+  49 |       </div>                                                                                                                                      react-hooks/error-boundaries
+  44:13  warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx:44:13
+  42 |         <header className="studio-heading">
+  43 |           <div>
+> 44 |             <h1>Private existing-project proposal</h1>
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  45 |             <p>Prepare a token relationship and supporting references for later verification.</p>
+  46 |           </div>
+  47 |         </header>                                                                                                                                                                                                                                                                                                                                                                                   react-hooks/error-boundaries
+  45:13  warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx:45:13
+  43 |           <div>
+  44 |             <h1>Private existing-project proposal</h1>
+> 45 |             <p>Prepare a token relationship and supporting references for later verification.</p>
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  46 |           </div>
+  47 |         </header>
+  48 |         <ProjectProposalForm state={state} draftRevision={draft.revision} />                                                                                                                                                                                                                                                                                                       react-hooks/error-boundaries
+  48:9   warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/guild-drafts/[id]/project/page.tsx:48:9
+  46 |           </div>
+  47 |         </header>
+> 48 |         <ProjectProposalForm state={state} draftRevision={draft.revision} />
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  49 |       </div>
+  50 |     );
+  51 |   } catch {                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/error-boundaries
+
+✖ 7 problems (0 errors, 7 warnings)

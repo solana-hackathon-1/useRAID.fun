@@ -1,3 +1,4 @@
+import { readGuildDraft } from '../guild-profiles/draft-storage';
 import type { GuildDraftActor, GuildDraftCommand } from '../guild-profiles/draft-storage-contracts';
 import {
   readGuildProjectProposal,
@@ -33,4 +34,21 @@ export async function saveProjectProposal(command: GuildDraftCommand) {
     ...result,
     ...projectProposalWriteConfiguration(),
   };
+}
+
+/** One owned transaction supplies coherent private page input; no cookie or actor reaches client props. */
+export async function readProjectProposalPageState(actor: GuildDraftActor, id: string) {
+  return runCommandTransaction(db, async (tx) => {
+    const draft = await readGuildDraft(tx, actor, id);
+    const proposal = await readGuildProjectProposal(tx, actor, id);
+    return {
+      draft,
+      state: {
+        version: 'v1' as const,
+        guildDraftId: draft.id,
+        proposal,
+        ...projectProposalWriteConfiguration(),
+      },
+    };
+  });
 }
