@@ -1,3 +1,9 @@
+# T010D implementation committed; candidate publication next — 2026-10-13T13:04:42.991137+00:00 Codex /root
+
+Bounded D implementationddadaa05446c2352190ee251d7d85348003bb368 committed onoriginalbranch, no sourcechanges after111proof/223docs+proof/112finaldocs/5requirements/strictTSC/lintzero/wholefreshformat/own7packagecrypto v1v2 bothadapterstests PASS. Localresourcesnone; sourcehashes/timedSELF andgenuine26RED/precision3RED/full27validatorrejection preserved. ActualpublicHTTP530/1033+knownVMSSHtimeout remaindeploymentgap. PR205exact423129files1509/new28browser/nativeimage/runtime/GHCR/cleanup/allsevenChecksSUCCESS complete/bodyupdated/originalmanualworkflowdisabledrestored. Next metadatahashpin/push/templatePR/matchedheadmerge/exactnewmandatorygates; temporarymanualChecks MUSTrestore afterownedrun success/failure/interruption. Continue independentT011 next, no humanwait/delegation/branchswitch/fullissueclosure/liveactivation.
+
+---
+
 # T010D source verified ready; PR205 CI records complete — 2026-10-13T13:03:33.966173+00:00 Codex /root
 
 Originalbranch main423 plusbounded D/uncommitted metadata. Coexisting v2 exactcompletependingproposal/currentownsnapshot/controlmessage andsharedtypedcryptoport withunchangedv1protocol locallyverified:26RED2PASS→101GREEN→108regression; precision2RED/numericUUIDvacuouscase corrected→3RED→111finalPASS2.56s. Strictv2 millisecondprecision/context-current facts andnormalizedresultID fixes; genuinefailures retained. Docs223PASS5.03s/final112PASS, inventory1RED5tests→5PASS, ownstrictTSC/lintzero/wholefreshformatter/independentown7packagecanonicalNaCl+Node v1v2/staleabsent/crossprotocol/noeffectsPASS. NoDrootroute/UI/flag/DDL/server/provider/money/capacity effects; SELFtiming/sourcehashes/full27packetvalidatorreject retained, no independentacceptance.

@@ -42,7 +42,7 @@
     "NormalizedsignedUUIDcouldreturnnoncanonicalresultcase; actualletterUUIDRED thennormalize resultid; firstnumericUUIDfixture lackedcasecharacters andwas correctedwithoutweakening",
     "Sharedsignatureport structural schema movedintocontracts, v1message/result/validationbehavior unchanged andfullregressionsPASS"
   ],
-  "source_identity": "UNCOMMITTED D relative423; genuineinitialRED tests/stub precedeimplementation, final hashes below; no cleanHEAD RED claim",
+  "source_identity": "Bounded implementation ddadaa05446c2352190ee251d7d85348003bb368; actualinitialRED uncommitted tests/stub and precision failures retained, final hashes/own consumer/source identified",
   "formatter_source": "/tmp/raid-t010-proposal-control-source-8g955ynf",
   "ended_utc": "2026-10-13T13:02:15.777028+00:00",
   "elapsed_seconds": 545.552066,
@@ -60,5 +60,6 @@
     "docs/raid-module-reuse.md": "a772c82f67059e44de430c05e5a45da4d0a00987997ebbef4cb7d40e84ed918a",
     "docs/tasks/2026-10-13-T010-proposal-control.md": "d00fee8dd6eccf569a6ca2a9989cf972cbd13db84e97be78e600f26158b26084",
     "planning/raid-ci-matrix.json": "dddd7bf337afb669b2c58cda2546077be57da34eb4b085fbcb16a861062e0ddb"
-  }
+  },
+  "implementation_commit": "ddadaa05446c2352190ee251d7d85348003bb368"
 }
