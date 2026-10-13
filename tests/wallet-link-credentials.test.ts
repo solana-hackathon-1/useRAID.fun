@@ -12,6 +12,7 @@ import {
 } from '../src/identity-link';
 import { createPrismaIdentityTransaction } from '../src/lib/identity-storage-adapter';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { matchesBlockingObservation } from './helpers/lock-observation';
 import {
   fixtureAddress,
   fixtureLinkInput,
@@ -386,7 +387,7 @@ integration('B1 credentials on real PostgreSQL', () => {
         'SELECT query,pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid=$1',
         waiter,
       );
-      if (rows[0]?.blockers.includes(blocker)) {
+      if (matchesBlockingObservation(rows[0], blocker, statement)) {
         expect(rows[0].query).toMatch(statement);
         console.info(
           JSON.stringify({

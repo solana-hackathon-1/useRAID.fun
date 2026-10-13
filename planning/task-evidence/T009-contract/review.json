@@ -44,5 +44,27 @@
     "completion": "Expected fullT009 validator exit1; all fullcriteriaNOTVERIFIED; no self-issued approval"
   },
   "resources": "No task-owned runtime server/container started; CLI consumers completed; priorfixtures STOPPED, unrelated services/volumes/images/evidence retained.",
-  "implementation_commit": "bf6a131ff091babd4986d08eaec798f49847a2c7"
+  "implementation_commit": "bf6a131ff091babd4986d08eaec798f49847a2c7",
+  "hosted_attempt_1": {
+    "main_sha": "47b79b1a9a77ee343f93bfabd5595527c6e9e473",
+    "run": 38356032038,
+    "source_db_browser_image_runtime": "PASS",
+    "publication": "FAIL unknown blob after layer uploads; not a source/build acceptance failure",
+    "cleanup": "PASS",
+    "action": "Retry failed job with same source; actual repeat results pending"
+  },
+  "hosted_attempt_2": {
+    "main_sha": "47b79b1a9a77ee343f93bfabd5595527c6e9e473",
+    "run": 38356032038,
+    "attempt": 2,
+    "conclusion": "SUCCESS",
+    "log": "hosted-success.log.gz",
+    "observed": "Exact actual suite/browser/image/runtime/publication/cleanup results retained in raw log; no full independent criterion acceptance implied",
+    "test_files": 111,
+    "tests": 1302,
+    "browser_tests": 8,
+    "browser_seconds": 37.1,
+    "digest": "sha256:ec18da49243050811982d2d4c538f35aa4f6df3a71c20f3f8b2f0b221815b2d2",
+    "cleanup": "PASS"
+  }
 }

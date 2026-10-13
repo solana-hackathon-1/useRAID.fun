@@ -29,6 +29,7 @@ model User {
   walletLinks WalletLink[]
   raiderPreferences RaiderPreferences?
   raiderPreferenceVersions RaiderPreferenceVersion[]
+  guildDrafts GuildDraft[]
 }
 // Immutable HUMAN foundation; checks/row guard live in the additive SQL migration.
 model Participant {
@@ -640,6 +641,7 @@ model CommandReceipt {
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   auditEvents AuditEvent[]
   orientationVersion RaiderPreferenceVersion?
+  guildDraftVersion GuildDraftVersion?
   @@unique([actorId, commandKind, idempotencyKey])
 }
 model InboxDelivery {
@@ -706,4 +708,33 @@ model RaiderPreferences {
   account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferences_account_fkey")
   participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferences_participant_fkey")
   currentVersion RaiderPreferenceVersion @relation(fields: [currentVersionId, accountId, participantId, revision], references: [id, accountId, participantId, revision], onDelete: Restrict, onUpdate: Restrict, map: "RaiderPreferences_version_fkey")
+}
+// Private draft ownership is not verified project-Founder/Guild permission authority.
+model GuildDraft {
+  id String @id @db.Uuid
+  ownerAccountId String
+  slug String @unique(map: "GuildDraft_slug_key")
+  revision Int
+  currentVersionId String @db.Uuid
+  owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_owner_fkey")
+  versions GuildDraftVersion[] @relation("GuildDraftHistory")
+  currentVersion GuildDraftVersion @relation("GuildDraftCurrent", fields: [currentVersionId, id, ownerAccountId, revision], references: [id, guildDraftId, ownerAccountId, revision], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_version_fkey")
+  @@unique([id, ownerAccountId], map: "GuildDraft_owner_key")
+  @@index([ownerAccountId])
+}
+model GuildDraftVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildDraftId String @db.Uuid
+  ownerAccountId String
+  revision Int
+  profile Json @db.JsonB
+  receiptId String @unique(map: "GuildDraftVersion_receiptId_key") @db.Uuid
+  actorAccountId String
+  requestId String
+  recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  draft GuildDraft @relation("GuildDraftHistory", fields: [guildDraftId, ownerAccountId], references: [id, ownerAccountId], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraftVersion_draft_fkey")
+  currentProjections GuildDraft[] @relation("GuildDraftCurrent")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraftVersion_receipt_fkey")
+  @@unique([guildDraftId, revision], map: "GuildDraftVersion_draft_revision_key")
+  @@unique([id, guildDraftId, ownerAccountId, revision], map: "GuildDraftVersion_pointer_key")
 }

@@ -1,0 +1,24 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+x·
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-boundary.test.ts > declares private owner storage, real transaction/session dependencies and an independently installed host
+Error: ENOENT: no such file or directory, open 'docs/raid-guild-drafts.md'
+ ❯ tests/guild-draft-boundary.test.ts:5:15
+      3| import { EventEnvelopeSchema } from '../src/contracts/protocol';
+      4| it('declares private owner storage, real transaction/session dependenc…
+      5|   const doc = await readFile('docs/raid-guild-drafts.md', 'utf8');
+       |               ^
+      6|   for (const text of [
+      7|     'R15',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  12:13:43
+   Duration  330ms (transform 51ms, setup 0ms, import 132ms, tests 13ms, environment 0ms)

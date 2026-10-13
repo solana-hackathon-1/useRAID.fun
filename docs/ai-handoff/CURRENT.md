@@ -1,3 +1,53 @@
+# T009B bounded source verified ready for publication — 2026-10-13T06:42:37.831874+00:00 Codex /root
+
+Originalbranch main47b79b1 plus private draft/version/schema/service/protocol/docs/ownconsumer/evidence/matrix and test-observer correction UNCOMMITTED, previous checkpoint/PR195attempt evidence preserved. Owner DEC-2026-10-12-03 permits bounded commit/push/matched-head merge; no delegation/branchswitch. Actual16storageRED→16GREEN, all21draft DB cases PASS in full113files1326PASS1FAIL1327total159.76s. The sole failure was old wallet observer accepting blocker before expected activity statement, deterministicRED1/2→same-statement/actual-blocker waiting with originalassertions/timeouts→affected33PASS. Fullfailure preserved; unchanged1326PASS reused; exact-main newfullpipeline stillrequired. Fresh own24-model client/typegen/typecheck/productionWebpackBuild/updated-observer tsc/ownedlint/formatPASS; requirements5/docs98/own20pkg pg hostPASS. TimedSELF-EVALUATED/hashbound review and full28criteria/sevenmissingnamedchecks packet remain NOT VERIFIED for fullT009 acceptance.
+
+AlltaskDB runnersfinallySTOP0 includingfailures; owned5f993a69... inspectfalse. No browser/server/preview/new publicflow; unrelatedresources/history/volumes/images preserved. PR195exact47b79b1 pipelineattempt2 SUCCESS111files1302PASS+8browser37.1s/image/runtime/privateGHCR/cleanup after preserved unknownblob failure. Publicingress prior530/1033 remains separate. No new verifiedFounder/grants/token/public/financial/privateaccess/skill/capacity authority; draftownership only.
+
+Nextstageexplicitboundedfiles, finalcachedchecks, commit/hashpin/PRtemplate/mainmerge, observeexactCI/fixactualfailure. Then authenticated private draft API/UI with defaultoff newwrites/strictowncookie/nocache/origin/rate/body limits/revision/idempotent feedback and browserRED/ownedpreview. Fullprojectcontrol/Founder/grants/media/ownership/privateaccess/O11/G10/independent/UAT obligations remainopen; work-state toolsabsent syncpending. No human testing/recommendation wait inferred.
+
+---
+
+# PR195 exact staging SUCCESS; T009B final regression running — 2026-10-13T06:37:53.574760+00:00 Codex /root
+
+PR195 main47b79b1 exact38356032038 attempt2 SUCCESS111files1302PASS,8desktop/mobile37.1sPASS, source/security/DB/client/productionimage/runtime/privateGHCR/cleanupPASS. Publishedsha256:ec18da49243050811982d2d4c538f35aa4f6df3a71c20f3f8b2f0b221815b2d2. Attempt1 registry unknown-blob failure remains retained with successful exact-source retry raw gzip. Public ingress prior530/1033 remains separate. FullT009/independent/UAT unresolved; no issue closure/activation.
+
+T009B additive private draft/version/service changes stillUNCOMMITTED. Fresh own24-model client/typegen/typecheck/productionWebpackBuildPASS; own20pkg pg consumerPASS with finallyDBstop0; ownedlint/formatPASS, finalrequirements/inventory5PASS; directSQL110first109PASS1error-shape fixture failure corrected to exact database denial, full frozen-source suite nowrunning. Source/product/test/example hashes matchcanonical. Docs3files98PASS actual; initialmissing-docRED and original16storageRED retained. Fullcompletionvalidator intentionallyrejects28criteria/sevennamedchecks and pending refactor evidence; final fullresult must update beforepublication. E03 inventory now truthfully EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW (bounded tests exist; full domainreview absent).
+
+Owned raid-t009-drafts-auto-20261013 onlyactive duringfulltests, runnerfinally-stop automatically; no server/browser owned; unrelated resources/evidence retained. Next record actualfullresult/cleanup/finalSELF-EVALUATED packet and boundedPR/mainpublication; then authenticated API/UI under explicit new-write switch with private no-store/CSRF/rate/body safeguards and genuine browserRED. Founder/project/grant/media/publicactivation/ownership/recovery/O11/G10 remainunimplemented. No delegation, branchswitch or humanUAT wait.
+
+---
+
+# T009B consuming-host milestone — 2026-10-13T06:33:44.995222+00:00 Codex /root
+
+Private draft/version service and24th additive migration remain UNCOMMITTED on original main47b79b1 branch. Initial16RED→16GREEN; stronger5file regression109PASS1FAIL110total: database correctly denied forged audit at commit, assertion assumed raw-query P2010 whereas Prisma commit emits UnknownRequestError; corrected to exact Guild-specific denial message with rollback counts retained. Boundary missing-doc1FAIL/event1PASS before docs/example; subsequent actual4files141PASS (nonexistent task-evidence filter did not execute, no claim). Independently copied consumer own20-package pg/zod/bs58/tsx install+minimal User/Session/receipt/draft migrations PASS real save/update/private read/replay/changed-body/session denial/whole retry/no outbox. Own fixture finallySTOP0 each run, no browser/server started; unrelated services/data/evidence preserved.
+
+Fresh owned snapshot/client/typegen/typecheck/build verification running; explicit synthetic schema validationPASS after first missing DATABASE_URL configuration failure. Timed SELF-EVALUATED/source hashes started T009-drafts/review.json. Next complete corrected full SQL/full regression on exact frozen source, final docs/planning/static/validator/checkpoint, publish bounded source; full28criteria/independent/UAT/actualFounder/projectproof/Guildgrants/API/UI/O11/G10 still NOT VERIFIED. PR195 exact47b79b1 stagingattempt2 reruns unresolved GHCR unknown-blob publication; recorded attempt1 gates PASS with cleanup, no success until observed. Public ingress separate530/1033. Work-state sync tools absent.
+
+---
+
+# T009B storage GREEN; PR195 GHCR publication retry — 2026-10-13T06:27:44.464639+00:00 Codex /root
+
+Private owner storage initial16actualDBcases PASS3.96s after genuine16FAIL. Additive202610130002_guild_drafts (24migrations total) and protected draft-service/contracts/protocol-reference/model updates UNCOMMITTED; own autoDB finallySTOP0. Actual User/Session/Draft lock waits recorded; no project/Guild authority or API/UI activation. Schema validation first lacked DATABASE_URL (host configuration, not schema result); explicit synthetic dependency validation PASS. Direct SQL provenance/revision/FK and own independently installed pg host still pending; preserve WIP.
+
+PR195 exact main47b79b1 attempt1 passed source/audit/DB/application/8browser/production image/runtime/cleanup but registry push failed unknown blob. Raw failure gzip retained T009-contract/hosted-publish-failure.log.gz; same exact failed job rerun requested, success/image publication NOT VERIFIED until actual result. No arbitrary test repeat: unresolved publication requires hosted job repeat. No human input or delegation. Fullcriteria/independent/UAT/O11/G10/project-control/public tunnel limitations remain.
+
+---
+
+# T009B genuine storage RED — 2026-10-13T06:24:50.809785+00:00 Codex /root
+
+Bounded packet docs/tasks/2026-10-13-T009-draft-storage.md plus executable service stub and16actualDBbehavior tests now UNCOMMITTED over main47b79b1. Before any DDL/implementation,16/16FAIL recorded T009-drafts/red.log (12.20s): missing projection tables and unimplemented save/read/authorization/revision/replay/slug/concurrency behavior. No claims of implementation success; negative assertions unchanged. Newly owned uniquely labelled raid-t009-drafts-auto-20261013 tmpfs fixture uses Docker-assigned loopback port; runner finally-stop0 completed. Unrelated fixtures/services retained. Next implement additive24thmigration/current-draft+immutable-version provenance/privateaudit and same-transaction protected service to GREEN, then stronger direct SQL constraints/replay/session-lock expiry proofs and independent host. PR195 exact staging38356032038 source/security/DB passed; browser/build/image still pending when last read. FullT009/independent/UAT remains open, no activation/delegation.
+
+---
+
+# PR195 merged; T009B protected draft storage starting — 2026-10-13T06:20:27.133746+00:00 Codex /root
+
+PR195 merged2026-10-13T06:19:08Z main47b79b1a9a77ee343f93bfabd5595527c6e9e473; originalbranch fast-forwarded without discarding changes. Implementationbf6a131 + hash-pin42bfc5f published; exact staging38356032038 IN_PROGRESS, no success/image claim yet. Prior T009A actual159regression/95docs/5planning/33policy/own6pkg/typecheck/lint evidence retained, full28criteria and independent/UAT unverified. All prior runtime fixtures stopped; no new running resources. Work_state sync capability unavailable.
+
+T009B scope private own GuildDraft/version storage only, receipt-first current User→Session→Draft locks, database clock after waits, owner-scope reads, stable unique slug, sequential revisions, immutable original receipt replay/private audit/no outbox. No real Guild activation, verified project-Founder/grants/token/treasury/private code authority inferred from draft ownership. Canonical06/25/28 and actual schema/service/receipt ports inspected; migration is additive, existing history/auth/money preserved. Next write bounded task/storage contract+genuine failing DB tests before DDL/implementation, own disposable fixtures+finally cleanup, then GREEN/refactor and independent consuming host/docs/static/schema/build/gates. Owner staging authority continues; no delegation/issue closure. Public tunnel prior530/1033 remains independent limitation.
+
+---
+
 # T009A verified contract ready for staging publication — 2026-10-13T06:16:55.294845+00:00 Codex /root
 
 Original branch codex/t006-linked-wallet-signin HEAD5461fb3 unchanged; all new T009 pure contracts/tests/independent example/docs/evidence/matrix plus prior T008 exact-hosted evidence/checkpoint amendments UNCOMMITTED, preserved. Scope draft preparation, approved public allowlist and informational selected-field profile/delegation policy only; no Guild store/API/Founder attestation/grant/token/treasury/private-access activation. Owner DEC-2026-10-12-03 authorizes bounded commit/push/matched-head merge; no delegation.
