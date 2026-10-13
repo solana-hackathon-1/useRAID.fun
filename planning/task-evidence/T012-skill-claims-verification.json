@@ -17,8 +17,8 @@
     "T002/T006 independent acceptance/Rooteligibility/privatecode/UAT/releasegates unverified"
   ],
   "release_gate_disposition": "Independent reversibleprivateclaim/taxonomycandidates only; no publication/assessment/rank/grant/provider/money/capacity enablement orfakehostedCI",
-  "code_source_sha": null,
-  "source_identity": "UNCOMMITTED relative148b95fe29dbc0069d1bd9393341fe99f59007f2; genuineRED manifests/initialstubs/tests retained",
+  "code_source_sha": "07a2b49bcf0dce7947d487c44da40f8101e790ee",
+  "source_identity": "Bounded implementation 07a2b49bcf0dce7947d487c44da40f8101e790ee; actualRED relative148 plusinitialstubs/testsmanifest, no cleanHEAD newtestclaim",
   "criteria": {
     "T012-C01": {
       "result": "NOT VERIFIED",
@@ -231,14 +231,14 @@
     },
     "green": {
       "command": "vitest skill-claims",
-      "sha": null,
+      "sha": "07a2b49bcf0dce7947d487c44da40f8101e790ee",
       "evidence_url": "planning/task-evidence/T012-skill-claims/green.log",
       "observed": "19PASS aftermodule/schema implementation",
       "result": "PASS"
     },
     "refactor": {
       "command": "vitest skill-claims/newboundary/docs; ownedstrictTSC/lint/owncleanconsumer",
-      "sha": null,
+      "sha": "07a2b49bcf0dce7947d487c44da40f8101e790ee",
       "evidence_url": "planning/task-evidence/T012-skill-claims/review.json",
       "observed": "2files22PASS808ms;4files138PASS2.99s/5requirements/strictTSC/lint/ownclean6packagehostPASS",
       "result": "PASS"

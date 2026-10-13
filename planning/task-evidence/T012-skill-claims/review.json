@@ -34,5 +34,7 @@
     "docs/raid-module-reuse.md": "fcca61518347a44e0cc01955c95e7557bafe4bd121edd02f3144a85e81b8eeea",
     "docs/tasks/2026-10-13-T012-skill-claims.md": "a8d772c5f0ebb152503040f63ad1b784540858cce637fd211ca76d3647f8dd95",
     "planning/raid-ci-matrix.json": "80804441b031012b42e19d6e55ea2bb1a7aa1190e7761cdb8f29cb67bb049311"
-  }
+  },
+  "implementation_commit": "07a2b49bcf0dce7947d487c44da40f8101e790ee",
+  "source_identity": "Bounded implementation 07a2b49bcf0dce7947d487c44da40f8101e790ee; actualuncommittedRED source/testmanifest andfinalhashes retained"
 }
