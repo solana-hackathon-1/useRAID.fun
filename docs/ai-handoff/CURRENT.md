@@ -1,3 +1,65 @@
+# B2 implementation committed; source pin/publication next — 2026-10-13T23:57:30.374849+00:00 Codex /root
+
+Implementation 4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7 committedsameoriginalbranch onmainbe816. Actualfinal139files1702PASS209.88s/187PG/218boundarydocs1skip/52planning/own20pkgPG27NoDifference/types/build/lint/format +genuine22+1RED andStudiofailure/26targetedfix retained. Allownedfixturesstopped/poolsclosed; codeunchangedafterverification. Sourcepin metadata nowWIP, nextpincommit/push/templatePR/matchedheadmerge/actualautomaticStaging. Originalmanualworkflow remainsdisabled/no restoreoutstanding; knownbe816billingbeforesteps, no repeatedmanualdispatchuntilactualhostedavailabilitychange. Full27T012+7CI/unresolvedRootAPIUI/assessment/evaluator/rank/reassessment-revocation/independentUAT/gates remainNOTVERIFIED; nextprotectedRootskillAPIUI.
+
+---
+
+# T012B2 SELF-EVALUATED ready for publication — 2026-10-13T23:56:27.290552+00:00 Codex /root
+
+Same originalbranch/headbe816 plusB2canonicalprivateclaim/evidence kernel/contracts/27thDDL/schema/sharedaudit/44DB+5boundarytests/own20packagePGconsumer/docs/receipt-identity-history guards/test-onlyStudiofixturefix andpreservedPR209postCIevidence. Genuine22DB+1auditRED exactsnapshots→23GREEN→187realPGregression/218boundary-docs1skip/52planning/own20pkgPGactualcanonicalmapping/27migrationdriftNoDifference/types/build/lint/wholefreshformat PASS. Fullfirst139files1701PASS1Studio5s DNS-dependentintentionalRPCfailuretimeout; preservedoriginal+raw, test-only scopedfailure strengthenedexacterror/perintentcounts/3calls, original5s/limits/moneycodeunchanged.26targetedPASS/strictTSC/lint/format rerun; final139files1702PASS209.88s. No sourcechangesafterchecks. TimedSELF/hash/sourceidentity; actualfullvalidator34reject=27fullNOTVERIFIED+7newcandidateCI, noTDDmetadataerrors.
+
+AllownedPG runs finallystop0 inclfullfailure/retry, claim/catalogfixturesactualRunningfalse/poolsdisconnected; no server/browser/newpreview. Unrelatedservices/data/images/source/evidence preserved. No actualrank/assessment/historyreset/participantprovision/Rootflag/provider/money/public/capacityenablement. Nextstage/commit/sourcepin/pushsamebranch/templatePR/matchedheadmainmerge/actualautomaticnewStaging. OriginalmanualChecks disabled_manually restored/APIverified afterbe816failedbeforestepbilling; no restorationoutstanding, no repeatedmanualdispatch underknownunchangedblock. Enableonlyifnewhostedexecution actuallyresumes thenrestore. FullT012/independentUAT/RootAPIUI/evaluator-rubric/reassessment-revocation/release remainNOTVERIFIED; protectedRootAPI/UI next; no humanwait/delegation/branchswitch/parentclosure.
+
+---
+
+# Fullsuite fixture failure corrected; retest active — 2026-10-13T23:50:37.971151+00:00 Codex /root
+
+B2claims187PG/218boundary-docs1skip/52planning/own20pkgcanonicalPG/27schemaNoDifference/types/build/lint/wholeformatPASS. FirstfullfrozenRoot suite139files1701PASS1Studio5sTimeout222.48s, ownedPGstopped0. Causeexistingstudio-db depositlimits deliberatelyawait realhttps://example.invalid RPC failure post-intent; unreliableDNSdelay exceedsoriginal5s test. Recordedoriginaltestsnapshot/fullfailure; correctedscoped Connection.prototype.getGenesisHash failure onlyinthatcase, explicitexpectederror+perintentcount+exact3calls assertions, restorefinally. Moneycode/deadline/limits unchanged.
+
+NewWIP testfixturefixincludedwithclaimslice; targetedStudio/USDC regression running andfullsource/stictTSCretry neededaftertestchange. Featurecodeunchanged, no sourcecheckweakening/globalDNSchanges. Allprevious27DDLexceptnew27unchanged, flags/provider/money/rank/publicenablementabsent. PR209mainbe816billingbeforesteps/nomanualrestoreoutstanding remainsactual; nextfinishlocalchecks/SELF/sourcepin/samebranchPRpublication thenactualautoStaging. FullT012/independentUAT/assessment/revocation/RootAPIUIremainNOTVERIFIED.
+
+---
+
+# T012B2 actual PostgreSQL GREEN/regression — 2026-10-13T23:38:55.168713+00:00 Codex /root
+
+Same be816 originalbranch plusB2claimmodule/contracts/27thDDL/sharedclaimIDaudit/schema/44DB+5boundarytests/docs/ownconsumerWIP andpreservedPR209postCIevidence. Genuine22DB+1auditRED exactsources→23GREEN5.43s→8files187realPGregressionPASS23.35s includesactualcanonicalidentity/catalog/receipt/history/noassessment/privateaudit/SQLguards/expiry-lock/currentauthority. Ownedraid-t012-claims-auto-20261014 finallystoppedexit0; oldcatalogfixturestopped, unrelatedpreserved. Newclaimfields only, noassessment/rank/historyreset/rootflags/participantprovision/public/provider/money effects.
+
+Nextown20packagePGconsumeractualcanonicalmapping/schema27drift/fullselectedstatic/meaningfulshared-regression/docs/52planning/freshformat/SELFpacketvalidator/publication. Consumer staticreviewcaughtomittedclaims-migrationarrayextension beforeexecution, correctedexplicitclaims.sqldependency. FullT012/independentUAT/liveenablementstillNOTVERIFIED; be816Staging+7Checksfailedbeforestepsbilling andoriginalmanualdisabledrestored/APIverified, nooutstandingrestore. No humanwait/delegation/branchswitch/issueclosure; protectedAPI/UI afterdurablecontracts.
+
+---
+
+# T012B2 genuine RED captured — 2026-10-13T23:30:55.062698+00:00 Codex /root
+
+Same branch/main be816/PR209 pluspreservedpostCIbillingfailureevidence andnewB2privatecanonicalclaim task/stubs/tests. Genuine22DBFAIL beforeimplementation/DDL27;1eventFAIL beforepayloadcontractextension. Exactphase source/testmanifest archives retained inT012-claim-storage. OwnednewPG raid-t012-claims-auto-20261014 labelT012-claims finallystoppedexit0, oldT012-taxonomy remainsstopped. Noindependentreview/UAT/liveenablement/rank fabricated. Workflow368182197 restored disabled_manually/APIverified afterfailed38484067426, no restorationoutstanding.
+
+NextimplementprivateowncanonicalHUMANclaim/evidence version/projection/receipt/audit contracts/additive27thDDL againstactualpublishedcatalog, preservingoldassessments ratherthancopyingnullmetadata; GREEN/race/currentauth/replay/SQLguards/ownPGexample/docs/SELF/static/fullvalidator/publication. No delegation/branchswitch/humanwait/parentclosure. Lastimage remainsd023/fb982/publiclast530/1033; be816CIfailedbeforestepsbilling not code failure.
+
+---
+
+# PR209 hosted billing block recorded; workflow restored — 2026-10-13T23:26:48.098734+00:00 Codex /root
+
+CurrentHEAD/main be81615724c5200734f1dd1f2b23cfb1088f0a6b onoriginalbranch. PR209MERGED actualcatalogslice; local172PG/211boundary-docs1skip/52planning/own20pkgPG26schema-drift/types/build/lint/formatPASS. Exactnewmain automaticStaging38484005795 andsevenChecks38484067426 allFAILED before0steps withofficialaccountpayments/spendinglimitannotation; no checks/imageexecuted. Rawrun/jobs/annotations retained, rawlogs unavailablebecausejobsnotstarted. Originalmanualworkflow368182197 RESTORED disabled_manually byREST+APIverified afterownedrun; NOoutstandingrestoration. PR209body/packet/reviewupdated. No billing/spendlimit/runner/triggerpolicychange. Lastverifiedimage d023/fb982... andlastpublic530/1033/knownVMSSHtimeoutremain distinct, notclaimingnewrollout.
+
+CurrentWIP onlypostCIevidence/checkpoint; implementation code unchanged/localtestsvalid. AllownedlocalPG/pools/CLI stopped, unrelatedpreserved. Next T012B2privatecanonicalHUMANclaim/evidenceversions againstactualstoredtaxonomy, genuineRED-first/SQLcurrentauth/receipts/immutablehistory/ownPGconsumer; no selfassessment/rank/assessorpolicy orRootfinancial/provider enablement. No humanrecommendation/UATwait/delegation/branchswitch/parentclosure. FullT01227criteria+7hostedCI remainNOTVERIFIED. Work-state synctool absent.
+
+---
+
+# Manual Checks restore obligation ACTIVE — 2026-10-13T23:24:40.090779+00:00 Codex /root
+
+Workflow368182197 temporarilyactive/APIverified fromoriginaldisabled_manually for exactPR209main be81615724c5200734f1dd1f2b23cfb1088f0a6b. MUSTrestoredisabledafterownedrun success/failure/interruption andAPIverify; no authorizedpermanenttrigger/billing/runnerchange. Nextdispatch/retainactualownedrunIDs/observeStaging+Checks; alllocalresourcesstopped, codeunchanged. No fullT012 acceptance/Root/claim/assessment enablement.
+
+---
+
+# PR209 merged; exact-main CI next — 2026-10-13T23:24:21.415680+00:00 Codex /root
+
+PR209https://github.com/solana-hackathon-1/useRAID.fun/pull/209 mergedmain be81615724c5200734f1dd1f2b23cfb1088f0a6b; originalbranchff, implementation58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c +pin5c558bf +TDDmetadata2824888597ad09f5df5b62a39927edc1f01cff40. Local172realPG/211boundary-docs1skip/52planning/own20packagePG/schema26NoDifference/types/build/lint/formatPASS; no changedcodeaftertests. CorrectedpacketpreCI34errors=27fullNOTVERIFIED+7unrunCI, noTDDmetadataerrors. Rootauth/claim-evidence-assessment/history/privateUI/independentUAT/fullT012 stillunverified; parentopen; B2privateclaimsnext.
+
+NetworkmachineDNS intermittent: push282firstfailed, PRfirstcreated5c thenlocal-headassertstopped; safeper-requestDNS/directSSH currentIP withHostKeyAliasgithub.com keptknown-hostverification/no globalchanges, actualpush282 andGETmatchedhead thenmerge. OfficialAPI per-requestTLS currentDNS+CA verified; nosecretprinted/stored. Alllocalownedresourcesstopped.
+
+ManualChecks actualbaselineworkflow368182197 disabled_manually verified. Aboutto temporarilyenable/dispatch exactmain forownedrequired7checks; MUSTrestoreoriginaldisabledafterownedrun success/failure/interruption andAPIverify. Restoreobligation pendingon enable success, do notyieldwithworkflowactive. AutomaticStaging requiredactualnewmain; image/site/fullacceptance distinct, publiclast530/1033/knownVMno accesschange.
+
+---
+
 # Evidence packet correction before PR — 2026-10-13T23:22:08.298111+00:00 Codex /root
 
 Implementation58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c +pin5c558bfa33573f2f31d74c752b6175dab1f4cc1b pushedsamebranch. Actualpinnedvalidator42errors=27fullNOTVERIFIED+7newcandidateCI+8missingTDDfields, soearlier solely27summary waspremature/superseded. Fixed8metadatafieldsusingactualbase/implementationsha andexpected-observed19+1RED/exactuncommittedmanifests, no changedtests/source/fakeCI/independentacceptance. Correctedtask/review; originalrawrejectionretained. Nextverifyexpected34remainingpreCIerrors, commitmetadata/push/templatePR/matchedheadmerge/mainCI+restoreoriginaldisabledmanualworkflow. Allownedlocalresourcesstopped; B2privateclaimsnext.

@@ -1,5 +1,5 @@
 import { beforeAll, afterAll, describe, it, expect, vi } from 'vitest';
-import { Keypair } from '@solana/web3.js';
+import { Connection, Keypair } from '@solana/web3.js';
 import { db } from '../src/lib/db';
 import { config } from '../src/lib/config';
 import { saveStudioRaid, launchStudioRaid } from '../src/lib/studio-campaigns';
@@ -296,8 +296,24 @@ suite('Studio atomic balances and settlement', () => {
       where: { userId: owner.id, kind: 'WITHDRAWAL', status: 'REQUESTED' },
     }))
       await rejectWithdrawal(open.id, owner.id, 'Test cleanup');
-    for (let i = 0; i < 3; i++) await createDeposit(owner.id, 1_000_000n).catch(() => undefined);
-    await expect(createDeposit(owner.id, 1_000_000n)).rejects.toMatchObject({ status: 429 });
+    // This storage-limit test deliberately fails chain preparation after the intent commits.
+    // Make that failure deterministic: example.invalid DNS is not a fixture dependency.
+    const unavailable = new Error('Synthetic RPC unavailable');
+    const genesis = vi.spyOn(Connection.prototype, 'getGenesisHash').mockRejectedValue(unavailable);
+    try {
+      for (let i = 0; i < 3; i++) {
+        await expect(createDeposit(owner.id, 1_000_000n)).rejects.toBe(unavailable);
+        expect(
+          await db.usdcTransfer.count({
+            where: { userId: owner.id, kind: 'DEPOSIT', status: 'AWAITING_TRANSFER' },
+          }),
+        ).toBe(i + 1);
+      }
+      await expect(createDeposit(owner.id, 1_000_000n)).rejects.toMatchObject({ status: 429 });
+      expect(genesis).toHaveBeenCalledTimes(3);
+    } finally {
+      genesis.mockRestore();
+    }
     await db.usdcTransfer.deleteMany({
       where: { userId: owner.id, kind: 'DEPOSIT', status: 'AWAITING_TRANSFER' },
     });

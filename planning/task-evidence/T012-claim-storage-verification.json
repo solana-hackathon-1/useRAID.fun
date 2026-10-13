@@ -1,0 +1,249 @@
+{
+  "task_id": "T012",
+  "scope": "T012B2 private canonical HUMAN claim/evidence persistence; fullT012 NOT VERIFIED",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md",
+  "migration_rollback": "Additive27th migration, noseed/backfill; disable newwrites/preserveparticipants/catalog/claim versions/receipts; destructive downgradeunsupported.",
+  "dependency_evidence": [
+    "ActualcanonicalHuman/currentownSQLauth/catalog/CAS/privateclaim/receipt/immutablehistory44DB+existingregression187PASS23.35s",
+    "Own20packagePGconsumer actualcanonicalmapping/claim/evidence/catalog/retirement+disablewriteoriginalreplay/currentrevocation PASS;27Rootmigrations/schemaNoDifference",
+    "Rootendpoint/artifactassessment/rubric/evaluator/confidence/reassessment/revocation/independentUAT/releaseNOTVERIFIED"
+  ],
+  "open_decisions": [
+    "Actualassessor/rubric/evaluation/admission/reassessment-revocation policies stillunverified",
+    "RootprivateAPI/UI with cookie/origin/rate scope next; no clientclaim grantsrank"
+  ],
+  "release_gate_disposition": "Independent reversible private claimstorage only; no actualrank/access/provider/financial/capacity/publicenablement",
+  "code_source_sha": "4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7",
+  "source_identity": "Bounded implementation 4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7; exact22DB+1eventRED manifests, finalsourcehashes/actualfullsuite1702 andoriginalStudiofailure retained",
+  "criteria": {
+    "T012-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    },
+    "T012-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "Actualprivateclaim/catalog/history tested; fullT012 assessment/reassessment/revocation/admission/independentreview-UAT/release remainsmissing",
+      "evidence": "docs/tasks/2026-10-14-T012-claim-storage.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "B2newsource notpublishedyet; actualprecedingbe816hostedbilling-before-step failures do nottestnewsource"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "B2newsource notpublishedyet; actualprecedingbe816hostedbilling-before-step failures do nottestnewsource"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "B2newsource notpublishedyet; actualprecedingbe816hostedbilling-before-step failures do nottestnewsource"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "B2newsource notpublishedyet; actualprecedingbe816hostedbilling-before-step failures do nottestnewsource"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "B2newsource notpublishedyet; actualprecedingbe816hostedbilling-before-step failures do nottestnewsource"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "B2newsource notpublishedyet; actualprecedingbe816hostedbilling-before-step failures do nottestnewsource"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "B2newsource notpublishedyet; actualprecedingbe816hostedbilling-before-step failures do nottestnewsource"
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+      "command": "python3 /tmp/raid-t012-claims-db-run.py node_modules/.bin/vitest run tests/skill-claim-storage-db.test.ts; vitest run tests/skill-claim-storage-boundary.test.ts",
+      "expected_failure": "Beforeclaimimplementation/DDL27, DBbehaviors fail at executable stubs; audit payload newID rejected",
+      "observed_failure": "Actual22DBFAIL beforeimplementation/DDL plus1eventFAIL; baseSHAdoesnotinclude newtests, exactuncommittedREDsources inred-source/event-red-source manifests",
+      "evidence_url": "planning/task-evidence/T012-claim-storage/red.log",
+      "result": "FAIL"
+    },
+    "green": {
+      "sha": "4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7",
+      "command": "python3 /tmp/raid-t012-claims-db-run.py node_modules/.bin/vitest run claim storage tests",
+      "observed": "Actualinitial23PASS5.43s beforeexpansion; finalunchangedfeaturecode in 4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7 withrecordedRED/finalhashes; source wasuncommittedat execution, no baseHEADnewtest claim",
+      "evidence_url": "planning/task-evidence/T012-claim-storage/green.log",
+      "result": "PASS"
+    },
+    "refactor": {
+      "sha": "4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7",
+      "command": "python3 /tmp/raid-t012-claims-db-run.py node_modules/.bin/vitest run affected claim/catalog/receipt tests",
+      "observed": "FinalfrozenRoot139files1702PASS209.88s;8files187PG/218boundaries-docs+1existing skip/52planning/own20packagePG27schemaNoDifference/strictTSC/build/lint/format PASS. OriginalfullStudio5s timeout retained, scopedfixturefailure correction+26targetedPASS; no weakerassertions/deadlines or moneycodechange.",
+      "evidence_url": "planning/task-evidence/T012-claim-storage/full-suite.log",
+      "result": "PASS"
+    }
+  },
+  "candidate_sha": "4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7",
+  "verification_environment": "Owned PostgreSQL16.15 / Node22 / independent own20package pg host; root fixtures; no live credentials"
+}

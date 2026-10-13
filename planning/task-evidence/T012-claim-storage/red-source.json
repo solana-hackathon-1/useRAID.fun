@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-13T23:30:55.060993+00:00",
+  "base": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+  "files": {
+    "src/skills/claim-storage.ts": "3f15cb8b1cbcd92aac235c933749813c459ebd43733e5a1ce27e6c6ce47616f7",
+    "tests/skill-claim-storage-db.test.ts": "2fa07ed72d60893c66431ef15fb83b55b25178a66b0b0305d1253c864fe60f76"
+  }
+}

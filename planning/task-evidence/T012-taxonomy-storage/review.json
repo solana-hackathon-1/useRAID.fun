@@ -51,5 +51,14 @@
   },
   "resource_status": false,
   "implementation_commit": "58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c",
-  "source_identity": "Implementation 58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c with recorded exact-code hash verification and frozen build identity"
+  "source_identity": "Implementation 58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c with recorded exact-code hash verification and frozen build identity",
+  "post_merge_ci": {
+    "head": "be81615724c5200734f1dd1f2b23cfb1088f0a6b",
+    "checks_run": 38484067426,
+    "staging_run": 38484005795,
+    "result": "NOT VERIFIED; actualbillingbeforestepsfailures",
+    "restoration": "Originaldisabled_manually restored/APIverified",
+    "new_image": "NOT PUBLISHED",
+    "raw_logs": "Unavailable because nojobstarted; actualrun/jobs/annotationsretained"
+  }
 }

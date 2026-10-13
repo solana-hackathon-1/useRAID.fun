@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610140002_skill_claims/migration.sql

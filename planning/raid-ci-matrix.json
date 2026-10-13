@@ -117,6 +117,8 @@
     "tests/shared-contracts.test.ts",
     "tests/shell-account.test.ts",
     "tests/siws-nonce.test.ts",
+    "tests/skill-claim-storage-boundary.test.ts",
+    "tests/skill-claim-storage-db.test.ts",
     "tests/skill-claims-boundary.test.ts",
     "tests/skill-claims.test.ts",
     "tests/skill-taxonomy-boundary.test.ts",
@@ -444,6 +446,8 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/skill-claim-storage-boundary.test.ts",
+        "tests/skill-claim-storage-db.test.ts",
         "tests/skill-claims-boundary.test.ts",
         "tests/skill-claims.test.ts",
         "tests/skill-taxonomy-boundary.test.ts",

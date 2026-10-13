@@ -44,6 +44,8 @@ model Participant {
   walletLinks WalletLink[]
   raiderPreferences RaiderPreferences[]
   raiderPreferenceVersions RaiderPreferenceVersion[]
+  skillClaims SkillClaim[]
+  skillClaimVersions SkillClaimVersion[]
   @@unique([id, accountId])
 }
 // Additional verified wallet credentials; checks, guard and exclusivity triggers live in the SQL migration.
@@ -645,6 +647,7 @@ model CommandReceipt {
   guildDraftVersion GuildDraftVersion?
   projectProposalVersion GuildProjectProposalVersion?
   skillTaxonomyVersion SkillTaxonomyVersion?
+  skillClaimVersion SkillClaimVersion?
   @@unique([actorId, commandKind, idempotencyKey])
 }
 model InboxDelivery {
@@ -795,8 +798,51 @@ model SkillTaxonomyVersion {
   publishedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
   taxonomy SkillTaxonomy @relation("SkillTaxonomyHistory", fields: [taxonomyId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_catalog_fkey")
   currentFor SkillTaxonomy[] @relation("SkillTaxonomyPointer")
+  skillClaimVersions SkillClaimVersion[]
   publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_actor_fkey")
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_receipt_fkey")
   @@unique([taxonomyId, revision], map: "SkillTaxonomyVersion_revision_key")
   @@unique([id, taxonomyId, revision], map: "SkillTaxonomyVersion_pointer_key")
+}
+
+// Private claimant-controlled versions, separate from assessments/ranks/history.
+model SkillClaim {
+  id String @id @db.Uuid
+  accountId String
+  participantId String @db.Uuid
+  skillId String
+  skillDomain String
+  taxonomyId String
+  revision Int
+  currentVersionId String @db.Uuid
+  participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaim_participant_fkey")
+  currentVersion SkillClaimVersion @relation("SkillClaimPointer", fields: [currentVersionId, id, participantId, accountId, skillId, skillDomain, taxonomyId, revision], references: [id, skillClaimId, participantId, accountId, skillId, skillDomain, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaim_version_fkey")
+  versions SkillClaimVersion[] @relation("SkillClaimHistory")
+  @@unique([participantId, skillId], map: "SkillClaim_subject_skill_key")
+  @@unique([id, participantId, accountId, skillId, skillDomain, taxonomyId], map: "SkillClaim_owner_key")
+}
+model SkillClaimVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  skillClaimId String @db.Uuid
+  accountId String
+  participantId String @db.Uuid
+  skillId String
+  skillDomain String
+  taxonomyId String
+  taxonomyVersionId String @db.Uuid
+  taxonomyRevision Int
+  revision Int
+  claimedLevel String
+  supportingReferences Json @db.JsonB
+  receiptId String @unique(map: "SkillClaimVersion_receiptId_key") @db.Uuid
+  actorAccountId String
+  requestId String
+  recordedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  claim SkillClaim @relation("SkillClaimHistory", fields: [skillClaimId, participantId, accountId, skillId, skillDomain, taxonomyId], references: [id, participantId, accountId, skillId, skillDomain, taxonomyId], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_claim_fkey")
+  currentFor SkillClaim[] @relation("SkillClaimPointer")
+  participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_participant_fkey")
+  taxonomyVersion SkillTaxonomyVersion @relation(fields: [taxonomyVersionId, taxonomyId, taxonomyRevision], references: [id, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_taxonomy_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_receipt_fkey")
+  @@unique([skillClaimId, revision], map: "SkillClaimVersion_revision_key")
+  @@unique([id, skillClaimId, participantId, accountId, skillId, skillDomain, taxonomyId, revision], map: "SkillClaimVersion_pointer_key")
 }
