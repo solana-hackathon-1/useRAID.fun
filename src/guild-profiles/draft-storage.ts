@@ -9,6 +9,9 @@ import {
 import {
   SaveGuildDraftInputSchema,
   SavedGuildDraftSchema,
+  ListGuildDraftsInputSchema,
+  SavedGuildDraftPageSchema,
+  type SavedGuildDraftPage,
   GuildDraftStorageError,
   type GuildDraftActor,
   type GuildDraftCommand,
@@ -207,4 +210,56 @@ export async function readGuildDraft(
   );
   if (rows.length !== 1) fail('NOT_FOUND');
   return loadVersion(tx, actor, rows[0].currentVersionId);
+}
+export async function listGuildDrafts(
+  tx: CommandReceiptTransaction,
+  actor: GuildDraftActor,
+  input: unknown,
+): Promise<SavedGuildDraftPage> {
+  validateActor(actor);
+  const parsed = ListGuildDraftsInputSchema.safeParse(input);
+  if (!parsed.success) fail('INVALID_INPUT');
+  await authorize(tx, actor);
+  const { cursor, pageSize } = parsed.data;
+  if (cursor !== null) {
+    const owned = await query<{ id: string }>(
+      tx,
+      'SELECT "id"::text FROM "GuildDraft" WHERE "id"=$1::uuid AND "ownerAccountId"=$2',
+      [cursor, actor.accountId],
+    );
+    if (owned.length !== 1) fail('NOT_FOUND');
+  }
+  // The immutable first version fixes pagination order. Later edits cannot move older rows
+  // across a cursor or require the host to round a PostgreSQL microsecond timestamp.
+  const rows = await query<{ id: string; currentVersionId: string }>(
+    tx,
+    `SELECT d."id"::text,d."currentVersionId"::text FROM "GuildDraft" d JOIN "GuildDraftVersion" initial ON initial."guildDraftId"=d."id" AND initial."ownerAccountId"=d."ownerAccountId" AND initial."revision"=1
+    WHERE d."ownerAccountId"=$1 AND ($2::uuid IS NULL OR (initial."recordedAt",d."id") < (SELECT v."recordedAt",c."id" FROM "GuildDraft" c JOIN "GuildDraftVersion" v ON v."guildDraftId"=c."id" AND v."ownerAccountId"=c."ownerAccountId" AND v."revision"=1 WHERE c."id"=$2::uuid AND c."ownerAccountId"=$1))
+    ORDER BY initial."recordedAt" DESC,d."id" DESC LIMIT $3::int`,
+    [actor.accountId, cursor, String(pageSize + 1)],
+  );
+  if (
+    rows.length > pageSize + 1 ||
+    rows.some(
+      (row) =>
+        !z.uuid().safeParse(row.id).success || !z.uuid().safeParse(row.currentVersionId).success,
+    )
+  )
+    fail('STORAGE_CONTRACT');
+  const selected = rows.slice(0, pageSize),
+    drafts: SavedGuildDraft[] = [];
+  for (const row of selected) {
+    const value = await loadVersion(tx, actor, row.currentVersionId);
+    if (value.id !== row.id) fail('STORAGE_CONTRACT');
+    drafts.push(value);
+  }
+  // Even the bounded read may take time; authority must remain live at the return boundary.
+  await authorize(tx, actor);
+  const result = SavedGuildDraftPageSchema.safeParse({
+    version: 'v1',
+    drafts,
+    nextCursor: rows.length > pageSize ? selected[selected.length - 1].id : null,
+  });
+  if (!result.success) fail('STORAGE_CONTRACT');
+  return result.data;
 }

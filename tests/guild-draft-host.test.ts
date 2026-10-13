@@ -1,14 +1,16 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-const mocks = vi.hoisted(() => ({ run: vi.fn(), read: vi.fn(), save: vi.fn() }));
+const mocks = vi.hoisted(() => ({ run: vi.fn(), read: vi.fn(), save: vi.fn(), list: vi.fn() }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({ runCommandTransaction: mocks.run }));
 vi.mock('../src/guild-profiles/draft-storage', () => ({
   readGuildDraft: mocks.read,
   saveGuildDraft: mocks.save,
+  listGuildDrafts: mocks.list,
 }));
 import {
   guildDraftWriteConfiguration,
   readGuildDraftState,
   saveDraft,
+  readGuildDraftIndexState,
 } from '../src/lib/guild-draft-host';
 import { config } from '../src/lib/config';
 const previousDemo = config.demo;
@@ -42,4 +44,17 @@ it('keeps owned read and write configuration independent when creation is disabl
   expect(state.draft).toEqual({ revision: 2 });
   expect(state.writesAvailable).toBe(false);
   expect(mocks.read).toHaveBeenCalledWith({}, actor, '11111111-1111-4111-8111-111111111111');
+});
+it('passes only current own actor and bounded input to listing while new writes are disabled', async () => {
+  vi.stubEnv('GUILD_DRAFTS_ENABLED', 'false');
+  const page = { version: 'v1', drafts: [], nextCursor: null };
+  mocks.list.mockResolvedValue(page);
+  const input = { cursor: null, pageSize: 20 };
+  expect(await readGuildDraftIndexState(actor, input)).toEqual({
+    version: 'v1',
+    page,
+    writesAvailable: false,
+    unavailableReason: 'DISABLED',
+  });
+  expect(mocks.list).toHaveBeenCalledWith({}, actor, input);
 });

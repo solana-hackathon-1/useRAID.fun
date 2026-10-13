@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 import { randomBytes, createHash, randomUUID } from 'node:crypto';
 import { db } from '../../src/lib/db';
 import { assertTestDatabase, truncateAll } from '../helpers/db-guard';
+import { saveGuildDraft } from '../../src/guild-profiles/draft-storage';
+import { runCommandTransaction } from '../../src/lib/command-receipts-adapter';
 const baseURL = process.env.GUILD_DRAFT_BROWSER_URL || 'http://localhost:3016';
 let token: string;
 const profile = {
@@ -177,6 +179,78 @@ test('shows private-safe anonymous and foreign views and permits a corrected una
     await anon.getByRole('button', { name: 'Save private draft', exact: true }).click();
     await expect(anon.locator('form').getByRole('status')).toContainText('Draft saved');
     expect(await db.commandReceipt.count()).toBe(2);
+  } finally {
+    await outsider.close();
+  }
+});
+test('finds acknowledged own drafts after creation-page refresh and keeps other accounts out of the index', async ({
+  page,
+  browser,
+}, info) => {
+  const href = await create(page);
+  await page.reload();
+  await page.goto('/creator/guild-drafts');
+  await expect(
+    page.getByRole('heading', { name: 'My private Guild drafts', exact: true }),
+  ).toBeVisible();
+  const entry = page.getByRole('link', { name: profile.name, exact: true });
+  await expect(entry).toHaveAttribute('href', href!);
+  await page.evaluate(() => scrollTo(0, 0));
+  await page.screenshot({ path: info.outputPath('private-index.png'), fullPage: true });
+  const owner = await db.user.findFirstOrThrow({ where: { handle: 'synthetic_guild_form' } }),
+    actor = {
+      accountId: owner.id,
+      actorAccountId: owner.id,
+      sessionHash: createHash('sha256').update(token).digest('hex'),
+    };
+  for (let i = 0; i < 21; i++)
+    await runCommandTransaction(db, (tx) =>
+      saveGuildDraft(
+        tx,
+        {
+          actor,
+          input: {
+            guildDraftId: null,
+            expectedRevision: 0,
+            profile: {
+              name: 'List fixture ' + i,
+              slug: 'list-fixture-' + i,
+              description: 'Synthetic list pagination',
+            },
+          },
+          idempotencyKey: randomUUID(),
+          requestId: randomUUID(),
+        },
+        { allowNewWrites: true },
+      ),
+    );
+  await page.reload();
+  await expect(page.locator('.orientation-card')).toHaveCount(20);
+  await page.getByRole('link', { name: 'More private drafts', exact: true }).click();
+  await expect(page.locator('.orientation-card')).toHaveCount(2);
+  await expect(entry).toHaveAttribute('href', href!);
+  await entry.click();
+  await expect(page.getByLabel('Description', { exact: true })).toHaveValue(profile.description);
+  const outsider = await browser.newContext();
+  try {
+    const anon = await outsider.newPage();
+    await anon.goto('/creator/guild-drafts');
+    await expect(anon.getByRole('link', { name: 'Sign in', exact: true })).toBeVisible();
+    expect(await anon.content()).not.toContain(profile.description);
+    const u = await db.user.create({ data: { handle: 'synthetic_empty_index' } }),
+      cookie = randomBytes(32).toString('base64url');
+    await db.session.create({
+      data: {
+        userId: u.id,
+        tokenHash: createHash('sha256').update(cookie).digest('hex'),
+        via: 'wallet',
+        expiresAt: new Date(Date.now() + 3600000),
+      },
+    });
+    await outsider.addCookies([{ name: 'raid_session', value: cookie, url: baseURL }]);
+    await anon.reload();
+    await expect(anon.getByText('No private drafts saved yet.', { exact: true })).toBeVisible();
+    expect(await anon.content()).not.toContain(profile.description);
   } finally {
     await outsider.close();
   }

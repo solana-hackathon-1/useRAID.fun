@@ -1,0 +1,19 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-list-boundary.test.ts > documents owner-only bounded pagination and a consuming host without claiming pending-key recovery
+Error: ENOENT: no such file or directory, open 'docs/raid-guild-draft-list.md'
+ ❯ tests/guild-draft-list-boundary.test.ts:4:12
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  14:26:10
+   Duration  236ms (transform 25ms, setup 0ms, import 40ms, tests 8ms, environment 0ms)

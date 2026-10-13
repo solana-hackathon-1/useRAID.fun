@@ -1,0 +1,192 @@
+{
+  "task_id": "T009",
+  "scope": "T009D1 protected own private draft listing/current index/20record creation-time cursor; no verification/public authority",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "3155f1c5c25e3c49861a897e2e7a4504ed022396",
+  "source_identity": "Bounded implementation 3155f1c5c25e3c49861a897e2e7a4504ed022396; actual executed source hashes/preimplementation phase identities retained, fulltask incomplete",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T009-draft-list.md",
+  "migration_rollback": "NoDDL; removeindex/list interface only, retain acknowledged privateversions/receipts/audit",
+  "dependency_evidence": [
+    "Main535 exact38368727580 actual121files1359+16browser/nativeARMimage/runtime/GHCR/cleanupPASS",
+    "OwnrealPG/list cursor/creation-order/current-session/no sideeffect +privatebrowser/independentPGhost proofs",
+    "No approvedexisting-project control/Founder/grants/public/ownership/full independentacceptance supplied"
+  ],
+  "open_decisions": [
+    "No actualprojectcontrol/verifiedFounder/token relationship supplied here",
+    "O11/G10 privacy/retention/recovery, independent/UAT/fullactual authorization/storage remainNOTVERIFIED"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging source only; no actualGuild/profile/role/Founder/token/treasury/privateaccess/ownership activation; full independent/UAT and real authorization/storage evidence absent",
+  "criteria": {
+    "T009-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-W04": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    },
+    "T009-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Private current own listing/index/DB/browser/consuminghost evidence only; actualGuild/projectproof/grants/public/ownership/independentacceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-list.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "ownedPG vitest guild-draft-list-db",
+      "sha": "535abaaddcfff21610375ba3f91dbff8d8702342",
+      "source_identity": "Then-uncommitted executableliststub/tests beforeimplementation; no cleanHEAD/retroactiveREDcommit claim",
+      "evidence_url": "planning/task-evidence/T009-list/red.log",
+      "result": "FAIL",
+      "expected_failure": "Privateown boundedlisting unimplemented",
+      "observed_failure": "5FAIL beforecode; separatemissingindex2browserRED also retained"
+    },
+    "green": {
+      "command": "ownedPG vitest ownlist/protectedstorage",
+      "sha": "535abaaddcfff21610375ba3f91dbff8d8702342",
+      "source_identity": "Uncommitted implementedlist overbase, actualmatching source",
+      "evidence_url": "planning/task-evidence/T009-list/green.log",
+      "result": "PASS",
+      "observed": "2files26PASS5.84s incl5newlist/21storage"
+    },
+    "refactor": {
+      "command": "affected6files then finaldocs/host/current typedbuild/independent host/browser",
+      "sha": "535abaaddcfff21610375ba3f91dbff8d8702342",
+      "source_identity": "Hashbound core/candidate andownedhost/source snapshots; no fullcriteria acceptance inferred",
+      "evidence_url": "planning/task-evidence/T009-list/regression.log",
+      "result": "PASS",
+      "observed": "6files124PASS/final104docs/host5/2desktop-mobilepagination/current typedbuild/ownconsumerPASS"
+    }
+  },
+  "ci": {}
+}

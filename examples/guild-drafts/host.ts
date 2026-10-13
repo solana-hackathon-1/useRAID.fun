@@ -9,6 +9,7 @@ import {
 } from './command-receipts';
 import {
   saveGuildDraft,
+  listGuildDrafts,
   readGuildDraft,
   GuildDraftStorageError,
   type GuildDraftActor,
@@ -197,6 +198,19 @@ try {
     }),
   );
   assert.equal(originDenied.status, 403);
+  const listPage = await transaction((tx) =>
+    listGuildDrafts(tx, actor, { cursor: null, pageSize: 1 }),
+  );
+  assert.equal(listPage.drafts.length, 1);
+  assert.equal(listPage.drafts[0].id, createdBody.draft.id);
+  assert.equal(listPage.nextCursor, createdBody.draft.id);
+  const continuation = await transaction((tx) =>
+    listGuildDrafts(tx, actor, { cursor: listPage.nextCursor, pageSize: 1 }),
+  );
+  assert.equal(continuation.drafts.length, 1);
+  assert.equal(continuation.drafts[0].id, first.draft.id);
+  assert.equal(continuation.drafts[0].revision, 3);
+  assert.equal(continuation.nextCursor, null);
   console.log(
     JSON.stringify({
       synthetic: true,
@@ -207,6 +221,8 @@ try {
       ownSchema: true,
       alternatePgPort: true,
       privateRead: true,
+      ownBoundedList: true,
+      cursorAndCurrentRevision: true,
       originalReplay: true,
       changedBodyConflict: true,
       foreignSessionDenied: true,
