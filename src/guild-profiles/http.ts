@@ -1,7 +1,5 @@
 import { z } from 'zod';
 import { InternalId } from '../contracts/ids';
-import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
-import { CommandReceiptError } from '../command-receipts';
 import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
 import {
   SaveGuildDraftInputSchema,
@@ -20,66 +18,16 @@ export interface GuildDraftHttpHost {
   save(command: GuildDraftCommand): Promise<unknown>;
   requestId(): string;
 }
-export class GuildDraftHttpError extends Error {
-  constructor(readonly status: 401 | 403 | 429) {
-    super('HTTP_AUTHORITY_DENIED');
-    this.name = 'GuildDraftHttpError';
-  }
-}
-const headers = { 'Cache-Control': 'private, no-store', Vary: 'Cookie' };
-function failure(error: unknown, requestId: string) {
-  let code: ErrorCode = 'SERVICE_UNAVAILABLE',
-    status: number | undefined;
-  if (error instanceof JsonBodyFailure) {
-    code = 'INVALID_COMMAND';
-    status = error.status;
-  } else if (error instanceof GuildDraftHttpError) {
-    code =
-      error.status === 401
-        ? 'AUTHENTICATION_REQUIRED'
-        : error.status === 403
-          ? 'FORBIDDEN'
-          : 'RATE_LIMITED';
-  } else if (error instanceof GuildDraftStorageError) {
-    code =
-      error.code === 'UNAUTHENTICATED'
-        ? 'AUTHENTICATION_REQUIRED'
-        : error.code === 'ACCOUNT_RESTRICTED'
-          ? 'ACCOUNT_RESTRICTED'
-          : error.code === 'WRONG_ACTOR'
-            ? 'FORBIDDEN'
-            : error.code === 'NOT_FOUND'
-              ? 'NOT_FOUND'
-              : error.code === 'REVISION_CONFLICT'
-                ? 'REVISION_CHANGED'
-                : error.code === 'SLUG_UNAVAILABLE'
-                  ? 'DRAFT_SLUG_UNAVAILABLE'
-                  : ['INVALID_INPUT', 'SLUG_IMMUTABLE'].includes(error.code)
-                    ? 'INVALID_COMMAND'
-                    : 'SERVICE_UNAVAILABLE';
-  } else if (error instanceof CommandReceiptError) {
-    code =
-      error.code === 'IDEMPOTENCY_KEY_REUSED'
-        ? 'IDEMPOTENCY_KEY_REUSED'
-        : error.code === 'INVALID_INPUT'
-          ? 'INVALID_COMMAND'
-          : 'SERVICE_UNAVAILABLE';
-  }
-  const result = createErrorEnvelope(code, requestId);
-  return Response.json(result.body, { status: status ?? result.status, headers });
-}
+export { GuildDraftHttpError } from './http-errors';
+import {
+  guildPreparationHeaders as headers,
+  guildPreparationFailure as failure,
+  guildPreparationRequestId,
+} from './http-errors';
 /** Portable Request/Response adapter. Host authority is rebuilt from trusted current state. */
 export function createGuildDraftHandlers(host: GuildDraftHttpHost) {
   if (host.version !== 'v1') throw new GuildDraftStorageError('STORAGE_CONTRACT');
-  const requestId = () => {
-    try {
-      const p = InternalId.safeParse(host.requestId());
-      if (p.success) return p.data;
-    } catch {
-      /* Fixed fallback reveals no private host detail. */
-    }
-    return crypto.randomUUID();
-  };
+  const requestId = () => guildPreparationRequestId(host);
   return {
     async POST(request: Request) {
       const id = requestId();

@@ -1,0 +1,9 @@
+src/guild-profiles/http.ts 114ms
+src/guild-profiles/http-errors.ts 24ms
+src/guild-profiles/project-proposal-http.ts 37ms
+src/guild-profiles/project-proposal-http-contracts.ts 19ms
+src/lib/project-proposal-host.ts 9ms
+src/lib/project-proposal-http.ts 15ms
+src/app/api/v1/guild-drafts/[id]/project-proposal/route.ts 5ms
+tests/project-proposal-http.test.ts 130ms
+docs/tasks/2026-10-13-T010-proposal-http.md 53ms (unchanged)

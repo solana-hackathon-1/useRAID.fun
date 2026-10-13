@@ -1,0 +1,2 @@
+examples/guild-drafts/guild-profiles/http.ts(21,37): error TS2307: Cannot find module './http-errors' or its corresponding type declarations.
+examples/guild-drafts/guild-profiles/http.ts(26,8): error TS2307: Cannot find module './http-errors' or its corresponding type declarations.

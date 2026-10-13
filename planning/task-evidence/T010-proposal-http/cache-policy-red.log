@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/project-proposal-http.test.ts (34 tests | 1 failed | 33 skipped) 60ms
+   × keeps shared preparation cache policy private when an importing host tries to change it 57ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/project-proposal-http.test.ts > keeps shared preparation cache policy private when an importing host tries to change it
+AssertionError: expected 'public, max-age=3600' to be 'private, no-store' // Object.is equality
+
+Expected: "private, no-store"
+Received: "public, max-age=3600"
+
+ ❯ privacy tests/project-proposal-http.test.ts:78:49
+     76|   });
+     77| function privacy(response: Response) {
+     78|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+     79|   expect(response.headers.get('vary')).toContain('Cookie');
+     80| }
+ ❯ tests/project-proposal-http.test.ts:345:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 33 skipped (34)
+   Start at  17:27:40
+   Duration  544ms (transform 188ms, setup 0ms, import 321ms, tests 60ms, environment 0ms)

@@ -1,4 +1,8 @@
 import assert from 'node:assert/strict';
+import {
+  createGuildProjectProposalHandlers,
+  GuildProjectProposalHttpError,
+} from './guild-profiles/project-proposal-http';
 import { createHash, randomUUID } from 'node:crypto';
 import bs58 from 'bs58';
 import { pool } from './connection';
@@ -167,10 +171,78 @@ try {
   } finally {
     check.release();
   }
+  const http = createGuildProjectProposalHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => actor,
+    checkOrigin(request) {
+      if (request.headers.get('origin') !== 'https://synthetic.example')
+        throw new GuildProjectProposalHttpError(403);
+    },
+    rateLimit: async () => {},
+    read: async (a, target) => ({
+      version: 'v1',
+      guildDraftId: target,
+      proposal: await transaction((tx) => readGuildProjectProposal(tx, a, target)),
+      writesAvailable: false,
+      unavailableReason: 'DISABLED',
+    }),
+    save: async (command) => {
+      const result = await transaction((tx) =>
+        saveGuildProjectProposal(tx, command, { allowNewWrites: false }),
+      );
+      return {
+        version: 'v1',
+        guildDraftId: result.proposal.guildDraftId,
+        ...result,
+        writesAvailable: false,
+        unavailableReason: 'DISABLED',
+      };
+    },
+  });
+  const get = await http.GET(new Request('https://synthetic.example'), draft.draft.id);
+  assert.equal(get.status, 200);
+  assert.equal((await get.json()).proposal.revision, 3);
+  assert.equal(get.headers.get('cache-control'), 'private, no-store');
+  const post = () =>
+    new Request('https://synthetic.example', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Origin: 'https://synthetic.example',
+        'Idempotency-Key': 'first-' + id,
+      },
+      body: JSON.stringify({
+        expectedDraftRevision: input.expectedDraftRevision,
+        expectedProposalRevision: input.expectedProposalRevision,
+        candidateToken: input.candidateToken,
+        publicEvidenceRefs: input.publicEvidenceRefs,
+      }),
+    });
+  const original = await http.POST(post(), draft.draft.id);
+  assert.equal(original.status, 200);
+  const ack = await original.json();
+  assert.equal(ack.status, 'REPLAYED');
+  assert.deepEqual(ack.proposal, first.proposal);
+  assert.equal(ack.writesAvailable, false);
+  const denied = await http.POST(
+    new Request(post(), {
+      headers: {
+        'Content-Type': 'application/json',
+        Origin: 'https://foreign.example',
+        'Idempotency-Key': 'first-' + id,
+      },
+    }),
+    draft.draft.id,
+  );
+  assert.equal(denied.status, 403);
   console.log(
     JSON.stringify({
       synthetic: true,
       independentPgHost: true,
+      portablePrivateHttp: true,
+      originalHttpReplayWhenDisabled: true,
+      foreignOriginDenied: true,
       exactPendingCandidate: true,
       noFounderGuildTokenGrantPublicEffect: true,
       immutableOriginalReplayWhenDisabled: true,

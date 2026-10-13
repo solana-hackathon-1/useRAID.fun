@@ -1,0 +1,34 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/env-example.test.ts (5 tests | 1 failed) 30ms
+     × documents every variable the application reads 23ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/env-example.test.ts > .env.example > documents every variable the application reads
+AssertionError: expected [ 'GUILD_PROJECT_PROPOSALS_ENABLED' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "GUILD_PROJECT_PROPOSALS_ENABLED",
++ ]
+
+ ❯ tests/env-example.test.ts:34:21
+     32|     }
+     33|     const missing = [...used].filter((name) => !documented.has(name) &…
+     34|     expect(missing).toEqual([]);
+       |                     ^
+     35|   });
+     36|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  17:15:42
+   Duration  258ms (transform 46ms, setup 0ms, import 64ms, tests 30ms, environment 0ms)

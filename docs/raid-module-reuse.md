@@ -90,3 +90,5 @@ T010A owns [the informational control-proof contract](raid-project-control.md) a
 ## Private existing-project proposal storage
 
 T010B owns [pending proposal contracts](raid-project-proposals.md) and [independent minimal PostgreSQL host](../examples/project-proposals/README.md). Inject current own cookie identity, exact guarded transaction/whole retries and explicit new-write configuration. Persisted pending candidates/references never grant Founder/token/Guild/public/grant authority. Actual SQL lock/expiry/replay/provenance and no-outbox boundaries are verified separately from approved project recognition and independent UAT.
+
+Private proposal [portable HTTP/client contracts](raid-project-proposal-http.md) extend the same minimalPGhost with URL/snapshot binding, actualroot cookie/origin/rate composition and immutable private cache/error policy. Rootflags control newpendingwrites only; currentownread/originalreplay remain whenoff. Actualprojectapproval/nonce/recognition/APIUI acceptance and independentUAT are separate unverified obligations.

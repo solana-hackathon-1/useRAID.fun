@@ -1,0 +1,27 @@
+▲ Next.js 16.3.8 (Turbopack)
+- Local:         http://127.0.0.1:3015
+- Network:       http://127.0.0.1:3015
+✓ Ready in 484ms
+✓ Running next.config.ts took 40ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+
+ GET /api/health 200 in 1247ms (next.js: 1121ms, application-code: 126ms)
+ GET /api/health 200 in 25ms (next.js: 7ms, application-code: 18ms)
+ POST /api/v1/guild-drafts 200 in 1121ms (next.js: 896ms, application-code: 225ms)
+ GET /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 200 in 1100ms (next.js: 1059ms, application-code: 41ms)
+ POST /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 200 in 139ms (next.js: 24ms, application-code: 115ms)
+ POST /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 200 in 80ms (next.js: 3ms, application-code: 77ms)
+ POST /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 200 in 39ms (next.js: 2ms, application-code: 36ms)
+ GET /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 200 in 37ms (next.js: 2ms, application-code: 35ms)
+ POST /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 409 in 36ms (next.js: 6ms, application-code: 31ms)
+ POST /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 403 in 13ms (next.js: 4ms, application-code: 9ms)
+ POST /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 422 in 13ms (next.js: 3ms, application-code: 11ms)
+ GET /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 401 in 7ms (next.js: 2ms, application-code: 5ms)
+ GET /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 404 in 16ms (next.js: 2ms, application-code: 14ms)
+ POST /api/v1/guild-drafts/03f9a1c9-a447-4491-9ccc-a5d0efbb9c6b/project-proposal 404 in 26ms (next.js: 9ms, application-code: 17ms)
+ GET /api/v1/guild-drafts/c2130835-b17e-406e-8a96-1870731b80a9/project-proposal 404 in 15ms (next.js: 1.7ms, application-code: 13ms)
+ POST /api/v1/guild-drafts/c2130835-b17e-406e-8a96-1870731b80a9/project-proposal 404 in 18ms (next.js: 1.7ms, application-code: 17ms)

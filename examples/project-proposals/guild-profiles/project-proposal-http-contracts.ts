@@ -1,0 +1,1 @@
+../../../src/guild-profiles/project-proposal-http-contracts.ts

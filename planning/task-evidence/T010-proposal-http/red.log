@@ -1,0 +1,325 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/project-proposal-http.test.ts (33 tests | 33 failed) 75ms
+   × serves private own pending state and writes only URL-bound currentactor/revision/candidate data 38ms
+   × returns own null state and supports original replay while newwrites are disabled 2ms
+   × rejects host authority 401 before mutations without leaking secrets 3ms
+   × rejects host authority 403 before mutations without leaking secrets 2ms
+   × rejects host authority 429 before mutations without leaking secrets 2ms
+   × rejects foreign origin/rate denial before writing 1ms
+   × rejects injected caller actor 1ms
+   × rejects injected caller guildDraftId 1ms
+   × rejects injected caller role 2ms
+   × rejects injected caller founderControlVerified 1ms
+   × rejects injected caller recognizesGuild 1ms
+   × rejects injected caller signature 1ms
+   × maps storage UNAUTHENTICATED without private details 1ms
+   × maps storage ACCOUNT_RESTRICTED without private details 1ms
+   × maps storage WRONG_ACTOR without private details 1ms
+   × maps storage NOT_FOUND without private details 1ms
+   × maps storage REVISION_CONFLICT without private details 1ms
+   × maps storage WRITES_DISABLED without private details 1ms
+   × maps storage INVALID_INPUT without private details 1ms
+   × maps storage STORAGE_UNAVAILABLE without private details 1ms
+   × maps changed-body receipt conflict and suppresses unknown provider error text 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"guildDraftId":"33333333-3333-4333-8333-333333333333"} 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"revision":2} 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"draftRevision":2} 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"candidateToken":{"chain":"SOLANA","networkIdentity":"other-genesis","kind":"TOKEN","mint":"29d2S7vB453rNYFdR5Ycwt7y9haRT5fwVwL9zTmBhfV2","tokenProgram":"2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj"}} 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"candidateToken":{"chain":"SOLANA","networkIdentity":"synthetic-genesis","kind":"TOKEN","mint":"2MNus2KCpxwXnp19iyXNpWSFtBD2UGjQBAL8AbtywfT9","tokenProgram":"2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj"}} 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"publicEvidenceRefs":["https://public.example/other"]} 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"founderControlVerified":true} 1ms
+   × rejects success-shaped wrongresource/snapshot/private DTO {"privateNotes":"private-secret"} 1ms
+   × rejects wrong-resource read including null and malformed capability state 1ms
+   × accepts uppercase equivalent UUIDs and normalizes references before binding saved snapshots 1ms
+   × rejects malformed route/key/content type/actual bytes without dispatch 3ms
+   × rejects unsupported hostversion and uses a safe requestid fallback 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 33 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/project-proposal-http.test.ts > serves private own pending state and writes only URL-bound currentactor/revision/candidate data
+AssertionError: expected 501 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:16:166
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > returns own null state and supports original replay while newwrites are disabled
+AssertionError: expected 501 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:21:92
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects host authority 401 before mutations without leaking secrets
+AssertionError: expected 501 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:24:274
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects host authority 403 before mutations without leaking secrets
+AssertionError: expected 501 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:24:274
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects host authority 429 before mutations without leaking secrets
+AssertionError: expected 501 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:24:274
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects foreign origin/rate denial before writing
+AssertionError: expected 501 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:27:273
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects injected caller actor
+ FAIL  tests/project-proposal-http.test.ts > rejects injected caller guildDraftId
+ FAIL  tests/project-proposal-http.test.ts > rejects injected caller role
+ FAIL  tests/project-proposal-http.test.ts > rejects injected caller founderControlVerified
+ FAIL  tests/project-proposal-http.test.ts > rejects injected caller recognizesGuild
+ FAIL  tests/project-proposal-http.test.ts > rejects injected caller signature
+AssertionError: expected 501 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:30:158
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > maps storage UNAUTHENTICATED without private details
+AssertionError: expected 501 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:33:359
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > maps storage ACCOUNT_RESTRICTED without private details
+ FAIL  tests/project-proposal-http.test.ts > maps storage WRONG_ACTOR without private details
+AssertionError: expected 501 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:33:359
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > maps storage NOT_FOUND without private details
+AssertionError: expected 501 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:33:359
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > maps storage REVISION_CONFLICT without private details
+AssertionError: expected 501 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:33:359
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > maps storage WRITES_DISABLED without private details
+ FAIL  tests/project-proposal-http.test.ts > maps storage STORAGE_UNAVAILABLE without private details
+AssertionError: expected 501 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:33:359
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > maps storage INVALID_INPUT without private details
+AssertionError: expected 501 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:33:359
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > maps changed-body receipt conflict and suppresses unknown provider error text
+AssertionError: expected 501 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:36:283
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"guildDraftId":"33333333-3333-4333-8333-333333333333"}
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"revision":2}
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"draftRevision":2}
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"candidateToken":{"chain":"SOLANA","networkIdentity":"other-genesis","kind":"TOKEN","mint":"29d2S7vB453rNYFdR5Ycwt7y9haRT5fwVwL9zTmBhfV2","tokenProgram":"2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj"}}
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"candidateToken":{"chain":"SOLANA","networkIdentity":"synthetic-genesis","kind":"TOKEN","mint":"2MNus2KCpxwXnp19iyXNpWSFtBD2UGjQBAL8AbtywfT9","tokenProgram":"2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj"}}
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"publicEvidenceRefs":["https://public.example/other"]}
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"founderControlVerified":true}
+ FAIL  tests/project-proposal-http.test.ts > rejects success-shaped wrongresource/snapshot/private DTO {"privateNotes":"private-secret"}
+AssertionError: expected 501 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:41:244
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects wrong-resource read including null and malformed capability state
+AssertionError: expected 501 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:44:498
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > accepts uppercase equivalent UUIDs and normalizes references before binding saved snapshots
+AssertionError: expected 501 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:47:417
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects malformed route/key/content type/actual bytes without dispatch
+AssertionError: expected 501 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 501
+
+ ❯ tests/project-proposal-http.test.ts:50:411
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/33]⎯
+
+ FAIL  tests/project-proposal-http.test.ts > rejects unsupported hostversion and uses a safe requestid fallback
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/project-proposal-http.test.ts:53:83
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/33]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  33 failed (33)
+   Start at  17:05:01
+   Duration  545ms (transform 160ms, setup 0ms, import 293ms, tests 75ms, environment 0ms)
