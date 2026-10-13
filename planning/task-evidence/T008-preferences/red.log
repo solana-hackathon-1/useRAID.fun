@@ -74,7 +74,7 @@ migrations/
     └─ migration.sql
   └─ 202610090003_wallet_links/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
  RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
@@ -150,4 +150,4 @@ OrientationStorageError: STORAGE_UNAVAILABLE
    Duration  1.56s (transform 461ms, setup 0ms, import 860ms, tests 329ms, environment 0ms)
 
 JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-preferences/red.xml
-OWNED CLEANUP: 0 raid-t008-preferences-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-20261013

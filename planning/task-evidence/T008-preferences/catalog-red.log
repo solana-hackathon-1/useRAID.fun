@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
  RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
@@ -113,4 +113,4 @@ OnboardingContractError: INVALID_INPUT
    Start at  06:25:06
    Duration  1.03s (transform 240ms, setup 0ms, import 461ms, tests 272ms, environment 0ms)
 
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

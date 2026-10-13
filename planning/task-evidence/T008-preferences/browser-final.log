@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 OWNED PREVIEW SOURCE /tmp/raid-t008-ui-source-3j07p14m
 [WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
@@ -98,4 +98,4 @@ Running 8 tests using 1 worker
 
   8 passed (1.0m)
 OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t008-ui-source-3j07p14m/test-results
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

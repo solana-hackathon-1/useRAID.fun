@@ -109,4 +109,3 @@ React does not immediately render components when JSX is rendered, so any errors
   341:11  warning  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
 ✖ 7 problems (0 errors, 7 warnings)
-

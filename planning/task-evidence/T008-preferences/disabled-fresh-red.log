@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
  RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
@@ -133,4 +133,4 @@ AssertionError: promise resolved "{ status: 'EXECUTED', …(1) }" instead of rej
    Start at  06:41:25
    Duration  878ms (transform 232ms, setup 0ms, import 419ms, tests 274ms, environment 0ms)
 
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

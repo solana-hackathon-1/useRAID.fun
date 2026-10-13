@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 OWNED PREVIEW SOURCE /tmp/raid-t008-ui-source-xzr_8u1i
 [WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
@@ -95,7 +95,7 @@ Running 6 tests using 1 worker
   ✘  6 [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft (3.1s)
 
 
-  1) [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once 
+  1) [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
 
     Error: expect(locator).toContainText(expected) failed
 
@@ -133,7 +133,7 @@ Running 6 tests using 1 worker
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-  2) [desktop] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft 
+  2) [desktop] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
 
     Error: expect(locator).toContainText(expected) failed
 
@@ -169,7 +169,7 @@ Running 6 tests using 1 worker
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-  3) [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once 
+  3) [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
 
     Error: expect(locator).toContainText(expected) failed
 
@@ -207,7 +207,7 @@ Running 6 tests using 1 worker
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-  4) [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft 
+  4) [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
 
     Error: expect(locator).toContainText(expected) failed
 
@@ -244,10 +244,10 @@ Running 6 tests using 1 worker
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
   4 failed
-    [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once 
-    [desktop] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft 
-    [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once 
-    [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft 
+    [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
+    [desktop] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
+    [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once
+    [mobile] › tests/browser-live/raider-onboarding.spec.ts:90:1 › experienced portfolio input stays self-described and a rejected save preserves the draft
   2 passed (52.2s)
 OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t008-ui-source-xzr_8u1i/test-results
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

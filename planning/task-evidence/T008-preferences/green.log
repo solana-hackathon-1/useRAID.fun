@@ -77,7 +77,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
  RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
@@ -164,7 +164,7 @@ CommandReceiptError: INVALID_INPUT
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
 
  FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > checks the database clock after the real Session lock wait rather than transaction start
-PrismaClientKnownRequestError: 
+PrismaClientKnownRequestError:
 Invalid `prisma.$queryRawUnsafe()` invocation:
 
 
@@ -190,4 +190,4 @@ Raw query failed. Code: `N/A`. Message: `Failed to deserialize column of type 'v
    Duration  3.86s (transform 280ms, setup 0ms, import 570ms, tests 2.98s, environment 0ms)
 
 JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-preferences/green.xml
-OWNED CLEANUP: 0 raid-t008-preferences-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-20261013

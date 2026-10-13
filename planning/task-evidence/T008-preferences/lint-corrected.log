@@ -3,4 +3,3 @@
   341:11  warning  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
 ✖ 1 problem (0 errors, 1 warning)
-

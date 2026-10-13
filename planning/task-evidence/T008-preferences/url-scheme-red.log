@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
  RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
@@ -115,4 +115,4 @@ CommandReceiptError: STORAGE_UNAVAILABLE
    Start at  10:36:18
    Duration  983ms (transform 258ms, setup 0ms, import 496ms, tests 241ms, environment 0ms)
 
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

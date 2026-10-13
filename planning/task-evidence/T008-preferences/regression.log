@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
  RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
@@ -389,4 +389,4 @@ X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered me
    Duration  159.56s (transform 2.99s, setup 0ms, import 37.33s, tests 99.18s, environment 21ms)
 
 JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-preferences/regression.xml
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

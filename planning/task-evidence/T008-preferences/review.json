@@ -62,7 +62,9 @@
     "format": "Unsupported .env parserfailure retained; supportedfilecheckPASS; dotenv/SQL/schema validated via diff/Prisma/database checks",
     "full_completion": "Expected exit1: full27criterion/independent acceptance and required candidateCI missing. Genuine workingtree TDD context explicitly distinguished from clean HEAD",
     "skipped": "No arbitrary extra provider/money/recovery/representativeUAT/independent checks. Old browser journeys remain isolated; matching relevant code evidence reused. CandidateCI executes8dedicated flows beforepublish.",
-    "final_docs": "2files92PASS"
+    "final_docs": "2files92PASS",
+    "diff": "Initial whole staged check warned about original tool-output whitespace; rawbytes retained in companion .log.gz, textviews normalized only; source assertions/results unchanged",
+    "evidence_view": "Text log display whitespace normalized; .log.gz companions preserve exact raw tool bytes, and implementation commit retains original artifacts"
   },
   "resource_cleanup": "Every completed DB run finally-stop0; fixed/auto ownedDB STOPPED. All --rm browser containers/Next3014 absent. Traces/screenshots/evidence retained; unrelated services/volumes/images/credentials untouched.",
   "preview": {
@@ -93,5 +95,6 @@
     "format.log",
     "browser-isolation-red.log",
     "discovery-red.log"
-  ]
+  ],
+  "implementation_commit": "8cb769656b3ffb7135d12fb1829e3891fbea4e02"
 }

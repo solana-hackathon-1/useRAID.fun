@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 OWNED PREVIEW SOURCE /tmp/raid-t008-ui-source-wpfte3uh
 [WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
@@ -90,7 +90,7 @@ Running 2 tests using 1 worker
   ✘  2 [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps (7.5s)
 
 
-  1) [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps 
+  1) [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
 
     Error: expect(locator).toBeVisible() failed
 
@@ -125,7 +125,7 @@ Running 2 tests using 1 worker
 
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-  2) [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps 
+  2) [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
 
     Error: expect(locator).toBeVisible() failed
 
@@ -161,7 +161,7 @@ Running 2 tests using 1 worker
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
   2 failed
-    [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps 
-    [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps 
+    [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
+    [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps
 OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t008-ui-source-wpfte3uh/test-results
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

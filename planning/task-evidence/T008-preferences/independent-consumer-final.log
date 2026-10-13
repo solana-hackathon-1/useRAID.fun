@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
 > raid-raider-preferences-example@1.0.0 migrate
@@ -90,4 +90,4 @@ Independent synthetic host schema and owned migrations applied.
 > tsx host.ts
 
 {"synthetic":true,"realDatabase":true,"alternatePgPort":true,"ownSchema":true,"privateRead":true,"originalReplay":true,"changedBodyConflict":true,"foreignSessionDenied":true,"wholeRetry":true,"stableHuman":true,"noRankSlotOrPayment":true}
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013

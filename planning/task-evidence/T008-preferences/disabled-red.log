@@ -78,7 +78,7 @@ migrations/
     └─ migration.sql
   └─ 202610130001_raider_preferences/
     └─ migration.sql
-      
+
 All migrations have been successfully applied.
 
  RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
@@ -117,4 +117,4 @@ AssertionError: expected OrientationStorageError: REVISION_CONFLICT { code: '…
    Start at  06:40:37
    Duration  829ms (transform 211ms, setup 0ms, import 387ms, tests 265ms, environment 0ms)
 
-OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013
