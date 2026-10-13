@@ -225,19 +225,24 @@
       "command": "python3 /tmp/raid-t012-taxonomy-db-run.py node_modules/.bin/vitest run tests/skill-taxonomy-db.test.ts",
       "evidence_url": "planning/task-evidence/T012-taxonomy-storage/red.log",
       "observed": "19 actualFAIL beforeimplementation/DDL, exact sources retained",
-      "result": "FAIL"
+      "result": "FAIL",
+      "sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+      "expected_failure": "New DB behavior must fail before storage/DDL exists; event contract must reject new skill namespace",
+      "observed_failure": "19 DBFAIL at executable NOT_IMPLEMENTED stubs plus1 eventFAIL; baseSHA doesnotcontain newtests, exact uncommittedRED source/test snapshots inred-source.json/event-red-source.json"
     },
     "green": {
       "command": "python3 /tmp/raid-t012-taxonomy-db-run.py node_modules/.bin/vitest run affected skill/receipt/shared tests",
       "evidence_url": "planning/task-evidence/T012-taxonomy-storage/regression.log",
       "observed": "8files172PASS13.76s after actual migration/audit/harness fixes",
-      "result": "PASS"
+      "result": "PASS",
+      "sha": "58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c"
     },
     "refactor": {
       "command": "node_modules/.bin/vitest run affected boundaries/docs",
       "evidence_url": "planning/task-evidence/T012-taxonomy-storage/boundary-docs.log",
       "observed": "9files211PASS1existing skip5.45s; source formatted without assertion changes",
-      "result": "PASS"
+      "result": "PASS",
+      "sha": "58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c"
     }
   },
   "candidate_sha": "58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c",

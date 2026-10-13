@@ -1,3 +1,9 @@
+# Evidence packet correction before PR — 2026-10-13T23:22:08.298111+00:00 Codex /root
+
+Implementation58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c +pin5c558bfa33573f2f31d74c752b6175dab1f4cc1b pushedsamebranch. Actualpinnedvalidator42errors=27fullNOTVERIFIED+7newcandidateCI+8missingTDDfields, soearlier solely27summary waspremature/superseded. Fixed8metadatafieldsusingactualbase/implementationsha andexpected-observed19+1RED/exactuncommittedmanifests, no changedtests/source/fakeCI/independentacceptance. Correctedtask/review; originalrawrejectionretained. Nextverifyexpected34remainingpreCIerrors, commitmetadata/push/templatePR/matchedheadmerge/mainCI+restoreoriginaldisabledmanualworkflow. Allownedlocalresourcesstopped; B2privateclaimsnext.
+
+---
+
 # T012B1 implementation committed — 2026-10-13T23:21:16.869034+00:00 Codex /root
 
 Implementation 58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c on originalbranch, preservespreviouspostCIevidenceandboundedcatalogslice. AllselectedlocalrealPG172/boundary-docs211+1skip/planning52/own20packagePGhost/schema26drift/types/build/lint/formatPASS andgenuine19+1RED/actualfailuresretained. Sourcepin metadata onlynewWIP; no sourcechangesafterverification. Allownedfixturesstopped, no restorationoutstanding yet. Nextpincommit/pushsamebranch/templatePR/matchedheadmerge/actualnewmainautomaticStaging+temporarynamedChecks/restoredisabledstate afterownedrun. FullT01227NOTVERIFIED/independentUAT/claim-evidence-assessment-history/Root enablement remainopen; B2claimsnext.

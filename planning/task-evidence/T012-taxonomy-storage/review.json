@@ -14,7 +14,7 @@
     "consumer": "Own20package clean npmci + minimal actualPG16 catalog host PASS; all26migration/schema drift no difference",
     "static": "Owned source /tmp/raid-t008-build-source-2xavo66l schemaValidate/clientGenerate/Nexttypegen/strictTSC/productionWebpackBuild PASS; ESLintzero",
     "format": "Whole freshtracked+untracked source checked; only newreviewJSON warning fixed. Final changed review/install/packetmetadata format PASS; unrelated ignoredRoot-owned evidence preserved.",
-    "completion": "ActualfullT012 validator exit1 exactly27NOTVERIFIED; premature invocation beforepacketcreation failed/retained",
+    "completion": "ActualpreCIvalidator exit1:27fullNOTVERIFIED plus7unrunCI; initialpacket also8missingTDDmetadatafields, corrected with actual phaseSHA/expected/observedfailure and exactREDmanifest. Earlier solely27 statement was premature and superseded.",
     "skipped_reused": "No browser/RootHTTP/UI/flag/dependency change; unchanged prior pages verified atd023, mandatory hosted browser/build/security newcandidate stillrequired. No local redundant browser/provider/audit tests. RealSQL26/newcatalog/currentauth/receipts checked."
   },
   "findings": [
@@ -22,7 +22,8 @@
     "New skill audit family added in additive migration after actual AuditEvent_type_check rejection; old migrations unchanged",
     "Fixture attaches all asynchronous rejection assertions immediately, avoiding genuine first-green unhandled errors",
     "Wholeformatter detected new self-review JSON formatting; metadata fix/check pending",
-    "Completion validator first invoked before packet creation finished; actual finalpacket rejected only27 fullNOTVERIFIEDcriteria"
+    "Completion validator first invoked before packet creation finished; actual finalpacket rejected only27 fullNOTVERIFIEDcriteria",
+    "Pinned validator revealed8 missingTDDmetadatafields plus7newcandidateCI; metadata fixed withoutfabricatingindependentreview/CI orchanging source/tests. Earlier solely27summary corrected."
   ],
   "ended_utc": "2026-10-13T23:19:48.263956+00:00",
   "elapsed_seconds": 309.046325,
