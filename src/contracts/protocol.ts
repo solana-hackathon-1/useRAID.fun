@@ -38,6 +38,7 @@ export const EventEnvelopeSchema = z
         identityLinkId: InternalId.optional(),
         orientationVersionId: InternalId.optional(),
         guildDraftVersionId: InternalId.optional(),
+        projectProposalVersionId: InternalId.optional(),
       })
       .readonly(),
   })

@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610130003_guild_project_proposals/migration.sql

@@ -186,45 +186,45 @@
   "ci": {
     "planning-contracts": {
       "result": "SUCCESS",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
-      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "static": {
-      "result": "FAILURE",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
-      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "dependency-security": {
       "result": "SUCCESS",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
-      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "test": {
-      "result": "FAILURE",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
-      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "docker": {
       "result": "SUCCESS",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
-      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "browser": {
       "result": "SUCCESS",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
-      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     },
     "ci-gate": {
-      "result": "FAILURE",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
-      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
+      "result": "SUCCESS",
+      "sha": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38382666920",
+      "observed": "Actual successful namedjob on samecandidate; fulltaskindependent/applicable acceptance criteria remainNOTVERIFIED"
     }
   },
   "tdd": {
