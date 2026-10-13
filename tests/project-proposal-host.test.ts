@@ -1,6 +1,7 @@
 import { beforeEach, afterEach, expect, it, vi } from 'vitest';
-const mocks = vi.hoisted(() => ({ run: vi.fn(), read: vi.fn(), save: vi.fn() }));
+const mocks = vi.hoisted(() => ({ run: vi.fn(), read: vi.fn(), save: vi.fn(), draft: vi.fn() }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({ runCommandTransaction: mocks.run }));
+vi.mock('../src/guild-profiles/draft-storage', () => ({ readGuildDraft: mocks.draft }));
 vi.mock('../src/guild-profiles/project-proposal-storage', () => ({
   readGuildProjectProposal: mocks.read,
   saveGuildProjectProposal: mocks.save,
@@ -9,6 +10,7 @@ import {
   projectProposalWriteConfiguration,
   readProjectProposalState,
   saveProjectProposal,
+  readProjectProposalPageState,
 } from '../src/lib/project-proposal-host';
 import { config } from '../src/lib/config';
 const demo = config.demo;
@@ -66,4 +68,26 @@ it('keeps authenticated own empty/current reads available while new writes are d
     });
     expect(mocks.read).toHaveBeenCalledWith({}, actor, id);
   }
+});
+
+it('loads current own draft and pending proposal in one guarded transaction without exposing actor/cookie props', async () => {
+  vi.stubEnv('GUILD_DRAFTS_ENABLED', 'true');
+  vi.stubEnv('GUILD_PROJECT_PROPOSALS_ENABLED', 'true');
+  const draft = { id, revision: 3 },
+    proposal = { guildDraftId: id, revision: 2 };
+  mocks.draft.mockResolvedValue(draft);
+  mocks.read.mockResolvedValue(proposal);
+  expect(await readProjectProposalPageState(actor, id)).toEqual({
+    draft,
+    state: {
+      version: 'v1',
+      guildDraftId: id,
+      proposal,
+      writesAvailable: true,
+      unavailableReason: null,
+    },
+  });
+  expect(mocks.run).toHaveBeenCalledOnce();
+  expect(mocks.draft).toHaveBeenCalledWith({}, actor, id);
+  expect(mocks.read).toHaveBeenCalledWith({}, actor, id);
 });

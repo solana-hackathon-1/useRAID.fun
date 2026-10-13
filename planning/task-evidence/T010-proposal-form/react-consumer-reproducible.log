@@ -1,0 +1,5 @@
+
+> raid-project-proposal-example@1.0.0 form
+> tsx form-example.tsx
+
+{"synthetic":true,"reusableReactForm":true,"explicitTransport":true,"semanticLabels":true,"enabledDisabledSSR":true,"noHiddenRequestsOrAuthState":true,"noProjectAuthority":true}

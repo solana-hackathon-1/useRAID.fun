@@ -65,6 +65,16 @@ export async function GuildDraftPage({ id }: { id?: string }) {
           <p>Prepare your project name and description.</p>
         </div>
       </header>
+      {state.draft && (
+        <p>
+          <Link
+            className="inline-link"
+            href={'/creator/guild-drafts/' + state.draft.id + '/project'}
+          >
+            Prepare existing-project proposal
+          </Link>
+        </p>
+      )}
       <GuildDraftForm state={state} />
     </div>
   );

@@ -185,32 +185,46 @@
   },
   "ci": {
     "planning-contracts": {
-      "result": "NOT VERIFIED",
-      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+      "result": "SUCCESS",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
     },
     "static": {
-      "result": "NOT VERIFIED",
-      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+      "result": "SUCCESS",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
     },
     "dependency-security": {
-      "result": "NOT VERIFIED",
-      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+      "result": "SUCCESS",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
     },
     "test": {
-      "result": "NOT VERIFIED",
-      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+      "result": "SUCCESS",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
     },
     "docker": {
-      "result": "NOT VERIFIED",
-      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+      "result": "SUCCESS",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
     },
     "browser": {
-      "result": "NOT VERIFIED",
-      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+      "result": "SUCCESS",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
     },
     "ci-gate": {
-      "result": "NOT VERIFIED",
-      "observed": "ActualnewC1 candidate notpublished; previousBnamedSUCCESS cannotproveC1 API/sharederror source"
+      "result": "SUCCESS",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
     }
   },
   "tdd": {

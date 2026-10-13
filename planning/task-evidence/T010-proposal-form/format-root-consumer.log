@@ -1,0 +1,11 @@
+tests/project-proposal-host.test.ts 116ms
+examples/project-proposals/package.json 14ms (unchanged)
+[error] examples/project-proposals/form-example.tsx: SyntaxError: Expression expected. (6:359)
+[error]   4 | const id='11111111-1111-4111-8111-111111111111';
+[error]   5 | for(const enabled of [false,true]){
+[error] > 6 |  const html=renderToStaticMarkup(<ProjectProposalForm draftRevision={1} state={{version:'v1',guildDraftId:id,proposal:null,writesAvailable:enabled,unavailableReason:enabled?null:'DISABLED'}} api={{save:async()=>{throw Error('Synthetic transport unused duringSSR');},readProposal:async()=>{throw Error('Unused');},readDraft:async()=>{throw Error('Unused');}}/>);
+[error]     |                                                                                                                                                                                                                                                                                                                                                                       ^
+[error]   7 |  for(const value of ['Claimed network identity','Token mint','Token program','Supporting reference URLs','Save private proposal','Founder control has not been verified.','No proposal has been saved.'])assert(html.includes(value));
+[error]   8 |  assert.equal(/<fieldset[^>]*disabled/.test(html),!enabled);assert(!html.includes('sessionHash'));assert(!html.includes('node_modules'));assert(!html.includes('NEXT_PUBLIC'));
+[error]   9 | }
+examples/project-proposals/tsconfig.json 2ms

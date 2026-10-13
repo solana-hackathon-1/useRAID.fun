@@ -72,5 +72,27 @@
     ".env.example": "d371e7423402de83234c17f194821f5c9a285ae0b2447e21388e9996dac0efb5",
     "planning/raid-ci-matrix.json": "2fa7d17984105609b7e31865ccf20c14c715ee160f3191f1889f1ff55efa0712"
   },
-  "implementation_commit": "36ef864380d59fa6aed0becf3563c5212fc1a99e"
+  "implementation_commit": "36ef864380d59fa6aed0becf3563c5212fc1a99e",
+  "post_merge_staging": {
+    "head": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394351507",
+    "result": "SUCCESS",
+    "raw_log": "hosted-staging-success.log.gz"
+  },
+  "post_merge_checks": {
+    "head": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38394732085",
+    "result": "SUCCESS",
+    "jobs": [
+      "planning-contracts",
+      "static",
+      "dependency-security",
+      "test",
+      "docker",
+      "browser",
+      "ci-gate"
+    ],
+    "raw_log": "hosted-checks-success.log.gz",
+    "restoration": "Originalmanualworkflowdisabled_manually restored/APIverified afterownedrun"
+  }
 }

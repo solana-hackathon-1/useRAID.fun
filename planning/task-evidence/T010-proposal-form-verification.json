@@ -1,0 +1,254 @@
+{
+  "task_id": "T010",
+  "scope": "T010C2 private owner proposal form, atomic page loader and mandatory browser gates",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "code_source_sha": null,
+  "source_identity": "UNCOMMITTED relative to main547f0fb4ded38c4d372036a5ebeac1b9292c870d; genuine missing-page browser RED/first loader failure/final hashes recorded separately",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T010-proposal-form.md",
+  "migration_rollback": "No DDL; remove UI/root loader/link, preserve existing25-schema immutable proposal history/private receipts/API replay",
+  "dependency_evidence": [
+    "PR204 exactmain547 Staging38394351507 and Checks38394732085 SUCCESS; source-bound older API/backend evidence only",
+    "Independent installed23package React SSR/PG/portableHTTP host PASS; actual isolated desktop/mobile currentcookie actions/private boundaries",
+    "Actual project authority/evidence/nonce/recognition/provider/fundedflow/independentUAT remain missing"
+  ],
+  "open_decisions": [
+    "05.6/O01/O02/O05/O06/O07/O11 currentprojectcontrol/publicevidence/adoption missing",
+    "Proposal-version challenge/nonce/recognizedasset uniqueness/history/provider/UI/independentUAT/G01\u2013G10 notverified"
+  ],
+  "release_gate_disposition": "Ownerboundedstagingprivatepending prepAPIonly/defaultoff; no projectapproval/Founder/Guild/token/grant/public/capacity/money/provider enablement",
+  "criteria": {
+    "T010-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    },
+    "T010-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md05.5/05.6/06\u201307/13/16/23\u201330/35AC71,73\u201375/39",
+      "observed": "Private pending owner UI/portable React/current-cookie API preparation only; full recognition/history/nonce/provider/funded flow and independent review/UAT absent",
+      "evidence": "docs/tasks/2026-10-13-T010-proposal-form.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "No new C2 candidate has been published; older PR204 evidence does not cover C2",
+      "observed": "ActualnamedjobSUCCESSsameC1candidate; fullparentindependentcriterion/projectrecognition/UAT/gates remainNOTVERIFIED"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "python3 /tmp/raid-t010-proposals-db-run.py python3 /tmp/raid-t010-proposal-form-browser-run.py red",
+      "sha": "547f0fb4ded38c4d372036a5ebeac1b9292c870d",
+      "evidence_url": "planning/task-evidence/T010-proposal-form/browser-red.log",
+      "expected_failure": "Desktop/mobile owner preparation fields unavailable before page/form implementation",
+      "observed_failure": "Both desktop/mobile owner cases fail on missing form fields; actual uncommitted tests/config and snapshot35jx4ok8",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "Same two owner cases after explicit readGuildDraft import, plus eight adverse cases",
+      "sha": null,
+      "evidence_url": "planning/task-evidence/T010-proposal-form/browser-loader-fixed.log",
+      "observed": "2PASS45.4s plus8PASS1.5m; first implemented2FAIL preserved, same assertions/timeouts",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "Affected six page cases after moving JSX outside try; types/lint/production build/independent consumer/regression",
+      "sha": null,
+      "evidence_url": "planning/task-evidence/T010-proposal-form/review.json",
+      "observed": "SixaffectedpagebrowserPASS1.6m,4matchingadversePASSreused; final150+11regression/5requirements/strictbuild-types/lint/wholeformatter/independentPG-andReact PASS",
+      "result": "PASS"
+    }
+  }
+}
