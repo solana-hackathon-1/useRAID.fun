@@ -1,0 +1,6 @@
+examples/project-control/guild-profiles/ed25519-control-verifier.ts(8,12): error TS7031: Binding element 'message' implicitly has an 'any' type.
+examples/project-control/guild-profiles/ed25519-control-verifier.ts(8,21): error TS7031: Binding element 'signature' implicitly has an 'any' type.
+examples/project-control/guild-profiles/ed25519-control-verifier.ts(8,32): error TS7031: Binding element 'signer' implicitly has an 'any' type.
+src/guild-profiles/ed25519-control-verifier.ts(8,12): error TS7031: Binding element 'message' implicitly has an 'any' type.
+src/guild-profiles/ed25519-control-verifier.ts(8,21): error TS7031: Binding element 'signature' implicitly has an 'any' type.
+src/guild-profiles/ed25519-control-verifier.ts(8,32): error TS7031: Binding element 'signer' implicitly has an 'any' type.

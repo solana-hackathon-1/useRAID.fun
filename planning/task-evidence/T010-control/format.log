@@ -1,0 +1,12 @@
+src/guild-profiles/control-attestation.ts 136ms
+src/guild-profiles/control-attestation-contracts.ts 61ms
+src/guild-profiles/ed25519-control-verifier.ts 8ms
+tests/project-control-attestation.test.ts 150ms
+tests/project-control-boundary.test.ts 9ms
+docs/raid-project-control.md 95ms
+examples/project-control/host.ts 29ms
+examples/project-control/package.json 13ms
+examples/project-control/README.md 9ms (unchanged)
+docs/tasks/2026-10-13-T010-control-attestation.md 27ms (unchanged)
+docs/raid-module-reuse.md 89ms (unchanged)
+planning/raid-ci-matrix.json 43ms (unchanged)

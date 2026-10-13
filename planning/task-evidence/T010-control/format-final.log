@@ -1,0 +1,7 @@
+src/guild-profiles/control-attestation.ts 131ms (unchanged)
+src/guild-profiles/control-attestation-contracts.ts 67ms (unchanged)
+src/guild-profiles/ed25519-control-verifier.ts 9ms
+tests/project-control-attestation.test.ts 137ms
+examples/project-control/host.ts 32ms
+docs/raid-project-control.md 109ms (unchanged)
+docs/tasks/2026-10-13-T010-control-attestation.md 26ms (unchanged)

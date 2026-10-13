@@ -42,7 +42,6 @@
   "checks": {
     "red": "5DBFAIL beforelistimplementation;2missingindex desktop/mobile beforepage; discovery8-vs10RED beforeexact10update;missingdocRED beforedoc/example",
     "green": "5list+21protectedDB=26PASS5.84s;newindex2PASS55.5s;extended20/2pagination/privacy desktop/mobile2PASS1m; affected6files124PASS",
-    "remaining": "OwnPGconsumer/build/typed/static/docs/requirements currentlyrunning/pending",
     "regression": "6files124PASS;final4files104docsPASS;host/delivery3files5PASS",
     "static": "Freshown24-migration client/typegen/typecheck/productionWebpackBuildPASS; after hosttestaddition updatedtypecheck/lintPASS; finalrequirements5/formatPASS",
     "consumer": "Owninstalled23-package minimalPG/React host refreshescanonicalfiles, realstorage/portableHTTP plus ownbounded1recordpage/nextcursor/currentrevisionPASS; no dependencyreinstall needed",
@@ -62,5 +61,14 @@
     "observed": "Private find-afterrefresh,20/2pagination/ownedit/anonymous/otherowner confidentiality desktop/mobile; screenshots/traces/logs retained"
   },
   "resources": "Owned raid-t009-list-auto-20261013 41ae3a92e144c905bdfa408a27ae8c4f5c78d855e318ef067f521fc8363357a2 finallySTOP0/inspectfalse; browsers/Next finallyexit/ownedrunnerremoved, no3016listener; ownCLI poolsended; unrelatedservices/data/volumes/images/evidence preserved",
-  "implementation_commit": "3155f1c5c25e3c49861a897e2e7a4504ed022396"
+  "implementation_commit": "3155f1c5c25e3c49861a897e2e7a4504ed022396",
+  "post_merge_staging": {
+    "head": "43d41a1cca3aca571489e2cc7b217d819fe8beab",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38374149398",
+    "result": "SUCCESS",
+    "checks": "123 files/1368 tests;8 orientation37.6s+10 Guild1.3m;source/planning/type/lint/audit/realSQL/production nativeARM image/runtime/privateGHCR/cleanup",
+    "digest": "sha256:f01741688103412f0493490eba1e8994799ed36973c7edd0880347ac2dfffdad",
+    "public_health": "NOT VERIFIED; public ingress last530/1033 and VMSSH timeout separate",
+    "raw_log": "hosted-success.log.gz"
+  }
 }

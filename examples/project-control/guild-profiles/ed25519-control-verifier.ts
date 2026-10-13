@@ -1,0 +1,1 @@
+../../../src/guild-profiles/ed25519-control-verifier.ts

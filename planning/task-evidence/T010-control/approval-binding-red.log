@@ -1,0 +1,48 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/project-control-attestation.test.ts (72 tests | 4 failed | 68 skipped) 57ms
+   × accepts only purpose-scoped approval with authority and public evidence linked to that exact approval 25ms
+   × rejects unrelated approved record binding authority-policy 8ms
+   × rejects unrelated approved record binding evidence-policy 8ms
+   × rejects unrelated approved record binding evidence-authority 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/project-control-attestation.test.ts > accepts only purpose-scoped approval with authority and public evidence linked to that exact approval
+ProjectControlContractError: INVALID_HOST_CONTRACT
+ ❯ parseHost src/guild-profiles/control-attestation.ts:17:30
+     15| function parseHost<T>(schema: z.ZodType<T>, value: unknown): T {
+     16|   const parsed = schema.safeParse(value);
+     17|   if (!parsed.success) throw new ProjectControlContractError('INVALID_…
+       |                              ^
+     18|   return parsed.data;
+     19| }
+ ❯ evaluateProjectControlProof src/guild-profiles/control-attestation.ts:77:17
+ ❯ evaluate tests/project-control-attestation.test.ts:75:6
+ ❯ tests/project-control-attestation.test.ts:366:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects unrelated approved record binding authority-policy
+ FAIL  tests/project-control-attestation.test.ts > rejects unrelated approved record binding evidence-policy
+ FAIL  tests/project-control-attestation.test.ts > rejects unrelated approved record binding evidence-authority
+ProjectControlContractError: INVALID_HOST_CONTRACT
+ ❯ parseHost src/guild-profiles/control-attestation.ts:17:30
+     15| function parseHost<T>(schema: z.ZodType<T>, value: unknown): T {
+     16|   const parsed = schema.safeParse(value);
+     17|   if (!parsed.success) throw new ProjectControlContractError('INVALID_…
+       |                              ^
+     18|   return parsed.data;
+     19| }
+ ❯ evaluateProjectControlProof src/guild-profiles/control-attestation.ts:77:17
+ ❯ evaluate tests/project-control-attestation.test.ts:75:6
+ ❯ tests/project-control-attestation.test.ts:373:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 68 skipped (72)
+   Start at  15:15:45
+   Duration  527ms (transform 117ms, setup 0ms, import 290ms, tests 57ms, environment 0ms)

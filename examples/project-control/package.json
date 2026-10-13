@@ -1,0 +1,18 @@
+{
+  "name": "raid-project-control-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx host.ts"
+  },
+  "dependencies": {
+    "zod": "4.6.5",
+    "bs58": "6.0.0",
+    "tsx": "4.23.15",
+    "tweetnacl": "1.0.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

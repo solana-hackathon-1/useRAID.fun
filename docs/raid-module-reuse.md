@@ -82,3 +82,7 @@ An auth feature’s example host supplies a session/nonce store, test clock, dom
 The runnable example must reject reused/expired/wrong-domain challenges, incorrect link intent, duplicate conflicting subject links, revoked sessions and cross-tenant access. A wallet/provider adapter replacement retains the same canonical account/participant and existing capacity/history/claims. A storage implementation used in production must preserve atomic nonce consumption and identity uniqueness; an in-memory example proves interface use only. Record which tests use real storage and which use deterministic fixtures.
 
 This is a required future consuming example, not a claim that an auth package or alternate implementation already exists. E02/T006/T007/T008/T090 own the auth slice; E01/T002/T004/T089 own shared boundaries and contract evidence. Every other feature uses the same documentation and test-driven completion rules at its own boundary.
+
+## Existing-project signed control proof
+
+T010A owns [the informational control-proof contract](raid-project-control.md) and [independent crypto host](../examples/project-control/README.md). Inject trusted current account/draft/origin/clock and approved versioned project authority/public evidence, plus local Ed25519 verification. Exact purpose/nonce/asset/request binding and adverse outcomes are tested with an alternate Node verifier. No actual approval, nonce consumption, recognized Guild, Founder/grant, public or financial authority is implied; those dependent contracts remain NOT VERIFIED.
