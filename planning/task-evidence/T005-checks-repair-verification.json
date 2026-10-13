@@ -4,8 +4,8 @@
   "status": "IN_PROGRESS",
   "implementer": "Codex /root",
   "reviewer": "NOT VERIFIED: independent parent criterionreview missing",
-  "code_source_sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
-  "source_identity": "Basee143 plus uncommitted twoJSON/testfixture/docs/evidence repair; exacthashes in T010-checks-repair/review.json",
+  "code_source_sha": "a9dce93338b839666d706b82ba48caed024906cf",
+  "source_identity": "Bounded implementation a9dce93338b839666d706b82ba48caed024906cf; actual source-hash/Red/Green phase evidence retained, fullparent incomplete",
   "handoff": "docs/tasks/2026-10-13-T010-checks-repair.md",
   "migration_rollback": "NoDDL/app/dependency/config/provider change; retain originalJSONgzip; do not revert fixture to sharedpool starvation",
   "dependency_evidence": [
@@ -197,14 +197,14 @@
     "green": {
       "result": "PASS",
       "command": "RAID_FIXTURE_APP_POOL=3/2 python3 /tmp/raid-t010-checks-db-run.py vitest originalXrace suites; freshtrackedsource Prettiercheck",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "sha": "a9dce93338b839666d706b82ba48caed024906cf",
       "evidence_url": "planning/task-evidence/T010-checks-repair/pool3-green.log",
       "observed": "22pool3+5pool2 originalassertionsPASS; wholeformatterPASS and unchangedJSONvalues/originalgzip preserved"
     },
     "refactor": {
       "result": "PASS",
       "command": "Frozenown tsc; owned lint; pool2 adverseregression and cleanup",
-      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "sha": "a9dce93338b839666d706b82ba48caed024906cf",
       "evidence_url": "planning/task-evidence/T010-checks-repair/pool2-green.log",
       "observed": "Strict typecheck/lint/originalfivepool2 races andallfinallycleanupPASS; no assertion/timeout/compiler weakening"
     }

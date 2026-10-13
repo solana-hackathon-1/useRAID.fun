@@ -2,7 +2,7 @@
   "label": "SELF-EVALUATED",
   "started_utc": "2026-10-13T10:02:42.057944+00:00",
   "source_base": "e14327499f74ba47742c64140dfaae2552cda2e0",
-  "source_identity": "Uncommitted two historical report serialization repairs + one X race fixture (explicit pools/finally) and docs/evidence/retained checkpoint; no application changes",
+  "source_identity": "Bounded implementation a9dce93338b839666d706b82ba48caed024906cf; actual source hashes and Red/Green phase evidence retained, fullparent remains incomplete",
   "source_snapshot": "/tmp/raid-t010-checks-source-gxy3t0xr",
   "requirements": [
     "I10",
@@ -44,5 +44,6 @@
     "planning/task-evidence/public-staging-20261011/vm-after-public.json.original.gz": "bbcfb9fe0d631bccef0ffc698ad9f69d971c542bd5ab08ac1ab9e8a29df621ae",
     "docs/tasks/2026-10-13-T010-checks-repair.md": "f69dd04e73f0edadb90328411d6a78cddc8e96616583607e67b3a20a88cd595d",
     "planning/task-evidence/T010-checks-repair/json-originals.json": "ea2f6c447d00a834ada5e23323b01d87c3a91dbcc77cb07a807027ff87d6d031"
-  }
+  },
+  "implementation_commit": "a9dce93338b839666d706b82ba48caed024906cf"
 }
