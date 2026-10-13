@@ -47,6 +47,8 @@
     "tests/env-example.test.ts",
     "tests/fake-solana.test.ts",
     "tests/format.test.ts",
+    "tests/guild-profiles-boundary.test.ts",
+    "tests/guild-profiles.test.ts",
     "tests/http.test.ts",
     "tests/identity-link-authority-hook-db.test.ts",
     "tests/identity-link-boundary.test.ts",
@@ -159,6 +161,8 @@
         "tests/docs-links.test.ts",
         "tests/fake-solana.test.ts",
         "tests/format.test.ts",
+        "tests/guild-profiles-boundary.test.ts",
+        "tests/guild-profiles.test.ts",
         "tests/http.test.ts",
         "tests/identity-link-authority-hook-db.test.ts",
         "tests/identity-link-boundary.test.ts",
@@ -327,7 +331,10 @@
         "browser",
         "ci-gate"
       ],
-      "existing_test_files": [],
+      "existing_test_files": [
+        "tests/guild-profiles-boundary.test.ts",
+        "tests/guild-profiles.test.ts"
+      ],
       "implementation_status": "DOMAIN_TESTS_NOT_IMPLEMENTED",
       "required_test_layers": [
         "unit and boundary contract",

@@ -1,0 +1,32 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/guild-profiles.test.ts (31 tests | 1 failed) 60ms
+   × rejects finer-than-millisecond grant clocks rather than rounding future authority into the present 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-profiles.test.ts > rejects finer-than-millisecond grant clocks rather than rounding future authority into the present
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/guild-profiles.test.ts:231:5
+    229|       request,
+    230|     ),
+    231|   ).toThrow('INVALID_HOST_CONTRACT');
+       |     ^
+    232| });
+    233|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 30 passed (31)
+   Start at  11:34:39
+   Duration  593ms (transform 161ms, setup 0ms, import 301ms, tests 60ms, environment 0ms)

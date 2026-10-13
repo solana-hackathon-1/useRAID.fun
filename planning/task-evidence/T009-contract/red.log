@@ -1,0 +1,191 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/guild-profiles.test.ts (29 tests | 28 failed) 33ms
+   × prepares only self-described public draft fields with no founder/token/permission side effect 7ms
+   × rejects injected draft authority/private field founderAccountId 7ms
+   × rejects injected draft authority/private field verified 1ms
+   × rejects injected draft authority/private field primaryToken 1ms
+   × rejects injected draft authority/private field permissions 1ms
+   × rejects injected draft authority/private field privateNotes 1ms
+   × projects only approved shared public fields and never private administrators/repositories/payments/notes 1ms
+   × allows a verified own founder only within profile scopes at the current revision 1ms
+   × holder eligibility and legacy global roles never supply Guild authority 1ms
+   × profile founder cannot authorize unrelated action TREASURY_SETTLE 0ms
+   × profile founder cannot authorize unrelated action DISPUTE_DECIDE 0ms
+   × profile founder cannot authorize unrelated action PRIVATE_DOWNLOAD 0ms
+   × profile founder cannot authorize unrelated action CHANGE_FOUNDER 0ms
+   × profile founder cannot authorize unrelated action CHANGE_PRIMARY_TOKEN 0ms
+   × profile founder cannot authorize unrelated action SET_SKILL_RANK 0ms
+   × profile scope never authorizes unrelated or stable field slug 0ms
+   × profile scope never authorizes unrelated or stable field primaryToken 0ms
+   × profile scope never authorizes unrelated or stable field founderAccountId 0ms
+   × profile scope never authorizes unrelated or stable field privateConfiguration 0ms
+   × profile scope never authorizes unrelated or stable field reward 0ms
+   × profile scope never authorizes unrelated or stable field permissions 0ms
+   × requires live own authority, unrestricted actor and verified founder control 0ms
+   × a delegate can edit only its own granted fields and cannot redelegate without that explicit scope 0ms
+   × ignores foreign, revoked, expired or future grants {"guildId":"foreign-guild"} 0ms
+   × ignores foreign, revoked, expired or future grants {"granteeAccountId":"other-editor"} 0ms
+   × ignores foreign, revoked, expired or future grants {"status":"REVOKED"} 0ms
+   × ignores foreign, revoked, expired or future grants {"expiresAt":"2026-10-13T00:00:00.000Z"} 0ms
+   × ignores foreign, revoked, expired or future grants {"validFrom":"2026-10-14T00:00:00.000Z"} 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 28 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-profiles.test.ts > prepares only self-described public draft fields with no founder/token/permission side effect
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ prepareGuildProfileDraft src/guild-profiles/index.ts:8:9
+      6| }
+      7| export function prepareGuildProfileDraft(_input: unknown): unknown {
+      8|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+      9| }
+     10| export function projectPublicGuildProfile(_record: unknown): unknown {
+ ❯ tests/guild-profiles.test.ts:43:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > rejects injected draft authority/private field founderAccountId
+ FAIL  tests/guild-profiles.test.ts > rejects injected draft authority/private field verified
+ FAIL  tests/guild-profiles.test.ts > rejects injected draft authority/private field primaryToken
+ FAIL  tests/guild-profiles.test.ts > rejects injected draft authority/private field permissions
+ FAIL  tests/guild-profiles.test.ts > rejects injected draft authority/private field privateNotes
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/guild-profiles.test.ts:73:7
+     71|         [field]: 'forged',
+     72|       }),
+     73|     ).toThrow('INVALID_INPUT');
+       |       ^
+     74|   },
+     75| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > projects only approved shared public fields and never private administrators/repositories/payments/notes
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ projectPublicGuildProfile src/guild-profiles/index.ts:11:9
+      9| }
+     10| export function projectPublicGuildProfile(_record: unknown): unknown {
+     11|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+ ❯ tests/guild-profiles.test.ts:90:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > allows a verified own founder only within profile scopes at the current revision
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:14:9
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+     14|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     15| }
+     16|
+ ❯ tests/guild-profiles.test.ts:106:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > holder eligibility and legacy global roles never supply Guild authority
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:14:9
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+     14|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     15| }
+     16|
+ ❯ tests/guild-profiles.test.ts:124:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > profile founder cannot authorize unrelated action TREASURY_SETTLE
+ FAIL  tests/guild-profiles.test.ts > profile founder cannot authorize unrelated action DISPUTE_DECIDE
+ FAIL  tests/guild-profiles.test.ts > profile founder cannot authorize unrelated action PRIVATE_DOWNLOAD
+ FAIL  tests/guild-profiles.test.ts > profile founder cannot authorize unrelated action CHANGE_FOUNDER
+ FAIL  tests/guild-profiles.test.ts > profile founder cannot authorize unrelated action CHANGE_PRIMARY_TOKEN
+ FAIL  tests/guild-profiles.test.ts > profile founder cannot authorize unrelated action SET_SKILL_RANK
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:14:9
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+     14|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     15| }
+     16|
+ ❯ tests/guild-profiles.test.ts:144:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > profile scope never authorizes unrelated or stable field slug
+ FAIL  tests/guild-profiles.test.ts > profile scope never authorizes unrelated or stable field primaryToken
+ FAIL  tests/guild-profiles.test.ts > profile scope never authorizes unrelated or stable field founderAccountId
+ FAIL  tests/guild-profiles.test.ts > profile scope never authorizes unrelated or stable field privateConfiguration
+ FAIL  tests/guild-profiles.test.ts > profile scope never authorizes unrelated or stable field reward
+ FAIL  tests/guild-profiles.test.ts > profile scope never authorizes unrelated or stable field permissions
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:14:9
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+     14|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     15| }
+     16|
+ ❯ tests/guild-profiles.test.ts:157:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > requires live own authority, unrestricted actor and verified founder control
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:14:9
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+     14|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     15| }
+     16|
+ ❯ tests/guild-profiles.test.ts:164:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > a delegate can edit only its own granted fields and cannot redelegate without that explicit scope
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:14:9
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+     14|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     15| }
+     16|
+ ❯ tests/guild-profiles.test.ts:178:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/28]⎯
+
+ FAIL  tests/guild-profiles.test.ts > ignores foreign, revoked, expired or future grants {"guildId":"foreign-guild"}
+ FAIL  tests/guild-profiles.test.ts > ignores foreign, revoked, expired or future grants {"granteeAccountId":"other-editor"}
+ FAIL  tests/guild-profiles.test.ts > ignores foreign, revoked, expired or future grants {"status":"REVOKED"}
+ FAIL  tests/guild-profiles.test.ts > ignores foreign, revoked, expired or future grants {"expiresAt":"2026-10-13T00:00:00.000Z"}
+ FAIL  tests/guild-profiles.test.ts > ignores foreign, revoked, expired or future grants {"validFrom":"2026-10-14T00:00:00.000Z"}
+GuildProfileContractError: NOT_IMPLEMENTED
+ ❯ evaluateGuildProfilePermission src/guild-profiles/index.ts:14:9
+     12| }
+     13| export function evaluateGuildProfilePermission(_facts: unknown, _reque…
+     14|   throw new GuildProfileContractError('NOT_IMPLEMENTED');
+       |         ^
+     15| }
+     16|
+ ❯ tests/guild-profiles.test.ts:200:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/28]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  28 failed | 1 passed (29)
+   Start at  11:28:54
+   Duration  358ms (transform 48ms, setup 0ms, import 67ms, tests 33ms, environment 0ms)

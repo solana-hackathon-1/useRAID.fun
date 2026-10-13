@@ -1,0 +1,5 @@
+
+> raid-guild-profile-example@1.0.0 start
+> tsx host.ts
+
+{"synthetic":true,"noPrivateProjection":true,"holderDoesNotAdminister":true,"alternateHost":true,"delegatedFieldsOnly":true,"unknownMembershipPreservesScope":true,"treasurySeparate":true,"expiredAndRevokedDenied":true,"noPersistenceOrAuthorityToken":true}
