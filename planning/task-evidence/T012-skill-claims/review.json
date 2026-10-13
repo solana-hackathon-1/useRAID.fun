@@ -1,0 +1,38 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-13T14:03:08.400861+00:00",
+  "source_base": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+  "scope": "T012A typedstabletaxonomy/adminpublicationcandidate/currentcanonicalHUMAN unverifiedprivateclaim only",
+  "requirements": ["R04", "R05", "R06", "R12", "R15", "R16", "P07", "I06", "I07", "I10", "I13"],
+  "independent_review": "NOT VERIFIED; solewriter/no delegation",
+  "checks": {
+    "red": "19genuineFAIL beforemodule/schema; exactsource/test manifests red-source",
+    "green": "Initial19PASS, refactor21behaviors+1moduleboundary22PASS; actuallogs retained",
+    "regression": "2files22PASS808ms including21behavior/1boundary; docs+proof4files138PASS2.99s",
+    "requirements": "Inventory5tests1FAIL beforeglobal/E04 registrations\u21925PASS0.129s",
+    "consumer": "Ownclean npmci6packages/finalcanonicalNode host alias/domain/currentHUMAN/nowealthrank/noassessment/noTaxonomyPublication PASS; ownnode_modules /tmp/raid-t012-skill-consumer-2awejh3n",
+    "static": "OwnfrozenstrictTSC/lintzero/wholefreshtracked+WIPformat PASS",
+    "reused_skipped": "NoRoot/DDL/UI/provider/depchange; matchingolderUI/SQL/build evidence reusedonlyunchangedboundaries, no redundantlocalDB/browser/build/image/security. Newcandidatefullnamed/image stillNOTVERIFIED underknownbillingblock.",
+    "cleanup": "CLI/Vitest/types/lint exited; noT012server/DB/browser/testcontainersstarted; olderownedresources stopped/unrelateddata/services/images/evidence retained; manualworkflowdisabled_manually verified/no restorationoutstanding",
+    "completion": "Fullnumberedcriteria/actualpublication/assessment/evidence/storage/history/independentreview-UAT/releasegates NOTVERIFIED; validator expectedreject",
+    "docs_final": "2files116PASS actualdocs-final.log"
+  },
+  "findings": [],
+  "formatter_source": "/tmp/raid-t012-skill-source-_oakutkz",
+  "ended_utc": "2026-10-13T14:27:57.043859+00:00",
+  "elapsed_seconds": 1488.642998,
+  "source_hashes": {
+    "src/skills/index.ts": "2c58b145d8171dfe0fe29d9220214c400068ba638e0f4fcf80b47fd11199b562",
+    "src/skills/contracts.ts": "01b4dc528f3d939d982783648f57c7a1184b77a567764136c6c51983f214b60b",
+    "tests/skill-claims.test.ts": "26f8e6366e8eabbfddb7e1508271cba7c40e46dad7c09a84febbb3014e9100ca",
+    "tests/skill-claims-boundary.test.ts": "e1149a4e6d61872953ddc35a200ef83da1cdc2d70eb971bdb077ed0d572541c5",
+    "examples/skill-claims/host.ts": "993a72552de3efea7ebd72c26a62c82e9ad4adcf18ed43f79e89c35284f8af30",
+    "examples/skill-claims/package.json": "62bee99ef34650a22ad6f3503aa853456eff0565e42ad09ed67b89d18dea89ed",
+    "examples/skill-claims/package-lock.json": "74609ad3e035c2095488cc2f29468d068a766e2088b2ca6c063478c087cda7ec",
+    "examples/skill-claims/README.md": "287fa7a6a3673161796a9477f4d91122b110deba448fed83d4ca31266a8634e1",
+    "docs/raid-skill-claims.md": "b0a622aa6044f114f374877fb51d6cf013725310af5dea74a16756c3ac862c8d",
+    "docs/raid-module-reuse.md": "fcca61518347a44e0cc01955c95e7557bafe4bd121edd02f3144a85e81b8eeea",
+    "docs/tasks/2026-10-13-T012-skill-claims.md": "a8d772c5f0ebb152503040f63ad1b784540858cce637fd211ca76d3647f8dd95",
+    "planning/raid-ci-matrix.json": "80804441b031012b42e19d6e55ea2bb1a7aa1190e7761cdb8f29cb67bb049311"
+  }
+}

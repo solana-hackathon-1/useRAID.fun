@@ -43,5 +43,12 @@
     "planning/raid-ci-matrix.json": "a23840e0f85438f58d87c757bf8e413d09559a64e1f453b6363819990b0ed5c3"
   },
   "implementation_commit": "562d196eb6a481663c619d09af08cd4104176bf0",
-  "source_identity": "Bounded implementation 562d196eb6a481663c619d09af08cd4104176bf0; genuineRED manifests/stubs/tests/provenancefailures andfinalhashes retained"
+  "source_identity": "Bounded implementation 562d196eb6a481663c619d09af08cd4104176bf0; genuineRED manifests/stubs/tests/provenancefailures andfinalhashes retained",
+  "post_merge_staging": {
+    "head": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38407477051",
+    "result": "NOT VERIFIED: failedbeforeanystep/payment-spendinglimitannotation",
+    "new_image": "NOT PUBLISHED for148",
+    "manual_checks": "NOT RUN underunchangedaccountblock, originalworkflowdisabled_manually verified"
+  }
 }

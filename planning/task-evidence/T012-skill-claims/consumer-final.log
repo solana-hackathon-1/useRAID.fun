@@ -1,0 +1,5 @@
+
+> raid-skill-claims-example@1.0.0 start
+> tsx host.ts
+
+{"synthetic":true,"ownInstalledHost":true,"stableSkillAndAliasIdentity":true,"crossDomainDistinct":true,"canonicalParticipantPreserved":true,"noRankFromClaimOrWealth":true,"noTaxonomyPublication":true,"noAssessmentOrPersistence":true}

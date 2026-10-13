@@ -1,0 +1,17 @@
+src/skills/contracts.ts 129ms
+src/skills/index.ts 43ms
+tests/skill-claims.test.ts 104ms
+tests/skill-claims-boundary.test.ts 15ms
+examples/skill-claims/host.ts 29ms
+examples/skill-claims/package.json 21ms
+examples/skill-claims/README.md 43ms (unchanged)
+docs/raid-skill-claims.md 56ms (unchanged)
+docs/raid-module-reuse.md 176ms (unchanged)
+docs/tasks/2026-10-13-T012-skill-claims.md 8ms (unchanged)
+planning/raid-ci-matrix.json 52ms
+planning/task-evidence/T012-skill-claims/review.json 2ms
+planning/task-evidence/T012-skill-claims/red-source/manifest.json 2ms (unchanged)
+planning/task-evidence/T011-holder-observation/review.json 3ms
+planning/task-evidence/T011-holder-observation-verification.json 12ms (unchanged)
+planning/task-evidence/T011-holder-observation/hosted-staging-failure-result.json 1ms (unchanged)
+planning/task-evidence/T011-holder-observation/hosted-staging-failure-annotations.json 2ms (unchanged)

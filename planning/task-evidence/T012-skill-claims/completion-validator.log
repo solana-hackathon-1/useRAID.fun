@@ -1,0 +1,38 @@
+TDD green: missing sha
+TDD green: invalid commit SHA
+TDD refactor: missing sha
+TDD refactor: invalid commit SHA
+Required CI check has no successful result: planning-contracts
+Required CI check has no successful result: static
+Required CI check has no successful result: dependency-security
+Required CI check has no successful result: test
+Required CI check has no successful result: docker
+Required CI check has no successful result: browser
+Required CI check has no successful result: ci-gate
+T012-C01: NOT VERIFIED prevents completion
+T012-C02: NOT VERIFIED prevents completion
+T012-C03: NOT VERIFIED prevents completion
+T012-C04: NOT VERIFIED prevents completion
+T012-C05: NOT VERIFIED prevents completion
+T012-C06: NOT VERIFIED prevents completion
+T012-C07: NOT VERIFIED prevents completion
+T012-C08: NOT VERIFIED prevents completion
+T012-C09: NOT VERIFIED prevents completion
+T012-C10: NOT VERIFIED prevents completion
+T012-C11: NOT VERIFIED prevents completion
+T012-C12: NOT VERIFIED prevents completion
+T012-C13: NOT VERIFIED prevents completion
+T012-C14: NOT VERIFIED prevents completion
+T012-C15: NOT VERIFIED prevents completion
+T012-C16: NOT VERIFIED prevents completion
+T012-C17: NOT VERIFIED prevents completion
+T012-C18: NOT VERIFIED prevents completion
+T012-A01: NOT VERIFIED prevents completion
+T012-A02: NOT VERIFIED prevents completion
+T012-W01: NOT VERIFIED prevents completion
+T012-W02: NOT VERIFIED prevents completion
+T012-W03: NOT VERIFIED prevents completion
+T012-C19: NOT VERIFIED prevents completion
+T012-C20: NOT VERIFIED prevents completion
+T012-C21: NOT VERIFIED prevents completion
+T012-C22: NOT VERIFIED prevents completion
