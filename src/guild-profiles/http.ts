@@ -5,23 +5,12 @@ import { CommandReceiptError } from '../command-receipts';
 import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
 import {
   SaveGuildDraftInputSchema,
-  SavedGuildDraftSchema,
   GuildDraftStorageError,
   type GuildDraftActor,
   type GuildDraftCommand,
 } from './draft-storage-contracts';
-export const GuildDraftHttpStateSchema = z
-  .strictObject({
-    version: z.literal('v1'),
-    draft: SavedGuildDraftSchema,
-    writesAvailable: z.boolean(),
-    unavailableReason: z.literal('DISABLED').nullable(),
-  })
-  .refine((s) => s.writesAvailable === (s.unavailableReason === null));
-export const GuildDraftHttpSavedSchema = z.strictObject({
-  status: z.enum(['EXECUTED', 'REPLAYED']),
-  draft: SavedGuildDraftSchema,
-});
+export { GuildDraftHttpStateSchema, GuildDraftHttpSavedSchema } from './http-contracts';
+import { GuildDraftHttpStateSchema, GuildDraftHttpSavedSchema } from './http-contracts';
 export interface GuildDraftHttpHost {
   version: 'v1';
   actor(): Promise<GuildDraftActor>;

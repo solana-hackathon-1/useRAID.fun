@@ -37,6 +37,13 @@ export default async function AccountPage({
         <XConnection account={account} status={auth} returnTo="account" />
       </section>
       <section className="studio-section">
+        <h2>Guild draft</h2>
+        <p>Prepare private project details and keep your saved draft URL.</p>
+        <Link className="inline-link" href="/creator/guild-drafts/new">
+          Create a private Guild draft
+        </Link>
+      </section>
+      <section className="studio-section">
         <h2>Work preferences</h2>
         <p>Learn Raider commitments and manage your private work interests.</p>
         <Link className="inline-link" href="/raider/onboarding">

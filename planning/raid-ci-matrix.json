@@ -18,6 +18,7 @@
     "tests/auth-routes.test.ts",
     "tests/auth.test.ts",
     "tests/braces-security.test.ts",
+    "tests/browser-guild-drafts/guild-drafts.spec.ts",
     "tests/browser-live/admin.spec.ts",
     "tests/browser-live/pages.spec.ts",
     "tests/browser-live/rewards.spec.ts",
@@ -49,6 +50,8 @@
     "tests/format.test.ts",
     "tests/guild-draft-boundary.test.ts",
     "tests/guild-draft-db.test.ts",
+    "tests/guild-draft-discovery.test.ts",
+    "tests/guild-draft-form-boundary.test.ts",
     "tests/guild-draft-host.test.ts",
     "tests/guild-draft-http-boundary.test.ts",
     "tests/guild-draft-routes.test.ts",
@@ -76,6 +79,7 @@
     "tests/media-db.test.ts",
     "tests/methodology-page.test.ts",
     "tests/money-integrity-db.test.ts",
+    "tests/production-test-boundary.test.ts",
     "tests/public-load-db.test.ts",
     "tests/pump-launch.test.ts",
     "tests/raid-evidence.test.ts",
@@ -169,6 +173,8 @@
         "tests/format.test.ts",
         "tests/guild-draft-boundary.test.ts",
         "tests/guild-draft-db.test.ts",
+        "tests/guild-draft-discovery.test.ts",
+        "tests/guild-draft-form-boundary.test.ts",
         "tests/guild-draft-host.test.ts",
         "tests/guild-draft-http-boundary.test.ts",
         "tests/guild-draft-routes.test.ts",
@@ -189,6 +195,7 @@
         "tests/integration.test.ts",
         "tests/lock-observation.test.ts",
         "tests/media-db.test.ts",
+        "tests/production-test-boundary.test.ts",
         "tests/public-load-db.test.ts",
         "tests/raid-evidence.test.ts",
         "tests/raid-fixtures-boundary.test.ts",
@@ -257,6 +264,7 @@
         "tests/account-merge-canonical.test.ts",
         "tests/auth-routes.test.ts",
         "tests/auth.test.ts",
+        "tests/browser-guild-drafts/guild-drafts.spec.ts",
         "tests/browser-onboarding/raider-onboarding.spec.ts",
         "tests/creator-legacy-cleanup.test.ts",
         "tests/identity-link-boundary.test.ts",
@@ -345,14 +353,18 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/browser-guild-drafts/guild-drafts.spec.ts",
         "tests/guild-draft-boundary.test.ts",
         "tests/guild-draft-db.test.ts",
+        "tests/guild-draft-discovery.test.ts",
+        "tests/guild-draft-form-boundary.test.ts",
         "tests/guild-draft-host.test.ts",
         "tests/guild-draft-http-boundary.test.ts",
         "tests/guild-draft-routes.test.ts",
         "tests/guild-profiles-boundary.test.ts",
         "tests/guild-profiles.test.ts",
-        "tests/lock-observation.test.ts"
+        "tests/lock-observation.test.ts",
+        "tests/production-test-boundary.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
@@ -785,6 +797,7 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/browser-guild-drafts/guild-drafts.spec.ts",
         "tests/browser-onboarding/raider-onboarding.spec.ts",
         "tests/raider-onboarding-discovery.test.ts"
       ],

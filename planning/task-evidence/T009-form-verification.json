@@ -1,0 +1,192 @@
+{
+  "task_id": "T009",
+  "scope": "T009C2 private owner form + mandatory8browserCI gate + production-safe test-only verification helper; no verified/public authority",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "7ce85baaad7a1ccaefd268698ebe425f125f3310",
+  "source_identity": "Bounded implementation 7ce85baaad7a1ccaefd268698ebe425f125f3310; actual executed working-tree hashes/preimplementation phases retained; fulltask incomplete",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T009-draft-form.md",
+  "migration_rollback": "No newDDL; unwire pages/form only, preserve acknowledged drafts/versions/receipts/audit pending reviewed retention/recovery",
+  "dependency_evidence": [
+    "PR196exact7e5bad7 114files1329+8browser/source/24DDL/image/runtime/cleanup actualPASS for unchanged relevantstorage boundaries",
+    "PR197exact2e52097 source/DB/browser passed butDockerfailedtestimport excluded; rawfailure retained andtest-only move actuallocalDocker/runtime verified",
+    "T009C2 ownindependentReact+pg/HTTP/source/browsers evidence; actualFounder/project/grants/public/ownership/independentacceptance still absent"
+  ],
+  "open_decisions": [
+    "No actualprojectcontrol/verifiedFounder/token relationship supplied here",
+    "O11/G10 privacy/retention/recovery, independent/UAT/fullactual authorization/storage remainNOTVERIFIED"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging source only; no actualGuild/profile/role/Founder/token/treasury/privateaccess/ownership activation; full independent/UAT and real authorization/storage evidence absent",
+  "criteria": {
+    "T009-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-W04": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    },
+    "T009-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Private draft store/API/form/8browser/ownconsumer/image evidence only; fullactual projectFounder/grants/public/domain/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-draft-form.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "owned browser runner --grep creates-an-unverified-private-draft",
+      "sha": "2e520973910d6913122df53d5fe6b33b2744163b",
+      "source_identity": "Then-uncommitted browsertests/config beforepages/form implementation; no cleanHEAD/retroactiveREDcommit claim",
+      "evidence_url": "planning/task-evidence/T009-form/red.log",
+      "result": "FAIL",
+      "expected_failure": "Private owner page/form notimplemented",
+      "observed_failure": "2missingpageFAIL desktop/mobile"
+    },
+    "green": {
+      "command": "owned browser runner all8 then failed2scopedlocator correction",
+      "sha": "2e520973910d6913122df53d5fe6b33b2744163b",
+      "source_identity": "Sameuncommitted coreproductsource; actual6passing cases reused, twofailedassertions correctedonlylocator",
+      "evidence_url": "planning/task-evidence/T009-form/browser-corrected.log",
+      "result": "PASS",
+      "observed": "First6PASS2locatorFAIL retained; corrected2PASS sameassertions/timeouts; all8flowsevidence"
+    },
+    "refactor": {
+      "command": "affected9file regression + finaldelivery/docs + actualDocker/runtime/ownconsumers",
+      "sha": "2e520973910d6913122df53d5fe6b33b2744163b",
+      "source_identity": "Finalsourcehashes/ownbuild/runtime/syntheticbrowser snapshots; genuinefailures preserved",
+      "evidence_url": "planning/task-evidence/T009-form/regression.log",
+      "result": "PASS",
+      "observed": "9files141PASS, final6files109docsPASS, ownReact+pgHTTP, correctedtsc/productionDocker/runtimePASS; nofullissueacceptance"
+    }
+  },
+  "ci": {}
+}
