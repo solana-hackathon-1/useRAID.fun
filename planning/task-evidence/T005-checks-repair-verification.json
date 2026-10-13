@@ -1,0 +1,213 @@
+{
+  "task_id": "T005",
+  "scope": "Bounded exact-main formatter serialization + constrained X-race fixture/pool/cleanup repair duringT010",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent parent criterionreview missing",
+  "code_source_sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+  "source_identity": "Basee143 plus uncommitted twoJSON/testfixture/docs/evidence repair; exacthashes in T010-checks-repair/review.json",
+  "handoff": "docs/tasks/2026-10-13-T010-checks-repair.md",
+  "migration_rollback": "NoDDL/app/dependency/config/provider change; retain originalJSONgzip; do not revert fixture to sharedpool starvation",
+  "dependency_evidence": [
+    "Actualmain e143 Staging38378066334 SUCCESS125files1443/18browser/nativeARMimage/runtime/GHCR/cleanup",
+    "ActualnamedChecks38378710677 formatter twoJSONFAIL/test1439PASS4FAIL/ci-gateFAIL; otherfourjobsSUCCESS; rawretained",
+    "Ownpool3 22PASS/pool2 5PASS/JSONsemantic equality/freshtrackedformatter/tsc/lintPASS"
+  ],
+  "open_decisions": [
+    "ParentindependentUAT/featurepolicy/nonce/recognition/history/privacy/recovery/gates absent",
+    "KnownownedVMSSH/privatepublicingress unavailable; no rolloutclaim"
+  ],
+  "release_gate_disposition": "Ownerboundedstagingpublication only, no fullparentacceptance/provider/money/identity/capacity enablement",
+  "criteria": {
+    "T005-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    },
+    "T005-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "BoundedCI fixture/formatter repair only, fullparent independentcriterion/release/UAT missing",
+      "evidence": "docs/tasks/2026-10-13-T010-checks-repair.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "observed": "Exactnewcandidate Checks notyetpublished; originale143 expectedFAIL retained"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "command": "Exactmain manualChecks38378710677; wholelocalformatter beforeedit",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "planning/task-evidence/T010-checks-repair/hosted-complete-failure.log.gz",
+      "expected_failure": "Formatter cannotaccept unformattedJSON; race harness cannot observe two callbacks with saturated3slot apppool",
+      "observed_failure": "ActualtwoJSONstaticFAIL; X-race4FAIL timeout/pool-starvation/truncate-deadlock,1439otherPASS; beforefixtureimplementation"
+    },
+    "green": {
+      "result": "PASS",
+      "command": "RAID_FIXTURE_APP_POOL=3/2 python3 /tmp/raid-t010-checks-db-run.py vitest originalXrace suites; freshtrackedsource Prettiercheck",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "planning/task-evidence/T010-checks-repair/pool3-green.log",
+      "observed": "22pool3+5pool2 originalassertionsPASS; wholeformatterPASS and unchangedJSONvalues/originalgzip preserved"
+    },
+    "refactor": {
+      "result": "PASS",
+      "command": "Frozenown tsc; owned lint; pool2 adverseregression and cleanup",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "planning/task-evidence/T010-checks-repair/pool2-green.log",
+      "observed": "Strict typecheck/lint/originalfivepool2 races andallfinallycleanupPASS; no assertion/timeout/compiler weakening"
+    }
+  },
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348"
+}

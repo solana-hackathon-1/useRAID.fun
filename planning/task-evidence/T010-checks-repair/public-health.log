@@ -1,0 +1,3 @@
+OBSERVED read-only reachability check after PR201 publication:
+curl --connect-timeout 5 --max-time 12 https://staging.useraid.fun/api/health: exit28, timeout12002ms/no bytes, HTTP000, bodyfile notcreated. No current HTTP530 response inferred (older530/1033 retained separately).
+ssh -o BatchMode=yes -o ConnectTimeout=5 raidstaging@192.168.101.8 docker ps: exit255, port22 connectiontimeout. No remote configuration/flags/credential change.

@@ -1,0 +1,7 @@
+planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json 40ms
+planning/task-evidence/public-staging-20261011/vm-after-public.json 19ms
+planning/task-evidence/T007-origin-binding/header-test-results/.last-run.json 1ms
+[error] Unable to write file "planning/task-evidence/T007-origin-binding/header-test-results/.last-run.json":
+[error] EACCES: permission denied, open '/srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T007-origin-binding/header-test-results/.last-run.json'
+docs/tasks/2026-10-13-T010-checks-repair.md 56ms (unchanged)
+[error] No files matching the pattern were found: "planning/task-evidence/T010-checks-repair/json-originals.json".
