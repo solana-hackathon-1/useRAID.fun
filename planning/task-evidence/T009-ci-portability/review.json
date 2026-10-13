@@ -24,5 +24,6 @@
     "reused_skipped": "Application/schema/config/productioncontext unchanged;1356priorpassingcases/C2local8browser/AMD64Docker5267/runtime evidence reusedonlyfor matching relevantbytes. No unnecessary appbuild/preview/browser/image repeats; exactnewmainfulltest/16browser/nativeARMimage/cleanup mandatory",
     "completion": "FullT009 all28criteria/sevennamedchecks NOT VERIFIED; expectedvalidator1, no independentacceptance"
   },
-  "resources": "Owned tmpfsraid-t009-ci-auto-20261013 8c858971... finallySTOP0/inspectfalse; no browser/server/resources outstanding; unrelatedservices/volumes/images/history/evidence preserved"
+  "resources": "Owned tmpfsraid-t009-ci-auto-20261013 8c858971... finallySTOP0/inspectfalse; no browser/server/resources outstanding; unrelatedservices/volumes/images/history/evidence preserved",
+  "implementation_commit": "36e4bc669b04d12b072c75415bd51324aa53ea2b"
 }
