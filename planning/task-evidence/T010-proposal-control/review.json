@@ -61,5 +61,13 @@
     "docs/tasks/2026-10-13-T010-proposal-control.md": "d00fee8dd6eccf569a6ca2a9989cf972cbd13db84e97be78e600f26158b26084",
     "planning/raid-ci-matrix.json": "dddd7bf337afb669b2c58cda2546077be57da34eb4b085fbcb16a861062e0ddb"
   },
-  "implementation_commit": "ddadaa05446c2352190ee251d7d85348003bb368"
+  "implementation_commit": "ddadaa05446c2352190ee251d7d85348003bb368",
+  "post_merge_hosted": {
+    "head": "0d28e217688a467285049105f12ab351dd255e2c",
+    "staging": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402395451",
+    "checks": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+    "result": "NOT VERIFIED: GitHub jobs failed before any step; billing/payment/spendinglimit annotation",
+    "restoration": "OriginalmanualChecksdisabled_manually restoredCLI/APIverified afterownedfailedruns",
+    "new_image": "NOT PUBLISHED for0d; previous423digest5b17...remainslastverifiedimage"
+  }
 }

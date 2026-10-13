@@ -1,0 +1,12 @@
+src/guild-profiles/holder-observation.ts 140ms
+src/guild-profiles/holder-observation-contracts.ts 80ms
+tests/holder-observation.test.ts 118ms
+tests/holder-observation-boundary.test.ts 22ms
+examples/holder-observation/host.ts 52ms
+examples/holder-observation/package.json 13ms
+examples/holder-observation/README.md 48ms (unchanged)
+docs/raid-holder-observation.md 55ms (unchanged)
+docs/raid-module-reuse.md 155ms (unchanged)
+docs/tasks/2026-10-13-T011-holder-observation.md 11ms (unchanged)
+planning/raid-ci-matrix.json 54ms (unchanged)
+planning/task-evidence/T011-holder-observation/review.json 5ms

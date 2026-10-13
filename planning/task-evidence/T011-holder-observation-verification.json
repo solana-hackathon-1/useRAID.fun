@@ -1,0 +1,247 @@
+{
+  "task_id": "T011",
+  "scope": "T011A private informational complete-scope exactasset holder observation contracts andreplaceable read port",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T011-holder-observation.md",
+  "migration_rollback": "No DDL/root route/provider/persistence/UI/flags; removeunusedcalculator whilepreservingexistingcredentials/preferences/work/claims",
+  "dependency_evidence": [
+    "T010 recognizedrelationship/approvedcontrol/evidence/nonce/history harddependency missing; Root/liveprovider/persistence enablement blocked",
+    "OwninstalledsixpackageNode host/two synthetic adapters/schema parsedserializedport/realexistingprofilepermission denialsPASS",
+    "PR205actual129files1509/fullbrowser/nativeARMimageSUCCESSvalidonlyunchangedolderboundaries; PR206alljobsnotstartedpayment/spendinglimit, no0dimage"
+  ],
+  "open_decisions": [
+    "Actualrecognizedexactasset/currentapprovedownership-dust-finality-freshness-provider policy andlivechainprovenance absent",
+    "T011 durableobservations/preferences/effectiveprivatecode/historyclaims/independentreview-UAT/releasegates unverified"
+  ],
+  "release_gate_disposition": "Independent reversiblemoduleonly/noRoot/provider/publicgrant/money/capacity enablement; nofakeGitHubSUCCESS for accountblockedCI",
+  "code_source_sha": "562d196eb6a481663c619d09af08cd4104176bf0",
+  "source_identity": "Bounded implementation 562d196eb6a481663c619d09af08cd4104176bf0; RED uncommitted relative0d withactualsource manifest, finalchecks/ownconsumer hashesretained",
+  "criteria": {
+    "T011-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    },
+    "T011-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md06.3\u20134/07/09/13/16/24\u201330/35/39",
+      "observed": "Privateinformationalcurrent-self/completeexactasset calculation/two syntheticadaptercontracts only; live recognizedrelationship/provenance/storage/private-download/historyclaim/independent evidence absent",
+      "evidence": "docs/tasks/2026-10-13-T011-holder-observation.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "NoT011candidatepublished; previous0djobsneverstartedbecauseaccountpayment/spendinglimit"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "node node_modules/vitest/vitest.mjs run tests/holder-observation.test.ts",
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "planning/task-evidence/T011-holder-observation/red.log",
+      "expected_failure": "Executableplaceholdercannotcomputeexactprivateholderstates/currentfacts/integerbalances",
+      "observed_failure": "24FAIL beforecontracts/implementation; actualuncommittedtests/stub snapshots/hashes red-source/manifest.json",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "vitest holder-observation/guild-profiles",
+      "sha": "562d196eb6a481663c619d09af08cd4104176bf0",
+      "evidence_url": "planning/task-evidence/T011-holder-observation/green.log",
+      "observed": "2files57PASS766ms including33existingprofilepermissioncases",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "vitest holder/boundary/profile/regression/docs; strictTSC/lint/independentcleanconsumer",
+      "sha": "562d196eb6a481663c619d09af08cd4104176bf0",
+      "evidence_url": "planning/task-evidence/T011-holder-observation/review.json",
+      "observed": "4files59PASS thenmeaningfulprovenance2RED1PASS\u2192final4files62PASS; final6files176PASS6.27s/5requirements/strictTSC/lint/ownclean6packageconsumerPASS",
+      "result": "PASS"
+    }
+  }
+}

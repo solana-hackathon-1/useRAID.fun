@@ -1,0 +1,104 @@
+import bs58 from 'bs58';
+import { expect, it } from 'vitest';
+import { evaluateGuildHolderEligibility } from '../src/guild-profiles/holder-observation';
+const address = (value: number) => bs58.encode(new Uint8Array(32).fill(value));
+const assetId = { chain: 'SOLANA', kind: 'TOKEN', networkIdentity: 'synthetic-genesis', mint: address(31), tokenProgram: address(32) };
+const reference = (recordId: string) => ({ recordId, revision: 1 });
+const context = {
+  version: 'v1', now: '2026-10-13T12:00:00Z',
+  guild: { id: 'synthetic-guild', founderAccountId: 'other-founder', revision: 1, primaryToken: assetId },
+  relationship: { reference: reference('relationship'), status: 'VERIFIED' },
+  actorAccountId: 'self', actorSessionAuthorized: true, actorRestricted: false, accountId: 'self',
+  wallets: [address(33), address(34)],
+  policy: { reference: reference('policy'), status: 'APPROVED', ownershipScope: 'CURRENT_VERIFIED_LINKED_WALLETS', minimumBalanceBaseUnits: '1', minimumFinality: 'FINALIZED', maxObservationAgeMs: 60000 },
+};
+const observation = {
+  version: 'v1', status: 'VERIFIED', relationshipReference: context.relationship.reference, policyReference: context.policy.reference,
+  assetId, queriedWallets: context.wallets, complete: true,
+  observedAt: '2026-10-13T11:59:30Z', observedSlot: '9007199254740993', finality: 'FINALIZED',
+  provider: { id: 'synthetic-provider', adapterVersion: 'v1' },
+  accounts: [
+    { address: address(35), owner: address(33), assetId, balanceBaseUnits: '1' },
+    { address: address(36), owner: address(33), assetId, balanceBaseUnits: '2' },
+    { address: address(37), owner: address(34), assetId, balanceBaseUnits: '3' },
+  ],
+};
+const evaluate = (c: unknown = context, o: unknown = observation) => evaluateGuildHolderEligibility(c, o);
+it('aggregates all supported current wallets/token accounts as integer exact-asset observations without granting rights or opting in', () => {
+  expect(evaluate()).toEqual({ version: 'v1', guildId: context.guild.id, state: 'ELIGIBLE', holderEligible: true, reason: 'VERIFIED_BALANCE', balanceBaseUnits: '6', observedAt: '2026-10-13T11:59:30.000Z', observedSlot: observation.observedSlot, finality: 'FINALIZED', provider: observation.provider, informational: true, isAuthorizationToken: false, persisted: false, createsPermissionGrant: false, verifiesFounderControl: false, enrollsPublicAssociation: false, subscribesNotifications: false, consumesCapacity: false, affectsWorkHistory: false, affectsClaims: false });
+  expect(Object.isFrozen(evaluate())).toBe(true);
+});
+it('distinguishes an actual complete fresh zero from unavailable RPC or partial positive results', () => {
+  expect(evaluate(context, { ...observation, accounts: [] })).toMatchObject({ state: 'NOT_ELIGIBLE', holderEligible: false, balanceBaseUnits: '0' });
+  for (const value of [null, { version: 'v1', status: 'UNAVAILABLE', provider: observation.provider }, { ...observation, complete: false }]) expect(evaluate(context, value)).toMatchObject({ state: 'UNKNOWN', holderEligible: null, balanceBaseUnits: null });
+});
+it('uses the explicitly approved integer dust threshold and exact inclusive boundary', () => {
+  expect(evaluate({ ...context, policy: { ...context.policy, minimumBalanceBaseUnits: '6' } }).holderEligible).toBe(true);
+  expect(evaluate({ ...context, policy: { ...context.policy, minimumBalanceBaseUnits: '7' } })).toMatchObject({ state: 'NOT_ELIGIBLE', holderEligible: false });
+});
+it('preserves arbitrary integer precision for balance and slot rather than converting through numbers', () => {
+  const accounts = [{ ...observation.accounts[0], balanceBaseUnits: '9007199254740993' }, { ...observation.accounts[1], balanceBaseUnits: '1' }];
+  expect(evaluate(context, { ...observation, accounts })).toMatchObject({ balanceBaseUnits: '9007199254740994', observedSlot: '9007199254740993' });
+});
+it('deduplicates identical account rows instead of counting the same balance twice', () => {
+  expect(evaluate(context, { ...observation, accounts: [...observation.accounts, observation.accounts[0]] }).balanceBaseUnits).toBe('6');
+});
+it('keeps inconsistent duplicate accounts unknown', () => {
+  expect(evaluate(context, { ...observation, accounts: [...observation.accounts, { ...observation.accounts[0], balanceBaseUnits: '9' }] })).toMatchObject({ state: 'UNKNOWN', reason: 'SOURCE_CONFLICT', holderEligible: null, balanceBaseUnits: null });
+});
+for (const [name, patch] of [
+  ['network', { networkIdentity: 'wrong-genesis' }],
+  ['program', { tokenProgram: address(38) }],
+  ['mint', { mint: address(39) }],
+] as const) it('rejects different observed ' + name + ' as unknown without ticker-based aggregation', () => {
+  expect(evaluate(context, { ...observation, assetId: { ...assetId, ...patch } })).toMatchObject({ state: 'UNKNOWN', reason: 'ASSET_MISMATCH', balanceBaseUnits: null });
+  expect(evaluate(context, { ...observation, accounts: [{ ...observation.accounts[0], assetId: { ...assetId, ...patch } }] })).toMatchObject({ state: 'UNKNOWN', reason: 'ASSET_MISMATCH' });
+});
+it('denies unsupported ownership and incomplete or foreign wallet query scopes', () => {
+  for (const queriedWallets of [[address(33)], [...context.wallets, address(40)], [...context.wallets, address(33)]]) expect(evaluate(context, { ...observation, queriedWallets })).toMatchObject({ state: 'UNKNOWN', reason: 'OWNERSHIP_SCOPE_MISMATCH' });
+  expect(evaluate(context, { ...observation, accounts: [{ ...observation.accounts[0], owner: address(40) }] })).toMatchObject({ state: 'UNKNOWN', reason: 'OWNERSHIP_SCOPE_MISMATCH' });
+  expect(evaluate({ ...context, policy: { ...context.policy, ownershipScope: 'UNSUPPORTED' } })).toMatchObject({ state: 'UNKNOWN', reason: 'OWNERSHIP_SCOPE_UNSUPPORTED' });
+});
+it('does not assume an unlinked or unsupported exchange wallet is eligible', () => {
+  expect(evaluate({ ...context, wallets: [] })).toMatchObject({ state: 'UNKNOWN', reason: 'OWNERSHIP_UNAVAILABLE' });
+});
+it('marks exact freshness boundary stale and future observations unknown', () => {
+  expect(evaluate({ ...context, now: '2026-10-13T12:00:30Z' })).toMatchObject({ state: 'STALE', reason: 'OBSERVATION_STALE', holderEligible: null, balanceBaseUnits: null });
+  expect(evaluate({ ...context, now: '2026-10-13T11:59:29Z' })).toMatchObject({ state: 'UNKNOWN', reason: 'OBSERVATION_NOT_YET_VALID' });
+});
+it('requires the current approved finality while preserving honest pending state', () => {
+  expect(evaluate(context, { ...observation, finality: 'CONFIRMED' })).toMatchObject({ state: 'UNKNOWN', reason: 'FINALITY_PENDING' });
+  expect(evaluate({ ...context, policy: { ...context.policy, minimumFinality: 'CONFIRMED' } }, { ...observation, finality: 'CONFIRMED' }).holderEligible).toBe(true);
+});
+it('keeps pending/revoked/conflicting recognized relationships and policies unknown', () => {
+  for (const status of ['PENDING', 'REVOKED', 'CONFLICT']) expect(evaluate({ ...context, relationship: { ...context.relationship, status } })).toMatchObject({ state: 'UNKNOWN', reason: 'RELATIONSHIP_UNAVAILABLE' });
+  expect(evaluate({ ...context, guild: { ...context.guild, primaryToken: null } })).toMatchObject({ state: 'UNKNOWN', reason: 'RELATIONSHIP_UNAVAILABLE' });
+  for (const status of ['UNAPPROVED', 'REVOKED']) expect(evaluate({ ...context, policy: { ...context.policy, status } })).toMatchObject({ state: 'UNKNOWN', reason: 'POLICY_UNAVAILABLE' });
+});
+it('does not reuse observations for a different relationship or policy revision', () => {
+  expect(evaluate(context, { ...observation, relationshipReference: { ...observation.relationshipReference, revision: 2 } })).toMatchObject({ state: 'UNKNOWN', reason: 'RELATIONSHIP_CHANGED' });
+  expect(evaluate(context, { ...observation, policyReference: { ...observation.policyReference, revision: 2 } })).toMatchObject({ state: 'UNKNOWN', reason: 'POLICY_CHANGED' });
+});
+it('denies anonymous/foreign/restricted private observation contexts', () => {
+  expect(() => evaluate({ ...context, actorSessionAuthorized: false })).toThrow('AUTHENTICATION_REQUIRED');
+  expect(() => evaluate({ ...context, actorAccountId: 'foreign' })).toThrow('FORBIDDEN');
+  expect(() => evaluate({ ...context, actorRestricted: true })).toThrow('ACCOUNT_RESTRICTED');
+});
+for (const balanceBaseUnits of ['-1', '1.5', '01', '1e6', '']) it('rejects malformed raw balance without numeric coercion', () => {
+  expect(() => evaluate(context, { ...observation, accounts: [{ ...observation.accounts[0], balanceBaseUnits }] })).toThrow('INVALID_HOST_CONTRACT');
+});
+it('rejects extra role/public opt-in fields and invalid timestamp precision', () => {
+  expect(() => evaluate({ ...context, role: 'ADMIN' })).toThrow('INVALID_HOST_CONTRACT');
+  expect(() => evaluate(context, { ...observation, publicAssociation: true })).toThrow('INVALID_HOST_CONTRACT');
+  expect(() => evaluate(context, { ...observation, observedAt: '2026-10-13T11:59:30.000001Z' })).toThrow('INVALID_HOST_CONTRACT');
+});
+it('keeps provider conflict and unavailable snapshots unknown rather than assigning zero', () => {
+  expect(evaluate(context, { version: 'v1', status: 'CONFLICT', provider: observation.provider })).toMatchObject({ state: 'UNKNOWN', reason: 'SOURCE_CONFLICT', balanceBaseUnits: null });
+});
+it('does not mutate prior observations, preferences, work or claims when a verified balance becomes zero', () => {
+  const preserved = { associationOptIn: true, notificationsOptIn: false, acceptedWork: ['work-1'], claims: [{ id: 'claim-1', amount: '42' }], priorObservation: structuredClone(observation) };
+  const before = structuredClone(preserved);
+  expect(evaluate(context, { ...observation, accounts: [] }).holderEligible).toBe(false);
+  expect(preserved).toEqual(before);
+  expect(observation.accounts).toHaveLength(3);
+});

@@ -1,0 +1,438 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/holder-observation.test.ts (24 tests | 24 failed) 43ms
+   × aggregates all supported current wallets/token accounts as integer exact-asset observations without granting rights or opting in 14ms
+   × distinguishes an actual complete fresh zero from unavailable RPC or partial positive results 3ms
+   × uses the explicitly approved integer dust threshold and exact inclusive boundary 1ms
+   × preserves arbitrary integer precision for balance and slot rather than converting through numbers 3ms
+   × deduplicates identical account rows instead of counting the same balance twice 1ms
+   × keeps inconsistent duplicate accounts unknown 1ms
+   × rejects different observed network as unknown without ticker-based aggregation 1ms
+   × rejects different observed program as unknown without ticker-based aggregation 1ms
+   × rejects different observed mint as unknown without ticker-based aggregation 2ms
+   × denies unsupported ownership and incomplete or foreign wallet query scopes 1ms
+   × does not assume an unlinked or unsupported exchange wallet is eligible 1ms
+   × marks exact freshness boundary stale and future observations unknown 1ms
+   × requires the current approved finality while preserving honest pending state 1ms
+   × keeps pending/revoked/conflicting recognized relationships and policies unknown 1ms
+   × does not reuse observations for a different relationship or policy revision 1ms
+   × denies anonymous/foreign/restricted private observation contexts 2ms
+   × rejects malformed raw balance without numeric coercion 1ms
+   × rejects malformed raw balance without numeric coercion 1ms
+   × rejects malformed raw balance without numeric coercion 0ms
+   × rejects malformed raw balance without numeric coercion 0ms
+   × rejects malformed raw balance without numeric coercion 0ms
+   × rejects extra role/public opt-in fields and invalid timestamp precision 1ms
+   × keeps provider conflict and unavailable snapshots unknown rather than assigning zero 1ms
+   × does not mutate prior observations, preferences, work or claims when a verified balance becomes zero 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/holder-observation.test.ts > aggregates all supported current wallets/token accounts as integer exact-asset observations without granting rights or opting in
+AssertionError: expected { state: 'UNKNOWN', …(2) } to deeply equal { version: 'v1', …(19) }
+
+- Expected
++ Received
+
+  {
+-   "affectsClaims": false,
+-   "affectsWorkHistory": false,
+-   "balanceBaseUnits": "6",
+-   "consumesCapacity": false,
+-   "createsPermissionGrant": false,
+-   "enrollsPublicAssociation": false,
+-   "finality": "FINALIZED",
+-   "guildId": "synthetic-guild",
+-   "holderEligible": true,
+-   "informational": true,
+-   "isAuthorizationToken": false,
+-   "observedAt": "2026-10-13T11:59:30.000Z",
+-   "observedSlot": "9007199254740993",
+-   "persisted": false,
+-   "provider": {
+-     "adapterVersion": "v1",
+-     "id": "synthetic-provider",
+-   },
+-   "reason": "VERIFIED_BALANCE",
+-   "state": "ELIGIBLE",
+-   "subscribesNotifications": false,
+-   "verifiesFounderControl": false,
+-   "version": "v1",
++   "holderEligible": null,
++   "reason": "UNIMPLEMENTED",
++   "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:28:22
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > distinguishes an actual complete fresh zero from unavailable RPC or partial positive results
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'NOT_ELIGIBLE', …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "balanceBaseUnits": "0",
+-   "holderEligible": false,
+-   "state": "NOT_ELIGIBLE",
++   "holderEligible": null,
++   "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:32:63
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > uses the explicitly approved integer dust threshold and exact inclusive boundary
+AssertionError: expected null to be true // Object.is equality
+
+- Expected:
+true
+
++ Received:
+null
+
+ ❯ tests/holder-observation.test.ts:36:112
+     34| });
+     35| it('uses the explicitly approved integer dust threshold and exact incl…
+     36|   expect(evaluate({ ...context, policy: { ...context.policy, minimumBa…
+       |                                                                                                                ^
+     37|   expect(evaluate({ ...context, policy: { ...context.policy, minimumBa…
+     38| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > preserves arbitrary integer precision for balance and slot rather than converting through numbers
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { …(2) }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "balanceBaseUnits": "9007199254740994",
+-   "observedSlot": "9007199254740993",
++   "holderEligible": null,
++   "reason": "UNIMPLEMENTED",
++   "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:41:59
+     39| it('preserves arbitrary integer precision for balance and slot rather …
+     40|   const accounts = [{ ...observation.accounts[0], balanceBaseUnits: '9…
+     41|   expect(evaluate(context, { ...observation, accounts })).toMatchObjec…
+       |                                                           ^
+     42| });
+     43| it('deduplicates identical account rows instead of counting the same b…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > deduplicates identical account rows instead of counting the same balance twice
+AssertionError: expected undefined to be '6' // Object.is equality
+
+- Expected:
+"6"
+
++ Received:
+undefined
+
+ ❯ tests/holder-observation.test.ts:44:128
+     42| });
+     43| it('deduplicates identical account rows instead of counting the same b…
+     44|   expect(evaluate(context, { ...observation, accounts: [...observation…
+       |                                                                                                                                ^
+     45| });
+     46| it('keeps inconsistent duplicate accounts unknown', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > keeps inconsistent duplicate accounts unknown
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(3) }
+
+- Expected
++ Received
+
+  {
+-   "balanceBaseUnits": null,
+    "holderEligible": null,
+-   "reason": "SOURCE_CONFLICT",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:47:141
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > rejects different observed network as unknown without ticker-based aggregation
+ FAIL  tests/holder-observation.test.ts > rejects different observed program as unknown without ticker-based aggregation
+ FAIL  tests/holder-observation.test.ts > rejects different observed mint as unknown without ticker-based aggregation
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "balanceBaseUnits": null,
+-   "reason": "ASSET_MISMATCH",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:54:84
+     52|   ['mint', { mint: address(39) }],
+     53| ] as const) it('rejects different observed ' + name + ' as unknown wit…
+     54|   expect(evaluate(context, { ...observation, assetId: { ...assetId, ..…
+       |                                                                                    ^
+     55|   expect(evaluate(context, { ...observation, accounts: [{ ...observati…
+     56| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > denies unsupported ownership and incomplete or foreign wallet query scopes
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "reason": "OWNERSHIP_SCOPE_MISMATCH",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:58:181
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > does not assume an unlinked or unsupported exchange wallet is eligible
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "reason": "OWNERSHIP_UNAVAILABLE",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:63:49
+     61| });
+     62| it('does not assume an unlinked or unsupported exchange wallet is elig…
+     63|   expect(evaluate({ ...context, wallets: [] })).toMatchObject({ state:…
+       |                                                 ^
+     64| });
+     65| it('marks exact freshness boundary stale and future observations unkno…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > marks exact freshness boundary stale and future observations unknown
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'STALE', …(3) }
+
+- Expected
++ Received
+
+  {
+-   "balanceBaseUnits": null,
+    "holderEligible": null,
+-   "reason": "OBSERVATION_STALE",
+-   "state": "STALE",
++   "reason": "UNIMPLEMENTED",
++   "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:66:65
+     64| });
+     65| it('marks exact freshness boundary stale and future observations unkno…
+     66|   expect(evaluate({ ...context, now: '2026-10-13T12:00:30Z' })).toMatc…
+       |                                                                 ^
+     67|   expect(evaluate({ ...context, now: '2026-10-13T11:59:29Z' })).toMatc…
+     68| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > requires the current approved finality while preserving honest pending state
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "reason": "FINALITY_PENDING",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:70:72
+     68| });
+     69| it('requires the current approved finality while preserving honest pen…
+     70|   expect(evaluate(context, { ...observation, finality: 'CONFIRMED' }))…
+       |                                                                        ^
+     71|   expect(evaluate({ ...context, policy: { ...context.policy, minimumFi…
+     72| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > keeps pending/revoked/conflicting recognized relationships and policies unknown
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "reason": "RELATIONSHIP_UNAVAILABLE",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:74:144
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > does not reuse observations for a different relationship or policy revision
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(1) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "reason": "RELATIONSHIP_CHANGED",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:79:127
+     77| });
+     78| it('does not reuse observations for a different relationship or policy…
+     79|   expect(evaluate(context, { ...observation, relationshipReference: { …
+       |                                                                                                                               ^
+     80|   expect(evaluate(context, { ...observation, policyReference: { ...obs…
+     81| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > denies anonymous/foreign/restricted private observation contexts
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/holder-observation.test.ts:83:73
+     81| });
+     82| it('denies anonymous/foreign/restricted private observation contexts',…
+     83|   expect(() => evaluate({ ...context, actorSessionAuthorized: false })…
+       |                                                                         ^
+     84|   expect(() => evaluate({ ...context, actorAccountId: 'foreign' })).to…
+     85|   expect(() => evaluate({ ...context, actorRestricted: true })).toThro…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > rejects malformed raw balance without numeric coercion
+ FAIL  tests/holder-observation.test.ts > rejects malformed raw balance without numeric coercion
+ FAIL  tests/holder-observation.test.ts > rejects malformed raw balance without numeric coercion
+ FAIL  tests/holder-observation.test.ts > rejects malformed raw balance without numeric coercion
+ FAIL  tests/holder-observation.test.ts > rejects malformed raw balance without numeric coercion
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/holder-observation.test.ts:88:117
+     86| });
+     87| for (const balanceBaseUnits of ['-1', '1.5', '01', '1e6', '']) it('rej…
+     88|   expect(() => evaluate(context, { ...observation, accounts: [{ ...obs…
+       |                                                                                                                     ^
+     89| });
+     90| it('rejects extra role/public opt-in fields and invalid timestamp prec…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > rejects extra role/public opt-in fields and invalid timestamp precision
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/holder-observation.test.ts:91:57
+     89| });
+     90| it('rejects extra role/public opt-in fields and invalid timestamp prec…
+     91|   expect(() => evaluate({ ...context, role: 'ADMIN' })).toThrow('INVAL…
+       |                                                         ^
+     92|   expect(() => evaluate(context, { ...observation, publicAssociation: …
+     93|   expect(() => evaluate(context, { ...observation, observedAt: '2026-1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > keeps provider conflict and unavailable snapshots unknown rather than assigning zero
+AssertionError: expected { state: 'UNKNOWN', …(2) } to match object { state: 'UNKNOWN', …(2) }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "balanceBaseUnits": null,
+-   "reason": "SOURCE_CONFLICT",
++   "reason": "UNIMPLEMENTED",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:96:100
+     94| });
+     95| it('keeps provider conflict and unavailable snapshots unknown rather t…
+     96|   expect(evaluate(context, { version: 'v1', status: 'CONFLICT', provid…
+       |                                                                                                    ^
+     97| });
+     98| it('does not mutate prior observations, preferences, work or claims wh…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/24]⎯
+
+ FAIL  tests/holder-observation.test.ts > does not mutate prior observations, preferences, work or claims when a verified balance becomes zero
+AssertionError: expected null to be false // Object.is equality
+
+- Expected:
+false
+
++ Received:
+null
+
+ ❯ tests/holder-observation.test.ts:101:78
+     99|   const preserved = { associationOptIn: true, notificationsOptIn: fals…
+    100|   const before = structuredClone(preserved);
+    101|   expect(evaluate(context, { ...observation, accounts: [] }).holderEli…
+       |                                                                              ^
+    102|   expect(preserved).toEqual(before);
+    103|   expect(observation.accounts).toHaveLength(3);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/24]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  24 failed (24)
+   Start at  18:59:44
+   Duration  389ms (transform 64ms, setup 0ms, import 84ms, tests 43ms, environment 0ms)

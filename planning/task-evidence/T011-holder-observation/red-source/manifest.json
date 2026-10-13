@@ -1,0 +1,9 @@
+{
+  "base": "0d28e217688a467285049105f12ab351dd255e2c",
+  "phase": "RED-before-implementation; source/tests uncommitted",
+  "hashes": {
+    "src/guild-profiles/holder-observation.ts": "39f56c69e233b5f20e617d43f4bcf76a07f22dd473ea9dd46a69070a70f3e25a",
+    "tests/holder-observation.test.ts": "9d643bbaf44e2eccb803642b450716b6cda4700e0c8427a8c362488db0edeb3d",
+    "docs/tasks/2026-10-13-T011-holder-observation.md": "37c260782ec53fafb528f3043970223aae38f840d74f076f2443e53e38dbc9b2"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "conclusion": "failure",
+  "headSha": "0d28e217688a467285049105f12ab351dd255e2c",
+  "jobs": [
+    {
+      "completedAt": "2026-10-13T13:07:18Z",
+      "conclusion": "failure",
+      "databaseId": 115313168193,
+      "name": "test",
+      "startedAt": "2026-10-13T13:07:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605/job/115313168193"
+    },
+    {
+      "completedAt": "2026-10-13T13:07:17Z",
+      "conclusion": "failure",
+      "databaseId": 115313168484,
+      "name": "docker",
+      "startedAt": "2026-10-13T13:07:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605/job/115313168484"
+    },
+    {
+      "completedAt": "2026-10-13T13:07:18Z",
+      "conclusion": "failure",
+      "databaseId": 115313168489,
+      "name": "planning-contracts",
+      "startedAt": "2026-10-13T13:07:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605/job/115313168489"
+    },
+    {
+      "completedAt": "2026-10-13T13:07:18Z",
+      "conclusion": "failure",
+      "databaseId": 115313168519,
+      "name": "static",
+      "startedAt": "2026-10-13T13:07:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605/job/115313168519"
+    },
+    {
+      "completedAt": "2026-10-13T13:07:18Z",
+      "conclusion": "failure",
+      "databaseId": 115313168582,
+      "name": "dependency-security",
+      "startedAt": "2026-10-13T13:07:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605/job/115313168582"
+    },
+    {
+      "completedAt": "2026-10-13T13:07:18Z",
+      "conclusion": "failure",
+      "databaseId": 115313168714,
+      "name": "browser",
+      "startedAt": "2026-10-13T13:07:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605/job/115313168714"
+    },
+    {
+      "completedAt": "2026-10-13T13:07:25Z",
+      "conclusion": "failure",
+      "databaseId": 115313264692,
+      "name": "ci-gate",
+      "startedAt": "2026-10-13T13:07:18Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605/job/115313264692"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605"
+}
