@@ -61,5 +61,6 @@
     "access": "Workspace-local/no publicforward; stoppedperownerdirection",
     "observed": "Private find-afterrefresh,20/2pagination/ownedit/anonymous/otherowner confidentiality desktop/mobile; screenshots/traces/logs retained"
   },
-  "resources": "Owned raid-t009-list-auto-20261013 41ae3a92e144c905bdfa408a27ae8c4f5c78d855e318ef067f521fc8363357a2 finallySTOP0/inspectfalse; browsers/Next finallyexit/ownedrunnerremoved, no3016listener; ownCLI poolsended; unrelatedservices/data/volumes/images/evidence preserved"
+  "resources": "Owned raid-t009-list-auto-20261013 41ae3a92e144c905bdfa408a27ae8c4f5c78d855e318ef067f521fc8363357a2 finallySTOP0/inspectfalse; browsers/Next finallyexit/ownedrunnerremoved, no3016listener; ownCLI poolsended; unrelatedservices/data/volumes/images/evidence preserved",
+  "implementation_commit": "3155f1c5c25e3c49861a897e2e7a4504ed022396"
 }
