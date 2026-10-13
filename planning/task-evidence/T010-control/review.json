@@ -2,7 +2,7 @@
   "label": "SELF-EVALUATED",
   "started_utc": "2026-10-13T09:28:59.732871+00:00",
   "source_base": "43d41a1cca3aca571489e2cc7b217d819fe8beab",
-  "source_identity": "Uncommitted strict control-proof schemas/module/adapter/actual signed tests/independent host/docs/matrix, plus preserved prior checkpoint/postCI metadata",
+  "source_identity": "Bounded implementation 654a94a54bccb87a66ad1d4b49555c52036e0838; source hashes/actual test phases retain exact uncommitted phase identities; fulltask incomplete",
   "requirements": [
     "R01",
     "R02",
@@ -57,5 +57,6 @@
     "examples/project-control/package-lock.json": "5de3e27fcc6235ca76948d0bc316b05ba4f78777ce3bd6649fd55ec3620f1b2c",
     "examples/project-control/README.md": "c780b991074f192c456d7575f0a7ad881a5ce9d846be505a32b49df9d8f92b9e",
     "planning/raid-ci-matrix.json": "0f7db71999b584ea458da8cf70df4af932bddb1b2f610855d12d6e381f9933ec"
-  }
+  },
+  "implementation_commit": "654a94a54bccb87a66ad1d4b49555c52036e0838"
 }

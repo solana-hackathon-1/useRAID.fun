@@ -4,8 +4,8 @@
   "status": "IN_PROGRESS",
   "implementer": "Codex /root",
   "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
-  "code_source_sha": "43d41a1cca3aca571489e2cc7b217d819fe8beab",
-  "source_identity": "Base43d41a1cca3aca571489e2cc7b217d819fe8beab with new uncommitted control-proof schemas/module/adapter/tests/docs/consumer; final source hashes in T010-control/review.json. RED used actual executable stubs plus67 new tests before implementation, not a clean base HEAD.",
+  "code_source_sha": "654a94a54bccb87a66ad1d4b49555c52036e0838",
+  "source_identity": "Bounded implementation 654a94a54bccb87a66ad1d4b49555c52036e0838; actual RED base plus executable stubs/new tests and final source hashes retained, full task remains unverified",
   "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
   "handoff": "docs/tasks/2026-10-13-T010-control-attestation.md",
   "migration_rollback": "No DDL/storage/application wiring; removing unused helper does not change stored drafts/identity/assets/history",
@@ -225,14 +225,14 @@
     },
     "green": {
       "command": "node node_modules/vitest/vitest.mjs run tests/project-control-attestation.test.ts",
-      "sha": "43d41a1cca3aca571489e2cc7b217d819fe8beab",
+      "sha": "654a94a54bccb87a66ad1d4b49555c52036e0838",
       "result": "PASS",
       "evidence_url": "planning/task-evidence/T010-control/regression-final.log.gz",
       "observed": "72 signed-proof cases PASS after linkedapprovalfix; first66PASS1mistypedfixture then68PASS preserved"
     },
     "refactor": {
       "command": "node node_modules/vitest/vitest.mjs run affected9files; own7package crypto host; frozen tsc and lint",
-      "sha": "43d41a1cca3aca571489e2cc7b217d819fe8beab",
+      "sha": "654a94a54bccb87a66ad1d4b49555c52036e0838",
       "result": "PASS",
       "evidence_url": "planning/task-evidence/T010-control/regression-final.log.gz",
       "observed": "181regression+90docs+5requirements/ownrealcrypto/alternateNode/tsc/lintPASS; no assertion/compiler exclusion weakening"
