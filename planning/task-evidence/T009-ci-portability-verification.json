@@ -1,0 +1,192 @@
+{
+  "task_id": "T009",
+  "scope": "T009 CI test-host portability and identity lock-observation correction only",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independent full criterion review not supplied",
+  "code_source_sha": "a2d6dd165338fc493ced95e5fac4e60a9b47cd8f",
+  "source_identity": "Base maina2d6dd1 plus actualuncommitted test/doc/matrix hashes; no cleanHEAD/preimplementation fabrication",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/tasks/2026-10-13-T009-ci-portability.md",
+  "migration_rollback": "No app/migration change; revert onlytestharness corrections, preserve application/history/acknowledgeddrafts",
+  "dependency_evidence": [
+    "PR196exact7e5bad7 114files1329+8browser/source/24DDL/image/runtime/cleanup actualPASS for unchanged relevantstorage boundaries",
+    "PR197exact2e52097 source/DB/browser passed butDockerfailedtestimport excluded; rawfailure retained andtest-only move actuallocalDocker/runtime verified",
+    "T009C2 ownindependentReact+pg/HTTP/source/browsers evidence; actualFounder/project/grants/public/ownership/independentacceptance still absent"
+  ],
+  "open_decisions": [
+    "No actualprojectcontrol/verifiedFounder/token relationship supplied here",
+    "O11/G10 privacy/retention/recovery, independent/UAT/fullactual authorization/storage remainNOTVERIFIED"
+  ],
+  "release_gate_disposition": "Owner-directed bounded staging source only; no actualGuild/profile/role/Founder/token/treasury/privateaccess/ownership activation; full independent/UAT and real authorization/storage evidence absent",
+  "criteria": {
+    "T009-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-W04": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    },
+    "T009-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Focused actualCI testharness correction and ownedPG/native-host proof; fullGuild/project/grants/public/ownership/independent acceptance absent",
+      "evidence": "docs/tasks/2026-10-13-T009-ci-portability.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "vitest run tests/production-test-boundary-host.test.ts",
+      "sha": "a2d6dd165338fc493ced95e5fac4e60a9b47cd8f",
+      "source_identity": "Then-uncommitted childNode emptyPATH regression against originalscanner; actualhostedidentityRED also preserved",
+      "evidence_url": "planning/task-evidence/T009-ci-portability/red.log",
+      "result": "FAIL",
+      "expected_failure": "Scanner depends on absent rg binary",
+      "observed_failure": "1FAIL actualchildmissingrg, before NodeFS replacement"
+    },
+    "green": {
+      "command": "ownedPG vitest production/emptyPATH/matcher/identitystorage",
+      "sha": "a2d6dd165338fc493ced95e5fac4e60a9b47cd8f",
+      "source_identity": "Uncommitted focused testharness fixes overbase, no applicationchange",
+      "evidence_url": "planning/task-evidence/T009-ci-portability/green.log",
+      "result": "PASS",
+      "observed": "4files16PASS4.74s withactualidentityPGlocks"
+    },
+    "refactor": {
+      "command": "vitest production/emptyPATH/docs/evidence",
+      "sha": "a2d6dd165338fc493ced95e5fac4e60a9b47cd8f",
+      "source_identity": "Exacttest/doc hashes; no asserted fulltask acceptance",
+      "evidence_url": "planning/task-evidence/T009-ci-portability/docs-final.log",
+      "result": "PASS",
+      "observed": "4files102PASS; type/lint/format/requirements5PASS"
+    }
+  },
+  "ci": {}
+}

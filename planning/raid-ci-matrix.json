@@ -79,6 +79,7 @@
     "tests/media-db.test.ts",
     "tests/methodology-page.test.ts",
     "tests/money-integrity-db.test.ts",
+    "tests/production-test-boundary-host.test.ts",
     "tests/production-test-boundary.test.ts",
     "tests/public-load-db.test.ts",
     "tests/pump-launch.test.ts",
@@ -195,6 +196,7 @@
         "tests/integration.test.ts",
         "tests/lock-observation.test.ts",
         "tests/media-db.test.ts",
+        "tests/production-test-boundary-host.test.ts",
         "tests/production-test-boundary.test.ts",
         "tests/public-load-db.test.ts",
         "tests/raid-evidence.test.ts",
@@ -364,6 +366,7 @@
         "tests/guild-profiles-boundary.test.ts",
         "tests/guild-profiles.test.ts",
         "tests/lock-observation.test.ts",
+        "tests/production-test-boundary-host.test.ts",
         "tests/production-test-boundary.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",

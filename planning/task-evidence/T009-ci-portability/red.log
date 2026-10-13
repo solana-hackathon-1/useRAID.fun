@@ -1,0 +1,50 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/production-test-boundary.test.ts > keeps production-visible TypeScript imports independent of the excluded test fixture tree
+Error: spawnSync rg ENOENT
+ ❯ tests/production-test-boundary.test.ts:8:17
+      6|   const ignore = await readFile('.dockerignore', 'utf8');
+      7|   expect(ignore).toMatch(/^tests\/?$/m);
+      8|   const files = execFileSync('rg', ['--files', 'src', 'scripts'], { en…
+       |                 ^
+      9|     .split('\n')
+     10|     .filter((f) => /\.tsx?$/.test(f));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/production-test-boundary-host.test.ts > checks the actual production imports with no external search command on PATH
+Error: Command failed: /home/rpandox/.hermes/node/bin/node node_modules/vitest/vitest.mjs run tests/production-test-boundary.test.ts --reporter=dot
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/production-test-boundary.test.ts > keeps production-visible TypeScript imports independent of the excluded test fixture tree
+Error: spawnSync rg ENOENT
+ ❯ tests/production-test-boundary.test.ts:8:17
+      6|   const ignore = await readFile('.dockerignore', 'utf8');
+      7|   expect(ignore).toMatch(/^tests\/?$/m);
+      8|   const files = execFileSync('rg', ['--files', 'src', 'scripts'], { en…
+       |                 ^
+      9|     .split('\n')
+     10|     .filter((f) => /\.tsx?$/.test(f));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ ❯ tests/production-test-boundary-host.test.ts:4:15
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  13:53:19
+   Duration  889ms (transform 24ms, setup 0ms, import 39ms, tests 659ms, environment 0ms)
