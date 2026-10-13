@@ -17,8 +17,8 @@
     "Actual root catalog composition/canonical private claims and evidence next, no flags/seed/real admin adopted"
   ],
   "release_gate_disposition": "Bounded staging storage only; no verified rank/access/grant/provider/money/capacity/live enablement",
-  "code_source_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
-  "source_identity": "Uncommitted T012B1 changes over d023; source hashes in T012-taxonomy-storage/review.json, not a clean HEAD claim",
+  "code_source_sha": "58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c",
+  "source_identity": "Bounded implementation 58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c; exact initial uncommitted RED manifests and final source hashes retained",
   "criteria": {
     "T012-C01": {
       "result": "NOT VERIFIED",
@@ -240,7 +240,7 @@
       "result": "PASS"
     }
   },
-  "candidate_sha": "d0234caf721435ccc99ac28c2da4af292a42bbe2",
+  "candidate_sha": "58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c",
   "verification_environment": "Owned PostgreSQL16.15 / Node22 / independent own20package pg host; root fixtures; no live credentials",
   "repository_facts": [
     "T012A pure candidate contracts retained; actual catalog storage additive26th migration/current policy/session/receipt/history/private audit",

@@ -48,5 +48,7 @@
     "examples/skill-taxonomy/connection.ts": "787977ce3a720b89238c0a3e0eb2040e5ee6ff59005991ac32ba2801cdb73faf",
     "examples/skill-taxonomy/README.md": "4d8cf2ae7fd92aaab83fcaad8ec1fad2a7d908a738ce537bcf40aa8bf42fd9d0"
   },
-  "resource_status": false
+  "resource_status": false,
+  "implementation_commit": "58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c",
+  "source_identity": "Implementation 58e4b9ee6eda0b8aa4a6bf2df5e710f72a79e35c with recorded exact-code hash verification and frozen build identity"
 }
