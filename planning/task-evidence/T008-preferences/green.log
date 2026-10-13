@@ -1,0 +1,193 @@
+raid-t008-preferences-20261013
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:55442"
+
+23 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks expire committed during an observed account lock wait
+{"orientationLock":{"blocker":102,"waiter":100,"query":"FOR NO KEY UPDATE"}}
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks revoke committed during an observed account lock wait
+{"orientationLock":{"blocker":102,"waiter":100,"query":"FOR NO KEY UPDATE"}}
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks suspend committed during an observed account lock wait
+{"orientationLock":{"blocker":102,"waiter":100,"query":"FOR NO KEY UPDATE"}}
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > checks the database clock after the real Session lock wait rather than transaction start
+{"orientationLock":{"blocker":102,"waiter":100,"query":"FOR SHARE"}}
+
+ ❯ tests/raider-onboarding-db.test.ts (20 tests | 8 failed) 2985ms
+     ✓ has additive private projection/version tables and restrictive references 261ms
+     × creates a private recorded version for its own wallet session without granting skill or capacity 157ms
+     × reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences 175ms
+     × replays the immutable original response after later updates and rejects changed bodies 159ms
+     × serializes duplicate receipts and same-revision competing writes without partial effects 192ms
+     × rolls back a failed transaction and retries the whole original command identity 226ms
+     ✓ rejects substituted actorAccountId and foreign authority without any mutation 108ms
+     ✓ rejects substituted accountId and foreign authority without any mutation 93ms
+     ✓ rejects substituted sessionHash and foreign authority without any mutation 88ms
+     ✓ rejects injected preference authority rank 83ms
+     ✓ rejects injected preference authority accountId 117ms
+     ✓ rejects injected preference authority sessionHash 83ms
+     ✓ rejects injected preference authority verified 85ms
+     ✓ rejects injected preference authority reservesCapacity 86ms
+     × rejects suspended and expired authority including reads and receipt replay 95ms
+     ✓ rechecks expire committed during an observed account lock wait 253ms
+     ✓ rechecks revoke committed during an observed account lock wait 120ms
+     ✓ rechecks suspend committed during an observed account lock wait 99ms
+     × checks the database clock after the real Session lock wait rather than transaction start 329ms
+     × guards immutable versions, provenance, revision pointers and unaudited direct changes 165ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > creates a private recorded version for its own wallet session without granting skill or capacity
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > replays the immutable original response after later updates and rejects changed bodies
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > serializes duplicate receipts and same-revision competing writes without partial effects
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rejects suspended and expired authority including reads and receipt replay
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > guards immutable versions, provenance, revision pointers and unaudited direct changes
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+     30|
+     31| function fail(code: ConstructorParameters<typeof CommandReceiptError>[…
+     32|   throw new CommandReceiptError(code);
+       |         ^
+     33| }
+     34| function validId(value: unknown, maxLength = 200): asserts value is st…
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rolls back a failed transaction and retries the whole original command identity
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+     30|
+     31| function fail(code: ConstructorParameters<typeof CommandReceiptError>[…
+     32|   throw new CommandReceiptError(code);
+       |         ^
+     33| }
+     34| function validId(value: unknown, maxLength = 200): asserts value is st…
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ tests/raider-onboarding-db.test.ts:235:17
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > checks the database clock after the real Session lock wait rather than transaction start
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `N/A`. Message: `Failed to deserialize column of type 'void'. If you're using $queryRaw and this column is explicitly marked as `Unsupported` in your Prisma schema, try casting this column to any supported Prisma type such as `String`.`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/raider-onboarding-db.test.ts:367:7
+    365|         a.sessionHash,
+    366|       );
+    367|       await observer.$queryRawUnsafe('SELECT pg_sleep(0.2)');
+       |       ^
+    368|     } finally {
+    369|       h.release();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 12 passed (20)
+   Start at  06:20:46
+   Duration  3.86s (transform 280ms, setup 0ms, import 570ms, tests 2.98s, environment 0ms)
+
+JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-preferences/green.xml
+OWNED CLEANUP: 0 raid-t008-preferences-20261013 

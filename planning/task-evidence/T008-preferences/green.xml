@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="20" failures="8" errors="0" time="2.984569332">
+    <testsuite name="tests/raider-onboarding-db.test.ts" timestamp="2026-10-13T00:35:50.533Z" hostname="ubu2" tests="20" failures="8" errors="0" skipped="0" time="2.984569332">
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; has additive private projection/version tables and restrictive references" time="0.261128416">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; creates a private recorded version for its own wallet session without granting skill or capacity" time="0.156501778">
+            <failure message="INVALID_INPUT" type="CommandReceiptError">
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences" time="0.175110047">
+            <failure message="INVALID_INPUT" type="CommandReceiptError">
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays the immutable original response after later updates and rejects changed bodies" time="0.159302825">
+            <failure message="INVALID_INPUT" type="CommandReceiptError">
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; serializes duplicate receipts and same-revision competing writes without partial effects" time="0.191769366">
+            <failure message="INVALID_INPUT" type="CommandReceiptError">
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rolls back a failed transaction and retries the whole original command identity" time="0.22584104">
+            <failure message="INVALID_INPUT" type="CommandReceiptError">
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ tests/raider-onboarding-db.test.ts:235:17
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted actorAccountId and foreign authority without any mutation" time="0.108326826">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted accountId and foreign authority without any mutation" time="0.092571402">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted sessionHash and foreign authority without any mutation" time="0.088286565">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority rank" time="0.083032066">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority accountId" time="0.117242681">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority sessionHash" time="0.083147557">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority verified" time="0.084807716">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority reservesCapacity" time="0.086198201">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects suspended and expired authority including reads and receipt replay" time="0.095296019">
+            <failure message="INVALID_INPUT" type="CommandReceiptError">
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks expire committed during an observed account lock wait" time="0.252868618">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:102,&quot;waiter&quot;:100,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks revoke committed during an observed account lock wait" time="0.119505174">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:102,&quot;waiter&quot;:100,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks suspend committed during an observed account lock wait" time="0.099029299">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:102,&quot;waiter&quot;:100,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; checks the database clock after the real Session lock wait rather than transaction start" time="0.329081527">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:102,&quot;waiter&quot;:100,&quot;query&quot;:&quot;FOR SHARE&quot;}}
+
+            </system-out>
+            <failure message="
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `N/A`. Message: `Failed to deserialize column of type &apos;void&apos;. If you&apos;re using $queryRaw and this column is explicitly marked as `Unsupported` in your Prisma schema, try casting this column to any supported Prisma type such as `String`.`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `N/A`. Message: `Failed to deserialize column of type &apos;void&apos;. If you&apos;re using $queryRaw and this column is explicitly marked as `Unsupported` in your Prisma schema, try casting this column to any supported Prisma type such as `String`.`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/raider-onboarding-db.test.ts:367:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;N/A&apos;, message: &apos;Failed to deserialize column of type \&apos;void\&apos;. If you\&apos;re using $queryRaw and this column is explicitly marked as `Unsupported` in your Prisma schema, try casting this column to any supported Prisma type such as `String`.&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; guards immutable versions, provenance, revision pointers and unaudited direct changes" time="0.16487072">
+            <failure message="INVALID_INPUT" type="CommandReceiptError">
+CommandReceiptError: INVALID_INPUT
+ ❯ fail src/command-receipts/index.ts:32:9
+ ❯ src/command-receipts/index.ts:117:28
+ ❯ parseOutcome src/command-receipts/index.ts:104:20
+ ❯ record src/command-receipts/index.ts:138:33
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:236:27
+ ❯ saveRaiderOrientation src/raider-onboarding/storage.ts:155:18
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;INVALID_INPUT&apos; }
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

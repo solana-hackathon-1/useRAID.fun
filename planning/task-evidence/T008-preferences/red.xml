@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="20" failures="2" errors="0" time="0.329478552">
+    <testsuite name="tests/raider-onboarding-db.test.ts" timestamp="2026-10-13T00:32:38.060Z" hostname="ubu2" tests="20" failures="2" errors="0" skipped="18" time="0.329478552">
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; has additive private projection/version tables and restrictive references" time="0.283171252">
+            <failure message="expected [] to deeply equal [ &apos;RaiderPreferenceVersion&apos;, …(1) ]" type="AssertionError">
+AssertionError: expected [] to deeply equal [ &apos;RaiderPreferenceVersion&apos;, …(1) ]
+
+- Expected
++ Received
+
+- [
+-   &quot;RaiderPreferenceVersion&quot;,
+-   &quot;RaiderPreferences&quot;,
+- ]
++ []
+
+ ❯ tests/raider-onboarding-db.test.ts:120:37
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; creates a private recorded version for its own wallet session without granting skill or capacity" time="0.036300357">
+            <failure message="STORAGE_UNAVAILABLE" type="OrientationStorageError">
+OrientationStorageError: STORAGE_UNAVAILABLE
+ ❯ readRaiderOrientation src/raider-onboarding/storage.ts:48:9
+ ❯ tests/raider-onboarding-db.test.ts:53:37
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/raider-onboarding-db.test.ts:124:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;STORAGE_UNAVAILABLE&apos; }
+            </failure>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays the immutable original response after later updates and rejects changed bodies" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; serializes duplicate receipts and same-revision competing writes without partial effects" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rolls back a failed transaction and retries the whole original command identity" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted actorAccountId and foreign authority without any mutation" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted accountId and foreign authority without any mutation" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted sessionHash and foreign authority without any mutation" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority rank" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority accountId" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority sessionHash" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority verified" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority reservesCapacity" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects suspended and expired authority including reads and receipt replay" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks expire committed during an observed account lock wait" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks revoke committed during an observed account lock wait" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks suspend committed during an observed account lock wait" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; checks the database clock after the real Session lock wait rather than transaction start" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; guards immutable versions, provenance, revision pointers and unaudited direct changes" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

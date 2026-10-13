@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/raid-t008-verify-source.py", line 12, in <module>
+    if not target.is_symlink():target.symlink_to(src.readlink())
+  File "/home/rpandox/tools/miniconda/lib/python3.9/pathlib.py", line 1393, in symlink_to
+    self._accessor.symlink(target, self, target_is_directory)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/pathlib.py", line 446, in symlink
+    return os.symlink(a, b)
+FileExistsError: [Errno 17] File exists: '../../../src/raider-onboarding/contracts.ts' -> '/tmp/raid-t008-build-source-2xavo66l/examples/raider-onboarding/module/contracts.ts'

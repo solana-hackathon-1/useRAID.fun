@@ -131,6 +131,8 @@ jobs:
           COMPOSE_FILE: compose.yaml:compose.test.yaml
           COMPOSE_PROJECT_NAME: raid-ci-studio
         run: docker compose down -v
+      - name: Raider orientation desktop and mobile suite
+        run: npx playwright test --config=playwright.onboarding.config.ts
       - name: Production build
         run: npm run build
         env:

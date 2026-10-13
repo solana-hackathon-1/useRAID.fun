@@ -37,6 +37,13 @@ export default async function AccountPage({
         <XConnection account={account} status={auth} returnTo="account" />
       </section>
       <section className="studio-section">
+        <h2>Work preferences</h2>
+        <p>Learn Raider commitments and manage your private work interests.</p>
+        <Link className="inline-link" href="/raider/onboarding">
+          Raider orientation
+        </Link>
+      </section>
+      <section className="studio-section">
         <h2>Solana wallet</h2>
         <WalletLogin currentAddress={wallet?.address || null} canChange={!!account} />
       </section>

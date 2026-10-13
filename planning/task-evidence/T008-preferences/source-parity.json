@@ -1,0 +1,37 @@
+{
+  "build_source": "/tmp/raid-t008-build-source-2xavo66l",
+  "product_hashes": {
+    ".env.example": "429ff0d204d2c04d2583a026d7480b763d16387344e6dac5b60131f4dff0572c",
+    "prisma/schema.prisma": "3be31f2717a66d09a9d491be6cfaef710a6c085982c02e65851885fab537d1ed",
+    "prisma/migrations/202610130001_raider_preferences/migration.sql": "f717adc5314d9f9eab0e15a65969d6dae35273d53b1a641a7a8250f360ce8951",
+    "src/app/creator/account/page.tsx": "5e844895c94959069d6e2eb9bd4daf5d9313ac0a21a7a5c1eaac6c417a91c8a6",
+    "src/app/globals.css": "d359e32884efc069fecfcaf58d19b2d07984b7486349ac0fa19cabac07bc788b",
+    "src/contracts/protocol.ts": "c5ea4ec87680394c41cd9f14547ebe65be37a9a28d0f56b6351ce79fa89d0ff4",
+    "src/lib/raider-onboarding-host.ts": "7a8030ddf04fc336e1a33a1fe93e78fe235af5834c8527fdaeccd9eb3aea7036",
+    "src/components/raider-orientation-form.tsx": "25b1599acce387c7dca5bb7919ef7efc5d4d60b71a8f4f5bc89ff2f9d3f178ab",
+    "src/app/api/v1/me/orientation/route.ts": "422a2f1074071266738eb5a5ef46baecf37e84e0beeec66a297c15e619db999b",
+    "src/app/raider/onboarding/page.tsx": "81bf957961ce76b4c43a24caf5a6b126dee097e18d189ca3d2218dda4045c668",
+    "src/raider-onboarding/index.ts": "266771bbb818b871005acc44c5c88e004e3dccb3b72350b7de8861383c8cc6dd",
+    "src/raider-onboarding/contracts.ts": "edeed1883918ee1a95f5338a1bb95de92e3f5f3486253006a2a4c23df1aa344a",
+    "src/raider-onboarding/host-contracts.ts": "1b09a2a2a7601028ad0e96223384712dc023f9f9b33e13e7e290cfff6b33a24e",
+    "src/raider-onboarding/storage-contracts.ts": "d81c20338daa9ac2d5d2e204de53c48042cb1caca6f7e22b592e19da94c07068",
+    "src/raider-onboarding/storage.ts": "040ef90bad936bff70882a3ee9ca0f9c3cac0dd922aa86683839650baa7a46e0"
+  },
+  "parity": {
+    ".env.example": true,
+    "prisma/schema.prisma": true,
+    "prisma/migrations/202610130001_raider_preferences/migration.sql": true,
+    "src/app/creator/account/page.tsx": true,
+    "src/app/globals.css": true,
+    "src/contracts/protocol.ts": true,
+    "src/lib/raider-onboarding-host.ts": true,
+    "src/components/raider-orientation-form.tsx": true,
+    "src/app/api/v1/me/orientation/route.ts": true,
+    "src/app/raider/onboarding/page.tsx": true,
+    "src/raider-onboarding/index.ts": true,
+    "src/raider-onboarding/contracts.ts": true,
+    "src/raider-onboarding/host-contracts.ts": true,
+    "src/raider-onboarding/storage-contracts.ts": true,
+    "src/raider-onboarding/storage.ts": true
+  }
+}

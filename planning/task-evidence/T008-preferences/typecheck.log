@@ -1,0 +1,11 @@
+examples/raider-onboarding/module/storage.ts(7,8): error TS2307: Cannot find module '../command-receipts' or its corresponding type declarations.
+examples/raider-onboarding/module/storage.ts(8,62): error TS2307: Cannot find module '../identity-storage' or its corresponding type declarations.
+examples/raider-onboarding/module/storage.ts(128,14): error TS7031: Binding element 'receiptId' implicitly has an 'any' type.
+examples/raider-onboarding/module/storage.ts(151,61): error TS18046: 'error' is of type 'unknown'.
+examples/raider-onboarding/module/storage.ts(164,54): error TS18046: 'error' is of type 'unknown'.
+examples/raider-preferences/host.ts(49,26): error TS7006: Parameter 'sql' implicitly has an 'any' type.
+examples/raider-preferences/host.ts(49,31): error TS7006: Parameter 'bindings' implicitly has an 'any' type.
+tests/raider-onboarding-routes.test.ts(121,9): error TS2322: Type '{ 'Content-Length'?: undefined; 'Idempotency-Key': string; } | { 'Content-Length': string; 'Idempotency-Key': string; }' is not assignable to type 'Record<string, string> | undefined'.
+  Type '{ 'Content-Length'?: undefined; 'Idempotency-Key': string; }' is not assignable to type 'Record<string, string>'.
+    Property ''Content-Length'' is incompatible with index signature.
+      Type 'undefined' is not assignable to type 'string'.

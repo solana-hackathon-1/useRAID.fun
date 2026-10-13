@@ -1,0 +1,141 @@
+raid-t008-preferences-auto-20261013
+OWNED DATABASE: raid-t008-preferences-auto-20261013 loopback port 32777
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32777"
+
+23 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
+OWNED PREVIEW SOURCE /tmp/raid-t008-ui-source-y8kkee79
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 8 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  1 [desktop] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps (11.5s)
+  ✘  2 [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once (10.5s)
+  ✓  3 [desktop] › tests/browser-live/raider-onboarding.spec.ts:93:1 › experienced portfolio input stays self-described and a rejected save preserves the draft (2.8s)
+  ✓  4 [desktop] › tests/browser-live/raider-onboarding.spec.ts:128:1 › anonymous HTML and API never disclose another account private preferences (5.7s)
+  ✓  5 [mobile] › tests/browser-live/raider-onboarding.spec.ts:31:1 › saves private beginner preferences, reloads the stored version and shows honest next steps (6.3s)
+  ✓  6 [mobile] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once (3.0s)
+  ✓  7 [mobile] › tests/browser-live/raider-onboarding.spec.ts:93:1 › experienced portfolio input stays self-described and a rejected save preserves the draft (2.6s)
+  ✓  8 [mobile] › tests/browser-live/raider-onboarding.spec.ts:128:1 › anonymous HTML and API never disclose another account private preferences (5.5s)
+
+
+  1) [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once 
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator:  locator('form').getByRole('alert')
+    Expected: focused
+    Received: inactive
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeFocused" locator('form').getByRole('alert') with timeout 5000ms
+      - waiting for locator('form').getByRole('alert')
+        14 × locator resolved to <p role="alert" tabindex="-1">The save could not be confirmed. Retry with the s…</p>
+           - unexpected value "inactive"
+
+
+      80 |   await page.getByRole('button', { name: 'Save preferences', exact: true }).click();
+      81 |   await expect(page.locator('form').getByRole('alert')).toContainText('Retry');
+    > 82 |   await expect(page.locator('form').getByRole('alert')).toBeFocused();
+         |                                                         ^
+      83 |   await expect(page.getByLabel('Timezone', { exact: true })).toBeDisabled();
+      84 |   await expect(page.getByLabel('Timezone', { exact: true })).toHaveValue('Asia/Kathmandu');
+      85 |   await page.getByRole('button', { name: 'Retry save', exact: true }).click();
+        at /work/tests/browser-live/raider-onboarding.spec.ts:82:57
+
+    Error Context: test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/error-context.md
+
+    Error Context: test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/onboarding/raider-onboarding-preserve-4e160-se-then-safely-replays-once-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [desktop] › tests/browser-live/raider-onboarding.spec.ts:57:1 › preserves the draft and request identity after a lost response, then safely replays once 
+  7 passed (1.1m)
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t008-ui-source-y8kkee79/test-results
+OWNED CLEANUP: 0 raid-t008-preferences-auto-20261013 

@@ -36,6 +36,7 @@ export const EventEnvelopeSchema = z
         operationId: InternalId.optional(),
         claimId: InternalId.optional(),
         identityLinkId: InternalId.optional(),
+        orientationVersionId: InternalId.optional(),
       })
       .readonly(),
   })

@@ -1,0 +1,153 @@
+178a018006a84c141124cf071e1fefd8ced9e36ec49c470de75008e54c1f9520
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:55442"
+
+22 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/raider-onboarding-db.test.ts (20 tests | 2 failed | 18 skipped) 329ms
+     × has additive private projection/version tables and restrictive references 283ms
+     × creates a private recorded version for its own wallet session without granting skill or capacity 36ms
+     ↓ reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences
+     ↓ replays the immutable original response after later updates and rejects changed bodies
+     ↓ serializes duplicate receipts and same-revision competing writes without partial effects
+     ↓ rolls back a failed transaction and retries the whole original command identity
+     ↓ rejects substituted actorAccountId and foreign authority without any mutation
+     ↓ rejects substituted accountId and foreign authority without any mutation
+     ↓ rejects substituted sessionHash and foreign authority without any mutation
+     ↓ rejects injected preference authority rank
+     ↓ rejects injected preference authority accountId
+     ↓ rejects injected preference authority sessionHash
+     ↓ rejects injected preference authority verified
+     ↓ rejects injected preference authority reservesCapacity
+     ↓ rejects suspended and expired authority including reads and receipt replay
+     ↓ rechecks expire committed during an observed account lock wait
+     ↓ rechecks revoke committed during an observed account lock wait
+     ↓ rechecks suspend committed during an observed account lock wait
+     ↓ checks the database clock after the real Session lock wait rather than transaction start
+     ↓ guards immutable versions, provenance, revision pointers and unaudited direct changes
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > has additive private projection/version tables and restrictive references
+AssertionError: expected [] to deeply equal [ 'RaiderPreferenceVersion', …(1) ]
+
+- Expected
++ Received
+
+- [
+-   "RaiderPreferenceVersion",
+-   "RaiderPreferences",
+- ]
++ []
+
+ ❯ tests/raider-onboarding-db.test.ts:120:37
+    118|       `SELECT tablename AS name FROM pg_tables WHERE schemaname='publi…
+    119|     );
+    120|     expect(rows.map((r) => r.name)).toEqual(['RaiderPreferenceVersion'…
+       |                                     ^
+    121|   });
+    122|   it('creates a private recorded version for its own wallet session wi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > creates a private recorded version for its own wallet session without granting skill or capacity
+OrientationStorageError: STORAGE_UNAVAILABLE
+ ❯ readRaiderOrientation src/raider-onboarding/storage.ts:48:9
+     46|   _actor: OrientationActor,
+     47| ): Promise<SavedOrientation | null> {
+     48|   throw new OrientationStorageError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50|
+ ❯ tests/raider-onboarding-db.test.ts:53:37
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/raider-onboarding-db.test.ts:124:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 skipped (20)
+   Start at  06:17:36
+   Duration  1.56s (transform 461ms, setup 0ms, import 860ms, tests 329ms, environment 0ms)
+
+JUNIT report written to /srv/projects/useRAIDfun/useRAID-fun/planning/task-evidence/T008-preferences/red.xml
+OWNED CLEANUP: 0 raid-t008-preferences-20261013 

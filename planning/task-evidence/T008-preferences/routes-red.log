@@ -1,0 +1,213 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/raider-onboarding-routes.test.ts (11 tests | 10 failed) 52ms
+   × resolves account and session only from the own server cookie and returns private no-store data 31ms
+   × denies missing authentication and missing own cookie without a storage call 2ms
+   × rejects foreign request origins, injected fields and invalid keys before saving 3ms
+   × bounds streamed input even when content-length is absent or lies 1ms
+   × denies malformed JSON and non-JSON content without forwarding private details 2ms
+   × maps REVISION_CONFLICT to a sanitized error 2ms
+   × maps ACCOUNT_RESTRICTED to a sanitized error 1ms
+   × maps UNAUTHENTICATED to a sanitized error 1ms
+   × maps STORAGE_UNAVAILABLE to a sanitized error 2ms
+   × maps idempotency conflicts, retryable storage failures and rate denial 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > resolves account and session only from the own server cookie and returns private no-store data
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:70:27
+     68| it('resolves account and session only from the own server cookie and r…
+     69|   const response = await GET();
+     70|   expect(response.status).toBe(200);
+       |                           ^
+     71|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     72|   expect(response.headers.get('vary')).toContain('Cookie');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > denies missing authentication and missing own cookie without a storage call
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:95:32
+     93| it('denies missing authentication and missing own cookie without a sto…
+     94|   mocks.user.mockRejectedValue(new HttpError(401, 'Sign in'));
+     95|   expect((await GET()).status).toBe(401);
+       |                                ^
+     96|   expect((await post()).status).toBe(401);
+     97|   mocks.user.mockResolvedValue({ id: 'synthetic-self' });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > rejects foreign request origins, injected fields and invalid keys before saving
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:104:69
+    102| });
+    103| it('rejects foreign request origins, injected fields and invalid keys …
+    104|   expect((await post(input, {}, 'https://foreign.invalid')).status).to…
+       |                                                                     ^
+    105|   for (const body of [
+    106|     { ...input, actorId: 'foreign' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > bounds streamed input even when content-length is absent or lies
+AssertionError: expected 503 to be 413 // Object.is equality
+
+- Expected
++ Received
+
+- 413
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:125:29
+    123|       }),
+    124|     );
+    125|     expect(response.status).toBe(413);
+       |                             ^
+    126|   }
+    127|   expect(mocks.save).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > denies malformed JSON and non-JSON content without forwarding private details
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:141:5
+    139|       )
+    140|     ).status,
+    141|   ).toBe(422);
+       |     ^
+    142|   expect((await post(input, { 'Content-Type': 'text/plain' })).status)…
+    143|   expect(mocks.save).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > maps REVISION_CONFLICT to a sanitized error
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:153:27
+    151|   mocks.save.mockRejectedValue(new OrientationStorageError(code));
+    152|   const response = await post();
+    153|   expect(response.status).toBe(status);
+       |                           ^
+    154|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    155|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > maps ACCOUNT_RESTRICTED to a sanitized error
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:153:27
+    151|   mocks.save.mockRejectedValue(new OrientationStorageError(code));
+    152|   const response = await post();
+    153|   expect(response.status).toBe(status);
+       |                           ^
+    154|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    155|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > maps UNAUTHENTICATED to a sanitized error
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:153:27
+    151|   mocks.save.mockRejectedValue(new OrientationStorageError(code));
+    152|   const response = await post();
+    153|   expect(response.status).toBe(status);
+       |                           ^
+    154|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+    155|   expect(await response.json()).toMatchObject({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > maps STORAGE_UNAVAILABLE to a sanitized error
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ tests/raider-onboarding-routes.test.ts:154:49
+    152|   const response = await post();
+    153|   expect(response.status).toBe(status);
+    154|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+    155|   expect(await response.json()).toMatchObject({
+    156|     error: { code: expect.any(String), requestId: expect.any(String) },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ FAIL  tests/raider-onboarding-routes.test.ts > maps idempotency conflicts, retryable storage failures and rate denial
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ tests/raider-onboarding-routes.test.ts:161:33
+    159| it('maps idempotency conflicts, retryable storage failures and rate de…
+    160|   mocks.save.mockRejectedValue(new CommandReceiptError('IDEMPOTENCY_KE…
+    161|   expect((await post()).status).toBe(409);
+       |                                 ^
+    162|   mocks.save.mockRejectedValue(new CommandReceiptError('RETRY_TRANSACT…
+    163|   expect((await post()).status).toBe(503);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 1 passed (11)
+   Start at  06:32:43
+   Duration  502ms (transform 165ms, setup 0ms, import 281ms, tests 52ms, environment 0ms)
+

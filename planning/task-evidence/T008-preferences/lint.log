@@ -1,0 +1,112 @@
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/raider/onboarding/page.tsx
+  32:7   warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/raider/onboarding/page.tsx:32:7
+  30 |     });
+  31 |     return (
+> 32 |       <div className="studio">
+     |       ^^^^^^^^^^^^^^^^^^^^^^^^
+> 33 |         <header className="studio-heading">
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 34 |           <div>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 35 |             <h1>Raider orientation</h1>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 36 |             <p>Learn the commitments and choose the work you want to explore.</p>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 37 |           </div>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 38 |         </header>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 39 |         <RaiderOrientationForm state={state} />
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 40 |       </div>
+     | ^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  41 |     );
+  42 |   } catch {
+  43 |     return (  react-hooks/error-boundaries
+  33:9   warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/raider/onboarding/page.tsx:33:9
+  31 |     return (
+  32 |       <div className="studio">
+> 33 |         <header className="studio-heading">
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 34 |           <div>
+     | ^^^^^^^^^^^^^^^
+> 35 |             <h1>Raider orientation</h1>
+     | ^^^^^^^^^^^^^^^
+> 36 |             <p>Learn the commitments and choose the work you want to explore.</p>
+     | ^^^^^^^^^^^^^^^
+> 37 |           </div>
+     | ^^^^^^^^^^^^^^^
+> 38 |         </header>
+     | ^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  39 |         <RaiderOrientationForm state={state} />
+  40 |       </div>
+  41 |     );                                                                                                                                                                                                                                                                                                               react-hooks/error-boundaries
+  34:11  warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/raider/onboarding/page.tsx:34:11
+  32 |       <div className="studio">
+  33 |         <header className="studio-heading">
+> 34 |           <div>
+     |           ^^^^^
+> 35 |             <h1>Raider orientation</h1>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 36 |             <p>Learn the commitments and choose the work you want to explore.</p>
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 37 |           </div>
+     | ^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  38 |         </header>
+  39 |         <RaiderOrientationForm state={state} />
+  40 |       </div>                                                                                                                                                                                                                                                                                                                                                                           react-hooks/error-boundaries
+  35:13  warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/raider/onboarding/page.tsx:35:13
+  33 |         <header className="studio-heading">
+  34 |           <div>
+> 35 |             <h1>Raider orientation</h1>
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  36 |             <p>Learn the commitments and choose the work you want to explore.</p>
+  37 |           </div>
+  38 |         </header>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react-hooks/error-boundaries
+  36:13  warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/raider/onboarding/page.tsx:36:13
+  34 |           <div>
+  35 |             <h1>Raider orientation</h1>
+> 36 |             <p>Learn the commitments and choose the work you want to explore.</p>
+     |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  37 |           </div>
+  38 |         </header>
+  39 |         <RaiderOrientationForm state={state} />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react-hooks/error-boundaries
+  39:9   warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/raider/onboarding/page.tsx:39:9
+  37 |           </div>
+  38 |         </header>
+> 39 |         <RaiderOrientationForm state={state} />
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  40 |       </div>
+  41 |     );
+  42 |   } catch {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/error-boundaries
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/raider-orientation-form.tsx
+  341:11  warning  Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+✖ 7 problems (0 errors, 7 warnings)
+

@@ -1,0 +1,10 @@
+Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint raid-t008-preferences-20261013 (33e66cbd1f80ad718d0d652ddcbc6be9287e8aa3aee0d2408fddca20b0c59d68): Bind for 127.0.0.1:55442 failed: port is already allocated
+failed to start containers: raid-t008-preferences-20261013
+Traceback (most recent call last):
+  File "/tmp/raid-t008-db-run.py", line 11, in <module>
+    run(['docker','start',name])
+  File "/tmp/raid-t008-db-run.py", line 5, in run
+    def run(args,**kw): return subprocess.run(args,check=True,**kw)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['docker', 'start', 'raid-t008-preferences-20261013']' returned non-zero exit status 1.

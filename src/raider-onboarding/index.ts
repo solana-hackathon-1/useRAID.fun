@@ -43,15 +43,23 @@ export function prepareRaiderOrientation(input: unknown, host: unknown) {
     reservesCapacity: false as const,
     authorizesPaidCommitment: false as const,
     requiresVerifiedPayoutForPaidWork: true as const,
-    preferences: Object.freeze({
-      experience: data.experience,
-      workInterests: Object.freeze([...new Set(data.workInterests)].sort()),
-      timezone: data.timezone,
-      orientationAcknowledged: true as const,
-      evidencePath: data.evidencePath ?? null,
-      portfolioUrl: data.portfolioUrl ?? null,
-    }),
+    preferences: normalizeRaiderOrientationPreferences(data),
     nextAction,
   });
 }
+/** Normalize a semantic request independently of mutable navigation/catalog availability. */
+export function normalizeRaiderOrientationPreferences(input: unknown) {
+  const parsed = RaiderOrientationInputSchema.safeParse(input);
+  if (!parsed.success) throw new OnboardingContractError('INVALID_INPUT');
+  const data = parsed.data;
+  return Object.freeze({
+    experience: data.experience,
+    workInterests: Object.freeze([...new Set(data.workInterests)].sort()),
+    timezone: data.timezone,
+    orientationAcknowledged: true as const,
+    evidencePath: data.evidencePath ?? null,
+    portfolioUrl: data.portfolioUrl ?? null,
+  });
+}
+
 export type RaiderOrientationPlan = ReturnType<typeof prepareRaiderOrientation>;
