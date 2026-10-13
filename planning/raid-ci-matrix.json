@@ -90,6 +90,8 @@
     "tests/project-proposal-discovery.test.ts",
     "tests/project-proposal-host.test.ts",
     "tests/project-proposal-http.test.ts",
+    "tests/proposal-control-boundary.test.ts",
+    "tests/proposal-control.test.ts",
     "tests/public-load-db.test.ts",
     "tests/pump-launch.test.ts",
     "tests/raid-evidence.test.ts",
@@ -387,7 +389,9 @@
         "tests/project-proposal-db.test.ts",
         "tests/project-proposal-discovery.test.ts",
         "tests/project-proposal-host.test.ts",
-        "tests/project-proposal-http.test.ts"
+        "tests/project-proposal-http.test.ts",
+        "tests/proposal-control-boundary.test.ts",
+        "tests/proposal-control.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [

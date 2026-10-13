@@ -1,0 +1,19 @@
+docs/ai-handoff/CURRENT.md 1394ms (unchanged)
+docs/raid-proposal-control.md 67ms (unchanged)
+docs/raid-project-control.md 82ms (unchanged)
+docs/raid-module-reuse.md 117ms (unchanged)
+docs/tasks/2026-10-13-T010-proposal-control.md 9ms (unchanged)
+examples/project-control/host.ts 210ms (unchanged)
+examples/project-control/README.md 13ms (unchanged)
+src/guild-profiles/proposal-control.ts 70ms (unchanged)
+src/guild-profiles/proposal-control-contracts.ts 58ms (unchanged)
+src/guild-profiles/control-attestation.ts 101ms (unchanged)
+src/guild-profiles/control-attestation-contracts.ts 178ms (unchanged)
+tests/proposal-control.test.ts 199ms
+tests/proposal-control-boundary.test.ts 12ms
+planning/raid-ci-matrix.json 93ms (unchanged)
+planning/task-evidence/T010-proposal-control/review.json 9ms (unchanged)
+planning/task-evidence/T010-proposal-form-verification.json 30ms (unchanged)
+planning/task-evidence/T010-proposal-form/review.json 8ms
+planning/task-evidence/T010-proposal-form/hosted-checks-result.json 33ms (unchanged)
+planning/task-evidence/T010-proposal-form/hosted-staging-result.json 7ms (unchanged)

@@ -1,0 +1,1 @@
+../../../src/guild-profiles/proposal-control-contracts.ts

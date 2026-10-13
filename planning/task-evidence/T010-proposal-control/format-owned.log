@@ -1,0 +1,7 @@
+src/guild-profiles/proposal-control.ts 130ms
+src/guild-profiles/proposal-control-contracts.ts 31ms
+src/guild-profiles/control-attestation.ts 73ms (unchanged)
+src/guild-profiles/control-attestation-contracts.ts 88ms (unchanged)
+tests/proposal-control.test.ts 103ms
+examples/project-control/host.ts 49ms
+docs/tasks/2026-10-13-T010-proposal-control.md 53ms (unchanged)

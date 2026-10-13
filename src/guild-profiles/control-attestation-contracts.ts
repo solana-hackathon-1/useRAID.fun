@@ -116,6 +116,14 @@ export interface ProjectControlSignatureVerifier {
   readonly algorithm: 'ED25519';
   verify(input: ProjectControlVerificationInput): boolean;
 }
+/** Shared structural port check; implementations must also return an actual synchronous boolean. */
+export const ProjectControlSignatureVerifierSchema = z.strictObject({
+  version: z.literal('v1'),
+  algorithm: z.literal('ED25519'),
+  verify: z.custom<(input: ProjectControlVerificationInput) => unknown>(
+    (value) => typeof value === 'function',
+  ),
+});
 export type ProjectControlReason =
   | 'SIGNATURE_BOUND'
   | 'AUTHENTICATION_REQUIRED'
