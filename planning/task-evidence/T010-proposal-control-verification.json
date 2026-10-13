@@ -185,38 +185,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+      "observed": "Hosted job failed withoutsteps duepayment/spendinglimit; localsourcechecksPASS, not actualhostedCI"
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+      "observed": "Hosted job failed withoutsteps duepayment/spendinglimit; localsourcechecksPASS, not actualhostedCI"
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+      "observed": "Hosted job failed withoutsteps duepayment/spendinglimit; localsourcechecksPASS, not actualhostedCI"
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+      "observed": "Hosted job failed withoutsteps duepayment/spendinglimit; localsourcechecksPASS, not actualhostedCI"
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+      "observed": "Hosted job failed withoutsteps duepayment/spendinglimit; localsourcechecksPASS, not actualhostedCI"
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+      "observed": "Hosted job failed withoutsteps duepayment/spendinglimit; localsourcechecksPASS, not actualhostedCI"
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "NoDcandidatepublished; prior423 provesC2 only"
+      "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402423605",
+      "observed": "Hosted job failed withoutsteps duepayment/spendinglimit; localsourcechecksPASS, not actualhostedCI"
     }
   },
   "tdd": {
@@ -242,5 +249,11 @@
       "observed": "4files108PASS2.78s; meaningfulprecision2FAIL1PASS (numericUUIDfixturevacuous)\u2192correctletterUUID\u21923FAIL\u2192final4files111PASS2.56s; docs6files223PASS5.03s/requirements5PASS",
       "result": "PASS"
     }
+  },
+  "post_merge_staging": {
+    "result": "NOT VERIFIED",
+    "sha": "0d28e217688a467285049105f12ab351dd255e2c",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38402395451",
+    "observed": "Job notstarted duebilling annotation; no0dimage/runtime/publish/cleanup execution"
   }
 }

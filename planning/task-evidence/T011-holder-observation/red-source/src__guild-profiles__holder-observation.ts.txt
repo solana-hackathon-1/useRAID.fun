@@ -1,0 +1,4 @@
+/** Executable behavior-test stub, never an authority or provider. */
+export function evaluateGuildHolderEligibility(_context: unknown, _observation: unknown) {
+  return { state: 'UNKNOWN', holderEligible: null, reason: 'UNIMPLEMENTED' };
+}

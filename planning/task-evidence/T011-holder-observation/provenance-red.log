@@ -1,0 +1,89 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/holder-observation.test.ts (27 tests | 2 failed | 24 skipped) 60ms
+   × carries the exact target asset, relationship and policy versions with the private result 50ms
+   × does not attach mismatched asset or wallet-scope metadata to the target Guild observation 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/holder-observation.test.ts > carries the exact target asset, relationship and policy versions with the private result
+AssertionError: expected { version: 'v1', …(19) } to match object { targetAssetId: { …(5) }, …(3) }
+(22 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "computedAt": "2026-10-13T12:00:00.000Z",
+-   "policyReference": {
+-     "recordId": "policy",
+-     "revision": 1,
++   "affectsClaims": false,
++   "affectsWorkHistory": false,
++   "balanceBaseUnits": "6",
++   "consumesCapacity": false,
++   "createsPermissionGrant": false,
++   "enrollsPublicAssociation": false,
++   "finality": "FINALIZED",
++   "guildId": "synthetic-guild",
++   "holderEligible": true,
++   "informational": true,
++   "isAuthorizationToken": false,
++   "observedAt": "2026-10-13T11:59:30.000Z",
++   "observedSlot": "9007199254740993",
++   "persisted": false,
++   "provider": {
++     "adapterVersion": "v1",
++     "id": "synthetic-provider",
+    },
+-   "relationshipReference": {
+-     "recordId": "relationship",
+-     "revision": 1,
+-   },
+-   "targetAssetId": {
+-     "chain": "SOLANA",
+-     "kind": "TOKEN",
+-     "mint": "36VASLSKLFD2KokjXG7V28veZvXEsyHRKefLonPaAKzv",
+-     "networkIdentity": "synthetic-genesis",
+-     "tokenProgram": "3AQTaduKvYWFTu1ExZSQK1hQp5jSZ2yEt4KzsASAufKd",
+-   },
++   "reason": "VERIFIED_BALANCE",
++   "state": "ELIGIBLE",
++   "subscribesNotifications": false,
++   "verifiesFounderControl": false,
++   "version": "v1",
+  }
+
+ ❯ tests/holder-observation.test.ts:285:22
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/holder-observation.test.ts > does not attach mismatched asset or wallet-scope metadata to the target Guild observation
+AssertionError: expected { version: 'v1', …(19) } to match object { state: 'UNKNOWN', …(3) }
+(18 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "finality": null,
+-   "observedAt": null,
+-   "observedSlot": null,
++   "finality": "FINALIZED",
++   "observedAt": "2026-10-13T11:59:30.000Z",
++   "observedSlot": "9007199254740993",
+    "state": "UNKNOWN",
+  }
+
+ ❯ tests/holder-observation.test.ts:288:190
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed | 24 skipped (27)
+   Start at  19:15:36
+   Duration  835ms (transform 276ms, setup 0ms, import 411ms, tests 60ms, environment 0ms)

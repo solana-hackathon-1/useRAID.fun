@@ -1,0 +1,45 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-13T13:20:02.190984+00:00",
+  "source_base": "0d28e217688a467285049105f12ab351dd255e2c",
+  "scope": "T011A current-self recognized exactasset/approvedpolicy andcomplete current-wallet observations private informational calculation only",
+  "requirements": ["R01", "R02", "R03", "R04", "R10", "R15", "R16", "I06", "I07", "I10", "I13"],
+  "independent_review": "NOT VERIFIED; sole writer/no delegation",
+  "checks": {
+    "red": "24FAIL before schema/implementation, exact source/test manifest copiedred-source",
+    "green": "2files57PASS766ms with33existingprofilepermissions",
+    "refactor": "4files59PASS1.13s; strengthenactualinputimmutability anddeclareboundary",
+    "provenance": "Actual2FAIL1PASS/24filtered cases: missingasset/ref/computationprovenance andwrongresource metadata; bindtarget/ref/computedtime+denybadmetadata beforefinalGREEN",
+    "final": "4files62PASS; final6files176PASS6.27s incl27newholder/2module-boundaries/33profile/114docs+evidence",
+    "requirements": "Inventory5tests1FAIL beforetwo-file registration\u21925PASS0.156s",
+    "consumer": "Independentclean npmci6packages andfinalschema-parsedtwoadapter/serializedtransport/exactintegers/unknownstale/noexistingprofilegrant PASS; ownnode_modules /tmp/raid-t011-holder-consumer-cl4dmei7",
+    "static": "OwnstrictTSC PASS; source byte comparisons match allnewmodule/tests/example; ownedlintzero; wholefreshtracked+WIPsourceformatPASS",
+    "reused_skipped": "NoRoot/DDL/UI/provider/flags/depchanges; oldexact UI/SQL/build evidence reusedonlymatchingboundaries, no redundantlocalDB/browser/productionbuild/image/security checks. FullnamednewcandidateCI/image stillNOTVERIFIEDbillingblocked.",
+    "cleanup": "AllCLI/Vitest/TSC/lint exited; noT011server/database/browser/testcontainersstarted. OlderownedPGstopped/Nextbrowserremoved/unrelatedresourcesandlogsretained. ManualChecksdisabled_manually restored/no outstandingobligation.",
+    "completion": "Full27criteria/liveprovenance/storage/recognition/privatecode/historyclaims/independentreview-UAT andreleasegates NOTVERIFIED; validator mustreject",
+    "docs_final": "2files114PASS actualdocs-final.log"
+  },
+  "findings": [
+    "Initial history-preservation test usedunrelatedobjects; strengthenedtoassertactualpassedcontext andsource snapshots unchanged, claim/historyDB evidence explicitlynotverified",
+    "Consumingadapter fixtures parsedwithownedschema, nofakebrandedamountcast",
+    "Resultinitiallydroppedtargetasset/currentrelationship-policy/computationtime; meaningfulREDthenretainversionedidentitybeforefuturepersistence",
+    "Wrongasset/scope/ref source couldsupplymetadatafortargetGuild; meaningfulREDthenexposemetadata onlymatchingknown/stale/future/finalitypending states; unknownbalance staysnull"
+  ],
+  "formatter_source": "/tmp/raid-t011-holder-source-r85gctr5",
+  "ended_utc": "2026-10-13T13:37:18.304058+00:00",
+  "elapsed_seconds": 1036.113074,
+  "source_hashes": {
+    "src/guild-profiles/holder-observation.ts": "803f00b0734eb61908f2120a74c7083156d9a8a43e5f25dd678137cd91d0a364",
+    "src/guild-profiles/holder-observation-contracts.ts": "4cb572ea079efb4e174e6bf8ee3e46976085594cd74abe6361aa5425ccb9fe27",
+    "tests/holder-observation.test.ts": "322b340c7aad002760b41ea2d6bd8dac35cd05390df5b2c48af3cc65a70465ca",
+    "tests/holder-observation-boundary.test.ts": "e9a29d0e26ea7490d2efb1910039dec2a6839505fe2f18c557b4d01aca3b7522",
+    "examples/holder-observation/host.ts": "a5b75f78118b58adf324b621ec98e9a6c6265cef4642d628ea15e716e57753b4",
+    "examples/holder-observation/package.json": "42df49981a14dc2f49ce9b08777922e0398ffc127b1f02af06417bc33adaae5f",
+    "examples/holder-observation/package-lock.json": "8e6c1c9a71804c1e5d07132246e20f8746460037c679b3bb2a6dac0ad6ae0465",
+    "examples/holder-observation/README.md": "c3c77ed47c60e51d327ec85a2f549ce80cd94bf5daa7d7704233330eb3469585",
+    "docs/raid-holder-observation.md": "61fc047d62e3e25f89f706ee7f196c1e75ec3d15a4a4ed1432e57936e4dea33a",
+    "docs/raid-module-reuse.md": "48e5f1867c38e8f8f037a2008e9fdb239ff1cb0d20294603fed375fcd07c73bd",
+    "docs/tasks/2026-10-13-T011-holder-observation.md": "ebd45f1e9d48d9e0771b1801790d163c43ada64d016c500e591a7336b9059f41",
+    "planning/raid-ci-matrix.json": "a23840e0f85438f58d87c757bf8e413d09559a64e1f453b6363819990b0ed5c3"
+  }
+}
