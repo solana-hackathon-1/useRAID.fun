@@ -12,9 +12,7 @@
       "MaximumRetryCount": 0
     },
     "ports": {},
-    "networks": [
-      "useraid-staging_default"
-    ],
+    "networks": ["useraid-staging_default"],
     "environment": {
       "WALLET_LINKS_ENABLED": "false",
       "NODE_ENV": "production",
@@ -51,9 +49,7 @@
       "MaximumRetryCount": 0
     },
     "ports": {},
-    "networks": [
-      "useraid-staging_default"
-    ],
+    "networks": ["useraid-staging_default"],
     "environment": {
       "LOCAL_AUTO_APPROVE_CREATORS": "false",
       "ACCOUNT_FOLDS_ENABLED": "false",
@@ -90,9 +86,7 @@
       "MaximumRetryCount": 0
     },
     "ports": {},
-    "networks": [
-      "useraid-staging_public_edge"
-    ],
+    "networks": ["useraid-staging_public_edge"],
     "environment": {},
     "mounts": [
       {
@@ -124,10 +118,7 @@
         }
       ]
     },
-    "networks": [
-      "useraid-staging_default",
-      "useraid-staging_public_edge"
-    ],
+    "networks": ["useraid-staging_default", "useraid-staging_public_edge"],
     "environment": {},
     "mounts": [
       {
@@ -160,9 +151,7 @@
       "MaximumRetryCount": 0
     },
     "ports": {},
-    "networks": [
-      "useraid-staging_default"
-    ],
+    "networks": ["useraid-staging_default"],
     "environment": {},
     "mounts": [
       {
@@ -192,9 +181,7 @@
       "MaximumRetryCount": 0
     },
     "ports": {},
-    "networks": [
-      "useraid-staging_default"
-    ],
+    "networks": ["useraid-staging_default"],
     "environment": {},
     "mounts": [
       {

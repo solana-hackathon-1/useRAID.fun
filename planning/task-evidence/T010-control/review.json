@@ -58,5 +58,21 @@
     "examples/project-control/README.md": "c780b991074f192c456d7575f0a7ad881a5ce9d846be505a32b49df9d8f92b9e",
     "planning/raid-ci-matrix.json": "0f7db71999b584ea458da8cf70df4af932bddb1b2f610855d12d6e381f9933ec"
   },
-  "implementation_commit": "654a94a54bccb87a66ad1d4b49555c52036e0838"
+  "implementation_commit": "654a94a54bccb87a66ad1d4b49555c52036e0838",
+  "post_merge_staging": {
+    "head": "e14327499f74ba47742c64140dfaae2552cda2e0",
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378066334",
+    "result": "SUCCESS",
+    "observed": "125files1443PASS;52planning;8orientation39.0s+10Guild1.3m;production nativeARMimage/runtime/privateGHCR/cleanup",
+    "digest": "sha256:c833b0fd71cc40feb98f97e4cf147be39ada623c0d26ffbb2f01afa50bdc58f5",
+    "raw_log": "hosted-success.log.gz"
+  },
+  "named_checks": {
+    "run": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+    "head": "e14327499f74ba47742c64140dfaae2552cda2e0",
+    "result": "FAILURE",
+    "observed": "planning/security/docker/browserSUCCESS;staticFAIL(two report serialization),testFAIL(1439PASS4X-race fixture failures),ci-gateFAIL",
+    "raw_log": "../T010-checks-repair/hosted-complete-failure.log.gz",
+    "restoration": "Checks temporarily enabled forownedrun then restored disabled_manually viaAPIreadback; noYAMLtriggerchange"
+  }
 }

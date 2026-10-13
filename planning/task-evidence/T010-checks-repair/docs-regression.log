@@ -1,0 +1,8 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+
+ Test Files  3 passed (3)
+      Tests  106 passed (106)
+   Start at  15:53:07
+   Duration  3.84s (transform 502ms, setup 0ms, import 937ms, tests 1.87s, environment 1ms)

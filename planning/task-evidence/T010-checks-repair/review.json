@@ -1,0 +1,49 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-13T10:02:42.057944+00:00",
+  "source_base": "e14327499f74ba47742c64140dfaae2552cda2e0",
+  "source_identity": "Bounded implementation a9dce93338b839666d706b82ba48caed024906cf; actual source hashes and Red/Green phase evidence retained, fullparent remains incomplete",
+  "source_snapshot": "/tmp/raid-t010-checks-source-gxy3t0xr",
+  "requirements": [
+    "I10",
+    "I13",
+    "R15",
+    "R16",
+    "AC75",
+    "T005-C16",
+    "T005-C19",
+    "T005-C22",
+    "T006-C16"
+  ],
+  "checks": {
+    "red": "Actuale143 twoJSONformatFAIL and X-race4FAIL/1439PASS beforefix; localignoredartifactwarnpreserved",
+    "green": "Owned apppool3 race+Xregression22PASS4.50s; apppool2 originalfive5PASS2.41s",
+    "format": "Fresh tracked-source wholePrettierPASS; twoJSONparsed valuesidentical/originalgzbuddies, ignoredroot-ownedartifactunaltered",
+    "static": "Ownfrozen strict typecheck andlintPASS",
+    "reused_skipped": "Unchanged code/core/deps/schema/app/browser nativeARMimage/runtime frome143 exactStaging125files1443+18browserSUCCESS; actualoldnamedfullbrowser49+52+8+10+42PASS7skips andbuild/live-flowSUCCESS. No redundant localappbuild/browser/DBfullrepeat. Newexactmain named+automaticgatesstillmandatory. No newbrowserflow; no newpreview. Faultinjectioncleanup notexecuted",
+    "cleanup": "Owned raid-t010-checks-auto-20261013 finallystop0 twice/allPrismaclientsdisconnect. Namedoldremotejobscompleted/GitHubephemeralresourcescleaned, originalworkflowdisabled_manually restored/APIverified. Sources/deps/evidence/unrelatedservices/data/volumes/images retained",
+    "remaining": "Fullparent/independentacceptance missing; newcandidate actualChecks andStaging stilldue",
+    "docs": "3files106PASS3.84s",
+    "completion": "ActualT005validator exit1 full27criteria/sevennewcandidatechecks stillNOTVERIFIED; no fabricatedindependent/pass/exclusion"
+  },
+  "independent_review": "NOT VERIFIED; no delegation",
+  "remaining": "Named Checks exactnewmain/CI/gates/fullparent criteria/independentUAT/projectpolicy/nonce/recognition/history/actualVMrollout unverified; restore Checksoriginaldisabled state afterownedrun",
+  "findings": [
+    "Separatetesthost pools eliminate starvation without apppool/timeout/permissionchanges",
+    "Preserve original JSONbytes and equalvalues, freshtrackedsource excludes unrelated ignoredimmutableartifact without newignore rule",
+    "Actualpublichealth nowtimeout000/SSHtimeout, noHTTP530 readbackthischeck"
+  ],
+  "cleanup_resource": "OwnedDB92d99fdbd71327961a0e3d9d236d82831f157dfa7e9ce860d87ca6040266950d finallystop0 bothruns/inspectfalse",
+  "ended_utc": "2026-10-13T10:11:25.533950+00:00",
+  "elapsed_seconds": 523.476006,
+  "source_hashes": {
+    "tests/x-oauth-first-link-race-db.test.ts": "2c3bc7284cfd330f22d5c1ba5a49b0209e057ec200abe34c7ce5d2471636b185",
+    "planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json": "25cbb11381ea08e19488087b00416b865352425a89975e2de4381c071f2b80a6",
+    "planning/task-evidence/public-staging-20261011/vm-after-public.json": "70056d8fb5264a15656ec8475db032e9788beeca9b766ac9341acf8a88089a59",
+    "planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json.original.gz": "b1dbd1027abbd73a50f28d6d8bd992f0cb1ef14a000f8b26036ebeb254feb032",
+    "planning/task-evidence/public-staging-20261011/vm-after-public.json.original.gz": "bbcfb9fe0d631bccef0ffc698ad9f69d971c542bd5ab08ac1ab9e8a29df621ae",
+    "docs/tasks/2026-10-13-T010-checks-repair.md": "f69dd04e73f0edadb90328411d6a78cddc8e96616583607e67b3a20a88cd595d",
+    "planning/task-evidence/T010-checks-repair/json-originals.json": "ea2f6c447d00a834ada5e23323b01d87c3a91dbcc77cb07a807027ff87d6d031"
+  },
+  "implementation_commit": "a9dce93338b839666d706b82ba48caed024906cf"
+}

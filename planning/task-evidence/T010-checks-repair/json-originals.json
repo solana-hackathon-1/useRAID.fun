@@ -1,0 +1,19 @@
+{
+  "planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json": {
+    "original_sha256": "1a56fe754a525653d6558f53f9a02d4b817dfb1352245404e077fa49189db3ac",
+    "formatted_sha256": "25cbb11381ea08e19488087b00416b865352425a89975e2de4381c071f2b80a6",
+    "original_gzip": "planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json.original.gz",
+    "parsed_values_equal": true
+  },
+  "planning/task-evidence/public-staging-20261011/vm-after-public.json": {
+    "original_sha256": "ccd40b3b34dd78673b1e009890a730d5df940bcd22d255038976b305d3d94146",
+    "formatted_sha256": "70056d8fb5264a15656ec8475db032e9788beeca9b766ac9341acf8a88089a59",
+    "original_gzip": "planning/task-evidence/public-staging-20261011/vm-after-public.json.original.gz",
+    "parsed_values_equal": true
+  },
+  "planning/task-evidence/T007-origin-binding/header-test-results/.last-run.json": {
+    "original_sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+    "status": "Git-ignored root-owned historic artifact preserved unchanged; clean tracked-source formatter excludes it by absence, no new ignore rule",
+    "original_gzip": "planning/task-evidence/T010-checks-repair/ignored-browser-last-run.original.json.gz"
+  }
+}

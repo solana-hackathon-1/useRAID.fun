@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
 import { config } from '../src/lib/config';
 import { hash } from '../src/lib/auth';
@@ -12,8 +13,18 @@ const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.sk
 integration('first X identity binding under concurrent callbacks (PostgreSQL)', () => {
   const plain = { id: '1001', username: 'plain', name: 'Plain' };
   const privileged = { id: '2002', username: 'privileged', name: 'Privileged' };
+  let lockDb: PrismaClient, observer: PrismaClient;
   beforeAll(() => {
     assertTestDatabase();
+    // Lock holders and observations cannot compete with the two callbacks for the app pool.
+    const fixtureUrl = new URL(process.env.DATABASE_URL!);
+    fixtureUrl.searchParams.set('connection_limit', '3');
+    lockDb = new PrismaClient({
+      datasourceUrl: fixtureUrl.toString(),
+      transactionOptions: { timeout: 30000, maxWait: 10000 },
+    });
+    fixtureUrl.searchParams.set('connection_limit', '1');
+    observer = new PrismaClient({ datasourceUrl: fixtureUrl.toString() });
     config.demo = false;
     config.appUrl = 'http://localhost:3000';
     vi.stubEnv('X_CLIENT_ID', 'fixture-client');
@@ -25,7 +36,7 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
   });
   afterAll(async () => {
     vi.unstubAllEnvs();
-    await db.$disconnect();
+    await Promise.all([db.$disconnect(), lockDb?.$disconnect(), observer?.$disconnect()]);
   });
 
   async function walletAccount() {
@@ -47,7 +58,7 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
     let held!: () => void;
     const gate = new Promise<void>((resolve) => (open = resolve));
     const locked = new Promise<void>((resolve) => (held = resolve));
-    const finished = db.$transaction(
+    const finished = lockDb.$transaction(
       async (tx) => {
         await lockIdentity(tx, xId);
         held();
@@ -55,7 +66,7 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
       },
       { timeout: 30000, maxWait: 10000 },
     );
-    await locked;
+    await Promise.race([locked, finished]);
     return () => {
       open();
       return finished;
@@ -66,7 +77,7 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
     let held!: () => void;
     const gate = new Promise<void>((resolve) => (open = resolve));
     const locked = new Promise<void>((resolve) => (held = resolve));
-    const finished = db.$transaction(
+    const finished = lockDb.$transaction(
       async (tx) => {
         await tx.$queryRaw`SELECT id FROM "User" WHERE id = ${userId} FOR NO KEY UPDATE`;
         held();
@@ -74,7 +85,7 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
       },
       { timeout: 30000, maxWait: 10000 },
     );
-    await locked;
+    await Promise.race([locked, finished]);
     return () => {
       open();
       return finished;
@@ -82,7 +93,7 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
   }
   async function waitUntilRowBlocked(count: number) {
     for (let i = 0; i < 200; i++) {
-      const rows = await db.$queryRaw<{ n: bigint }[]>`
+      const rows = await observer.$queryRaw<{ n: bigint }[]>`
         SELECT count(*) AS n FROM pg_stat_activity
         WHERE wait_event_type = 'Lock' AND wait_event IN ('transactionid', 'tuple')
           AND datname = current_database()`;
@@ -93,7 +104,7 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
   }
   async function waitUntilBlocked(count: number) {
     for (let i = 0; i < 200; i++) {
-      const rows = await db.$queryRaw<{ n: bigint }[]>`
+      const rows = await observer.$queryRaw<{ n: bigint }[]>`
         SELECT count(*) AS n FROM pg_stat_activity
         WHERE wait_event_type = 'Lock' AND wait_event = 'advisory' AND datname = current_database()`;
       if (Number(rows[0].n) >= count) return;
@@ -105,34 +116,44 @@ integration('first X identity binding under concurrent callbacks (PostgreSQL)', 
     const { user, sessions } = await walletAccount();
     const attempts = [await claimed(sessions[0]), await claimed(sessions[1])];
     const profiles = [plain, privileged];
-    const releases = [await holdIdentityLock(plain.id), await holdIdentityLock(privileged.id)];
-    const callbacks = [
-      completeConnection(attempts[0], plain),
-      completeConnection(attempts[1], privileged),
-    ].map((p) =>
-      p.then(
-        (token) => ({ token }),
-        (error: unknown) => ({ error }),
-      ),
-    );
-    await waitUntilBlocked(2);
-    if (order === 'overlapping-update') {
-      // Both callbacks pass their identity locks and block together on the account row, so the
-      // second UPDATE is re-evaluated by PostgreSQL after the first commits (READ COMMITTED).
-      const releaseRow = await holdRowLock(user.id);
-      await Promise.all(releases.map((release) => release()));
-      await waitUntilRowBlocked(2);
-      await releaseRow();
-    } else if (order === 'simultaneous') await Promise.all(releases.map((release) => release()));
-    else
-      for (const first of order) {
-        const at = profiles.indexOf(first);
-        await releases[at]();
-        await callbacks[at];
-      }
-    const results = await Promise.all(callbacks);
-    return { user, results, profiles, sessions, attempts };
+    const releases: (() => Promise<void>)[] = [];
+    let releaseRow: (() => Promise<void>) | undefined;
+    let callbacks: Promise<{ token: string } | { error: unknown }>[] = [];
+    try {
+      releases.push(await holdIdentityLock(plain.id));
+      releases.push(await holdIdentityLock(privileged.id));
+      callbacks = [
+        completeConnection(attempts[0], plain),
+        completeConnection(attempts[1], privileged),
+      ].map((p) =>
+        p.then(
+          (token) => ({ token }),
+          (error: unknown) => ({ error }),
+        ),
+      );
+      await waitUntilBlocked(2);
+      if (order === 'overlapping-update') {
+        // Both callbacks block on the account row; the loser UPDATE is re-evaluated after commit.
+        releaseRow = await holdRowLock(user.id);
+        await Promise.all(releases.map((release) => release()));
+        await waitUntilRowBlocked(2);
+        await releaseRow();
+      } else if (order === 'simultaneous') await Promise.all(releases.map((release) => release()));
+      else
+        for (const first of order) {
+          const at = profiles.indexOf(first);
+          await releases[at]();
+          await callbacks[at];
+        }
+      const results = await Promise.all(callbacks);
+      return { user, results, profiles, sessions, attempts };
+    } finally {
+      // Open every owned gate before awaiting; then drain callbacks before the next TRUNCATE.
+      await Promise.all([releaseRow?.(), ...releases.map((release) => release())]);
+      await Promise.all(callbacks);
+    }
   }
+
   async function expectSingleBinding(
     outcome: Awaited<ReturnType<typeof race>>,
     expectedWinner?: typeof plain,

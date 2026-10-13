@@ -1,0 +1,207 @@
+2026-10-13T09:46:30.2950102Z Current runner version: '2.337.0'
+2026-10-13T09:46:30.2985122Z ##[group]Runner Image Provisioner
+2026-10-13T09:46:30.2986489Z Hosted Compute Agent
+2026-10-13T09:46:30.2987508Z Version: 20261002.596
+2026-10-13T09:46:30.2988618Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-13T09:46:30.2990255Z Build Date: 2026-10-02T22:28:27Z
+2026-10-13T09:46:30.2991494Z Worker ID: {c2ab1197-bc4a-43a2-9cd1-6255ed3e98fc}
+2026-10-13T09:46:30.2992750Z Region: eastus2
+2026-10-13T09:46:30.2993771Z Cloud: Azure
+2026-10-13T09:46:30.2994604Z ##[endgroup]
+2026-10-13T09:46:30.2997450Z ##[group]Operating System
+2026-10-13T09:46:30.2998642Z Ubuntu
+2026-10-13T09:46:30.2999756Z 24.04.5
+2026-10-13T09:46:30.3000737Z LTS
+2026-10-13T09:46:30.3001539Z ##[endgroup]
+2026-10-13T09:46:30.3002394Z ##[group]Runner Image
+2026-10-13T09:46:30.3003521Z Image: ubuntu-24.04
+2026-10-13T09:46:30.3004477Z Version: 20261004.327.1
+2026-10-13T09:46:30.3006638Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-13T09:46:30.3010292Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+2026-10-13T09:46:30.3012097Z ##[endgroup]
+2026-10-13T09:46:30.3014012Z ##[group]GITHUB_TOKEN Permissions
+2026-10-13T09:46:30.3016909Z Contents: read
+2026-10-13T09:46:30.3017833Z Metadata: read
+2026-10-13T09:46:30.3018843Z ##[endgroup]
+2026-10-13T09:46:30.3022062Z Secret source: Actions
+2026-10-13T09:46:30.3023697Z Cache mode: write
+2026-10-13T09:46:30.3025188Z Prepare workflow directory
+2026-10-13T09:46:30.3495463Z Prepare all required actions
+2026-10-13T09:46:30.3565780Z Getting action download info
+2026-10-13T09:46:30.6185206Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-13T09:46:30.7238731Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-13T09:46:30.9703749Z Complete job name: static
+2026-10-13T09:46:31.0476513Z ##[group]Run actions/checkout@v4
+2026-10-13T09:46:31.0477409Z with:
+2026-10-13T09:46:31.0477884Z   repository: solana-hackathon-1/useRAID.fun
+2026-10-13T09:46:31.0481936Z   token: ***
+2026-10-13T09:46:31.0482376Z   ssh-strict: true
+2026-10-13T09:46:31.0482815Z   ssh-user: git
+2026-10-13T09:46:31.0483254Z   persist-credentials: true
+2026-10-13T09:46:31.0483738Z   clean: true
+2026-10-13T09:46:31.0484175Z   sparse-checkout-cone-mode: true
+2026-10-13T09:46:31.0484701Z   fetch-depth: 1
+2026-10-13T09:46:31.0485120Z   fetch-tags: false
+2026-10-13T09:46:31.0485555Z   show-progress: true
+2026-10-13T09:46:31.0485994Z   lfs: false
+2026-10-13T09:46:31.0486423Z   submodules: false
+2026-10-13T09:46:31.0486858Z   set-safe-directory: true
+2026-10-13T09:46:31.0487350Z   allow-unsafe-pr-checkout: false
+2026-10-13T09:46:31.0488118Z ##[endgroup]
+2026-10-13T09:46:31.1660365Z Syncing repository: solana-hackathon-1/useRAID.fun
+2026-10-13T09:46:31.1666245Z ##[group]Getting Git version info
+2026-10-13T09:46:31.1667852Z Working directory is '/home/runner/work/useRAID.fun/useRAID.fun'
+2026-10-13T09:46:31.1670311Z [command]/usr/bin/git version
+2026-10-13T09:46:31.1810508Z git version 2.55.0
+2026-10-13T09:46:31.1860131Z ##[endgroup]
+2026-10-13T09:46:31.1869282Z Temporarily overriding HOME='/home/runner/work/_temp/6a234646-a432-44e9-a9fb-9717b5ccde63' before making global git config changes
+2026-10-13T09:46:31.1872183Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T09:46:31.1888454Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/useRAID.fun/useRAID.fun
+2026-10-13T09:46:31.1981381Z Deleting the contents of '/home/runner/work/useRAID.fun/useRAID.fun'
+2026-10-13T09:46:31.2001143Z ##[group]Initializing the repository
+2026-10-13T09:46:31.2010281Z [command]/usr/bin/git init /home/runner/work/useRAID.fun/useRAID.fun
+2026-10-13T09:46:31.2130587Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-13T09:46:31.2134391Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-13T09:46:31.2145202Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-13T09:46:31.2146594Z hint: call:
+2026-10-13T09:46:31.2147782Z hint:
+2026-10-13T09:46:31.2148756Z hint: 	git config --global init.defaultBranch <name>
+2026-10-13T09:46:31.2150318Z hint:
+2026-10-13T09:46:31.2151496Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-13T09:46:31.2156648Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-13T09:46:31.2158073Z hint:
+2026-10-13T09:46:31.2158873Z hint: 	git branch -m <name>
+2026-10-13T09:46:31.2160108Z hint:
+2026-10-13T09:46:31.2161312Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-13T09:46:31.2163344Z Initialized empty Git repository in /home/runner/work/useRAID.fun/useRAID.fun/.git/
+2026-10-13T09:46:31.2166734Z [command]/usr/bin/git remote add origin https://github.com/solana-hackathon-1/useRAID.fun
+2026-10-13T09:46:31.2234051Z ##[endgroup]
+2026-10-13T09:46:31.2235391Z ##[group]Disabling automatic garbage collection
+2026-10-13T09:46:31.2236605Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-13T09:46:31.2452253Z ##[endgroup]
+2026-10-13T09:46:31.2453525Z ##[group]Setting up auth
+2026-10-13T09:46:31.2454855Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T09:46:31.2459187Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-13T09:46:31.4612164Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T09:46:31.4617905Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-13T09:46:31.4651180Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T09:46:31.4654887Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-13T09:46:31.4683516Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-13T09:46:32.6304587Z ##[endgroup]
+2026-10-13T09:46:32.6311848Z ##[group]Fetching the repository
+2026-10-13T09:46:32.6315431Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e14327499f74ba47742c64140dfaae2552cda2e0:refs/remotes/origin/main
+2026-10-13T09:46:34.4542281Z From https://github.com/solana-hackathon-1/useRAID.fun
+2026-10-13T09:46:34.4551174Z  * [new ref]         e14327499f74ba47742c64140dfaae2552cda2e0 -> origin/main
+2026-10-13T09:46:34.4557888Z ##[endgroup]
+2026-10-13T09:46:34.4560176Z ##[group]Determining the checkout info
+2026-10-13T09:46:34.4562029Z ##[endgroup]
+2026-10-13T09:46:34.4563147Z [command]/usr/bin/git sparse-checkout disable
+2026-10-13T09:46:34.4620538Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-13T09:46:34.4672295Z ##[group]Checking out the ref
+2026-10-13T09:46:34.4673692Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-10-13T09:46:34.6544612Z Switched to a new branch 'main'
+2026-10-13T09:46:34.6551165Z branch 'main' set up to track 'origin/main'.
+2026-10-13T09:46:34.6576199Z ##[endgroup]
+2026-10-13T09:46:34.6654736Z [command]/usr/bin/git log -1 --format=%H
+2026-10-13T09:46:34.6683953Z e14327499f74ba47742c64140dfaae2552cda2e0
+2026-10-13T09:46:34.6971000Z ##[group]Run actions/setup-node@v4
+2026-10-13T09:46:34.6971363Z with:
+2026-10-13T09:46:34.6971622Z   node-version: 22
+2026-10-13T09:46:34.6971873Z   cache: npm
+2026-10-13T09:46:34.6972116Z   always-auth: false
+2026-10-13T09:46:34.6972382Z   check-latest: false
+2026-10-13T09:46:34.6974930Z   token: ***
+2026-10-13T09:46:34.6975186Z ##[endgroup]
+2026-10-13T09:46:34.8761109Z (node:2083) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-13T09:46:34.8763134Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-13T09:46:34.8764170Z ##[group]Environment details
+2026-10-13T09:46:34.8768665Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-13T09:46:37.8866971Z node: v22.23.3
+2026-10-13T09:46:37.8868603Z npm: 10.9.9
+2026-10-13T09:46:37.8869305Z yarn: 1.22.22
+2026-10-13T09:46:37.8872658Z ##[endgroup]
+2026-10-13T09:46:37.8968059Z [command]/opt/hostedtoolcache/node/22.23.3/x64/bin/npm config get cache
+2026-10-13T09:46:38.2330917Z /home/runner/.npm
+2026-10-13T09:46:38.3901712Z Cache hit for: node-cache-Linux-x64-npm-b0a00daa0a435f72377194fddbfb9d72182fdb60b80075e83311a34272dd4be8
+2026-10-13T09:46:38.4005262Z (node:2083) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-13T09:46:39.4230923Z Received 176160768 of 208503260 (84.5%), 168.0 MBs/sec
+2026-10-13T09:46:39.5809849Z Received 208503260 of 208503260 (100.0%), 171.6 MBs/sec
+2026-10-13T09:46:39.5816993Z Cache Size: ~199 MB (208503260 B)
+2026-10-13T09:46:39.5852282Z [command]/usr/bin/tar -xf /home/runner/work/_temp/9aa7c495-2a90-46ff-a3ee-623ded975ad3/cache.tzst -P -C /home/runner/work/useRAID.fun/useRAID.fun --use-compress-program unzstd
+2026-10-13T09:46:40.0310629Z Cache restored successfully
+2026-10-13T09:46:40.0421117Z Cache restored from key: node-cache-Linux-x64-npm-b0a00daa0a435f72377194fddbfb9d72182fdb60b80075e83311a34272dd4be8
+2026-10-13T09:46:40.0716007Z ##[group]Run npm ci
+2026-10-13T09:46:40.0716341Z npm ci
+2026-10-13T09:46:40.1039930Z shell: /usr/bin/bash -e {0}
+2026-10-13T09:46:40.1040240Z ##[endgroup]
+2026-10-13T09:46:51.7199481Z npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+2026-10-13T09:47:10.2958435Z
+2026-10-13T09:47:10.2970828Z added 517 packages, and audited 518 packages in 30s
+2026-10-13T09:47:10.2980217Z
+2026-10-13T09:47:10.2998771Z 177 packages are looking for funding
+2026-10-13T09:47:10.3000091Z   run `npm fund` for details
+2026-10-13T09:47:10.3023293Z
+2026-10-13T09:47:10.3023911Z 8 high severity vulnerabilities
+2026-10-13T09:47:10.3030740Z
+2026-10-13T09:47:10.3031643Z To address issues that do not require attention, run:
+2026-10-13T09:47:10.3036946Z   npm audit fix
+2026-10-13T09:47:10.3037549Z
+2026-10-13T09:47:10.3041695Z To address all issues (including breaking changes), run:
+2026-10-13T09:47:10.3045604Z   npm audit fix --force
+2026-10-13T09:47:10.3046283Z
+2026-10-13T09:47:10.3046826Z Run `npm audit` for details.
+2026-10-13T09:47:10.4118137Z ##[group]Run npm run db:generate
+2026-10-13T09:47:10.4118480Z npm run db:generate
+2026-10-13T09:47:10.4185142Z shell: /usr/bin/bash -e {0}
+2026-10-13T09:47:10.4185430Z ##[endgroup]
+2026-10-13T09:47:10.5269041Z
+2026-10-13T09:47:10.5270416Z > useraid@0.1.0 db:generate
+2026-10-13T09:47:10.5271395Z > prisma generate
+2026-10-13T09:47:10.5271946Z
+2026-10-13T09:47:11.6137012Z Prisma schema loaded from prisma/schema.prisma
+2026-10-13T09:47:12.4553309Z ┌─────────────────────────────────────────────────────────┐
+2026-10-13T09:47:12.4553764Z
+2026-10-13T09:47:12.4554660Z │  Update available 6.19.3 -> 8.0.0-rc.22                 │
+2026-10-13T09:47:12.4555830Z │                                                         │
+2026-10-13T09:47:12.4556877Z ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 374ms
+2026-10-13T09:47:12.4557977Z │  This is a major update - please follow the guide at    │
+2026-10-13T09:47:12.4559058Z │  https://pris.ly/d/major-version-upgrade                │
+2026-10-13T09:47:12.4560221Z │                                                         │
+2026-10-13T09:47:12.4561043Z │  Run the following to update                            │
+2026-10-13T09:47:12.4574182Z │    npm i --save-dev prisma@latest                       │
+2026-10-13T09:47:12.4575171Z │    npm i @prisma/client@latest                          │
+2026-10-13T09:47:12.4576121Z └─────────────────────────────────────────────────────────┘
+2026-10-13T09:47:12.4576469Z
+2026-10-13T09:47:12.4577018Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2026-10-13T09:47:12.4577557Z
+2026-10-13T09:47:12.4578409Z Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+2026-10-13T09:47:12.4579199Z
+2026-10-13T09:47:12.4893283Z ##[group]Run npm run format:check
+2026-10-13T09:47:12.4893613Z npm run format:check
+2026-10-13T09:47:12.4960719Z shell: /usr/bin/bash -e {0}
+2026-10-13T09:47:12.4960994Z ##[endgroup]
+2026-10-13T09:47:12.6007748Z
+2026-10-13T09:47:12.6008848Z > useraid@0.1.0 format:check
+2026-10-13T09:47:12.6010055Z > prettier --check .
+2026-10-13T09:47:12.6010668Z
+2026-10-13T09:47:12.7039821Z Checking formatting...
+2026-10-13T09:47:20.3174603Z [warn] planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json
+2026-10-13T09:47:20.4844572Z [warn] planning/task-evidence/public-staging-20261011/vm-after-public.json
+2026-10-13T09:47:32.2024842Z [warn] Code style issues found in 2 files. Run Prettier with --write to fix.
+2026-10-13T09:47:32.2513132Z ##[error]Process completed with exit code 1.
+2026-10-13T09:47:32.2667679Z Post job cleanup.
+2026-10-13T09:47:32.3620696Z [command]/usr/bin/git version
+2026-10-13T09:47:32.3690617Z git version 2.55.0
+2026-10-13T09:47:32.3778935Z Temporarily overriding HOME='/home/runner/work/_temp/a0d33925-c1a5-4014-bb62-dcc8f626325b' before making global git config changes
+2026-10-13T09:47:32.3802778Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T09:47:32.3825937Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/useRAID.fun/useRAID.fun
+2026-10-13T09:47:32.3869176Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T09:47:32.3882557Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-13T09:47:32.4191461Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T09:47:32.4250151Z http.https://github.com/.extraheader
+2026-10-13T09:47:32.4262001Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-13T09:47:32.4342582Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-13T09:47:32.4760445Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T09:47:32.4873433Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-13T09:47:32.5920248Z Cleaning up orphan processes
+2026-10-13T09:47:32.6220490Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

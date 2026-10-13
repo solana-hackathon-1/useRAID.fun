@@ -185,32 +185,46 @@
   },
   "ci": {
     "planning-contracts": {
-      "result": "NOT VERIFIED",
-      "observed": "Actual named Checks not yet run on this candidate; staging publish is not this job"
+      "result": "SUCCESS",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
     },
     "static": {
-      "result": "NOT VERIFIED",
-      "observed": "Actual named Checks not yet run on this candidate; staging publish is not this job"
+      "result": "FAILURE",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
     },
     "dependency-security": {
-      "result": "NOT VERIFIED",
-      "observed": "Actual named Checks not yet run on this candidate; staging publish is not this job"
+      "result": "SUCCESS",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
     },
     "test": {
-      "result": "NOT VERIFIED",
-      "observed": "Actual named Checks not yet run on this candidate; staging publish is not this job"
+      "result": "FAILURE",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
     },
     "docker": {
-      "result": "NOT VERIFIED",
-      "observed": "Actual named Checks not yet run on this candidate; staging publish is not this job"
+      "result": "SUCCESS",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
     },
     "browser": {
-      "result": "NOT VERIFIED",
-      "observed": "Actual named Checks not yet run on this candidate; staging publish is not this job"
+      "result": "SUCCESS",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
     },
     "ci-gate": {
-      "result": "NOT VERIFIED",
-      "observed": "Actual named Checks not yet run on this candidate; staging publish is not this job"
+      "result": "FAILURE",
+      "sha": "e14327499f74ba47742c64140dfaae2552cda2e0",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38378710677",
+      "observed": "Actual namedjob result; fullT010 independent criteria/recognition stillabsent"
     }
   },
   "tdd": {

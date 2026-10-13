@@ -1,0 +1,5 @@
+Checking formatting...
+[warn] planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json
+[warn] planning/task-evidence/public-staging-20261011/vm-after-public.json
+[warn] planning/task-evidence/T007-origin-binding/header-test-results/.last-run.json
+[warn] Code style issues found in 3 files. Run Prettier with --write to fix.

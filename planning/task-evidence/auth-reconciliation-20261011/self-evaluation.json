@@ -28,10 +28,7 @@
       "command": "npm run typecheck -- --incremental false",
       "result": "PASS",
       "observed": "Candidate and transferred root exit0",
-      "evidence": [
-        "typecheck.log",
-        "root-typecheck.log"
-      ]
+      "evidence": ["typecheck.log", "root-typecheck.log"]
     },
     {
       "command": "DEMO_MODE=true STUDIO_SANDBOX=false WALLET_LINKS_ENABLED=false ACCOUNT_FOLDS_ENABLED=false npm run build",
@@ -49,10 +46,7 @@
       "command": "tsx .auth-preview-probe.mts; tsx .visual-preview-probe.mts",
       "result": "PASS",
       "observed": "13 HTTP/render checks; additional2 hydrated visual checks with0 console/page errors, no overflow",
-      "evidence": [
-        "http-preview.json",
-        "visual-preview.json"
-      ]
+      "evidence": ["http-preview.json", "visual-preview.json"]
     },
     {
       "command": "npm run audit:check",
@@ -64,30 +58,19 @@
       "command": "npm run lint; eslint <changed auth/tests/example files>",
       "result": "PASS_WITH_WARNINGS",
       "observed": "Full initial lint0errors27warnings; one unused merged helper removed and final changed-file lint0errors0warnings.24 upstream warnings and2 prior WIP authority-hook warnings remain",
-      "evidence": [
-        "lint.log",
-        "lint-final-scoped.log"
-      ]
+      "evidence": ["lint.log", "lint-final-scoped.log"]
     },
     {
       "command": "git diff --check; scoped prettier --check; source/fingerprint/schema checks",
       "result": "PASS",
       "observed": "No whitespace errors/conflict markers; canonical fingerprints exact; package/lock/schema/all22 migrations unchanged; all listed implementation files equal tested candidate",
-      "evidence": [
-        "root-diff-check.log",
-        "self-review-doc-format.log",
-        "source-manifest.json"
-      ]
+      "evidence": ["root-diff-check.log", "self-review-doc-format.log", "source-manifest.json"]
     },
     {
       "command": "transfer.py probe; transfer.py apply",
       "result": "PASS",
       "observed": "Disposable Git probe and actual main fast-forward,1152 prepared paths retained,1066 original file hashes unchanged before transfer except mandated checkpoint; empty staged diff/0 unmerged entries; no push/new commit",
-      "evidence": [
-        "git-probe.json",
-        "git-result.json",
-        "transfer-plan.json"
-      ]
+      "evidence": ["git-probe.json", "git-result.json", "transfer-plan.json"]
     }
   ],
   "findings_and_fixes": [
@@ -122,10 +105,7 @@
     "database_container": "raid-auth-merge-20261011",
     "database_container_id": "f679815182dffd119aa450c5369b189b0f043ea73e2701038038414d5509088e",
     "database_port": "127.0.0.1:62843",
-    "databases": [
-      "useraid_test",
-      "useraid_studio_test"
-    ],
+    "databases": ["useraid_test", "useraid_studio_test"],
     "runtime": "Node26.0.0/npm11.12.1/Next16.3.8/Prisma6.19.3/PostgreSQL16-alpine pinned721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
     "stop_server": "After confirming PID78299 still owns this cwd and port, kill -TERM 78299",
     "stop_database": "docker stop raid-auth-merge-20261011 only when preview/review no longer needed",
