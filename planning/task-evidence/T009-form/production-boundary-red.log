@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/production-test-boundary.test.ts > keeps production-visible TypeScript imports independent of the excluded test fixture tree
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "scripts/verify-guild-draft-http-preview.ts -> tests/helpers/db-guard",
++ ]
+
+ ❯ tests/production-test-boundary.test.ts:9:18
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  13:09:30
+   Duration  281ms (transform 25ms, setup 0ms, import 41ms, tests 63ms, environment 0ms)

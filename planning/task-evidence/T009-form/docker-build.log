@@ -1,0 +1,49 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 963B 0.3s done
+#1 DONE 2.6s
+
+#2 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#2 DONE 4.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 261B 0.1s done
+#4 DONE 3.1s
+
+#5 [deps 1/8] FROM docker.io/library/node:22-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 35.54MB 0.9s done
+#6 DONE 1.8s
+
+#7 [deps 2/8] WORKDIR /app
+#7 CACHED
+
+#8 [deps 3/8] RUN apt-get update && apt-get install -y openssl --no-install-recommends && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [deps 4/8] COPY package*.json ./
+#9 CACHED
+
+#10 [deps 5/8] COPY .npmrc ./
+#10 CACHED
+
+#11 [deps 6/8] COPY prisma ./prisma
+#11 DONE 7.2s
+
+#12 [deps 7/8] COPY vendor ./vendor
+#12 DONE 2.8s
+
+#13 [deps 8/8] RUN npm ci
+#13 29.07 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+ERROR: failed to build: failed to solve: Canceled: context canceled

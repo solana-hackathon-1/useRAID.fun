@@ -1,0 +1,5 @@
+tests/guild-draft-discovery.test.ts(13,7): error TS2769: No overload matches this call.
+  Overload 3 of 8, '(file: string, args?: readonly string[] | undefined, options?: ExecFileSyncOptions | undefined): string | NonSharedBuffer', gave the following error.
+    Type '{ DATABASE_URL: string; NODE_ENV: string; }' is not assignable to type 'ProcessEnv'.
+      Types of property 'NODE_ENV' are incompatible.
+        Type 'string' is not assignable to type '"development" | "production" | "test"'.

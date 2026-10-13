@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { randomBytes, createHash, randomUUID } from 'node:crypto';
 import { db } from '../src/lib/db';
-import { assertTestDatabase, truncateAll } from '../tests/helpers/db-guard';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const base = new URL(process.env.GUILD_DRAFT_HTTP_PREVIEW_URL ?? 'http://missing');
 assert(['127.0.0.1', 'localhost'].includes(base.hostname));
 assertTestDatabase();

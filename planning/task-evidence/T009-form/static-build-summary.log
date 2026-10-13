@@ -1,0 +1,11 @@
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK client-final
+client-final PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK typegen-final
+typegen-final PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK typecheck-final
+Traceback (most recent call last):
+  File "/tmp/raid-t009-form-verify-source.py", line 27, in <module>
+    with (evidence/(name+'.log')).open('w') as f:subprocess.run(cmd,cwd=dst,env=env,stdout=f,stderr=subprocess.STDOUT,check=True)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['node_modules/.bin/tsc', '--noEmit']' returned non-zero exit status 2.

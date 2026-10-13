@@ -1,0 +1,127 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+x·x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/guild-draft-discovery.test.ts > isolates eight owned Guild form cases and requires them before staging publication
+AssertionError: expected 'name: Staging image\non:\n  push:\n  …' to contain 'test --config=playwright.guild-drafts…'
+
+- Expected
++ Received
+
+- test --config=playwright.guild-drafts.config.ts
++ name: Staging image
++ on:
++   push:
++     branches: [main]
++   workflow_dispatch:
++ permissions:
++   contents: read
++ concurrency:
++   group: staging-image-main
++   cancel-in-progress: false
++
++ jobs:
++   publish:
++     if: github.ref == 'refs/heads/main'
++     # The owner-selected staging VM is aarch64; publish a native ARM64 image.
++     runs-on: ubuntu-24.04-arm
++     timeout-minutes: 30
++     permissions:
++       contents: read
++       packages: write
++     services:
++       postgres:
++         image: postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
++         env:
++           POSTGRES_USER: useraid
++           POSTGRES_PASSWORD: useraid_ci_only
++           POSTGRES_DB: useraid_test
++         ports: ['5432:5432']
++         options: --health-cmd "pg_isready -U useraid" --health-interval 5s --health-retries 10
++     env:
++       DATABASE_URL: postgresql://useraid:useraid_ci_only@localhost:5432/useraid_test
++       RUN_DB_TESTS: 'true'
++       DEMO_MODE: 'false'
++       ACCOUNT_FOLDS_ENABLED: 'false'
++       WALLET_LINKS_ENABLED: 'false'
++       LIVE_COLLECTION_APPROVED: 'false'
++       X_TRACKING_V2_SETTLEMENT_ENABLED: 'false'
++       LAUNCH_ENABLED: 'false'
++       PAYOUT_ENABLED: 'false'
++     steps:
++       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
++       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
++         with:
++           node-version: '22'
++           cache: npm
++       - name: Install and check source
++         run: |
++           npm ci
++           python3 -m unittest discover -s tests -p 'test_raid_*.py'
++           npm run db:generate
++           npm run typecheck
++           npm run lint
++           npm run audit:check
++       - name: Verify database and application contracts
++         run: |
++           npm run db:migrate
++           npm test
++       - name: Raider orientation desktop and mobile suite
++         run: |
++           npx playwright install --with-deps chromium
++           npx playwright test --config=playwright.onboarding.config.ts
++       - name: Build production image without deployment secrets
++         env:
++           SOURCE_URL: ${{ github.server_url }}/${{ github.repository }}
++         run: |
++           docker build \
++             --label "org.opencontainers.image.source=$SOURCE_URL" \
++             --label "org.opencontainers.image.revision=$GITHUB_SHA" \
++             --label "org.opencontainers.image.description=useRAID staging web and worker" \
++             -t useraid:publish .
++       - name: Runtime image smoke
++         run: |
++           docker run --rm useraid:publish node -e "require.resolve('prisma/package.json'); require.resolve('tsx/package.json'); require.resolve('@prisma/client/package.json')"
++           docker run --rm useraid:publish sh -c 'test ! -d /app/tests && test -d /app/prisma/migrations && sh -n /app/scripts/staging-start.sh'
++           docker run --rm --name useraid-image-smoke -p 127.0.0.1:3099:3000 -e DEMO_MODE=true -d useraid:publish
++           trap 'docker stop useraid-image-smoke' EXIT
++           for attempt in $(seq 1 30); do
++             if curl --fail --silent http://127.0.0.1:3099/api/health > /tmp/useraid-health.json; then
++               python3 -c 'import json; h=json.load(open("/tmp/useraid-health.json")); assert h["status"] == "ok" and h["mode"] == "demo"'
++               exit 0
++             fi
++             sleep 2
++           done
++           docker logs useraid-image-smoke
++           exit 1
++       - name: Publish checked revision to private GHCR
++         env:
++           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
++         run: |
++           registry_config=$(mktemp -d)
++           export DOCKER_CONFIG="$registry_config"
++           trap 'rm -rf "$registry_config"' EXIT
++           printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
++           bash scripts/staging-publish.sh useraid:publish
++
+
+ ❯ tests/guild-draft-discovery.test.ts:8:95
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/guild-draft-form-boundary.test.ts > documents the reusable owner form, temporary-denial retry identity and independent React consumer
+Error: ENOENT: no such file or directory, open 'docs/raid-guild-draft-form.md'
+ ❯ tests/guild-draft-form-boundary.test.ts:5:12
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 1 passed (3)
+   Start at  13:06:46
+   Duration  3.08s (transform 152ms, setup 0ms, import 315ms, tests 2.22s, environment 0ms)

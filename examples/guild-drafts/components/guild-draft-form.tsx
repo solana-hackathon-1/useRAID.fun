@@ -1,0 +1,1 @@
+../../../src/components/guild-draft-form.tsx

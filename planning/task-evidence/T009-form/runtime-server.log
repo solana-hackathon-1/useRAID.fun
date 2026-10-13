@@ -1,0 +1,9 @@
+
+> useraid@0.1.0 start
+> next start --hostname 0.0.0.0
+
+▲ Next.js 16.3.8
+- Local:         http://localhost:3000
+- Network:       http://0.0.0.0:3000
+✓ Ready in 312ms
+✓ Running next.config.ts took 58ms

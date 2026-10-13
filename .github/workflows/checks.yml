@@ -133,6 +133,8 @@ jobs:
         run: docker compose down -v
       - name: Raider orientation desktop and mobile suite
         run: npx playwright test --config=playwright.onboarding.config.ts
+      - name: Guild draft desktop and mobile suite
+        run: npx playwright test --config=playwright.guild-drafts.config.ts
       - name: Production build
         run: npm run build
         env:

@@ -2507,6 +2507,7 @@ footer {
   font-weight: 600;
 }
 .orientation-fields select,
+.orientation-fields textarea,
 .orientation-fields input:not([type='checkbox']) {
   box-sizing: border-box;
   width: 100%;
