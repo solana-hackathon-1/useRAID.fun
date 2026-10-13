@@ -1,0 +1,32 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/project-control-attestation.test.ts (67 tests | 1 failed) 895ms
+   × rejects malformed signature bytes 1111111111111111111111111111111111111111111111111111111111111111 33ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed signature bytes 1111111111111111111111111111111111111111111111111111111111111111
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/project-control-attestation.test.ts:100:42
+     98| });
+     99| it.each(['', 'not-base58','1'.repeat(64),bs58.encode(new Uint8Array(65…
+    100|  expect(()=>evaluate(facts,{signature})).toThrow('INVALID_INPUT');
+       |                                          ^
+    101| });
+    102| it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 66 passed (67)
+   Start at  15:09:36
+   Duration  1.39s (transform 112ms, setup 0ms, import 272ms, tests 895ms, environment 0ms)

@@ -1,0 +1,368 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/project-control-attestation.test.ts (67 tests | 67 failed) 73ms
+   × binds a real approved project-wallet signature and grants no authority or effect 10ms
+   × produces a canonical explicit existing-project message independent of object order and UTC formatting 1ms
+   × substitutes the independently implemented Node verifier with the same outcomes 1ms
+   × cannot transplant a signature to changed actorAccountId 1ms
+   × cannot transplant a signature to changed guildDraftId 1ms
+   × cannot transplant a signature to changed draftRevision 0ms
+   × cannot transplant a signature to changed challengeId 1ms
+   × cannot transplant a signature to changed origin 0ms
+   × cannot transplant a signature to changed nonce 1ms
+   × cannot transplant a signature to changed signer 1ms
+   × cannot transplant a signature to changed issuedAt 1ms
+   × cannot transplant a signature to changed expiresAt 0ms
+   × cannot transplant a signature to changed policy 0ms
+   × cannot transplant a signature to changed authority 0ms
+   × cannot transplant a signature to changed publicEvidence 0ms
+   × binds the exact asset networkIdentity, not ticker or registry metadata 1ms
+   × binds the exact asset mint, not ticker or registry metadata 1ms
+   × binds the exact asset tokenProgram, not ticker or registry metadata 1ms
+   × rejects anonymous before calling cryptography 1ms
+   × rejects session revoked before calling cryptography 1ms
+   × rejects restricted before calling cryptography 0ms
+   × rejects wrong actor before calling cryptography 2ms
+   × rejects wrong draft before calling cryptography 1ms
+   × rejects wrong owner before calling cryptography 1ms
+   × rejects changed draft before calling cryptography 1ms
+   × rejects wrong origin before calling cryptography 0ms
+   × rejects consumed nonce before calling cryptography 1ms
+   × rejects revoked nonce before calling cryptography 1ms
+   × rejects exact expiry before calling cryptography 0ms
+   × rejects future proof before calling cryptography 0ms
+   × requires an actually approved policy instead of UNAPPROVED 1ms
+   × requires an actually approved policy instead of REVOKED 0ms
+   × rejects changed policy approval evidence revision 1ms
+   × rejects changed authority approval evidence revision 0ms
+   × rejects changed publicEvidence approval evidence revision 1ms
+   × rejects STALE project control despite a correct wallet signature 1ms
+   × rejects UNKNOWN project control despite a correct wallet signature 0ms
+   × rejects REVOKED project control despite a correct wallet signature 0ms
+   × rejects CONFLICT project control despite a correct wallet signature 0ms
+   × requires supporting public evidence instead of UNVERIFIED 0ms
+   × requires supporting public evidence instead of STALE 0ms
+   × requires supporting public evidence instead of UNKNOWN 0ms
+   × requires supporting public evidence instead of REVOKED 0ms
+   × rejects expired/future observations for authority even with an optimistic status 1ms
+   × rejects expired/future observations for publicEvidence even with an optimistic status 0ms
+   × does not require a permanently revoked mint authority or treat a sign-in message as project control 9ms
+   × rejects client supplied signer rather than inheriting asserted authority 9ms
+   × rejects client supplied message rather than inheriting asserted authority 1ms
+   × rejects client supplied assetId rather than inheriting asserted authority 1ms
+   × rejects client supplied founderControlVerified rather than inheriting asserted authority 1ms
+   × rejects client supplied role rather than inheriting asserted authority 1ms
+   × rejects client supplied holderEligible rather than inheriting asserted authority 1ms
+   × rejects malformed signature bytes  1ms
+   × rejects malformed signature bytes not-base58 1ms
+   × rejects malformed signature bytes 1111111111111111111111111111111111111111111111111111111111111111 1ms
+   × rejects malformed signature bytes 11111111111111111111111111111111111111111111111111111111111111111 1ms
+   × rejects malformed/unapproved context shape {"purpose":"WALLET_SIGN_IN"} 1ms
+   × rejects malformed/unapproved context shape {"version":"v2"} 1ms
+   × rejects malformed/unapproved context shape {"nonce":"weak"} 0ms
+   × rejects malformed/unapproved context shape {"expiresAt":"2026-10-13T09:00:00.000Z"} 1ms
+   × rejects malformed/unapproved context shape {"issuedAt":"2026-10-13T09:00:00.0001Z"} 1ms
+   × rejects malformed/unapproved context shape {"origin":"https://raid.example/"} 1ms
+   × rejects malformed/unapproved context shape {"origin":"https://user:password@raid.example"} 1ms
+   × rejects malformed/unapproved context shape {"assetId":{"chain":"SOLANA","networkIdentity":"synthetic-genesis","kind":"TOKEN","mint":"cGfHiC6Kgg3FpFZvgwGcswsCRtp4aBP2fzuXRQPizuN","tokenProgram":"gBxS1f6uyyGPuW5MzGBukidSb71jdsCb5fZaoSzULE5","symbol":"RAID"}} 1ms
+   × rejects malformed/unapproved context shape {"mintAuthority":"GmaDrppBC7P5ARKV8g3djiwP89vz1jLK23V2GBjuAEGB"} 1ms
+   × sanitizes verifier exceptions and rejects unknown or success-shaped adapter responses 0ms
+   × rejects global roles and private extras in trusted facts instead of using them as approval 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 67 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/project-control-attestation.test.ts > binds a real approved project-wallet signature and grants no authority or effect
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ evaluate tests/project-control-attestation.test.ts:14:51
+ ❯ tests/project-control-attestation.test.ts:20:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > produces a canonical explicit existing-project message independent of object order and UTC formatting
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ tests/project-control-attestation.test.ts:28:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > substitutes the independently implemented Node verifier with the same outcomes
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ tests/project-control-attestation.test.ts:36:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed actorAccountId
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed guildDraftId
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed draftRevision
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed challengeId
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed origin
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed nonce
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed signer
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed issuedAt
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed expiresAt
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed policy
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed authority
+ FAIL  tests/project-control-attestation.test.ts > cannot transplant a signature to changed publicEvidence
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ tests/project-control-attestation.test.ts:45:55
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > binds the exact asset networkIdentity, not ticker or registry metadata
+ FAIL  tests/project-control-attestation.test.ts > binds the exact asset mint, not ticker or registry metadata
+ FAIL  tests/project-control-attestation.test.ts > binds the exact asset tokenProgram, not ticker or registry metadata
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ tests/project-control-attestation.test.ts:50:55
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects anonymous before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects session revoked before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects restricted before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects wrong actor before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects wrong draft before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects wrong owner before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects changed draft before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects wrong origin before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects consumed nonce before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects revoked nonce before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects exact expiry before calling cryptography
+ FAIL  tests/project-control-attestation.test.ts > rejects future proof before calling cryptography
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ tests/project-control-attestation.test.ts:69:38
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > requires an actually approved policy instead of UNAPPROVED
+ FAIL  tests/project-control-attestation.test.ts > requires an actually approved policy instead of REVOKED
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ evaluate tests/project-control-attestation.test.ts:14:51
+ ❯ tests/project-control-attestation.test.ts:73:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects changed policy approval evidence revision
+ FAIL  tests/project-control-attestation.test.ts > rejects changed authority approval evidence revision
+ FAIL  tests/project-control-attestation.test.ts > rejects changed publicEvidence approval evidence revision
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ evaluate tests/project-control-attestation.test.ts:14:51
+ ❯ tests/project-control-attestation.test.ts:77:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects STALE project control despite a correct wallet signature
+ FAIL  tests/project-control-attestation.test.ts > rejects UNKNOWN project control despite a correct wallet signature
+ FAIL  tests/project-control-attestation.test.ts > rejects REVOKED project control despite a correct wallet signature
+ FAIL  tests/project-control-attestation.test.ts > rejects CONFLICT project control despite a correct wallet signature
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ evaluate tests/project-control-attestation.test.ts:14:51
+ ❯ tests/project-control-attestation.test.ts:80:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > requires supporting public evidence instead of UNVERIFIED
+ FAIL  tests/project-control-attestation.test.ts > requires supporting public evidence instead of STALE
+ FAIL  tests/project-control-attestation.test.ts > requires supporting public evidence instead of UNKNOWN
+ FAIL  tests/project-control-attestation.test.ts > requires supporting public evidence instead of REVOKED
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ evaluate tests/project-control-attestation.test.ts:14:51
+ ❯ tests/project-control-attestation.test.ts:83:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects expired/future observations for authority even with an optimistic status
+ FAIL  tests/project-control-attestation.test.ts > rejects expired/future observations for publicEvidence even with an optimistic status
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ evaluate tests/project-control-attestation.test.ts:14:51
+ ❯ tests/project-control-attestation.test.ts:88:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > does not require a permanently revoked mint authority or treat a sign-in message as project control
+Error: NOT_IMPLEMENTED
+ ❯ evaluateProjectControlProof src/guild-profiles/control-attestation.ts:6:9
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ evaluate tests/project-control-attestation.test.ts:14:131
+ ❯ tests/project-control-attestation.test.ts:93:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects client supplied signer rather than inheriting asserted authority
+ FAIL  tests/project-control-attestation.test.ts > rejects client supplied message rather than inheriting asserted authority
+ FAIL  tests/project-control-attestation.test.ts > rejects client supplied assetId rather than inheriting asserted authority
+ FAIL  tests/project-control-attestation.test.ts > rejects client supplied founderControlVerified rather than inheriting asserted authority
+ FAIL  tests/project-control-attestation.test.ts > rejects client supplied role rather than inheriting asserted authority
+ FAIL  tests/project-control-attestation.test.ts > rejects client supplied holderEligible rather than inheriting asserted authority
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/project-control-attestation.test.ts:97:61
+     95| });
+     96| it.each(['signer','message','assetId','founderControlVerified','role',…
+     97|  expect(()=>evaluate(facts,{...signed(),[field]:'forged'})).toThrow('I…
+       |                                                             ^
+     98| });
+     99| it.each(['', 'not-base58','1'.repeat(64),bs58.encode(new Uint8Array(65…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed signature bytes
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed signature bytes not-base58
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed signature bytes 1111111111111111111111111111111111111111111111111111111111111111
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed signature bytes 11111111111111111111111111111111111111111111111111111111111111111
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/project-control-attestation.test.ts:100:42
+     98| });
+     99| it.each(['', 'not-base58','1'.repeat(64),bs58.encode(new Uint8Array(65…
+    100|  expect(()=>evaluate(facts,{signature})).toThrow('INVALID_INPUT');
+       |                                          ^
+    101| });
+    102| it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"purpose":"WALLET_SIGN_IN"}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"version":"v2"}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"nonce":"weak"}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"expiresAt":"2026-10-13T09:00:00.000Z"}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"issuedAt":"2026-10-13T09:00:00.0001Z"}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"origin":"https://raid.example/"}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"origin":"https://user:password@raid.example"}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"assetId":{"chain":"SOLANA","networkIdentity":"synthetic-genesis","kind":"TOKEN","mint":"cGfHiC6Kgg3FpFZvgwGcswsCRtp4aBP2fzuXRQPizuN","tokenProgram":"gBxS1f6uyyGPuW5MzGBukidSb71jdsCb5fZaoSzULE5","symbol":"RAID"}}
+ FAIL  tests/project-control-attestation.test.ts > rejects malformed/unapproved context shape {"mintAuthority":"GmaDrppBC7P5ARKV8g3djiwP89vz1jLK23V2GBjuAEGB"}
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/project-control-attestation.test.ts:105:65
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > sanitizes verifier exceptions and rejects unknown or success-shaped adapter responses
+Error: NOT_IMPLEMENTED
+ ❯ createProjectControlMessage src/guild-profiles/control-attestation.ts:3:9
+      1| /** Executable test-first stub; no proof/authority implementation yet.…
+      2| export function createProjectControlMessage(_context: unknown): string…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function evaluateProjectControlProof(_context: unknown, _facts:…
+ ❯ signed tests/project-control-attestation.test.ts:13:110
+ ❯ tests/project-control-attestation.test.ts:108:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/67]⎯
+
+ FAIL  tests/project-control-attestation.test.ts > rejects global roles and private extras in trusted facts instead of using them as approval
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/project-control-attestation.test.ts:114:204
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/67]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  67 failed (67)
+   Start at  15:07:49
+   Duration  592ms (transform 89ms, setup 0ms, import 173ms, tests 73ms, environment 0ms)

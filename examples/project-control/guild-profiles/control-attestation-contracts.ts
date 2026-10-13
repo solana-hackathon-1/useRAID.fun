@@ -1,0 +1,1 @@
+../../../src/guild-profiles/control-attestation-contracts.ts

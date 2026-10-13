@@ -1,0 +1,62 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-13T09:28:59.732871+00:00",
+  "source_base": "43d41a1cca3aca571489e2cc7b217d819fe8beab",
+  "source_identity": "Bounded implementation 654a94a54bccb87a66ad1d4b49555c52036e0838; source hashes/actual test phases retain exact uncommitted phase identities; fulltask incomplete",
+  "requirements": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R10",
+    "R15",
+    "R16",
+    "I06",
+    "I07",
+    "I10",
+    "I13",
+    "AC71 partial",
+    "AC73 partial",
+    "AC74",
+    "AC75"
+  ],
+  "independent_review": "NOT VERIFIED; no delegation",
+  "scope": "Pure informational approved-signer/exactrequest proof, no nonce/storage/Guild/Founder/grant/token/public/capacity/money effect",
+  "findings": [
+    "RED67FAIL before implementation; firstGREEN66PASS1FAIL because64 base58 ones encode64bytes, retained as cryptographic rejection and malformed63bytes tested separately",
+    "CI inventory edit first keyid was wrong, corrected actualepic key after meaningful missinginventory check",
+    "Four new genuineRED tests identified cross-policy/cross-authority binding; strict purpose/route and exact linked references implemented",
+    "First frozen tsc failed implicit adapter destructuring; explicit public input type corrected without exclusions"
+  ],
+  "checks": {
+    "red": "67FAIL beforeimplementation; additional4scope-bindingFAIL beforelinkedpolicy/referencefix",
+    "green_regression": "Final9files181PASS incl72proof and1boundary; first66PASS1fixtureerror\u219268PASS recorded",
+    "docs": "4files90PASS",
+    "planning": "5affectedPASS;47 unchanged cases reused from main43d actual52PASS",
+    "static": "Corrected own frozen strict tsc and lint PASS; explicit verification input, no exclusions; final targetedformatcheckPASS",
+    "consumer": "Own copied /tmp/raid-t010-control-consumer-5ywgnd21,7package installation, refreshedcanonicalfiles real tweetnacl and independentNode verification/denials/noauthority/noreplayclaimPASS",
+    "reused_skipped": "No new schema/app/browser wiring, reuse matching main43d123files1368+18browser/nativeARMimage/runtime/GHCR/cleanup; exactnewmain mandatory staging and actual named Checks still due. No arbitrary localproduction/browser/DB repetition",
+    "preview": "Not applicable to this pure unused module: no browser-visible route/action changed; no server launched",
+    "cleanup": "All owned CLI processes exit0; no DB/container/server created, priorownedresourcesstopped, preserve unrelated services/data/volumes/images/evidence",
+    "completion": "Actualvalidator exit1: full27criteria/seven namedChecks have NOTVERIFIED evidence; no fabricated review/pass/exclusion"
+  },
+  "remaining": "Actual approved policy/authority/public evidence/provider/durable nonce/recognizedGuild uniqueness/history/API/UI/independentUAT/gates are NOT VERIFIED",
+  "ended_utc": "2026-10-13T09:37:27.813249+00:00",
+  "elapsed_seconds": 508.080378,
+  "source_hashes": {
+    "src/guild-profiles/control-attestation.ts": "041fb006b956062e8912cac30451db6456730796e5f3bdcd4351231a164aa16d",
+    "src/guild-profiles/control-attestation-contracts.ts": "5f4e92fbc756b6c5c4ef6a11c855c4bdc07efd68d2c0e07e898c5c2e385b39a1",
+    "src/guild-profiles/ed25519-control-verifier.ts": "14fa21b211e1d2ae06f5c7582ce90ec1310ee2dfd037e87fda74d77512a11455",
+    "tests/project-control-attestation.test.ts": "23e6a0c774d88b5fc05c23af6b595501f2ea9c2f83ea1c639d4d8b4dbe6c57e9",
+    "tests/project-control-boundary.test.ts": "906dd412ff8a6d384891d5e0b12ef89e837ef0827ab1bcadd6a85e171714b9ca",
+    "docs/raid-project-control.md": "21227b7456d67c4cd1c5a5d0b656f92db4eff2ca841cb0dff367219349a3c350",
+    "docs/raid-module-reuse.md": "32772374763f9428a53dac171f2a5704e734a437c175d944e10516b9c3aca5e2",
+    "docs/tasks/2026-10-13-T010-control-attestation.md": "f37f7ebe02b5bab4984a9d0209a194d8f2385c378b50c23c6bc69576e492e259",
+    "examples/project-control/host.ts": "2264ce7d6edd8b4894f093f5bd6283c5c217f86b11edeeb1a9762be5f09ac58d",
+    "examples/project-control/package.json": "f0bce77943d3c6550ee46bad05e66bacefe89f374276bcbffe3abcf1a7f63495",
+    "examples/project-control/package-lock.json": "5de3e27fcc6235ca76948d0bc316b05ba4f78777ce3bd6649fd55ec3620f1b2c",
+    "examples/project-control/README.md": "c780b991074f192c456d7575f0a7ad881a5ce9d846be505a32b49df9d8f92b9e",
+    "planning/raid-ci-matrix.json": "0f7db71999b584ea458da8cf70df4af932bddb1b2f610855d12d6e381f9933ec"
+  },
+  "implementation_commit": "654a94a54bccb87a66ad1d4b49555c52036e0838"
+}

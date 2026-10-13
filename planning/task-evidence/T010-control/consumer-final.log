@@ -1,0 +1,5 @@
+
+> raid-project-control-example@1.0.0 start
+> tsx host.ts
+
+{"synthetic":true,"realEd25519Signature":true,"alternateNodeVerifier":true,"exactAssetAndRequest":true,"expiryRevocationPolicyEvidenceAndTenantDenied":true,"noAuthorityOrPersistence":true,"noAtomicReplayClaim":true}
