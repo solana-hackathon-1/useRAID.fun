@@ -2,7 +2,7 @@
   "label": "SELF-EVALUATED",
   "started_utc": "2026-10-13T10:46:05.578691+00:00",
   "source_base": "23bffb4579ee72497018fde15f14e1d95de9e0e9",
-  "source_identity": "Uncommitted privateproposal schemas/rawstorage/additive25thDDL/Prisma/sharedidentifier/tests/docs/ownPGconsumer pluspreservedpostCI metadata/checkpoint",
+  "source_identity": "Bounded implementation 55e264bad5192ce744195c8a2945b73d8bb6e9b3; finalsourcehashes/actualuncommittedRED phase identity retained, fulltask incomplete",
   "scope": "Ownerprivate versioned PENDING_VERIFICATION claims only; no actualpolicy/authority/nonce/Guild/token/grant/public/money/capacity/rootAPIUI/flag effect",
   "requirements": [
     "R01",
@@ -58,5 +58,6 @@
     "examples/project-proposals/schema.sql": "680d316313be30e3f0fcd8893e280d003babc5c35649337dcc1b9328e1cbd090",
     "examples/project-proposals/README.md": "5de361f0ba673aac78577e21e5ed59a3bcec33113b2b0c250b08b3c939a5819f",
     "planning/raid-ci-matrix.json": "0eaa6af5aeb9c865efd74efbdda97e67ed17b99e22bcbb120509fa055a03859f"
-  }
+  },
+  "implementation_commit": "55e264bad5192ce744195c8a2945b73d8bb6e9b3"
 }
