@@ -17,8 +17,8 @@
     "T011 durableobservations/preferences/effectiveprivatecode/historyclaims/independentreview-UAT/releasegates unverified"
   ],
   "release_gate_disposition": "Independent reversiblemoduleonly/noRoot/provider/publicgrant/money/capacity enablement; nofakeGitHubSUCCESS for accountblockedCI",
-  "code_source_sha": null,
-  "source_identity": "UNCOMMITTED relative to0d28e217688a467285049105f12ab351dd255e2c; actualRED source manifest retained",
+  "code_source_sha": "562d196eb6a481663c619d09af08cd4104176bf0",
+  "source_identity": "Bounded implementation 562d196eb6a481663c619d09af08cd4104176bf0; RED uncommitted relative0d withactualsource manifest, finalchecks/ownconsumer hashesretained",
   "criteria": {
     "T011-C01": {
       "result": "NOT VERIFIED",
@@ -231,14 +231,14 @@
     },
     "green": {
       "command": "vitest holder-observation/guild-profiles",
-      "sha": null,
+      "sha": "562d196eb6a481663c619d09af08cd4104176bf0",
       "evidence_url": "planning/task-evidence/T011-holder-observation/green.log",
       "observed": "2files57PASS766ms including33existingprofilepermissioncases",
       "result": "PASS"
     },
     "refactor": {
       "command": "vitest holder/boundary/profile/regression/docs; strictTSC/lint/independentcleanconsumer",
-      "sha": null,
+      "sha": "562d196eb6a481663c619d09af08cd4104176bf0",
       "evidence_url": "planning/task-evidence/T011-holder-observation/review.json",
       "observed": "4files59PASS thenmeaningfulprovenance2RED1PASS\u2192final4files62PASS; final6files176PASS6.27s/5requirements/strictTSC/lint/ownclean6packageconsumerPASS",
       "result": "PASS"

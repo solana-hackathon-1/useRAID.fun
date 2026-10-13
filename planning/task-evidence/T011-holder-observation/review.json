@@ -41,5 +41,7 @@
     "docs/raid-module-reuse.md": "48e5f1867c38e8f8f037a2008e9fdb239ff1cb0d20294603fed375fcd07c73bd",
     "docs/tasks/2026-10-13-T011-holder-observation.md": "ebd45f1e9d48d9e0771b1801790d163c43ada64d016c500e591a7336b9059f41",
     "planning/raid-ci-matrix.json": "a23840e0f85438f58d87c757bf8e413d09559a64e1f453b6363819990b0ed5c3"
-  }
+  },
+  "implementation_commit": "562d196eb6a481663c619d09af08cd4104176bf0",
+  "source_identity": "Bounded implementation 562d196eb6a481663c619d09af08cd4104176bf0; genuineRED manifests/stubs/tests/provenancefailures andfinalhashes retained"
 }
