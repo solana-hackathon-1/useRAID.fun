@@ -8,6 +8,7 @@ import {
 import { isEmptyAccount, absorbAccount } from '../src/lib/account-merge';
 import { absorbLegacyAccount } from './helpers/legacy-account-merge';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { matchesBlockingObservation } from './helpers/lock-observation';
 import { creditUsdc } from './helpers/ledger';
 import { Keypair } from '@solana/web3.js';
 import bs58 from 'bs58';
@@ -45,7 +46,7 @@ async function observeBlock(waiter: number, blocker: number, statement: RegExp) 
       'SELECT query, pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid = $1',
       waiter,
     );
-    if (rows[0]?.blockers.includes(blocker)) {
+    if (matchesBlockingObservation(rows[0], blocker, statement)) {
       expect(rows[0].query).toMatch(statement);
       // Evidence comes from the DB lock graph, never from elapsed sleep.
       console.info(

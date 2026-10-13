@@ -1,13 +1,22 @@
-import { execFileSync } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
-import { dirname, resolve, relative } from 'node:path';
+import { readFile, readdir } from 'node:fs/promises';
+import { dirname, resolve, relative, join } from 'node:path';
 import { expect, it } from 'vitest';
 it('keeps production-visible TypeScript imports independent of the excluded test fixture tree', async () => {
   const ignore = await readFile('.dockerignore', 'utf8');
   expect(ignore).toMatch(/^tests\/?$/m);
-  const files = execFileSync('rg', ['--files', 'src', 'scripts'], { encoding: 'utf8' })
-    .split('\n')
-    .filter((f) => /\.tsx?$/.test(f));
+  async function sources(dir: string): Promise<string[]> {
+    const entries = await readdir(dir, { withFileTypes: true });
+    const groups = await Promise.all(
+      entries.map((entry) => {
+        const file = join(dir, entry.name);
+        return entry.isDirectory()
+          ? sources(file)
+          : Promise.resolve(/\.tsx?$/.test(file) ? [file] : []);
+      }),
+    );
+    return groups.flat();
+  }
+  const files = (await Promise.all(['src', 'scripts'].map(sources))).flat().sort();
   const invalid: string[] = [];
   for (const file of files) {
     const source = await readFile(file, 'utf8');

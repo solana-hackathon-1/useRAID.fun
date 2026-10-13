@@ -1,0 +1,29 @@
+{
+  "label": "SELF-EVALUATED",
+  "started_utc": "2026-10-13T08:12:01.890212+00:00",
+  "source_base": "a2d6dd165338fc493ced95e5fac4e60a9b47cd8f",
+  "source_hashes": {
+    "tests/production-test-boundary.test.ts": "c99aa0d69863dd79b21dae9ccb7904b4bbb4963d49ba86477da4fdb415729af7",
+    "tests/production-test-boundary-host.test.ts": "661eaab9c7fcccb466c831351faf642f4ed13a3f6e1fe9b1c6e5a0d66e32bd8a",
+    "tests/identity-storage-db.test.ts": "cc367b1b76a9c9b0f8e4500b9e7b3af93c407c8ec033b6b3231b0fee4214a7fc",
+    "docs/tasks/2026-10-13-T009-ci-portability.md": "f436e962214340226a7bc047678eaeb8effcbf1ca3ce57b0411f4eb34136316a",
+    "tests/helpers/lock-observation.ts": "321b35257738654ecd992d0dfe02b4fd3a949305ab9cacd42c43747cf467cb97",
+    "planning/raid-ci-matrix.json": "f075f402cdd579617bd900813e6f139b9da614eba035ea47cff822570b0dcd5f"
+  },
+  "scope": "Test-only portability and activity-observation correction, unchanged application/SQL/contracts/productionimage bytes",
+  "requirements": ["R15", "R16", "I10 evidence", "I13"],
+  "independent_review": "NOT VERIFIED; no delegation",
+  "remaining": "Exactnewmainstaginggates pendingpublication; fullT009/independentUAT/projectproof/Guildgrants/public/ownership/O11/G10 andownlisting remainopen",
+  "ended_utc": "2026-10-13T08:17:17.852548+00:00",
+  "elapsed_seconds": 315.962336,
+  "checks": {
+    "red": "ActualPR198120files1356PASS2FAIL1358total; reproducedscanner missingdependency withemptyPATH childNode/Vitest1FAIL beforechange; identityobserver actualhostedSHOW/FORKEYSHARE mismatch retained",
+    "green": "4files16PASS4.74s inclnative scanner/emptyPATH/sharedmatcher/realPG identityraces, originalstmt assertion/8000ms deadline",
+    "docs": "4files102PASS",
+    "static": "Ownedfrozen-source typecheck/ownedlint/format andrequirements5PASS",
+    "reused_skipped": "Application/schema/config/productioncontext unchanged;1356priorpassingcases/C2local8browser/AMD64Docker5267/runtime evidence reusedonlyfor matching relevantbytes. No unnecessary appbuild/preview/browser/image repeats; exactnewmainfulltest/16browser/nativeARMimage/cleanup mandatory",
+    "completion": "FullT009 all28criteria/sevennamedchecks NOT VERIFIED; expectedvalidator1, no independentacceptance"
+  },
+  "resources": "Owned tmpfsraid-t009-ci-auto-20261013 8c858971... finallySTOP0/inspectfalse; no browser/server/resources outstanding; unrelatedservices/volumes/images/history/evidence preserved",
+  "implementation_commit": "36e4bc669b04d12b072c75415bd51324aa53ea2b"
+}
