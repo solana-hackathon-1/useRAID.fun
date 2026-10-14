@@ -1,0 +1,36 @@
+
+added 15 packages, and audited 16 packages in 1s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> raid-skill-taxonomy-form-example@1.0.0 typecheck
+> tsc --noEmit
+
+
+> raid-skill-taxonomy-form-example@1.0.0 start
+> tsx host.tsx
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(saved.includes(s))
+
+    at <anonymous> (/tmp/raid-t012-editor-react-consumer-70tj3zc7/host.tsx:71:3)
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.23.1

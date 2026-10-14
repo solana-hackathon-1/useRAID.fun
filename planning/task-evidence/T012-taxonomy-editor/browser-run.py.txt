@@ -1,0 +1,27 @@
+import os,subprocess,shutil,tempfile,sys
+from pathlib import Path
+root=Path.cwd();deps=Path('/tmp/raid-t008-build-source-2xavo66l/node_modules');assert deps.is_dir() and not deps.is_symlink();dst=Path(tempfile.mkdtemp(prefix='raid-t012-taxonomy-editor-source-'))
+files=subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z']).split(b'\0')
+for raw in files:
+ if not raw:continue
+ rel=Path(os.fsdecode(raw));src=root/rel
+ if not src.exists() and not src.is_symlink():continue
+ target=dst/rel;target.parent.mkdir(parents=True,exist_ok=True)
+ if src.is_symlink():target.symlink_to(os.readlink(src))
+ elif src.is_file():shutil.copy2(src,target)
+(dst/'node_modules').symlink_to(deps,target_is_directory=True)
+print('OWNED PREVIEW SOURCE',dst,flush=True)
+name='raid-t012-taxonomy-editor-'+sys.argv[1]
+cmd=['docker','run','--rm','--name',name,'--label','raid.task=T012-taxonomy-editor','--network','host','-v',str(dst)+':/work','-v',str(deps)+':'+str(deps)+':ro','-w','/work','-e','DATABASE_URL='+os.environ['DATABASE_URL'],'-e','SKILL_EDITOR_TEST_WRITES='+('false' if sys.argv[1]=='maintenance' else 'true'),'-e','RUN_DB_TESTS=true','-e','NODE_ENV=test','raid-t005-final-browser-host:latest','node_modules/.bin/playwright','test','--config=playwright.skill-editor.config.ts','--reporter=list']
+if len(sys.argv)>2:cmd+=sys.argv[2:]
+assert subprocess.run(['docker','inspect',name],capture_output=True).returncode != 0, 'Preview name already exists; preserve it'
+try:code=subprocess.run(cmd).returncode
+finally:
+ r=subprocess.run(['docker','inspect',name],capture_output=True)
+ if r.returncode==0:
+  import json
+  item=json.loads(r.stdout)[0]
+  assert item['Config']['Labels'].get('raid.task')=='T012-taxonomy-editor'
+  subprocess.run(['docker','stop',item['Id']],check=True)
+ print('OWNED BROWSER CLEANUP complete; traces preserved at',dst/'test-results',flush=True)
+sys.exit(code)

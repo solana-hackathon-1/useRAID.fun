@@ -6,8 +6,12 @@ import {
   retryWholeTransaction,
   type CommandReceiptTransaction,
 } from './command-receipts';
-import { createSkillTaxonomyHandlers, SkillTaxonomyHttpError } from './skills/taxonomy-http';
-import { publishSkillTaxonomy } from './skills/taxonomy-storage';
+import {
+  createSkillTaxonomyHandlers,
+  createSkillTaxonomyReadHandler,
+  SkillTaxonomyHttpError,
+} from './skills/taxonomy-http';
+import { publishSkillTaxonomy, readSkillTaxonomyForPublisher } from './skills/taxonomy-storage';
 async function transaction<T>(work: (tx: CommandReceiptTransaction) => Promise<T>): Promise<T> {
   return retryWholeTransaction(async () => {
     const client = await pool.connect();
@@ -90,6 +94,21 @@ const request = (body: unknown = input, originalKey = key) =>
     },
     body: JSON.stringify(body),
   });
+const reader = createSkillTaxonomyReadHandler({
+  version: 'v1',
+  actor: async () => actor,
+  requestId: randomUUID,
+  read: async (current, id) => ({
+    version: 'v1',
+    taxonomyId: id,
+    publisherAccountId: current.accountId,
+    taxonomy: await transaction((tx) =>
+      readSkillTaxonomyForPublisher(tx, current, id, { canPublish: ({ xId }) => allowed.has(xId) }),
+    ),
+    writesAvailable: allowNewWrites,
+    unavailableReason: allowNewWrites ? null : 'DISABLED',
+  }),
+});
 try {
   const client = await pool.connect();
   try {
@@ -108,6 +127,9 @@ try {
   assert.equal(first.status, 200);
   const original = await first.json();
   assert.equal(original.taxonomy.publishedByAccountId, actor.accountId);
+  const current = await reader.GET(new Request('https://synthetic.example'), catalogId);
+  assert.equal(current.status, 200);
+  assert.deepEqual((await current.json()).taxonomy, original.taxonomy);
   allowNewWrites = false;
   const replay = await api.POST(request(), catalogId);
   assert.equal(replay.status, 200);
@@ -124,6 +146,9 @@ try {
   assert.equal(disabled.status, 503);
   assert.equal((await disabled.json()).error.code, 'SERVICE_UNAVAILABLE');
   allowed.clear();
+  const deniedRead = await reader.GET(new Request('https://synthetic.example'), catalogId);
+  assert.equal(deniedRead.status, 403);
+  assert.equal(deniedRead.headers.get('cache-control'), 'private, no-store');
   const denied = await api.POST(request(), catalogId);
   assert.equal(denied.status, 403);
   assert.equal((await denied.json()).error.code, 'FORBIDDEN');

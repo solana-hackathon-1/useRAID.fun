@@ -12,6 +12,7 @@ import {
 import {
   SkillTaxonomyHttpInputSchema,
   SkillTaxonomyHttpPublishedSchema,
+  SkillTaxonomyEditorStateSchema,
 } from './taxonomy-http-contracts';
 export * from './taxonomy-http-contracts';
 export interface SkillTaxonomyHttpHost {
@@ -72,7 +73,7 @@ function failure(error: unknown, requestId: string) {
   const result = createErrorEnvelope(code, requestId);
   return Response.json(result.body, { status: status ?? result.status, headers: privateHeaders });
 }
-function correlation(host: SkillTaxonomyHttpHost) {
+function correlation(host: { requestId(): string }) {
   try {
     const result = InternalId.safeParse(host.requestId());
     if (result.success) return result.data;
@@ -115,6 +116,38 @@ export function createSkillTaxonomyHandlers(host: SkillTaxonomyHttpHost) {
         )
           throw new SkillTaxonomyStorageError('STORAGE_CONTRACT');
         return Response.json(output.data, { headers: privateHeaders });
+      } catch (error) {
+        return failure(error, requestId);
+      }
+    },
+  };
+}
+export interface SkillTaxonomyReadHost {
+  readonly version: 'v1';
+  actor(): Promise<SkillTaxonomyActor>;
+  read(actor: SkillTaxonomyActor, id: string): Promise<unknown>;
+  requestId(): string;
+}
+export function createSkillTaxonomyReadHandler(host: SkillTaxonomyReadHost) {
+  if (host?.version !== 'v1') throw new SkillTaxonomyStorageError('STORAGE_CONTRACT');
+  return {
+    async GET(_request: Request, id: string | Promise<string>) {
+      const requestId = correlation(host);
+      try {
+        const current = SkillTaxonomyActorSchema.safeParse(await host.actor());
+        if (!current.success) throw new SkillTaxonomyStorageError('STORAGE_CONTRACT');
+        const target = InternalId.safeParse(await id);
+        if (!target.success) throw new JsonBodyFailure(422);
+        const parsed = SkillTaxonomyEditorStateSchema.safeParse(
+          await host.read(current.data, target.data),
+        );
+        if (
+          !parsed.success ||
+          parsed.data.taxonomyId !== target.data ||
+          parsed.data.publisherAccountId !== current.data.accountId
+        )
+          throw new SkillTaxonomyStorageError('STORAGE_CONTRACT');
+        return Response.json(parsed.data, { headers: privateHeaders });
       } catch (error) {
         return failure(error, requestId);
       }

@@ -1,0 +1,270 @@
+42172d310b4b29b233680c2c3feaab428336532b2603950e2ef5eb1522c99b6f
+OWNED DATABASE: raid-t012-taxonomy-editor-auto-20261014 loopback port 32855
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32855"
+
+27 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-taxonomy-editor-db.test.ts (5 tests | 5 failed) 675ms
+     × returns actual empty publisher catalog without creating version/receipt/audit 169ms
+     × returns the actual immutable published version under current scoped publisher authority 160ms
+     × denies current allowlist removal even for absent catalogs 116ms
+     × denies wallet-only admin sessions despite their connected X identity 110ms
+     × denies revoked own sessions before returning even an empty editor state 115ms
+ ❯ tests/skill-taxonomy-form.test.ts (3 tests | 3 failed) 21ms
+   × renders an explicit empty catalog and hydration-disabled review/publication controls without seeding 15ms
+   × renders actual saved identity/status/aliases and disabled new publication truthfully 1ms
+   × rejects malformed host/catalog bindings before rendering 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-taxonomy-editor-db.test.ts > current locked taxonomy editor read > returns actual empty publisher catalog without creating version/receipt/audit
+SkillTaxonomyStorageError: STORAGE_CONTRACT
+ ❯ fail src/skills/taxonomy-storage.ts:21:9
+     19| export * from './taxonomy-storage-contracts';
+     20| function fail(code: SkillTaxonomyStorageError['code']): never {
+     21|   throw new SkillTaxonomyStorageError(code);
+       |         ^
+     22| }
+     23| function actorValid(value: unknown): SkillTaxonomyActor {
+ ❯ readSkillTaxonomyForPublisher src/skills/taxonomy-storage.ts:242:10
+ ❯ tests/skill-taxonomy-editor-db.test.ts:14:56
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-editor-db.test.ts:23:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/skill-taxonomy-editor-db.test.ts > current locked taxonomy editor read > returns the actual immutable published version under current scoped publisher authority
+SkillTaxonomyStorageError: STORAGE_CONTRACT
+ ❯ fail src/skills/taxonomy-storage.ts:21:9
+     19| export * from './taxonomy-storage-contracts';
+     20| function fail(code: SkillTaxonomyStorageError['code']): never {
+     21|   throw new SkillTaxonomyStorageError(code);
+       |         ^
+     22| }
+     23| function actorValid(value: unknown): SkillTaxonomyActor {
+ ❯ readSkillTaxonomyForPublisher src/skills/taxonomy-storage.ts:242:10
+ ❯ tests/skill-taxonomy-editor-db.test.ts:14:56
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/skill-taxonomy-editor-db.test.ts:27:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/skill-taxonomy-editor-db.test.ts > current locked taxonomy editor read > denies current allowlist removal even for absent catalogs
+AssertionError: expected SkillTaxonomyStorageError: STORAGE_CONTRA… { code: '…' } to match object { code: 'FORBIDDEN' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ SkillTaxonomyStorageError {
++   "code": "STORAGE_CONTRACT",
+  }
+
+ ❯ tests/skill-taxonomy-editor-db.test.ts:30:42
+     28|   });
+     29|   it('denies current allowlist removal even for absent catalogs', asyn…
+     30|     allowed = false; await expect(read()).rejects.toMatchObject({ code…
+       |                                          ^
+     31|   });
+     32|   it('denies wallet-only admin sessions despite their connected X iden…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/skill-taxonomy-editor-db.test.ts > current locked taxonomy editor read > denies wallet-only admin sessions despite their connected X identity
+AssertionError: expected SkillTaxonomyStorageError: STORAGE_CONTRA… { code: '…' } to match object { code: 'FORBIDDEN' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ SkillTaxonomyStorageError {
++   "code": "STORAGE_CONTRACT",
+  }
+
+ ❯ tests/skill-taxonomy-editor-db.test.ts:34:25
+     32|   it('denies wallet-only admin sessions despite their connected X iden…
+     33|     await db.session.update({ where: { tokenHash: actor.sessionHash },…
+     34|     await expect(read()).rejects.toMatchObject({ code: 'FORBIDDEN' });
+       |                         ^
+     35|   });
+     36|   it('denies revoked own sessions before returning even an empty edito…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/skill-taxonomy-editor-db.test.ts > current locked taxonomy editor read > denies revoked own sessions before returning even an empty editor state
+AssertionError: expected SkillTaxonomyStorageError: STORAGE_CONTRA… { code: '…' } to match object { code: 'AUTHENTICATION_REQUIRED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ SkillTaxonomyStorageError {
++   "code": "STORAGE_CONTRACT",
+  }
+
+ ❯ tests/skill-taxonomy-editor-db.test.ts:38:25
+     36|   it('denies revoked own sessions before returning even an empty edito…
+     37|     await db.session.delete({ where: { tokenHash: actor.sessionHash } …
+     38|     await expect(read()).rejects.toMatchObject({ code: 'AUTHENTICATION…
+       |                         ^
+     39|   });
+     40| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/skill-taxonomy-form.test.ts > renders an explicit empty catalog and hydration-disabled review/publication controls without seeding
+AssertionError: expected '<p>Editor not implemented.</p>' to contain 'No catalog has been published'
+
+Expected: "No catalog has been published"
+Received: "<p>Editor not implemented.</p>"
+
+ ❯ tests/skill-taxonomy-form.test.ts:8:16
+      6| it('renders an explicit empty catalog and hydration-disabled review/pu…
+      7|   const html = renderToStaticMarkup(createElement(SkillTaxonomyForm, {…
+      8|   expect(html).toContain('No catalog has been published'); expect(html…
+       |                ^
+      9|   expect(html).toContain('Review changes'); expect(html).toContain('di…
+     10|   expect(html).toContain('Loading catalog controls'); expect(html).not…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  tests/skill-taxonomy-form.test.ts > renders actual saved identity/status/aliases and disabled new publication truthfully
+AssertionError: expected '<p>Editor not implemented.</p>' to contain 'Saved frontend'
+
+Expected: "Saved frontend"
+Received: "<p>Editor not implemented.</p>"
+
+ ❯ tests/skill-taxonomy-form.test.ts:15:152
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  tests/skill-taxonomy-form.test.ts > rejects malformed host/catalog bindings before rendering
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/skill-taxonomy-form.test.ts:18:138
+     16| });
+     17| it('rejects malformed host/catalog bindings before rendering', () => {
+     18|   expect(() => renderToStaticMarkup(createElement(SkillTaxonomyForm, {…
+       |                                                                                                                                          ^
+     19| });
+     20|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  8 failed (8)
+   Start at  19:00:15
+   Duration  1.53s (transform 203ms, setup 0ms, import 504ms, tests 696ms, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t012-taxonomy-editor-auto-20261014

@@ -1,0 +1,10 @@
+{
+  "base_sha": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
+  "files": {
+    "src/skills/taxonomy-storage.ts": "6848568c79bda73e7a2e1dbdc1cabcabe6d67517eb87d98c33178154c74a20bb",
+    "src/components/skill-taxonomy-form.tsx": "610f0e2a774c0f528daa3d578050f93d10dee9e49d6143669146a3c5851e161d",
+    "tests/skill-taxonomy-editor-db.test.ts": "c1a8bf5057f3eecc9827d2bb7c7547d48fe02138d5d6007e7ad76c86bca36f6c",
+    "tests/skill-taxonomy-form.test.ts": "9274782891726d49a4009cfedff0eda32bb56153a141fa8b7ee8d7aaebf198ee"
+  },
+  "identity": "Base plus archived test/stub working tree, before implementation."
+}

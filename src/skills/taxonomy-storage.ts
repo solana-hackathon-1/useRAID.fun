@@ -233,3 +233,17 @@ export async function readPublishedSkillTaxonomy(
   await authorize(tx, actor);
   return result;
 }
+export async function readSkillTaxonomyForPublisher(
+  tx: CommandReceiptTransaction,
+  actorValue: SkillTaxonomyActor,
+  id: string,
+  policy: Pick<SkillTaxonomyStorageOptions, 'canPublish'>,
+): Promise<PublishedSkillTaxonomy | null> {
+  const actor = actorValid(actorValue);
+  if (!InternalId.safeParse(id).success) fail('INVALID_INPUT');
+  if (typeof policy?.canPublish !== 'function') fail('STORAGE_CONTRACT');
+  await authorize(tx, actor, policy.canPublish);
+  const result = await readPublishedSkillTaxonomy(tx, actor, id);
+  await authorize(tx, actor, policy.canPublish);
+  return result;
+}

@@ -1,0 +1,242 @@
+{
+  "task_id": "T012",
+  "scope": "T012D2 current-authorized stable category editor and publisher reads only",
+  "status": "VERIFIED_IN_TEST bounded editor only; full T012 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not authorized/assigned",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-14-T012-taxonomy-editor.md",
+  "migration_rollback": "Additive route/config only; no DDL/schema/core receipt change. Disable new publications and retain every acknowledged catalog/version/receipt/audit; destructive rollback unsupported.",
+  "dependency_evidence": "Actual existing publication/history/private claim contracts and additive current locked publisher read/GET. Own installed React/PG consumers and actual desktop/mobile/disabled-host tests. Approved assessment/trial/rubric/evaluator and full acceptance remain independent obligations.",
+  "open_decisions": "O09 numeric promotion/calibration, actual assessment/evaluator/provider/operating policies not selected or enabled.",
+  "release_gate_disposition": "Full parent acceptance, independent/UAT/business/live gates NOT VERIFIED. Bounded staging Git authority DEC-2026-10-12-03 remains.",
+  "code_source_sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
+  "source_identity": "Implementation f63a1a40edf626c80c4a7b32ceae683cc3d1d463 contains exact verified code/test/config/example; subsequent pin changes metadata only.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11; pinned owned PG16 with27 unchanged migrations and dedicated generated27client deps; actual desktop/mobile/disabled-host; independent own-installed React and PG hosts; no live provider/admin/fund credentials.",
+  "candidate_sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
+  "criteria": {
+    "T012-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C01",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C02",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C03",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C04",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C05",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C06",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C07",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C08",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C09",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C10",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C11",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C12",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C13",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C14",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C15",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C16",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C17",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C18",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-A01",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-A02",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W01",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W02",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W03",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C19",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C20",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C21",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    },
+    "T012-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C22",
+      "observed": "Bounded current-authorized editor/publisher read author evidence only; full assessment/history/admission/administration/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-editor.md; planning/task-evidence/T012-taxonomy-editor/review.json"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
+      "command": "Owned PG Vitest DB/SSR before implementation; portable read HTTP before implementation; actual missing-page desktop/mobile; workflow test before wiring",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-editor/red-source.json; red-source.tar.gz; red.log; read-http-red.log; read-http-red-source.tar.gz; browser-red.log; browser-red-source.tar.gz; ci-red.log; ci-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "Publisher read and catalog editor not implemented",
+      "observed_failure": "8typedDB/SSR failures,8portableHTTP failures,2missing-editor desktop/mobile failures,2workflowexecution subtest failures; base SHA alone does not include archived tests/stubs"
+    },
+    "green": {
+      "sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
+      "command": "Actual20desktop-mobile/2maintenance;140affected; independentinstalled hosts",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-editor/green.log; browser-final.log; browser-maintenance.log; affected.log; react-consumer-final.log; pg-consumer.log; source-hashes.json",
+      "result": "PASS",
+      "observed": "60initialGREEN;20browser/2disabled/140affected/owninstalledReacttypesSSR and actualPGHTTP PASS"
+    },
+    "refactor": {
+      "sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
+      "command": "Targeted exact-current auth after native signin form; strict source gates and mandatory checks",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-editor/auth-refactor.log; browser-reuse.json; typecheck.log; production-build.log; lint.log; planning.log; review.json",
+      "result": "PASS",
+      "observed": "4authPASS, finalstrictbuild/types/lint0errors25oldwarnings/55planning/auditpolicyPASS; matching relevant20browser source reused; no assertions/deadlines weakened"
+    }
+  }
+}
