@@ -17,8 +17,8 @@
     "RootprivateAPI/UI with cookie/origin/rate scope next; no clientclaim grantsrank"
   ],
   "release_gate_disposition": "Independent reversible private claimstorage only; no actualrank/access/provider/financial/capacity/publicenablement",
-  "code_source_sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
-  "source_identity": "UncommittedC1 over6a5b withactual33HTTP+3RootHost+1adminwalletRED manifests/finalhashes; nocleanHEADnewtestclaim",
+  "code_source_sha": "d07812ec894417a764a69268b7706d7ee9ab32bb",
+  "source_identity": "Implementation d07812ec894417a764a69268b7706d7ee9ab32bb; exact33HTTP+3host+1walletadmin RED manifests/finalhashes retained",
   "criteria": {
     "T012-C01": {
       "result": "NOT VERIFIED",
@@ -230,20 +230,20 @@
       "result": "FAIL"
     },
     "green": {
-      "sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+      "sha": "d07812ec894417a764a69268b7706d7ee9ab32bb",
       "command": "vitest run portableHTTP/Roothost;realPGcurrentadmin/storage contracts",
       "observed": "36combinedHTTP/hostPASS928ms +6files132PGPASS19.59s; actualuncommittedC1 overbase",
       "evidence_url": "planning/task-evidence/T012-skill-http/regression.log",
       "result": "PASS"
     },
     "refactor": {
-      "sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+      "sha": "d07812ec894417a764a69268b7706d7ee9ab32bb",
       "command": "vitest affectedboundaries/docs;NextsyntheticHTTPpreview;independentPG/HTTPhost",
-      "observed": "10files209PASS9.55s/52planning/actualNextAPI/own20packagePGHTTP27schemaNoDifference;sourceuncommittedoverbase",
+      "observed": "10files209PASS9.55s/52planning/actualNextAPI/own20packagePGHTTP27schemaNoDifference;finalsourcepinnedatimplementation",
       "evidence_url": "planning/task-evidence/T012-skill-http/boundary-docs.log",
       "result": "PASS"
     }
   },
-  "candidate_sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+  "candidate_sha": "d07812ec894417a764a69268b7706d7ee9ab32bb",
   "verification_environment": "Owned PostgreSQL16.15 / Node22 / independent own20package pg host; root fixtures; no live credentials"
 }

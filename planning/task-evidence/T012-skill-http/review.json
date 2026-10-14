@@ -31,7 +31,7 @@
     "access": "Workspace-local/no public forwarding; ownerURL/source/results/accesslimits/stoppedstatus shown",
     "desktop_mobile": "NOT RUN; no browser-visible UI/page added, API requests verified"
   },
-  "source_identity": "UncommittedC1 over6a5b; actualphase snapshots/finalhashes retained",
+  "source_identity": "Implementation d07812ec894417a764a69268b7706d7ee9ab32bb; recordedexacttype/build/preview/consumer source hashes",
   "source_hashes": {
     ".env.example": "e6e37aa398e93b9bc44c673f2513bfd272ad3ea251e2d12882c1333eb44e2e1a",
     "src/skills/http.ts": "ec004b76ccb92d5d820f3835ceae3f64bdf6b8b6ce98d7811bb4867776adae14",
@@ -61,5 +61,6 @@
     "owned_next": "Removed afterstop0; source/logs retained; no listener retained"
   },
   "ended_utc": "2026-10-14T00:27:37.895388+00:00",
-  "elapsed_seconds": 553.423267
+  "elapsed_seconds": 553.423267,
+  "implementation_commit": "d07812ec894417a764a69268b7706d7ee9ab32bb"
 }
