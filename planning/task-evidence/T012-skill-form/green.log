@@ -1,0 +1,483 @@
+raid-t012-skill-form-auto-20261014
+OWNED DATABASE: raid-t012-skill-form-auto-20261014 loopback port 32845
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32845"
+
+27 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+OWNED PREVIEW SOURCE /tmp/raid-t012-skill-form-source-wjnn2y8w
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 14 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘   1 [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:30:1 › owner discovers actual categories and saves a private unverified claim (13.6s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓   2 [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:41:1 › anonymous and revoked sessions receive no private claim or proof bytes (8.3s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘   3 [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:49:1 › validates fields accessibly without losing the draft or sending a command (3.6s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘   4 [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:55:1 › retries a committed lost acknowledgment with the original key and body through rate denial (3.7s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘   5 [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:69:1 › rereads a known stale catalog while preserving input for explicit review and new intent (5.1s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘   6 [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:78:1 › rejects a mismatched success snapshot and retries the same committed intent (4.6s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓   7 [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:87:1 › keeps a retired saved category readable and excludes it from new claim discovery (9.1s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘   8 [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:30:1 › owner discovers actual categories and saves a private unverified claim (6.8s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓   9 [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:41:1 › anonymous and revoked sessions receive no private claim or proof bytes (13.2s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  10 [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:49:1 › validates fields accessibly without losing the draft or sending a command (3.4s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  11 [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:55:1 › retries a committed lost acknowledgment with the original key and body through rate denial (3.3s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  12 [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:69:1 › rereads a known stale catalog while preserving input for explicit review and new intent (3.9s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  13 [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:78:1 › rejects a mismatched success snapshot and retries the same committed intent (3.6s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  14 [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:87:1 › keeps a retired saved category readable and excludes it from new claim discovery (10.8s)
+
+
+  1) [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:30:1 › owner discovers actual categories and saves a private unverified claim
+
+    TypeError: Cannot read properties of undefined (reading 'count')
+
+      35 |  await expect(page.getByText('Self-reported; skill has not been assessed.',{exact:true})).toBeVisible();
+      36 |  await page.reload();await expect(page.getByLabel('Self-reported experience',{exact:true})).toHaveValue('I build accessible interfaces');
+    > 37 |  expect(await db.skillClaimVersion.count()).toBe(1);expect(await db.outboxEvent.count()).toBe(0);
+         |                                    ^
+      38 |  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+      39 |  await page.evaluate(()=>document.fonts.ready);await page.screenshot({path:info.outputPath('private-skill-claim.png'),fullPage:true});
+      40 | });
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:37:36
+
+    Error Context: test-results/skill-claims/skill-claims-owner-discove-98283--a-private-unverified-claim-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-owner-discove-98283--a-private-unverified-claim-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-owner-discove-98283--a-private-unverified-claim-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:49:1 › validates fields accessibly without losing the draft or sending a command
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator: getByRole('alert')
+    Expected: focused
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">Enter your self-reported experience and up to fiv…</p> aka getByText('Enter your self-reported')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toBeFocused" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      51 |  await page.goto('/raider/skills/frontend');await page.getByLabel('Self-reported experience',{exact:true}).fill('Keep this text');
+      52 |  await page.getByLabel('Private proof URLs',{exact:true}).fill('http://unsafe.example');await page.getByRole('button',{name:'Save private claim',exact:true}).click();
+    > 53 |  await expect(page.getByRole('alert')).toBeFocused();expect(posts).toBe(0);await expect(page.getByLabel('Self-reported experience',{exact:true})).toHaveValue('Keep this text');
+         |                                        ^
+      54 | });
+      55 | test('retries a committed lost acknowledgment with the original key and body through rate denial',async({page})=>{
+      56 |  let attempts=0;const requests:{key:string|null,body:string|null}[]=[];
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:53:40
+
+    Error Context: test-results/skill-claims/skill-claims-validates-fie-2e365--draft-or-sending-a-command-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-validates-fie-2e365--draft-or-sending-a-command-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-validates-fie-2e365--draft-or-sending-a-command-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:55:1 › retries a committed lost acknowledgment with the original key and body through rate denial
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "could not be confirmed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">The save could not be confirmed. Keep this page o…</p> aka getByText('The save could not be')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        3 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      62 |  });
+      63 |  await page.goto('/raider/skills/frontend');await fill(page);await page.getByRole('button',{name:'Save private claim',exact:true}).click();
+    > 64 |  await expect(page.getByRole('alert')).toContainText('could not be confirmed');await expect(page.getByLabel('Self-reported experience',{exact:true})).toBeDisabled();
+         |                                        ^
+      65 |  await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByRole('alert')).toContainText('Wait');
+      66 |  await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.locator('form').getByRole('status')).toContainText('Claim saved');
+      67 |  expect(requests).toHaveLength(3);expect(requests[1]).toEqual(requests[0]);expect(requests[2]).toEqual(requests[0]);expect(await db.skillClaimVersion.count()).toBe(1);
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:64:40
+
+    Error Context: test-results/skill-claims/skill-claims-retries-a-com-1ae2e-nd-body-through-rate-denial-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-retries-a-com-1ae2e-nd-body-through-rate-denial-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-retries-a-com-1ae2e-nd-body-through-rate-denial-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:69:1 › rereads a known stale catalog while preserving input for explicit review and new intent
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "changed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">Saved details changed. Reload the saved revision,…</p> aka getByText('Saved details changed. Reload')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        3 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      69 | test('rereads a known stale catalog while preserving input for explicit review and new intent',async({page})=>{
+      70 |  await page.goto('/raider/skills/frontend');await fill(page,'Preserve my draft');await publish(1);
+    > 71 |  await page.getByRole('button',{name:'Save private claim',exact:true}).click();await expect(page.getByRole('alert')).toContainText('changed');
+         |                                                                                                                      ^
+      72 |  await expect(page.getByRole('button',{name:'Save private claim',exact:true})).toBeDisabled();
+      73 |  await page.getByRole('button',{name:'Reload saved revision',exact:true}).click();await expect(page.locator('form').getByRole('status')).toContainText('Review');
+      74 |  await expect(page.getByLabel('Self-reported experience',{exact:true})).toHaveValue('Preserve my draft');
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:71:118
+
+    Error Context: test-results/skill-claims/skill-claims-rereads-a-kno-625ab-licit-review-and-new-intent-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-rereads-a-kno-625ab-licit-review-and-new-intent-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-rereads-a-kno-625ab-licit-review-and-new-intent-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:78:1 › rejects a mismatched success snapshot and retries the same committed intent
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "could not be confirmed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">The save could not be confirmed. Keep this page o…</p> aka getByText('The save could not be')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        3 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      82 |  });
+      83 |  await page.goto('/raider/skills/frontend');await fill(page);await page.getByRole('button',{name:'Save private claim',exact:true}).click();
+    > 84 |  await expect(page.getByRole('alert')).toContainText('could not be confirmed');await page.getByRole('button',{name:'Retry save',exact:true}).click();
+         |                                        ^
+      85 |  await expect(page.locator('form').getByRole('status')).toContainText('Claim saved');expect(await db.skillClaimVersion.count()).toBe(1);
+      86 | });
+      87 | test('keeps a retired saved category readable and excludes it from new claim discovery',async({page})=>{
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:84:40
+
+    Error Context: test-results/skill-claims/skill-claims-rejects-a-mis-9948a-s-the-same-committed-intent-desktop/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-rejects-a-mis-9948a-s-the-same-committed-intent-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-rejects-a-mis-9948a-s-the-same-committed-intent-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:30:1 › owner discovers actual categories and saves a private unverified claim
+
+    TypeError: Cannot read properties of undefined (reading 'count')
+
+      35 |  await expect(page.getByText('Self-reported; skill has not been assessed.',{exact:true})).toBeVisible();
+      36 |  await page.reload();await expect(page.getByLabel('Self-reported experience',{exact:true})).toHaveValue('I build accessible interfaces');
+    > 37 |  expect(await db.skillClaimVersion.count()).toBe(1);expect(await db.outboxEvent.count()).toBe(0);
+         |                                    ^
+      38 |  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+      39 |  await page.evaluate(()=>document.fonts.ready);await page.screenshot({path:info.outputPath('private-skill-claim.png'),fullPage:true});
+      40 | });
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:37:36
+
+    Error Context: test-results/skill-claims/skill-claims-owner-discove-98283--a-private-unverified-claim-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-owner-discove-98283--a-private-unverified-claim-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-owner-discove-98283--a-private-unverified-claim-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:49:1 › validates fields accessibly without losing the draft or sending a command
+
+    Error: expect(locator).toBeFocused() failed
+
+    Locator: getByRole('alert')
+    Expected: focused
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">Enter your self-reported experience and up to fiv…</p> aka getByText('Enter your self-reported')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toBeFocused" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      51 |  await page.goto('/raider/skills/frontend');await page.getByLabel('Self-reported experience',{exact:true}).fill('Keep this text');
+      52 |  await page.getByLabel('Private proof URLs',{exact:true}).fill('http://unsafe.example');await page.getByRole('button',{name:'Save private claim',exact:true}).click();
+    > 53 |  await expect(page.getByRole('alert')).toBeFocused();expect(posts).toBe(0);await expect(page.getByLabel('Self-reported experience',{exact:true})).toHaveValue('Keep this text');
+         |                                        ^
+      54 | });
+      55 | test('retries a committed lost acknowledgment with the original key and body through rate denial',async({page})=>{
+      56 |  let attempts=0;const requests:{key:string|null,body:string|null}[]=[];
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:53:40
+
+    Error Context: test-results/skill-claims/skill-claims-validates-fie-2e365--draft-or-sending-a-command-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-validates-fie-2e365--draft-or-sending-a-command-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-validates-fie-2e365--draft-or-sending-a-command-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  8) [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:55:1 › retries a committed lost acknowledgment with the original key and body through rate denial
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "could not be confirmed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">The save could not be confirmed. Keep this page o…</p> aka getByText('The save could not be')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        3 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      62 |  });
+      63 |  await page.goto('/raider/skills/frontend');await fill(page);await page.getByRole('button',{name:'Save private claim',exact:true}).click();
+    > 64 |  await expect(page.getByRole('alert')).toContainText('could not be confirmed');await expect(page.getByLabel('Self-reported experience',{exact:true})).toBeDisabled();
+         |                                        ^
+      65 |  await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.getByRole('alert')).toContainText('Wait');
+      66 |  await page.getByRole('button',{name:'Retry save',exact:true}).click();await expect(page.locator('form').getByRole('status')).toContainText('Claim saved');
+      67 |  expect(requests).toHaveLength(3);expect(requests[1]).toEqual(requests[0]);expect(requests[2]).toEqual(requests[0]);expect(await db.skillClaimVersion.count()).toBe(1);
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:64:40
+
+    Error Context: test-results/skill-claims/skill-claims-retries-a-com-1ae2e-nd-body-through-rate-denial-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-retries-a-com-1ae2e-nd-body-through-rate-denial-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-retries-a-com-1ae2e-nd-body-through-rate-denial-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  9) [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:69:1 › rereads a known stale catalog while preserving input for explicit review and new intent
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "changed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">Saved details changed. Reload the saved revision,…</p> aka getByText('Saved details changed. Reload')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        2 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      69 | test('rereads a known stale catalog while preserving input for explicit review and new intent',async({page})=>{
+      70 |  await page.goto('/raider/skills/frontend');await fill(page,'Preserve my draft');await publish(1);
+    > 71 |  await page.getByRole('button',{name:'Save private claim',exact:true}).click();await expect(page.getByRole('alert')).toContainText('changed');
+         |                                                                                                                      ^
+      72 |  await expect(page.getByRole('button',{name:'Save private claim',exact:true})).toBeDisabled();
+      73 |  await page.getByRole('button',{name:'Reload saved revision',exact:true}).click();await expect(page.locator('form').getByRole('status')).toContainText('Review');
+      74 |  await expect(page.getByLabel('Self-reported experience',{exact:true})).toHaveValue('Preserve my draft');
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:71:118
+
+    Error Context: test-results/skill-claims/skill-claims-rereads-a-kno-625ab-licit-review-and-new-intent-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-rereads-a-kno-625ab-licit-review-and-new-intent-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-rereads-a-kno-625ab-licit-review-and-new-intent-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10) [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:78:1 › rejects a mismatched success snapshot and retries the same committed intent
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "could not be confirmed"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert" tabindex="-1">The save could not be confirmed. Keep this page o…</p> aka getByText('The save could not be')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+        3 × locator resolved to <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div>
+          - unexpected value ""
+
+
+      82 |  });
+      83 |  await page.goto('/raider/skills/frontend');await fill(page);await page.getByRole('button',{name:'Save private claim',exact:true}).click();
+    > 84 |  await expect(page.getByRole('alert')).toContainText('could not be confirmed');await page.getByRole('button',{name:'Retry save',exact:true}).click();
+         |                                        ^
+      85 |  await expect(page.locator('form').getByRole('status')).toContainText('Claim saved');expect(await db.skillClaimVersion.count()).toBe(1);
+      86 | });
+      87 | test('keeps a retired saved category readable and excludes it from new claim discovery',async({page})=>{
+        at /work/tests/browser-skill-claims/skill-claims.spec.ts:84:40
+
+    Error Context: test-results/skill-claims/skill-claims-rejects-a-mis-9948a-s-the-same-committed-intent-mobile/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-claims/skill-claims-rejects-a-mis-9948a-s-the-same-committed-intent-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-claims/skill-claims-rejects-a-mis-9948a-s-the-same-committed-intent-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10 failed
+    [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:30:1 › owner discovers actual categories and saves a private unverified claim
+    [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:49:1 › validates fields accessibly without losing the draft or sending a command
+    [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:55:1 › retries a committed lost acknowledgment with the original key and body through rate denial
+    [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:69:1 › rereads a known stale catalog while preserving input for explicit review and new intent
+    [desktop] › tests/browser-skill-claims/skill-claims.spec.ts:78:1 › rejects a mismatched success snapshot and retries the same committed intent
+    [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:30:1 › owner discovers actual categories and saves a private unverified claim
+    [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:49:1 › validates fields accessibly without losing the draft or sending a command
+    [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:55:1 › retries a committed lost acknowledgment with the original key and body through rate denial
+    [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:69:1 › rereads a known stale catalog while preserving input for explicit review and new intent
+    [mobile] › tests/browser-skill-claims/skill-claims.spec.ts:78:1 › rejects a mismatched success snapshot and retries the same committed intent
+  4 passed (2.4m)
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t012-skill-form-source-wjnn2y8w/test-results
+OWNED CLEANUP: 0 raid-t012-skill-form-auto-20261014

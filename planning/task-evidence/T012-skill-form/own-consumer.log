@@ -1,0 +1,20 @@
+OWN INSTALLED React host /tmp/raid-t012-form-installed-consumer-19e_0b4w
+
+added 15 packages, and audited 16 packages in 1s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> raid-skill-claim-form-example@1.0.0 typecheck
+> tsc --noEmit
+
+components/skill-claim-form.tsx(153,27): error TS18048: 'initialCategory' is possibly 'undefined'.
+components/skill-claim-form.tsx(209,26): error TS18048: 'initialCategory' is possibly 'undefined'.
+Traceback (most recent call last):
+  File "/tmp/raid-t012-skill-form-own-consumer.py", line 7, in <module>
+    for cmd in [['npm','ci','--ignore-scripts'],['npm','run','typecheck'],['npm','start']]:subprocess.run(cmd,cwd=dst,check=True)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['npm', 'run', 'typecheck']' returned non-zero exit status 2.

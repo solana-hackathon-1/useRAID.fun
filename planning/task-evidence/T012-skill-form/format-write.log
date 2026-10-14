@@ -1,0 +1,18 @@
+src/components/skill-claim-form.tsx 196ms
+src/lib/skill-claims-page.ts 12ms
+src/lib/skill-claims-host.ts 19ms (unchanged)
+src/app/raider/skills/page.tsx 11ms
+src/app/raider/skills/[skillId]/page.tsx 19ms
+src/app/raider/onboarding/page.tsx 21ms
+tests/browser-skill-claims/skill-claims.spec.ts 116ms
+tests/skill-claims-host.test.ts 23ms (unchanged)
+tests/skill-claim-form-boundary.test.ts 12ms
+playwright.skill-claims.config.ts 14ms
+docs/raid-skill-claim-form.md 79ms (unchanged)
+docs/raid-module-reuse.md 149ms (unchanged)
+docs/tasks/2026-10-14-T012-skill-form.md 11ms (unchanged)
+examples/skill-claim-form/host.tsx 8ms
+examples/skill-claim-form/package.json 13ms
+examples/skill-claim-form/README.md 6ms (unchanged)
+examples/skill-claim-form/tsconfig.json 2ms
+planning/raid-ci-matrix.json 43ms (unchanged)

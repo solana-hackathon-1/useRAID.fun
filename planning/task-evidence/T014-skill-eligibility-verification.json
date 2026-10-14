@@ -208,38 +208,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+      "observed": "New automatic staging failed before steps; named Checks not redispatched under known billing block."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+      "observed": "New automatic staging failed before steps; named Checks not redispatched under known billing block."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+      "observed": "New automatic staging failed before steps; named Checks not redispatched under known billing block."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+      "observed": "New automatic staging failed before steps; named Checks not redispatched under known billing block."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+      "observed": "New automatic staging failed before steps; named Checks not redispatched under known billing block."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+      "observed": "New automatic staging failed before steps; named Checks not redispatched under known billing block."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+      "observed": "New automatic staging failed before steps; named Checks not redispatched under known billing block."
     }
   },
   "tdd": {
@@ -265,5 +272,14 @@
       "evidence_url": "planning/task-evidence/T014-skill-eligibility/final-regression.log; planning/task-evidence/T014-skill-eligibility/own-consumer.log; planning/task-evidence/T014-skill-eligibility/planning.log",
       "result": "PASS"
     }
+  },
+  "post_merge_staging": {
+    "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+    "result": "NOT VERIFIED",
+    "observed": "FAILED before0steps due GitHub account payments/spending limit",
+    "run_id": 38506960716,
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38506960716",
+    "new_image": "NOT PUBLISHED",
+    "manual_checks": "Original workflow disabled_manually API-verified; no redispatch under unchanged block, no restoration outstanding"
   }
 }

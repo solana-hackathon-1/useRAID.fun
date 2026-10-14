@@ -1,0 +1,23 @@
+{
+  "phase": "RED",
+  "base_sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+  "recorded_utc": "2026-10-14T03:45:20.174997+00:00",
+  "sources": {
+    "docs/tasks/2026-10-14-T012-skill-form.md": {
+      "sha256": "a317107192e6fceb6009b764eab145d12ff2a98e2058dfe35272c4cba7ea0ca2",
+      "evidence": "planning/task-evidence/T012-skill-form/red-source/docs__tasks__2026-10-14-T012-skill-form.md.txt"
+    },
+    "tests/browser-skill-claims/skill-claims.spec.ts": {
+      "sha256": "0aa71e51d6700fd17c07fa16d0fc18d28a32a20ad0a326bb4f34468f85496390",
+      "evidence": "planning/task-evidence/T012-skill-form/red-source/tests__browser-skill-claims__skill-claims.spec.ts.txt"
+    },
+    "playwright.skill-claims.config.ts": {
+      "sha256": "545c6654dfc5ca91f3875f94b6154578af0e01426328a535f1fdcd5f0064cce3",
+      "evidence": "planning/task-evidence/T012-skill-form/red-source/playwright.skill-claims.config.ts.txt"
+    },
+    "tests/skill-claims-host.test.ts": {
+      "sha256": "871a0bf04a04a8dd7c1fdb25d1f9502ddb9b307abe36bc1b279572f4b31393dc",
+      "evidence": "planning/task-evidence/T012-skill-form/red-source/tests__skill-claims-host.test.ts.txt"
+    }
+  }
+}

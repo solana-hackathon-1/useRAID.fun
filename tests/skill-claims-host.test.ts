@@ -11,6 +11,7 @@ vi.mock('../src/lib/command-receipts-adapter', () => ({
 }));
 import {
   skillClaimWriteConfiguration,
+  skillClaimCatalogConfiguration,
   readSkillClaimState,
   readSkillCatalogState,
   saveSkillClaimFromHost,
@@ -65,4 +66,13 @@ it('delegates new-write gating to the SQL command so original authorized receipt
     unavailableReason: 'DISABLED',
   });
   expect(storage.save).toHaveBeenCalledWith(storage.port, command, { allowNewWrites: false });
+});
+
+it('selects only an explicit valid host catalog and never seeds or guesses a catalog', () => {
+  for (const value of ['', undefined, 'bad catalog', '../catalog', 'x'.repeat(201)]) {
+    vi.stubEnv('SKILL_TAXONOMY_ID', value);
+    expect(skillClaimCatalogConfiguration()).toBeNull();
+  }
+  vi.stubEnv('SKILL_TAXONOMY_ID', 'synthetic-browser-catalog');
+  expect(skillClaimCatalogConfiguration()).toBe('synthetic-browser-catalog');
 });

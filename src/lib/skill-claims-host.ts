@@ -1,3 +1,4 @@
+import { InternalId } from '../contracts/ids';
 import {
   readSkillClaim,
   saveSkillClaim,
@@ -7,6 +8,10 @@ import {
 import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
+export function skillClaimCatalogConfiguration(): string | null {
+  const parsed = InternalId.safeParse(process.env.SKILL_TAXONOMY_ID);
+  return parsed.success ? parsed.data : null;
+}
 export function skillClaimWriteConfiguration() {
   const writesAvailable = process.env.SKILL_CLAIMS_ENABLED === 'true';
   return { writesAvailable, unavailableReason: writesAvailable ? null : ('DISABLED' as const) };

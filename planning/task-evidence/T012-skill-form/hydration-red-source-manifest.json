@@ -1,0 +1,14 @@
+{
+  "src/components/skill-claim-form.tsx": {
+    "sha256": "c55d1c65517b1fdfc7ca30b4bce97889396ff79806d5e9f6262d7c7636ecf514",
+    "evidence": "planning/task-evidence/T012-skill-form/red-source/hydration__src__components__skill-claim-form.tsx.txt"
+  },
+  "tests/browser-skill-claims/skill-claims.spec.ts": {
+    "sha256": "c87bd5b442528b9d508b5ad78b00c3d9e702b55c292d26bd4e4d9c0c03d5971d",
+    "evidence": "planning/task-evidence/T012-skill-form/red-source/hydration__tests__browser-skill-claims__skill-claims.spec.ts.txt"
+  },
+  "examples/skill-claim-form/host.tsx": {
+    "sha256": "63c1f63a0b5b5795de3bf7616786837d6ea33fc3c1d68829b345479626099d0b",
+    "evidence": "planning/task-evidence/T012-skill-form/red-source/hydration__examples__skill-claim-form__host.tsx.txt"
+  }
+}

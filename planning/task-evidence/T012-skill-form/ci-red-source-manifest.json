@@ -1,0 +1,14 @@
+{
+  "tests/test_raid_staging.py": {
+    "sha256": "42cae3a4eb6d2d2157e6138398c9bc76e382d4a34a4bffcfc79cbc11ef344c92",
+    "evidence": "planning/task-evidence/T012-skill-form/red-source/ci__tests__test_raid_staging.py.txt"
+  },
+  ".github/workflows/checks.yml": {
+    "sha256": "1b2637eab4b98fca89354b371ae751b7c5376dd865ff1df1d1b0481ce1d11ef9",
+    "evidence": "planning/task-evidence/T012-skill-form/red-source/ci__.github__workflows__checks.yml.txt"
+  },
+  ".github/workflows/staging-image.yml": {
+    "sha256": "3b3ba63f921926e7df5a24f9fdf46a2282b331afc4885758f3d1409e91d635dc",
+    "evidence": "planning/task-evidence/T012-skill-form/red-source/ci__.github__workflows__staging-image.yml.txt"
+  }
+}

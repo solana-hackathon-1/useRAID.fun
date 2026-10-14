@@ -1,0 +1,175 @@
+name: Checks
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  planning-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify requirement and completion contracts
+        run: python3 -m unittest discover -s tests -p 'test_raid_*.py'
+
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm run lint
+  dependency-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run audit:check
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t useraid:ci .
+      - name: Runtime image smoke test
+        run: |
+          docker run --rm useraid:ci node -e "require.resolve('prisma/package.json'); require.resolve('tsx/package.json'); require.resolve('@prisma/client/package.json')"
+          docker run --rm useraid:ci sh -c 'test ! -d /app/tests && test -d /app/prisma/migrations && test -f /app/src/worker.ts && npx prisma --version'
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: useraid
+          POSTGRES_PASSWORD: useraid
+          POSTGRES_DB: useraid_test
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U useraid" --health-interval 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://useraid:useraid@localhost:5432/useraid_test
+      RUN_DB_TESTS: 'true'
+      DEMO_MODE: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run db:migrate
+      - name: Schema drift check
+        env:
+          PGPASSWORD: useraid
+        run: |
+          psql -h localhost -U useraid -d postgres -c 'CREATE DATABASE useraid_shadow'
+          npx prisma migrate diff \
+            --from-migrations prisma/migrations \
+            --to-schema-datamodel prisma/schema.prisma \
+            --shadow-database-url postgresql://useraid:useraid@localhost:5432/useraid_shadow \
+            --exit-code
+      - name: All unit and real-database tests
+        run: npm test -- --reporter=default --reporter=junit --outputFile=test-results/vitest.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vitest-database-results
+          path: test-results/
+          if-no-files-found: warn
+  browser:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: useraid
+          POSTGRES_PASSWORD: useraid
+          POSTGRES_DB: useraid_test
+        ports: ['5432:5432']
+        options: --health-cmd "pg_isready -U useraid" --health-interval 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://useraid:useraid@localhost:5432/useraid_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
+      - run: npm run db:migrate
+      - run: npx playwright install --with-deps chromium
+      - name: Demo browser suite
+        run: npm run test:browser
+      - name: Studio desktop and mobile suite
+        env:
+          COMPOSE_FILE: compose.yaml:compose.test.yaml
+          COMPOSE_PROJECT_NAME: raid-ci-studio
+          DATABASE_URL: postgresql://useraid:useraid@localhost:55432/useraid_studio_test
+        run: |
+          docker compose up -d --wait db
+          npm run test:browser:studio
+      - name: Stop isolated Studio database
+        if: always()
+        env:
+          COMPOSE_FILE: compose.yaml:compose.test.yaml
+          COMPOSE_PROJECT_NAME: raid-ci-studio
+        run: docker compose down -v
+      - name: Raider orientation desktop and mobile suite
+        run: npx playwright test --config=playwright.onboarding.config.ts
+      - name: Guild draft desktop and mobile suite
+        run: npx playwright test --config=playwright.guild-drafts.config.ts
+      - name: Project proposal desktop and mobile suite
+        run: npx playwright test --config=playwright.project-proposals.config.ts
+      - name: Production build
+        run: npm run build
+        env:
+          DEMO_MODE: 'false'
+      - name: Database-backed browser journey
+        run: npm run test:live
+        env:
+          DEMO_MODE: 'false'
+      - name: Live browser suite
+        run: npm run test:browser:live
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-results
+          path: |
+            playwright-report/
+            test-results/
+
+  ci-gate:
+    if: always()
+    needs: [planning-contracts, static, dependency-security, test, docker, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reject failed, skipped or cancelled required checks
+        env:
+          JOB_RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os, sys
+          results = json.loads(os.environ['JOB_RESULTS'])
+          failed = {name: job['result'] for name, job in results.items() if job['result'] != 'success'}
+          if failed:
+              print('Required CI jobs did not pass:', failed)
+              sys.exit(1)
+          print('Every required CI job passed for this candidate.')
+          PYCODE

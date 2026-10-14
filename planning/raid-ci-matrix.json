@@ -27,6 +27,7 @@
     "tests/browser-live/tracking.spec.ts",
     "tests/browser-onboarding/raider-onboarding.spec.ts",
     "tests/browser-project-proposals/project-proposals.spec.ts",
+    "tests/browser-skill-claims/skill-claims.spec.ts",
     "tests/browser-studio/pages.spec.ts",
     "tests/browser-studio/studio.spec.ts",
     "tests/browser-studio/test-center.spec.ts",
@@ -117,6 +118,7 @@
     "tests/shared-contracts.test.ts",
     "tests/shell-account.test.ts",
     "tests/siws-nonce.test.ts",
+    "tests/skill-claim-form-boundary.test.ts",
     "tests/skill-claim-storage-boundary.test.ts",
     "tests/skill-claim-storage-db.test.ts",
     "tests/skill-claims-boundary.test.ts",
@@ -450,6 +452,8 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/browser-skill-claims/skill-claims.spec.ts",
+        "tests/skill-claim-form-boundary.test.ts",
         "tests/skill-claim-storage-boundary.test.ts",
         "tests/skill-claim-storage-db.test.ts",
         "tests/skill-claims-boundary.test.ts",

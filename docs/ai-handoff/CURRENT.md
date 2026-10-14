@@ -1,3 +1,33 @@
+# T012C2 SELF-EVALUATED ready for publication — 2026-10-14T04:26:03.932772+00:00 Codex /root
+
+Same f539 original branch plus private configured-catalog browse/form and existing APIs. Final20desktop/mobilePASS2.9m;184affectedPASS5.69s;53planningPASS83.973s; own-installed React/types/SSR/audit0vuln, stricttypes-typegen-productionbuild/lint0errors25existingwarnings and wholefreshformat PASS. Genuine route/selector/CI/readiness RED source manifests retained; fixture failures and mobile hydration bug corrected without deadline/assertion weakening. Readiness now server-disabled/client-ready via immutable React store snapshot, exactunknown body/key frozen, canonical/claim/catalog acknowledgment binding; no rank, assessment, access, payment or capacity authority. All27DDL/schema unchanged/newwritesdefaultoff/catalogIDexplicitunset→unavailable.
+
+Actual preview loopback3021/source4ieu2e4h/mode-synthetic20desktop/mobile outcomes and access limitation shown, final images inspected; no public forwarding. Browser/Nextremoved/PGfinallystop0 and actualRunningfalse, allCLI ended; sources/traces/unrelated services preserved. Prior T014 post-CI WIP preserved. Full T012 criteria/7CI/assessment-history-adminRoot-admission/independent/UAT/gates NOT VERIFIED. Next honest completion validator/metadata checks, commit/sourcepin/push/template Ref54 PR/matched-head mainmerge and exactautoStaging; original manualChecks disabled/no restore obligation, previousf53938506960716beforestepsbillingblocked/noimage. Then rootadmincatalogpublication interface and dependent T013 assessment contracts/other ready issues. No humanwait, branchswitch or delegation.
+
+---
+
+# T012C2 mobile startup fix under final verification — 2026-10-14T04:06:43.110805+00:00 Codex /root
+
+Same f539 original branch plus private form/pages/server-selected real catalog. Genuine route RED2/selector RED1/CI step RED2 retained. Corrected14 actual browsers PASS1.8m; extended18 before readiness16PASS2mobileFAIL revealed unfinished smooth screenshot scroll and pre-hydration typing loss. Actual scripts-blocked readiness RED2 source archived before fix. Form now disables controls until ready, preserves readable saved data/no-script fallback; no API/model/authority change. Existing save/retry/CAS/private assertions/deadlines remain. Own SSR type narrowing issue fixed by captured validated domain, no weakened assertions. Final own consumer/static run in progress first; final20-browser run only after generated client/build ends. Prior T014 post-CI WIP retained. All completed previews/PG stopped0, sources/traces retained, no active preview currently; build/consumer CLI are task-owned. Full acceptance/CI/UAT/assessment/admission remain NOT VERIFIED, no live flag enablement or delegation.
+
+---
+
+# T012C2 genuine browser RED captured — 2026-10-14T03:45:20.174997+00:00 Codex /root
+
+Same f539 main/original branch. New owner-private skill form scope and genuine then-WIP test/config sources archived before implementation. Actual desktop/mobile both failed expected200/received404 at /raider/skills; Root catalog-selector missing-function case failed with previous3 host testsPASS. RED owned preview source /tmp/raid-t012-skill-form-source-0ep662tr and traces preserved. Browser auto-removed/PG finallystop0; no preview remains. Prior T014 post-CI WIP preserved. Next implement typed portable form/current canonical participant binding, configured real catalog private pages, safe retry/stale review and documentation/own React consumer; run actual14 browser cases and mandatory checks. No parent closure, human wait, delegation or feature/rank/money enablement.
+
+---
+
+# PR212 merged; staging blocked before start; continue private skill UI — 2026-10-14T03:38:07.620657+00:00 Codex /root
+
+PR212 https://github.com/solana-hackathon-1/useRAID.fun/pull/212 merged main f5391ac2743ff008b3df3859af844a80eaec4f15; implementation46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98/pin7f77127e85641ac3cd55233f4b1366d0d25feb60. Same original branch fast-forwarded to exact merge after scoped Git DNS retry; initial fetch/stale pin-head lookup failures retained in tool transcript and review. No global network/host-key settings changed. Local223affected/52planning/own-installed-host/types-build-lint-format PASS; no implementation changes after verification. No server/container started; all owned CLI resources exited, existing resources preserved. Full T01427criteria+7CI/independent/UAT/admission/assessment/moderation NOT VERIFIED; parent remains open.
+
+Exact-main automatic Staging 38506960716 FAILED before0steps with official account payments/spending-limit annotation. No new image. Original manual Checks disabled_manually API-verified, not redispatched under unchanged external block; no restore obligation. Actual run/jobs/annotations stored in T014-skill-eligibility/hosted-staging-result.json, packet/review post-CI WIP retained. Last verified image remains d023/fb982 and last public530/1033/known VM SSH timeout; no material access change or rollout claim.
+
+Next bounded T012C2: actual owner-private skill browsing/form using the real server-selected published catalog, current cookie/HUMAN claim reads and existing protected APIs. New server catalog ID configuration is an explicit host dependency, not seeded category policy; absence gives an honest unavailable state. Preserve unknown-save key/body, stale revision reread plus review, actual catalog/claim binding and mobile accessibility; genuine browser RED before pages/component, independent React consumer and synthetic task-owned preview with automatic cleanup. Existing assessment/admission/financial/provider gates remain disabled; no human recommendation/testing wait, branch switch or delegation.
+
+---
+
 # T014A implementation committed; publication next — 2026-10-14T03:33:18.037545+00:00 Codex /root
 
 Implementation 46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98 on same original branch. Verified code/test hashes match final223 affected/52planning/own-installed consumer/strict types-production build-lint-format evidence. Prior PR211 post-CI evidence included and preserved. Full34 acceptance/CI obligations and independent/UAT remain NOT VERIFIED. No owned server/container or live enablement. Next metadata pin commit, push/template Ref56 PR, matched-head merge, actual new-main automatic Staging. Original manual workflow disabled/no restoration; do not redispatch known billing block absent meaningful execution resumption. Private skill form/discovery and further dependency-ready issues remain queued.

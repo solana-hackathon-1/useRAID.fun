@@ -1,0 +1,49 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_utc": "2026-10-14T03:56:07.380051+00:00",
+  "base_sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+  "findings": [
+    "Genuine browser missing-route RED2 and selector RED1 before implementation; CI execution RED2 before workflow edits",
+    "First browser14:4PASS10FAIL due stale fixture generated Prisma client and global alert matching Next announcer; preserved source/traces, used separately generated own client and form-scoped alert, assertions unchanged",
+    "Corrected actual14 desktop/mobile browser PASS1.8m with real SQL/cookie/save/replay/CAS/privacy/retirement; all owned preview/PG cleanup0",
+    "Own SSR consumer typecheck found TS18048 captured nullable category; capture its already-validated domain before async callbacks, no non-null weakening",
+    "Freeze normalized pending input; add foreign canonical account and concurrent form activation cases, reset screenshot scroll for correct sticky-header capture",
+    "Final pre-readiness browser18 had16PASS2mobileFAIL: smooth scrolling not finished at screenshot assertion and early SSR interaction before hydration lost typed fields. New actual blocked-JS readiness RED2 before fix; original deadlines/claims preserved. Added hydration readiness state and no-script readable fallback. Screenshot waits for actual scrollY0.",
+    "Generated own client is held unchanged during final browser run; static generation/build executes first.",
+    "Move JSX rendering outside protected data-load try/catch to remove3new compiler warnings; catch only load errors, no assertion weakening",
+    "Use React useSyncExternalStore server=false/client=true immutable readiness snapshot instead of synchronous state in effect; scoped module lint clean and final20 actual browsers PASS",
+    "Finalmobile screenshot scroll reset/wait0 verifies sticky-header capture; long synthetic handle wraps within existing global menu, no full WCAG/representative UAT conformance claim"
+  ],
+  "preview": {
+    "url": "http://127.0.0.1:3021/raider/skills",
+    "mode": "Synthetic NextWebpack development",
+    "source": "/tmp/raid-t012-skill-form-source-4ieu2e4h",
+    "result": "20desktop/mobilePASS; finaldesktop/mobile screenshots inspected and retained; actual save/read/replay/privacy/CAS/retired/noJS startup",
+    "access": "Workspace-local, no public forwarding; URL auto-stopped aftertests per owner",
+    "owned_container": "raid-t012-skill-form-release; labelraid.task=T012-skill-form; auto-removed",
+    "owned_database": "raid-t012-skill-form-auto-20261014; ID7235aebedff41c717e2fad28c396b18d2c18f5a6dd7d5f39edf82ecd381dcfaf; actualRunningfalse",
+    "cleanup": "Browser/Next exited/removed; PGfinallystop0; traces/source retained"
+  },
+  "independent_review": "NOT VERIFIED",
+  "uat": "NOT VERIFIED",
+  "ended_utc": "2026-10-14T04:26:03.932772+00:00",
+  "elapsed_seconds": 1796.552721,
+  "source_manifest": "planning/task-evidence/T012-skill-form/source-hashes.json",
+  "checks": {
+    "red": "2actualroute404+1missingselector+2workflowexecution+2blockedJSreadiness; exact each-phase source manifests",
+    "browser": "Final20PASS2.9m; all original assertions/deadlines retained, added foreign/double-submit/blocked-JS cases",
+    "affected": "10files184PASS5.69s",
+    "planning": "53PASS83.973s incl workflow execution-before-artifact contract",
+    "own_consumer": "Own install/types/SSR PASS, audit0vulnerabilities; /tmp/raid-t012-form-installed-consumer-0umdpq7l",
+    "types_build": "Final strict types/typegen/production Webpack build PASS; generated27client/schema reused byte-identical, not mutated during final browser run",
+    "lint": "Full PASS0errors25existingwarnings; prior27 contained2new readiness warnings removed via React subscription snapshot hook, no suppressions",
+    "format": "Whole fresh tracked+WIP source PASS; only subsequent metadata normalization checked separately",
+    "migrations": "All27SQL/schema unchanged"
+  },
+  "skipped": {
+    "full_suite": "Meaningful affected184+actual20browser selected; historical1702 applies only to its exact source, not this source",
+    "new_standalone_DB_races": "No SQL command/schema/storage changed. Actual browser uses real migrations/session/HUMAN/catalog/claim/receipts; original DB race evidence remains historical scoped evidence",
+    "hosted_CI": "Candidate not merged yet; latestf53938506960716beforestepsbillingfailure, namedChecksdisabled/APIverified. Required actualcandidateCI NOT VERIFIED."
+  },
+  "resources": "All owned CLI ended; no server/listener/container/pool remains active. Existing services/images/volumes and source evidence preserved."
+}

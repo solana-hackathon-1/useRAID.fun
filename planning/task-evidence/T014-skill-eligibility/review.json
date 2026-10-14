@@ -56,5 +56,13 @@
   },
   "resource_cleanup": "No owned server/container started. All test/consumer/type/build/lint/format CLI processes exited. Sources/logs preserved, no unrelated resource modified",
   "preview": "NOT APPLICABLE; no browser-visible work. Independent console host is actual executable example, not a development preview or UAT.",
-  "implementation_commit": "46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98"
+  "implementation_commit": "46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98",
+  "post_merge_ci": {
+    "head": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+    "run": 38506960716,
+    "result": "NOT VERIFIED; actual failure before0steps due account billing",
+    "new_image": "NOT PUBLISHED",
+    "manual": "disabled_manually API-verified",
+    "local_git_reconciliation": "Initial fetch failed machine DNS; stale pin-head staging lookup failed before producing evidence. Retried Git with scoped resolved IPv4 + original github.com host-key verification, fetched and fast-forwarded to exact merge SHA. No global DNS/SSH changes."
+  }
 }

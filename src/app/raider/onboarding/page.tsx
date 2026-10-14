@@ -53,6 +53,11 @@ export default async function OnboardingPage() {
           <p>Learn the commitments and choose the work you want to explore.</p>
         </div>
       </header>
+      <p>
+        <Link className="inline-link" href="/raider/skills">
+          Add private skill claims
+        </Link>
+      </p>
       <RaiderOrientationForm
         state={state}
         browseLink={

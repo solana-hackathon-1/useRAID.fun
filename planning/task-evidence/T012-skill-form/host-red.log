@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-claims-host.test.ts (4 tests | 1 failed) 20ms
+   × selects only an explicit valid host catalog and never seeds or guesses a catalog 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-claims-host.test.ts > selects only an explicit valid host catalog and never seeds or guesses a catalog
+TypeError: skillClaimCatalogConfiguration is not a function
+ ❯ tests/skill-claims-host.test.ts:74:12
+     72|   for (const value of ['', undefined, 'bad catalog', '../catalog', 'x'…
+     73|     vi.stubEnv('SKILL_TAXONOMY_ID', value);
+     74|     expect(skillClaimCatalogConfiguration()).toBeNull();
+       |            ^
+     75|   }
+     76|   vi.stubEnv('SKILL_TAXONOMY_ID', 'synthetic-browser-catalog');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  09:26:49
+   Duration  398ms (transform 72ms, setup 0ms, import 99ms, tests 20ms, environment 0ms)
