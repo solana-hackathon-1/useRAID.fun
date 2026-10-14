@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-14T05:03:12.711370+00:00",
+  "base_sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+  "working_tree": "Prior post-CI evidence preserved; new typed stubs and behavior tests before implementation. Base SHA alone does not contain new tests.",
+  "files": {
+    "src/skills/taxonomy-http.ts": "026238031730445d3e15983e51e586873cb63542f069bbc1c2b997e74d02abcb",
+    "src/lib/skill-taxonomy-host.ts": "abacf5a1cf3dbac8875a54c42663f7859944d7c308ffc15897890860a6654860",
+    "tests/skill-taxonomy-http.test.ts": "119f778714bd5e2688bdc31f395954f9d4686a8fe71ce38dc1f8f07a6552ac81",
+    "tests/skill-taxonomy-host.test.ts": "f6c1d1807ad4093badcc4a0ebb22d60e802ab61972ef81ceb7474108bc4ebe87"
+  }
+}

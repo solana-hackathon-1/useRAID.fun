@@ -1,0 +1,22 @@
+OWNED PREVIEW SOURCE /tmp/raid-t012-taxonomy-http-source-35lnwfs5
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 14 tests using 1 worker
+
+  ✓   1 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:70:1 › actual X admin publishes once, reads catalog, and replays immutable original after a later update (2.6s)
+  ✓   2 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:115:3 › denies actual anonymous before publication (224ms)
+  ✓   3 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:115:3 › denies actual wallet-admin before publication (247ms)
+  ✓   4 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:115:3 › denies actual ordinary-user before publication (385ms)
+  ✓   5 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:115:3 › denies actual unlisted-x before publication (355ms)
+  ✓   6 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:115:3 › denies actual suspended before publication (358ms)
+  ✓   7 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:115:3 › denies actual expired before publication (274ms)
+  ✓   8 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:115:3 › denies actual revoked before publication (329ms)
+  ✓   9 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:139:1 › rejects foreign origin and actual account rate excess (307ms)
+  ✓  10 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:155:1 › rejects stale revision, changed key body and historical identity removal without extra versions (499ms)
+  ✓  11 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:176:1 › current X revocation denies original replay while wallet retains ordinary catalog read (321ms)
+  ✓  12 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:193:1 › simultaneous bootstrap commands have one winner and preserve one audit/version (453ms)
+  ✓  13 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:204:1 › simultaneous exact original intent executes once and returns the same immutable result (406ms)
+  ✓  14 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:216:1 › rejects a forged publisher body and oversized body without side effects (394ms)
+
+  14 passed (47.3s)
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t012-taxonomy-http-source-35lnwfs5/test-results

@@ -1,0 +1,242 @@
+{
+  "task_id": "T012",
+  "scope": "T012D1 Root authorized administrative catalog publication API only",
+  "status": "VERIFIED_IN_TEST bounded API only; full T012 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not authorized/assigned",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-14-T012-taxonomy-http.md",
+  "migration_rollback": "Additive route/config only; no DDL/schema/core receipt change. Disable new publications and retain every acknowledged catalog/version/receipt/audit; destructive rollback unsupported.",
+  "dependency_evidence": "Existing actual immutable catalog command/receipts/migrations26-27, current Root X/admin policy and origin/account rate. Own-installed PG/HTTP host and actual Next/SQL tests. Admin editor and approved assessment/evaluator/trial/admission remain independent dependencies.",
+  "open_decisions": "O09 numeric promotion/calibration, actual assessment/evaluator/provider/operating policies not selected or enabled.",
+  "release_gate_disposition": "Full parent acceptance, independent/UAT/business/live gates NOT VERIFIED. Bounded staging Git authority DEC-2026-10-12-03 remains.",
+  "code_source_sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+  "source_identity": "Base9b0a plus exact final working-tree hashes in planning/task-evidence/T012-taxonomy-http/source-hashes.json; commit pin follows checks.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11, owned pinned PG16 fixture, separately generated27-client immutable deps, actual Next API Playwright, independent own-installed pg/Zod/bs58/tsx CLI. No live provider/funds/admin credentials.",
+  "candidate_sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+  "criteria": {
+    "T012-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C01",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C02",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C03",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C04",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C05",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C06",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C07",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C08",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C09",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C10",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C11",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C12",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C13",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C14",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C15",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C16",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C17",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C18",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-A01",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-A02",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W01",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W02",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W03",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C19",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C20",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C21",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    },
+    "T012-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C22",
+      "observed": "Bounded API author checks only; full admin editor/assessment/history/admission/independent/UAT criterion remains NOT VERIFIED.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-taxonomy-http.md; planning/task-evidence/T012-taxonomy-http/review.json"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Candidate not published yet. Exact9b0a Staging38511926678 failed before0steps due account billing; named Checks remains originally disabled, no redispatch under unchanged block."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Candidate not published yet. Exact9b0a Staging38511926678 failed before0steps due account billing; named Checks remains originally disabled, no redispatch under unchanged block."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Candidate not published yet. Exact9b0a Staging38511926678 failed before0steps due account billing; named Checks remains originally disabled, no redispatch under unchanged block."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Candidate not published yet. Exact9b0a Staging38511926678 failed before0steps due account billing; named Checks remains originally disabled, no redispatch under unchanged block."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Candidate not published yet. Exact9b0a Staging38511926678 failed before0steps due account billing; named Checks remains originally disabled, no redispatch under unchanged block."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Candidate not published yet. Exact9b0a Staging38511926678 failed before0steps due account billing; named Checks remains originally disabled, no redispatch under unchanged block."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Candidate not published yet. Exact9b0a Staging38511926678 failed before0steps due account billing; named Checks remains originally disabled, no redispatch under unchanged block."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "command": "vitest run tests/skill-taxonomy-http.test.ts tests/skill-taxonomy-host.test.ts; owned actual Next API test before route; test_raid_staging.py before CI wiring",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-http/red-source.json; red-source.tar.gz; red.log; api-red.log; api-red-source.tar.gz; ci-red.log; ci-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "New protected publication API and host behavior not implemented",
+      "observed_failure": "47 behavior failures against typed stubs; actualmissingroute1 expected200/404; workflow execution2 failed subtests before wiring. Base SHA alone does not contain the archived tests/stubs."
+    },
+    "green": {
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "command": "actual Next API suite; affected Vitest; independently installed PG/HTTP consumer",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-http/unit-green.log; api-refactor.log; api-final.log; affected.log; installed-consumer.log; source-hashes.json",
+      "result": "PASS",
+      "observed": "47GREEN; correctedactual11PASS then final14PASS;123affectedPASS; independent ownPGHTTP PASS. Exact working-tree hashes identify source before metadata commit pin."
+    },
+    "refactor": {
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "command": "Final normalized transport/private bindings/current-policy regression and strict source gates",
+      "evidence_url": "planning/task-evidence/T012-taxonomy-http/affected.log; planning.log; typecheck.log; lint.log; audit.log; review.json",
+      "result": "PASS",
+      "observed": "123affected/54planning/strict types/lint0errors25oldwarnings/auditpolicyPASS; original assertions and deadlines retained. Separate production build/format recorded when completed."
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "mode": "Synthetic Next16.3.8 Webpack development API; no new visible screen",
+  "url": "http://127.0.0.1:3022/api/v1/admin/skill-taxonomies/synthetic-admin-catalog",
+  "source": "/tmp/raid-t012-taxonomy-http-source-35lnwfs5",
+  "observed": "14 actual API tests PASS 47.3s via container-local Playwright: publish/read/replay/current X roles/session/origin/rate/concurrency/private errors",
+  "access": "Container-local loopback verified; separate workspace curl5s gotHTTP000 during startup; owner forwarding NOT VERIFIED. Earlier GET405 probe was wrong method, no page/access claim.",
+  "resources": "Owned Next/browser removed automatically; owned PG c9f62a7120831e56728aee9cc170b73a921e43e41ff1a397b864bcf0fdf63c95 stopped0 and actualRunningfalse. All CLI/pools ended. No owned active resources; source/traces preserved."
+}

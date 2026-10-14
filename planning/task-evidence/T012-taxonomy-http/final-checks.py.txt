@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess
+checks=[('api-final',['python3','/tmp/raid-t012-taxonomy-http-browser-run.py','release']),('affected',['node_modules/.bin/vitest','run','tests/skill-taxonomy-http.test.ts','tests/skill-taxonomy-host.test.ts','tests/skill-taxonomy-host-db.test.ts','tests/skill-taxonomy-db.test.ts','tests/skill-taxonomy-boundary.test.ts','tests/skill-claims.test.ts','tests/skill-claims-host.test.ts']),('installed-consumer',['python3','/tmp/raid-t012-taxonomy-http-host-run.py'])]
+for label,cmd in checks:
+ print('CHECK',label,flush=True)
+ with Path('planning/task-evidence/T012-taxonomy-http/'+label+'.log').open('w') as log:r=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT)
+ print(label,'exit',r.returncode,flush=True)
+ if r.returncode:raise SystemExit(r.returncode)

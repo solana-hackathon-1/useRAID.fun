@@ -1,0 +1,14 @@
+{
+  "red": {
+    "path": "/tmp/raid-t012-taxonomy-http-source-gbas6fx5",
+    "observed": "1FAIL actual route expected200/404",
+    "files": {
+      "playwright.skill-taxonomy.config.ts": "1b0380e446f5c345b767f813f933c67b474cbd16c2bb1cfc1b4fbf91c5a6d040",
+      "tests/browser-skill-taxonomy/skill-taxonomy.spec.ts": "196d723779e27bddd78b0abaa479fe4246ae318b77a4d93c20f9ff2cda5203b8"
+    }
+  },
+  "initial_green": {
+    "path": "/tmp/raid-t012-taxonomy-http-source-0ky43fwj",
+    "observed": "3PASS8FAIL solely exact-Vary equality: actual Next routing token list also includes Cookie. Correct HTTP comma-token assertion, retain private/no-store/current authority/storage assertions and deadlines."
+  }
+}

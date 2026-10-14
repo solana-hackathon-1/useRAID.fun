@@ -1,0 +1,17 @@
+CREATE DATABASE
+INDEPENDENT OWNED HOST: /tmp/raid-t012-taxonomy-http-installed-consumer-qvh_z3db
+
+> raid-skill-taxonomy-example@1.0.0 migrate
+> tsx migrate.ts
+
+Independent account/session/receipt/admin-catalog schema applied.
+
+> raid-skill-taxonomy-example@1.0.0 start
+> tsx host.ts
+
+PASS: actual authorized publication/read/original replay/current policy revocation; stable skill domains; saved taxonomy never verifies a self claim; no outbox. Synthetic data only.
+
+> raid-skill-taxonomy-example@1.0.0 http
+> tsx http-host.ts
+
+PASS: independently installed HTTP/real PG publish, disabled original replay, denied new intent, revoked policy, private errors, one version and no outbox. Synthetic only.

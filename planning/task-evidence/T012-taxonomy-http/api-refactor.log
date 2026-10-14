@@ -1,0 +1,114 @@
+raid-t012-taxonomy-http-auto-20261014
+OWNED DATABASE: raid-t012-taxonomy-http-auto-20261014 loopback port 32853
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32853"
+
+27 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+OWNED PREVIEW SOURCE /tmp/raid-t012-taxonomy-http-source-ms9mfbjn
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 11 tests using 1 worker
+
+  ✓   1 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:65:1 › actual X admin publishes once, reads catalog, and replays immutable original after a later update (5.2s)
+  ✓   2 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:110:3 › denies actual anonymous before publication (163ms)
+  ✓   3 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:110:3 › denies actual wallet-admin before publication (235ms)
+  ✓   4 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:110:3 › denies actual ordinary-user before publication (254ms)
+  ✓   5 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:110:3 › denies actual unlisted-x before publication (199ms)
+  ✓   6 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:110:3 › denies actual suspended before publication (263ms)
+  ✓   7 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:110:3 › denies actual expired before publication (249ms)
+  ✓   8 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:110:3 › denies actual revoked before publication (202ms)
+  ✓   9 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:134:1 › rejects foreign origin and actual account rate excess (194ms)
+  ✓  10 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:150:1 › rejects stale revision, changed key body and historical identity removal without extra versions (374ms)
+  ✓  11 tests/browser-skill-taxonomy/skill-taxonomy.spec.ts:171:1 › current X revocation denies original replay while wallet retains ordinary catalog read (384ms)
+
+  11 passed (23.2s)
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t012-taxonomy-http-source-ms9mfbjn/test-results
+OWNED CLEANUP: 0 raid-t012-taxonomy-http-auto-20261014

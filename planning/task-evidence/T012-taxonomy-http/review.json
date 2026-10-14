@@ -1,0 +1,60 @@
+{
+  "label": "SELF-EVALUATED",
+  "agent": "Codex /root",
+  "start_utc": "2026-10-14T05:12:47.545740+00:00",
+  "end_utc": "2026-10-14T05:22:10.503263+00:00",
+  "elapsed_seconds": 562.958,
+  "base_sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+  "source_identity": "Final actual code/test/config/example hashes in source-hashes.json; commit pin follows checks. Original prior PR213 evidence WIP preserved.",
+  "requirements_checked": [
+    "R04/R06/R12/R15/R16",
+    "I05/I06/I10/I11/I13",
+    "Current own X-authorized unrestricted ADMIN and actual current allowlist",
+    "Stable IDs/domains/aliases, immutable original replay and current-authority recheck",
+    "Origin/current actor/account rate before bounded streamed JSON",
+    "Strict URL/actor/revision/category acknowledgment bindings and private sanitized error DTO",
+    "Default-off new publication within durable command; ordinary wallet reads remain",
+    "No schema/receipt/assessment/rank/provider/grant/money/capacity change",
+    "Independent installed host with all dependencies and current scoped policy",
+    "Task numbered criteria/full acceptance remain NOT VERIFIED"
+  ],
+  "actual_checks": {
+    "portable_TDD": "47RED against typed stubs ->47GREEN; exact source archives/hashes retained",
+    "route_TDD": "actual missing endpoint1RED expected200/404",
+    "CI_execution_TDD": "2 failing workflow subtests before actual execution step",
+    "actual_Next_API": "initial3PASS8FAIL exact-Vary fixture assertion; corrected11PASS23.2s; final14PASS47.3s",
+    "affected": "7files123PASS16.93s with real PG incl4Root policy tests and42catalog races/authority cases",
+    "planning": "54PASS79.678s",
+    "installed_consumer": "Own npm ci20packages/audited21/0vulnerabilities; actual minimal PG migration/previous canonical host/new HTTP host PASS; exact script/module/package/lock bytes match Root canonical source; own node_modules no symlink",
+    "strict_typegen_and_types": "PASS after genuine initial TS7006 failure corrected explicit driver port parameter types",
+    "production_Webpack_build": "PASS in dedicated own-dependency snapshot, synthetic demo env; separate from actual Next dev mode",
+    "lint": "PASS0errors25preexistingwarnings, no new suppression",
+    "root_audit_policy": "PASS: moderate+ advisories allowlisted and unexpired; no zero-vulnerability claim for Root",
+    "whole_format": "PASS fresh tracked/nonignored WIP snapshot /tmp/raid-t012-taxonomy-http-format-source-_w474jwo; unrelated root-owned ignored artifact preserved, no exclusion change"
+  },
+  "findings_and_fixes": [
+    "Corrected actual Next Vary comma-token fixture assertion to require cookie variation, retaining private/no-store/status/SQL checks and original deadlines; portable handler exact Vary remains tested. All failed sources/logs retained.",
+    "Strict Root compiler found two implicit driver parameters in independent HTTP host; added explicit shared port-compatible parameter types, no weakened compiler configuration.",
+    "Separate workspace startup POST curl5s timed out HTTP000; owner forwarding/access not verified. Actual container-local Playwright14 proves API access there only.",
+    "Existing publication snapshots/audit have no separate admin change reason or bulk dry-run interface; documented full administration gap and next editor dependency."
+  ],
+  "reused": {
+    "schema_and_driver": "All27SQL/schema/Root package+lock byte-identical to9b0a; existing generated27client/immutable dedicated dependencies reused; no unnecessary generation/drift rerun."
+  },
+  "skipped": {
+    "browser_screen_desktop_mobile": "No new visible UI in this API slice; actual API suite executed. Prior private skill UI unchanged; new admin editor remains next.",
+    "whole_application_test_suite": "Selected changed transport/policy and direct storage/preparation boundaries with123PASS; unrelated whole application suite not rerun. Historical all-suite evidence is not new-source proof.",
+    "hosted_CI_image_site": "Known exact9b0a automatic Staging failed before0steps due account billing; no redispatch/manual enablement under unchanged block; newcandidate hosted results pending publication. Prior public530/1033/VMtimeout not retested without material access change.",
+    "independent_review_UAT_business_release": "NOT VERIFIED, no delegation or human-wait gating independent implementation"
+  },
+  "preview": {
+    "mode": "Synthetic Next16.3.8 Webpack development API; no new visible screen",
+    "url": "http://127.0.0.1:3022/api/v1/admin/skill-taxonomies/synthetic-admin-catalog",
+    "source": "/tmp/raid-t012-taxonomy-http-source-35lnwfs5",
+    "observed": "14 actual API tests PASS 47.3s via container-local Playwright: publish/read/replay/current X roles/session/origin/rate/concurrency/private errors",
+    "access": "Container-local loopback verified; separate workspace curl5s gotHTTP000 during startup; owner forwarding NOT VERIFIED. Earlier GET405 probe was wrong method, no page/access claim.",
+    "resources": "Owned Next/browser removed automatically; owned PG c9f62a7120831e56728aee9cc170b73a921e43e41ff1a397b864bcf0fdf63c95 stopped0 and actualRunningfalse. All CLI/pools ended. No owned active resources; source/traces preserved."
+  },
+  "resources": "All owned Next/browser removed; fixture c9f62a712083... stop0 actualRunningfalse; all pools/CLI ended. Existing listeners/images/volumes/evidence preserved. No manualworkflow restoration outstanding.",
+  "completion_validator": "34 expected failures=27fullcriteria+7CI NOT VERIFIED; no packet metadata errors, no self-approval"
+}
