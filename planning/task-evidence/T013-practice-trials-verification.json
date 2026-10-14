@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual canonical HUMAN/rank/catalog schemas; approved full immutable definition/accommodation ports and fresh family counts explicit. Independently installed alternate console adapters; no actual approved Root registry/evaluator/trial store exists.",
   "open_decisions": "O09 numerical calibration, actual rubric/evaluator/operating approvals and O11 retention unresolved; dependent production actions absent/disabled.",
   "release_gate_disposition": "Full parent55 and independent/UAT/business/provider/release gates NOT VERIFIED; bounded staging publication DEC-2026-10-12-03.",
-  "code_source_sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-  "candidate_sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-  "source_identity": "base5869b182 plus archived exact current working-tree source-hashes; commit pin pending",
+  "code_source_sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+  "candidate_sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+  "source_identity": "Implementation c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5 contains exact verified code/test/config/example hashes; subsequent pin changes metadata/readable-log whitespace only; original raw gzip retained.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11; own-install console9packages10audit0vuln; no DB/provider credentials",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "25 failures against NOT_IMPLEMENTED scaffold. Archived initial tests/stubs existed before implementation; baseSHA alone does not contain these uncommitted files."
     },
     "green": {
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
       "command": "Initial25GREEN then final affected Vitest/copy/own-install consumer",
       "evidence_url": "planning/task-evidence/T013-practice-trials/green-initial.log; affected.log; consumer-final.log; source-hashes.json",
       "result": "PASS",
       "observed": "25initialGREEN, final27behavior+2boundary within101affectedPASS; own-install alternate byte/digest policiesPASS"
     },
     "refactor": {
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
       "command": "Strict consumer after callback typing, formatted finalhost, affected/regression, strict Root gates and planning",
       "evidence_url": "planning/task-evidence/T013-practice-trials/consumer-initial-failure.log; consumer-green.log; consumer-final.log; typecheck.log; production-build.log; lint.log; audit.log; review.json",
       "result": "PASS",

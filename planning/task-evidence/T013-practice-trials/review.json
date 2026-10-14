@@ -38,7 +38,8 @@
   "findings_and_fixes": [
     "Strict independent TS7006 callback fixed with explicit unknown parameter, no casts or weakened runtime validation; raw failure retained",
     "Accidental direct checkout strict check hit known stale generated Prisma client: retained actual exit2. Final exact source checked with dedicated unchanged generated27 dependency/runtime, exit0. No assertions/compiler rules/client source changed.",
-    "Reviewed full-payload approval, canonical bindings, family revision counts, selected current accommodations, public/synthetic provenance responsibility and lack of durable start/assessment effects; no unrecorded production policy or rank grant."
+    "Reviewed full-payload approval, canonical bindings, family revision counts, selected current accommodations, public/synthetic provenance responsibility and lack of durable start/assessment effects; no unrecorded production policy or rank grant.",
+    "Staged diff check found blank EOF in five readable logs after implementation commit. Pin normalizes readable EOF only, retains original gzip bytes; final staged diff check required."
   ],
   "skipped": [
     "Browser/preview: no browser-visible change or Root route",
@@ -47,5 +48,6 @@
     "Hosted exactnewmain pending; known prior billing before0steps, manualChecks originallydisabled; no redispatch under unchanged block",
     "Independent criterion/UAT/business/release acceptance NOT VERIFIED"
   ],
-  "source_hashes": "planning/task-evidence/T013-practice-trials/source-hashes.json"
+  "source_hashes": "planning/task-evidence/T013-practice-trials/source-hashes.json",
+  "implementation_commit": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5"
 }

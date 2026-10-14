@@ -1,3 +1,9 @@
+# T013 implementation committed; verification pin next — 2026-10-14T14:28:48.249232+00:00 — Codex /root
+
+Implementation c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5 on original branch; exact101affected/55planning/owninstallconsumer/strict build-lint-format-audit evidence retained, no active owned resource. Prior T012 post-CI work preserved. Pin updates source SHA/metadata and normalizes five readable-log EOF warnings with original raw gzips retained; final staged diff check required. Full parent55/27criteria+7hosted/independent/UAT/business/release NOT VERIFIED. Authorized push/template Ref55 PR/matched-head merge next, then exact CI observation and authorized assessment slice. No branch switch/delegation/live enablement/manual-workflow restoration obligation.
+
+---
+
 # T013 practice contracts verified; staging publication next — 2026-10-14T14:27:26.042931+00:00 — Codex /root
 
 Original branch/base5869b182, sole writer, prior T012 post-CI work preserved. T013A versioned safe public/synthetic unpaid definition/full immutable approval ports and private canonical attempt preparation delivered. Exact definition/rubric/tool/variant/consent, current family-wide counts/cooldown and selected participant-scoped accommodations fail closed. No persisted trial/assessment/rank/access/capacity/money, Root API/UI/27DDL/dependency/flag enablement or production policy. No delegation/branch switch.
