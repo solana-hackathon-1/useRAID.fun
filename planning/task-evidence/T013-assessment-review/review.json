@@ -51,5 +51,6 @@
     "No stored effect/schema/migration/DB race/provider/runner/funds, no inferred live authority or durability",
     "Independent reviewer, representative UAT/business/full release acceptance NOT VERIFIED",
     "Exactnewmain hosted jobs pending; known priorc898 billing failure before0steps and originallydisabled manualChecks, no unchanged redispatch"
-  ]
+  ],
+  "implementation_commit": "29fe14361a2aea26d83a15a1a2d93b95e5f7b540"
 }
