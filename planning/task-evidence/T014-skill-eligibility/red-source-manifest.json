@@ -1,0 +1,19 @@
+{
+  "phase": "RED",
+  "base_sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+  "recorded_utc": "2026-10-14T03:19:22.423268+00:00",
+  "sources": {
+    "tests/skill-eligibility.test.ts": {
+      "sha256": "0c377a7e0e1595cb02a8f8aeba3b341b1929fd17f212bd68fa1386891ac660b6",
+      "evidence": "planning/task-evidence/T014-skill-eligibility/red-source/tests__skill-eligibility.test.ts.txt"
+    },
+    "src/skills/eligibility.ts": {
+      "sha256": "550d574adb512f72b20e3a4042cdc058cf40eadae7c7f353910777ecf6c60fcb",
+      "evidence": "planning/task-evidence/T014-skill-eligibility/red-source/src__skills__eligibility.ts.txt"
+    },
+    "docs/tasks/2026-10-14-T014-skill-eligibility.md": {
+      "sha256": "07e7d479bcf2c68a7a03aaa50d2624fd9589a7a103711e59fe8b31d18fc64123",
+      "evidence": "planning/task-evidence/T014-skill-eligibility/red-source/docs__tasks__2026-10-14-T014-skill-eligibility.md.txt"
+    }
+  }
+}

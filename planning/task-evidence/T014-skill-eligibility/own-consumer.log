@@ -1,0 +1,18 @@
+Independent copied host: /tmp/raid-t014-installed-consumer-w5fvy9j8
+
+added 9 packages, and audited 10 packages in 1s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> raid-skill-eligibility-example@1.0.0 typecheck
+> tsc --noEmit
+
+
+> raid-skill-eligibility-example@1.0.0 start
+> tsx host.ts
+
+{"synthetic":true,"explicitPartyCoverage":true,"wrongDomainRejected":true,"staleIsUnknown":true,"noPurchasedRank":true,"noPermissionOrCapacityEffect":true,"privateEvidenceOmitted":true}
+OWN INSTALLED CONSUMER PASS; no server or containers; source retained

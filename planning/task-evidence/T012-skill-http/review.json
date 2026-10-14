@@ -62,5 +62,13 @@
   },
   "ended_utc": "2026-10-14T00:27:37.895388+00:00",
   "elapsed_seconds": 553.423267,
-  "implementation_commit": "d07812ec894417a764a69268b7706d7ee9ab32bb"
+  "implementation_commit": "d07812ec894417a764a69268b7706d7ee9ab32bb",
+  "post_merge_ci": {
+    "head": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+    "staging_run": 38490596285,
+    "result": "NOT VERIFIED; actualbilling-beforestepsfailure",
+    "named_checks": "Notredispatchedunderknownunchangedblock; originalworkflowdisabled/APIverified",
+    "new_image": "NOT PUBLISHED",
+    "logs": "Nojobstarted; actualrun/jobs/annotationsretained"
+  }
 }

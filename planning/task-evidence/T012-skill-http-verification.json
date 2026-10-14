@@ -186,38 +186,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+      "observed": "AutomaticStagingbefore-stepbilling failure; namedChecksnotredispatchedunderknownunchangedexternalblock, originalworkflowdisabled/APIverified"
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+      "observed": "AutomaticStagingbefore-stepbilling failure; namedChecksnotredispatchedunderknownunchangedexternalblock, originalworkflowdisabled/APIverified"
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+      "observed": "AutomaticStagingbefore-stepbilling failure; namedChecksnotredispatchedunderknownunchangedexternalblock, originalworkflowdisabled/APIverified"
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+      "observed": "AutomaticStagingbefore-stepbilling failure; namedChecksnotredispatchedunderknownunchangedexternalblock, originalworkflowdisabled/APIverified"
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+      "observed": "AutomaticStagingbefore-stepbilling failure; namedChecksnotredispatchedunderknownunchangedexternalblock, originalworkflowdisabled/APIverified"
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+      "observed": "AutomaticStagingbefore-stepbilling failure; namedChecksnotredispatchedunderknownunchangedexternalblock, originalworkflowdisabled/APIverified"
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+      "observed": "AutomaticStagingbefore-stepbilling failure; namedChecksnotredispatchedunderknownunchangedexternalblock, originalworkflowdisabled/APIverified"
     }
   },
   "tdd": {
@@ -245,5 +252,14 @@
     }
   },
   "candidate_sha": "d07812ec894417a764a69268b7706d7ee9ab32bb",
-  "verification_environment": "Owned PostgreSQL16.15 / Node22 / independent own20package pg host; root fixtures; no live credentials"
+  "verification_environment": "Owned PostgreSQL16.15 / Node22 / independent own20package pg host; root fixtures; no live credentials",
+  "post_merge_staging": {
+    "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+    "result": "NOT VERIFIED",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38490596285",
+    "observed": "ActualpublishjobFAILED before0steps; officialaccountpayments/spendinglimitannotation",
+    "new_image": "NOT PUBLISHED",
+    "last_verified_image": "d023/fb982407cba13e1f0ea74370a0bb0691f031d0c679eb7ce050bb35610f7f3d40",
+    "manual_checks": "Originaldisabled/APIverified; no repeateddispatchunderknownunchangedbefore-stepbillingblock"
+  }
 }

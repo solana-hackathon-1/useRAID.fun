@@ -1,0 +1,21 @@
+{
+  "base_sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+  "source": "current working tree over recorded base, not an already committed source",
+  "files": {
+    "src/contracts/entities.ts": "e7301c4a4e640af9da7e1b9fbc49856b501ef8ec35ba15d60dad85c304684732",
+    "src/skills/eligibility.ts": "1fe8941c3ee4690d6ff07c58e3e41c5d90591eb0d63289691f1750a0fd41bde2",
+    "src/skills/eligibility-contracts.ts": "f101562aa918a974a065fd2d038b7662b65590182f62691fff629cc83e9bc4a0",
+    "tests/skill-eligibility.test.ts": "528e59ce3013a0c2b6c5b749965f67a0eec964af5ba99eaed136ae75dc2c9740",
+    "tests/skill-eligibility-boundary.test.ts": "0f7891bbcc30d2b9afa614f76eba0c20226055d4618d6018201e7074f2bbd32c",
+    "examples/skill-eligibility/host.ts": "b2d104970a51e0e80a8817fc39594b6201e5b024612d369f8f0955387e6047d5",
+    "examples/skill-eligibility/package.json": "975762c8848461168bddb9eb30c85fd7aecc9ec6867910aec5046757d238b6d5",
+    "examples/skill-eligibility/package-lock.json": "86f5c11336db4658c05e86934ec539ee7a9419f85f96835b015d0011909c4873",
+    "examples/skill-eligibility/tsconfig.json": "813a1cfd53230f17497734f9c30c0a415705b4c4c9d41e63fdb66985291888d1",
+    "docs/raid-skill-eligibility.md": "0b2e0afb29812746c6c4e707a1be456504d85673630850b2230dc455ad2de8df",
+    "docs/raid-module-reuse.md": "3ccdf47a087c0ce2856970d5b13efe9487854fe04f7e5c8eb1d61960f6cd7cee",
+    "planning/raid-ci-matrix.json": "ad84b0ef1dba6a6b8188b6c1ea3b61ee069f24e17ff71eca8ee6c0a3dd31517c",
+    "package.json": "f41b419956db600840d037472f4841e41346b7e7f8ea584eb54fc50ef404a061",
+    "package-lock.json": "6aa3822efe168564405f1c0efc474b2b5252bce1a127a630921dd7e175e8e868",
+    "prisma/schema.prisma": "a7a67ebb5e6ee703b6224e04f1866ca84dd58fbbb8f06b0153d050b0109dac53"
+  }
+}

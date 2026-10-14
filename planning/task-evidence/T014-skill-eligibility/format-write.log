@@ -1,0 +1,12 @@
+src/contracts/entities.ts 168ms (unchanged)
+src/skills/eligibility.ts 79ms
+src/skills/eligibility-contracts.ts 75ms
+tests/skill-eligibility.test.ts 121ms
+tests/skill-eligibility-boundary.test.ts 16ms
+docs/raid-skill-eligibility.md 89ms (unchanged)
+docs/tasks/2026-10-14-T014-skill-eligibility.md 25ms (unchanged)
+examples/skill-eligibility/host.ts 18ms
+examples/skill-eligibility/README.md 10ms (unchanged)
+examples/skill-eligibility/package.json 13ms
+examples/skill-eligibility/tsconfig.json 2ms
+planning/raid-ci-matrix.json 44ms (unchanged)
