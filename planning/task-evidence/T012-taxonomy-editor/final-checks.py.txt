@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess
+checks=[('browser-final',['python3','/tmp/raid-t012-taxonomy-editor-browser-run.py','release']),('browser-maintenance',['python3','/tmp/raid-t012-taxonomy-editor-browser-run.py','maintenance']),('affected',['node_modules/.bin/vitest','run','tests/skill-taxonomy-http.test.ts','tests/skill-taxonomy-read-http.test.ts','tests/skill-taxonomy-form.test.ts','tests/skill-taxonomy-editor-db.test.ts','tests/skill-taxonomy-host.test.ts','tests/skill-taxonomy-host-db.test.ts','tests/skill-taxonomy-db.test.ts','tests/skill-taxonomy-boundary.test.ts','tests/skill-claims.test.ts','tests/skill-claims-host.test.ts']),('pg-consumer',['python3','/tmp/raid-t012-taxonomy-editor-host-run.py'])]
+for name,cmd in checks:
+ print('CHECK',name,flush=True)
+ with Path('planning/task-evidence/T012-taxonomy-editor/'+name+'.log').open('w') as log:r=subprocess.run(cmd,stdout=log,stderr=subprocess.STDOUT)
+ print(name,'exit',r.returncode,flush=True)
+ if r.returncode:raise SystemExit(r.returncode)

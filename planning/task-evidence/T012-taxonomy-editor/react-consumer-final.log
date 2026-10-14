@@ -1,0 +1,9 @@
+
+> raid-skill-taxonomy-form-example@1.0.0 typecheck
+> tsc --noEmit
+
+
+> raid-skill-taxonomy-form-example@1.0.0 start
+> tsx host.tsx
+
+{"synthetic":true,"portableReact":true,"noSeed":true,"hydrationDisabled":true,"actualSavedIdentity":true,"disabledWrites":true,"invalidHostDenied":true,"noHiddenAuthorityOrDispatch":true}

@@ -141,6 +141,10 @@ jobs:
         run: npx playwright test --config=playwright.skill-claims.config.ts
       - name: Administrative taxonomy API suite
         run: npx playwright test --config=playwright.skill-taxonomy.config.ts
+      - name: Administrative catalog editor and maintenance suites
+        run: |
+          npx playwright test --config=playwright.skill-editor.config.ts
+          SKILL_EDITOR_TEST_WRITES=false npx playwright test --config=playwright.skill-editor.config.ts
       - name: Production build
         run: npm run build
         env:

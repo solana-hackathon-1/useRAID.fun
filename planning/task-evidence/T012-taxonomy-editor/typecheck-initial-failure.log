@@ -1,0 +1,20 @@
+examples/skill-taxonomy-form/host.tsx(48,9): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type 'string' is not assignable to type 'string & $brand<"AccountId">'.
+      Type 'string' is not assignable to type '$brand<"AccountId">'.
+examples/skill-taxonomy-form/host.tsx(76,28): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type 'string' is not assignable to type 'string & $brand<"AccountId">'.
+      Type 'string' is not assignable to type '$brand<"AccountId">'.
+src/app/admin/skills/page.tsx(15,28): error TS2322: Type '{ writesAvailable: boolean; unavailableReason: "DISABLED" | null; version: "v1"; taxonomyId: string; publisherAccountId: string; taxonomy: Readonly<{ version: "v1"; id: string; revision: number; state: "PUBLISHED"; publishedByAccountId: string & $brand<...>; publishedAt: string; skills: readonly Readonly<...>[]; }> ...' is not assignable to type '{ version: "v1"; taxonomyId: string; publisherAccountId: string & $brand<"AccountId">; taxonomy: Readonly<{ version: "v1"; id: string; revision: number; state: "PUBLISHED"; publishedByAccountId: string & $brand<...>; publishedAt: string; skills: readonly Readonly<...>[]; }> | null; writesAvailable: boolean; unavaila...'.
+  Types of property 'publisherAccountId' are incompatible.
+    Type 'string' is not assignable to type 'string & $brand<"AccountId">'.
+      Type 'string' is not assignable to type '$brand<"AccountId">'.
+tests/skill-taxonomy-form.test.ts(11,3): error TS2322: Type 'string' is not assignable to type 'string & $brand<"AccountId">'.
+  Type 'string' is not assignable to type '$brand<"AccountId">'.
+tests/skill-taxonomy-form.test.ts(36,7): error TS2322: Type 'string' is not assignable to type 'string & $brand<"AccountId">'.
+  Type 'string' is not assignable to type '$brand<"AccountId">'.
+tests/skill-taxonomy-form.test.ts(63,28): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type 'string' is not assignable to type 'string & $brand<"AccountId">'.
+      Type 'string' is not assignable to type '$brand<"AccountId">'.

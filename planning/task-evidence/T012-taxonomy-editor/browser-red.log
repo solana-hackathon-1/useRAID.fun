@@ -1,0 +1,189 @@
+raid-t012-taxonomy-editor-auto-20261014
+OWNED DATABASE: raid-t012-taxonomy-editor-auto-20261014 loopback port 32856
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32856"
+
+27 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+OWNED PREVIEW SOURCE /tmp/raid-t012-taxonomy-editor-source-8tdxswoo
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 2 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  1 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:29:3 › admin edits actual saved categories, reviews changes and publishes one immutable version (9.2s)
+  ✘  2 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:29:3 › admin edits actual saved categories, reviews changes and publishes one immutable version (7.7s)
+
+
+  1) [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:29:3 › admin edits actual saved categories, reviews changes and publishes one immutable version
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Skill catalog', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Skill catalog', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Skill catalog', exact: true })
+
+
+      29 |   test('admin edits actual saved categories, reviews changes and publishes one immutable version', async ({ page }, info) => {
+      30 |     await publish(); await page.goto('/admin/skills');
+    > 31 |     await expect(page.getByRole('heading', { name: 'Skill catalog', exact: true })).toBeVisible();
+         |                                                                                     ^
+      32 |     await expect(page.getByLabel('Skill ID', { exact: true })).toHaveAttribute('readonly', '');
+      33 |     await expect(page.getByLabel('Skill domain', { exact: true })).toHaveAttribute('readonly', '');
+      34 |     await page.getByLabel('Additional aliases', { exact: true }).fill('ACCESSIBLE-UI');
+        at /work/tests/browser-skill-editor/skill-editor.spec.ts:31:85
+
+    Error Context: test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-desktop/error-context.md
+
+    Error Context: test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-desktop/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-desktop/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-desktop/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:29:3 › admin edits actual saved categories, reviews changes and publishes one immutable version
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Skill catalog', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Skill catalog', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Skill catalog', exact: true })
+
+
+      29 |   test('admin edits actual saved categories, reviews changes and publishes one immutable version', async ({ page }, info) => {
+      30 |     await publish(); await page.goto('/admin/skills');
+    > 31 |     await expect(page.getByRole('heading', { name: 'Skill catalog', exact: true })).toBeVisible();
+         |                                                                                     ^
+      32 |     await expect(page.getByLabel('Skill ID', { exact: true })).toHaveAttribute('readonly', '');
+      33 |     await expect(page.getByLabel('Skill domain', { exact: true })).toHaveAttribute('readonly', '');
+      34 |     await page.getByLabel('Additional aliases', { exact: true }).fill('ACCESSIBLE-UI');
+        at /work/tests/browser-skill-editor/skill-editor.spec.ts:31:85
+
+    Error Context: test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-mobile/error-context.md
+
+    Error Context: test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-mobile/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-mobile/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/skill-editor/skill-editor-admin-edits-a-b5019-ishes-one-immutable-version-mobile/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:29:3 › admin edits actual saved categories, reviews changes and publishes one immutable version
+    [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:29:3 › admin edits actual saved categories, reviews changes and publishes one immutable version
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t012-taxonomy-editor-source-8tdxswoo/test-results
+OWNED CLEANUP: 0 raid-t012-taxonomy-editor-auto-20261014

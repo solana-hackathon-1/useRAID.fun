@@ -1,0 +1,11 @@
+import os,subprocess,json
+from pathlib import Path
+name='raid-t012-taxonomy-editor-auto-20261014'
+r=json.loads(subprocess.check_output(['docker','inspect',name]))[0]
+assert r['Config']['Labels'].get('raid.task')=='T012-taxonomy-editor' and r['State']['Running']
+url=os.environ['DATABASE_URL'];assert url.endswith('/useraid_test')
+subprocess.run(['docker','exec',name,'psql','-U','postgres','-d','postgres','-v','ON_ERROR_STOP=1','-c','CREATE DATABASE useraid_skill_host_test'],check=True)
+env=dict(os.environ,DATABASE_URL=url.replace('/useraid_test','/useraid_skill_host_test'),NODE_ENV='test')
+consumer=Path(Path('/tmp/raid-t012-taxonomy-editor-pg-consumer-path').read_text())
+print('INDEPENDENT OWNED HOST:',consumer,flush=True)
+for cmd in [['npm','run','migrate'],['npm','start'],['npm','run','http']]:subprocess.run(cmd,cwd=consumer,env=env,check=True)

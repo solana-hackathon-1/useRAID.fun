@@ -175,6 +175,9 @@ export default async function AdminPage({
       <div className="page-title">
         <h1>Operations</h1>
         <p>Keep the pilot useful, attributable, and within budget.</p>
+        <Link className="inline-link" href="/admin/skills">
+          Manage skill catalog
+        </Link>
       </div>
       <XDiagnostics userId={user.id} />
       <TrackingOperations />

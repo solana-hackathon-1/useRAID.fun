@@ -1,0 +1,11 @@
+OWNED PREVIEW SOURCE /tmp/raid-t012-taxonomy-editor-source-zsz9ifn8
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 2 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  1 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:296:3 › disabled new publication retains readable actual categories and disabled editor controls (6.8s)
+  ✓  2 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:296:3 › disabled new publication retains readable actual categories and disabled editor controls (2.6s)
+
+  2 passed (31.6s)
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t012-taxonomy-editor-source-zsz9ifn8/test-results

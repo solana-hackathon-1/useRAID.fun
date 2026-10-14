@@ -1,0 +1,113 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-taxonomy-read-http.test.ts (8 tests | 8 failed) 43ms
+   × returns bound private current publisher state even when new publication is off 33ms
+   × denies current actor 401 before read 1ms
+   × denies current actor 403 before read 1ms
+   × rejects invalid URL before consulting catalog storage 1ms
+   × rejects unbound publisher host state without exposing it 2ms
+   × rejects unbound catalog host state without exposing it 1ms
+   × rejects unbound availability host state without exposing it 1ms
+   × rejects unbound extra host state without exposing it 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-taxonomy-read-http.test.ts > returns bound private current publisher state even when new publication is off
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/skill-taxonomy-read-http.test.ts:11:20
+      9| it('returns bound private current publisher state even when new public…
+     10|   const { api, host } = fixture(); const r=await api.GET(new Request('…
+     11|   expect(r.status).toBe(200); expect(await r.json()).toEqual(state); e…
+       |                    ^
+     12|   expect(r.headers.get('cache-control')).toBe('private, no-store'); ex…
+     13| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/skill-taxonomy-read-http.test.ts > denies current actor 401 before read
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/skill-taxonomy-read-http.test.ts:16:20
+     14| it.each([401,403] as const)('denies current actor %i before read', asy…
+     15|   const {api,host}=fixture({actor:async()=>{throw new SkillTaxonomyHtt…
+     16|   expect(r.status).toBe(status); expect(r.headers.get('cache-control')…
+       |                    ^
+     17| });
+     18| it('rejects invalid URL before consulting catalog storage', async()=>{
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/skill-taxonomy-read-http.test.ts > denies current actor 403 before read
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/skill-taxonomy-read-http.test.ts:16:20
+     14| it.each([401,403] as const)('denies current actor %i before read', asy…
+     15|   const {api,host}=fixture({actor:async()=>{throw new SkillTaxonomyHtt…
+     16|   expect(r.status).toBe(status); expect(r.headers.get('cache-control')…
+       |                    ^
+     17| });
+     18| it('rejects invalid URL before consulting catalog storage', async()=>{
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/skill-taxonomy-read-http.test.ts > rejects invalid URL before consulting catalog storage
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/skill-taxonomy-read-http.test.ts:19:119
+     17| });
+     18| it('rejects invalid URL before consulting catalog storage', async()=>{
+     19|   const {api,host}=fixture();const r=await api.GET(new Request('https:…
+       |                                                                                                                       ^
+     20| });
+     21| it.each(['publisher','catalog','availability','extra'])('rejects unbou…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/skill-taxonomy-read-http.test.ts > rejects unbound publisher host state without exposing it
+ FAIL  tests/skill-taxonomy-read-http.test.ts > rejects unbound catalog host state without exposing it
+ FAIL  tests/skill-taxonomy-read-http.test.ts > rejects unbound availability host state without exposing it
+ FAIL  tests/skill-taxonomy-read-http.test.ts > rejects unbound extra host state without exposing it
+AssertionError: expected null to be 'Cookie' // Object.is equality
+
+- Expected:
+"Cookie"
+
++ Received:
+null
+
+ ❯ tests/skill-taxonomy-read-http.test.ts:23:167
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  19:03:28
+   Duration  488ms (transform 157ms, setup 0ms, import 281ms, tests 43ms, environment 0ms)

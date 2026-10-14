@@ -1,0 +1,30 @@
+OWNED PREVIEW SOURCE /tmp/raid-t012-taxonomy-editor-source-7df978ci
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 20 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓   1 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:59:3 › admin edits actual saved categories, reviews changes and publishes one immutable version (13.6s)
+  ✓   2 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:88:3 › empty configured catalog starts with no seeded categories and adds explicit stable data (3.6s)
+  ✓   3 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:103:3 › invalid duplicate alias focuses error and preserves draft without publishing (3.9s)
+  ✓   4 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:115:3 › unknown committed publication preserves exact original intent across rate and stale denials (4.5s)
+  ✓   5 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:158:3 › stale revision reloads current publisher state and preserves draft for renewed review (3.6s)
+  ✓   6 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:179:3 › mismatched success acknowledgment stays unconfirmed and retries the original command (3.4s)
+  ✓   7 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:206:3 › anonymous and wallet-only admins receive no editor catalog payload (4.6s)
+  ✓   8 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:223:3 › controls remain disabled before hydration and prevent simultaneous duplicate publication (3.8s)
+  ✓   9 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:247:3 › failed or foreign reload preserves stale draft and requires a valid current read before publication (3.8s)
+  ✓  10 [desktop] › tests/browser-skill-editor/skill-editor.spec.ts:274:3 › current role, allowlist identity and session revocation deny editor reads without leaking saved catalog (7.4s)
+  ✓  11 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:59:3 › admin edits actual saved categories, reviews changes and publishes one immutable version (8.5s)
+  ✓  12 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:88:3 › empty configured catalog starts with no seeded categories and adds explicit stable data (6.6s)
+  ✓  13 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:103:3 › invalid duplicate alias focuses error and preserves draft without publishing (6.9s)
+  ✓  14 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:115:3 › unknown committed publication preserves exact original intent across rate and stale denials (3.4s)
+  ✓  15 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:158:3 › stale revision reloads current publisher state and preserves draft for renewed review (3.2s)
+  ✓  16 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:179:3 › mismatched success acknowledgment stays unconfirmed and retries the original command (3.5s)
+  ✓  17 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:206:3 › anonymous and wallet-only admins receive no editor catalog payload (4.4s)
+  ✓  18 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:223:3 › controls remain disabled before hydration and prevent simultaneous duplicate publication (4.0s)
+  ✓  19 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:247:3 › failed or foreign reload preserves stale draft and requires a valid current read before publication (3.6s)
+  ✓  20 [mobile] › tests/browser-skill-editor/skill-editor.spec.ts:274:3 › current role, allowlist identity and session revocation deny editor reads without leaking saved catalog (7.2s)
+
+  20 passed (2.2m)
+OWNED BROWSER CLEANUP complete; traces preserved at /tmp/raid-t012-taxonomy-editor-source-7df978ci/test-results

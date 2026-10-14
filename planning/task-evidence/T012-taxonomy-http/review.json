@@ -57,5 +57,13 @@
   },
   "resources": "All owned Next/browser removed; fixture c9f62a712083... stop0 actualRunningfalse; all pools/CLI ended. Existing listeners/images/volumes/evidence preserved. No manualworkflow restoration outstanding.",
   "completion_validator": "34 expected failures=27fullcriteria+7CI NOT VERIFIED; no packet metadata errors, no self-approval",
-  "implementation_commit": "a1a39be3f67d7ba629a8df6a2b708747f6fdba48"
+  "implementation_commit": "a1a39be3f67d7ba629a8df6a2b708747f6fdba48",
+  "post_merge_ci": {
+    "head": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
+    "run": 38516527523,
+    "result": "NOT VERIFIED; actual failure before0steps with official account payments/spending-limit annotation",
+    "new_image": "NOT PUBLISHED",
+    "manual": "disabled_manually API-verified; no restoration obligation",
+    "tree_identity": "Actual merge tree equals verified pin tree; final code/test/config/example hashes still match"
+  }
 }

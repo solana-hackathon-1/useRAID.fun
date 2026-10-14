@@ -1,0 +1,51 @@
+{
+  "label": "SELF-EVALUATED",
+  "agent": "Codex /root",
+  "start_utc": "2026-10-14T13:25:03.904689+00:00",
+  "end_utc": "2026-10-14T13:48:28.490617+00:00",
+  "elapsed_seconds": 1404.586,
+  "base_sha": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
+  "source_identity": "Final exact code/test/config/example hashes in source-hashes.json; metadata pin follows implementation commit",
+  "requirements_checked": [
+    "R04/R06/R12/R15/R16/I05/I06/I10/I13",
+    "Current own X-authorized unrestricted ADMIN and actual allowlist at Root and locked publisher read/publication",
+    "Configured actual catalog with no seed, retained historical ID/domain/aliases",
+    "Normalized reviewed body/16KiB bound/canonical persisted revision range",
+    "Separate review/publication, immutable original unknown intent across every later denial",
+    "Current bound reload/CAS recovery, draft retention and valid history",
+    "Private current actor/catalog DTOs before HTML/hydration, no session credentials",
+    "Hydration disabled controls/semantic labels/focused errors/desktop-mobile reflow",
+    "Default-off new publication/actual disabled host readability",
+    "Additive v1 factories and own-installed React/PG consumers, no schema/Root dependency or money/provider/assessment change"
+  ],
+  "checks": {
+    "TDD": "8DB-SSRRED+8HTTPRED+2missing-pageRED+2CIexecutionRED, exact archives retained;60initialGREEN",
+    "actual_browser": "16initialPASS1.9m;20extendedPASS2.2m;2disabled-hostPASS31.6s;4affected-auth refactorPASS49.7s. Exact runtime reuse mapping in browser-reuse.json",
+    "affected": "10files140PASS13.06s with actual PG including6publisher-read cases/current-policy-after-read check and old publication/claim boundaries",
+    "planning": "55PASS71.624s",
+    "independent_examples": "React own npmci15packages16audit0vuln/types/SSR PASS; PG own npmci20packages21audit0vuln/minimal migrations/previous host/extendedHTTP-read host PASS. Own node_modules, no runtime symlink; source retained",
+    "static": "Final typegen/strict types/production Webpack build PASS; lint0errors25preexistingwarnings/no new suppression; Root audit policy PASS",
+    "format": "PASS fresh tracked/nonignored WIP snapshot /tmp/raid-t012-taxonomy-editor-format-source-w_42fhy0; no ignored-artifact removal or exclusion",
+    "completion": "34expected unverified obligations=27fullcriteria+7CI, no metadata errors/self-approval"
+  },
+  "findings_fixes": [
+    "Strict branded AccountId compiler failures fixed by canonical parsing at Root read and distinct plain JSON input/canonical output types, without casts or weakened runtime validation.",
+    "Initial SSR consumer assertion expected lowercase readonly; actual React serializer uses readOnly. Corrected serialized representation; actual DOM readonly assertions remain.",
+    "One new OAuth anchor warning replaced by native GET sign-in form retaining full browser redirect and no prefetch; affected4auth cases rerun; final lint back to25oldwarnings.",
+    "Broader change-reason and administration repair contracts remain explicit gaps; local category preview does not imply full administrative or assessment acceptance."
+  ],
+  "reused_skipped": {
+    "reused": "Full20 browser relevant source matches except sign-in branch covered by4exact-current auth cases. All27SQL/schema/Root package+lock unchanged; dedicated generated27client immutable deps reused.",
+    "skipped": "Unrelated whole application/browser suites, real X/provider/funds/UAT/independent review; no arbitrary rerun under unchanged GitHub billing block. Production build is separate from development verification."
+  },
+  "preview": {
+    "url": "http://127.0.0.1:3023/admin/skills",
+    "mode": "Synthetic Next16.3.8 Webpack development; desktop Chromium/mobile iPhone13 emulation",
+    "source": "/tmp/raid-t012-taxonomy-editor-source-7df978ci; final auth branch sourcegtswswfa",
+    "observed": "Actual roles/reads/edits/normalization/review/publish/replay/unknown-denials/CAS/reload/hydration/reflow/maintenance verified; desktop/mobile saved images inspected",
+    "access": "Container-local loopback verified; owner forwarding NOT VERIFIED. No running/public preview claim.",
+    "ownership": "Owned browser/Next removed after each phase; PG42172d310b4b29b233680c2c3feaab428336532b2603950e2ef5eb1522c99b6f labelT012-taxonomy-editor stopped0/actualfalse; all pools/CLI/build ended. Source/traces/images/rawgz retained; unrelated listeners/volumes/images preserved."
+  },
+  "independent_UAT_release": "NOT VERIFIED; parent open; no delegation, no live flag/provider/funds enablement",
+  "hosted_CI": "Pending actual new candidate. Prior975d Staging38516527523 failed before0steps due account payments/spending limit; manualChecks originally disabled/no restoration obligation."
+}

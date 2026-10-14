@@ -1,0 +1,11 @@
+{
+  "full20_source": "/tmp/raid-t012-taxonomy-editor-source-7df978ci",
+  "full20_result": "PASS2.2m",
+  "runtime_difference": ["src/app/admin/skills/page.tsx"],
+  "difference": "SIGN_IN branch native GET form replaces native anchor; ready/forbidden/unavailable branches and all owning component/ports/storage/host runtime bytes unchanged",
+  "affected_auth_source": "/tmp/raid-t012-taxonomy-editor-source-gtswswfa",
+  "affected_auth_result": "4 desktop/mobile PASS49.7s",
+  "maintenance_source": "/tmp/raid-t012-taxonomy-editor-source-zsz9ifn8",
+  "maintenance_result": "2PASS31.6s",
+  "source_identity": "Matching exact relevant runtime/dependency/config/environment evidence reused; no assertion/deadline weakening"
+}

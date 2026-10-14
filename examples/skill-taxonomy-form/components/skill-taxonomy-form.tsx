@@ -1,0 +1,1 @@
+../../../src/components/skill-taxonomy-form.tsx

@@ -1,0 +1,26 @@
+{
+  "name": "raid-skill-taxonomy-form-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx host.tsx",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "4.6.5",
+    "bs58": "6.0.0",
+    "tsx": "4.23.15",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "22.20.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
