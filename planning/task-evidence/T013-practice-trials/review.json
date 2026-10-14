@@ -49,5 +49,16 @@
     "Independent criterion/UAT/business/release acceptance NOT VERIFIED"
   ],
   "source_hashes": "planning/task-evidence/T013-practice-trials/source-hashes.json",
-  "implementation_commit": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5"
+  "implementation_commit": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+  "post_merge_ci": {
+    "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+    "result": "NOT VERIFIED",
+    "observed": "FAILED before0steps due official account payments/spending-limit annotation",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+    "new_image": "NOT PUBLISHED",
+    "manual_checks": "Originally disabled_manually API-verified; no enablement/redispatch/restoration obligation",
+    "source": "Actual merge tree equals verified pin; final code/test/config/example hashes remain exact"
+  },
+  "post_merge_source": "Merge tree equals verified pin; all final source hashes still match",
+  "readable_log_normalization": "Pin corrected five EOF warnings and two empty readable outputs; seven files normalized. Original byte-exact raw gzip retained."
 }

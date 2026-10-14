@@ -1,0 +1,27 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-assessment-review.test.ts (29 tests | 1 failed | 28 skipped) 29ms
+     × preserves a historical assessment already due at its issuance boundary 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > preserves a historical assessment already due at its issuance boundary
+SkillAssessmentReviewContractError: INVALID_HOST_CONTRACT
+ ❯ assessment src/skills/assessment-review.ts:81:11
+     79|         Date.parse(record.reassessmentAt) <= Date.parse(record.issuedA…
+     80|   )
+     81|     throw new SkillAssessmentReviewContractError('INVALID_HOST_CONTRAC…
+       |           ^
+     82|   if (!same(record?.reference ?? null, expected))
+     83|     throw new SkillAssessmentReviewContractError('REVISION_CHANGED');
+ ❯ prepareSkillAssessmentReview src/skills/assessment-review.ts:120:29
+ ❯ tests/skill-assessment-review.test.ts:49:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 28 skipped (29)
+   Start at  23:42:39
+   Duration  620ms (transform 224ms, setup 0ms, import 394ms, tests 29ms, environment 0ms)

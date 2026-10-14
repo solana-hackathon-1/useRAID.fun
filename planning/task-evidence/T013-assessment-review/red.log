@@ -1,0 +1,446 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-assessment-review.test.ts (27 tests | 27 failed) 43ms
+     × prepares a reasoned relevant advanced assessment without persisted eligibility or grants 8ms
+     × denies actorAccountId=null 7ms
+     × denies actorSessionAuthorized=false 1ms
+     × denies actorRestricted=true 1ms
+     × denies actorAccountId=synthetic-alice-account 1ms
+     × denies actorAccountId=unscoped-founder 1ms
+     × denies assessmentPolicyVersion=unapproved-policy 1ms
+     × requires current actual scope before disclosing domain or version failures 2ms
+     × rejects client actor/rank/authority/score fields and missing decision ports 2ms
+     × sanitizes private approval failures 1ms
+     × binds exact definition, rubric, submission and current assessment versions 1ms
+     × rejects changed immutable rubric/tool/variant under the approved definition ID 1ms
+     × requires the actual canonical HUMAN subject and matching stable domain 1ms
+     × preserves actual submitted historical rubric after skill retirement 1ms
+     × denies expired/future/wrong-scope assessment observations including claimed absence 2ms
+     × denies malformed current assessment bindings without erasing them 1ms
+     × requires fresh actually submitted evidence without future submission/history rewrites 1ms
+     × requires exactly one reasoned finding for every actual rubric criterion 1ms
+     × requires confirmed ownership and MET required criteria for verification 1ms
+     × keeps incomplete/failed reviews separate from old capability history 1ms
+     × validates bounded future reassessment date and prevents revision overflow 1ms
+     × proposes scoped capability reassessment preserving prior rank/evidence/issuer history 1ms
+     × allows only a separately authorized reasoned fraud case to propose revocation 1ms
+     × denies self-review, restricted/unscoped evaluators and unavailable current case evidence 1ms
+     × requires actual existing current assessment and exact original version 1ms
+     × has no automatic provider outage, reputation restriction or mutable history effect 1ms
+     × sanitizes a failed scoped reassessment policy 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 27 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > prepares a reasoned relevant advanced assessment without persisted eligibility or grants
+Error: NOT_IMPLEMENTED
+ ❯ prepareSkillAssessmentReview src/skills/assessment-review.ts:3:9
+      1| /** RED scaffold: authorized assessment preparation has not been imple…
+      2| export function prepareSkillAssessmentReview(..._args: unknown[]): any…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function prepareSkillAssessmentReassessment(..._args: unknown[]…
+ ❯ tests/skill-assessment-review.test.ts:15:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies actorAccountId=null
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies actorSessionAuthorized=false
+AssertionError: expected [Function] to throw error including 'AUTHENTICATION_REQUIRED' but got 'NOT_IMPLEMENTED'
+
+Expected: "AUTHENTICATION_REQUIRED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:25:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies actorRestricted=true
+AssertionError: expected [Function] to throw error including 'ACCOUNT_RESTRICTED' but got 'NOT_IMPLEMENTED'
+
+Expected: "ACCOUNT_RESTRICTED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:25:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies actorAccountId=synthetic-alice-account
+AssertionError: expected [Function] to throw error including 'SELF_REVIEW_FORBIDDEN' but got 'NOT_IMPLEMENTED'
+
+Expected: "SELF_REVIEW_FORBIDDEN"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:25:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies actorAccountId=unscoped-founder
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies assessmentPolicyVersion=unapproved-policy
+AssertionError: expected [Function] to throw error including 'FORBIDDEN' but got 'NOT_IMPLEMENTED'
+
+Expected: "FORBIDDEN"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:25:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > requires current actual scope before disclosing domain or version failures
+AssertionError: expected [Function] to throw error including 'FORBIDDEN' but got 'NOT_IMPLEMENTED'
+
+Expected: "FORBIDDEN"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:29:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > rejects client actor/rank/authority/score fields and missing decision ports
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:33:114
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > sanitizes private approval failures
+AssertionError: expected [Function] to throw error including 'HOST_POLICY_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "HOST_POLICY_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:38:67
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > binds exact definition, rubric, submission and current assessment versions
+AssertionError: expected [Function] to throw error including 'REVISION_CHANGED' but got 'NOT_IMPLEMENTED'
+
+Expected: "REVISION_CHANGED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:42:88
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > rejects changed immutable rubric/tool/variant under the approved definition ID
+AssertionError: expected [Function] to throw error including 'DEFINITION_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "DEFINITION_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:50:155
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > requires the actual canonical HUMAN subject and matching stable domain
+AssertionError: expected [Function] to throw error including 'RESOURCE_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "RESOURCE_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:53:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > preserves actual submitted historical rubric after skill retirement
+Error: NOT_IMPLEMENTED
+ ❯ prepareSkillAssessmentReview src/skills/assessment-review.ts:3:9
+      1| /** RED scaffold: authorized assessment preparation has not been imple…
+      2| export function prepareSkillAssessmentReview(..._args: unknown[]): any…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function prepareSkillAssessmentReassessment(..._args: unknown[]…
+ ❯ tests/skill-assessment-review.test.ts:60:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies expired/future/wrong-scope assessment observations including claimed absence
+AssertionError: expected [Function] to throw error including 'ASSESSMENT_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "ASSESSMENT_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:63:106
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > denies malformed current assessment bindings without erasing them
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:69:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > requires fresh actually submitted evidence without future submission/history rewrites
+AssertionError: expected [Function] to throw error including 'SUBMISSION_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "SUBMISSION_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:73:64
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > requires exactly one reasoned finding for every actual rubric criterion
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:78:219
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > requires confirmed ownership and MET required criteria for verification
+AssertionError: expected [Function] to throw error including 'EVIDENCE_NOT_CONFIRMED' but got 'NOT_IMPLEMENTED'
+
+Expected: "EVIDENCE_NOT_CONFIRMED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:81:56
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > keeps incomplete/failed reviews separate from old capability history
+Error: NOT_IMPLEMENTED
+ ❯ prepareSkillAssessmentReview src/skills/assessment-review.ts:3:9
+      1| /** RED scaffold: authorized assessment preparation has not been imple…
+      2| export function prepareSkillAssessmentReview(..._args: unknown[]): any…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function prepareSkillAssessmentReassessment(..._args: unknown[]…
+ ❯ tests/skill-assessment-review.test.ts:87:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > authorized private manual review > validates bounded future reassessment date and prevents revision overflow
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReview tests/skill-assessment-review.test.ts:10:160
+      8|   canPrepareReassessment: (ctx: {actorAccountId:string;assessmentPolic…
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+       |                                                                                                                                                                ^
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+     12|
+ ❯ tests/skill-assessment-review.test.ts:92:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > reasoned private reassessment and fraud revocation > proposes scoped capability reassessment preserving prior rank/evidence/issuer history
+Error: NOT_IMPLEMENTED
+ ❯ prepareSkillAssessmentReassessment src/skills/assessment-review.ts:6:9
+      4| }
+      5| export function prepareSkillAssessmentReassessment(..._args: unknown[]…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/skill-assessment-review.test.ts:99:72
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > reasoned private reassessment and fraud revocation > allows only a separately authorized reasoned fraud case to propose revocation
+Error: NOT_IMPLEMENTED
+ ❯ prepareSkillAssessmentReassessment src/skills/assessment-review.ts:6:9
+      4| }
+      5| export function prepareSkillAssessmentReassessment(..._args: unknown[]…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/skill-assessment-review.test.ts:105:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > reasoned private reassessment and fraud revocation > denies self-review, restricted/unscoped evaluators and unavailable current case evidence
+AssertionError: expected [Function] to throw error including 'SELF_REVIEW_FORBIDDEN' but got 'NOT_IMPLEMENTED'
+
+Expected: "SELF_REVIEW_FORBIDDEN"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReassessment tests/skill-assessment-review.test.ts:11:178
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+       |                                                                                                                                                                                  ^
+     12|
+     13| describe('authorized private manual review',()=>{
+ ❯ tests/skill-assessment-review.test.ts:110:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > reasoned private reassessment and fraud revocation > requires actual existing current assessment and exact original version
+AssertionError: expected [Function] to throw error including 'ASSESSMENT_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "ASSESSMENT_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReassessment tests/skill-assessment-review.test.ts:11:178
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+       |                                                                                                                                                                                  ^
+     12|
+     13| describe('authorized private manual review',()=>{
+ ❯ tests/skill-assessment-review.test.ts:117:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > reasoned private reassessment and fraud revocation > has no automatic provider outage, reputation restriction or mutable history effect
+AssertionError: expected [Function] to throw error including 'CASE_EVIDENCE_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "CASE_EVIDENCE_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReassessment tests/skill-assessment-review.test.ts:11:178
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+       |                                                                                                                                                                                  ^
+     12|
+     13| describe('authorized private manual review',()=>{
+ ❯ tests/skill-assessment-review.test.ts:124:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/27]⎯
+
+ FAIL  tests/skill-assessment-review.test.ts > reasoned private reassessment and fraud revocation > sanitizes a failed scoped reassessment policy
+AssertionError: expected [Function] to throw error including 'HOST_POLICY_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "HOST_POLICY_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejectReassessment tests/skill-assessment-review.test.ts:11:178
+      9| });
+     10| const rejectReview = (code:string,ctx:unknown, input:unknown=reviewInp…
+     11| const rejectReassessment = (code:string,ctx:unknown, input:unknown=rea…
+       |                                                                                                                                                                                  ^
+     12|
+     13| describe('authorized private manual review',()=>{
+ ❯ tests/skill-assessment-review.test.ts:128:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/27]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  27 failed (27)
+   Start at  23:31:18
+   Duration  553ms (transform 135ms, setup 0ms, import 243ms, tests 43ms, environment 0ms)

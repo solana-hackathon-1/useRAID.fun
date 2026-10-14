@@ -11,7 +11,7 @@
   "open_decisions": "O09 numerical calibration, actual rubric/evaluator/operating approvals and O11 retention unresolved; dependent production actions absent/disabled.",
   "release_gate_disposition": "Full parent55 and independent/UAT/business/provider/release gates NOT VERIFIED; bounded staging publication DEC-2026-10-12-03.",
   "code_source_sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
-  "candidate_sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+  "candidate_sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
   "source_identity": "Implementation c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5 contains exact verified code/test/config/example hashes; subsequent pin changes metadata/readable-log whitespace only; original raw gzip retained.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11; own-install console9packages10audit0vuln; no DB/provider credentials",
   "criteria": {
@@ -181,45 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
-      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+      "observed": "Exact merged candidate StagingFAILED before0steps due billing; originally disabled namedChecks not enabled/redispatched. Local source evidence remains separate."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
-      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+      "observed": "Exact merged candidate StagingFAILED before0steps due billing; originally disabled namedChecks not enabled/redispatched. Local source evidence remains separate."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
-      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+      "observed": "Exact merged candidate StagingFAILED before0steps due billing; originally disabled namedChecks not enabled/redispatched. Local source evidence remains separate."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
-      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+      "observed": "Exact merged candidate StagingFAILED before0steps due billing; originally disabled namedChecks not enabled/redispatched. Local source evidence remains separate."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
-      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+      "observed": "Exact merged candidate StagingFAILED before0steps due billing; originally disabled namedChecks not enabled/redispatched. Local source evidence remains separate."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
-      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+      "observed": "Exact merged candidate StagingFAILED before0steps due billing; originally disabled namedChecks not enabled/redispatched. Local source evidence remains separate."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
-      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
-      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+      "observed": "Exact merged candidate StagingFAILED before0steps due billing; originally disabled namedChecks not enabled/redispatched. Local source evidence remains separate."
     }
   },
   "tdd": {
@@ -245,5 +245,14 @@
       "result": "PASS",
       "observed": "101affectedPASS5.52s,55planningPASS51.789s, own installed exactconsumer/strict types, dedicated Root typegen/strict types/build, lint0errors25oldwarnings, Root audit policy and freshsource formatter PASS. TS7006 fixed explicitly; stale originalRoot generated-client failure retained; no assertions/deadlines/authority weakened."
     }
+  },
+  "post_merge_staging": {
+    "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+    "result": "NOT VERIFIED",
+    "observed": "FAILED before0steps due official account payments/spending-limit annotation",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38581167251",
+    "new_image": "NOT PUBLISHED",
+    "manual_checks": "Originally disabled_manually API-verified; no enablement/redispatch/restoration obligation",
+    "source": "Actual merge tree equals verified pin; final code/test/config/example hashes remain exact"
   }
 }

@@ -1,0 +1,13 @@
+
+added 9 packages, and audited 10 packages in 2s
+
+found 0 vulnerabilities
+
+> raid-skill-assessment-example@1.0.0 typecheck
+> tsc --noEmit
+
+
+> raid-skill-assessment-example@1.0.0 start
+> tsx host.ts
+
+{"synthetic":true,"alternateApprovalPorts":true,"scopedEvaluator":true,"selfReviewDenied":true,"immutableVersions":true,"staleFactsDenied":true,"reasonedReassessment":true,"noCommittedRankOrCapacityOrMoney":true}
