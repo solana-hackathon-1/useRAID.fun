@@ -10,10 +10,10 @@
   "dependency_evidence": "Actual existing publication/history/private claim contracts and additive current locked publisher read/GET. Own installed React/PG consumers and actual desktop/mobile/disabled-host tests. Approved assessment/trial/rubric/evaluator and full acceptance remain independent obligations.",
   "open_decisions": "O09 numeric promotion/calibration, actual assessment/evaluator/provider/operating policies not selected or enabled.",
   "release_gate_disposition": "Full parent acceptance, independent/UAT/business/live gates NOT VERIFIED. Bounded staging Git authority DEC-2026-10-12-03 remains.",
-  "code_source_sha": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
-  "source_identity": "Base plus exact source-hashes.json working tree; implementation commit pin follows gates.",
+  "code_source_sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
+  "source_identity": "Implementation f63a1a40edf626c80c4a7b32ceae683cc3d1d463 contains exact verified code/test/config/example; subsequent pin changes metadata only.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11; pinned owned PG16 with27 unchanged migrations and dedicated generated27client deps; actual desktop/mobile/disabled-host; independent own-installed React and PG hosts; no live provider/admin/fund credentials.",
-  "candidate_sha": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
+  "candidate_sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
   "criteria": {
     "T012-C01": {
       "result": "NOT VERIFIED",
@@ -225,14 +225,14 @@
       "observed_failure": "8typedDB/SSR failures,8portableHTTP failures,2missing-editor desktop/mobile failures,2workflowexecution subtest failures; base SHA alone does not include archived tests/stubs"
     },
     "green": {
-      "sha": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
+      "sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
       "command": "Actual20desktop-mobile/2maintenance;140affected; independentinstalled hosts",
       "evidence_url": "planning/task-evidence/T012-taxonomy-editor/green.log; browser-final.log; browser-maintenance.log; affected.log; react-consumer-final.log; pg-consumer.log; source-hashes.json",
       "result": "PASS",
       "observed": "60initialGREEN;20browser/2disabled/140affected/owninstalledReacttypesSSR and actualPGHTTP PASS"
     },
     "refactor": {
-      "sha": "975d563d30ea868bae4419e121e04a33c2a3ea5f",
+      "sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
       "command": "Targeted exact-current auth after native signin form; strict source gates and mandatory checks",
       "evidence_url": "planning/task-evidence/T012-taxonomy-editor/auth-refactor.log; browser-reuse.json; typecheck.log; production-build.log; lint.log; planning.log; review.json",
       "result": "PASS",

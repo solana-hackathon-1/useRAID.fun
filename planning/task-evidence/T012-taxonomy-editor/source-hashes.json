@@ -55,5 +55,6 @@
     "prisma/migrations/202610130003_guild_project_proposals/migration.sql": "5dbddca0a51de715edb6ea388e046450213a13ba869220a7eb59d97fd15b7232",
     "prisma/migrations/202610140001_skill_taxonomy/migration.sql": "dd6de952538a9962e488486b4f4be1b445d4e1ffc01b6178144ea0d3940c26b7",
     "prisma/migrations/202610140002_skill_claims/migration.sql": "1ed594139aaed47e9492dc5395e2883fb33e6c7d03259373a161b592e6edc4b2"
-  }
+  },
+  "implementation_commit": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463"
 }

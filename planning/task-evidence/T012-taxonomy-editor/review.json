@@ -47,5 +47,6 @@
     "ownership": "Owned browser/Next removed after each phase; PG42172d310b4b29b233680c2c3feaab428336532b2603950e2ef5eb1522c99b6f labelT012-taxonomy-editor stopped0/actualfalse; all pools/CLI/build ended. Source/traces/images/rawgz retained; unrelated listeners/volumes/images preserved."
   },
   "independent_UAT_release": "NOT VERIFIED; parent open; no delegation, no live flag/provider/funds enablement",
-  "hosted_CI": "Pending actual new candidate. Prior975d Staging38516527523 failed before0steps due account payments/spending limit; manualChecks originally disabled/no restoration obligation."
+  "hosted_CI": "Pending actual new candidate. Prior975d Staging38516527523 failed before0steps due account payments/spending limit; manualChecks originally disabled/no restoration obligation.",
+  "implementation_commit": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463"
 }
