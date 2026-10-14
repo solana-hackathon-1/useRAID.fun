@@ -48,5 +48,13 @@
   },
   "independent_UAT_release": "NOT VERIFIED; parent open; no delegation, no live flag/provider/funds enablement",
   "hosted_CI": "Pending actual new candidate. Prior975d Staging38516527523 failed before0steps due account payments/spending limit; manualChecks originally disabled/no restoration obligation.",
-  "implementation_commit": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463"
+  "implementation_commit": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
+  "post_merge_ci": {
+    "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+    "run": 38575388630,
+    "result": "NOT VERIFIED; failure before0steps due billing",
+    "new_image": "NOT PUBLISHED",
+    "manual": "Originally disabled_manually API-verified; no restore obligation",
+    "source": "Actual merge tree equals verified pin; all final code hashes remain exact"
+  }
 }

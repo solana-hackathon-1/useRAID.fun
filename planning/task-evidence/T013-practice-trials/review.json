@@ -1,0 +1,53 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-14T14:18:47.391158+00:00",
+  "source": "base5869b182 plus new practice files, additive reference schema, examples/tests/CI inventory; preserved T012 post-CI evidence",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "P07",
+    "I06",
+    "I07",
+    "I10",
+    "I13",
+    "R15",
+    "R16",
+    "AC06",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_red": "25 failed against archived stubs; red source hashes and gzip retained",
+  "green_initial": "25 behavior and 2 boundary PASS",
+  "finding": "Independent strict TS7006 callback parameter; fixed with explicit unknown type, no runtime/test weakening",
+  "independent_UAT_release": "NOT VERIFIED",
+  "resource_ownership": "No task server/container/pool created; all build/formatter/test/consumer CLI workers finished; no active owned resource. Preserve copied source/logs and unrelated listeners/images/volumes",
+  "ended_at": "2026-10-14T14:27:26.042931+00:00",
+  "elapsed_seconds": 518.652,
+  "actual_checks": {
+    "affected": "7files101testsPASS5.52s; includes27behavior+2boundary new",
+    "planning": "55PASS51.789s",
+    "own_consumer": "9packages10audit0vuln; strict typesPASS; exact final bytes consolePASS; byte/digest adapters",
+    "Root": "Dedicated generated27 own dependencies: typegen/strict types/productionWebpackbuildPASS; final tests-only strict typesPASS; exact source matches",
+    "lint": "0errors25preexistingwarnings; no new warning/suppression",
+    "audit": "Approved unexpired Root moderate+ advisory policyPASS; not Root0vulnerabilities",
+    "format": "Fresh Git tracked+nonignored WIP snapshot /tmp/raid-t013-practice-trials-format-source-5t7cbo1o PASS",
+    "completion": "34expected27criteria+7hosted obligations NOT VERIFIED; no metadata errors"
+  },
+  "findings_and_fixes": [
+    "Strict independent TS7006 callback fixed with explicit unknown parameter, no casts or weakened runtime validation; raw failure retained",
+    "Accidental direct checkout strict check hit known stale generated Prisma client: retained actual exit2. Final exact source checked with dedicated unchanged generated27 dependency/runtime, exit0. No assertions/compiler rules/client source changed.",
+    "Reviewed full-payload approval, canonical bindings, family revision counts, selected current accommodations, public/synthetic provenance responsibility and lack of durable start/assessment effects; no unrecorded production policy or rank grant.",
+    "Staged diff check found blank EOF in five readable logs after implementation commit. Pin normalizes readable EOF only, retains original gzip bytes; final staged diff check required."
+  ],
+  "skipped": [
+    "Browser/preview: no browser-visible change or Root route",
+    "New DB races/migrations/provider/runner: no stored/external effect; future durable attempt contract remains unverified",
+    "Entire Root tests and unrelated browser flows: selected101 meaningful affected + mandatory source gates; no current-full-suite claim",
+    "Hosted exactnewmain pending; known prior billing before0steps, manualChecks originallydisabled; no redispatch under unchanged block",
+    "Independent criterion/UAT/business/release acceptance NOT VERIFIED"
+  ],
+  "source_hashes": "planning/task-evidence/T013-practice-trials/source-hashes.json",
+  "implementation_commit": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5"
+}

@@ -1,0 +1,22 @@
+{
+  "name": "raid-practice-trials-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx host.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "4.6.5",
+    "bs58": "6.0.0",
+    "tsx": "4.23.15"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "22.20.4"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

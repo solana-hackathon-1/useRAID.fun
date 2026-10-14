@@ -1,0 +1,306 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trials.test.ts (25 tests | 25 failed) 76ms
+     × exposes the full approved version/tool/rubric policy with no granted rank or hidden answers 15ms
+     × rejects changed approved brief under the same reference 12ms
+     × rejects changed approved passConditions under the same reference 2ms
+     × rejects changed approved accommodationPolicy under the same reference 2ms
+     × rejects unsafe material PRIVATE 2ms
+     × rejects unsafe material CUSTOMER_PRODUCTION 2ms
+     × rejects founder work, duplicate rubric IDs and hidden-answer fields 5ms
+     × does not trust a client approval flag or missing policy 2ms
+     × sanitizes a failed host policy without leaking private exceptions 4ms
+     × rejects future publication and mismatched/retired catalog skills 2ms
+     × keeps experienced A-rank entry separate from assessment and capacity 1ms
+     × denies actorAccountId=null 2ms
+     × denies actorSessionAuthorized=false 2ms
+     × denies actorRestricted=true 3ms
+     × denies actorAccountId=foreign-account 1ms
+     × cannot supply canonical identity or authority in the command 1ms
+     × requires exact current definition and accommodation consent 1ms
+     × denies STALE attempt observations 1ms
+     × denies UNAVAILABLE attempt observations 1ms
+     × binds attempt counts to the canonical subject and stable trial family 2ms
+     × rejects malformed or inconsistent attempt history 1ms
+     × enforces family-wide attempt exhaustion and exact cooldown boundary 1ms
+     × uses only the exact current host-approved participant accommodation 1ms
+     × rejects a non-HUMAN canonical mapping 1ms
+     × freezes candidate facts without mutating the inputs or creating a receipt 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 25 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trials.test.ts > approved practice definition > exposes the full approved version/tool/rubric policy with no granted rank or hidden answers
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeTrial src/skills/practice-trials.ts:3:9
+      1| /** Typed RED scaffold; no approved practice-trial behavior exists yet…
+      2| export function readPracticeTrial(..._args: unknown[]): any {
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export function preparePracticeTrialAttempt(..._args: unknown[]): any {
+ ❯ tests/practice-trials.test.ts:30:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > approved practice definition > rejects changed approved brief under the same reference
+ FAIL  tests/practice-trials.test.ts > approved practice definition > rejects changed approved passConditions under the same reference
+ FAIL  tests/practice-trials.test.ts > approved practice definition > rejects changed approved accommodationPolicy under the same reference
+AssertionError: expected [Function] to throw error including 'DEFINITION_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "DEFINITION_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/practice-trials.test.ts:38:51
+     36|   it.each(['brief', 'passConditions', 'accommodationPolicy'])('rejects…
+     37|     const ctx = discovery(); Reflect.set(ctx.definition, key, 'Changed…
+     38|     expect(() => readPracticeTrial(ctx, ports())).toThrow('DEFINITION_…
+       |                                                   ^
+     39|   });
+     40|   it.each(['PRIVATE', 'CUSTOMER_PRODUCTION'])('rejects unsafe material…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > approved practice definition > rejects unsafe material PRIVATE
+ FAIL  tests/practice-trials.test.ts > approved practice definition > rejects unsafe material CUSTOMER_PRODUCTION
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/practice-trials.test.ts:42:51
+     40|   it.each(['PRIVATE', 'CUSTOMER_PRODUCTION'])('rejects unsafe material…
+     41|     const ctx = discovery(); ctx.definition.inputs[0].material = mater…
+     42|     expect(() => readPracticeTrial(ctx, ports())).toThrow('INVALID_HOS…
+       |                                                   ^
+     43|   });
+     44|   it('rejects founder work, duplicate rubric IDs and hidden-answer fie…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > approved practice definition > rejects founder work, duplicate rubric IDs and hidden-answer fields
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/practice-trials.test.ts:46:110
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > approved practice definition > does not trust a client approval flag or missing policy
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/practice-trials.test.ts:50:82
+     48|   });
+     49|   it('does not trust a client approval flag or missing policy', () => {
+     50|     expect(() => readPracticeTrial({ ...discovery(), approved: true },…
+       |                                                                                  ^
+     51|     expect(() => readPracticeTrial(discovery(), {})).toThrow('INVALID_…
+     52|     expect(() => readPracticeTrial(discovery(), { ...ports(), isApprov…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > approved practice definition > sanitizes a failed host policy without leaking private exceptions
+AssertionError: expected [Function] to throw error matching /^HOST_POLICY_UNAVAILABLE$/ but got 'NOT_IMPLEMENTED'
+
+- Expected:
+/^HOST_POLICY_UNAVAILABLE$/
+
++ Received:
+"NOT_IMPLEMENTED"
+
+ ❯ tests/practice-trials.test.ts:55:143
+     53|   });
+     54|   it('sanitizes a failed host policy without leaking private exception…
+     55|     expect(() => readPracticeTrial(discovery(), { ...ports(), isApprov…
+       |                                                                                                                                               ^
+     56|   });
+     57|   it('rejects future publication and mismatched/retired catalog skills…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > approved practice definition > rejects future publication and mismatched/retired catalog skills
+AssertionError: expected [Function] to throw error matching /INVALID_HOST_CONTRACT|SKILL_UNAVAILAB…/ but got 'NOT_IMPLEMENTED'
+
+- Expected:
+/INVALID_HOST_CONTRACT|SKILL_UNAVAILABLE/
+
++ Received:
+"NOT_IMPLEMENTED"
+
+ ❯ tests/practice-trials.test.ts:59:94
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > keeps experienced A-rank entry separate from assessment and capacity
+Error: NOT_IMPLEMENTED
+ ❯ preparePracticeTrialAttempt src/skills/practice-trials.ts:6:9
+      4| }
+      5| export function preparePracticeTrialAttempt(..._args: unknown[]): any {
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/practice-trials.test.ts:66:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > denies actorAccountId=null
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > denies actorSessionAuthorized=false
+AssertionError: expected [Function] to throw error including 'AUTHENTICATION_REQUIRED' but got 'NOT_IMPLEMENTED'
+
+Expected: "AUTHENTICATION_REQUIRED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:73:54
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > denies actorRestricted=true
+AssertionError: expected [Function] to throw error including 'ACCOUNT_RESTRICTED' but got 'NOT_IMPLEMENTED'
+
+Expected: "ACCOUNT_RESTRICTED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:73:54
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > denies actorAccountId=foreign-account
+AssertionError: expected [Function] to throw error including 'FORBIDDEN' but got 'NOT_IMPLEMENTED'
+
+Expected: "FORBIDDEN"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:73:54
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > cannot supply canonical identity or authority in the command
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:76:95
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > requires exact current definition and accommodation consent
+AssertionError: expected [Function] to throw error including 'REVISION_CHANGED' but got 'NOT_IMPLEMENTED'
+
+Expected: "REVISION_CHANGED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:79:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > denies STALE attempt observations
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > denies UNAVAILABLE attempt observations
+AssertionError: expected [Function] to throw error including 'ATTEMPT_HISTORY_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "ATTEMPT_HISTORY_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:83:82
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > binds attempt counts to the canonical subject and stable trial family
+AssertionError: expected [Function] to throw error including 'ATTEMPT_HISTORY_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "ATTEMPT_HISTORY_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:85:110
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > rejects malformed or inconsistent attempt history
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:88:155
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > enforces family-wide attempt exhaustion and exact cooldown boundary
+AssertionError: expected [Function] to throw error including 'ATTEMPT_LIMIT_REACHED' but got 'NOT_IMPLEMENTED'
+
+Expected: "ATTEMPT_LIMIT_REACHED"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:92:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > uses only the exact current host-approved participant accommodation
+Error: NOT_IMPLEMENTED
+ ❯ preparePracticeTrialAttempt src/skills/practice-trials.ts:6:9
+      4| }
+      5| export function preparePracticeTrialAttempt(..._args: unknown[]): any {
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/practice-trials.test.ts:100:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > rejects a non-HUMAN canonical mapping
+AssertionError: expected [Function] to throw error including 'RESOURCE_UNAVAILABLE' but got 'NOT_IMPLEMENTED'
+
+Expected: "RESOURCE_UNAVAILABLE"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ rejected tests/practice-trials.test.ts:25:67
+
+ ❯ tests/practice-trials.test.ts:106:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/25]⎯
+
+ FAIL  tests/practice-trials.test.ts > private unpersisted practice preparation > freezes candidate facts without mutating the inputs or creating a receipt
+Error: NOT_IMPLEMENTED
+ ❯ preparePracticeTrialAttempt src/skills/practice-trials.ts:6:9
+      4| }
+      5| export function preparePracticeTrialAttempt(..._args: unknown[]): any {
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/practice-trials.test.ts:110:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/25]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  25 failed (25)
+   Start at  19:59:38
+   Duration  667ms (transform 132ms, setup 0ms, import 174ms, tests 76ms, environment 0ms)

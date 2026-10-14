@@ -1,0 +1,9 @@
+{
+  "path": "/tmp/raid-t013-practice-trials-consumer-nl837z1p",
+  "own_node_modules": true,
+  "actual_install": "9packages10audit0vulnerabilities",
+  "source": "All canonical skills/shared contract and host/package/lock/config/doc bytes match",
+  "typecheck": "PASS after explicit unknown callback typing; post-format evidence reused for unchanged semantics",
+  "final_console": "PASS exact formatted source",
+  "resources": "CLI ended; no server/container/pool"
+}

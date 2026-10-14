@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013A versioned unpaid public/synthetic practice definition and private unpersisted attempt preparation",
+  "status": "VERIFIED_IN_TEST bounded pure contract only; full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-14-T013-practice-trials.md",
+  "migration_rollback": "Additive pure schemas/functions/reference export; no schema/27DDL/API/UI or persisted record change. No history deletion or live enablement.",
+  "dependency_evidence": "Actual canonical HUMAN/rank/catalog schemas; approved full immutable definition/accommodation ports and fresh family counts explicit. Independently installed alternate console adapters; no actual approved Root registry/evaluator/trial store exists.",
+  "open_decisions": "O09 numerical calibration, actual rubric/evaluator/operating approvals and O11 retention unresolved; dependent production actions absent/disabled.",
+  "release_gate_disposition": "Full parent55 and independent/UAT/business/provider/release gates NOT VERIFIED; bounded staging publication DEC-2026-10-12-03.",
+  "code_source_sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+  "candidate_sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+  "source_identity": "Implementation c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5 contains exact verified code/test/config/example hashes; subsequent pin changes metadata/readable-log whitespace only; original raw gzip retained.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11; own-install console9packages10audit0vuln; no DB/provider credentials",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C01",
+      "observed": "Approved practice definition and unpersisted attempt boundary only; actual public UI/durable review remain missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C02",
+      "observed": "Full immutable current approval ports, literal true, no client authority or OPEN numerical threshold chosen; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C03",
+      "observed": "Shared canonical HUMAN/rank/catalog/reference contracts reused; no trial/attempt/assessment tables yet; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C04",
+      "observed": "25initialRED and final27behavior tests cover own session/foreign/restricted/approval/selected accommodation; actual Root API absent; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C05",
+      "observed": "Safe view and PREPARED only; persistedfalse, no started attempt or verified skill; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C06",
+      "observed": "Canonical account/participant binding; unpaid platform practice consumes no capacity; no DB race claim; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C07",
+      "observed": "Exact definition/rubric/variant/tool policy and selected accommodation version; changed payload and stale consent deny; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C08",
+      "observed": "No financial state, asset effect or obligation created; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C09",
+      "observed": "Strict safe material DTO, private context absent from candidate; hidden-answer fields deny; host provenance review is explicit; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C10",
+      "observed": "Preparation writes nothing; repeated candidate equal, no receipt; future durable host must atomically consume and receipt; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C11",
+      "observed": "No stored attempt or transaction in this slice; two preparations can propose same next attempt number; actual race remains missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C12",
+      "observed": "Pure local synchronous approval; errors sanitize exceptions; no external effects or network; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C13",
+      "observed": "Typed failure categories only; actual browser/UI/representative journey not implemented; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C14",
+      "observed": "Strict schema/body authority separation, current facts and original payload approval; no code execution or URL fetch; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C15",
+      "observed": "Own CLI/build workers end; no test server/container/pool created; no live enablement or operating policy; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C16",
+      "observed": "101 affected/own-install consumer/strict build and actual source gates; full hosted evidence missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C17",
+      "observed": "No independent reviewer, representative UAT or business approval; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C18",
+      "observed": "Actual bounded task/docs/source/evidence retained; authorized assessment boundary and real durable approval/attempts remain next; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-A01",
+      "observed": "Advanced target has no E-task grinding; prep supplies no qualification; public/synthetic unpaid only with actual full-content approval; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-A02",
+      "observed": "Advanced target has no E-task grinding; prep supplies no qualification; public/synthetic unpaid only with actual full-content approval; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-W01",
+      "observed": "Trial variants/tool/rubric/attempt/accommodation contracts only; durable commands/screens/authorized review missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-W02",
+      "observed": "Trial variants/tool/rubric/attempt/accommodation contracts only; durable commands/screens/authorized review missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-W03",
+      "observed": "Trial variants/tool/rubric/attempt/accommodation contracts only; durable commands/screens/authorized review missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C19",
+      "observed": "25 genuine failures archived before implementation\u219225initialGREEN\u219227behavior+2boundary final, initial strict consumer failure preserved/fixed; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C20",
+      "observed": "Explicit local approval ports with byte/digest deterministic adapters; real provider/current authority still host requirement; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C21",
+      "observed": "Independent own node_modules9packages10audit0vuln, final exact canonical bytes consolePASS and strict typesPASS; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C22",
+      "observed": "Both new files registered E04/global; ordinary Vitest discovery; local gates actual, hosted seven named checks missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json; docs/raid-practice-trials.md; docs/tasks/2026-10-14-T013-practice-trials.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
+      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
+      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
+      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
+      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
+      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
+      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/review.json",
+      "observed": "Actual new candidate hosted CI pending; prior exactmain billing failure before0steps. Local checks remain separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "command": "vitest run tests/practice-trials.test.ts before implementation",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/red.log; red.log.gz; red-source.tar.gz; red-source-hashes.json",
+      "result": "FAIL",
+      "expected_failure": "Approved trial and private preparation behavior absent",
+      "observed_failure": "25 failures against NOT_IMPLEMENTED scaffold. Archived initial tests/stubs existed before implementation; baseSHA alone does not contain these uncommitted files."
+    },
+    "green": {
+      "sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+      "command": "Initial25GREEN then final affected Vitest/copy/own-install consumer",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/green-initial.log; affected.log; consumer-final.log; source-hashes.json",
+      "result": "PASS",
+      "observed": "25initialGREEN, final27behavior+2boundary within101affectedPASS; own-install alternate byte/digest policiesPASS"
+    },
+    "refactor": {
+      "sha": "c7a92bbbcac8f14717269fdb1f89b7e3e2c8d6c5",
+      "command": "Strict consumer after callback typing, formatted finalhost, affected/regression, strict Root gates and planning",
+      "evidence_url": "planning/task-evidence/T013-practice-trials/consumer-initial-failure.log; consumer-green.log; consumer-final.log; typecheck.log; production-build.log; lint.log; audit.log; review.json",
+      "result": "PASS",
+      "observed": "101affectedPASS5.52s,55planningPASS51.789s, own installed exactconsumer/strict types, dedicated Root typegen/strict types/build, lint0errors25oldwarnings, Root audit policy and freshsource formatter PASS. TS7006 fixed explicitly; stale originalRoot generated-client failure retained; no assertions/deadlines/authority weakened."
+    }
+  }
+}
