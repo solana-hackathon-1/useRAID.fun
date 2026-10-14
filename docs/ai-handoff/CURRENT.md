@@ -1,3 +1,56 @@
+# T013 practice contracts verified; staging publication next — 2026-10-14T14:27:26.042931+00:00 — Codex /root
+
+Original branch/base5869b182, sole writer, prior T012 post-CI work preserved. T013A versioned safe public/synthetic unpaid definition/full immutable approval ports and private canonical attempt preparation delivered. Exact definition/rubric/tool/variant/consent, current family-wide counts/cooldown and selected participant-scoped accommodations fail closed. No persisted trial/assessment/rank/access/capacity/money, Root API/UI/27DDL/dependency/flag enablement or production policy. No delegation/branch switch.
+
+Genuine25RED archived tests/stubs→25initialGREEN; final27behavior+2boundary within101affectedPASS5.52s,55planningPASS51.789s. Own installed9packages10audit0vuln console alternatebyte/digest ports/strict types/exactcanonical bytesPASS. Initial TS7006 callback fixed explicitly, failure retained. Dedicated generated27 Root typegen/strict types/productionWebpackbuild/finaltests strict typesPASS; accidental originalRoot stale-client checkexit2 retained, no type/schema/assertion weakening. Lint0errors25oldwarnings, auditpolicy/freshwholeformatPASS. Timed SELF-EVALUATED 2026-10-14T14:18:47.391158+00:00→2026-10-14T14:27:26.042931+00:00, 518.652s; fullvalidator34expected27criteria+7hosted NOT VERIFIED/no metadataerrors. Evidence planning/task-evidence/T013-practice-trials and packet; docs/tasks/2026-10-14-T013-practice-trials.md.
+
+No browser-visible work; no preview/server/container/pool started. All CLI/build/test/formatter workers ended, no active owned resource. Retain evidence/source/dependencies and unrelated services/images/volumes. Parent55/independent/UAT/business/release remain NOT VERIFIED/open. Actual approved definition/rubric/evaluator authority and durable attempt/review are dependent gaps; O09 numerical calibration not chosen. Work-state sync tool absent, obligation retained.
+
+Next: authorized implementation/pin/push/template Ref55PR/matched-head main merge DEC-2026-10-12-03, actual exactmain CI observation. Known prior5869 Staging38575388630 billing failure before0steps; manualChecks originallydisabled/APIverified/no restoration obligation, no redispatch under unchanged blocker. Then authorized manual assessment preparation and other dependency-ready issues sequentially without human testing wait.
+
+---
+
+# T013 practice-trial milestone — 2026-10-14T14:18:47.392450+00:00 — Codex /root
+
+Original branch/base5869b182, sole writer, prior T012 post-CI work preserved. T013A strict public/synthetic unpaid definition/approval ports and private canonical attempt preparation implemented after genuine25RED archived tests/stubs.25behavior+2boundaryGREEN; alternate full-payload approval adapters/copy-host verified. Own installed consumer9packages10audit0vulnerabilities; initial strict TS7006 callback typing corrected, original failure retained, final types/hostPASS. Preparation persists nothing and grants no assessment/rank/access/capacity/money; no Root route/UI/27DDL/dependency/flag enablement. Timed SELF-EVALUATED and affected/mandatory source gates underway; independent/UAT/full55 acceptance NOT VERIFIED. Build CLI session14967 active; no owned server/container/pool. Known hosted billing before0steps/manualChecks originallydisabled unchanged. Next finish docs/gates/source packet, authorized template Ref55 publication/matched-head merge, actual CI observation, then authorized assessment decision boundary. No delegation or branch switch.
+
+---
+
+# Catalog editor merged; assessment/trial contracts are next — 2026-10-14T13:56:45.713744+00:00 — Codex /root
+
+Original branch `codex/t006-linked-wallet-signin`; local/main HEAD `5869b18223a237db912f1d9cea0c2b9b5280d9c4`. [PR215](https://github.com/solana-hackathon-1/useRAID.fun/pull/215) merged under DEC-2026-10-12-03, implementation `f63a1a40edf626c80c4a7b32ceae683cc3d1d463`, metadata pin `9d5742d`. The actual merge tree equals the verified pin and final code/test/config/example hashes remain exact. Prior PR214 post-CI work was preserved in the implementation. No branch switch or delegation.
+
+Delivered T012D2: actual current-X ADMIN/allowlist catalog editor at `/admin/skills`, additive locked publisher read and private v1 GET, portable React transport, explicit empty-catalog creation, stable historical IDs/domains/aliases, normalized review before publication, exact frozen unknown intent across every denial, bound stale reload preserving draft, hydration/duplicate guards and native GET X sign-in. New publication remains exacttrue/defaultfalse; no live flag/provider/fund enablement, schema/27migration/Root dependency, assessment/rank/grant/capacity or public outbox change. Separate admin change-reason/broader repair obligations remain gaps.
+
+Verification: genuine8DB/SSRRED+8HTTPRED+2missing-pageRED+2CIexecutionRED→60initialGREEN. Final20desktop/mobilePASS2.2m,2publication-disabled hostPASS31.6s,4affected auth rerunPASS49.7s. Exact runtime mapping reuses20case ready/editor/storage/HTTP evidence; only sign-in branch changed and was reverified.140affectedPASS13.06s,55planningPASS71.624s; independent own-install React types/SSR (15packages/16audit/0vulnerabilities) and actual minimalPG/HTTP host (20packages/21audit/0vulnerabilities) PASS, exact canonical source. Branded input/output boundary, SSR serializer and new anchor warning failures were retained and fixed without weakened schemas/assertions/deadlines. Final strict typegen/types/production build/whole fresh formatting PASS, lint0errors25preexistingwarnings, Root audit policy PASS. Timed author review is SELF-EVALUATED only; full validator rejects27criteria+7hosted evidence as NOT VERIFIED with no metadata errors or self-approval. Evidence/task: `planning/task-evidence/T012-taxonomy-editor/`, `planning/task-evidence/T012-taxonomy-editor-verification.json`, `docs/tasks/2026-10-14-T012-taxonomy-editor.md`.
+
+Exact new-main [Staging38575388630](https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630) FAILED before0steps with the official account payments/spending-limit annotation. No new image was published; rollout remains NOT VERIFIED. PR body/packet/review record the actual result. Manual Checks is originally `disabled_manually`, API-verified, with no enablement/redispatch or restoration obligation. Last successful image remains d023/fb982407cba13e1f0ea74370a0bb0691f031d0c679eb7ce050bb35610f7f3d40; prior public530/1033 and VM SSH timeout were not retested without material access change. No billing/budget/runner/trigger/global DNS/SSH host-key changes.
+
+Actual synthetic development URL `http://127.0.0.1:3023/admin/skills`, full source `/tmp/raid-t012-taxonomy-editor-source-7df978ci`, maintenancezsz9ifn8, final authgtswswfa. Desktop/mobile images were inspected and preserved. Container-local loopback is verified; owner forwarding is NOT VERIFIED. All browser/Next containers removed; owned PG `raid-t012-taxonomy-editor-auto-20261014`42172d310b4b… stopped0/actualRunningfalse; all pools/CLI/build workers ended. No active owned resource. Preserve unrelated services/volumes/images/source/traces/raw logs.
+
+Current WIP is post-CI packet/review/task/checkpoint and hosted-result/completion/format evidence only; implementation unchanged. Preserve it in the next authorized implementation commit. Full parent54, assessment/trial55, eligibility/anti-spam56 and independent/UAT/business/release acceptance remain open/NOT VERIFIED. Work-state sync tool is absent; obligation retained.
+
+Final post-CI packet validation and changed-metadata formatting are complete:34expected full-criteria/hosted obligations remain NOT VERIFIED, no metadata errors, and final source hashes still match. No owned active resource or implementation change.
+
+Ordered next:
+
+1. T013 approved-authority assessment/trial contracts. Inspect existing skill/assessment eligibility facts and canonical trial/rubric requirements; build dependency-ready contracts with actual approved rubric/evaluator authority as explicit host dependencies. Do not invent OPEN numeric promotions, evaluator/provider/operating policy or treat examples/client approval flags as authority. Public trials/durable assessments depend on their real approved contracts.
+2. Continue other dependency-ready issues sequentially without human recommendation/UAT wait. Keep missing independent acceptance and actual hosted CI/image/site evidence separate; no arbitrary redispatch under unchanged billing block.
+
+---
+
+# Catalog editor merged; exact staging observation pending — 2026-10-14T13:52:48.580087+00:00 — Codex /root
+
+https://github.com/solana-hackathon-1/useRAID.fun/pull/215 matched-head merge 5869b18223a237db912f1d9cea0c2b9b5280d9c4 under DEC-2026-10-12-03; implementationf63a1a40edf626c80c4a7b32ceae683cc3d1d463/pin9d5742d. Original branch preserved, localHEAD beforefetch 9d5742db10b51a6b1183fedf20e2c7d0293ba76d. Verified code/evidence and all owned resource cleanup preserved. Full parent/independent/UAT/assessment/broader administration/release acceptance NOT VERIFIED; no flag/provider/fund enablement. Next fetch/ff verified exact merge then actual CI/manual-state observation; T013/other independent issues follow.
+
+---
+
+# Catalog editor committed; staging publication underway — 2026-10-14T13:51:26.357207+00:00 — Codex /root
+
+Implementation f63a1a40edf626c80c4a7b32ceae683cc3d1d463; pin/currentHEAD 9d5742db10b51a6b1183fedf20e2c7d0293ba76d on original branch. Verified code/source hashes,140affected/20browser/2maintenance/4auth/55planning/own installed consumers/strict source gates unchanged. All owned resources stopped; prior PR214 post-CI work preserved. Full27+7/independent/UAT/assessment and broader admin acceptance remain NOT VERIFIED. Authorized push/template Ref54PR/matched-head main merge underway under DEC-2026-10-12-03; then exact CI observation and T013/other independent issues. No branch switch/delegation/provider/financial enablement or manual-workflow restoration obligation.
+
+---
+
 # Catalog editor verified; staging publication next — 2026-10-14T13:48:28.490617+00:00 — Codex /root
 
 T012D2 on original branch/base975d563, sole writer; prior PR214 post-CI WIP preserved. Implemented actual current-X ADMIN+allowlist page /admin/skills, additive locked publisher read/private GET, portable React review-before-publish, stable IDs/domains/aliases, explicit empty-catalog creation, exact frozen unknown intent across all denials, bound stale reload preserving draft, hydration/duplicate guards and native GET X sign-in. Publication remains default off; no schema/27SQL/Root dependency/assessment/rank/grant/capacity/provider/money change or live enablement.

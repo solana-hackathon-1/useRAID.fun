@@ -13,7 +13,7 @@
   "code_source_sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
   "source_identity": "Implementation f63a1a40edf626c80c4a7b32ceae683cc3d1d463 contains exact verified code/test/config/example; subsequent pin changes metadata only.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11; pinned owned PG16 with27 unchanged migrations and dedicated generated27client deps; actual desktop/mobile/disabled-host; independent own-installed React and PG hosts; no live provider/admin/fund credentials.",
-  "candidate_sha": "f63a1a40edf626c80c4a7b32ceae683cc3d1d463",
+  "candidate_sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
   "criteria": {
     "T012-C01": {
       "result": "NOT VERIFIED",
@@ -181,38 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+      "observed": "Actual merged candidate automatic Staging FAILED before0steps with official account payments/spending-limit annotation; namedChecks originally disabled/no redispatch. Local checks are separate."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+      "observed": "Actual merged candidate automatic Staging FAILED before0steps with official account payments/spending-limit annotation; namedChecks originally disabled/no redispatch. Local checks are separate."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+      "observed": "Actual merged candidate automatic Staging FAILED before0steps with official account payments/spending-limit annotation; namedChecks originally disabled/no redispatch. Local checks are separate."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+      "observed": "Actual merged candidate automatic Staging FAILED before0steps with official account payments/spending-limit annotation; namedChecks originally disabled/no redispatch. Local checks are separate."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+      "observed": "Actual merged candidate automatic Staging FAILED before0steps with official account payments/spending-limit annotation; namedChecks originally disabled/no redispatch. Local checks are separate."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+      "observed": "Actual merged candidate automatic Staging FAILED before0steps with official account payments/spending-limit annotation; namedChecks originally disabled/no redispatch. Local checks are separate."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "New candidate not published yet; previous exact975d Staging38516527523 failed before0steps due account billing; original manualChecks disabled/no redispatch."
+      "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+      "observed": "Actual merged candidate automatic Staging FAILED before0steps with official account payments/spending-limit annotation; namedChecks originally disabled/no redispatch. Local checks are separate."
     }
   },
   "tdd": {
@@ -238,5 +245,13 @@
       "result": "PASS",
       "observed": "4authPASS, finalstrictbuild/types/lint0errors25oldwarnings/55planning/auditpolicyPASS; matching relevant20browser source reused; no assertions/deadlines weakened"
     }
+  },
+  "post_merge_staging": {
+    "sha": "5869b18223a237db912f1d9cea0c2b9b5280d9c4",
+    "result": "NOT VERIFIED",
+    "observed": "FAILED before0steps due official GitHub billing/spending-limit block",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38575388630",
+    "new_image": "NOT PUBLISHED",
+    "manual_checks": "Originaldisabled_manually API-verified; no redispatch, enablement or restoration obligation"
   }
 }

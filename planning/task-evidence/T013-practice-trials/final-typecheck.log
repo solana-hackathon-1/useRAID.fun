@@ -1,0 +1,24 @@
+.next-studio/dev/types/validator.ts(251,39): error TS2307: Cannot find module '../../../src/app/api/creator/route.js' or its corresponding type declarations.
+.next/types/validator.ts(251,39): error TS2307: Cannot find module '../../src/app/api/creator/route.js' or its corresponding type declarations.
+tests/browser-skill-claims/skill-claims.spec.ts(102,19): error TS2339: Property 'skillClaimVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-claims/skill-claims.spec.ts(180,19): error TS2339: Property 'skillClaimVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-claims/skill-claims.spec.ts(200,20): error TS2339: Property 'skillClaimVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-claims/skill-claims.spec.ts(220,19): error TS2339: Property 'skillClaimVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-claims/skill-claims.spec.ts(289,19): error TS2339: Property 'skillClaimVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(70,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(73,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(101,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(113,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(156,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(177,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(204,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(245,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(269,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-editor/skill-editor.spec.ts(309,21): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-taxonomy/skill-taxonomy.spec.ts(68,19): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-taxonomy/skill-taxonomy.spec.ts(99,19): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-taxonomy/skill-taxonomy.spec.ts(104,19): error TS2339: Property 'skillClaimVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-taxonomy/skill-taxonomy.spec.ts(173,19): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-taxonomy/skill-taxonomy.spec.ts(190,19): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-taxonomy/skill-taxonomy.spec.ts(200,19): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+tests/browser-skill-taxonomy/skill-taxonomy.spec.ts(213,19): error TS2339: Property 'skillTaxonomyVersion' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.

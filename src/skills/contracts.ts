@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { AccountId, InternalId, Revision, UtcTimestamp } from '../contracts/ids';
 import { ParticipantSchema } from '../contracts/entities';
+/** Immutable skill-owned definition, rubric, evidence or assessment version. */
+export const SkillVersionReferenceSchema = z
+  .strictObject({ recordId: InternalId, revision: Revision })
+  .readonly();
 const Timestamp = UtcTimestamp.refine((value) => {
   const fraction = value.match(/\.(\d+)Z$/)?.[1];
   return !fraction || fraction.length <= 3;
