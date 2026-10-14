@@ -1,0 +1,4 @@
+/** RED stub: the independent explanation contract is not implemented yet. */
+export function explainSkillEligibility(_context: unknown, _input: unknown): never {
+  throw new Error('NOT_IMPLEMENTED');
+}

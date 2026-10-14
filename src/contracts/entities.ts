@@ -62,6 +62,8 @@ const deadlines = z
     operationalClosure: UtcTimestamp,
   })
   .readonly();
+export const SkillRankSchema = z.enum(['E', 'D', 'C', 'B', 'A', 'S']);
+export type SkillRank = z.infer<typeof SkillRankSchema>;
 export const TermsSnapshotSchema = z
   .strictObject({
     id: TermsVersionId,
@@ -74,7 +76,7 @@ export const TermsSnapshotSchema = z
         z
           .strictObject({
             skillId: InternalId,
-            minimumRank: z.enum(['E', 'D', 'C', 'B', 'A', 'S']),
+            minimumRank: SkillRankSchema,
             assessmentPolicyVersion: InternalId,
           })
           .readonly(),

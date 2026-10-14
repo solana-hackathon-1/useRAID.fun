@@ -123,6 +123,8 @@
     "tests/skill-claims-host.test.ts",
     "tests/skill-claims-http.test.ts",
     "tests/skill-claims.test.ts",
+    "tests/skill-eligibility-boundary.test.ts",
+    "tests/skill-eligibility.test.ts",
     "tests/skill-taxonomy-boundary.test.ts",
     "tests/skill-taxonomy-db.test.ts",
     "tests/standalone-db.test.ts",
@@ -454,6 +456,8 @@
         "tests/skill-claims-host.test.ts",
         "tests/skill-claims-http.test.ts",
         "tests/skill-claims.test.ts",
+        "tests/skill-eligibility-boundary.test.ts",
+        "tests/skill-eligibility.test.ts",
         "tests/skill-taxonomy-boundary.test.ts",
         "tests/skill-taxonomy-db.test.ts"
       ],

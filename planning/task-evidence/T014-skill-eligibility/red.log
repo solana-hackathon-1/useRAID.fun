@@ -1,0 +1,370 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-eligibility.test.ts (42 tests | 42 failed) 54ms
+     × explains verified A React as satisfying C React without granting authority 10ms
+     × never uses A frontend to satisfy B Solana (AC05) 1ms
+     × uses descriptive ordinal E only within the same skill 1ms
+     × uses descriptive ordinal D only within the same skill 1ms
+     × uses descriptive ordinal C only within the same skill 1ms
+     × uses descriptive ordinal B only within the same skill 1ms
+     × uses descriptive ordinal A only within the same skill 3ms
+     × uses descriptive ordinal S only within the same skill 1ms
+     × does not parse a free-text S claim or proof link into verified rank 1ms
+     × labels explicitly permitted pending rank evidence as unverified 1ms
+     × does not qualify REVOKED even for unverified admission 1ms
+     × does not qualify REASSESSMENT_REQUIRED even for unverified admission 0ms
+     × does not qualify an assessment at its exact reassessment boundary 0ms
+     × preserves existing skill assessment when taxonomy retires its category 1ms
+     × rejects an old assessment policy rather than silently substituting it 0ms
+     × preserves STALE as unknown rather than deleting skill evidence 1ms
+     × preserves UNAVAILABLE as unknown rather than deleting skill evidence 1ms
+     × expires a current observation at its exact deadline and recovers with a refreshed snapshot 1ms
+     × allows an explicit starter without fabricating a skill or waiving other checks 1ms
+     × requires a single member to cover an entire AND unless distribution is explicit 0ms
+     × supports React OR Vue without requiring both 0ms
+     × requires every member when the requirements declare EVERY_MEMBER 0ms
+     × evaluates nested alternatives without mixing different skills 0ms
+     × uses three-state truth tables for every group and coverage decision 1ms
+     × rejects an invalid requirement instead of guessing 6ms
+     × rejects an invalid requirement instead of guessing 1ms
+     × rejects an invalid requirement instead of guessing 1ms
+     × rejects an invalid requirement instead of guessing 1ms
+     × rejects an invalid requirement instead of guessing 1ms
+     × rejects an invalid requirement instead of guessing 1ms
+     × rejects an invalid requirement instead of guessing 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects ambiguous, future, foreign or authority-shaped host input 1ms
+     × rejects excessive depth, node count and cyclic input before recursive parsing 1ms
+     × does not mutate inputs; returns deeply frozen explanations without private claim/evaluator evidence 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 42 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > explains verified A React as satisfying C React without granting authority
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ tests/skill-eligibility.test.ts:34:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > never uses A frontend to satisfy B Solana (AC05)
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ tests/skill-eligibility.test.ts:40:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > uses descriptive ordinal E only within the same skill
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > uses descriptive ordinal D only within the same skill
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > uses descriptive ordinal C only within the same skill
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > uses descriptive ordinal B only within the same skill
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > uses descriptive ordinal A only within the same skill
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > uses descriptive ordinal S only within the same skill
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:45:36
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > does not parse a free-text S claim or proof link into verified rank
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:50:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > labels explicitly permitted pending rank evidence as unverified
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:55:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > does not qualify REVOKED even for unverified admission
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > does not qualify REASSESSMENT_REQUIRED even for unverified admission
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:59:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > does not qualify an assessment at its exact reassessment boundary
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:62:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > preserves existing skill assessment when taxonomy retires its category
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:66:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > rejects an old assessment policy rather than silently substituting it
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ tests/skill-eligibility.test.ts:69:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > preserves STALE as unknown rather than deleting skill evidence
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > preserves UNAVAILABLE as unknown rather than deleting skill evidence
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:74:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > expires a current observation at its exact deadline and recovers with a refreshed snapshot
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:77:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > relevant current evidence > allows an explicit starter without fabricating a skill or waiving other checks
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ tests/skill-eligibility.test.ts:81:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > explicit grouping and Party coverage > requires a single member to cover an entire AND unless distribution is explicit
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:90:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > explicit grouping and Party coverage > supports React OR Vue without requiring both
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:95:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > explicit grouping and Party coverage > requires every member when the requirements declare EVERY_MEMBER
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:98:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > explicit grouping and Party coverage > evaluates nested alternatives without mixing different skills
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:103:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > explicit grouping and Party coverage > uses three-state truth tables for every group and coverage decision
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ status tests/skill-eligibility.test.ts:30:49
+ ❯ tests/skill-eligibility.test.ts:114:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects an invalid requirement instead of guessing
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects an invalid requirement instead of guessing
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects an invalid requirement instead of guessing
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects an invalid requirement instead of guessing
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects an invalid requirement instead of guessing
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects an invalid requirement instead of guessing
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects an invalid requirement instead of guessing
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/skill-eligibility.test.ts:126:54
+    124|     input({kind:'OR',children:Array(17).fill(leaf())}),input('React, S…
+    125|   ])('rejects an invalid requirement instead of guessing',i => {
+    126|     expect(()=>explainSkillEligibility(context(),i)).toThrow('INVALID_…
+       |                                                      ^
+    127|   });
+    128|   it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects ambiguous, future, foreign or authority-shaped host input
+AssertionError: expected [Function] to throw error including 'INVALID_HOST_CONTRACT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_HOST_CONTRACT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/skill-eligibility.test.ts:136:52
+    134|     context(undefined,{wealth:'999999999',reputation:100,guildTrust:'C…
+    135|   ])('rejects ambiguous, future, foreign or authority-shaped host inpu…
+    136|     expect(()=>explainSkillEligibility(c,input())).toThrow('INVALID_HO…
+       |                                                    ^
+    137|   });
+    138|   it('rejects excessive depth, node count and cyclic input before recu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > rejects excessive depth, node count and cyclic input before recursive parsing
+AssertionError: expected [Function] to throw error including 'INVALID_INPUT' but got 'NOT_IMPLEMENTED'
+
+Expected: "INVALID_INPUT"
+Received: "NOT_IMPLEMENTED"
+
+ ❯ tests/skill-eligibility.test.ts:140:64
+    138|   it('rejects excessive depth, node count and cyclic input before recu…
+    139|     let tree:unknown=leaf();for(let n=0;n<9;n++) tree={kind:'AND',chil…
+    140|     expect(()=>explainSkillEligibility(context(),input(tree))).toThrow…
+       |                                                                ^
+    141|     const big={kind:'AND',children:Array.from({length:16},()=>({kind:'…
+    142|     expect(()=>explainSkillEligibility(context(),input(big))).toThrow(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/42]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > strict host and request boundary > does not mutate inputs; returns deeply frozen explanations without private claim/evaluator evidence
+Error: NOT_IMPLEMENTED
+ ❯ explainSkillEligibility src/skills/eligibility.ts:3:9
+      1| /** RED stub: the independent explanation contract is not implemented …
+      2| export function explainSkillEligibility(_context: unknown, _input: unk…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5|
+ ❯ tests/skill-eligibility.test.ts:148:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/42]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  42 failed (42)
+   Start at  09:04:01
+   Duration  552ms (transform 122ms, setup 0ms, import 152ms, tests 54ms, environment 0ms)

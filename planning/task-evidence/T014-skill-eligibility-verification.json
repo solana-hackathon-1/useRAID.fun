@@ -1,0 +1,269 @@
+{
+  "task_id": "T014",
+  "scope": "T014A pure private informational structured skill explanation only",
+  "status": "VERIFIED_IN_TEST bounded slice; full T014 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-14-T014-skill-eligibility.md",
+  "migration_rollback": "No migration or stored state change; all 27 SQL migrations and Prisma schema byte-identical to a2085ff. Accepted TermsSnapshot uses identical shared E\u2013S enum; no accepted history rewritten. Revert module integration only when added under a later task.",
+  "dependency_evidence": "Existing canonical IDs/Participant/published taxonomy; actual private claim storage. T012 assessment storage/T013 assessment authority/T020 admission remain absent, explicit trusted host contract, dependent enablement NOT VERIFIED.",
+  "open_decisions": "O09 numeric promotion/calibration remains OPEN; no thresholds chosen; actual rubric/evaluator/provider/operating authority remains a host dependency.",
+  "release_gate_disposition": "No live rank, admission, funds, provider, access or capacity enablement. Independent review/UAT/business/live gates NOT VERIFIED. DEC-2026-10-12-03 authorizes bounded staging Git publication only.",
+  "code_source_sha": null,
+  "candidate_sha": null,
+  "source_identity": "planning/task-evidence/T014-skill-eligibility/source-hashes.json; base plus exact WIP files; pin implementation commit after verification",
+  "verification_environment": "Node22.23.1, Vitest4.1.11, Zod4.6.5/bs586/tsx4.23.15; synthetic authorized projections; copied host with own installed dependencies; frozen own-root dependencies for type/build/lint. No real assessment/provider credentials or database fixture.",
+  "criteria": {
+    "T014-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C01",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. State the observable user outcome, assigned milestone, in-scope commands and explicit adjacent work excluded. Compare the actual baseline to the desired behavior; identify existing working behavior that must survive.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C02",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. List every applicable LOCKED, DIRECTION, DEFAULT, OPEN and EXAMPLE reference separately. Keep unresolved dependent production actions disabled. A recorded owner decision must identify who accepted it, date, changed contract and effect on old accepted work.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C03",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. List affected canonical entities, concrete tables/models, identifiers, foreign keys, tenant scope, uniqueness and immutable fields. Identify the shared contract owner and reuse existing contracts. Do not assert the intended blueprint tables already exist.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C04",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Provide an actor \u00d7 action \u00d7 resource \u00d7 state matrix for every changed read/write. Cover unauthenticated, wrong Guild, token-holder-only, self-review, expired/revoked grant and restricted account cases. Deny at the server/resource boundary; include direct API/download tests.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C05",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Provide before-state, command, authorized actor, terms/submission version, precondition, atomic mutation, after-state and rejected alternatives. Keep listing, offer, work, access, funding, settlement, dispute and run states separate. Specify finite deadlines and material cancellation/timeout paths.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C06",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Use canonical participant identity across linked wallets and Guilds. Identify whether this action consumes capacity under section 13. Prove database uniqueness, all-or-none Party reservations, same-engagement operator accounting, current eligibility rechecks, lock order and engagement-scoped release where touched.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C07",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Identify exact immutable terms, roster, payout split, beneficiary, rubric and submission version. Test stale version and unauthorized amendment. Material accepted-work changes require affected consent, valid additional funding and audit; defaults cannot rewrite old agreements.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C08",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Declare whether financial obligations are touched. If so specify network/kind/mint/program/decimals, integer base units, verified funds, reserves, allocations, fees, claims, refunds and conservation per asset. Verify actual effects/finality and beneficiary authority; transaction submission and ticker text prove nothing.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C09",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Enumerate public and private DTOs, HTML hydration, metadata, search, previews, artifacts, logs and notification fields. Test absence of private bytes and effective scoped provider access. Distinguish desired from observed grants; preserve independent rights and surface failed revocation.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C10",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Specify command identity, request digest, immutable receipt, semantic external operation and outbox/inbox deduplication. Same key plus different payload must conflict. Retry or rebuilt transaction cannot repeat business effects. Preserve intent across process crashes.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C11",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Name every competing command and linearization boundary. Exercise meaningful independent transactions/provider boundaries for applicable acceptance, refund, claim/appeal, Party, Challenge handoff, delayed cleanup and stale job races. Record winning state and losing response; in-memory mocks do not prove database/program races.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C12",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. List every provider/program effect, authority, generation, timeout, partial success, stale success and compensation path. Do not hold database locks during provider/LLM/wallet/finality waits. Reconcile before retrying an unknown outcome; stale success cannot reopen work or grant access.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C13",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Cover loading, empty, unknown/stale, validation failure, conflict, permission denied, rejected signature, pending/failed/partial effect, cancellation and recovery states where applicable. Verify keyboard/focus, mobile, draft preservation, exact amounts and intelligible eligibility reasons.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C14",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Identify applicable input validation, session/nonce/CSRF/origin, rate limit, upload quarantine, SSRF/redirect, secrets, malicious build and prompt-injection boundaries. Untrusted code and model output cannot inherit credentials, grant permissions, self-approve or expand spending.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C15",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Record feature flags at server and UI, monitoring, named case owner, incident/runbook and feature-specific G01\u2013G10 evidence. Disabling new work must preserve old claims, cancellation, dispute and access cleanup. Define migration/backfill, verified backup/restore and rollback constraints.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C16",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. For each requirement and criterion provide setup/fixtures, exact action, expected result, observed result, command/test, SHA, environment/network/provider version and sanitized evidence. Record failed, blocked or not-run checks accurately; compiler success is insufficient.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C17",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. For affected user-facing release scope identify representative journey, tester, candidate environment/SHA, expected results, defect disposition/retest and separate business sign-off. QA, UAT and release approval cannot be inferred from each other.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C18",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Record actual files, schema/API/event changes, tests executed/results, unresolved risks, authority/privacy/money effects, migration/rollback limits, reviewer and exact next bounded task. Unimplemented criteria cannot disappear through issue closure or epic roll-up.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-A01",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Correct domain/rank evaluated server-side",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-A02",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Shared Wi-Fi or young wallet alone is not permanent fraud proof",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-W01",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Model explicit AND/OR skill predicates and Party coverage",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-W02",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Evaluate verified rank separately from reliability, Trust and access",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-W03",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Add proportional rate limits, duplicate evidence review and appeal reason categories",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C19",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. For every implementation change, define behavior from canonical requirements and write a meaningful failing test BEFORE implementation. Record RED command, actual failure and unchanged baseline; implement the smallest complete behavior; record GREEN result; refactor without changing the contract and record relevant regression results. Use real database/program/provider boundaries for material races and financial/access effects. Tests cannot be weakened, deleted or replaced with mocks merely to obtain green. For existing verified behavior, run and record the baseline and add a failing test for each changed/missing behavior; do not fabricate a red result. For decisions/docs/UAT-only work, define expected acceptance results before execution, record why a coding cycle is not applicable, and validate the actual deliverable.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C20",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Declare the stable versioned port, operations/capabilities, injected configuration, typed errors, cancellation/retry/idempotency, secrets, observations and provider-specific adapter boundary. Write shared contract tests first and demonstrate an alternate/test adapter without changing domain commands. Negative capability tests fail closed. Pin/reconcile in-flight operations before switching; verify no duplicate effects, asset/authority/terms drift or lost receipts. Document switch/drain/rollback and repeat affected live gates. See R15, AC73 and section 24.6.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C21",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Deliver module purpose/non-goals, public API/schema/event/error contracts, dependencies/host wiring, configuration, permissions, entity/state ownership, architecture, installation, runnable consuming example, tests/fixtures, limitations, migration/versioning and operations/recovery notes in the implementation change. Run the independently declared consuming host and negative/contract tests; no hidden RAID singleton/global secret or undeclared app import. Document UI accessibility and host authority when relevant. See R16, AC74 and section 24.7.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    },
+    "T014-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/08.5/11/13/23.4/24.6\u20138/25.3/28\u201329/35/39; T014-C22",
+      "repository_facts": "Bounded pure explanation tested; no actual Root assessment/admission or moderation workflow.",
+      "observed": "SELF-EVALUATED bounded evidence only; full numbered criterion and independent review/UAT not established. Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "evidence_url": "docs/tasks/2026-10-14-T014-skill-eligibility.md; planning/task-evidence/T014-skill-eligibility/final-regression.log"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exact a208 Staging38490596285 failed before steps due GitHub account payments/spending limit."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "command": "node_modules/.bin/vitest run tests/skill-eligibility.test.ts",
+      "expected_failure": "Missing structured current evidence and Party explanation behavior; explicit NOT_IMPLEMENTED stub",
+      "observed_failure": "42 tests FAILED. Exact then-uncommitted behavior tests/stub/task archived before implementation; base SHA does not contain those new tests. Unchanged shared baseline 55 PASS.",
+      "evidence_url": "planning/task-evidence/T014-skill-eligibility/red.log; planning/task-evidence/T014-skill-eligibility/red-source-manifest.json",
+      "result": "FAIL"
+    },
+    "green": {
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "command": "node_modules/.bin/vitest run tests/skill-eligibility.test.ts",
+      "observed": "42 PASS 480ms; implemented WIP over base, source manifest retained.",
+      "evidence_url": "planning/task-evidence/T014-skill-eligibility/green.log",
+      "result": "PASS"
+    },
+    "refactor": {
+      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "command": "vitest affected skill/shared-contract/boundary/docs/env suite; own installed console host; 52 planning checks",
+      "observed": "11 files 223 PASS 12.29s, including unchanged original 42 cases plus maximum parser bounds; own install/typecheck/start PASS; 52 planning PASS54.406s. Shared enum extraction preserves previous terms shape. Current WIP source hashes retained; implementation SHA will be pinned.",
+      "evidence_url": "planning/task-evidence/T014-skill-eligibility/final-regression.log; planning/task-evidence/T014-skill-eligibility/own-consumer.log; planning/task-evidence/T014-skill-eligibility/planning.log",
+      "result": "PASS"
+    }
+  }
+}

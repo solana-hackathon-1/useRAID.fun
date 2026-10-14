@@ -1,0 +1,59 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_utc": "2026-10-14T03:24:40.833173+00:00",
+  "base_sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+  "scope": "T014A pure private informational skill explanation; no Root admission/UI/DB/provider effect",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "R15",
+    "R16",
+    "I07",
+    "I10",
+    "I13",
+    "AC04 partial",
+    "AC05 partial",
+    "AC73",
+    "AC74",
+    "AC75 partial"
+  ],
+  "findings": [
+    "Root assessments/admission remain unavailable: trusted projection is explicit host dependency, not client authority",
+    "Free-text claimedLevel remains unranked; incomplete observation is UNKNOWN",
+    "Shared SkillRankSchema replaces identical inline enum without changing accepted TermsSnapshot",
+    "Initial CI matrix edit used wrong epic field and failed before mutation; corrected using actual epic/existing_test_files schema"
+  ],
+  "independent_review": "NOT VERIFIED",
+  "uat": "NOT VERIFIED",
+  "resources": [],
+  "ended_utc": "2026-10-14T03:31:20.502652+00:00",
+  "elapsed_seconds": 399.669479,
+  "source_manifest": "planning/task-evidence/T014-skill-eligibility/source-hashes.json",
+  "checks": {
+    "baseline": "3 files 55 PASS1.19s",
+    "red": "42 FAIL552ms; exact pre-implementation test/stub source retained",
+    "green": "42 PASS480ms",
+    "refactor_regression": "11 files223PASS12.29s, original assertions retained; added exact maximum8-depth/128-node boundary",
+    "own_installed_consumer": {
+      "path": "/tmp/raid-t014-installed-consumer-w5fvy9j8",
+      "result": "Own npm ci/typecheck/start PASS; dependency audit0 vulnerabilities; no app/DB credential",
+      "runtime_dependency_symlink": false
+    },
+    "planning": "52PASS54.406s",
+    "schema_client_typegen": "PASS;27migrationbytes and schema unchanged",
+    "strict_types": "PASS; final added parser-bound test copied to frozen source and final typecheck rerun",
+    "production_build": "PASS Next16.3.8Webpack; synthetic DEMO_MODEtrue, financial/provider/new-link flagsfalse",
+    "lint": "PASS0errors25existingwarnings",
+    "whole_format": "PASS fresh tracked+WIP snapshot /tmp/raid-t014-format-source-tdrjsjy2",
+    "completion_validator": "Actual34reject:27fullNOTVERIFIED+7hostedchecks, no metadata errors"
+  },
+  "skipped_checks": {
+    "browser_preview": "No browser-visible page/route/API/UI change; private console explanation contract only",
+    "database_provider_races": "No stored/financial/access/concurrency state changed; actual assessment/admission missing, no simulated fixture can prove it",
+    "full_suite": "Meaningful affected checks selected; historical139files1702PASS applies only to its recorded source, not this source",
+    "hosted_ci": "Exact-source checks still NOT VERIFIED. Existing billing-beforesteps block; observe new automatic staging after merge before any manual dispatch"
+  },
+  "resource_cleanup": "No owned server/container started. All test/consumer/type/build/lint/format CLI processes exited. Sources/logs preserved, no unrelated resource modified",
+  "preview": "NOT APPLICABLE; no browser-visible work. Independent console host is actual executable example, not a development preview or UAT."
+}
