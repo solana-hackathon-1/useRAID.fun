@@ -1,0 +1,8 @@
+{
+  "agent": "Codex /root",
+  "base_sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+  "started_at": "2026-10-14T17:46:17.413720+00:00",
+  "prior_work": "T013A post-CI packet/checkpoint/evidence preserved",
+  "authority": "DEC-2026-10-12-03 staging publication; one writer/no delegation",
+  "status": "IN_PROGRESS"
+}

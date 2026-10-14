@@ -1,0 +1,5 @@
+tests/skill-assessment-review.test.ts(88,28): error TS18047: 'result.proposedAssessment' is possibly 'null'.
+tests/skill-assessment-review.test.ts(90,12): error TS18047: 'result.proposedAssessment' is possibly 'null'.
+tests/skill-assessment-review.test.ts(91,12): error TS18047: 'result.proposedAssessment' is possibly 'null'.
+tests/skill-assessment-review.test.ts(173,7): error TS2531: Object is possibly 'null'.
+tests/skill-assessment-review.test.ts(219,7): error TS2531: Object is possibly 'null'.

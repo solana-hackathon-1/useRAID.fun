@@ -1,0 +1,5 @@
+{
+  "tests/skill-assessment-review.test.ts": "420b80f57ee1d1f4e12e970c678571f7a2db8e39e46831e84f5aa2ec56b2e925",
+  "src/skills/assessment-review.ts": "666a31155fb31f80fce904ada105473e4ffc7e14a4f9d3c6320603e93106d12d",
+  "examples/skill-assessments/fixtures.ts": "6fa9186e162f5dd37e023ffbb339939ff5b86e65b2a9cdb01ab5da204e3a4d25"
+}

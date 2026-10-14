@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013B authorized private manual review/reassessment/fraud proposal contracts only",
+  "status": "VERIFIED_IN_TEST bounded proposal only; full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-14-T013-assessment-review.md",
+  "migration_rollback": "Additive pure schemas/helpers/examples; no schema/27DDL/API/UI/Root dependencies/live flags or stored history change. Removing preparation has no persisted rollback; future history/claims must be preserved.",
+  "dependency_evidence": "Actual canonical HUMAN/catalog/rank/reference and immutable PracticeTrialDefinition contracts, fresh host assessment/absence/submission/case and current scoped evaluator policy explicit. Own-install alternate console verified; no actual trial/assessment/evaluator store or Root authority exists yet.",
+  "open_decisions": "O09 numeric scoring/calibration, O11 retention and actual approved operating/evaluator/provider policy remain unresolved; no production authority/policy seed.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "29fe14361a2aea26d83a15a1a2d93b95e5f7b540",
+  "candidate_sha": "29fe14361a2aea26d83a15a1a2d93b95e5f7b540",
+  "source_identity": "Implementation 29fe14361a2aea26d83a15a1a2d93b95e5f7b540 contains the exact verified final code/test/config/example hashes; subsequent pin changes metadata only. Initial/RED sources and raw failures remain separately archived.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11; dedicated own generated27 deps; own-install console9packages10audit0vuln; no real DB/provider/runner/authority credentials",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C01",
+      "observed": "Private PROPOSED review/capability/fraud preparation only, no committed rank or Root API/UI; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C02",
+      "observed": "Current own unrestricted independent evaluator plus full scoped local host approval; no client role/wealth/self-approval; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C03",
+      "observed": "Canonical identity/rank/catalog/practice/reference schemas reused; proposed nested data separate from actual committed snapshot; no trial/assessment tables; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C04",
+      "observed": "Self-review/unscoped/restricted denied before domain disclosure; whole immutable approval and resource/subject scope explicit; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C05",
+      "observed": "Reasoned review and distinct capability/fraud proposals; every output including nested assessment remains PROPOSED/unpersisted; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C06",
+      "observed": "Canonical HUMAN/account checks; no practice/evaluation capacity acquisition; paid reviewer assignment remains separate funded work; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C07",
+      "observed": "Exact original definition/rubric/submission/evidence and current assessment/absence; complete original criterion findings and stale version denials; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C08",
+      "observed": "No balances/obligations/provider/asset changes or effect; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C09",
+      "observed": "All result/context/reason/evaluator/case data private; no public route/DTO/log/preview or raw answer/code emitted; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C10",
+      "observed": "Repeated preparation has no stored effect; future durable receipt/replay required, no false durable success; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C11",
+      "observed": "No database/linearization boundary here; future atomic current scope/version/history/receipt acceptance remains missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C12",
+      "observed": "Pure synchronous current local authority; sanitized errors; no provider waits or in-flight effects; old history preserved on outages; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C13",
+      "observed": "Typed denial/conflict/unknown categories and documented recovery only; actual UI/accessibility/browser flows missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C14",
+      "observed": "Strict actor/subject/rank/approval/body separation, self-review denial, original owned evidence and no code/URL execution; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C15",
+      "observed": "No Root flag/provider authority enabled; own CLI ended; no owned container/server/pool created; no backup/restore inference; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C16",
+      "observed": "27genuineRED, stronger candidate-only27RED, historical-date1RED \u2192132affectedPASS; exact own-install consumer/strict build source gates; whole hosted candidate missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C17",
+      "observed": "No independent reviewer/representative UAT/business/release acceptance; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C18",
+      "observed": "Actual bounded files/source/failures/docs/next durable approved store and actual APIs remain explicit; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-A01",
+      "observed": "Relevant advanced review proposes only original target, no E-task grinding; actual committed qualification missing, unpaid platform material retained; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-A02",
+      "observed": "Relevant advanced review proposes only original target, no E-task grinding; actual committed qualification missing, unpaid platform material retained; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-W01",
+      "observed": "Versioned criterion review and distinct capability/fraud preparation only; actual approved persisted definitions/attempt/review missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-W02",
+      "observed": "Versioned criterion review and distinct capability/fraud preparation only; actual approved persisted definitions/attempt/review missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-W03",
+      "observed": "Versioned criterion review and distinct capability/fraud preparation only; actual approved persisted definitions/attempt/review missing; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C19",
+      "observed": "Initial27RED and strict nested-proposal27RED before implementation, historical equality1RED before fix, archived hashes/raw sources; no weakened assertion/cast/timeout; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C20",
+      "observed": "Explicit full-definition and scoped-evaluator/reassessment ports; alternate byte/digest independent console host, production authority remains host obligation; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C21",
+      "observed": "Current own-install strict types/console/source bytes verified,9packages10audit0vuln; same-change complete contracts/docs/example; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/24.6\u20138/25.3/26/28\u201329/33.7/35/39\u201340; T013-C22",
+      "observed": "Both new tests E04/global/discovery; local affected/mandatory source evidence only; actual hosted seven checks NOT VERIFIED; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json; docs/raid-skill-assessment-review.md; docs/tasks/2026-10-14-T013-assessment-review.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json",
+      "observed": "New candidate hosted check pending; prior exactc898 automatic Staging38581167251 failed before0steps due billing; manualChecks originallydisabled, no unchanged redispatch."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json",
+      "observed": "New candidate hosted check pending; prior exactc898 automatic Staging38581167251 failed before0steps due billing; manualChecks originallydisabled, no unchanged redispatch."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json",
+      "observed": "New candidate hosted check pending; prior exactc898 automatic Staging38581167251 failed before0steps due billing; manualChecks originallydisabled, no unchanged redispatch."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json",
+      "observed": "New candidate hosted check pending; prior exactc898 automatic Staging38581167251 failed before0steps due billing; manualChecks originallydisabled, no unchanged redispatch."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json",
+      "observed": "New candidate hosted check pending; prior exactc898 automatic Staging38581167251 failed before0steps due billing; manualChecks originallydisabled, no unchanged redispatch."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json",
+      "observed": "New candidate hosted check pending; prior exactc898 automatic Staging38581167251 failed before0steps due billing; manualChecks originallydisabled, no unchanged redispatch."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/review.json",
+      "observed": "New candidate hosted check pending; prior exactc898 automatic Staging38581167251 failed before0steps due billing; manualChecks originallydisabled, no unchanged redispatch."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "c898911e38b05f1ad3844fff1fca950b57b30c16",
+      "command": "vitest run tests/skill-assessment-review.test.ts before implementation; strengthen nested proposal-only before implementation; later targeted historical-date test before fix",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/red.log; red-source.tar.gz; red-source-hashes.json; red-strict-candidate.log; red-strict-candidate-source.tar.gz; red-strict-candidate-hashes.json; historical-date-red.log; historical-date-red-source.tar.gz; historical-date-red-hashes.json",
+      "result": "FAIL",
+      "expected_failure": "Scoped manual review/reassessment behavior absent; historical issued-at boundary must retain current history",
+      "observed_failure": "27fail NOT_IMPLEMENTED, strengthened27fail NOT_IMPLEMENTED; later1fail INVALID_HOST_CONTRACT for valid already-due history. BaseSHA alone does not contain archived uncommitted tests/stubs."
+    },
+    "green": {
+      "sha": "29fe14361a2aea26d83a15a1a2d93b95e5f7b540",
+      "command": "Final affected9files Vitest and independently own-installed console/type host",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/green.log; affected.log; consumer-final.log; source-hashes.json",
+      "result": "PASS",
+      "observed": "27initialGREEN,30new includingboundaryGREEN, historicalfix final132affectedPASS4.49s; own-install strict/current console/source bytesPASS"
+    },
+    "refactor": {
+      "sha": "29fe14361a2aea26d83a15a1a2d93b95e5f7b540",
+      "command": "Canonical historical-date alignment and explicit typed nonnull contract guards; final strict Root/source/planning/format checks",
+      "evidence_url": "planning/task-evidence/T013-assessment-review/historical-date-red.log; initial-typecheck.log; typecheck.log; production-build.log; final-lint.log; final-planning.log; review.json",
+      "result": "PASS",
+      "observed": "Final132affectedPASS4.49s,55planningPASS46.095s, exact own-install types/console, dedicated Root typegen/strict types/productionbuild, unchanged root auditpolicy, initialwholelint0errors25oldwarnings + final changed-filelint0errors0warnings, freshwholeformatterPASS. Historical equality aligned via genuine1RED; strict test-null errors fixed with explicit runtime contract guards. No weakened assertions/casts/suppression/timeouts."
+    }
+  }
+}

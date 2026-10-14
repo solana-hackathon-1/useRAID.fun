@@ -1,0 +1,56 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-14T17:53:11.550530+00:00",
+  "source": "basec898911 plus assessment contracts/tests/own-example/CI inventory; prior T013A post-CI work preserved",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "P07",
+    "I06",
+    "I07",
+    "I10",
+    "I13",
+    "R15",
+    "R16",
+    "AC06",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_RED": "27 actual failures against archived tests/stubs; strengthened nested proposal-only contract again27RED before implementation, both raw archives retained",
+  "initial_GREEN": "27behavior then28behavior+2boundaryPASS",
+  "consumer": "Own node_modules install/strict types/byte+digest hostPASS; actualcounts log retained",
+  "independent_UAT_release": "NOT VERIFIED",
+  "resource_ownership": "All own consumer/test/planning/lint/audit/typegen/typecheck/build/formatter CLI ended. No task server/container/database/pool was created; no active owned resource. Preserve source/dependencies/raw evidence and unrelated services/images/volumes",
+  "ended_at": "2026-10-14T18:05:26.059522+00:00",
+  "elapsed_seconds": 734.509,
+  "source_hashes": "planning/task-evidence/T013-assessment-review/source-hashes.json",
+  "actual_checks": {
+    "new": "27initialRED\u219227GREEN,28behavior+2boundary initialGREEN; historicalDate1RED\u2192current29behavior+2boundary within132affectedPASS4.49s",
+    "affected": "Final9files132PASS4.49s; initial131PASS8.39s applies prior strict-date source only",
+    "planning": "Final55PASS46.095s; initial55PASS50.159s retained before final docs/test update",
+    "own_consumer": "9packages10audit0vuln; strict types/alternate byte-digest scope/current-source consolePASS; all canonical/example/lock/dependency bytes match",
+    "Root": "Final dedicated own generated27 deps typegen/strict types/productionWebpackbuildPASS; final impl/tests/dependency/config bytes match",
+    "lint": "Initialwhole0errors25oldwarnings; final changed implementation/tests0errors0warnings; unchanged lint inputs reuse initialwhole evidence",
+    "audit": "Root approved unexpired moderate+ advisory policyPASS; same root dependency/config bytes, not Root0vulnerabilities",
+    "format": "Fresh Gittracked+nonignored WIP snapshot /tmp/raid-t013-assessment-review-format-source-iuglwa5a PASS"
+  },
+  "findings_and_fixes": [
+    "Before implementation, initial nested VERIFIED proposal design was strengthened to explicit nested PROPOSED/proposedRank and false-effect flags. Both original27RED and strengthened27RED archives retained; no committed fact can be parsed from proposals.",
+    "Author review found historical reassessmentAt equality was stricter than existing eligibility v1. Added actual failing boundary test first, then changed historical guard to allow equality/preserve already-due history; new proposal future-date constraints unchanged.",
+    "Initial Root strict TS18047/TS2531 in tests: explicit runtime nonnull proposal assertion/guard fixes typing without cast, nonnull assertion, suppression or weakened runtime expectation. Own consumer/library strict types already passed; raw Root failure retained."
+  ],
+  "reused": [
+    "Final source after historical fix is exactly independently installed host and final dedicated build source",
+    "Root dependency/security and unchanged lint inputs; changed files received final lint",
+    "No current-full-suite claim, selected affected contracts plus mandatory source gates only"
+  ],
+  "skipped": [
+    "No browser-visible route/UI or preview, no new browser suite",
+    "No stored effect/schema/migration/DB race/provider/runner/funds, no inferred live authority or durability",
+    "Independent reviewer, representative UAT/business/full release acceptance NOT VERIFIED",
+    "Exactnewmain hosted jobs pending; known priorc898 billing failure before0steps and originallydisabled manualChecks, no unchanged redispatch"
+  ],
+  "implementation_commit": "29fe14361a2aea26d83a15a1a2d93b95e5f7b540"
+}
