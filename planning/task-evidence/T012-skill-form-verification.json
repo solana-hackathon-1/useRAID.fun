@@ -10,10 +10,10 @@
   "dependency_evidence": "Actual C1 protected APIs, B1 taxonomy and B2 own HUMAN claim storage. Page authorizes current cookie and actual immutable mapping before private hydration; host selects actual published catalog ID. Actual assessment/trial/adminRoot/admission and deployment configuration remain dependencies.",
   "open_decisions": "O09 numeric promotion/calibration, actual assessment/evaluator/provider/operating policies not selected or enabled.",
   "release_gate_disposition": "Full parent acceptance, independent/UAT/business/live gates NOT VERIFIED. Bounded staging Git authority DEC-2026-10-12-03 remains.",
-  "code_source_sha": null,
-  "source_identity": "Exact current WIP over f5391ac2743ff008b3df3859af844a80eaec4f15; source-hashes.json and separate route/host/CI/hydration RED source manifests; pin actual implementation after final checks.",
+  "code_source_sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
+  "source_identity": "Implementation 71c05fda64e0e2545e16d4e6883c95e11770f668; phase source manifests and final code/test hashes retained; later pin is metadata only.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11, real owned synthetic PG16 pinned image, copied Next sources with own generated27-client dependencies, desktop Chromium/mobile iPhone13 emulation, independent own-installed React SSR host. No live provider/financial credentials.",
-  "candidate_sha": null,
+  "candidate_sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
   "criteria": {
     "T012-C01": {
       "result": "NOT VERIFIED",
@@ -225,14 +225,14 @@
       "result": "FAIL"
     },
     "green": {
-      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
       "command": "Owned real PG/Next Playwright skill-claims suite; affected Vitest; own React install",
       "observed": "Final20desktop/mobilePASS2.9m against actualownedPG/Next/currentcookie/realcatalog-canonicalclaims; selector4PASS incl original3. Earlier14PASS/18partial failures and readinessRED2 retained.",
       "evidence_url": "planning/task-evidence/T012-skill-form/release-browser.log",
       "result": "PASS"
     },
     "refactor": {
-      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
       "command": "Affected Vitest +53 planning +own installed SSR/types +strict root types/build/lint +actual20desktop/mobile afterfinalreadiness refactor",
       "observed": "Final184affectedPASS5.69s/53planningPASS83.973s/owninstalledReacttypes-SSR/audit0vuln/strictRoottypes-typegen-build/lint0errors25oldwarnings/wholeformatPASS; exact finalWIP code hashes retained. All27DDL/schema bytes unchanged; final20browser afterreadyrefactor passed with originaldeadlines/assertions.",
       "evidence_url": "planning/task-evidence/T012-skill-form/release-boundary.log; planning/task-evidence/T012-skill-form/review.json",

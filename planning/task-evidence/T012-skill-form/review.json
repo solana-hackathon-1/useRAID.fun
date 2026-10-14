@@ -45,5 +45,6 @@
     "new_standalone_DB_races": "No SQL command/schema/storage changed. Actual browser uses real migrations/session/HUMAN/catalog/claim/receipts; original DB race evidence remains historical scoped evidence",
     "hosted_CI": "Candidate not merged yet; latestf53938506960716beforestepsbillingfailure, namedChecksdisabled/APIverified. Required actualcandidateCI NOT VERIFIED."
   },
-  "resources": "All owned CLI ended; no server/listener/container/pool remains active. Existing services/images/volumes and source evidence preserved."
+  "resources": "All owned CLI ended; no server/listener/container/pool remains active. Existing services/images/volumes and source evidence preserved.",
+  "implementation_commit": "71c05fda64e0e2545e16d4e6883c95e11770f668"
 }
