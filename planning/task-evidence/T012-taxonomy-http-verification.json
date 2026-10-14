@@ -10,10 +10,10 @@
   "dependency_evidence": "Existing actual immutable catalog command/receipts/migrations26-27, current Root X/admin policy and origin/account rate. Own-installed PG/HTTP host and actual Next/SQL tests. Admin editor and approved assessment/evaluator/trial/admission remain independent dependencies.",
   "open_decisions": "O09 numeric promotion/calibration, actual assessment/evaluator/provider/operating policies not selected or enabled.",
   "release_gate_disposition": "Full parent acceptance, independent/UAT/business/live gates NOT VERIFIED. Bounded staging Git authority DEC-2026-10-12-03 remains.",
-  "code_source_sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
-  "source_identity": "Base9b0a plus exact final working-tree hashes in planning/task-evidence/T012-taxonomy-http/source-hashes.json; commit pin follows checks.",
+  "code_source_sha": "a1a39be3f67d7ba629a8df6a2b708747f6fdba48",
+  "source_identity": "Implementation a1a39be3f67d7ba629a8df6a2b708747f6fdba48 contains the exact verified code/test/config/example hashes; subsequent pin commit changes metadata only.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11, owned pinned PG16 fixture, separately generated27-client immutable deps, actual Next API Playwright, independent own-installed pg/Zod/bs58/tsx CLI. No live provider/funds/admin credentials.",
-  "candidate_sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+  "candidate_sha": "a1a39be3f67d7ba629a8df6a2b708747f6fdba48",
   "criteria": {
     "T012-C01": {
       "result": "NOT VERIFIED",
@@ -225,14 +225,14 @@
       "observed_failure": "47 behavior failures against typed stubs; actualmissingroute1 expected200/404; workflow execution2 failed subtests before wiring. Base SHA alone does not contain the archived tests/stubs."
     },
     "green": {
-      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "sha": "a1a39be3f67d7ba629a8df6a2b708747f6fdba48",
       "command": "actual Next API suite; affected Vitest; independently installed PG/HTTP consumer",
       "evidence_url": "planning/task-evidence/T012-taxonomy-http/unit-green.log; api-refactor.log; api-final.log; affected.log; installed-consumer.log; source-hashes.json",
       "result": "PASS",
       "observed": "47GREEN; correctedactual11PASS then final14PASS;123affectedPASS; independent ownPGHTTP PASS. Exact working-tree hashes identify source before metadata commit pin."
     },
     "refactor": {
-      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "sha": "a1a39be3f67d7ba629a8df6a2b708747f6fdba48",
       "command": "Final normalized transport/private bindings/current-policy regression and strict source gates",
       "evidence_url": "planning/task-evidence/T012-taxonomy-http/affected.log; planning.log; typecheck.log; lint.log; audit.log; review.json",
       "result": "PASS",

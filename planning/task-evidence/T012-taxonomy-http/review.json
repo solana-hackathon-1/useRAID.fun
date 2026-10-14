@@ -5,7 +5,7 @@
   "end_utc": "2026-10-14T05:22:10.503263+00:00",
   "elapsed_seconds": 562.958,
   "base_sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
-  "source_identity": "Final actual code/test/config/example hashes in source-hashes.json; commit pin follows checks. Original prior PR213 evidence WIP preserved.",
+  "source_identity": "Implementation a1a39be3f67d7ba629a8df6a2b708747f6fdba48; source-hashes.json exact code/test/config/example identity. Metadata pin follows, with no runtime/test/config changes.",
   "requirements_checked": [
     "R04/R06/R12/R15/R16",
     "I05/I06/I10/I11/I13",
@@ -56,5 +56,6 @@
     "resources": "Owned Next/browser removed automatically; owned PG c9f62a7120831e56728aee9cc170b73a921e43e41ff1a397b864bcf0fdf63c95 stopped0 and actualRunningfalse. All CLI/pools ended. No owned active resources; source/traces preserved."
   },
   "resources": "All owned Next/browser removed; fixture c9f62a712083... stop0 actualRunningfalse; all pools/CLI ended. Existing listeners/images/volumes/evidence preserved. No manualworkflow restoration outstanding.",
-  "completion_validator": "34 expected failures=27fullcriteria+7CI NOT VERIFIED; no packet metadata errors, no self-approval"
+  "completion_validator": "34 expected failures=27fullcriteria+7CI NOT VERIFIED; no packet metadata errors, no self-approval",
+  "implementation_commit": "a1a39be3f67d7ba629a8df6a2b708747f6fdba48"
 }
