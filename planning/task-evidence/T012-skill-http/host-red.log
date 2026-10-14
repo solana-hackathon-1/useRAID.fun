@@ -1,0 +1,52 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-claims-host.test.ts (3 tests | 3 failed) 10ms
+   × defaults new claim writes off and rejects nonexact enablement values 6ms
+   × reads existing private claims and actual catalogs even with writes disabled 1ms
+   × delegates new-write gating to the SQL command so original authorized receipt replay remains possible 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-claims-host.test.ts > defaults new claim writes off and rejects nonexact enablement values
+Error: NOT_IMPLEMENTED
+ ❯ Module.skillClaimWriteConfiguration src/lib/skill-claims-host.ts:2:114
+      1| import type { SkillClaimActor,SaveSkillClaimCommand } from '../skills/…
+      2| export function skillClaimWriteConfiguration():{writesAvailable:boolea…
+       |                                                                                                                  ^
+      3| export async function readSkillClaimState(_actor:SkillClaimActor,_skil…
+      4| export async function readSkillCatalogState(_actor:SkillClaimActor,_id…
+ ❯ tests/skill-claims-host.test.ts:11:104
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/skill-claims-host.test.ts > reads existing private claims and actual catalogs even with writes disabled
+Error: NOT_IMPLEMENTED
+ ❯ Module.readSkillClaimState src/lib/skill-claims-host.ts:3:106
+      1| import type { SkillClaimActor,SaveSkillClaimCommand } from '../skills/…
+      2| export function skillClaimWriteConfiguration():{writesAvailable:boolea…
+      3| export async function readSkillClaimState(_actor:SkillClaimActor,_skil…
+       |                                                                                                          ^
+      4| export async function readSkillCatalogState(_actor:SkillClaimActor,_id…
+      5| export async function saveSkillClaimFromHost(_command:SaveSkillClaimCo…
+ ❯ tests/skill-claims-host.test.ts:15:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/skill-claims-host.test.ts > delegates new-write gating to the SQL command so original authorized receipt replay remains possible
+Error: NOT_IMPLEMENTED
+ ❯ Module.saveSkillClaimFromHost src/lib/skill-claims-host.ts:5:101
+      3| export async function readSkillClaimState(_actor:SkillClaimActor,_skil…
+      4| export async function readSkillCatalogState(_actor:SkillClaimActor,_id…
+      5| export async function saveSkillClaimFromHost(_command:SaveSkillClaimCo…
+       |                                                                                                     ^
+      6|
+ ❯ tests/skill-claims-host.test.ts:20:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  05:54:38
+   Duration  258ms (transform 50ms, setup 0ms, import 71ms, tests 10ms, environment 0ms)

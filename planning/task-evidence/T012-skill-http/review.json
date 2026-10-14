@@ -1,0 +1,66 @@
+{
+  "started_utc": "2026-10-14T00:18:24.472121+00:00",
+  "source_base": "6a5b88412e410569d2127f0cff953f6d8181566f",
+  "label": "SELF-EVALUATED",
+  "scope": "T012C1 private HTTP/Root +existingadminX-sessioncontractcorrection",
+  "independent_review": "NOT VERIFIED; solewriter/no delegation",
+  "requirements": ["R04", "R06", "R12", "R15", "R16", "I05", "I06", "I10", "I13"],
+  "checks": {
+    "red": "33portableHTTPFAIL/exact initialsources\u219233PASS;3RootHostFAIL\u219236combinedPASS;1wallet-adminFAIL/exactsource\u2192currentX enforced",
+    "regression": "6files132realPGPASS19.59s includes42catalog/44claim plusHTTP/host/boundaries; changedfixturespubX alloriginalassertions retained",
+    "boundary_docs": "10files209PASS9.55s",
+    "planning": "All52PythonplanningPASS54.954s; inventory1RED beforeglobal/E04registrations",
+    "preview": "ActualNextdevelopmentAPIPASS atloopback3020/source4mg8otzc; cookie/read/save/replay/foreignprivacy/origin/digest/body/rate/revocation/noassessment-outbox; actualownedNextstop+rm0/PGstop0; workspace-only/no publicforward",
+    "consumer": "Own20package clean npmci/minimalactualcanonicalPG+nativeRequest/ResponseHTTP PASS; Rootmigrations27NoDifference",
+    "static": "Ownedfrozenexactsource schemaValidate/client/Nexttypegen/strictTSC/productionWebpackbuild PASS, ESLintzero",
+    "reused_skipped": "Old1702fullsuite/source4ad reusedonlymatchingunchangedmoney/identity/shared-storage/fullbaseline; changedcatalogauth/HTTP/root/environment/providerboundary specificallyrechecked. No newUI/browserdesktopmobile/screenshots becauseonlyAPI; actualNextHTTPpreview required/run. No localfinancial/provider/dependencysecurity rerun; newcandidatehosted mandatorygates remainunverified underknownbillingblock.",
+    "completion": "Actualfullvalidator exits1 solely27 fullNOTVERIFIED+7unrunCI, noTDDmetadataerror",
+    "format": "Wholefreshtracked+WIPformatter PASS; finalreview/taskmetadata update checked separately"
+  },
+  "findings": [
+    "RootexistingadminUser/requireUser(admin) requiresSessionviax; previouspurepublisheracceptedwallet. Genuine1RED correctedcommandguard/allafterwait-replaychecks; fixtures/consumers nowXauthenticatedadmins, walletreadsretained; no newfreshness policy",
+    "FirstactualNextAPIpreview gotthroughcookie/saved/replay/foreign/origin/digest/body cases thenfixtureRateLimitmissingrequiredexpiresAt. Actualschemaread/fixturefilledbefore429check, failure/logsretained; retryallPASS"
+  ],
+  "preview_resources": {
+    "url": "http://127.0.0.1:3020",
+    "source": "/tmp/raid-t012-skill-http-preview-source-4mg8otzc",
+    "mode": "NextWebpackdevelopment/syntheticrealPG/ownedSKILL_CLAIMS_ENABLED=true onlyfixture; allfinancial-provider-linkflagsfalse",
+    "container_id": "9a816e734b16100097f8821f57364cbd0770f05a81b2f7c4744ac5afd40c9ce4",
+    "owned_next": "Stopped+removedexit0 afterverification",
+    "owned_pg": "raid-t012-skill-http-auto-20261014 finallystopped0",
+    "access": "Workspace-local/no public forwarding; ownerURL/source/results/accesslimits/stoppedstatus shown",
+    "desktop_mobile": "NOT RUN; no browser-visible UI/page added, API requests verified"
+  },
+  "source_identity": "Implementation d07812ec894417a764a69268b7706d7ee9ab32bb; recordedexacttype/build/preview/consumer source hashes",
+  "source_hashes": {
+    ".env.example": "e6e37aa398e93b9bc44c673f2513bfd272ad3ea251e2d12882c1333eb44e2e1a",
+    "src/skills/http.ts": "ec004b76ccb92d5d820f3835ceae3f64bdf6b8b6ce98d7811bb4867776adae14",
+    "src/skills/http-contracts.ts": "21a98a9cbe8ea8700e775105cbfcc538e4e5529a519bc7b86e4d0a8a0c8bf585",
+    "src/skills/taxonomy-storage.ts": "4e674ad069814d75e33c6db6ee36648051116f31d4c41223d5d6c78c303b625b",
+    "src/lib/skill-claims-host.ts": "645faf27c3de1905447f63b797162e29eec77a3691c284902efb12fd9fb4f0a1",
+    "src/lib/skill-claims-http.ts": "fe8b900139441d874d93f485af5e6f399591a0ffdcce4b5c7f8519c3cb6d35af",
+    "src/app/api/v1/skill-claims/[skillId]/route.ts": "cb1b2aa792ca4ccc0ce32c95d8260de2905dd4d77c4775473286e6f6b70537f9",
+    "src/app/api/v1/skill-taxonomies/[id]/route.ts": "08ac85451e86b3fdc775349a383ec394244673efbba0ebe62360571789619726",
+    "tests/skill-claims-http.test.ts": "59d0138f9326de211321986b81374df04e320c91d01bdbf71b75632b8d099acc",
+    "tests/skill-claims-host.test.ts": "b202ce5e9b87929faefd61e59038ade07364fba7b96a70f4737b7cafdad4e95e",
+    "tests/skill-claims-http-preview.ts": "3f66df1e82e66b31ee7a8f81c4036c01cc2711277b8a7110367d0deb7a7980b0",
+    "tests/skill-taxonomy-db.test.ts": "2f76d1be2bf3f735aa2ff37eae6a2ae89d8972672070e88d1dd6cfa8c11301a9",
+    "tests/skill-claim-storage-db.test.ts": "d74aada44f1f912588516f2aedb983bcd005efc638d68ccfcf2aa37b2e332645",
+    "docs/raid-skill-http.md": "d89e255c4c6f8e295c3206004241cd7373ed074f07d6a1622424310c7546ccf8",
+    "docs/raid-skill-taxonomy-storage.md": "ee841b4969eb76b4ae4d7c5917b01e6056f304bf3bad49370e73deaa95dffe9b",
+    "docs/raid-module-reuse.md": "ea76886a4f5d0c1f5ce4427dc21e00a800612df8260d07124d2ff29352fb15ee",
+    "planning/raid-ci-matrix.json": "3286f11f90613b4b561ee80e311c05843fe52c9c0816686f9298b5c2afbfaf5e",
+    "examples/skill-taxonomy/host.ts": "11d5eeafae518caf9ea3b7c1b7d87b1181f2a4057601660190753485c2ea64fc",
+    "examples/skill-taxonomy/README.md": "03144d39f0eb49e61ffb8aacf7b9bb1306587823ac8f6c86b257a2cae603a70e",
+    "examples/skill-claim-storage/host.ts": "77a88c031dbe1702c7a6cb90d9dc489cf2319178f0b378c623c7930fb4f1fb10",
+    "examples/skill-claim-storage/README.md": "2be81f5ff9b41ab464bea56165788d123286d663e35cbfb4c5ddade03087a32b"
+  },
+  "resource_status": {
+    "owned_pg": "43f310b8cc3bedebb9e2720bd1060299b7ee1ab73b7c9bb0196b8aaaf93a6e2a",
+    "running": false,
+    "owned_next": "Removed afterstop0; source/logs retained; no listener retained"
+  },
+  "ended_utc": "2026-10-14T00:27:37.895388+00:00",
+  "elapsed_seconds": 553.423267,
+  "implementation_commit": "d07812ec894417a764a69268b7706d7ee9ab32bb"
+}

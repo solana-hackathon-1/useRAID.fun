@@ -1,0 +1,22 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3020
+- Network:       http://127.0.0.1:3020
+✓ Ready in 3.8s
+✓ Running next.config.ts took 1479ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+
+○ Compiling /api/health ...
+ GET /api/health 200 in 334ms (next.js: 3ms, application-code: 332ms)
+ GET /api/v1/skill-claims/frontend 401 in 2.4s (next.js: 2.3s, application-code: 100ms)
+ GET /api/v1/skill-taxonomies/synthetic-api-catalog 200 in 1008ms (next.js: 898ms, application-code: 109ms)
+ GET /api/v1/skill-claims/frontend 200 in 67ms (next.js: 23ms, application-code: 45ms)
+ POST /api/v1/skill-claims/frontend 200 in 147ms (next.js: 3ms, application-code: 144ms)
+ POST /api/v1/skill-claims/frontend 200 in 35ms (next.js: 3ms, application-code: 32ms)
+ GET /api/v1/skill-claims/frontend 200 in 30ms (next.js: 3ms, application-code: 27ms)
+ POST /api/v1/skill-claims/frontend 409 in 28ms (next.js: 2ms, application-code: 26ms)
+ POST /api/v1/skill-claims/frontend 403 in 6ms (next.js: 1.7ms, application-code: 5ms)
+ POST /api/v1/skill-claims/frontend 422 in 13ms (next.js: 1.7ms, application-code: 11ms)

@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-14T00:08:22.627373+00:00",
+  "base": "6a5b88412e410569d2127f0cff953f6d8181566f",
+  "files": {
+    "src/skills/http.ts": "7493e6ba2051ff46b95b54c9f42a8d78857ba4a3a585d18483bff7a0895da116",
+    "tests/skill-claims-http.test.ts": "7a9afdfb47626f4e524f47a416795b3bfb1370b66092f2489cc3f4fc8fe95dad"
+  }
+}

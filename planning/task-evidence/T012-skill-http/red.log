@@ -1,0 +1,234 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-claims-http.test.ts (33 tests | 33 failed) 60ms
+   × returns private current and empty own claim state without treating claimed level as assessment 29ms
+   × saves normalized input under server actor and original key/request identity 3ms
+   × returns original replay when new writes unavailable without adapter prechecking a new-write flag 1ms
+   × returns only actual correctly bound catalog records or null under current actor 1ms
+   × denies host authority 401 before save and protects all error responses 1ms
+   × denies host authority 403 before save and protects all error responses 1ms
+   × denies host authority 429 before save and protects all error responses 1ms
+   × checks origin, actor and rate before body parsing/saving 1ms
+   × rejects client participantId instead of overriding URL or permission authority 2ms
+   × rejects client accountId instead of overriding URL or permission authority 1ms
+   × rejects client skillId instead of overriding URL or permission authority 1ms
+   × rejects client verified instead of overriding URL or permission authority 1ms
+   × rejects client assessedRank instead of overriding URL or permission authority 1ms
+   × rejects client assessmentHistory instead of overriding URL or permission authority 1ms
+   × denies an invalid claim resource before reading storage 1ms
+   × denies an invalid catalog resource before reading storage 0ms
+   × rejects mismatched or forged saved skill facts 1ms
+   × rejects mismatched or forged saved catalog facts 1ms
+   × rejects mismatched or forged saved revision facts 1ms
+   × rejects mismatched or forged saved level facts 1ms
+   × rejects mismatched or forged saved references facts 1ms
+   × rejects mismatched or forged saved verification facts 3ms
+   × rejects mismatched or forged saved availability facts 1ms
+   × rejects current claim or catalog responses bound to another requested resource 1ms
+   × maps storage and unknown errors privately 1ms
+   × maps storage and unknown errors privately 1ms
+   × maps storage and unknown errors privately 0ms
+   × maps storage and unknown errors privately 0ms
+   × maps storage and unknown errors privately 1ms
+   × maps storage and unknown errors privately 0ms
+   × maps storage and unknown errors privately 0ms
+   × maps storage and unknown errors privately 0ms
+   × bounds JSON/key/mime and sanitizes request-id failures 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 33 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-claims-http.test.ts > returns private current and empty own claim state without treating claimed level as assessment
+Error: NOT_IMPLEMENTED
+ ❯ Object.GET src/skills/http.ts:7:81
+      5| export class SkillClaimHttpError extends Error {constructor(readonly s…
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+       |                                                                                 ^
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+ ❯ tests/skill-claims-http.test.ts:19:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > saves normalized input under server actor and original key/request identity
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:23:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > returns original replay when new writes unavailable without adapter prechecking a new-write flag
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:26:156
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > returns only actual correctly bound catalog records or null under current actor
+Error: NOT_IMPLEMENTED
+ ❯ Object.CATALOG_GET src/skills/http.ts:9:89
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+       |                                                                                         ^
+     10| };}
+     11|
+ ❯ tests/skill-claims-http.test.ts:29:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > denies host authority 401 before save and protects all error responses
+ FAIL  tests/skill-claims-http.test.ts > denies host authority 403 before save and protects all error responses
+ FAIL  tests/skill-claims-http.test.ts > denies host authority 429 before save and protects all error responses
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:33:109
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > checks origin, actor and rate before body parsing/saving
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:36:203
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > rejects client participantId instead of overriding URL or permission authority
+ FAIL  tests/skill-claims-http.test.ts > rejects client accountId instead of overriding URL or permission authority
+ FAIL  tests/skill-claims-http.test.ts > rejects client skillId instead of overriding URL or permission authority
+ FAIL  tests/skill-claims-http.test.ts > rejects client verified instead of overriding URL or permission authority
+ FAIL  tests/skill-claims-http.test.ts > rejects client assessedRank instead of overriding URL or permission authority
+ FAIL  tests/skill-claims-http.test.ts > rejects client assessmentHistory instead of overriding URL or permission authority
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:40:52
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > denies an invalid claim resource before reading storage
+Error: NOT_IMPLEMENTED
+ ❯ Object.GET src/skills/http.ts:7:81
+      5| export class SkillClaimHttpError extends Error {constructor(readonly s…
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+       |                                                                                 ^
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+ ❯ tests/skill-claims-http.test.ts:43:68
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > denies an invalid catalog resource before reading storage
+Error: NOT_IMPLEMENTED
+ ❯ Object.CATALOG_GET src/skills/http.ts:9:89
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+       |                                                                                         ^
+     10| };}
+     11|
+ ❯ tests/skill-claims-http.test.ts:43:127
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > rejects mismatched or forged saved skill facts
+ FAIL  tests/skill-claims-http.test.ts > rejects mismatched or forged saved catalog facts
+ FAIL  tests/skill-claims-http.test.ts > rejects mismatched or forged saved revision facts
+ FAIL  tests/skill-claims-http.test.ts > rejects mismatched or forged saved level facts
+ FAIL  tests/skill-claims-http.test.ts > rejects mismatched or forged saved references facts
+ FAIL  tests/skill-claims-http.test.ts > rejects mismatched or forged saved verification facts
+ FAIL  tests/skill-claims-http.test.ts > rejects mismatched or forged saved availability facts
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:47:138
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > rejects current claim or catalog responses bound to another requested resource
+Error: NOT_IMPLEMENTED
+ ❯ Object.GET src/skills/http.ts:7:81
+      5| export class SkillClaimHttpError extends Error {constructor(readonly s…
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+       |                                                                                 ^
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+ ❯ tests/skill-claims-http.test.ts:50:90
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+ FAIL  tests/skill-claims-http.test.ts > maps storage and unknown errors privately
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:62:150
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/33]⎯
+
+ FAIL  tests/skill-claims-http.test.ts > bounds JSON/key/mime and sanitizes request-id failures
+Error: NOT_IMPLEMENTED
+ ❯ Object.POST src/skills/http.ts:8:82
+      6| export function createSkillClaimHandlers(_host:SkillClaimHttpHost){ret…
+      7|  async GET(_request:Request,_id:string|Promise<string>):Promise<Respon…
+      8|  async POST(_request:Request,_id:string|Promise<string>):Promise<Respo…
+       |                                                                                  ^
+      9|  async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promis…
+     10| };}
+ ❯ tests/skill-claims-http.test.ts:64:100
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/33]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  33 failed (33)
+   Start at  05:51:32
+   Duration  618ms (transform 181ms, setup 0ms, import 306ms, tests 60ms, environment 0ms)

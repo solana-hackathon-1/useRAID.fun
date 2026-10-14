@@ -78,6 +78,8 @@ async function authorize(
   );
   if (clock.length !== 1 || clock[0].valid !== true) fail('AUTHENTICATION_REQUIRED');
   if (policy) {
+    // Preserve the root administrative contract: a relayed wallet proof is not X admin authority.
+    if (sessions[0].via !== 'x') fail('FORBIDDEN');
     if (
       user.id !== actor.accountId ||
       user.role !== 'ADMIN' ||

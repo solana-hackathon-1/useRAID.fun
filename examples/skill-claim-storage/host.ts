@@ -6,7 +6,8 @@ import {
   CommandReceiptError,
   type CommandReceiptTransaction,
 } from './command-receipts';
-import { publishSkillTaxonomy } from './skills/taxonomy-storage';
+import { publishSkillTaxonomy, readPublishedSkillTaxonomy } from './skills/taxonomy-storage';
+import { createSkillClaimHandlers, SkillClaimHttpError } from './skills/http';
 import { saveSkillClaim, readSkillClaim } from './skills/claim-storage';
 async function transaction<T>(work: (tx: CommandReceiptTransaction) => Promise<T>): Promise<T> {
   return retryWholeTransaction(async () => {
@@ -99,8 +100,8 @@ try {
     );
     for (const a of [admin, self])
       await setup.query(
-        `INSERT INTO "Session"("tokenHash","userId","expiresAt") VALUES($1,$2,(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')`,
-        [a.sessionHash, a.accountId],
+        `INSERT INTO "Session"("tokenHash","userId","via","expiresAt") VALUES($1,$2,$3,(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')`,
+        [a.sessionHash, a.accountId, a === admin ? 'x' : 'wallet'],
       );
     const { rows } = await setup.query<{ id: string }>(
       `INSERT INTO "Participant"("accountId","provisionActorAccountId","provisionRequestId") VALUES($1,$1,'synthetic-provision') RETURNING "id"::text`,
@@ -119,6 +120,53 @@ try {
   assert.equal(first.claim.persisted, true);
   assert(!('assessedRank' in first.claim));
   assert(!('assessmentHistory' in first.claim));
+  const api = createSkillClaimHandlers({
+    version: 'v1',
+    requestId: () => randomUUID(),
+    actor: async () => self,
+    checkOrigin: (request) => {
+      if (request.headers.get('origin') !== 'https://synthetic.example')
+        throw new SkillClaimHttpError(403);
+    },
+    rateLimit: async () => {},
+    read: async (a, skillId) => ({
+      version: 'v1',
+      skillId,
+      claim: await transaction((tx) => readSkillClaim(tx, a, skillId)),
+      writesAvailable: false,
+      unavailableReason: 'DISABLED',
+    }),
+    readCatalog: async (a, id) => ({
+      version: 'v1',
+      taxonomyId: id,
+      taxonomy: await transaction((tx) => readPublishedSkillTaxonomy(tx, a, id)),
+    }),
+    save: async (command) => ({
+      version: 'v1',
+      ...(await transaction((tx) => saveSkillClaim(tx, command, { allowNewWrites: false }))),
+      writesAvailable: false,
+      unavailableReason: 'DISABLED',
+    }),
+  });
+  const { skillId: targetSkill, ...httpBody } = input;
+  const response = await api.POST(
+    new Request('https://synthetic.example/claim', {
+      method: 'POST',
+      headers: {
+        Origin: 'https://synthetic.example',
+        'Content-Type': 'application/json',
+        'Idempotency-Key': key,
+      },
+      body: JSON.stringify(httpBody),
+    }),
+    targetSkill,
+  );
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('cache-control'), 'private, no-store');
+  assert.equal((await response.json()).status, 'REPLAYED');
+  const own = await api.GET(new Request('https://synthetic.example/claim'), targetSkill);
+  assert.equal(own.status, 200);
+  assert.equal((await own.json()).claim.participantId, participantId);
   await publish(1, 'RETIRED');
   assert.deepEqual(await save(false), { status: 'REPLAYED', claim: first.claim });
   assert.deepEqual(await transaction((tx) => readSkillClaim(tx, self, 'frontend')), first.claim);

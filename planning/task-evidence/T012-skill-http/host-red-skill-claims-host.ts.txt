@@ -1,0 +1,5 @@
+import type { SkillClaimActor,SaveSkillClaimCommand } from '../skills/claim-storage';
+export function skillClaimWriteConfiguration():{writesAvailable:boolean;unavailableReason:'DISABLED'|null}{throw Error('NOT_IMPLEMENTED');}
+export async function readSkillClaimState(_actor:SkillClaimActor,_skillId:string):Promise<unknown>{throw Error('NOT_IMPLEMENTED');}
+export async function readSkillCatalogState(_actor:SkillClaimActor,_id:string):Promise<unknown>{throw Error('NOT_IMPLEMENTED');}
+export async function saveSkillClaimFromHost(_command:SaveSkillClaimCommand):Promise<unknown>{throw Error('NOT_IMPLEMENTED');}

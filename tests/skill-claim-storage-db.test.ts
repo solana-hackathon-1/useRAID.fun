@@ -33,7 +33,7 @@ async function actor(mapping = true, admin = false) {
     data: {
       tokenHash: sessionHash,
       userId: user.id,
-      via: 'wallet',
+      via: admin ? 'x' : 'wallet',
       expiresAt: new Date(Date.now() + 60000),
     },
   });

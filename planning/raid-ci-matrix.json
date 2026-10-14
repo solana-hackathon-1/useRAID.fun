@@ -120,6 +120,8 @@
     "tests/skill-claim-storage-boundary.test.ts",
     "tests/skill-claim-storage-db.test.ts",
     "tests/skill-claims-boundary.test.ts",
+    "tests/skill-claims-host.test.ts",
+    "tests/skill-claims-http.test.ts",
     "tests/skill-claims.test.ts",
     "tests/skill-taxonomy-boundary.test.ts",
     "tests/skill-taxonomy-db.test.ts",
@@ -449,6 +451,8 @@
         "tests/skill-claim-storage-boundary.test.ts",
         "tests/skill-claim-storage-db.test.ts",
         "tests/skill-claims-boundary.test.ts",
+        "tests/skill-claims-host.test.ts",
+        "tests/skill-claims-http.test.ts",
         "tests/skill-claims.test.ts",
         "tests/skill-taxonomy-boundary.test.ts",
         "tests/skill-taxonomy-db.test.ts"
