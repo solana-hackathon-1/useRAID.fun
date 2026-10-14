@@ -1,0 +1,242 @@
+{
+  "task_id": "T012",
+  "scope": "T012C2 owner-private real catalog discovery and replaceable safe claim UI only",
+  "status": "VERIFIED_IN_TEST bounded C2 only; fullT012NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not authorized/assigned",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-14-T012-skill-form.md",
+  "migration_rollback": "No migration or data rewrite; all27SQL/schema unchanged. Catalog selection must preserve stored catalog identity/history; new writes defaultoff, own reads/original receipt replay remain.",
+  "dependency_evidence": "Actual C1 protected APIs, B1 taxonomy and B2 own HUMAN claim storage. Page authorizes current cookie and actual immutable mapping before private hydration; host selects actual published catalog ID. Actual assessment/trial/adminRoot/admission and deployment configuration remain dependencies.",
+  "open_decisions": "O09 numeric promotion/calibration, actual assessment/evaluator/provider/operating policies not selected or enabled.",
+  "release_gate_disposition": "Full parent acceptance, independent/UAT/business/live gates NOT VERIFIED. Bounded staging Git authority DEC-2026-10-12-03 remains.",
+  "code_source_sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
+  "source_identity": "Implementation 71c05fda64e0e2545e16d4e6883c95e11770f668; phase source manifests and final code/test hashes retained; later pin is metadata only.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11, real owned synthetic PG16 pinned image, copied Next sources with own generated27-client dependencies, desktop Chromium/mobile iPhone13 emulation, independent own-installed React SSR host. No live provider/financial credentials.",
+  "candidate_sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
+  "criteria": {
+    "T012-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C01",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. State the observable user outcome, assigned milestone, in-scope commands and explicit adjacent work excluded. Compare the actual baseline to the desired behavior; identify existing working behavior that must survive.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C02",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. List every applicable LOCKED, DIRECTION, DEFAULT, OPEN and EXAMPLE reference separately. Keep unresolved dependent production actions disabled. A recorded owner decision must identify who accepted it, date, changed contract and effect on old accepted work.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C03",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. List affected canonical entities, concrete tables/models, identifiers, foreign keys, tenant scope, uniqueness and immutable fields. Identify the shared contract owner and reuse existing contracts. Do not assert the intended blueprint tables already exist.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C04",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Provide an actor \u00d7 action \u00d7 resource \u00d7 state matrix for every changed read/write. Cover unauthenticated, wrong Guild, token-holder-only, self-review, expired/revoked grant and restricted account cases. Deny at the server/resource boundary; include direct API/download tests.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C05",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Provide before-state, command, authorized actor, terms/submission version, precondition, atomic mutation, after-state and rejected alternatives. Keep listing, offer, work, access, funding, settlement, dispute and run states separate. Specify finite deadlines and material cancellation/timeout paths.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C06",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Use canonical participant identity across linked wallets and Guilds. Identify whether this action consumes capacity under section 13. Prove database uniqueness, all-or-none Party reservations, same-engagement operator accounting, current eligibility rechecks, lock order and engagement-scoped release where touched.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C07",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Identify exact immutable terms, roster, payout split, beneficiary, rubric and submission version. Test stale version and unauthorized amendment. Material accepted-work changes require affected consent, valid additional funding and audit; defaults cannot rewrite old agreements.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C08",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Declare whether financial obligations are touched. If so specify network/kind/mint/program/decimals, integer base units, verified funds, reserves, allocations, fees, claims, refunds and conservation per asset. Verify actual effects/finality and beneficiary authority; transaction submission and ticker text prove nothing.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C09",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Enumerate public and private DTOs, HTML hydration, metadata, search, previews, artifacts, logs and notification fields. Test absence of private bytes and effective scoped provider access. Distinguish desired from observed grants; preserve independent rights and surface failed revocation.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C10",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Specify command identity, request digest, immutable receipt, semantic external operation and outbox/inbox deduplication. Same key plus different payload must conflict. Retry or rebuilt transaction cannot repeat business effects. Preserve intent across process crashes.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C11",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Name every competing command and linearization boundary. Exercise meaningful independent transactions/provider boundaries for applicable acceptance, refund, claim/appeal, Party, Challenge handoff, delayed cleanup and stale job races. Record winning state and losing response; in-memory mocks do not prove database/program races.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C12",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. List every provider/program effect, authority, generation, timeout, partial success, stale success and compensation path. Do not hold database locks during provider/LLM/wallet/finality waits. Reconcile before retrying an unknown outcome; stale success cannot reopen work or grant access.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C13",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Cover loading, empty, unknown/stale, validation failure, conflict, permission denied, rejected signature, pending/failed/partial effect, cancellation and recovery states where applicable. Verify keyboard/focus, mobile, draft preservation, exact amounts and intelligible eligibility reasons.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C14",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Identify applicable input validation, session/nonce/CSRF/origin, rate limit, upload quarantine, SSRF/redirect, secrets, malicious build and prompt-injection boundaries. Untrusted code and model output cannot inherit credentials, grant permissions, self-approve or expand spending.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C15",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Record feature flags at server and UI, monitoring, named case owner, incident/runbook and feature-specific G01\u2013G10 evidence. Disabling new work must preserve old claims, cancellation, dispute and access cleanup. Define migration/backfill, verified backup/restore and rollback constraints.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C16",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. For each requirement and criterion provide setup/fixtures, exact action, expected result, observed result, command/test, SHA, environment/network/provider version and sanitized evidence. Record failed, blocked or not-run checks accurately; compiler success is insufficient.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C17",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. For affected user-facing release scope identify representative journey, tester, candidate environment/SHA, expected results, defect disposition/retest and separate business sign-off. QA, UAT and release approval cannot be inferred from each other.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C18",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Record actual files, schema/API/event changes, tests executed/results, unresolved risks, authority/privacy/money effects, migration/rollback limits, reviewer and exact next bounded task. Unimplemented criteria cannot disappear through issue closure or epic roll-up.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-A01",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Wallet/token wealth never creates a verified rank",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-A02",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. One verified frontend skill cannot satisfy Solana requirements",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W01",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Create stable skill IDs/aliases",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W02",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Store claim, verification state, rubric/version, evidence, evaluator and confidence",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-W03",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Preserve reassessment/revocation history",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C19",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. For every implementation change, define behavior from canonical requirements and write a meaningful failing test BEFORE implementation. Record RED command, actual failure and unchanged baseline; implement the smallest complete behavior; record GREEN result; refactor without changing the contract and record relevant regression results. Use real database/program/provider boundaries for material races and financial/access effects. Tests cannot be weakened, deleted or replaced with mocks merely to obtain green. For existing verified behavior, run and record the baseline and add a failing test for each changed/missing behavior; do not fabricate a red result. For decisions/docs/UAT-only work, define expected acceptance results before execution, record why a coding cycle is not applicable, and validate the actual deliverable.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C20",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Declare the stable versioned port, operations/capabilities, injected configuration, typed errors, cancellation/retry/idempotency, secrets, observations and provider-specific adapter boundary. Write shared contract tests first and demonstrate an alternate/test adapter without changing domain commands. Negative capability tests fail closed. Pin/reconcile in-flight operations before switching; verify no duplicate effects, asset/authority/terms drift or lost receipts. Document switch/drain/rollback and repeat affected live gates. See R15, AC73 and section 24.6.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C21",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Deliver module purpose/non-goals, public API/schema/event/error contracts, dependencies/host wiring, configuration, permissions, entity/state ownership, architecture, installation, runnable consuming example, tests/fixtures, limitations, migration/versioning and operations/recovery notes in the implementation change. Run the independently declared consuming host and negative/contract tests; no hidden RAID singleton/global secret or undeclared app import. Document UI accessibility and host authority when relevant. See R16, AC74 and section 24.7.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    },
+    "T012-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md07\u201309/13/23/24.6\u20138/25.3/26/28\u201329/35/39; T012-C22",
+      "observed": "Bounded private UI author evidence only; full assessment/history/admin/admission/moderation/independent/UAT criterion remains unverified. Define the task\u2019s unit, adapter contract/substitution, real DB/program concurrency, permissions/private-data, money properties, retry/recovery, browser/accessibility, docs/consuming-host and UAT requirements before coding. Implement meaningful tests first and wire every automated test into the owned CI suite. CI must run against the exact candidate SHA; record named checks, artifacts, actual executed/skipped counts and failures. New tests cannot be left outside CI discovery. Missing domain tests or skipped required jobs block the affected feature; mock/unit success cannot replace real races/provider or live gates. Use the feature CI matrix and independent aggregate gate; never use continue-on-error or blanket skip/allowlisting to hide failure.",
+      "evidence_url": "docs/tasks/2026-10-14-T012-skill-form.md; planning/task-evidence/T012-skill-form/review.json"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+      "command": "Owned real PG/Next desktop-mobile owner route before pages; vitest missing catalog-selector; Python workflow execution contract; owned blocked-JS readiness beforefix",
+      "expected_failure": "Missing route200 expected; missing explicit catalog selection; absent actual browser CI execution; enabled pre-hydration fields unsafe",
+      "observed_failure": "Actual route404 fails2; missing-selector1FAIL3PASS; CI execution2subtestFAIL; blockedJS readiness2FAIL beforefix. Exact then-uncommitted sources archived before each implementation. Base SHA does not contain those new tests.",
+      "evidence_url": "planning/task-evidence/T012-skill-form/red-source-manifest.json; planning/task-evidence/T012-skill-form/ci-red-source-manifest.json; planning/task-evidence/T012-skill-form/hydration-red-source-manifest.json",
+      "result": "FAIL"
+    },
+    "green": {
+      "sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
+      "command": "Owned real PG/Next Playwright skill-claims suite; affected Vitest; own React install",
+      "observed": "Final20desktop/mobilePASS2.9m against actualownedPG/Next/currentcookie/realcatalog-canonicalclaims; selector4PASS incl original3. Earlier14PASS/18partial failures and readinessRED2 retained.",
+      "evidence_url": "planning/task-evidence/T012-skill-form/release-browser.log",
+      "result": "PASS"
+    },
+    "refactor": {
+      "sha": "71c05fda64e0e2545e16d4e6883c95e11770f668",
+      "command": "Affected Vitest +53 planning +own installed SSR/types +strict root types/build/lint +actual20desktop/mobile afterfinalreadiness refactor",
+      "observed": "Final184affectedPASS5.69s/53planningPASS83.973s/owninstalledReacttypes-SSR/audit0vuln/strictRoottypes-typegen-build/lint0errors25oldwarnings/wholeformatPASS; exact finalWIP code hashes retained. All27DDL/schema bytes unchanged; final20browser afterreadyrefactor passed with originaldeadlines/assertions.",
+      "evidence_url": "planning/task-evidence/T012-skill-form/release-boundary.log; planning/task-evidence/T012-skill-form/review.json",
+      "result": "PASS"
+    }
+  }
+}

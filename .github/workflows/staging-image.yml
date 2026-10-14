@@ -63,6 +63,8 @@ jobs:
         run: npx playwright test --config=playwright.guild-drafts.config.ts
       - name: Project proposal desktop and mobile suite
         run: npx playwright test --config=playwright.project-proposals.config.ts
+      - name: Private skill claims desktop and mobile suite
+        run: npx playwright test --config=playwright.skill-claims.config.ts
       - name: Build production image without deployment secrets
         env:
           SOURCE_URL: ${{ github.server_url }}/${{ github.repository }}

@@ -1,0 +1,1 @@
+../../../src/components/skill-claim-form.tsx

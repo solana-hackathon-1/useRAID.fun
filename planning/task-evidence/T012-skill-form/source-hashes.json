@@ -1,0 +1,28 @@
+{
+  "base_sha": "f5391ac2743ff008b3df3859af844a80eaec4f15",
+  "source": "Exact working tree over base; new tests/implementation were not contained in RED base commit",
+  "files": {
+    ".env.example": "e4a341b25f87377e21f4e2bbeb3245476b921c995f052847cc18a6eff50c4e96",
+    ".github/workflows/checks.yml": "900f22a26c36776109ab1d96419fb3e2b0851f19fd1a7d759f63427e000a917e",
+    ".github/workflows/staging-image.yml": "db6458c787fc9fe3f0b1187b96c0e87df4f7c076d0dc1fcb8106b86fb144a5f2",
+    "src/components/skill-claim-form.tsx": "d2aae28ceb192322f020dc923453a3645f09633991b843ebbd1bcfd4080f834f",
+    "src/lib/skill-claims-page.ts": "e778814479dfefe5929e52ffdfe6b9033a22838a33b1da33e3bcc14005732f5e",
+    "src/lib/skill-claims-host.ts": "100b46601acdc99be7e6b172b7c31cfa4bd5a11eb8ea815f0a1328b8e2f0f5bc",
+    "src/app/raider/skills/page.tsx": "16e96467c4da49b2489b30c2b7092bf9ce561b8da2bef3770b6e5c7e3e47dc11",
+    "src/app/raider/skills/[skillId]/page.tsx": "385ff6f38d2c0380ca6ceaa6170521f7408a3cc0c17c465560b2dec320403830",
+    "src/app/raider/onboarding/page.tsx": "2b0b2e8a4e3931901ac9f882416d30a23a42fabdc40f37bc092a1a6d5b93789e",
+    "tests/browser-skill-claims/skill-claims.spec.ts": "e34a906213ee31a9c3bc912479d6168b4202d5e2ad39d8f9efafe5d229f584dd",
+    "tests/skill-claims-host.test.ts": "871a0bf04a04a8dd7c1fdb25d1f9502ddb9b307abe36bc1b279572f4b31393dc",
+    "tests/skill-claim-form-boundary.test.ts": "e6ecd4d07f56e71ff06d3fe23a56808a37817dd4ed88071d2a3faf412f6281aa",
+    "tests/test_raid_staging.py": "42cae3a4eb6d2d2157e6138398c9bc76e382d4a34a4bffcfc79cbc11ef344c92",
+    "playwright.skill-claims.config.ts": "7bb79bc2b977ff806d873790fca07e448b5a53479a9bae93ab60d2350f7558d3",
+    "docs/raid-skill-claim-form.md": "6a1d63b37257c5d97b54f8a5fe47518e33515efabd81d802a24e6a02b8073fd9",
+    "examples/skill-claim-form/host.tsx": "21ee6421070370cac9316057354b4bd7e8dbd99b7441b9615d1734c916f1e3d4",
+    "examples/skill-claim-form/package.json": "7dd4dd12b3c579f2bbbcfc5c00b399757c58e41db180d223bf7118e43d9de93e",
+    "examples/skill-claim-form/package-lock.json": "153f2c73cc4416c3ca5274b490f1164593962af76444cf17792c67f25685f24d",
+    "examples/skill-claim-form/tsconfig.json": "a4525471190d2f007f2c426ee6d980f1bf6fb6519d74b98f75cc8c5a7d480ee8",
+    "package.json": "f41b419956db600840d037472f4841e41346b7e7f8ea584eb54fc50ef404a061",
+    "package-lock.json": "6aa3822efe168564405f1c0efc474b2b5252bce1a127a630921dd7e175e8e868",
+    "prisma/schema.prisma": "a7a67ebb5e6ee703b6224e04f1866ca84dd58fbbb8f06b0153d050b0109dac53"
+  }
+}

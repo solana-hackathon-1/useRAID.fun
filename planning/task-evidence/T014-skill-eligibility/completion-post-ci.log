@@ -1,0 +1,34 @@
+Required CI check has no successful result: planning-contracts
+Required CI check has no successful result: static
+Required CI check has no successful result: dependency-security
+Required CI check has no successful result: test
+Required CI check has no successful result: docker
+Required CI check has no successful result: browser
+Required CI check has no successful result: ci-gate
+T014-C01: NOT VERIFIED prevents completion
+T014-C02: NOT VERIFIED prevents completion
+T014-C03: NOT VERIFIED prevents completion
+T014-C04: NOT VERIFIED prevents completion
+T014-C05: NOT VERIFIED prevents completion
+T014-C06: NOT VERIFIED prevents completion
+T014-C07: NOT VERIFIED prevents completion
+T014-C08: NOT VERIFIED prevents completion
+T014-C09: NOT VERIFIED prevents completion
+T014-C10: NOT VERIFIED prevents completion
+T014-C11: NOT VERIFIED prevents completion
+T014-C12: NOT VERIFIED prevents completion
+T014-C13: NOT VERIFIED prevents completion
+T014-C14: NOT VERIFIED prevents completion
+T014-C15: NOT VERIFIED prevents completion
+T014-C16: NOT VERIFIED prevents completion
+T014-C17: NOT VERIFIED prevents completion
+T014-C18: NOT VERIFIED prevents completion
+T014-A01: NOT VERIFIED prevents completion
+T014-A02: NOT VERIFIED prevents completion
+T014-W01: NOT VERIFIED prevents completion
+T014-W02: NOT VERIFIED prevents completion
+T014-W03: NOT VERIFIED prevents completion
+T014-C19: NOT VERIFIED prevents completion
+T014-C20: NOT VERIFIED prevents completion
+T014-C21: NOT VERIFIED prevents completion
+T014-C22: NOT VERIFIED prevents completion

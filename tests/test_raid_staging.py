@@ -93,6 +93,16 @@ class StagingPublication(unittest.TestCase):
 
 
 class StagingConsumingHost(unittest.TestCase):
+    def test_private_skill_browser_runs_before_production_artifact(self):
+        command = 'npx playwright test --config=playwright.skill-claims.config.ts'
+        for file, artifact in [('checks.yml', '- name: Production build'),
+                               ('staging-image.yml', '- name: Build production image')]:
+            with self.subTest(workflow=file):
+                source = (ROOT / '.github/workflows' / file).read_text()
+                self.assertIn(command, source)
+                self.assertLess(source.index(command), source.index(artifact))
+
+
     def test_publication_is_main_only_and_checks_precede_registry_credentials(self):
         workflow = (ROOT / '.github/workflows/staging-image.yml').read_text()
         trigger = workflow.split('on:', 1)[1].split('permissions:', 1)[0]
