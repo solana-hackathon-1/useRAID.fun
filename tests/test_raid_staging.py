@@ -93,6 +93,15 @@ class StagingPublication(unittest.TestCase):
 
 
 class StagingConsumingHost(unittest.TestCase):
+    def test_admin_taxonomy_api_runs_before_production_artifact(self):
+        command = 'npx playwright test --config=playwright.skill-taxonomy.config.ts'
+        for file, artifact in [('checks.yml', '- name: Production build'),
+                               ('staging-image.yml', '- name: Build production image')]:
+            with self.subTest(workflow=file):
+                source = (ROOT / '.github/workflows' / file).read_text()
+                self.assertIn(command, source)
+                self.assertLess(source.index(command), source.index(artifact))
+
     def test_private_skill_browser_runs_before_production_artifact(self):
         command = 'npx playwright test --config=playwright.skill-claims.config.ts'
         for file, artifact in [('checks.yml', '- name: Production build'),

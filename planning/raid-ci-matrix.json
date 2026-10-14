@@ -28,6 +28,7 @@
     "tests/browser-onboarding/raider-onboarding.spec.ts",
     "tests/browser-project-proposals/project-proposals.spec.ts",
     "tests/browser-skill-claims/skill-claims.spec.ts",
+    "tests/browser-skill-taxonomy/skill-taxonomy.spec.ts",
     "tests/browser-studio/pages.spec.ts",
     "tests/browser-studio/studio.spec.ts",
     "tests/browser-studio/test-center.spec.ts",
@@ -129,6 +130,9 @@
     "tests/skill-eligibility.test.ts",
     "tests/skill-taxonomy-boundary.test.ts",
     "tests/skill-taxonomy-db.test.ts",
+    "tests/skill-taxonomy-host-db.test.ts",
+    "tests/skill-taxonomy-host.test.ts",
+    "tests/skill-taxonomy-http.test.ts",
     "tests/standalone-db.test.ts",
     "tests/standalone-raids.test.ts",
     "tests/states.test.ts",
@@ -453,6 +457,7 @@
       ],
       "existing_test_files": [
         "tests/browser-skill-claims/skill-claims.spec.ts",
+        "tests/browser-skill-taxonomy/skill-taxonomy.spec.ts",
         "tests/skill-claim-form-boundary.test.ts",
         "tests/skill-claim-storage-boundary.test.ts",
         "tests/skill-claim-storage-db.test.ts",
@@ -463,7 +468,10 @@
         "tests/skill-eligibility-boundary.test.ts",
         "tests/skill-eligibility.test.ts",
         "tests/skill-taxonomy-boundary.test.ts",
-        "tests/skill-taxonomy-db.test.ts"
+        "tests/skill-taxonomy-db.test.ts",
+        "tests/skill-taxonomy-host-db.test.ts",
+        "tests/skill-taxonomy-host.test.ts",
+        "tests/skill-taxonomy-http.test.ts"
       ],
       "implementation_status": "DOMAIN_TESTS_NOT_IMPLEMENTED",
       "required_test_layers": [

@@ -18,3 +18,13 @@ Provision a fresh dedicated database `useraid_skill_host_test` on your own loopb
 Expected output: PASS for actual authorized publication/read/original replay/current policy revocation; stable frontend/Solana domains; the saved taxonomy never verifies a self claim; no outbox. Synthetic data only. The CLI persists an actual catalog via a synthetic allowed ADMIN with a live X-authorized session, replays the exact original result with writes disabled, reads it, consumes that saved catalog in pure unverified preparation and rejects replay after removing policy authority. The pure preparation's HUMAN participant is an explicitly synthetic host fact, not a persisted canonical participant. This minimal schema does not store a claim or assessment, or prove production root auth/admin rollout, UAT, independent review or release gates.
 
 The module contains no driver SDK types, environment singleton, Next app routing or provider fetch. A local synchronous current allowlist receives locked database account/xId facts. Existing role/suspension/session checks cannot be bypassed by the callback. Replace the driver with another port implementation only while preserving actual PostgreSQL transaction/isolation/constraints, whole retry identity, immutable versions and scoped current authorization. See the contract for SQL privilege limits and unsupported destructive rollback.
+
+## Portable publication HTTP consumer
+
+The same independent installation also consumes [the administrative publication API contract](../../docs/raid-skill-taxonomy-http.md), including the canonical bounded JSON module. After the fresh migration above, run:
+
+```sh
+npm run http
+```
+
+Expected PASS: actual HTTP/PG publication, disabled original replay, denied new intent, revoked policy, protected private errors, exactly one immutable version and no outbox. `http-host.ts` owns a separate synthetic administrator/current X session and local allowlist. It injects native Request/Response, exact synthetic origin, request IDs, actual transaction/whole-retry port and current new-write configuration. The CLI's actor/rate callbacks have no untrusted network caller and are explicitly synthetic; they cannot be copied as production cookie authentication or account rate limiting. A real host supplies both and enforces current X/admin authority before body consumption as well as locked command authorization. No HTTP listener is started; pool shutdown occurs in finally. All dependencies remain declared in this example; no Root installation or live credential is used.

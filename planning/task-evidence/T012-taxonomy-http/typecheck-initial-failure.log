@@ -1,0 +1,2 @@
+examples/skill-taxonomy/http-host.ts(19,26): error TS7006: Parameter 'sql' implicitly has an 'any' type.
+examples/skill-taxonomy/http-host.ts(19,31): error TS7006: Parameter 'bindings' implicitly has an 'any' type.

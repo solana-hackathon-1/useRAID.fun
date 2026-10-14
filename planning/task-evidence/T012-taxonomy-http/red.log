@@ -1,0 +1,576 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-taxonomy-http.test.ts (44 tests | 44 failed) 120ms
+   × publishes normalized categories bound to URL, current server actor and exact original command identity 44ms
+   × keeps original publication replay available with new writes disabled 7ms
+   × denies current authority 401 before publication 2ms
+   × denies current authority 403 before publication 2ms
+   × denies current authority 429 before publication 2ms
+   × checks origin and account rate before consuming command bytes 2ms
+   × rejects client taxonomyId authority 1ms
+   × rejects client actor authority 1ms
+   × rejects client accountId authority 2ms
+   × rejects client isAdmin authority 2ms
+   × rejects client publishedByAccountId authority 1ms
+   × rejects client publishedAt authority 2ms
+   × rejects client assessedRank authority 1ms
+   × rejects client allowNewWrites authority 1ms
+   × rejects client canPublish authority 1ms
+   × rejects invalid catalog duplicate-id before storage 2ms
+   × rejects invalid catalog duplicate-alias before storage 1ms
+   × rejects invalid catalog missing-alias before storage 1ms
+   × rejects invalid catalog invalid-status before storage 1ms
+   × rejects invalid catalog excessive-revision before storage 1ms
+   × fails closed on wrong-id acknowledgment without exposing unbound data 2ms
+   × fails closed on wrong-revision acknowledgment without exposing unbound data 2ms
+   × fails closed on wrong-publisher acknowledgment without exposing unbound data 1ms
+   × fails closed on wrong-name acknowledgment without exposing unbound data 2ms
+   × fails closed on wrong-alias-order acknowledgment without exposing unbound data 1ms
+   × fails closed on extra-field acknowledgment without exposing unbound data 1ms
+   × fails closed on inconsistent-availability acknowledgment without exposing unbound data 2ms
+   × sanitizes SkillTaxonomyStorageError: AUTHENTICATION_REQUIRED under canonical private error envelope 2ms
+   × sanitizes SkillTaxonomyStorageError: ACCOUNT_RESTRICTED under canonical private error envelope 1ms
+   × sanitizes SkillTaxonomyStorageError: FORBIDDEN under canonical private error envelope 1ms
+   × sanitizes SkillTaxonomyStorageError: WRITES_DISABLED under canonical private error envelope 5ms
+   × sanitizes SkillClaimContractError: REVISION_CHANGED under canonical private error envelope 1ms
+   × sanitizes SkillClaimContractError: HISTORY_CONFLICT under canonical private error envelope 1ms
+   × sanitizes CommandReceiptError: IDEMPOTENCY_KEY_REUSED under canonical private error envelope 1ms
+   × sanitizes Error: PRIVATE-SECRET driver password under canonical private error envelope 1ms
+   × rejects invalid resource  and idempotency keys before storage 1ms
+   × rejects invalid resource invalid/id and idempotency keys before storage 1ms
+   × rejects invalid resource bad id and idempotency keys before storage 1ms
+   × rejects malformed trusted actor and safely supplies correlation when the host fails 1ms
+   × rejects unsupported or unbounded JSON before publication 1ms
+   × rejects unsupported or unbounded JSON before publication 1ms
+   × rejects unsupported or unbounded JSON before publication 1ms
+   × enforces 16KiB streamed body bytes and fatal UTF8 without trusting content length 2ms
+   × cancels stalled body after the shared five-second deadline without publication 5ms
+ ❯ tests/skill-taxonomy-host.test.ts (3 tests | 3 failed) 17ms
+   × defaults new taxonomy publication off and accepts only exact true 13ms
+   × delegates disabled new-write policy to SQL while retaining original replay 2ms
+   × reevaluates actual allowlist from locked DB facts on every invocation and rejects Studio-only privilege 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 47 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-taxonomy-host.test.ts > defaults new taxonomy publication off and accepts only exact true
+AssertionError: expected { writesAvailable: false, …(1) } to deeply equal { writesAvailable: true, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "unavailableReason": null,
+-   "writesAvailable": true,
++   "unavailableReason": "DISABLED",
++   "writesAvailable": false,
+  }
+
+ ❯ tests/skill-taxonomy-host.test.ts:15:45
+     13|   }
+     14|   vi.stubEnv('SKILL_TAXONOMY_PUBLICATION_ENABLED', 'true');
+     15|   expect(skillTaxonomyWriteConfiguration()).toEqual({ writesAvailable:…
+       |                                             ^
+     16| });
+     17| it('delegates disabled new-write policy to SQL while retaining origina…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/47]⎯
+
+ FAIL  tests/skill-taxonomy-host.test.ts > delegates disabled new-write policy to SQL while retaining original replay
+Error: NOT_IMPLEMENTED
+ ❯ Module.publishSkillTaxonomyFromHost src/lib/skill-taxonomy-host.ts:6:9
+      4| }
+      5| export async function publishSkillTaxonomyFromHost(_command: PublishSk…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/skill-taxonomy-host.test.ts:20:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/47]⎯
+
+ FAIL  tests/skill-taxonomy-host.test.ts > reevaluates actual allowlist from locked DB facts on every invocation and rejects Studio-only privilege
+Error: NOT_IMPLEMENTED
+ ❯ Module.publishSkillTaxonomyFromHost src/lib/skill-taxonomy-host.ts:6:9
+      4| }
+      5| export async function publishSkillTaxonomyFromHost(_command: PublishSk…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/skill-taxonomy-host.test.ts:37:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > publishes normalized categories bound to URL, current server actor and exact original command identity
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/skill-taxonomy-http.test.ts:31:20
+     29|   const { host, api } = fixture();
+     30|   const r = await api.POST(request({ ...input, skills: [{ ...skills[0]…
+     31|   expect(r.status).toBe(200);
+       |                    ^
+     32|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     33|   expect(r.headers.get('vary')).toBe('Cookie');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > keeps original publication replay available with new writes disabled
+AssertionError: expected { Object (error) } to deeply equal { version: 'v1', …(4) }
+
+- Expected
++ Received
+
+  {
+-   "status": "REPLAYED",
+-   "taxonomy": {
+-     "id": "actual-catalog",
+-     "publishedAt": "2026-10-14T00:00:00.000Z",
+-     "publishedByAccountId": "actual-admin",
+-     "revision": 1,
+-     "skills": [
+-       {
+-         "aliases": [
+-           "frontend",
+-           "web-ui",
+-         ],
+-         "domain": "software.frontend",
+-         "id": "frontend",
+-         "name": "Frontend",
+-         "status": "ACTIVE",
+-       },
+-     ],
+-     "state": "PUBLISHED",
+-     "version": "v1",
++   "error": {
++     "code": "SERVICE_UNAVAILABLE",
+    },
+-   "unavailableReason": "DISABLED",
+-   "version": "v1",
+-   "writesAvailable": false,
+  }
+
+ ❯ tests/skill-taxonomy-http.test.ts:40:70
+     38|   const value = { ...saved, status: 'REPLAYED', writesAvailable: false…
+     39|   const { api } = fixture({ publish: async () => value });
+     40|   expect(await (await api.POST(request(), 'actual-catalog')).json()).t…
+       |                                                                      ^
+     41| });
+     42| it.each([401, 403, 429] as const)('denies current authority %i before …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > denies current authority 401 before publication
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:44:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > denies current authority 403 before publication
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:44:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > denies current authority 429 before publication
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:44:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > checks origin and account rate before consuming command bytes
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:49:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client taxonomyId authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client actor authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client accountId authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client isAdmin authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client publishedByAccountId authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client publishedAt authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client assessedRank authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client allowNewWrites authority
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects client canPublish authority
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:57:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid catalog duplicate-id before storage
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid catalog duplicate-alias before storage
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid catalog missing-alias before storage
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid catalog invalid-status before storage
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid catalog excessive-revision before storage
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:68:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > fails closed on wrong-id acknowledgment without exposing unbound data
+ FAIL  tests/skill-taxonomy-http.test.ts > fails closed on wrong-revision acknowledgment without exposing unbound data
+ FAIL  tests/skill-taxonomy-http.test.ts > fails closed on wrong-publisher acknowledgment without exposing unbound data
+ FAIL  tests/skill-taxonomy-http.test.ts > fails closed on wrong-name acknowledgment without exposing unbound data
+ FAIL  tests/skill-taxonomy-http.test.ts > fails closed on wrong-alias-order acknowledgment without exposing unbound data
+ FAIL  tests/skill-taxonomy-http.test.ts > fails closed on extra-field acknowledgment without exposing unbound data
+ FAIL  tests/skill-taxonomy-http.test.ts > fails closed on inconsistent-availability acknowledgment without exposing unbound data
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:20:42
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+     22|   const body = await r.json();
+ ❯ tests/skill-taxonomy-http.test.ts:81:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes SkillTaxonomyStorageError: AUTHENTICATION_REQUIRED under canonical private error envelope
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:94:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes SkillTaxonomyStorageError: ACCOUNT_RESTRICTED under canonical private error envelope
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes SkillTaxonomyStorageError: FORBIDDEN under canonical private error envelope
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:94:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes SkillTaxonomyStorageError: WRITES_DISABLED under canonical private error envelope
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes Error: PRIVATE-SECRET driver password under canonical private error envelope
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:20:42
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+     22|   const body = await r.json();
+ ❯ tests/skill-taxonomy-http.test.ts:94:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes SkillClaimContractError: REVISION_CHANGED under canonical private error envelope
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes CommandReceiptError: IDEMPOTENCY_KEY_REUSED under canonical private error envelope
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:94:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > sanitizes SkillClaimContractError: HISTORY_CONFLICT under canonical private error envelope
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:94:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid resource  and idempotency keys before storage
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid resource invalid/id and idempotency keys before storage
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects invalid resource bad id and idempotency keys before storage
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:98:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects malformed trusted actor and safely supplies correlation when the host fails
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:20:42
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+     22|   const body = await r.json();
+ ❯ tests/skill-taxonomy-http.test.ts:104:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects unsupported or unbounded JSON before publication
+AssertionError: expected 503 to be 415 // Object.is equality
+
+- Expected
++ Received
+
+- 415
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:113:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects unsupported or unbounded JSON before publication
+AssertionError: expected 503 to be 413 // Object.is equality
+
+- Expected
++ Received
+
+- 413
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:113:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > rejects unsupported or unbounded JSON before publication
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:113:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > enforces 16KiB streamed body bytes and fatal UTF8 without trusting content length
+AssertionError: expected 503 to be 413 // Object.is equality
+
+- Expected
++ Received
+
+- 413
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:121:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/47]⎯
+
+ FAIL  tests/skill-taxonomy-http.test.ts > cancels stalled body after the shared five-second deadline without publication
+AssertionError: expected 503 to be 408 // Object.is equality
+
+- Expected
++ Received
+
+- 408
++ 503
+
+ ❯ denied tests/skill-taxonomy-http.test.ts:19:20
+     17| }
+     18| async function denied(r: Response, status: number, code: string) {
+     19|   expect(r.status).toBe(status);
+       |                    ^
+     20|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+     21|   expect(r.headers.get('vary')).toBe('Cookie');
+ ❯ tests/skill-taxonomy-http.test.ts:133:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/47]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  47 failed (47)
+   Start at  10:48:13
+   Duration  916ms (transform 200ms, setup 0ms, import 401ms, tests 137ms, environment 0ms)

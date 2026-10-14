@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "migrate": "tsx migrate.ts",
-    "start": "tsx host.ts"
+    "start": "tsx host.ts",
+    "http": "tsx http-host.ts"
   },
   "dependencies": {
     "pg": "8.23.1",

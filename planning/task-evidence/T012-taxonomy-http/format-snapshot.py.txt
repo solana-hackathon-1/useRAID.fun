@@ -1,0 +1,13 @@
+from pathlib import Path
+import subprocess,tempfile,os,shutil
+root=Path('/srv/projects/useRAIDfun/useRAID-fun');dst=Path(tempfile.mkdtemp(prefix='raid-t012-taxonomy-http-format-source-'))
+for raw in subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=root).split(b'\0'):
+ if not raw:continue
+ rel=Path(os.fsdecode(raw));src=root/rel;target=dst/rel
+ if not src.is_file() and not src.is_symlink():continue
+ target.parent.mkdir(parents=True,exist_ok=True)
+ if src.is_symlink():target.symlink_to(src.readlink())
+ else:shutil.copy2(src,target)
+(dst/'node_modules').symlink_to(root/'node_modules',target_is_directory=True)
+Path('/tmp/raid-t012-taxonomy-http-format-source-path').write_text(str(dst));print('Fresh tracked and WIP source',dst,flush=True)
+subprocess.run(['node_modules/.bin/prettier','--check','.'],cwd=dst,check=True)

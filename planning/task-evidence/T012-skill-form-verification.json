@@ -181,38 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+      "observed": "Actual new-main automatic Staging failed before0steps; namedChecks not redispatched under known billing block. Local checks are separate evidence."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+      "observed": "Actual new-main automatic Staging failed before0steps; namedChecks not redispatched under known billing block. Local checks are separate evidence."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+      "observed": "Actual new-main automatic Staging failed before0steps; namedChecks not redispatched under known billing block. Local checks are separate evidence."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+      "observed": "Actual new-main automatic Staging failed before0steps; namedChecks not redispatched under known billing block. Local checks are separate evidence."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+      "observed": "Actual new-main automatic Staging failed before0steps; namedChecks not redispatched under known billing block. Local checks are separate evidence."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+      "observed": "Actual new-main automatic Staging failed before0steps; namedChecks not redispatched under known billing block. Local checks are separate evidence."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": null,
-      "evidence_url": "Not published yet; prior exactf539 automaticStaging38506960716 failed before0steps due account payments/spending limit; namedChecks originaldisabled."
+      "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+      "observed": "Actual new-main automatic Staging failed before0steps; namedChecks not redispatched under known billing block. Local checks are separate evidence."
     }
   },
   "tdd": {
@@ -238,5 +245,13 @@
       "evidence_url": "planning/task-evidence/T012-skill-form/release-boundary.log; planning/task-evidence/T012-skill-form/review.json",
       "result": "PASS"
     }
+  },
+  "post_merge_staging": {
+    "sha": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+    "result": "NOT VERIFIED",
+    "observed": "FAILED before0steps due GitHub account payments/spending limit",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38511926678",
+    "new_image": "NOT PUBLISHED",
+    "manual_checks": "Originaldisabled_manually API-verified; no redispatch under unchanged block, no restore outstanding"
   }
 }

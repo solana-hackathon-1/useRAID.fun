@@ -1,0 +1,5 @@
+
+> useraid@0.1.0 audit:check
+> tsx scripts/audit-check.ts
+
+npm audit: every moderate-or-higher advisory is allowlisted and unexpired.

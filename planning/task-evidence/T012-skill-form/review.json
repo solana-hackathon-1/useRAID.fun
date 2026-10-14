@@ -46,5 +46,12 @@
     "hosted_CI": "Candidate not merged yet; latestf53938506960716beforestepsbillingfailure, namedChecksdisabled/APIverified. Required actualcandidateCI NOT VERIFIED."
   },
   "resources": "All owned CLI ended; no server/listener/container/pool remains active. Existing services/images/volumes and source evidence preserved.",
-  "implementation_commit": "71c05fda64e0e2545e16d4e6883c95e11770f668"
+  "implementation_commit": "71c05fda64e0e2545e16d4e6883c95e11770f668",
+  "post_merge_ci": {
+    "head": "9b0a0015b5047229e13378b74fbf8b0cfd41bb14",
+    "run": 38511926678,
+    "result": "NOT VERIFIED; actual failure before0steps due billing",
+    "new_image": "NOT PUBLISHED",
+    "manual": "disabled_manually API-verified; no restoration obligation"
+  }
 }
