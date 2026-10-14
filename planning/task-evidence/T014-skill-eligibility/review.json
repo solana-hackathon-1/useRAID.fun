@@ -55,5 +55,6 @@
     "hosted_ci": "Exact-source checks still NOT VERIFIED. Existing billing-beforesteps block; observe new automatic staging after merge before any manual dispatch"
   },
   "resource_cleanup": "No owned server/container started. All test/consumer/type/build/lint/format CLI processes exited. Sources/logs preserved, no unrelated resource modified",
-  "preview": "NOT APPLICABLE; no browser-visible work. Independent console host is actual executable example, not a development preview or UAT."
+  "preview": "NOT APPLICABLE; no browser-visible work. Independent console host is actual executable example, not a development preview or UAT.",
+  "implementation_commit": "46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98"
 }

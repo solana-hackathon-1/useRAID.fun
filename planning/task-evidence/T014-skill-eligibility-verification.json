@@ -10,9 +10,9 @@
   "dependency_evidence": "Existing canonical IDs/Participant/published taxonomy; actual private claim storage. T012 assessment storage/T013 assessment authority/T020 admission remain absent, explicit trusted host contract, dependent enablement NOT VERIFIED.",
   "open_decisions": "O09 numeric promotion/calibration remains OPEN; no thresholds chosen; actual rubric/evaluator/provider/operating authority remains a host dependency.",
   "release_gate_disposition": "No live rank, admission, funds, provider, access or capacity enablement. Independent review/UAT/business/live gates NOT VERIFIED. DEC-2026-10-12-03 authorizes bounded staging Git publication only.",
-  "code_source_sha": null,
-  "candidate_sha": null,
-  "source_identity": "planning/task-evidence/T014-skill-eligibility/source-hashes.json; base plus exact WIP files; pin implementation commit after verification",
+  "code_source_sha": "46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98",
+  "candidate_sha": "46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98",
+  "source_identity": "Implementation 46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98; exact code/test hashes and then-WIP RED source manifests retained. Later metadata pin does not change implementation.",
   "verification_environment": "Node22.23.1, Vitest4.1.11, Zod4.6.5/bs586/tsx4.23.15; synthetic authorized projections; copied host with own installed dependencies; frozen own-root dependencies for type/build/lint. No real assessment/provider credentials or database fixture.",
   "criteria": {
     "T014-C01": {
@@ -252,14 +252,14 @@
       "result": "FAIL"
     },
     "green": {
-      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "sha": "46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98",
       "command": "node_modules/.bin/vitest run tests/skill-eligibility.test.ts",
       "observed": "42 PASS 480ms; implemented WIP over base, source manifest retained.",
       "evidence_url": "planning/task-evidence/T014-skill-eligibility/green.log",
       "result": "PASS"
     },
     "refactor": {
-      "sha": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+      "sha": "46fcfcaf269cd4fed771ef5eaaf25cacbbdabd98",
       "command": "vitest affected skill/shared-contract/boundary/docs/env suite; own installed console host; 52 planning checks",
       "observed": "11 files 223 PASS 12.29s, including unchanged original 42 cases plus maximum parser bounds; own install/typecheck/start PASS; 52 planning PASS54.406s. Shared enum extraction preserves previous terms shape. Current WIP source hashes retained; implementation SHA will be pinned.",
       "evidence_url": "planning/task-evidence/T014-skill-eligibility/final-regression.log; planning/task-evidence/T014-skill-eligibility/own-consumer.log; planning/task-evidence/T014-skill-eligibility/planning.log",
