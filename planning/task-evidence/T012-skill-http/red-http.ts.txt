@@ -1,0 +1,10 @@
+import type { SkillClaimActor,SaveSkillClaimCommand } from './claim-storage-contracts';
+export interface SkillClaimHttpHost {
+ version:'v1';actor():Promise<SkillClaimActor>;checkOrigin(request:Request):void|Promise<void>;rateLimit(actor:SkillClaimActor):Promise<void>;read(actor:SkillClaimActor,skillId:string):Promise<unknown>;save(command:SaveSkillClaimCommand):Promise<unknown>;readCatalog(actor:SkillClaimActor,id:string):Promise<unknown>;requestId():string;
+}
+export class SkillClaimHttpError extends Error {constructor(readonly status:401|403|429){super('HTTP_AUTHORITY_DENIED');}}
+export function createSkillClaimHandlers(_host:SkillClaimHttpHost){return {
+ async GET(_request:Request,_id:string|Promise<string>):Promise<Response>{throw Error('NOT_IMPLEMENTED');},
+ async POST(_request:Request,_id:string|Promise<string>):Promise<Response>{throw Error('NOT_IMPLEMENTED');},
+ async CATALOG_GET(_request:Request,_id:string|Promise<string>):Promise<Response>{throw Error('NOT_IMPLEMENTED');},
+};}

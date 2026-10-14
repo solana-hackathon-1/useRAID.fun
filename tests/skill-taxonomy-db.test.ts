@@ -44,7 +44,7 @@ async function actor(admin = true, patch = {}) {
     data: {
       tokenHash: sessionHash,
       userId: user.id,
-      via: 'wallet',
+      via: 'x',
       expiresAt: new Date(Date.now() + 60000),
     },
   });
@@ -238,6 +238,18 @@ integration('T012B1 durable authorized taxonomy', () => {
     const results = await Promise.all([save(a, body(), key), save(a, body(), key)]);
     expect(results.map((r) => r.status).sort()).toEqual(['EXECUTED', 'REPLAYED']);
     expect(results[0].taxonomy).toEqual(results[1].taxonomy);
+    expect(await counts()).toEqual([{ versions: 1, receipts: 1, audits: 1, outbox: 0 }]);
+  });
+  it('requires current X session authority for catalog administration, while wallet sessions can still read', async () => {
+    const a = await actor();
+    await db.session.update({ where: { tokenHash: a.sessionHash }, data: { via: 'wallet' } });
+    await expect(save(a)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    await db.session.update({ where: { tokenHash: a.sessionHash }, data: { via: 'x' } });
+    const key = randomUUID(),
+      first = await save(a, body(), key);
+    await db.session.update({ where: { tokenHash: a.sessionHash }, data: { via: 'wallet' } });
+    await expect(save(a, body(), key, false)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    expect(await read(a)).toEqual(first.taxonomy);
     expect(await counts()).toEqual([{ versions: 1, receipts: 1, audits: 1, outbox: 0 }]);
   });
   async function hold(a: SkillTaxonomyActor, kind: 'user' | 'session' | 'catalog' | 'advisory') {

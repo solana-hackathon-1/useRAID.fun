@@ -80,7 +80,7 @@ try {
       xId,
     ]);
     await setup.query(
-      `INSERT INTO "Session"("tokenHash","userId","expiresAt") VALUES($1,$2,(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')`,
+      `INSERT INTO "Session"("tokenHash","userId","via","expiresAt") VALUES($1,$2,'x',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')`,
       [actor.sessionHash, accountId],
     );
   } finally {

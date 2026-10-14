@@ -1,0 +1,249 @@
+{
+  "task_id": "T012",
+  "scope": "T012C1 private skillHTTP/root/currentadminX-sessioncorrection; fullT012NOTVERIFIED",
+  "status": "IN_PROGRESS",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED: independentparentcriterion reviewmissing",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md",
+  "migration_rollback": "NoDDLchange/all27historicalmigrationbytesunchanged. SKILL_CLAIMS_ENABLEDdefaultoff preservescurrentownreads/originalreceiptreplay. CurrentX adminpolicytighteningretainspriorversions/receipts.",
+  "dependency_evidence": [
+    "Actual132PG/209boundary-docs/52planning/RootsyntheticNextAPI/own20packagePGHTTP/27schemaNoDifference",
+    "Inheritedfull1702/source4ad onlymatchingunchangedboundaries, changedadminX/root/HTTP separatelyverified",
+    "ActualRootUI/assessment/rubric/evaluator/confidence/reassessment-revocation/independentUAT/fullrelease stillNOTVERIFIED"
+  ],
+  "open_decisions": [
+    "Actualassessor/rubric/evaluation/admission/reassessment-revocation policies stillunverified",
+    "RootprivateAPI/UI with cookie/origin/rate scope next; no clientclaim grantsrank"
+  ],
+  "release_gate_disposition": "Independent reversible private claimstorage only; no actualrank/access/provider/financial/capacity/publicenablement",
+  "code_source_sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+  "source_identity": "UncommittedC1 over6a5b withactual33HTTP+3RootHost+1adminwalletRED manifests/finalhashes; nocleanHEADnewtestclaim",
+  "criteria": {
+    "T012-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    },
+    "T012-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md08.2/24.6\u201324.8/25.3/28\u201329/35/39",
+      "observed": "BoundedprivateHTTP/root+SQLdata tested; fullcriteria/actualUI-assessment-history/independentreview-UAT/release remainunverified",
+      "evidence": "docs/tasks/2026-10-14-T012-skill-http.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": null,
+      "evidence_url": "C1notpublishedyet; prior6a5b38487413848billing-beforestepfailure doesnotverifynewsource"
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+      "command": "vitest run skill-claims-http;skill-claims-host;realPGwallet-admin case beforeimplementation",
+      "expected_failure": "MissingportableHTTP/Roothost fail; wallet-only adminpub mustrejectexistingrootX-sessioncontract",
+      "observed_failure": "Actual33+3+1FAIL, exactinitialsrc/testmanifests archived beforeedits; baseSHAdoesnot containnewtests",
+      "evidence_url": "planning/task-evidence/T012-skill-http/red.log",
+      "result": "FAIL"
+    },
+    "green": {
+      "sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+      "command": "vitest run portableHTTP/Roothost;realPGcurrentadmin/storage contracts",
+      "observed": "36combinedHTTP/hostPASS928ms +6files132PGPASS19.59s; actualuncommittedC1 overbase",
+      "evidence_url": "planning/task-evidence/T012-skill-http/regression.log",
+      "result": "PASS"
+    },
+    "refactor": {
+      "sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+      "command": "vitest affectedboundaries/docs;NextsyntheticHTTPpreview;independentPG/HTTPhost",
+      "observed": "10files209PASS9.55s/52planning/actualNextAPI/own20packagePGHTTP27schemaNoDifference;sourceuncommittedoverbase",
+      "evidence_url": "planning/task-evidence/T012-skill-http/boundary-docs.log",
+      "result": "PASS"
+    }
+  },
+  "candidate_sha": "6a5b88412e410569d2127f0cff953f6d8181566f",
+  "verification_environment": "Owned PostgreSQL16.15 / Node22 / independent own20package pg host; root fixtures; no live credentials"
+}

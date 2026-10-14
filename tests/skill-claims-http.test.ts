@@ -1,0 +1,311 @@
+import { expect, it, vi } from 'vitest';
+import {
+  createSkillClaimHandlers,
+  SkillClaimHttpError,
+  type SkillClaimHttpHost,
+} from '../src/skills/http';
+import { SkillClaimStorageError } from '../src/skills/claim-storage';
+import { SkillClaimContractError } from '../src/skills';
+import { CommandReceiptError } from '../src/command-receipts';
+const actor = { accountId: 'self', sessionHash: 'a'.repeat(64) };
+const claim = {
+  version: 'v1',
+  id: '12345678-1234-4234-8234-123456789012',
+  revision: 1,
+  state: 'CLAIMED',
+  participantId: 'canonical-self',
+  skillId: 'frontend',
+  skillDomain: 'software.frontend',
+  taxonomyReference: { recordId: 'actual-catalog', revision: 2 },
+  recordedAt: '2026-10-14T00:00:00.000Z',
+  claimedLevel: 'S',
+  supportingReferences: ['https://public.example/portfolio'],
+  persisted: true,
+  informational: true,
+  isAuthorizationToken: false,
+  verifiesSkill: false,
+  createsPermissionGrant: false,
+  consumesCapacity: false,
+};
+const input = {
+  taxonomyId: 'actual-catalog',
+  expectedTaxonomyRevision: 2,
+  expectedClaimRevision: 0,
+  claimedLevel: ' S ',
+  supportingReferences: [' https://public.example/portfolio '],
+};
+const state = {
+  version: 'v1',
+  skillId: 'frontend',
+  claim,
+  writesAvailable: true,
+  unavailableReason: null,
+};
+const saved = {
+  version: 'v1',
+  status: 'EXECUTED',
+  claim,
+  writesAvailable: true,
+  unavailableReason: null,
+};
+const catalog = {
+  version: 'v1',
+  id: 'actual-catalog',
+  revision: 2,
+  state: 'PUBLISHED',
+  publishedByAccountId: 'admin',
+  publishedAt: '2026-10-14T00:00:00.000Z',
+  skills: [
+    {
+      id: 'frontend',
+      domain: 'software.frontend',
+      name: 'Frontend',
+      status: 'ACTIVE',
+      aliases: ['frontend'],
+    },
+  ],
+};
+const request = (body: unknown = input, extra: Record<string, string> = {}) =>
+  new Request('https://raid.example/api/v1/skill-claims/frontend', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      origin: 'https://raid.example',
+      'idempotency-key': 'original-key',
+      ...extra,
+    },
+    body: JSON.stringify(body),
+  });
+function fixture(patch: Partial<SkillClaimHttpHost> = {}) {
+  const host: SkillClaimHttpHost = {
+    version: 'v1',
+    actor: vi.fn(async () => actor),
+    checkOrigin: vi.fn(() => {}),
+    rateLimit: vi.fn(async () => {}),
+    read: vi.fn(async () => state),
+    save: vi.fn(async () => saved),
+    readCatalog: vi.fn(async () => ({
+      version: 'v1',
+      taxonomyId: 'actual-catalog',
+      taxonomy: catalog,
+    })),
+    requestId: () => 'request-1',
+    ...patch,
+  };
+  return { host, api: createSkillClaimHandlers(host) };
+}
+async function denied(response: Response, status: number, code: string) {
+  expect(response.status).toBe(status);
+  expect(response.headers.get('cache-control')).toBe('private, no-store');
+  expect(response.headers.get('vary')).toBe('Cookie');
+  const value = await response.json();
+  expect(value.error.code).toBe(code);
+  expect(JSON.stringify(value)).not.toContain('PRIVATE-SECRET');
+}
+it('returns private current and empty own claim state without treating claimed level as assessment', async () => {
+  const { host, api } = fixture();
+  const r = await api.GET(new Request('https://raid.example/'), Promise.resolve('frontend'));
+  expect(r.status).toBe(200);
+  expect(r.headers.get('cache-control')).toBe('private, no-store');
+  expect(await r.json()).toEqual(state);
+  expect(host.read).toHaveBeenCalledWith(actor, 'frontend');
+  const empty = fixture({
+    read: async () => ({
+      ...state,
+      claim: null,
+      writesAvailable: false,
+      unavailableReason: 'DISABLED',
+    }),
+  });
+  expect(
+    (await (await empty.api.GET(new Request('https://raid.example/'), 'frontend')).json()).claim,
+  ).toBeNull();
+});
+it('saves normalized input under server actor and original key/request identity', async () => {
+  const { host, api } = fixture();
+  const r = await api.POST(request(), Promise.resolve('frontend'));
+  expect(r.status).toBe(200);
+  expect(await r.json()).toEqual(saved);
+  expect(host.save).toHaveBeenCalledWith({
+    actor,
+    input: {
+      ...input,
+      skillId: 'frontend',
+      claimedLevel: 'S',
+      supportingReferences: ['https://public.example/portfolio'],
+    },
+    idempotencyKey: 'original-key',
+    requestId: 'request-1',
+  });
+});
+it('returns original replay when new writes unavailable without adapter prechecking a new-write flag', async () => {
+  const value = {
+      ...saved,
+      status: 'REPLAYED',
+      writesAvailable: false,
+      unavailableReason: 'DISABLED',
+    },
+    { api } = fixture({ save: async () => value });
+  expect(await (await api.POST(request(), 'frontend')).json()).toEqual(value);
+});
+it('returns only actual correctly bound catalog records or null under current actor', async () => {
+  const { api, host } = fixture();
+  const r = await api.CATALOG_GET(new Request('https://raid.example/'), 'actual-catalog');
+  expect(r.status).toBe(200);
+  expect((await r.json()).taxonomy).toEqual(catalog);
+  expect(host.readCatalog).toHaveBeenCalledWith(actor, 'actual-catalog');
+  const empty = fixture({
+    readCatalog: async () => ({ version: 'v1', taxonomyId: 'actual-catalog', taxonomy: null }),
+  });
+  expect(
+    (
+      await (
+        await empty.api.CATALOG_GET(new Request('https://raid.example/'), 'actual-catalog')
+      ).json()
+    ).taxonomy,
+  ).toBeNull();
+});
+it.each([401, 403, 429] as const)(
+  'denies host authority %i before save and protects all error responses',
+  async (status) => {
+    const { api, host } = fixture({
+      actor: async () => {
+        throw new SkillClaimHttpError(status);
+      },
+    });
+    await denied(
+      await api.POST(request(), 'frontend'),
+      status,
+      status === 401 ? 'AUTHENTICATION_REQUIRED' : status === 403 ? 'FORBIDDEN' : 'RATE_LIMITED',
+    );
+    expect(host.save).not.toHaveBeenCalled();
+  },
+);
+it('checks origin, actor and rate before body parsing/saving', async () => {
+  const order: string[] = [];
+  const { api, host } = fixture({
+    checkOrigin: () => {
+      order.push('origin');
+      throw new SkillClaimHttpError(403);
+    },
+    actor: async () => {
+      order.push('actor');
+      return actor;
+    },
+  });
+  await denied(await api.POST(request(), 'frontend'), 403, 'FORBIDDEN');
+  expect(order).toEqual(['origin']);
+  expect(host.save).not.toHaveBeenCalled();
+  const limited = fixture({
+    rateLimit: async () => {
+      throw new SkillClaimHttpError(429);
+    },
+  });
+  await denied(await limited.api.POST(request(), 'frontend'), 429, 'RATE_LIMITED');
+  expect(limited.host.save).not.toHaveBeenCalled();
+});
+it.each(['participantId', 'accountId', 'skillId', 'verified', 'assessedRank', 'assessmentHistory'])(
+  'rejects client %s instead of overriding URL or permission authority',
+  async (field) => {
+    const { api, host } = fixture();
+    await denied(
+      await api.POST(request({ ...input, [field]: 'PRIVATE-SECRET' }), 'frontend'),
+      422,
+      'INVALID_COMMAND',
+    );
+    expect(host.save).not.toHaveBeenCalled();
+  },
+);
+it.each(['claim', 'catalog'])(
+  'denies an invalid %s resource before reading storage',
+  async (kind) => {
+    const { api, host } = fixture();
+    await denied(
+      await (kind === 'claim'
+        ? api.GET(new Request('https://raid.example/'), 'invalid/id')
+        : api.CATALOG_GET(new Request('https://raid.example/'), 'invalid/id')),
+      422,
+      'INVALID_COMMAND',
+    );
+    expect(host.read).not.toHaveBeenCalled();
+    expect(host.readCatalog).not.toHaveBeenCalled();
+  },
+);
+it.each(['skill', 'catalog', 'revision', 'level', 'references', 'verification', 'availability'])(
+  'rejects mismatched or forged saved %s facts',
+  async (kind) => {
+    let bad: unknown = claim;
+    if (kind === 'skill') bad = { ...claim, skillId: 'solana' };
+    if (kind === 'catalog')
+      bad = { ...claim, taxonomyReference: { recordId: 'other', revision: 2 } };
+    if (kind === 'revision') bad = { ...claim, revision: 2 };
+    if (kind === 'level') bad = { ...claim, claimedLevel: 'C' };
+    if (kind === 'references') bad = { ...claim, supportingReferences: [] };
+    if (kind === 'verification') bad = { ...claim, verifiesSkill: true };
+    const { api } = fixture({
+      save: async () =>
+        kind === 'availability' ? { ...saved, writesAvailable: false } : { ...saved, claim: bad },
+    });
+    await denied(await api.POST(request(), 'frontend'), 503, 'SERVICE_UNAVAILABLE');
+  },
+);
+it('rejects current claim or catalog responses bound to another requested resource', async () => {
+  const c = fixture({ read: async () => ({ ...state, skillId: 'solana' }) });
+  await denied(
+    await c.api.GET(new Request('https://raid.example/'), 'frontend'),
+    503,
+    'SERVICE_UNAVAILABLE',
+  );
+  const t = fixture({
+    readCatalog: async () => ({
+      version: 'v1',
+      taxonomyId: 'actual-catalog',
+      taxonomy: { ...catalog, id: 'other' },
+    }),
+  });
+  await denied(
+    await t.api.CATALOG_GET(new Request('https://raid.example/'), 'actual-catalog'),
+    503,
+    'SERVICE_UNAVAILABLE',
+  );
+});
+it.each([
+  [new SkillClaimStorageError('AUTHENTICATION_REQUIRED'), 401, 'AUTHENTICATION_REQUIRED'],
+  [new SkillClaimStorageError('ACCOUNT_RESTRICTED'), 403, 'ACCOUNT_RESTRICTED'],
+  [new SkillClaimStorageError('RESOURCE_UNAVAILABLE'), 404, 'NOT_FOUND'],
+  [new SkillClaimContractError('REVISION_CHANGED'), 409, 'REVISION_CHANGED'],
+  [new CommandReceiptError('IDEMPOTENCY_KEY_REUSED'), 409, 'IDEMPOTENCY_KEY_REUSED'],
+  [new SkillClaimContractError('SKILL_UNAVAILABLE'), 422, 'INVALID_COMMAND'],
+  [new SkillClaimStorageError('WRITES_DISABLED'), 503, 'SERVICE_UNAVAILABLE'],
+  [new Error('PRIVATE-SECRET'), 503, 'SERVICE_UNAVAILABLE'],
+])('maps storage and unknown errors privately', async (error, status, code) => {
+  const { api } = fixture({
+    save: async () => {
+      throw error;
+    },
+  });
+  await denied(await api.POST(request(), 'frontend'), Number(status), String(code));
+});
+it('bounds JSON/key/mime and sanitizes request-id failures', async () => {
+  const { api, host } = fixture({
+    requestId: () => {
+      throw Error('PRIVATE-SECRET');
+    },
+  });
+  await denied(
+    await api.POST(request(input, { 'idempotency-key': '' }), 'frontend'),
+    422,
+    'INVALID_COMMAND',
+  );
+  await denied(
+    await api.POST(request(input, { 'content-type': 'text/plain' }), 'frontend'),
+    415,
+    'INVALID_COMMAND',
+  );
+  await denied(
+    await api.POST(request(input, { 'content-length': '17000' }), 'frontend'),
+    413,
+    'INVALID_COMMAND',
+  );
+  expect(host.save).not.toHaveBeenCalled();
+});

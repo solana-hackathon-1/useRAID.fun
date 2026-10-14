@@ -1,3 +1,47 @@
+# T012C1 SELF-EVALUATED ready for publication — 2026-10-14T00:27:37.895388+00:00 Codex /root
+
+Same6a5b originalbranch plusC1privateRootAPI/portableDTO-hostcontracts/defaultoffnewwrites/envdocs/currentcookie-origin-database-rate/privateheaders/snapshotbindings/consumer andexistingcatalogX-sessionfix. Genuine33HTTP+3Roothost+1walletadminRED exactsnapshots→36combinedHTTP/host +132actualPG/209boundary-docs/52planning/own20pkgPGHTTP27NoDifference/strictTSC-build-lint-wholefreshformatPASS. RootadminUser/requireUser(admin) currentSessionviaxexistingpolicy nowenforcedpublisher; updatedXfixtures/assertions/historypreserved, no newpolicyfreshness. ActualNextAPIloopback3020/source4mg8otzc syntheticdevelopment PASS; firstfixtureexpiresAtmissingfailure retained/corrected. OwnerURL/source/mode/results/accesslimits/stoppedshown. Next9a816...stop+rm0/ownedPG/poolsfinallystop0, allresourcesstopped/unrelatedpreserved. Sourcehashes/SELFtiming/fullvalidator34reject=27NOTVERIFIED+7CI; noindependentUAT/fullacceptance. All27DDLunchanged/no UI/rank/grant/capacity/provider/money/publicenabled.
+
+Nextstage/commit/pin/push/templatePR/matchedheadmainmerge/actualautoStaging withoriginalmanualworkflowdisabled untilmaterialhostavailabilitychange; no repeatedknownbillingmanualdispatch. Last6a5bautomatic38487413848 beforestepbillingfailed/noimage, lastverifiedd023/fb982/publiclast530/1033 separate. Thenprivateownerform/discovery+adminRootintegration, actualassessment-rubric/confidence/revocation later. No humanwait/delegation/branchswitch/parentclosure. Currentuncommittedpost210CIevidencealso preserved.
+
+---
+
+# T012C1 actual API and auth correction verified — 2026-10-14T00:23:56.697180+00:00 Codex /root
+
+Same6a5b originalbranch plusC1portableHTTP/DTOs/Rootcookie-origin-rate/defaultoffSKILL_CLAIMS_ENABLED/2APIroutes/consumer-doc-tests andexistingadminX-sessiongapcorrection.33HTTPRED→33PASS/3RootHostRED→36combinedPASS/1walletadminRED→currentactualSessionviaxrequired forpublishing+replay, walletreads retained. ThismatchesexistingRootadminUser/requireUser(admin) source, no newfreshness choice.42catalog+44claim+HTTP/boundaries6files132PGPASS19.59s; fixturesconsumers nowactualXadmins, originalassertionsunchanged.209boundarydocs/52planningPASS.
+
+ActualsyntheticNextWebpackdevelopment API http://127.0.0.1:3020 source/tmp/raid-t012-skill-http-preview-source-4mg8otzc PASS cookie/currentcatalog/claim/save/replay/foreignprivacy/origin/digest/body/rate/revokedSession/no rank-outbox. FirstpreviewRateLimitfixturemissedrequiredexpiresAt afterothercasesPASS; actualschemafixed/failure retained, fullretryPASS. OwnerURL/source/mode/results/workspace-only-access+stoppedstatusshown. OwnedNext9a816...stop+rm0/PGfinallystop0; no serverleft. Independentown20pkgPGHTTPhost/schema27NoDifference PASS. TimedSELF/types-build-lint-format/packetcompletion finishing; no Role/funding/provider/public/UI/rankenablement. Old1702/source4ad onlymatchingunchangedboundaries, notnewfullsourceclaim.
+
+Nextfinishstatic/format/SELFfullvalidator/stage-sourcepin/PRmatchedheadpublication/mainautomaticCI thenprivateownerUI. Last6a5bStaging38487413848 billingbeforesteps/noimage; manualdisabledverified/no restorationoutstanding. Allparents/27fullT012+7CI/assessment/revocation/independentreviewUAT/gatesNOTVERIFIED. No humanwait/delegation/branchswitch/parentclosure.
+
+---
+
+# T012C1 portable HTTP milestone — 2026-10-14T00:09:38.767910+00:00 Codex /root
+
+Currentmain/originalbranch6a5b pluspreservedPR210postCIrecords andnewC1HTTPmodule/contracts/tests/taskWIP. Actual33behaviorRED beforeHTTPimplementation/exactsources→33GREEN. NewRoothost3behaviorRED beforeimplementation, exactstubs/testsnapshots retained. ClaimedData remainsunverified; RootCookie/origin/rate/defaultoffflagcomposition+2privateAPIs next, no frontend/adminpublication/assessment/rank/grant/money/provider effects. SourcefrominstalledNextroute/asynccookieguides andcanonical26 read. AlllocalownedPG/CLIresourcesstopped/no previewyet. OriginalmanualWorkflowdisabledverified/no restorationoutstanding; automatic6a5b38487413848 billingbeforesteps/noimage.
+
+NextRootcompose/actualsyntheticNextAPIpreview/ownPGHTTPconsumer/docs/adverseboundaries/affectedchecks/types/build/sourceSELF/fullvalidator/publication thenprivateUI. Preserve27fullT012+7CI/independentreviewUAT/rubricassessment-history/gates gaps. No humanwait/delegation/branchswitch/issueclosure.
+
+---
+
+# PR209/210 landed; staging account block retained — 2026-10-14T00:03:41.498831+00:00 Codex /root
+
+Currentmain/originalbranchHEAD6a5b88412e410569d2127f0cff953f6d8181566f. PR209 actualadmincatalog (implementation58e4b9e/mainbe816) andPR210 privatecanonicalclaim/evidence (implementation4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7/pin7701d139dfd8cb0f4611156a066892b14f0192ca/main6a5b) MERGEDunderDEC-2026-10-12-03; parentsopen. Finallocal139files1702PASS209.88s/187PG/218boundary-docs1skip/52planning/own20pkgcanonicalPG27NoDifference/strictTSC-productionbuild-lint-freshformatPASS. Genuine22+1RED, earlierStudioTimeout1701PASS1FAIL andstrongerscopedfixture correction26targeted/original5s preserved.
+
+Exact6a5b automaticStaging38487413848 actualFAILED before0steps withofficialpayments/spendinglimitannotation, no newcheck/image. NamedChecksnotredispatchedunderknownunchangedblock; originalmanual368182197disabled_manually/APIverified, no restorationoutstanding. PR210body/packet/review/rawrun-jobs-annotations updated. Previousbe816automatic38484005795 +sevenmanual38484067426 samebillingbeforesteps; restoredoriginaldisabled. Lastverifiedimaged023/fb982..., publiclastHTTP530/1033 andknownVMSSHtimeout separateunknownrollout; no retrieswithoutmaterialaccesschange/billing-spendlimit/runner/globalDNS/SSHhostkeychanges. Alllocalownedclaims/catalogPGfixturesactualstopped/poolsclosed, no server/browser/preview; sources/logs/images/unrelatedpreserved.
+
+CurrentWIP postCIrecords/checkpointonly, no implementationchanges. FullT01227criteria+7hostedCI/actualassessment-rubric-evaluator-confidence/reassessment-revocation/independentreview-UAT/Rootenablement/gatesNOTVERIFIED. NextboundedT012C1 protected skillclaim/catalog HTTP+Rootcookie/origin/rate/defaultoffnewwritecomposition, preservingoriginalreceipts/privateheaders/body-resource-bindings; actualsyntheticNextAPIpreview/independentownconsumer/docs/TDD. ThenownerprivateUI andlaterassessmentpolicy/contracts. No humanwait/delegation/branchswitch/fullissueclosure. Work-state synctool stillabsent.
+
+---
+
+# PR210 merged; actual staging verification next — 2026-10-13T23:59:26.857717+00:00 Codex /root
+
+PR210https://github.com/solana-hackathon-1/useRAID.fun/pull/210 MERGEDmain 6a5b88412e410569d2127f0cff953f6d8181566f; originalbranchff. Implementation4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7 +evidencepin7701d13 actualmatchedhead; no sourcechangeafter139files1702PASS/187PG/218boundarydocs1skip/52planning/own20packagecanonicalPG27NoDifference/types-build-lint-format. Genuine22+1RED andStudio5s failure/strongerscopedfixture correction26targetedPASS/originaldeadlines preserved. Allownedresourcesstopped/normalworktreecheckpoint WIPonly, no service/provider/rank/money/public/Rootenablement.
+
+Nextobserveexactnewmain automaticStaging; knownpreviousbe816accountbillingbeforesteps meansmanualChecks staysoriginaldisableduntilactualexecution availabilitychanges. Re-enable/dispatchonlyifnewStaging actuallyruns then MUSTrestoreoriginaldisabledafterownedrun. FullT01227criteria+7CI/independentUAT/assessment-rubric-evaluator/reassessment-revocation/RootprotectedAPIUI/gates unverified, parent#54open. Twoissue slices209+210nowmerged; nextT012C1protectedskillclaim/catalogHTTPcontracts +rootcookie/origin/rate/newwriteflag/actualsyntheticNextAPIpreview, thenUI. No humanwait/delegation/branchswitch/fullclosure; lastpublic530/1033/VMnoaccesschange/lastimage d023 distinctunknownrollout.
+
+---
+
 # B2 implementation committed; source pin/publication next — 2026-10-13T23:57:30.374849+00:00 Codex /root
 
 Implementation 4ad8ad32525393dd4c7f7bdfb4d2e03c77ca32f7 committedsameoriginalbranch onmainbe816. Actualfinal139files1702PASS209.88s/187PG/218boundarydocs1skip/52planning/own20pkgPG27NoDifference/types/build/lint/format +genuine22+1RED andStudiofailure/26targetedfix retained. Allownedfixturesstopped/poolsclosed; codeunchangedafterverification. Sourcepin metadata nowWIP, nextpincommit/push/templatePR/matchedheadmerge/actualautomaticStaging. Originalmanualworkflow remainsdisabled/no restoreoutstanding; knownbe816billingbeforesteps, no repeatedmanualdispatchuntilactualhostedavailabilitychange. Full27T012+7CI/unresolvedRootAPIUI/assessment/evaluator/rank/reassessment-revocation/independentUAT/gates remainNOTVERIFIED; nextprotectedRootskillAPIUI.
