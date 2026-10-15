@@ -1,0 +1,238 @@
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+sh: locale: not found
+2026-10-15 22:06:33.276 UTC [42] WARNING:  no usable system locales were found
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+waiting for server to start....2026-10-15 22:06:33.961 UTC [65] LOG:  starting PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-10-15 22:06:34.058 UTC [65] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-15 22:06:34.061 UTC [68] LOG:  database system was shut down at 2026-10-15 22:06:33 UTC
+2026-10-15 22:06:34.066 UTC [65] LOG:  database system is ready to accept connections
+ done
+server started
+CREATE DATABASE
+
+
+/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+
+waiting for server to shut down...2026-10-15 22:06:34.215 UTC [65] LOG:  received fast shutdown request
+.2026-10-15 22:06:34.215 UTC [65] LOG:  aborting any active transactions
+2026-10-15 22:06:34.221 UTC [65] LOG:  background worker "logical replication launcher" (PID 71) exited with exit code 1
+2026-10-15 22:06:34.221 UTC [66] LOG:  shutting down
+2026-10-15 22:06:34.221 UTC [66] LOG:  checkpoint starting: shutdown immediate
+2026-10-15 22:06:34.234 UTC [66] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.012 s, sync=0.001 s, total=0.013 s; sync files=301, longest=0.001 s, average=0.001 s; distance=4283 kB, estimate=4283 kB; lsn=0/1925D68, redo lsn=0/1925D68
+2026-10-15 22:06:34.246 UTC [65] LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+2026-10-15 22:06:34.347 UTC [1] LOG:  starting PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-10-15 22:06:34.348 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-15 22:06:34.348 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-10-15 22:06:34.419 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-15 22:06:34.421 UTC [86] LOG:  database system was shut down at 2026-10-15 22:06:34 UTC
+2026-10-15 22:06:34.425 UTC [1] LOG:  database system is ready to accept connections
+2026-10-15 22:07:20.738 UTC [1] LOG:  received fast shutdown request
+2026-10-15 22:07:20.738 UTC [1] LOG:  aborting any active transactions
+2026-10-15 22:07:20.742 UTC [1] LOG:  background worker "logical replication launcher" (PID 89) exited with exit code 1
+2026-10-15 22:07:20.743 UTC [84] LOG:  shutting down
+2026-10-15 22:07:20.743 UTC [84] LOG:  checkpoint starting: shutdown immediate
+2026-10-15 22:07:20.860 UTC [84] LOG:  checkpoint complete: wrote 603 buffers (3.7%); 0 WAL file(s) added, 0 removed, 1 recycled; write=0.006 s, sync=0.065 s, total=0.117 s; sync files=9851, longest=0.001 s, average=0.001 s; distance=11296 kB, estimate=11296 kB; lsn=0/242DED8, redo lsn=0/242DED8
+2026-10-15 22:07:20.869 UTC [1] LOG:  database system is shut down
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+sh: locale: not found
+2026-10-15 22:10:24.717 UTC [42] WARNING:  no usable system locales were found
+performing post-bootstrap initialization ... ok
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+syncing data to disk ... ok
+
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+waiting for server to start....2026-10-15 22:10:25.273 UTC [60] LOG:  starting PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-10-15 22:10:25.331 UTC [60] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-15 22:10:25.333 UTC [69] LOG:  database system was shut down at 2026-10-15 22:10:25 UTC
+2026-10-15 22:10:25.337 UTC [60] LOG:  database system is ready to accept connections
+ done
+server started
+CREATE DATABASE
+
+
+/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+
+waiting for server to shut down....2026-10-15 22:10:25.401 UTC [60] LOG:  received fast shutdown request
+2026-10-15 22:10:25.401 UTC [60] LOG:  aborting any active transactions
+2026-10-15 22:10:25.405 UTC [60] LOG:  background worker "logical replication launcher" (PID 72) exited with exit code 1
+2026-10-15 22:10:25.405 UTC [67] LOG:  shutting down
+2026-10-15 22:10:25.405 UTC [67] LOG:  checkpoint starting: shutdown immediate
+2026-10-15 22:10:25.413 UTC [67] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.007 s, sync=0.001 s, total=0.008 s; sync files=301, longest=0.001 s, average=0.000 s; distance=4283 kB, estimate=4283 kB; lsn=0/1925D68, redo lsn=0/1925D68
+2026-10-15 22:10:25.419 UTC [60] LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+2026-10-15 22:10:25.554 UTC [1] LOG:  starting PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+2026-10-15 22:10:25.554 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-15 22:10:25.554 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-10-15 22:10:25.608 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-15 22:10:25.610 UTC [88] LOG:  database system was shut down at 2026-10-15 22:10:25 UTC
+2026-10-15 22:10:25.616 UTC [1] LOG:  database system is ready to accept connections
+2026-10-15 22:10:28.216 UTC [94] ERROR:  syntax error at end of input at character 11369
+2026-10-15 22:10:28.216 UTC [94] STATEMENT:  -- Attributable private capability/fraud cases; no operating-policy seed or automatic conviction.
+	BEGIN;
+	ALTER TABLE "SkillAssessmentVersion" ADD COLUMN "decisionId" UUID;
+	DROP INDEX "SkillAssessmentVersion_review_key";
+	CREATE UNIQUE INDEX "SkillAssessmentVersion_original_review_key" ON "SkillAssessmentVersion"("reviewVersionId") WHERE "decisionId" IS NULL;
+	CREATE UNIQUE INDEX "SkillAssessmentVersion_decision_key" ON "SkillAssessmentVersion"("decisionId");
+	ALTER TABLE "SkillAssessmentVersion" DROP CONSTRAINT "SkillAssessmentVersion_contract_check";
+	ALTER TABLE "SkillAssessmentVersion" ADD CONSTRAINT "SkillAssessmentVersion_contract_check" CHECK("revision">0 AND (("decisionId" IS NULL AND "state"='VERIFIED') OR ("decisionId" IS NOT NULL AND "state" IN ('REASSESSMENT_REQUIRED','REVOKED'))) AND "assessedRank" IN ('E','D','C','B','A') AND "sampleSize"=1 AND raid_practice_text_v1(to_jsonb("confidenceStatement"),2000) IS TRUE AND isfinite("issuedAt") AND ("reassessmentAt" IS NULL OR (isfinite("reassessmentAt") AND "reassessmentAt">"issuedAt")) AND raid_practice_id_v1(to_jsonb("requestId")) IS TRUE);
+	CREATE FUNCTION raid_assessment_findings_v1(p jsonb, action text) RETURNS boolean LANGUAGE plpgsql IMMUTABLE AS $$
+	DECLARE item jsonb; supporting boolean:=false;
+	BEGIN
+	 IF jsonb_typeof(p) IS DISTINCT FROM 'array' OR jsonb_array_length(p) NOT BETWEEN 1 AND 20 THEN RETURN false; END IF;
+	 FOR item IN SELECT value FROM jsonb_array_elements(p) LOOP
+	  IF jsonb_typeof(item) IS DISTINCT FROM 'object' OR NOT(item ?& ARRAY['kind','detail']) OR item-ARRAY['kind','detail']<>'{}'::jsonb OR jsonb_typeof(item->'kind') IS DISTINCT FROM 'string' OR item->>'kind' NOT IN ('ASSESSMENT_EVIDENCE','OWNERSHIP_EVIDENCE','CAPABILITY_EVIDENCE') OR raid_practice_text_v1(item->'detail',2000) IS NOT TRUE THEN RETURN false; END IF;
+	  IF (action='REVOKE' AND item->>'kind' IN ('ASSESSMENT_EVIDENCE','OWNERSHIP_EVIDENCE')) OR (action='REQUIRE_REASSESSMENT' AND item->>'kind'='CAPABILITY_EVIDENCE') THEN supporting:=true; END IF;
+	 END LOOP;
+	 RETURN supporting;
+	END;
+	$$;
+	CREATE TABLE "PracticeAssessmentDecision"(
+	 "id" UUID NOT NULL DEFAULT gen_random_uuid(),"assessmentId" UUID NOT NULL,"priorAssessmentVersionId" UUID NOT NULL,"resultAssessmentVersionId" UUID NOT NULL,"caseReviewVersionId" UUID NOT NULL,"ownershipVersionId" UUID NOT NULL,"assignmentId" UUID NOT NULL,"policyVersionId" UUID NOT NULL,"evaluatorAccountId" TEXT NOT NULL,
+	 "action" TEXT NOT NULL,"reasonCategory" TEXT NOT NULL,"reason" TEXT NOT NULL,"findings" JSONB NOT NULL,"dueAt" TIMESTAMPTZ(3),"decidedAt" TIMESTAMPTZ(3) NOT NULL DEFAULT date_trunc('milliseconds',clock_timestamp()),
+	 "caseAccessReceiptId" UUID NOT NULL,"policyAccessReceiptId" UUID NOT NULL,"reviewAccessReceiptId" UUID NOT NULL,"ownershipAccessReceiptId" UUID NOT NULL,"priorAccessReceiptId" UUID NOT NULL,"receiptId" UUID NOT NULL,"requestId" TEXT NOT NULL,
+	 CONSTRAINT "PracticeAssessmentDecision_pkey" PRIMARY KEY("id"),
+	 CONSTRAINT "PracticeAssessmentDecision_contract_check" CHECK((("action"='REQUIRE_REASSESSMENT' AND "reasonCategory"='CAPABILITY_RECHECK' AND "dueAt" IS NOT NULL AND isfinite("dueAt") AND "dueAt">"decidedAt") OR ("action"='REVOKE' AND "reasonCategory"='FRAUDULENT_ASSESSMENT_EVIDENCE' AND "dueAt" IS NULL)) AND raid_practice_text_v1(to_jsonb("reason"),2000) IS TRUE AND raid_assessment_findings_v1("findings","action") IS TRUE AND isfinite("decidedAt") AND raid_practice_id_v1(to_jsonb("requestId")) IS TRUE),
+	 CONSTRAINT "PracticeAssessmentDecision_family_fkey" FOREIGN KEY("assessmentId") REFERENCES "SkillAssessment"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_prior_fkey" FOREIGN KEY("priorAssessmentVersionId") REFERENCES "SkillAssessmentVersion"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_result_fkey" FOREIGN KEY("resultAssessmentVersionId") REFERENCES "SkillAssessmentVersion"("id") ON DELETE RESTRICT ON UPDATE RESTRICT DEFERRABLE INITIALLY DEFERRED,
+	 CONSTRAINT "PracticeAssessmentDecision_review_fkey" FOREIGN KEY("caseReviewVersionId") REFERENCES "PracticeAssessmentReviewVersion"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_ownership_fkey" FOREIGN KEY("ownershipVersionId") REFERENCES "PracticeTrialOwnershipVersion"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_assignment_fkey" FOREIGN KEY("assignmentId") REFERENCES "PracticeTrialReviewAssignment"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_policy_fkey" FOREIGN KEY("policyVersionId") REFERENCES "PracticeReviewPolicyVersion"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_evaluator_fkey" FOREIGN KEY("evaluatorAccountId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_case_access_fkey" FOREIGN KEY("caseAccessReceiptId") REFERENCES "CommandReceipt"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_policy_access_fkey" FOREIGN KEY("policyAccessReceiptId") REFERENCES "CommandReceipt"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_review_access_fkey" FOREIGN KEY("reviewAccessReceiptId") REFERENCES "CommandReceipt"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_ownership_access_fkey" FOREIGN KEY("ownershipAccessReceiptId") REFERENCES "CommandReceipt"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_prior_access_fkey" FOREIGN KEY("priorAccessReceiptId") REFERENCES "CommandReceipt"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
+	 CONSTRAINT "PracticeAssessmentDecision_receipt_fkey" FOREIGN KEY("receiptId") REFERENCES "CommandReceipt"("id") ON DELETE RESTRICT ON UPDATE RESTRICT
+	);
+	CREATE UNIQUE INDEX "PracticeAssessmentDecision_result_key" ON "PracticeAssessmentDecision"("resultAssessmentVersionId");
+	CREATE UNIQUE INDEX "PracticeAssessmentDecision_receipt_key" ON "PracticeAssessmentDecision"("receiptId");
+	ALTER TABLE "SkillAssessmentVersion" ADD CONSTRAINT "SkillAssessmentVersion_decision_fkey" FOREIGN KEY("decisionId") REFERENCES "PracticeAssessmentDecision"("id") ON DELETE RESTRICT ON UPDATE RESTRICT;
+	CREATE FUNCTION raid_assessment_decision_guard_v1() RETURNS trigger LANGUAGE plpgsql AS $$
+	DECLARE prior "SkillAssessmentVersion"%ROWTYPE;
+	BEGIN
+	 IF TG_OP<>'INSERT' THEN RAISE EXCEPTION 'Assessment decision history is immutable' USING ERRCODE='23000'; END IF;
+	 SELECT * INTO prior FROM "SkillAssessmentVersion" WHERE "id"=NEW."priorAssessmentVersionId";
+	 IF prior."id" IS NULL THEN RAISE EXCEPTION 'Decision requires actual committed source' USING ERRCODE='23000'; END IF;
+	 PERFORM 1 FROM "User" WHERE "id"=NEW."evaluatorAccountId" FOR NO KEY UPDATE;
+	 PERFORM pg_advisory_xact_lock(hashtextextended(NEW."assignmentId"::text,12017));
+	 PERFORM pg_advisory_xact_lock(hashtextextended(prior."definitionVersionId"::text||':ASSESSMENT_REVIEW',12019));
+	 PERFORM pg_advisory_xact_lock(hashtextextended(prior."submissionId"::text,12020));
+	 PERFORM pg_advisory_xact_lock(hashtextextended(prior."participantId"::text||':'||prior."skillId",12022));
+	 IF NEW."assessmentId"<>prior."assessmentId" OR NOT EXISTS(SELECT 1 FROM "SkillAssessment" WHERE "id"=prior."assessmentId" AND "currentVersionId"=prior."id" AND "revision"=prior."revision") OR prior."state"='REVOKED' OR (NEW."action"='REQUIRE_REASSESSMENT' AND prior."state"<>'VERIFIED') OR NEW."decidedAt"<prior."issuedAt" OR NEW."decidedAt">clock_timestamp() OR NEW."ownershipVersionId" IS DISTINCT FROM (SELECT "currentVersionId" FROM "PracticeTrialOwnership" WHERE "submissionId"=prior."submissionId") OR NEW."caseReviewVersionId" IS DISTINCT FROM (SELECT "currentVersionId" FROM "PracticeAssessmentReview" WHERE "submissionId"=prior."submissionId") THEN RAISE EXCEPTION 'Decision requires exact current source/state/case/clock' USING ERRCODE='23000'; END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "PracticeTrialSubmission" s JOIN "PracticeTrialReviewAssignment" g ON g."id"=NEW."assignmentId" AND g."submissionId"=s."id" AND g."purpose"='ASSESSMENT_REVIEW' AND g."evaluatorAccountId"=NEW."evaluatorAccountId" AND g."issuedAt"<=NEW."decidedAt" AND g."expiresAt">clock_timestamp() JOIN "User" u ON u."id"=g."evaluatorAccountId" AND u."suspended"=false JOIN "PracticeReviewPolicyVersion" v ON v."id"=NEW."policyVersionId" AND v."definitionVersionId"=prior."definitionVersionId" AND v."purpose"='ASSESSMENT_REVIEW' AND v."state"='APPROVED' AND v."publishedAt"<=NEW."decidedAt" JOIN "PracticeReviewPolicy" p ON p."currentVersionId"=v."id" JOIN "CommandReceipt" c ON c."id"=NEW."receiptId" AND date_trunc('milliseconds',c."createdAt")<=NEW."decidedAt" WHERE s."id"=prior."submissionId" AND s."accountId"<>g."evaluatorAccountId" AND NOT EXISTS(SELECT 1 FROM "PracticeTrialReviewRevocation" x WHERE x."assignmentId"=g."id")) THEN RAISE EXCEPTION 'Decision requires current actual nonself case authority/policy' USING ERRCODE='23000'; END IF;
+	 RETURN NEW;
+	END;
+	$$;
+	CREATE TRIGGER assessment_decision_guard_v1 BEFORE INSERT OR UPDATE OR DELETE ON "PracticeAssessmentDecision" FOR EACH ROW EXECUTE FUNCTION raid_assessment_decision_guard_v1();
+	CREATE OR REPLACE FUNCTION raid_skill_assessment_version_guard_v1() RETURNS trigger LANGUAGE plpgsql AS $$
+	DECLARE decision "PracticeAssessmentDecision"%ROWTYPE; prior "SkillAssessmentVersion"%ROWTYPE;
+	BEGIN
+	 IF TG_OP<>'INSERT' THEN RAISE EXCEPTION 'Committed skill assessment history is immutable' USING ERRCODE='23000'; END IF;
+	 PERFORM pg_advisory_xact_lock(hashtextextended(NEW."participantId"::text||':'||NEW."skillId",12022));
+	 IF NEW."revision">1 AND NOT EXISTS(SELECT 1 FROM "SkillAssessmentVersion" WHERE "assessmentId"=NEW."assessmentId" AND "revision"=NEW."revision"-1 AND "participantId"=NEW."participantId" AND "skillId"=NEW."skillId" AND "skillDomain"=NEW."skillDomain" AND "taxonomyId"=NEW."taxonomyId" AND "issuedAt"<=NEW."issuedAt") THEN RAISE EXCEPTION 'Assessment requires contiguous stable source history' USING ERRCODE='23000'; END IF;
+	 IF NEW."decisionId" IS NOT NULL THEN
+	  SELECT * INTO decision FROM "PracticeAssessmentDecision" WHERE "id"=NEW."decisionId";
+	  SELECT * INTO prior FROM "SkillAssessmentVersion" WHERE "id"=decision."priorAssessmentVersionId";
+	  IF decision."id" IS NULL OR prior."id" IS NULL OR NEW."id"<>decision."resultAssessmentVersionId" OR NEW."assessmentId"<>prior."assessmentId" OR NEW."participantId"<>prior."participantId" OR NEW."skillId"<>prior."skillId" OR NEW."skillDomain"<>prior."skillDomain" OR NEW."taxonomyId"<>prior."taxonomyId" OR NEW."revision"<>prior."revision"+1 OR NEW."assessedRank"<>prior."assessedRank" OR NEW."definitionVersionId"<>prior."definitionVersionId" OR NEW."submissionId"<>prior."submissionId" OR NEW."ownershipVersionId"<>prior."ownershipVersionId" OR NEW."reviewVersionId"<>prior."reviewVersionId" OR NEW."confidenceStatement"<>prior."confidenceStatement" OR NEW."sampleSize"<>prior."sampleSize" OR NEW."policyVersionId"<>decision."policyVersionId" OR NEW."evaluatorAccountId"<>decision."evaluatorAccountId" OR NEW."issuedAt"<>decision."decidedAt" OR NEW."reassessmentAt" IS DISTINCT FROM decision."dueAt" OR NEW."receiptId"<>decision."receiptId" OR NEW."requestId"<>decision."requestId" OR NEW."state"<>CASE WHEN decision."action"='REVOKE' THEN 'REVOKED' ELSE 'REASSESSMENT_REQUIRED' END THEN RAISE EXCEPTION 'Decision assessment requires exact preserved original lineage and attributable case' USING ERRCODE='23000'; END IF;
+	  RETURN NEW;
+	 END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "PracticeAssessmentReviewVersion" r JOIN "PracticeTrialSubmission" s ON s."id"=r."submissionId" AND s."participantId"=NEW."participantId" JOIN "PracticeTrialVersion" d ON d."id"=r."definitionVersionId" AND d."taxonomyId"=NEW."taxonomyId" AND d."definition"->>'skillId'=NEW."skillId" AND d."definition"->>'skillDomain'=NEW."skillDomain" AND d."definition"->>'targetRank'=NEW."assessedRank" WHERE r."id"=NEW."reviewVersionId" AND r."assessmentVersionId"=NEW."id" AND r."decision"='VERIFY' AND r."definitionVersionId"=NEW."definitionVersionId" AND r."submissionId"=NEW."submissionId" AND r."ownershipVersionId"=NEW."ownershipVersionId" AND r."policyVersionId"=NEW."policyVersionId" AND r."evaluatorAccountId"=NEW."evaluatorAccountId" AND r."reviewedAt"=NEW."issuedAt" AND r."reassessmentAt" IS NOT DISTINCT FROM NEW."reassessmentAt" AND r."confidenceStatement"=NEW."confidenceStatement" AND r."receiptId"=NEW."receiptId" AND r."requestId"=NEW."requestId") THEN RAISE EXCEPTION 'Verification requires exact attributable actual review source' USING ERRCODE='23000'; END IF;
+	 RETURN NEW;
+	END;
+	$$;
+	CREATE OR REPLACE FUNCTION raid_skill_assessment_commit_v1() RETURNS trigger LANGUAGE plpgsql AS $$
+	BEGIN
+	 IF NEW."decisionId" IS NOT NULL THEN
+	  IF NOT EXISTS(SELECT 1 FROM "PracticeAssessmentDecision" d JOIN "CommandReceipt" c ON c."id"=d."receiptId" JOIN "AuditEvent" a ON a."receiptId"=c."id" JOIN "SkillAssessment" p ON p."id"=NEW."assessmentId" AND p."revision">=NEW."revision" WHERE d."id"=NEW."decisionId" AND d."resultAssessmentVersionId"=NEW."id" AND c."commandKind"='RecordPracticeAssessmentDecision' AND c."actorId"=NEW."evaluatorAccountId" AND c."requestId"=NEW."requestId" AND c."resultRef"=d."id"::text AND a."ordinal"=1 AND a."eventType"=CASE WHEN d."action"='REVOKE' THEN 'skill.assessment_revoked.v1' ELSE 'skill.assessment_reassessment_required.v1' END AND a."aggregateId"=NEW."assessmentId"::text AND a."aggregateVersion"=NEW."revision" AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=NEW."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('practiceAssessmentDecisionId',d."id"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Decision assessment requires exact finalized private event' USING ERRCODE='23000'; END IF;
+	  RETURN NULL;
+	 END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "CommandReceipt" c JOIN "AuditEvent" a ON a."receiptId"=c."id" JOIN "SkillAssessment" p ON p."id"=NEW."assessmentId" AND p."revision">=NEW."revision" WHERE c."id"=NEW."receiptId" AND c."actorId"=NEW."evaluatorAccountId" AND c."commandKind"='RecordPracticeTrialAssessment' AND c."requestId"=NEW."requestId" AND c."resultRef"=NEW."reviewVersionId"::text AND a."ordinal"=1 AND a."eventType"='skill.assessment_issued.v1' AND a."aggregateId"=NEW."assessmentId"::text AND a."aggregateVersion"=NEW."revision" AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=NEW."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('skillAssessmentVersionId',NEW."id"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Committed assessment requires exact finalized private review/audit/projection' USING ERRCODE='23000'; END IF;
+	 RETURN NULL;
+	END;
+	$$;
+	CREATE FUNCTION raid_assessment_decision_commit_v1() RETURNS trigger LANGUAGE plpgsql AS $$
+	DECLARE prior "SkillAssessmentVersion"%ROWTYPE; r "PracticeAssessmentReviewVersion"%ROWTYPE; ownership_revision integer;
+	BEGIN
+	 SELECT * INTO prior FROM "SkillAssessmentVersion" WHERE "id"=NEW."priorAssessmentVersionId";
+	 SELECT * INTO r FROM "PracticeAssessmentReviewVersion" WHERE "id"=NEW."caseReviewVersionId";
+	 SELECT "revision" INTO ownership_revision FROM "PracticeTrialOwnershipVersion" WHERE "id"=NEW."ownershipVersionId";
+	 IF NOT EXISTS(SELECT 1 FROM "SkillAssessmentVersion" v JOIN "SkillAssessment" p ON p."id"=v."assessmentId" AND p."revision">=v."revision" JOIN "CommandReceipt" c ON c."id"=NEW."receiptId" JOIN "AuditEvent" a ON a."receiptId"=c."id" WHERE v."id"=NEW."resultAssessmentVersionId" AND v."decisionId"=NEW."id" AND c."commandKind"='RecordPracticeAssessmentDecision' AND c."actorId"=NEW."evaluatorAccountId" AND c."requestId"=NEW."requestId" AND c."resultRef"=NEW."id"::text AND a."ordinal"=0 AND a."eventType"='skill.assessment_decision_recorded.v1' AND a."aggregateId"=NEW."assessmentId"::text AND a."aggregateVersion"=v."revision" AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=NEW."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('practiceAssessmentDecisionId',NEW."id"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Decision requires atomic finalized private case receipt/audit/version/projection' USING ERRCODE='23000'; END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "CommandReceipt" c JOIN "AuditEvent" a ON a."receiptId"=c."id" WHERE c."id"=NEW."caseAccessReceiptId" AND c."actorId"=NEW."evaluatorAccountId" AND c."commandKind"='ReadPracticeTrialForReview' AND c."resultRef"=prior."submissionId"::text AND date_trunc('milliseconds',c."createdAt")<=NEW."decidedAt" AND a."ordinal"=0 AND a."eventType"='skill.practice_review_access_authorized.v1' AND a."aggregateId"=prior."submissionId"::text AND a."aggregateVersion"=1 AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=c."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('practiceReviewAssignmentId',NEW."assignmentId"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Decision requires exact caseAccessReceiptId private source provenance' USING ERRCODE='23000'; END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "CommandReceipt" c JOIN "AuditEvent" a ON a."receiptId"=c."id" WHERE c."id"=NEW."policyAccessReceiptId" AND c."actorId"=NEW."evaluatorAccountId" AND c."commandKind"='ReadApprovedPracticeReviewPolicy' AND c."resultRef"=NEW."policyVersionId"::text AND date_trunc('milliseconds',c."createdAt")<=NEW."decidedAt" AND a."ordinal"=0 AND a."eventType"='skill.practice_review_policy_use_authorized.v1' AND a."aggregateId"=prior."submissionId"::text AND a."aggregateVersion"=1 AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=c."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('practiceReviewPolicyVersionId',NEW."policyVersionId"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Decision requires exact policyAccessReceiptId private source provenance' USING ERRCODE='23000'; END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "CommandReceipt" c JOIN "AuditEvent" a ON a."receiptId"=c."id" WHERE c."id"=NEW."reviewAccessReceiptId" AND c."actorId"=NEW."evaluatorAccountId" AND c."commandKind"='ReadPracticeTrialAssessment' AND c."resultRef"=r."id"::text AND date_trunc('milliseconds',c."createdAt")<=NEW."decidedAt" AND a."ordinal"=0 AND a."eventType"='skill.practice_assessment_review_access_authorized.v1' AND a."aggregateId"=prior."submissionId"::text AND a."aggregateVersion"=r."revision" AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=c."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('practiceAssessmentReviewVersionId',r."id"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Decision requires exact reviewAccessReceiptId private source provenance' USING ERRCODE='23000'; END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "CommandReceipt" c JOIN "AuditEvent" a ON a."receiptId"=c."id" WHERE c."id"=NEW."ownershipAccessReceiptId" AND c."actorId"=NEW."evaluatorAccountId" AND c."commandKind"='ReadPracticeTrialOwnership' AND c."resultRef"=NEW."ownershipVersionId"::text AND date_trunc('milliseconds',c."createdAt")<=NEW."decidedAt" AND a."ordinal"=0 AND a."eventType"='skill.practice_trial_ownership_access_authorized.v1' AND a."aggregateId"=prior."submissionId"::text AND a."aggregateVersion"=ownership_revision AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=c."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('practiceTrialOwnershipVersionId',NEW."ownershipVersionId"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Decision requires exact ownershipAccessReceiptId private source provenance' USING ERRCODE='23000'; END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "CommandReceipt" c JOIN "AuditEvent" a ON a."receiptId"=c."id" WHERE c."id"=NEW."priorAccessReceiptId" AND c."actorId"=NEW."evaluatorAccountId" AND c."commandKind"='ReadPracticeTrialAssessmentState' AND c."resultRef"=prior."id"::text AND date_trunc('milliseconds',c."createdAt")<=NEW."decidedAt" AND a."ordinal"=0 AND a."eventType"='skill.assessment_state_access_authorized.v1' AND a."aggregateId"=prior."assessmentId"::text AND a."aggregateVersion"=prior."revision" AND a."actorId"=NEW."evaluatorAccountId" AND a."correlationId"=c."requestId" AND a."guildId" IS NULL AND a."payload"=jsonb_build_object('skillAssessmentVersionId',prior."id"::text) AND NOT EXISTS(SELECT 1 FROM "OutboxEvent" o WHERE o."eventId"=a."id")) THEN RAISE EXCEPTION 'Decision requires exact priorAccessReceiptId private source provenance' USING ERRCODE='23000'; END IF;
+	 IF NOT EXISTS(SELECT 1 FROM "PracticeTrialReviewAssignment" g JOIN "User" u ON u."id"=g."evaluatorAccountId" AND u."suspended"=false JOIN "PracticeReviewPolicy" p ON p."currentVersionId"=NEW."policyVersionId" WHERE g."id"=NEW."assignmentId" AND g."expiresAt">clock_timestamp() AND NOT EXISTS(SELECT 1 FROM "PracticeTrialReviewRevocation" x WHERE x."assignmentId"=g."id")) THEN RAISE EXCEPTION 'Decision authority must remain current through commit' USING ERRCODE='23000'; END IF;
+	 RETURN NULL;
+	END;
+	$$;
+	CREATE CONSTRAINT TRIGGER assessment_decision_commit_v1 AFTER INSERT ON "PracticeAssessmentDecision" DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION raid_assessment_decision_commit_v1();
+	COMMIT;
+
+2026-10-15 22:10:28.219 UTC [94] ERROR:  current transaction is aborted, commands ignored until end of transaction block
+2026-10-15 22:10:28.219 UTC [94] STATEMENT:  UPDATE "_prisma_migrations" SET "logs" = $1 WHERE "id" = $2
+2026-10-15 22:10:28.389 UTC [1] LOG:  received fast shutdown request
+2026-10-15 22:10:28.390 UTC [1] LOG:  aborting any active transactions
+2026-10-15 22:10:28.395 UTC [1] LOG:  background worker "logical replication launcher" (PID 91) exited with exit code 1
+2026-10-15 22:10:28.396 UTC [86] LOG:  shutting down
+2026-10-15 22:10:28.396 UTC [86] LOG:  checkpoint starting: shutdown immediate
+2026-10-15 22:10:28.400 UTC [86] LOG:  checkpoint complete: wrote 333 buffers (2.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.003 s, total=0.005 s; sync files=470, longest=0.001 s, average=0.001 s; distance=3233 kB, estimate=3233 kB; lsn=0/1C4E268, redo lsn=0/1C4E268
+2026-10-15 22:10:28.406 UTC [1] LOG:  database system is shut down

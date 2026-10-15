@@ -49,6 +49,7 @@ export const EventEnvelopeSchema = z
         practiceReviewPolicyVersionId: InternalId.optional(),
         practiceTrialOwnershipVersionId: InternalId.optional(),
         practiceAssessmentReviewVersionId: InternalId.optional(),
+        practiceAssessmentDecisionId: InternalId.optional(),
         skillAssessmentVersionId: InternalId.optional(),
       })
       .readonly(),

@@ -1,0 +1,23 @@
+{
+  "observed_at": "2026-10-15T22:33:56.959135+00:00",
+  "name": "/raid-t013-assessment-decisions-auto-20261015",
+  "id": "c076ef1b8382c6525b6ff5197239cacc17082ccf7d2ea2eb1cb33260d8175d12",
+  "task_label": "T013-assessment-decisions",
+  "actual_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T22:24:09.292101325Z",
+    "FinishedAt": "2026-10-15T22:32:41.20294348Z"
+  },
+  "all_actual_normal_failure_runs_stop0": true,
+  "no_owned_server_or_preview": true,
+  "unrelated_resources_preserved": true,
+  "runner_signal_evidence": "Verified D2 signal handlers/owned child groups plus D4 bounded CLI/state diagnostics renamed; all current normal/failure stop0/Runningfalse, no new interruption execution claimed"
+}

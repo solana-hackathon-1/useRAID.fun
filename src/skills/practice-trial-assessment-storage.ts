@@ -1188,3 +1188,670 @@ export async function observePracticeTrialAssessmentContext(
   if (!(await permission(tx, actor, input, canRead))) return null;
   return value.data;
 }
+
+const Findings = z
+  .array(
+    z
+      .strictObject({
+        kind: z.enum(['ASSESSMENT_EVIDENCE', 'OWNERSHIP_EVIDENCE', 'CAPABILITY_EVIDENCE']),
+        detail: Text,
+      })
+      .readonly(),
+  )
+  .min(1)
+  .max(20)
+  .readonly();
+export const RecordPracticeAssessmentDecisionInputSchema = z
+  .strictObject({
+    version: z.literal('v1'),
+    assignmentId: z.uuid(),
+    submissionId: z.uuid(),
+    expectedAssessmentReference: Reference,
+    expectedReviewReference: Reference,
+    expectedOwnershipReference: Reference,
+    expectedPolicyReference: Reference,
+    action: z.enum(['REQUIRE_REASSESSMENT', 'REVOKE']),
+    reasonCategory: z.enum(['CAPABILITY_RECHECK', 'FRAUDULENT_ASSESSMENT_EVIDENCE']),
+    reason: Text,
+    findings: Findings,
+    dueAt: Timestamp.nullable(),
+  })
+  .refine((v) =>
+    v.action === 'REVOKE'
+      ? v.reasonCategory === 'FRAUDULENT_ASSESSMENT_EVIDENCE' &&
+        v.dueAt === null &&
+        v.findings.some((f) => f.kind === 'ASSESSMENT_EVIDENCE' || f.kind === 'OWNERSHIP_EVIDENCE')
+      : v.reasonCategory === 'CAPABILITY_RECHECK' &&
+        v.dueAt !== null &&
+        v.findings.some((f) => f.kind === 'CAPABILITY_EVIDENCE'),
+  )
+  .readonly();
+export const PracticeTrialAssessmentStateSchema = z
+  .strictObject({
+    version: z.literal('v1'),
+    private: z.literal(true),
+    assessment: SkillAssessmentSnapshotSchema,
+    assessmentVersionId: z.uuid(),
+    taxonomyId: InternalId,
+    sourceReviewReference: Reference,
+    currentAssessmentReference: Reference,
+    isCurrent: z.boolean(),
+    accessId: z.uuid(),
+    isAuthorizationToken: z.literal(false),
+    createsPermissionGrant: z.literal(false),
+    consumesCapacity: z.literal(false),
+    createsFinancialObligation: z.literal(false),
+  })
+  .refine(
+    (v) =>
+      v.currentAssessmentReference.recordId === v.assessment.reference.recordId &&
+      v.currentAssessmentReference.revision >= v.assessment.reference.revision &&
+      v.isCurrent === same(v.currentAssessmentReference, v.assessment.reference) &&
+      v.sourceReviewReference.recordId === v.assessment.submissionReference.recordId,
+  )
+  .readonly();
+export type PracticeTrialAssessmentState = z.output<typeof PracticeTrialAssessmentStateSchema>;
+export interface PracticeAssessmentDecisionScope {
+  readonly actorAccountId: string;
+  readonly assignmentId: string;
+  readonly participantId: string;
+  readonly taxonomyId: string;
+  readonly skillId: string;
+  readonly skillDomain: string;
+  readonly submissionReference: Readonly<{ recordId: string; revision: number }>;
+  readonly priorAssessmentReference: Readonly<{ recordId: string; revision: number }>;
+  readonly policyVersionId: string;
+  readonly policyReference: Readonly<{ recordId: string; revision: number }>;
+  readonly action: 'REQUIRE_REASSESSMENT' | 'REVOKE';
+  readonly reasonCategory: 'CAPABILITY_RECHECK' | 'FRAUDULENT_ASSESSMENT_EVIDENCE';
+}
+export interface PracticeAssessmentDecisionOptions {
+  readonly allowNewWrites: boolean;
+  readonly canRead: PracticeTrialAssessmentOptions['canRead'];
+  readonly canUsePolicy: PracticeTrialAssessmentOptions['canUsePolicy'];
+  readonly canDecide: (scope: PracticeAssessmentDecisionScope) => boolean;
+}
+export const PracticeAssessmentDecisionRecordSchema = z
+  .strictObject({
+    version: z.literal('v1'),
+    id: z.uuid(),
+    assessmentReference: Reference,
+    priorAssessmentReference: Reference,
+    submissionReference: Reference,
+    caseReviewReference: Reference,
+    ownershipReference: Reference,
+    assignmentId: z.uuid(),
+    policyVersionId: z.uuid(),
+    policyReference: Reference,
+    evaluatorAccountId: InternalId,
+    action: z.enum(['REQUIRE_REASSESSMENT', 'REVOKE']),
+    reasonCategory: z.enum(['CAPABILITY_RECHECK', 'FRAUDULENT_ASSESSMENT_EVIDENCE']),
+    reason: Text,
+    findings: Findings,
+    dueAt: Timestamp.nullable(),
+    decidedAt: Timestamp,
+    persisted: z.literal(true),
+    isAuthorizationToken: z.literal(false),
+    createsPermissionGrant: z.literal(false),
+    consumesCapacity: z.literal(false),
+    createsFinancialObligation: z.literal(false),
+  })
+  .refine(
+    (v) =>
+      v.assessmentReference.recordId === v.priorAssessmentReference.recordId &&
+      v.assessmentReference.revision === v.priorAssessmentReference.revision + 1 &&
+      v.submissionReference.revision === 1 &&
+      v.caseReviewReference.recordId === v.submissionReference.recordId &&
+      v.ownershipReference.recordId === v.submissionReference.recordId &&
+      (v.action === 'REVOKE'
+        ? v.findings.some(
+            (f) => f.kind === 'ASSESSMENT_EVIDENCE' || f.kind === 'OWNERSHIP_EVIDENCE',
+          )
+        : v.findings.some((f) => f.kind === 'CAPABILITY_EVIDENCE')) &&
+      (v.action === 'REVOKE'
+        ? v.reasonCategory === 'FRAUDULENT_ASSESSMENT_EVIDENCE' && v.dueAt === null
+        : v.reasonCategory === 'CAPABILITY_RECHECK' &&
+          v.dueAt !== null &&
+          Date.parse(v.dueAt) > Date.parse(v.decidedAt)),
+  )
+  .readonly();
+export const PracticeAssessmentDecisionViewSchema = z
+  .strictObject({
+    version: z.literal('v1'),
+    private: z.literal(true),
+    decision: PracticeAssessmentDecisionRecordSchema,
+    priorAssessment: SkillAssessmentSnapshotSchema,
+    assessment: SkillAssessmentSnapshotSchema,
+    currentAssessmentReference: Reference,
+    isCurrent: z.boolean(),
+    accessId: z.uuid(),
+    isAuthorizationToken: z.literal(false),
+  })
+  .refine(
+    (v) =>
+      same(v.decision.priorAssessmentReference, v.priorAssessment.reference) &&
+      same(v.decision.assessmentReference, v.assessment.reference) &&
+      v.currentAssessmentReference.recordId === v.assessment.reference.recordId &&
+      v.currentAssessmentReference.revision >= v.assessment.reference.revision &&
+      v.isCurrent === same(v.currentAssessmentReference, v.assessment.reference) &&
+      v.priorAssessment.participantId === v.assessment.participantId &&
+      v.priorAssessment.skillId === v.assessment.skillId &&
+      v.priorAssessment.skillDomain === v.assessment.skillDomain &&
+      same(v.priorAssessment.submissionReference, v.assessment.submissionReference) &&
+      same(v.assessment.submissionReference, v.decision.submissionReference) &&
+      same(v.priorAssessment.definitionReference, v.assessment.definitionReference) &&
+      same(v.priorAssessment.rubricReference, v.assessment.rubricReference) &&
+      v.priorAssessment.evidenceReferences.length === v.assessment.evidenceReferences.length &&
+      v.priorAssessment.evidenceReferences.every((r, i) =>
+        same(r, v.assessment.evidenceReferences[i]),
+      ) &&
+      v.priorAssessment.state !== 'REVOKED' &&
+      (v.decision.action === 'REVOKE' || v.priorAssessment.state === 'VERIFIED') &&
+      Date.parse(v.assessment.issuedAt) >= Date.parse(v.priorAssessment.issuedAt) &&
+      v.priorAssessment.assessedRank === v.assessment.assessedRank &&
+      v.priorAssessment.confidenceStatement === v.assessment.confidenceStatement &&
+      v.priorAssessment.sampleSize === v.assessment.sampleSize &&
+      v.assessment.state ===
+        (v.decision.action === 'REVOKE' ? 'REVOKED' : 'REASSESSMENT_REQUIRED') &&
+      v.assessment.evaluatorAccountId === v.decision.evaluatorAccountId &&
+      v.assessment.assessmentPolicyVersion === v.decision.policyVersionId &&
+      v.assessment.issuedAt === v.decision.decidedAt &&
+      v.assessment.reassessmentAt === v.decision.dueAt,
+  )
+  .readonly();
+export type PracticeAssessmentDecisionView = z.output<typeof PracticeAssessmentDecisionViewSchema>;
+/** Actual committed state for this assigned original case. Audit precedes private snapshot columns. */
+export async function readPracticeTrialAssessmentState(
+  tx: CommandReceiptTransaction,
+  actorValue: SkillTaxonomyActor,
+  inputValue: unknown,
+  canRead: PracticeTrialAssessmentOptions['canRead'],
+): Promise<PracticeTrialAssessmentState | null> {
+  const actor = actorValid(actorValue),
+    p = ReadPracticeTrialAssessmentInputSchema.safeParse(inputValue);
+  if (!p.success) fail('INVALID_INPUT');
+  if (typeof canRead !== 'function') fail('STORAGE_CONTRACT');
+  const input = p.data;
+  let auth = await permission(tx, actor, input, canRead);
+  if (!auth) return null;
+  await lockCase(tx, input.submissionId);
+  await lockSkill(tx, auth.scope.participantId, auth.scope.skillId);
+  auth = await permission(tx, actor, input, canRead);
+  if (!auth) return null;
+  const current = await family(tx, auth.scope.participantId, auth.scope.skillId);
+  if (!current) return null;
+  const revision = input.revision ?? current.revision;
+  const m = await query<{
+    id: string;
+    submissionId: string;
+    reviewVersionId: string;
+    reviewRevision: number;
+  }>(
+    tx,
+    'SELECT v."id"::text,v."submissionId"::text,v."reviewVersionId"::text,r."revision" AS "reviewRevision" FROM "SkillAssessmentVersion" v JOIN "PracticeAssessmentReviewVersion" r ON r."id"=v."reviewVersionId" WHERE v."assessmentId"=$1::uuid AND v."revision"=$2::int',
+    [current.id, String(revision)],
+  );
+  if (!m.length) return null;
+  if (
+    m.length !== 1 ||
+    !z.uuid().safeParse(m[0].id).success ||
+    !z.uuid().safeParse(m[0].reviewVersionId).success
+  )
+    fail('STORAGE_CONTRACT');
+  if (m[0].submissionId !== input.submissionId) return null;
+  if (!(await permission(tx, actor, input, canRead))) return null;
+  const accessId = await random(tx);
+  await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'ReadPracticeTrialAssessmentState',
+      idempotencyKey: accessId,
+      requestId: accessId,
+      request: {
+        version: 'v1',
+        assignmentId: input.assignmentId,
+        submissionId: input.submissionId,
+        revision,
+      },
+    },
+    async () => ({
+      resultRef: m[0].id,
+      events: [
+        {
+          type: 'skill.assessment_state_access_authorized.v1',
+          aggregateId: current.id,
+          aggregateVersion: revision,
+          payload: { skillAssessmentVersionId: m[0].id },
+          publish: false,
+        },
+      ],
+    }),
+  );
+  if (!(await permission(tx, actor, input, canRead))) return null;
+  const assessment = await loadAssessment(tx, m[0].id, m[0].reviewVersionId);
+  const view = PracticeTrialAssessmentStateSchema.safeParse({
+    version: 'v1',
+    private: true,
+    assessment,
+    assessmentVersionId: m[0].id,
+    taxonomyId: current.taxonomyId,
+    sourceReviewReference: { recordId: input.submissionId, revision: m[0].reviewRevision },
+    currentAssessmentReference: { recordId: current.id, revision: current.revision },
+    isCurrent: revision === current.revision,
+    accessId,
+    isAuthorizationToken: false,
+    createsPermissionGrant: false,
+    consumesCapacity: false,
+    createsFinancialObligation: false,
+  });
+  if (!view.success) fail('STORAGE_CONTRACT');
+  if (!(await permission(tx, actor, input, canRead))) return null;
+  return view.data;
+}
+type DecisionRow = {
+  id: string;
+  assessmentId: string;
+  priorAssessmentVersionId: string;
+  resultAssessmentVersionId: string;
+  caseReviewVersionId: string;
+  reviewRevision: number;
+  ownershipVersionId: string;
+  ownershipRevision: number;
+  assignmentId: string;
+  policyVersionId: string;
+  policyId: string;
+  policyRevision: number;
+  evaluatorAccountId: string;
+  action: string;
+  reasonCategory: string;
+  reason: string;
+  findings: unknown;
+  dueAt: Date | null;
+  decidedAt: Date;
+  resultRevision: number;
+  priorRevision: number;
+  reviewVersionId: string;
+  submissionId: string;
+};
+async function decisionView(
+  tx: CommandReceiptTransaction,
+  actor: SkillTaxonomyActor,
+  input: ReadInput,
+  id: string,
+  canRead: PracticeTrialAssessmentOptions['canRead'],
+): Promise<PracticeAssessmentDecisionView | null> {
+  let auth = await permission(tx, actor, input, canRead);
+  if (!auth) return null;
+  await lockCase(tx, input.submissionId);
+  await lockSkill(tx, auth.scope.participantId, auth.scope.skillId);
+  auth = await permission(tx, actor, input, canRead);
+  if (!auth) return null;
+  const current = await family(tx, auth.scope.participantId, auth.scope.skillId);
+  if (!current) return null;
+  const meta = await query<{ submissionId: string; revision: number }>(
+    tx,
+    'SELECT v."submissionId"::text,v."revision" FROM "PracticeAssessmentDecision" d JOIN "SkillAssessmentVersion" v ON v."id"=d."resultAssessmentVersionId" WHERE d."id"=$1::uuid AND v."assessmentId"=$2::uuid',
+    [id, current.id],
+  );
+  if (!meta.length) return null;
+  if (meta.length !== 1) fail('STORAGE_CONTRACT');
+  if (meta[0].submissionId !== input.submissionId) return null;
+  const accessId = await random(tx);
+  await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'ReadPracticeAssessmentDecision',
+      idempotencyKey: accessId,
+      requestId: accessId,
+      request: {
+        version: 'v1',
+        assignmentId: input.assignmentId,
+        submissionId: input.submissionId,
+        decisionId: id,
+      },
+    },
+    async () => ({
+      resultRef: id,
+      events: [
+        {
+          type: 'skill.assessment_decision_access_authorized.v1',
+          aggregateId: current.id,
+          aggregateVersion: meta[0].revision,
+          payload: { practiceAssessmentDecisionId: id },
+          publish: false,
+        },
+      ],
+    }),
+  );
+  if (!(await permission(tx, actor, input, canRead))) return null;
+  const rows = await query<DecisionRow>(
+    tx,
+    'SELECT d.*,r."revision" AS "reviewRevision",o."revision" AS "ownershipRevision",p."policyId",p."revision" AS "policyRevision",v."revision" AS "resultRevision",s."revision" AS "priorRevision",v."reviewVersionId",v."submissionId" FROM "PracticeAssessmentDecision" d JOIN "PracticeAssessmentReviewVersion" r ON r."id"=d."caseReviewVersionId" JOIN "PracticeTrialOwnershipVersion" o ON o."id"=d."ownershipVersionId" JOIN "PracticeReviewPolicyVersion" p ON p."id"=d."policyVersionId" JOIN "SkillAssessmentVersion" v ON v."id"=d."resultAssessmentVersionId" JOIN "SkillAssessmentVersion" s ON s."id"=d."priorAssessmentVersionId" WHERE d."id"=$1::uuid',
+    [id],
+  );
+  if (rows.length !== 1) fail('STORAGE_CONTRACT');
+  const d = rows[0];
+  if (
+    !(d.decidedAt instanceof Date) ||
+    Number.isNaN(d.decidedAt.getTime()) ||
+    (d.dueAt !== null && (!(d.dueAt instanceof Date) || Number.isNaN(d.dueAt.getTime())))
+  )
+    fail('STORAGE_CONTRACT');
+  const priorAssessment = await loadAssessment(tx, d.priorAssessmentVersionId, d.reviewVersionId),
+    assessment = await loadAssessment(tx, d.resultAssessmentVersionId, d.reviewVersionId);
+  const record = {
+    version: 'v1',
+    id: d.id,
+    assessmentReference: assessment.reference,
+    priorAssessmentReference: priorAssessment.reference,
+    submissionReference: { recordId: input.submissionId, revision: 1 },
+    caseReviewReference: { recordId: input.submissionId, revision: d.reviewRevision },
+    ownershipReference: { recordId: input.submissionId, revision: d.ownershipRevision },
+    assignmentId: d.assignmentId,
+    policyVersionId: d.policyVersionId,
+    policyReference: { recordId: d.policyId, revision: d.policyRevision },
+    evaluatorAccountId: d.evaluatorAccountId,
+    action: d.action,
+    reasonCategory: d.reasonCategory,
+    reason: d.reason,
+    findings: d.findings,
+    dueAt: d.dueAt?.toISOString() ?? null,
+    decidedAt: d.decidedAt.toISOString(),
+    persisted: true,
+    isAuthorizationToken: false,
+    createsPermissionGrant: false,
+    consumesCapacity: false,
+    createsFinancialObligation: false,
+  };
+  const view = PracticeAssessmentDecisionViewSchema.safeParse({
+    version: 'v1',
+    private: true,
+    decision: record,
+    priorAssessment,
+    assessment,
+    currentAssessmentReference: { recordId: current.id, revision: current.revision },
+    isCurrent: current.revision === d.resultRevision,
+    accessId,
+    isAuthorizationToken: false,
+  });
+  if (!view.success || d.submissionId !== input.submissionId) fail('STORAGE_CONTRACT');
+  if (!(await permission(tx, actor, input, canRead))) return null;
+  return view.data;
+}
+export async function readPracticeAssessmentDecision(
+  tx: CommandReceiptTransaction,
+  actorValue: SkillTaxonomyActor,
+  inputValue: unknown,
+  canRead: PracticeTrialAssessmentOptions['canRead'],
+): Promise<PracticeAssessmentDecisionView | null> {
+  const actor = actorValid(actorValue),
+    p = ReadPracticeTrialAssessmentInputSchema.safeParse(inputValue);
+  if (!p.success) fail('INVALID_INPUT');
+  if (typeof canRead !== 'function') fail('STORAGE_CONTRACT');
+  const state = await readPracticeTrialAssessmentState(tx, actor, p.data, canRead);
+  if (!state) return null;
+  const rows = await query<{ decisionId: string | null }>(
+    tx,
+    'SELECT "decisionId"::text FROM "SkillAssessmentVersion" WHERE "id"=$1::uuid',
+    [state.assessmentVersionId],
+  );
+  if (rows.length !== 1) fail('STORAGE_CONTRACT');
+  return rows[0].decisionId ? decisionView(tx, actor, p.data, rows[0].decisionId, canRead) : null;
+}
+/** Actual reasoned case and atomic committed state transition. Unknown-success retries preserve original history. */
+export async function recordPracticeAssessmentDecision(
+  tx: CommandReceiptTransaction,
+  command: PracticeTrialAssessmentCommand,
+  options: PracticeAssessmentDecisionOptions,
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; view: PracticeAssessmentDecisionView }> {
+  const actor = actorValid(command?.actor),
+    p = RecordPracticeAssessmentDecisionInputSchema.safeParse(command?.input);
+  if (!p.success) fail('INVALID_INPUT');
+  if (
+    typeof options?.allowNewWrites !== 'boolean' ||
+    typeof options?.canRead !== 'function' ||
+    typeof options?.canUsePolicy !== 'function' ||
+    typeof options?.canDecide !== 'function'
+  )
+    fail('STORAGE_CONTRACT');
+  const input = p.data,
+    readInput = {
+      version: 'v1' as const,
+      assignmentId: input.assignmentId,
+      submissionId: input.submissionId,
+    };
+  let executedScope: PracticeAssessmentDecisionScope | undefined;
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'RecordPracticeAssessmentDecision',
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+      request: input,
+    },
+    async ({ receiptId }) => {
+      if (!(await permission(tx, actor, readInput, options.canRead))) fail('RESOURCE_UNAVAILABLE');
+      if (!options.allowNewWrites) fail('WRITES_DISABLED');
+      let approved = await policy(
+        tx,
+        actor,
+        readInput,
+        input.expectedPolicyReference,
+        options.canUsePolicy,
+      );
+      let evidence;
+      try {
+        evidence = await readPracticeTrialForReview(
+          tx,
+          actor,
+          caseInput(readInput),
+          options.canRead,
+        );
+      } catch (e) {
+        return normalize(e);
+      }
+      if (!evidence) fail('RESOURCE_UNAVAILABLE');
+      await lockCase(tx, input.submissionId);
+      if (!(await permission(tx, actor, readInput, options.canRead))) fail('RESOURCE_UNAVAILABLE');
+      let ownership;
+      try {
+        ownership = await readPracticeTrialOwnership(
+          tx,
+          actor,
+          caseInput(readInput),
+          options.canRead,
+        );
+      } catch (e) {
+        return normalize(e);
+      }
+      if (!ownership) fail('RESOURCE_UNAVAILABLE');
+      if (!same(input.expectedOwnershipReference, ownership.record.reference))
+        fail('REVISION_CHANGED');
+      const context = await observePracticeTrialAssessmentContext(
+        tx,
+        actor,
+        readInput,
+        options.canRead,
+      );
+      if (!context) fail('RESOURCE_UNAVAILABLE');
+      if (
+        !same(context.currentReviewReference, input.expectedReviewReference) ||
+        !same(context.currentAssessmentReference, input.expectedAssessmentReference)
+      )
+        fail('REVISION_CHANGED');
+      const review = await readPracticeTrialAssessment(tx, actor, readInput, options.canRead),
+        prior = await readPracticeTrialAssessmentState(tx, actor, readInput, options.canRead);
+      if (!review || !prior || !prior.isCurrent) fail('RESOURCE_UNAVAILABLE');
+      if (!same(prior.assessment.reference, input.expectedAssessmentReference))
+        fail('REVISION_CHANGED');
+      if (
+        prior.assessment.state === 'REVOKED' ||
+        (input.action === 'REQUIRE_REASSESSMENT' && prior.assessment.state !== 'VERIFIED')
+      )
+        fail('INVALID_INPUT');
+      if (prior.assessment.reference.revision >= 2147483647) fail('REVISION_CHANGED');
+      const [clock] = await query<{ valid: boolean }>(
+        tx,
+        'SELECT ($1::timestamptz IS NULL OR $1::timestamptz>clock_timestamp()) AS valid',
+        [input.dueAt],
+      );
+      if (clock?.valid !== true) fail('INVALID_INPUT');
+      approved = await policy(
+        tx,
+        actor,
+        readInput,
+        input.expectedPolicyReference,
+        options.canUsePolicy,
+      );
+      if (!(await permission(tx, actor, readInput, options.canRead))) fail('RESOURCE_UNAVAILABLE');
+      const scope: PracticeAssessmentDecisionScope = Object.freeze({
+        actorAccountId: actor.accountId,
+        assignmentId: input.assignmentId,
+        participantId: prior.assessment.participantId,
+        taxonomyId: prior.taxonomyId,
+        skillId: prior.assessment.skillId,
+        skillDomain: prior.assessment.skillDomain,
+        submissionReference: prior.assessment.submissionReference,
+        priorAssessmentReference: prior.assessment.reference,
+        policyVersionId: approved.policy.id,
+        policyReference: approved.policy.reference,
+        action: input.action,
+        reasonCategory: input.reasonCategory,
+      });
+      executedScope = scope;
+      if (!allowed(options.canDecide, scope)) fail('RESOURCE_UNAVAILABLE');
+      const caseReceipt = await receipt(
+          tx,
+          actor.accountId,
+          'ReadPracticeTrialForReview',
+          evidence.accessId,
+          input.submissionId,
+        ),
+        policyReceipt = await receipt(
+          tx,
+          actor.accountId,
+          'ReadApprovedPracticeReviewPolicy',
+          approved.accessId,
+          approved.policy.id,
+        ),
+        reviewReceipt = await receipt(
+          tx,
+          actor.accountId,
+          'ReadPracticeTrialAssessment',
+          review.accessId,
+          review.review.id,
+        ),
+        ownershipReceipt = await receipt(
+          tx,
+          actor.accountId,
+          'ReadPracticeTrialOwnership',
+          ownership.accessId,
+          ownership.record.id,
+        ),
+        priorReceipt = await receipt(
+          tx,
+          actor.accountId,
+          'ReadPracticeTrialAssessmentState',
+          prior.accessId,
+          prior.assessmentVersionId,
+        );
+      const id = await random(tx),
+        versionId = await random(tx),
+        revision = prior.assessment.reference.revision + 1;
+      await query(
+        tx,
+        'INSERT INTO "PracticeAssessmentDecision"("id","assessmentId","priorAssessmentVersionId","resultAssessmentVersionId","caseReviewVersionId","ownershipVersionId","assignmentId","policyVersionId","evaluatorAccountId","action","reasonCategory","reason","findings","dueAt","caseAccessReceiptId","policyAccessReceiptId","reviewAccessReceiptId","ownershipAccessReceiptId","priorAccessReceiptId","receiptId","requestId") VALUES($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5::uuid,$6::uuid,$7::uuid,$8::uuid,$9,$10,$11,$12,$13::jsonb,$14::timestamptz,$15::uuid,$16::uuid,$17::uuid,$18::uuid,$19::uuid,$20::uuid,$21) RETURNING "id"',
+        [
+          id,
+          prior.assessment.reference.recordId,
+          prior.assessmentVersionId,
+          versionId,
+          review.review.id,
+          ownership.record.id,
+          input.assignmentId,
+          approved.policy.id,
+          actor.accountId,
+          input.action,
+          input.reasonCategory,
+          input.reason,
+          JSON.stringify(input.findings),
+          input.dueAt,
+          caseReceipt,
+          policyReceipt,
+          reviewReceipt,
+          ownershipReceipt,
+          priorReceipt,
+          receiptId,
+          command.requestId,
+        ],
+      );
+      const versions = await query(
+        tx,
+        'INSERT INTO "SkillAssessmentVersion"("id","assessmentId","participantId","skillId","skillDomain","taxonomyId","revision","state","assessedRank","definitionVersionId","submissionId","ownershipVersionId","policyVersionId","evaluatorAccountId","reviewVersionId","issuedAt","reassessmentAt","confidenceStatement","sampleSize","receiptId","requestId","decisionId") SELECT $1::uuid,p."assessmentId",p."participantId",p."skillId",p."skillDomain",p."taxonomyId",p."revision"+1,CASE WHEN d."action"=\'REVOKE\' THEN \'REVOKED\' ELSE \'REASSESSMENT_REQUIRED\' END,p."assessedRank",p."definitionVersionId",p."submissionId",p."ownershipVersionId",d."policyVersionId",d."evaluatorAccountId",p."reviewVersionId",d."decidedAt",d."dueAt",p."confidenceStatement",p."sampleSize",d."receiptId",d."requestId",d."id" FROM "PracticeAssessmentDecision" d JOIN "SkillAssessmentVersion" p ON p."id"=d."priorAssessmentVersionId" WHERE d."id"=$2::uuid RETURNING "id"',
+        [versionId, id],
+      );
+      if (versions.length !== 1) fail('STORAGE_CONTRACT');
+      const pointer = await query(
+        tx,
+        'UPDATE "SkillAssessment" SET "revision"=$2::int,"currentVersionId"=$3::uuid WHERE "id"=$1::uuid AND "revision"=$4::int RETURNING "id"',
+        [
+          prior.assessment.reference.recordId,
+          String(revision),
+          versionId,
+          String(prior.assessment.reference.revision),
+        ],
+      );
+      if (pointer.length !== 1) fail('REVISION_CHANGED');
+      await policy(tx, actor, readInput, input.expectedPolicyReference, options.canUsePolicy);
+      if (
+        !(await permission(tx, actor, readInput, options.canRead)) ||
+        !allowed(options.canDecide, scope)
+      )
+        fail('RESOURCE_UNAVAILABLE');
+      return {
+        resultRef: id,
+        events: [
+          {
+            type: 'skill.assessment_decision_recorded.v1',
+            aggregateId: prior.assessment.reference.recordId,
+            aggregateVersion: revision,
+            payload: { practiceAssessmentDecisionId: id },
+            publish: false,
+          },
+          {
+            type:
+              input.action === 'REVOKE'
+                ? 'skill.assessment_revoked.v1'
+                : 'skill.assessment_reassessment_required.v1',
+            aggregateId: prior.assessment.reference.recordId,
+            aggregateVersion: revision,
+            payload: { practiceAssessmentDecisionId: id },
+            publish: false,
+          },
+        ],
+      };
+    },
+  );
+  const view = await decisionView(tx, actor, readInput, result.resultRef, options.canRead);
+  if (!view) fail('RESOURCE_UNAVAILABLE');
+  if (result.status === 'EXECUTED') {
+    if (!executedScope) fail('STORAGE_CONTRACT');
+    const approved = await policy(
+      tx,
+      actor,
+      readInput,
+      input.expectedPolicyReference,
+      options.canUsePolicy,
+    );
+    if (
+      !(await permission(tx, actor, readInput, options.canRead)) ||
+      !allowed(options.canUsePolicy, policyUseScope(actor, readInput, approved)) ||
+      !allowed(options.canDecide, executedScope)
+    )
+      fail('RESOURCE_UNAVAILABLE');
+  }
+  return { status: result.status, view };
+}

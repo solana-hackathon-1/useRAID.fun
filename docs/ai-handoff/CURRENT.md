@@ -1,3 +1,45 @@
+# Reasoned assessment decisions686PASS/SELF-EVALUATED; publication next — 2026-10-15T22:33:56.959135+00:00 — Codex /root
+
+Original branch/main3fe09235/PR226postCI WIP preserved; no D6commit. Finalcurrent531PASS498.52s/15files(95D6+119D5+317source)+154pure5.65s+1external1.38s=686freshselected;55planning50.278s separate. Own46-file23installed24audited0vuln/current strict+minimalPG35 consumer/currentRootstrict-production/schema35-generation35/affectedlint0/auditpolicy/freshwholeformatPASS.592source46consumer/full537build exact/no stale files. TimedSELF903.092s; all actual normal/failure fixturesstop0/verifiedRunningfalse/no server-preview. Finalsource has mutableattackfixture/constcleanup; earlier95notdoublecounted. Exact generation/typegen/25oldwholelint baseline reused. All genuineRED/failures preserved in newevidence/review.
+
+Next completionvalidator expected27+7NOT, explicit implementation/pin commits/push/Ref55PR/matched-head merge/exactmainCI; then actual currenteligibility/private Raider assessment view/protected APIUI through2026-10-16T03:36:22Z. SeparateRootdefaultoff/no real seed/liveflags/providers/automaticfraud/account-money effects. FullT013/independent/UAT/business/release/parent55open; actualmainStaging38814499328billing0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Samebranch/solewriter/no delegation. Preserve all WIP/evidence/unrelated services.
+
+---
+
+# Reasoned decisions95PASS/current production+consumer PASS; combined regression running — 2026-10-15T22:26:15.062646+00:00 — Codex /root
+
+Original branch/main3fe09235/PR226postCI WIP preserved; no D6commit. Actual4DTORED9.07s fixedunsupportedfindings/originaldefinition-evidence/revokedprior provenance;95PASS235.14s/3files. CurrentRootstrict/productionWebpackPASS after readonlyattack-fixture typefix; generation35/schemaunchanged reused. Own46files/23installed24audited0vuln/strict+actual minimalPG35 actions/current-historicalstate/retry/withdrawal/revocation/5sstmt2slock5sidlePASS.592source46consumer/full537build code exact/no stalefiles;55planning50.278s/affectedlint0/auditpolicyPASS;25oldwholelint baseline/typegen reused. Freshwholeformat /tmp/raid-t013-assessment-decisions-whole-format.log running(session14605). Finalcurrent531regression(95D6+119D5+317source)+1external /tmp/raid-t013-assessment-decisions-final-affected.log running(session73819), ownfixtureauto-stop pending.114pure unchanged exactsource evidence reusable. Newtestsource final readonlyspread/const fix is in currentcombined run, no further implementation edits pending.
+
+TimedSELF review.json inprogress. Needfinal531/1external/cleanup/freshformat/timedSELF/packet expected27+7NOT/sourcepin/publish/actualCI then currentcommittedeligibility/protected APIUI through2026-10-16T03:36:22Z. Genuine29initialRED40.25s+1auditkeyRED/missingRootsuite; initialSQLCASEsyntax failure/source/dockerdiagnostic/policywithdrawaltestwrongrevision/readonlyTSerrors/lintwarnings retained; assertionspreserved. Latesthelpers /tmp/raid-t013-assessment-decisions-{db-run,affected-run,evidence,final-code-check,consumer-run,format-snapshot}.py; consumerpath /tmp/raid-t013-assessment-decisions-consumer-path; ownRoot /tmp/raid-t008-build-source-2xavo66l.
+
+SeparateRootdefaultoff/no real seed/flags/providers/automaticfraud/account-money effects. FullT013/independent/UAT/business/release/parent55open. MainStaging38814499328billing0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Solewriter/no delegation/branchswitch; preserve evidence/unrelated services.
+
+---
+
+# Reasoned assessment decisions91PASS; reusable DTO provenance next — 2026-10-15T22:18:53.867499+00:00 — Codex /root
+
+Original branch/main3fe09235/PR226postCI WIP preserved; no D6commit. Genuine29RED40.25s+opaqueaudit1RED/missingRootsuite before code. Core35PASS52.88s, expanded91PASS169.31s/3files actualPG35;55planning50.278s/schema35generation-currentRoottypes/own23install24audited0vuln/consumerstrictPASS. SQLCASEsyntax failure/source/dockerdiagnostic and policywithdrawaltest revision mismatch retained/corrected without weakening upstream assertions. All actual fixturesstop0/Runningfalse; no preview. TimedSELF nowstarted review.json.
+
+DTO provenance4controls RED run pending, then fixes/current fullsuite/ownPG35consumer/affected+mandatory gates/sourceproof/freshformat/full27+7expected missing/timedSELF/publication/exactmainCI. Then current committedeligibility/protected APIUI through2026-10-16T03:36:22Z. SeparateRootdefaultoff/no seeds/liveflags/providers/automaticfraud/account-money effects. FullT013/independent/UAT/business/release/parent55open; mainStaging38814499328billing0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Solewriter/no delegation/branchswitch; preserve evidence/unrelated services.
+
+---
+
+# Reasoned assessment decisions genuine29RED; implementation gates underway — 2026-10-15T22:11:46.883507+00:00 — Codex /root
+
+Original branch/main3fe09235/PR226postCI WIP preserved. D6 task acceptance recorded docs/tasks/2026-10-16-T013-assessment-decisions.md.29genuine behaviorFAIL40.25s actualPG34 typed placeholders plus opaqueauditkeyRED1/missingRootsuite before implementation, source/rawlogs retained. Additive35 actual immutable PracticeAssessmentDecision/currentversionprovenance/manualcapability orfraudevidence transitions/Rootseparatedefaultoff/privatecurrent-historicalstate firstpass. InitialSQL migration failed unparenthesizedCASE in IF expression; originalsource/dockerdiagnostic preserved, fixedparentheses, actual35DDLdeployPASS; firstschemaCLI lackedDATABASE_URL (no codechange), retryexplicit synthetic env. Current green2 tests running. All priorfixturesstop0/Runningfalse, no server/preview.
+
+Next inspectreal GREEN/fixwithassertionsintact, expand provenance/rawSQL/CAS/currentauthority/privateaudit/finalscope controls; own independentPG35consumer/docs/gates/timedSELF/packet/authorizepublish+actualCI. Then committedeligibility/protectedAPIUI through2026-10-16T03:36:22Z. Samebranch/solewriter/no delegation/real seeds/flags/providerchange. FullT01327+7/independent/UAT/business/release/parent55open; actualmainStaging38814499328billing0steps/manualoriginaldisabled/no restore/no unchangedredispatch.
+
+---
+
+# Actual manual assessments merged; reasoned reassessment next — 2026-10-15T22:04:46.525480+00:00 — Codex /root
+
+PR226/main3fe09235a267930a0f51ff0d5d5db4acb18c5421 entiretree==pinba2f2da/all586source45consumer exact; implementationfe82060. Final119+432same-task unchanged=551selectedPASS/55planning63.027s/currentactualPG34consumer/types-build/lint-format/schema-auditPASS; timedSELF3495.121s. Actual Staging38814499328 billingbefore0steps/no image-deploymentverified. Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. PostCI metadata WIP preserved nextcommit. Full27+7/independent/UAT/business/release/parent55 open; all ownedresourcesstopped/no preview.
+
+Next D6 reasoned actual capability reassessment/fraudrevocation, immutablehistory/currenteligibility under actual case/current grant/policy/ownSession/namespace/CAS, then protected APIUI. No label/claim/clientproposal becomes authority; no automaticfraud from reliability/similarity/network/AI signal, no account/money/accesspunishment. Actual one-caseMANUALE-A/S-automationsourcesunsupported. Active original12hwindow through2026-10-16T03:36:22Z/09:21Nepal16Oct. Samebranch/solewriter/no delegation/branchswitch/seeds/flags/providers. Preserve evidence/unrelated services.
+
+---
+
 # Assessment implementation committed; source pin and staging publication — 2026-10-15T22:03:17.241839+00:00 — Codex /root
 
 Implementation fe82060f38501ff89b999e2564df38cae2d971be on original branch. Final119+432reused=551selectedPASS/55planning; actualPG34ownconsumer/currenttypes-build/sourceproof/freshformat/timedSELF3495.121s. Completionvalidator expectedexit1 exactly27criteria+7hosted missing, no metadataerrors. Next metadata-only pin/push/Ref55PR/matchedheadmerge/exact-mainCI; then reasoned reassessment/currenteligibility/APIUI through2026-10-16T03:36:22Z. FullT013/independent/UAT/business/release remainNOTVERIFIED. No owned running resources/preview/seeds/liveflags/providers. Solewriter/no delegation/branchswitch.

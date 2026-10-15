@@ -6,6 +6,7 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+ assessmentDecisions PracticeAssessmentDecision[]
   practiceAssessmentReviewVersions PracticeAssessmentReviewVersion[]
   skillAssessmentVersions SkillAssessmentVersion[]
   practiceTrialOwnershipVersions PracticeTrialOwnershipVersion[]
@@ -646,6 +647,12 @@ model XEndpointState {
 // Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
 // additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
 model CommandReceipt {
+ assessmentDecision PracticeAssessmentDecision? @relation("AssessmentDecisionReceipt")
+ assessmentDecisionCaseAccess PracticeAssessmentDecision[] @relation("DecisionCaseAccess")
+ assessmentDecisionPolicyAccess PracticeAssessmentDecision[] @relation("DecisionPolicyAccess")
+ assessmentDecisionReviewAccess PracticeAssessmentDecision[] @relation("DecisionReviewAccess")
+ assessmentDecisionOwnershipAccess PracticeAssessmentDecision[] @relation("DecisionOwnershipAccess")
+ assessmentDecisionPriorAccess PracticeAssessmentDecision[] @relation("DecisionPriorAccess")
   practiceAssessmentReviewVersion PracticeAssessmentReviewVersion? @relation("AssessmentReviewReceipt")
   assessmentCaseAccesses PracticeAssessmentReviewVersion[] @relation("AssessmentCaseAccess")
   assessmentPolicyAccesses PracticeAssessmentReviewVersion[] @relation("AssessmentPolicyAccess")
@@ -985,6 +992,7 @@ model PracticeTrialSubmission {
 }
 
 model PracticeTrialReviewAssignment {
+ assessmentDecisions PracticeAssessmentDecision[]
   assessmentReviewVersions PracticeAssessmentReviewVersion[]
   ownershipVersions PracticeTrialOwnershipVersion[]
  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1030,6 +1038,7 @@ model PracticeReviewPolicy {
  @@unique([id,definitionVersionId,purpose],map:"PracticeReviewPolicy_family_key")
 }
 model PracticeReviewPolicyVersion {
+ assessmentDecisions PracticeAssessmentDecision[]
   assessmentReviewVersions PracticeAssessmentReviewVersion[]
   skillAssessmentVersions SkillAssessmentVersion[]
   ownershipVersions PracticeTrialOwnershipVersion[]
@@ -1060,6 +1069,7 @@ model PracticeTrialOwnership {
  currentVersion PracticeTrialOwnershipVersion @relation("CurrentTrialOwnership",fields:[currentVersionId,submissionId,revision],references:[id,submissionId,revision],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnership_version_fkey")
 }
 model PracticeTrialOwnershipVersion {
+ assessmentDecisions PracticeAssessmentDecision[]
   assessmentReviewVersions PracticeAssessmentReviewVersion[]
   skillAssessmentVersions SkillAssessmentVersion[]
  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1098,6 +1108,7 @@ model PracticeAssessmentReview {
  currentVersion PracticeAssessmentReviewVersion @relation("AssessmentReviewPointer",fields:[currentVersionId,submissionId,revision],references:[id,submissionId,revision],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentReview_version_fkey")
 }
 model PracticeAssessmentReviewVersion {
+ assessmentDecisions PracticeAssessmentDecision[]
  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
  submissionId String @db.Uuid
  revision Int
@@ -1126,7 +1137,7 @@ model PracticeAssessmentReviewVersion {
  evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentReviewVersion_evaluator_fkey")
  ownership PracticeTrialOwnershipVersion? @relation(fields:[ownershipVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentReviewVersion_ownership_fkey")
  assessmentVersion SkillAssessmentVersion? @relation("ReviewIssuedAssessment",fields:[assessmentVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentReviewVersion_assessment_fkey")
- assessmentSourceFor SkillAssessmentVersion? @relation("AssessmentSourceReview")
+ assessmentSourceFor SkillAssessmentVersion[] @relation("AssessmentSourceReview")
  caseAccess CommandReceipt @relation("AssessmentCaseAccess",fields:[caseAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentReviewVersion_case_access_fkey")
  policyAccess CommandReceipt @relation("AssessmentPolicyAccess",fields:[policyAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentReviewVersion_policy_access_fkey")
  ownershipAccess CommandReceipt? @relation("AssessmentOwnershipAccess",fields:[ownershipAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentReviewVersion_ownership_access_fkey")
@@ -1135,6 +1146,7 @@ model PracticeAssessmentReviewVersion {
  @@unique([id,submissionId,revision],map:"PracticeAssessmentReviewVersion_pointer_key")
 }
 model SkillAssessment {
+ decisions PracticeAssessmentDecision[]
  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
  participantId String @db.Uuid
  skillId String
@@ -1150,6 +1162,9 @@ model SkillAssessment {
  @@unique([id,participantId,skillId,skillDomain,taxonomyId],map:"SkillAssessment_family_key")
 }
 model SkillAssessmentVersion {
+ decision PracticeAssessmentDecision? @relation("AssessmentDecisionProvenance",fields:[decisionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"SkillAssessmentVersion_decision_fkey")
+ priorForDecisions PracticeAssessmentDecision[] @relation("DecisionPrior")
+ resultForDecision PracticeAssessmentDecision? @relation("DecisionResult")
  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
  assessmentId String @db.Uuid
  participantId String @db.Uuid
@@ -1164,7 +1179,8 @@ model SkillAssessmentVersion {
  ownershipVersionId String @db.Uuid
  policyVersionId String @db.Uuid
  evaluatorAccountId String
- reviewVersionId String @unique(map:"SkillAssessmentVersion_review_key") @db.Uuid
+ reviewVersionId String @db.Uuid
+ decisionId String? @unique(map:"SkillAssessmentVersion_decision_key") @db.Uuid
  issuedAt DateTime @db.Timestamptz(3)
  reassessmentAt DateTime? @db.Timestamptz(3)
  confidenceStatement String
@@ -1183,4 +1199,45 @@ model SkillAssessmentVersion {
  receipt CommandReceipt @relation("SkillAssessmentReceipt",fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"SkillAssessmentVersion_receipt_fkey")
  @@unique([assessmentId,revision],map:"SkillAssessmentVersion_revision_key")
  @@unique([id,assessmentId,participantId,skillId,skillDomain,taxonomyId,revision],map:"SkillAssessmentVersion_pointer_key")
+}
+
+// Partial original-review uniqueness is SQL-owned: WHERE decisionId IS NULL.
+model PracticeAssessmentDecision {
+ id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+ assessmentId String @db.Uuid
+ priorAssessmentVersionId String @db.Uuid
+ resultAssessmentVersionId String @unique(map:"PracticeAssessmentDecision_result_key") @db.Uuid
+ caseReviewVersionId String @db.Uuid
+ ownershipVersionId String @db.Uuid
+ assignmentId String @db.Uuid
+ policyVersionId String @db.Uuid
+ evaluatorAccountId String
+ action String
+ reasonCategory String
+ reason String
+ findings Json @db.JsonB
+ dueAt DateTime? @db.Timestamptz(3)
+ decidedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+ caseAccessReceiptId String @db.Uuid
+ policyAccessReceiptId String @db.Uuid
+ reviewAccessReceiptId String @db.Uuid
+ ownershipAccessReceiptId String @db.Uuid
+ priorAccessReceiptId String @db.Uuid
+ receiptId String @unique(map:"PracticeAssessmentDecision_receipt_key") @db.Uuid
+ requestId String
+ family SkillAssessment @relation(fields:[assessmentId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_family_fkey")
+ prior SkillAssessmentVersion @relation("DecisionPrior",fields:[priorAssessmentVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_prior_fkey")
+ result SkillAssessmentVersion @relation("DecisionResult",fields:[resultAssessmentVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_result_fkey")
+ provenanceFor SkillAssessmentVersion? @relation("AssessmentDecisionProvenance")
+ review PracticeAssessmentReviewVersion @relation(fields:[caseReviewVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_review_fkey")
+ ownership PracticeTrialOwnershipVersion @relation(fields:[ownershipVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_ownership_fkey")
+ assignment PracticeTrialReviewAssignment @relation(fields:[assignmentId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_assignment_fkey")
+ policy PracticeReviewPolicyVersion @relation(fields:[policyVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_policy_fkey")
+ evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_evaluator_fkey")
+ caseAccess CommandReceipt @relation("DecisionCaseAccess",fields:[caseAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_case_access_fkey")
+ policyAccess CommandReceipt @relation("DecisionPolicyAccess",fields:[policyAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_policy_access_fkey")
+ reviewAccess CommandReceipt @relation("DecisionReviewAccess",fields:[reviewAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_review_access_fkey")
+ ownershipAccess CommandReceipt @relation("DecisionOwnershipAccess",fields:[ownershipAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_ownership_access_fkey")
+ priorAccess CommandReceipt @relation("DecisionPriorAccess",fields:[priorAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_prior_access_fkey")
+ receipt CommandReceipt @relation("AssessmentDecisionReceipt",fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_receipt_fkey")
 }
