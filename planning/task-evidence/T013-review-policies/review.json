@@ -43,5 +43,6 @@
   "metadata_invocations": [
     "Finalization first attempted consumer hash paths relative to Root instead of example: FileNotFoundError before any source or metadata edits. Corrected base path; no behavior/gate repeated or source modified.",
     "Mandatory cached diffcheck blocked commit for trailing whitespace in readable initial RED log; stripped readable whitespace, original raw .gz retained unchanged, then cached check passed."
-  ]
+  ],
+  "implementation_sha": "ad032016e629de562a06d9edc238f9241cd1280a"
 }

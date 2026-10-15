@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual immutable original definition/rubric and current X-admin scoped policy publication with canonical one family per definitionVersion/purpose. Actual D1 scoped evaluator/current own session/assignment and same held current-policy scope mutex, private audit before guidance. Own installed real minimalPG consumer declares every dependency.",
   "open_decisions": "O09 numeric calibration/O11 retention/staffed operating approval remainOPEN; APPROVED platform data is not external terms/calibration/release signoff, no content or defaults seeded. Actual ownership/assessment/fraud/projection/APIUI and independent acceptance next.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-  "candidate_sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-  "source_identity": "Basef29e821 plus exact uncommitted124source/40consumer hashes matching actual own verified build/installation; original RED sources retained, authorized implementationSHA will be pinned.",
+  "code_source_sha": "ad032016e629de562a06d9edc238f9241cd1280a",
+  "candidate_sha": "ad032016e629de562a06d9edc238f9241cd1280a",
+  "source_identity": "Implementation ad032016e629de562a06d9edc238f9241cd1280a; exact124source/40ownconsumer manifest matches own verified build/installation; subsequent pin metadata-only",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinned PostgreSQL16; own generated32 build/current strict/production/independent23package24audited0vuln consumer; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "40behaviorFAIL15.02s+5host/eventFAIL; malformed literal-backslash fixtures corrected before productioncode with8real malformedFAIL901ms separately. Observer1FAIL1.40s; expiredassignment after policy wait callback1vs0 FAIL3.74s (oldcode delivered no guidance)."
     },
     "green": {
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "sha": "ad032016e629de562a06d9edc238f9241cd1280a",
       "command": "ActualPG32 final3newfiles and independently installed strict/current real minimalPG32 consumer",
       "evidence_url": "planning/task-evidence/T013-review-policies/final-db.log; consumer-install-types.log; consumer.log; source-hashes.json; consumer-source-hashes.json",
       "result": "PASS",
       "observed": "82PASS40.70s final source (earlier45/47/82 retained); own23installed24audited0vuln strict/current realPG/current observation/exact version/canonical scope/withdraw-reapprove/history/replay/revocation/localboundsPASS; all124source/40consumer files exact, everyfixturestop0."
     },
     "refactor": {
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "sha": "ad032016e629de562a06d9edc238f9241cd1280a",
       "command": "Canonical immutable source and held scoped policy resolution after waits; rawSQL/control/provenance/concurrency/audit, meaningful affected and mandatory gates",
       "evidence_url": "planning/task-evidence/T013-review-policies/final-db.log; affected-pure.log; planning.log; generate32.log; typecheck.log; final-typecheck.log; production-build.log; schema-validate.log; lint.log; final-affected-lint.log; audit.log; review.json",
       "result": "PASS",
