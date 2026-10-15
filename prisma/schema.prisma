@@ -6,6 +6,10 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  issuedPracticeReviewAssignments PracticeTrialReviewAssignment[] @relation("PracticeReviewIssuer")
+  evaluatedPracticeReviewAssignments PracticeTrialReviewAssignment[] @relation("PracticeReviewEvaluator")
+  practiceReviewRevocations PracticeTrialReviewRevocation[] @relation("PracticeReviewRevoker")
+
   id String @id @default(cuid())
   xId String? @unique
   handle String
@@ -654,6 +658,8 @@ model CommandReceipt {
   @@unique([actorId, commandKind, idempotencyKey])
   practiceTrialStart PracticeTrialStart?
   practiceTrialSubmission PracticeTrialSubmission?
+  practiceTrialReviewAssignment PracticeTrialReviewAssignment?
+  practiceTrialReviewRevocation PracticeTrialReviewRevocation?
 }
 model InboxDelivery {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -949,5 +955,37 @@ model PracticeTrialSubmission {
   requestId String
   start PracticeTrialStart @relation(fields: [startId, participantId, accountId], references: [id, participantId, accountId], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialSubmission_start_fkey")
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialSubmission_receipt_fkey")
+  reviewAssignments PracticeTrialReviewAssignment[]
   @@unique([id, revision], map: "PracticeTrialSubmission_reference_key")
+}
+
+model PracticeTrialReviewAssignment {
+ id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+ submissionId String @db.Uuid
+ evaluatorAccountId String
+ purpose String
+ expiresAt DateTime @db.Timestamptz(3)
+ reason String
+ issuedByAccountId String
+ issuedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+ receiptId String @unique(map: "PracticeTrialReviewAssignment_receipt_key") @db.Uuid
+ requestId String
+ submission PracticeTrialSubmission @relation(fields:[submissionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewAssignment_submission_fkey")
+ evaluator User @relation("PracticeReviewEvaluator",fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewAssignment_evaluator_fkey")
+ issuer User @relation("PracticeReviewIssuer",fields:[issuedByAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewAssignment_issuer_fkey")
+ receipt CommandReceipt @relation(fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewAssignment_receipt_fkey")
+ revocation PracticeTrialReviewRevocation?
+ @@index([evaluatorAccountId,submissionId,purpose],map:"PracticeTrialReviewAssignment_scope_idx")
+}
+model PracticeTrialReviewRevocation {
+ id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+ assignmentId String @unique(map:"PracticeTrialReviewRevocation_assignment_key") @db.Uuid
+ reason String
+ revokedByAccountId String
+ revokedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+ receiptId String @unique(map:"PracticeTrialReviewRevocation_receipt_key") @db.Uuid
+ requestId String
+ assignment PracticeTrialReviewAssignment @relation(fields:[assignmentId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewRevocation_assignment_fkey")
+ actor User @relation("PracticeReviewRevoker",fields:[revokedByAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewRevocation_actor_fkey")
+ receipt CommandReceipt @relation(fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewRevocation_receipt_fkey")
 }

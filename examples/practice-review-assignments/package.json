@@ -1,0 +1,24 @@
+{
+  "name": "raid-practice-review-assignment-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "migrate": "tsx migrate.ts",
+    "start": "tsx host.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "pg": "8.23.1",
+    "zod": "4.6.5",
+    "bs58": "6.0.0",
+    "tsx": "4.23.15"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "22.20.4"
+  }
+}

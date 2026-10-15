@@ -1,0 +1,538 @@
+raid-t013-review-assignments-auto-20261015
+OWNED DATABASE: raid-t013-review-assignments-auto-20261015 loopback port 32892
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32892"
+
+30 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-assignment-db.test.ts (35 tests | 35 failed) 9953ms
+     × issues exact immutable scope and authorizes actual designated evaluator only 777ms
+     × keeps original issue receipt after disabled writes, retirement, expiry and revocation without claiming current access 568ms
+     × revokes immutably with original receipt and no automatic alternate-key duplicate 499ms
+     × accepts separately explicit OWNERSHIP_REVIEW purpose without confirming work 414ms
+     × accepts separately explicit ASSESSMENT_REVIEW purpose without confirming work 410ms
+     × denies direct self review even when policy would grant 367ms
+     × does not let new writes proceed when default host configuration is off 377ms
+     × requires current actual X-admin management authority: wallet 349ms
+     × requires current actual X-admin management authority: CREATOR 345ms
+     × requires current actual X-admin management authority: no-x 288ms
+     × requires current actual X-admin management authority: suspended 286ms
+     × requires current actual X-admin management authority: expired 368ms
+     × requires current actual X-admin management authority: deleted 375ms
+     × requires evaluator current identity at use: suspended 279ms
+     × requires evaluator current identity at use: expired 327ms
+     × requires evaluator current identity at use: deleted 293ms
+     × requires evaluator current identity at use: foreign-session 311ms
+     × requires existing unrestricted evaluator and actual submission at issue 275ms
+     × requires exact true scoped host policy, got false 278ms
+     × requires exact true scoped host policy, got undefined 288ms
+     × requires exact true scoped host policy, got true 283ms
+     × fails closed when scoped policy throws 272ms
+     × never grants an already expired scope and does not extend elapsed authority 285ms
+     × keeps submission bodies out of receipts/audits/outbox and creates only actual scoped records 268ms
+     × SQL preserves immutable issued history UPDATE "PracticeTrialReviewAssignment" SET "reason"='rewritten' WHERE "id"=$1::uuid 269ms
+     × SQL preserves immutable issued history DELETE FROM "PracticeTrialReviewAssignment" WHERE "id"=$1::uuid 394ms
+     × SQL preserves immutable revocation history UPDATE "PracticeTrialReviewRevocation" SET "reason"='rewritten' WHERE "id"=$1::uuid 362ms
+     × SQL preserves immutable revocation history DELETE FROM "PracticeTrialReviewRevocation" WHERE "id"=$1::uuid 328ms
+   × rejects malformed new assignment before any SQL { reason: ' ' } 2ms
+   × rejects malformed new assignment before any SQL { expiresAt: 'invalid' } 1ms
+   × rejects malformed new assignment before any SQL { expiresAt: '2030-01-01T00:00:00.1234Z' } 1ms
+   × rejects malformed new assignment before any SQL { purpose: 'ALL' } 1ms
+   × rejects malformed new assignment before any SQL { submissionId: 'x' } 1ms
+   × rejects malformed new assignment before any SQL { evaluatorAccountId: '' } 1ms
+   × rejects malformed new assignment before any SQL { extra: true } 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 35 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > issues exact immutable scope and authorizes actual designated evaluator only
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:210:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > keeps original issue receipt after disabled writes, retirement, expiry and revocation without claiming current access
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:230:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > revokes immutably with original receipt and no automatic alternate-key duplicate
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:242:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > accepts separately explicit OWNERSHIP_REVIEW purpose without confirming work
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > accepts separately explicit ASSESSMENT_REVIEW purpose without confirming work
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:256:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > denies direct self review even when policy would grant
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'SELF_REVIEW_FORBIDDEN' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "SELF_REVIEW_FORBIDDEN",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:274:6
+    272|         canManage: () => true,
+    273|       }),
+    274|     ).rejects.toMatchObject({ code: 'SELF_REVIEW_FORBIDDEN' });
+       |      ^
+    275|   });
+    276|   it('does not let new writes proceed when default host configuration …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > does not let new writes proceed when default host configuration is off
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'WRITES_DISABLED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "WRITES_DISABLED",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:279:6
+    277|     await expect(
+    278|       issue(grantInput(), publisher, { ...policy, allowNewWrites: fals…
+    279|     ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
+       |      ^
+    280|     const g = await issue();
+    281|     await expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires current actual X-admin management authority: wallet
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires current actual X-admin management authority: CREATOR
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires current actual X-admin management authority: no-x
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'FORBIDDEN' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:307:28
+    305|       if (change === 'deleted')
+    306|         await db.session.delete({ where: { tokenHash: publisher.sessio…
+    307|       await expect(issue()).rejects.toMatchObject({
+       |                            ^
+    308|         code:
+    309|           change === 'suspended'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires current actual X-admin management authority: suspended
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'ACCOUNT_RESTRICTED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "ACCOUNT_RESTRICTED",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:307:28
+    305|       if (change === 'deleted')
+    306|         await db.session.delete({ where: { tokenHash: publisher.sessio…
+    307|       await expect(issue()).rejects.toMatchObject({
+       |                            ^
+    308|         code:
+    309|           change === 'suspended'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires current actual X-admin management authority: expired
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires current actual X-admin management authority: deleted
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'AUTHENTICATION_REQUIRED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:307:28
+    305|       if (change === 'deleted')
+    306|         await db.session.delete({ where: { tokenHash: publisher.sessio…
+    307|       await expect(issue()).rejects.toMatchObject({
+       |                            ^
+    308|         code:
+    309|           change === 'suspended'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: suspended
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: expired
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: deleted
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: foreign-session
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:320:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires existing unrestricted evaluator and actual submission at issue
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'RESOURCE_UNAVAILABLE' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:340:73
+    338|   );
+    339|   it('requires existing unrestricted evaluator and actual submission a…
+    340|     await expect(issue({ ...grantInput(), submissionId: randomUUID() }…
+       |                                                                         ^
+    341|       code: 'RESOURCE_UNAVAILABLE',
+    342|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires exact true scoped host policy, got false
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires exact true scoped host policy, got undefined
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires exact true scoped host policy, got true
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'FORBIDDEN' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:354:8
+    352|       await expect(
+    353|         issue(grantInput(), publisher, { ...policy, canManage: () => v…
+    354|       ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+       |        ^
+    355|       const g = await issue();
+    356|       expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > fails closed when scoped policy throws
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:377:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > never grants an already expired scope and does not extend elapsed authority
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'EXPIRY_INVALID' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "EXPIRY_INVALID",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:385:6
+    383|     await expect(
+    384|       issue({ ...grantInput(), expiresAt: new Date(0).toISOString() }),
+    385|     ).rejects.toMatchObject({ code: 'EXPIRY_INVALID' });
+       |      ^
+    386|     const body = { ...grantInput(), expiresAt: new Date(Date.now() + 5…
+    387|       key = randomUUID();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > keeps submission bodies out of receipts/audits/outbox and creates only actual scoped records
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:396:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable issued history UPDATE "PracticeTrialReviewAssignment" SET "reason"='rewritten' WHERE "id"=$1::uuid
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable issued history DELETE FROM "PracticeTrialReviewAssignment" WHERE "id"=$1::uuid
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:413:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable revocation history UPDATE "PracticeTrialReviewRevocation" SET "reason"='rewritten' WHERE "id"=$1::uuid
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable revocation history DELETE FROM "PracticeTrialReviewRevocation" WHERE "id"=$1::uuid
+PracticeReviewAssignmentError: STORAGE_UNAVAILABLE
+ ❯ issuePracticeReviewAssignment src/skills/practice-review-assignment-storage.ts:48:9
+     46|   _options: PracticeReviewAssignmentOptions,
+     47| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; assignment: PracticeRevi…
+     48|   throw new PracticeReviewAssignmentError('STORAGE_UNAVAILABLE');
+       |         ^
+     49| }
+     50| export async function revokePracticeReviewAssignment(
+ ❯ tests/practice-review-assignment-db.test.ts:159:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:421:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/35]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > rejects malformed new assignment before any SQL { reason: ' ' }
+ FAIL  tests/practice-review-assignment-db.test.ts > rejects malformed new assignment before any SQL { expiresAt: 'invalid' }
+ FAIL  tests/practice-review-assignment-db.test.ts > rejects malformed new assignment before any SQL { expiresAt: '2030-01-01T00:00:00.1234Z' }
+ FAIL  tests/practice-review-assignment-db.test.ts > rejects malformed new assignment before any SQL { purpose: 'ALL' }
+ FAIL  tests/practice-review-assignment-db.test.ts > rejects malformed new assignment before any SQL { submissionId: 'x' }
+ FAIL  tests/practice-review-assignment-db.test.ts > rejects malformed new assignment before any SQL { evaluatorAccountId: '' }
+ FAIL  tests/practice-review-assignment-db.test.ts > rejects malformed new assignment before any SQL { extra: true }
+AssertionError: expected PracticeReviewAssignmentError: STORAGE_UN… { code: '…' } to match object { code: 'INVALID_INPUT' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ PracticeReviewAssignmentError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:464:4
+    462|       { allowNewWrites: true, canManage: () => true },
+    463|     ),
+    464|   ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+       |    ^
+    465|   expect(queries).toBe(0);
+    466| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/35]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  35 failed (35)
+   Start at  23:32:16
+   Duration  10.75s (transform 328ms, setup 0ms, import 579ms, tests 9.95s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-review-assignments-auto-20261015

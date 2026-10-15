@@ -1,0 +1,376 @@
+raid-t013-review-assignments-auto-20261015
+OWNED DATABASE: raid-t013-review-assignments-auto-20261015 loopback port 32893
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32893"
+
+31 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-assignment-db.test.ts (35 tests | 21 failed) 11354ms
+     × issues exact immutable scope and authorizes actual designated evaluator only 479ms
+     × keeps original issue receipt after disabled writes, retirement, expiry and revocation without claiming current access 339ms
+     × revokes immutably with original receipt and no automatic alternate-key duplicate 339ms
+     × accepts separately explicit OWNERSHIP_REVIEW purpose without confirming work 338ms
+     × accepts separately explicit ASSESSMENT_REVIEW purpose without confirming work 334ms
+     × does not let new writes proceed when default host configuration is off 397ms
+     × requires evaluator current identity at use: suspended 367ms
+     × requires evaluator current identity at use: expired 426ms
+     × requires evaluator current identity at use: deleted 400ms
+     × requires evaluator current identity at use: foreign-session 370ms
+     × requires existing unrestricted evaluator and actual submission at issue 367ms
+     × requires exact true scoped host policy, got false 345ms
+     × requires exact true scoped host policy, got undefined 384ms
+     × requires exact true scoped host policy, got true 358ms
+     × fails closed when scoped policy throws 373ms
+     × never grants an already expired scope and does not extend elapsed authority 389ms
+     × keeps submission bodies out of receipts/audits/outbox and creates only actual scoped records 370ms
+     × SQL preserves immutable issued history UPDATE "PracticeTrialReviewAssignment" SET "reason"='rewritten' WHERE "id"=$1::uuid 480ms
+     × SQL preserves immutable issued history DELETE FROM "PracticeTrialReviewAssignment" WHERE "id"=$1::uuid 632ms
+     × SQL preserves immutable revocation history UPDATE "PracticeTrialReviewRevocation" SET "reason"='rewritten' WHERE "id"=$1::uuid 805ms
+     × SQL preserves immutable revocation history DELETE FROM "PracticeTrialReviewRevocation" WHERE "id"=$1::uuid 683ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 21 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > issues exact immutable scope and authorizes actual designated evaluator only
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:210:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > keeps original issue receipt after disabled writes, retirement, expiry and revocation without claiming current access
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:230:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > revokes immutably with original receipt and no automatic alternate-key duplicate
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:242:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > accepts separately explicit OWNERSHIP_REVIEW purpose without confirming work
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > accepts separately explicit ASSESSMENT_REVIEW purpose without confirming work
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:256:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > does not let new writes proceed when default host configuration is off
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:280:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: suspended
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: expired
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: deleted
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires evaluator current identity at use: foreign-session
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:320:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires existing unrestricted evaluator and actual submission at issue
+AssertionError: expected PracticeReviewAssignmentError: FORBIDDEN { code: '…' } to match object { code: 'RESOURCE_UNAVAILABLE' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ PracticeReviewAssignmentError {
++   "code": "FORBIDDEN",
+  }
+
+ ❯ tests/practice-review-assignment-db.test.ts:345:6
+    343|     await expect(
+    344|       issue({ ...grantInput(), evaluatorAccountId: 'missing-account' }…
+    345|     ).rejects.toMatchObject({ code: 'RESOURCE_UNAVAILABLE' });
+       |      ^
+    346|     await db.user.update({ where: { id: evaluator.accountId }, data: {…
+    347|     await expect(issue()).rejects.toMatchObject({ code: 'RESOURCE_UNAV…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires exact true scoped host policy, got false
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires exact true scoped host policy, got undefined
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > requires exact true scoped host policy, got true
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:355:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > fails closed when scoped policy throws
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:377:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > never grants an already expired scope and does not extend elapsed authority
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:388:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > keeps submission bodies out of receipts/audits/outbox and creates only actual scoped records
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:396:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable issued history UPDATE "PracticeTrialReviewAssignment" SET "reason"='rewritten' WHERE "id"=$1::uuid
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable issued history DELETE FROM "PracticeTrialReviewAssignment" WHERE "id"=$1::uuid
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:413:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/21]⎯
+
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable revocation history UPDATE "PracticeTrialReviewRevocation" SET "reason"='rewritten' WHERE "id"=$1::uuid
+ FAIL  tests/practice-review-assignment-db.test.ts > T013D1 explicit scoped private review assignments > SQL preserves immutable revocation history DELETE FROM "PracticeTrialReviewRevocation" WHERE "id"=$1::uuid
+PrismaClientUnknownRequestError: Error in connector: Error querying the database: ERROR: column reference "payload" is ambiguous
+DETAIL: It could refer to either a PL/pgSQL variable or a table column.
+ ❯ Qr.transaction node_modules/@prisma/client/src/runtime/core/engines/library/LibraryEngine.ts:223:12
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:725:8
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+    302|   for (let attemptNumber = 1; ; attemptNumber++) {
+    303|     try {
+    304|       return await attempt(attemptNumber);
+       |              ^
+    305|     } catch (error) {
+    306|       if (attemptNumber >= maxAttempts || !isRetryable(error)) throw e…
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-assignment-db.test.ts:421:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/21]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  21 failed | 17 passed (38)
+   Start at  23:35:44
+   Duration  12.58s (transform 316ms, setup 0ms, import 598ms, tests 11.37s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-review-assignments-auto-20261015

@@ -11,8 +11,8 @@
   "open_decisions": "O09 numeric scoring/calibration, O11 retention and actual approved operating/evaluator/provider policy remain unresolved; no production authority/policy seed.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
   "code_source_sha": "7520a48a7666c59105f0fc2900dc6dfe7be2586f",
-  "candidate_sha": "7520a48a7666c59105f0fc2900dc6dfe7be2586f",
-  "source_identity": "Implementation 7520a48a7666c59105f0fc2900dc6dfe7be2586f; all source-hashes exact; metadata-only source pin follows. Actual pre-implementation and consumer-bound RED sources retained.",
+  "candidate_sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+  "source_identity": "Implementation 7520a48a7666c59105f0fc2900dc6dfe7be2586f; all source-hashes exact; metadata-only source pin follows. Actual pre-implementation and consumer-bound RED sources retained. Actual merge 3082ada3d2f26c6e8b5c2753fc29c74af26a0e56 full tree equals pin 83b83fddefb50ef4d119e521d6cf4aef68e02434.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/PostgreSQL16 pinned image; own generated30 build deps/own23installed24audit0vuln minimalPG consumer; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -181,45 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-      "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json",
-      "observed": "Exact future mergedmain hosted result pending, local evidence separate. Prior5e995 Staging38774846587 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-practice-unicode/hosted-staging-result.json",
+      "observed": "Exact main Staging38779630222 failed before0steps with official billing annotation. Seven mandatory hosted checks remain NOT VERIFIED; manualChecks originallydisabled/APIverified/no unchanged redispatch. Local evidence separate."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-      "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json",
-      "observed": "Exact future mergedmain hosted result pending, local evidence separate. Prior5e995 Staging38774846587 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-practice-unicode/hosted-staging-result.json",
+      "observed": "Exact main Staging38779630222 failed before0steps with official billing annotation. Seven mandatory hosted checks remain NOT VERIFIED; manualChecks originallydisabled/APIverified/no unchanged redispatch. Local evidence separate."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-      "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json",
-      "observed": "Exact future mergedmain hosted result pending, local evidence separate. Prior5e995 Staging38774846587 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-practice-unicode/hosted-staging-result.json",
+      "observed": "Exact main Staging38779630222 failed before0steps with official billing annotation. Seven mandatory hosted checks remain NOT VERIFIED; manualChecks originallydisabled/APIverified/no unchanged redispatch. Local evidence separate."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-      "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json",
-      "observed": "Exact future mergedmain hosted result pending, local evidence separate. Prior5e995 Staging38774846587 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-practice-unicode/hosted-staging-result.json",
+      "observed": "Exact main Staging38779630222 failed before0steps with official billing annotation. Seven mandatory hosted checks remain NOT VERIFIED; manualChecks originallydisabled/APIverified/no unchanged redispatch. Local evidence separate."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-      "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json",
-      "observed": "Exact future mergedmain hosted result pending, local evidence separate. Prior5e995 Staging38774846587 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-practice-unicode/hosted-staging-result.json",
+      "observed": "Exact main Staging38779630222 failed before0steps with official billing annotation. Seven mandatory hosted checks remain NOT VERIFIED; manualChecks originallydisabled/APIverified/no unchanged redispatch. Local evidence separate."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-      "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json",
-      "observed": "Exact future mergedmain hosted result pending, local evidence separate. Prior5e995 Staging38774846587 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-practice-unicode/hosted-staging-result.json",
+      "observed": "Exact main Staging38779630222 failed before0steps with official billing annotation. Seven mandatory hosted checks remain NOT VERIFIED; manualChecks originallydisabled/APIverified/no unchanged redispatch. Local evidence separate."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-      "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json",
-      "observed": "Exact future mergedmain hosted result pending, local evidence separate. Prior5e995 Staging38774846587 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-practice-unicode/hosted-staging-result.json",
+      "observed": "Exact main Staging38779630222 failed before0steps with official billing annotation. Seven mandatory hosted checks remain NOT VERIFIED; manualChecks originallydisabled/APIverified/no unchanged redispatch. Local evidence separate."
     }
   },
   "tdd": {
@@ -245,5 +245,17 @@
       "result": "PASS",
       "observed": "13new+171affectedSQL+144pure+1externalhost=329selectedPASS;55planningPASS67.543s; current own host/generated30 strict/build/lint0errors25oldwarnings/audit/freshwholeformat. Initial build helper invocation raced creation/file-not-found; no gate ran, original retained and correct ordered checksPASS. Pure/30DDL/history/authority/accepted set unchanged."
     }
+  },
+  "hosted_staging": {
+    "observed_at": "2026-10-15T17:43:11.529959+00:00",
+    "merge": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+    "source_pin": "83b83fddefb50ef4d119e521d6cf4aef68e02434",
+    "actual_merge_tree_matches_pin": true,
+    "run": 38779630222,
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38779630222",
+    "result": "FAIL before0steps; official account payments/spending limit annotation",
+    "manual_workflow": "originaldisabled_manually/APIverified/no enablement or restoration obligation",
+    "deployment": "NOT VERIFIED; no new image produced by this failed run",
+    "no_unchanged_redispatch": true
   }
 }
