@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D2 exact-scope private practice reviewer read/full original consent/current post-query authority only",
+  "status": "VERIFIED_IN_TEST bounded audited private reader; fullT013NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-15-T013-review-reads.md",
+  "migration_rollback": "No new model/migration/backfill/business state mutation. Required identifier-only access-attempt receipt/audit uses existing prior31SQL. Disable reviewer reads and retain immutable submission/assignment/revocation/access audit history; no destructive rollback.",
+  "dependency_evidence": "Actual immutable private submission/start/original definition/rubric and D1 finite per-submission/purpose assignment/current session/policy/expiry/revocation. Same held PostgreSQL READ_COMMITTED before private columns and after query; independently installed actual minimal PG consumer. Canonical28.3 case access requires private identifier-only authorized-attempt receipt/audit in the same transaction before private selection, current permission repeated after audit wait and body; host delivers only after commit.",
+  "open_decisions": "O09 calibration and O11 retention/approved operating model remainOPEN; authorized read does not confirm ownership or assess rank. Actual decision stores/projections/APIs/UI/independent acceptance separate.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
+  "candidate_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
+  "source_identity": "Implementation cb8e84315e0593f753ab829b5f9df09a64789ec4, all118current relevant source/38own consumer files exact in verified own build/installation; original phase RED sources and runner lifecycle regression retained. Metadata-only pin follows.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinned PostgreSQL16; own generated31 deps/current strict/build/independently installed23packages24audited0vuln consumer; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded current exact-scope private review read author evidence only. Actual session/assignment/policy/expiry/revocation before private columns and after queries; exact original private bytes/rubric/declarations, ownershipUNCONFIRMED. Required private identifier-only authorized-attempt access receipt/audit before private columns, no body/outbox/business mutation. No ownership/assessment/rank/grant/capacity/money/provider/UI/real seed effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json; docs/raid-practice-review-reads.md; docs/tasks/2026-10-15-T013-review-reads.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
+      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
+      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
+      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
+      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
+      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
+      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
+      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "command": "ActualPG31 tests/practice-review-read-db.test.ts before implementation and separate Root host baseline; pure DTO boundary consistency regressions before shared refinement; actual canonical28.3 case-access audit-before-body/unavailable regressions before audit implementation",
+      "evidence_url": "planning/task-evidence/T013-review-reads/red.log; host-red.log; red-source.tar.gz; red-source-hashes.json; dto-red.log; dto-red-source.tar.gz; planning/task-evidence/T013-review-reads/access-audit-red.log; access-audit-red-source.tar.gz; access-audit-red-source-hashes.json",
+      "result": "FAIL",
+      "expected_failure": "Actual appointed current reviewer should read exact private original context only within current scope; invalid/denied inputs yield no private result; portable DTO cannot bind unrelated consent/skill records.",
+      "observed_failure": "25behaviorFAIL+1sanitizederror controlPASS8.94s and3hostFAIL before implementation; separate7DTO coherenceFAIL+7controlsPASS748ms before schema refinement. Canonical audit correction2FAIL1.73s before implementation. Separate actual runner SIGTERM RED\u2192GREEN retained as lifecycle evidence, not module RED."
+    },
+    "green": {
+      "sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
+      "command": "ActualPG31 all3new files after canonical case-audit correction, signal-safe owned runner, and final independently installed realPG consumer",
+      "evidence_url": "planning/task-evidence/T013-review-reads/access-audit-green.log; consumer-access-audit-types.log; consumer-access-audit.log; source-hashes.json; consumer-source-hashes.json",
+      "result": "PASS",
+      "observed": "49PASS17.20s; own23installed24audited0vuln strict/current actualPG/audit before private body/current authority/immutable original content/revocation/no business-outbox/local boundsPASS. All118source/38consumer files match own verified build/installation; owned fixturestop0, SIGTERM automaticcleanup separately verified."
+    },
+    "refactor": {
+      "sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
+      "command": "Shared coherent strict private DTO/current held D1 authorization before and after private query; meaningful affected/mandatory gates",
+      "evidence_url": "planning/task-evidence/T013-review-reads/affected-db.log; reused-evidence-source-proof.json; planning.log; final-typecheck.log; final-production-build.log; post-lint-typecheck.log; lint.log; final-affected-lint.log; audit.log; review.json; planning/task-evidence/T013-review-reads/access-audit-typecheck.log; access-audit-production-build.log; access-audit-lint.log; cleanup-signal-red.json; cleanup-signal-green.json",
+      "result": "PASS",
+      "observed": "330unique selected (49new+136affected+144exact reusedpure+1external);55planning42.551s. Canonical28.3 audit correction has genuine2RED before implementation. Current audit strict/productionWebpack/own consumer/lint0newwarnings/auditpolicyPASS;31DDL/Prisma/generate/typegen exactly reused. Final freshwholePASS/34expectedNOT-only packet/timedSELF complete. No fullT013/independent/hosted acceptance."
+    }
+  }
+}

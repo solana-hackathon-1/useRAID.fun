@@ -1,0 +1,64 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-read-host.test.ts (3 tests | 3 failed) 18ms
+   × defaults private review reads off and accepts only exact true 13ms
+   × composes current guarded transaction/actor/scope and current read flag policy 2ms
+   × does not return a private result if the read flag turns off after the module returns 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-read-host.test.ts > defaults private review reads off and accepts only exact true
+AssertionError: expected { readsAvailable: true, …(1) } to deeply equal { readsAvailable: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "readsAvailable": false,
+-   "unavailableReason": "DISABLED",
++   "readsAvailable": true,
++   "unavailableReason": null,
+  }
+
+ ❯ tests/practice-review-read-host.test.ts:28:47
+     26|   for (const value of [undefined, '', 'false', 'TRUE', '1']) {
+     27|     vi.stubEnv('PRACTICE_REVIEW_READS_ENABLED', value);
+     28|     expect(practiceReviewReadConfiguration()).toEqual({
+       |                                               ^
+     29|       readsAvailable: false,
+     30|       unavailableReason: 'DISABLED',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/practice-review-read-host.test.ts > composes current guarded transaction/actor/scope and current read flag policy
+Error: NOT_IMPLEMENTED
+ ❯ Module.readPracticeTrialForReviewFromHost src/lib/practice-review-reads-host.ts:12:9
+     10|   _input: unknown,
+     11| ) {
+     12|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14|
+ ❯ tests/practice-review-read-host.test.ts:42:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/practice-review-read-host.test.ts > does not return a private result if the read flag turns off after the module returns
+Error: NOT_IMPLEMENTED
+ ❯ Module.readPracticeTrialForReviewFromHost src/lib/practice-review-reads-host.ts:12:9
+     10|   _input: unknown,
+     11| ) {
+     12|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+     13| }
+     14|
+ ❯ tests/practice-review-read-host.test.ts:62:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  23:57:29
+   Duration  267ms (transform 51ms, setup 0ms, import 71ms, tests 18ms, environment 0ms)

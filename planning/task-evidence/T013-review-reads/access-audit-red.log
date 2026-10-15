@@ -1,0 +1,269 @@
+raid-t013-review-reads-auto-20261015
+OWNED DATABASE: raid-t013-review-reads-auto-20261015 loopback port 32914
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32914"
+
+31 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-read-db.test.ts (32 tests | 2 failed | 30 skipped) 1021ms
+     × records a private identifier-only authorized case-access attempt before private columns, without business/outbox changes 550ms
+     × fails closed before selecting private bytes if the required case-access audit cannot persist 465ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > records a private identifier-only authorized case-access attempt before private columns, without business/outbox changes
+PracticeReviewReadError: STORAGE_UNAVAILABLE
+ ❯ fail src/skills/practice-review-read-storage.ts:67:9
+     65| }
+     66| function fail(code: PracticeReviewReadError['code']): never {
+     67|   throw new PracticeReviewReadError(code);
+       |         ^
+     68| }
+     69| async function query<R>(
+ ❯ query src/skills/practice-review-read-storage.ts:87:12
+ ❯ readPracticeTrialForReview src/skills/practice-review-read-storage.ts:139:16
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-read-db.test.ts:387:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > fails closed before selecting private bytes if the required case-access audit cannot persist
+AssertionError: promise resolved "{ version: 'v1', private: true, …(4) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "assignment": {
++     "evaluatorAccountId": "cmv9vrn970005bq0fnojo5vll",
++     "expiresAt": "2026-10-15T18:37:56.315Z",
++     "id": "d410e29d-c4ef-4222-84f1-2f3d5f390258",
++     "isAuthorizationToken": false,
++     "issuedAt": "2026-10-15T18:36:56.328Z",
++     "issuedByAccountId": "cmv9vrn8q0003bq0f0qakdmi4",
++     "purpose": "OWNERSHIP_REVIEW",
++     "reason": "Synthetic bounded ownership review.",
++     "state": "ISSUED",
++     "submissionId": "5d45985b-1ffe-4498-870d-232b523b14d5",
++     "version": "v1",
++   },
++   "definition": {
++     "accommodationPolicy": "Request an approved scoped accommodation.",
++     "brief": "Build and explain a synthetic accessible interface.",
++     "cooldownSeconds": 0,
++     "evaluatorMethod": "MANUAL",
++     "expectedMinutes": 60,
++     "inputs": [
++       {
++         "content": "Invented records only.",
++         "label": "Fixture",
++         "material": "SYNTHETIC",
++       },
++     ],
++     "maximumAttempts": 3,
++     "passConditions": "The authorized reviewer applies every required criterion.",
++     "publishedAt": "2026-10-15T18:36:56.131Z",
++     "purpose": "UNPAID_PLATFORM_PRACTICE",
++     "reference": {
++       "recordId": "synthetic-submission-trial",
++       "revision": 1,
++     },
++     "rubric": {
++       "criteria": [
++         {
++           "description": "Working behavior and edge cases",
++           "id": "behavior",
++           "required": true,
++         },
++         {
++           "description": "Explain and modify the solution",
++           "id": "ownership",
++           "required": true,
++         },
++       ],
++       "reference": {
++         "recordId": "synthetic-submission-rubric",
++         "revision": 1,
++       },
++     },
++     "skillDomain": "web",
++     "skillId": "frontend",
++     "state": "PUBLISHED",
++     "targetRank": "A",
++     "title": "Synthetic interface exercise",
++     "tools": {
++       "aiAssistance": "ALLOWED",
++       "disclosure": "Explain and modify your work; disclose assistance.",
++       "permitted": [
++         "editor",
++         "browser",
++       ],
++     },
++     "variantId": "synthetic-variant-two",
++     "version": "v1",
++   },
++   "isAuthorizationToken": false,
++   "private": true,
++   "submission": {
++     "aiAssistanceUsed": false,
++     "answer": "
++   const answer = \"<script>literal</script>\";
++ ",
++     "assistanceDisclosure": "No AI assistance declared.",
++     "consumesCapacity": false,
++     "createsFinancialObligation": false,
++     "createsPermissionGrant": false,
++     "definitionReference": {
++       "recordId": "synthetic-submission-trial",
++       "revision": 1,
++     },
++     "explanation": "I can explain and modify this invented solution.",
++     "isAuthorizationToken": false,
++     "ownership": "UNCONFIRMED",
++     "participantId": "911e026e-a616-4956-ac5d-b71447527a91",
++     "persisted": true,
++     "reference": {
++       "recordId": "5d45985b-1ffe-4498-870d-232b523b14d5",
++       "revision": 1,
++     },
++     "rubricReference": {
++       "recordId": "synthetic-submission-rubric",
++       "revision": 1,
++     },
++     "skillDomain": "web",
++     "skillId": "frontend",
++     "startId": "2475c732-d609-4ebe-b559-2da0e3527510",
++     "state": "SUBMITTED",
++     "submittedAt": "2026-10-15T18:36:56.285Z",
++     "toolsUsed": [
++       "editor",
++     ],
++     "verifiesSkill": false,
++     "version": "v1",
++   },
++   "version": "v1",
+  }
+
+ ❯ tests/practice-review-read-db.test.ts:454:23
+    452|       ),
+    453|     );
+    454|     await expect(work).rejects.toMatchObject({ code: 'STORAGE_UNAVAILA…
+       |                       ^
+    455|     await expect(work).rejects.not.toThrow('private-audit-driver-marke…
+    456|     expect(privateQueries).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 30 skipped (32)
+   Start at  00:21:54
+   Duration  1.73s (transform 309ms, setup 0ms, import 527ms, tests 1.02s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-review-reads-auto-20261015

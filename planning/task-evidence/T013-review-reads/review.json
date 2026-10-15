@@ -1,0 +1,43 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-15T18:20:39.976411+00:00",
+  "source": "Base40fc279 + actual exact-scope private reader/Rootdefaultoff/3tests/ownconsumer/docs; PR222 postCI WIP preserved",
+  "requirements": ["R06", "R11", "R12", "R15", "R16", "I05", "I10", "I13", "AC73", "AC74", "AC75"],
+  "genuine_RED": "25behaviorFAIL+1sanitizederror controlPASS8.94s plus3Root hostFAIL before implementation, sources/logs retained. Separate pureDTO consistency7FAIL+7controlsPASS748ms before refinement.",
+  "GREEN": "29PASS9.25s; expanded34PASS16.27s; final48PASS16.67s actualPG31 including protected-query actual wait/session-assignment expiry/literal SQL-shaped code/no writes/DTO cases. All fixturesstop0.",
+  "findings": [
+    "Public exported DTO accepted inconsistent assignment/submission/original definition/rubric/skill-domain references. Genuine7RED+7controls before shared schema coherence refinement; all48PASS without assertions weakening.",
+    "Whole lint0errors26warnings included1new copied unused receipt import; replaced by type-only import, all assertions unchanged. Final changed lint0errors0warnings and current strict typesPASS; reran48current-byte checks for source identity. Production runtime code unchanged.",
+    "Actual SIGTERM cleanup regression: prior runner exit-15 left owned database Runningtrue; exact prior runner/JSON/log retained, manually recovered only owned fixturestop0. Runner now owns child sessions, handles SIGINT/SIGTERM and executes verified-label finally shutdown. Actual SIGTERM GREEN parent143/Runningfalse/automaticstop0; current normal48 recheck follows. This is runner lifecycle evidence, not module TDD or independent review.",
+    "Canonical28.3: Audit privileged exports, permission changes, beneficiary changes, config changes, and case access. Initial no-audit task assumption contradicted this unchanged authority. Updated acceptance/tests before implementation: actual2case-auditRED1.73s then49GREEN17.20s. Authorized attempts now have private identifier-only receipt/audit before body columns and accessId correlation; audit failure blocks private selection, current permission repeats after audit and body. No body/outbox/business mutation. Original false no-audit assumption remains recorded as superseded, no canonical policy rewritten.",
+    "Strengthened wrong-submission setup to a real foreign canonical private submission, not just a nonexistent UUID. First indentation edit assertion failed/no source changed; ensuing unchanged48run is retained and not double-counted; corrected fixture included in current49PASS."
+  ],
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "resources": "All owned PG normal/failure runsstop0, original SIGTERM defect manually recovered before fix; current SIGTERM verified automaticstop0/Runningfalse and normal49/own final consumerstop0. AllCLI/pools/build ended/no browser/server/preview; preserve unrelated resources/evidence.",
+  "pending": "Own final actualPG consumer, current strict/build, meaningful affected DB/pure/receipt checks and mandatory planning/lint/audit/format/sourceproof/packet/timedSELF/publication/actualCI",
+  "actual_checks": {
+    "new": "49PASS17.20s/3files, actual49source with canonical audit before body/failclosed +real foreign canonical target denial/current waits/coherentDTO",
+    "affected_db": "136PASS54.61s/6files D1/current authority +C3/private store,1external receipt hostPASS1.34s/3nontarget excluded",
+    "pure_reused": "144PASS reused exact8test sources plus112dependency files proof; prior148aggregate includes4D1boundary now rerun affected, not double counted",
+    "unique_selected": "49new+136affected+144exact reusedpure+1external=330unique selected,186actual+144reused",
+    "planning": "55PASS42.551s final audit/docs; prior55PASS55.006s retained",
+    "consumer": "Own23installed24audited0vuln strict/current actualPG/private original bytes/rubric/currentscope/zero private columns without assignment/audit before body/1private receipt-audit no business-outbox/revocation/localboundsPASS; all38files exact",
+    "root": "Own current access-audit strict/productionWebpackPASS; exact prior31DDL/Prisma validate/generation/typegen reused; all118relevant current files exact in own build snapshot including fixtures/db/auth helper",
+    "lint": "Whole0errors26warnings included1copied unused fixture import removed; final current audit source/test/consumer lint0errors0warnings,25preexisting retained",
+    "audit": "Root approved unexpired moderate-or-higher policyPASS, not zero Root vulnerabilities",
+    "format": "Fresh whole tracked+nonignored WIP source snapshotPASS after canonical audit correction; ignored Root-owned old result file preserved",
+    "lifecycle": "Genuine SIGTERM RED ownedRunningtrue/parent-15\u2192verified manual recovery stop0; fixed child-session/signal/finally runner GREEN parent143/Runningfalse/automaticstop0, then all48normalPASS/stop0"
+  },
+  "source_hashes": "planning/task-evidence/T013-review-reads/source-hashes.json",
+  "consumer_source_hashes": "planning/task-evidence/T013-review-reads/consumer-source-hashes.json",
+  "reuse_source_proof": "planning/task-evidence/T013-review-reads/reused-evidence-source-proof.json",
+  "skipped": [
+    "No browser-visible route/UI/devpreview, no browser suite",
+    "FullRoot suite/actual hosted7checks/independent/UAT/business/release not claimed",
+    "No new migration/model/Root deps/real authority/flag enablement/ownership or rank decision"
+  ],
+  "ended_at": "2026-10-15T18:53:05.372192+00:00",
+  "elapsed_seconds": 1945.396,
+  "completion_validator": "34expected NOT VERIFIED only=27T013 criteria+7hosted/no metadataerrors; independent/UAT/business/release/full55 remainopen",
+  "implementation_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4"
+}
