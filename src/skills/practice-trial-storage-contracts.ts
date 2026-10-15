@@ -26,6 +26,28 @@ export const PublishPracticeTrialInputSchema = z
   .superRefine((value, ctx) => {
     if (value.draft.rubric.reference.revision > 2147483647)
       ctx.addIssue({ code: 'custom', message: 'Stored rubric revision exceeds INTEGER.' });
+    // Installed string max checks count code points; stored SQL bounds count UTF-16 units.
+    // The draft is already normalized, so whitespace accepted previously remains accepted.
+    const text = (value: string, maximum: number, path: (string | number)[]) => {
+      if (value.length > maximum)
+        ctx.addIssue({ code: 'custom', message: 'Stored text exceeds UTF-16 limit.', path });
+    };
+    const draft = value.draft;
+    text(draft.title, 200, ['draft', 'title']);
+    text(draft.brief, 4000, ['draft', 'brief']);
+    draft.inputs.forEach((input, index) => {
+      text(input.label, 200, ['draft', 'inputs', index, 'label']);
+      text(input.content, 4000, ['draft', 'inputs', index, 'content']);
+    });
+    draft.tools.permitted.forEach((tool, index) =>
+      text(tool, 200, ['draft', 'tools', 'permitted', index]),
+    );
+    text(draft.tools.disclosure, 4000, ['draft', 'tools', 'disclosure']);
+    draft.rubric.criteria.forEach((criterion, index) =>
+      text(criterion.description, 4000, ['draft', 'rubric', 'criteria', index, 'description']),
+    );
+    text(draft.passConditions, 4000, ['draft', 'passConditions']);
+    text(draft.accommodationPolicy, 4000, ['draft', 'accommodationPolicy']);
     // JSONB has no representation for NUL or lone UTF-16 surrogates. Reject before receipt/query.
     const stack: unknown[] = [value];
     while (stack.length) {

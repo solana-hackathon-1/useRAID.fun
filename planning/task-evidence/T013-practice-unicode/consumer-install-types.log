@@ -1,0 +1,7 @@
+
+added 23 packages, and audited 24 packages in 1s
+
+found 0 vulnerabilities
+
+> raid-practice-trial-storage-example@1.0.0 typecheck
+> tsc --noEmit

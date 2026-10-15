@@ -1,0 +1,201 @@
+e06541d9514754d48d8480c3e6175f04c38bea103f44e134adc85cda07d8829b
+OWNED DATABASE: raid-t013-practice-unicode-auto-20261015 loopback port 32886
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32886"
+
+30 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-storage-unicode.test.ts (13 tests | 11 failed) 571ms
+   × enforces normalized stored UTF16 bounds for 'title' while preserving pure contracts 30ms
+   × enforces normalized stored UTF16 bounds for 'brief' while preserving pure contracts 4ms
+   × enforces normalized stored UTF16 bounds for 'input label' while preserving pure contracts 4ms
+   × enforces normalized stored UTF16 bounds for 'input content' while preserving pure contracts 3ms
+   × enforces normalized stored UTF16 bounds for 'permitted tool' while preserving pure contracts 3ms
+   × enforces normalized stored UTF16 bounds for 'tool disclosure' while preserving pure contracts 2ms
+   × enforces normalized stored UTF16 bounds for 'rubric criterion' while preserving pure contracts 2ms
+   × enforces normalized stored UTF16 bounds for 'pass conditions' while preserving pure contracts 2ms
+   × enforces normalized stored UTF16 bounds for 'accommodation policy' while preserving pure contracts 2ms
+   × rejects out-of-bound stored text before receipt or SQL queries 8ms
+     × returns INVALID_INPUT for supplementary stored overflow without querying or leaving receipt/version/rubric/audit effects 288ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'title' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'brief' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'input label' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'input content' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'permitted tool' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'tool disclosure' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'rubric criterion' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'pass conditions' while preserving pure contracts
+ FAIL  tests/practice-trial-storage-unicode.test.ts > enforces normalized stored UTF16 bounds for 'accommodation policy' while preserving pure contracts
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/practice-trial-storage-unicode.test.ts:104:73
+    102|     set(overflow, '😀'.repeat(maximum / 2 + 1));
+    103|     expect(PracticeTrialDraftSchema.safeParse(overflow.draft).success)…
+    104|     expect(PublishPracticeTrialInputSchema.safeParse(overflow).success…
+       |                                                                         ^
+    105|   },
+    106| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  tests/practice-trial-storage-unicode.test.ts > rejects out-of-bound stored text before receipt or SQL queries
+AssertionError: expected CommandReceiptError: STORAGE_CONTRACT { code: '…' } to match object { code: 'INVALID_INPUT' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ CommandReceiptError {
++   "code": "STORAGE_CONTRACT",
+  }
+
+ ❯ tests/practice-trial-storage-unicode.test.ts:138:6
+    136|         { allowNewWrites: true, canPublish: () => true },
+    137|       ),
+    138|     ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+       |      ^
+    139|   }
+    140|   expect(calls).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  tests/practice-trial-storage-unicode.test.ts > T013C1 stored Unicode error parity on actual PostgreSQL > returns INVALID_INPUT for supplementary stored overflow without querying or leaving receipt/version/rubric/audit effects
+AssertionError: expected CommandReceiptError: STORAGE_UNAVAILABLE { code: '…' } to match object { code: 'INVALID_INPUT' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ CommandReceiptError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-trial-storage-unicode.test.ts:220:6
+    218|         ),
+    219|       ),
+    220|     ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+       |      ^
+    221|     expect(calls).toBe(0);
+    222|     const rows = await db.$queryRawUnsafe(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  11 failed | 2 passed (13)
+   Start at  23:03:01
+   Duration  1.26s (transform 268ms, setup 0ms, import 508ms, tests 571ms, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-practice-unicode-auto-20261015
