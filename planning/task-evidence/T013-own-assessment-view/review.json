@@ -78,5 +78,7 @@
     "FullRoot suite/unrelated money/provider tests (no related change)",
     "Physical-device/realwallet/representative UAT/independent review/business/release/hosted7checks NOT VERIFIED",
     "Live Rootflags/catalog-policy-reviewer seeds/providers/billing/manualworkflow enablement or unchanged redispatch not performed"
-  ]
+  ],
+  "implementation_sha": "8a060baf78cb77250b4ea75430b0955dae87de61",
+  "completion_validator": "Expectedexit1 exactly27criteria+7hosted missing, no metadataerrors; completion.log"
 }

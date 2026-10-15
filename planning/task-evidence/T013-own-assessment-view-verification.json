@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual own User/live Session/canonical HUMAN/current published taxonomy and immutable canonical assessment pointer/DB clock; audited bounded read under held12022; internal actual eligibility facts stripped by Root. Own independently installed pg/React/HTTP minimalPG35 consumer.",
   "open_decisions": "O09/O11/actual operating-notice-appeal-retention/independent-UAT-business-release remainOPEN/NOT VERIFIED. AT_OBSERVATION exact instant introduces no invented freshness TTL; existing CURRENT expiry unchanged. One-caseMANUALE-A source capability only; S/automation unsupported. Trial/reviewer APIUI next.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-  "candidate_sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-  "source_identity": "Base0e6 plus exact612relevant/52consumer/all549build code files/current ownbuild+installed host, no stale files; implementationSHA will be pinned",
+  "code_source_sha": "8a060baf78cb77250b4ea75430b0955dae87de61",
+  "candidate_sha": "8a060baf78cb77250b4ea75430b0955dae87de61",
+  "source_identity": "Implementation 8a060baf78cb77250b4ea75430b0955dae87de61; exact612relevant/52consumer/all549build code; metadata-only source pin follows; no runtime changes.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11/Zod4.6.5/actualPG35 pinnedPG16; Playwright1.63 explicitChrome147 desktop/mobile emulation; own28packages29audited0vuln; development preview and production-build browser checks distinct; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "9coreFAIL14.72s;4instantFAIL2controlsPASS0.472s;13HTTPFAIL+Rootmissing suite;2realbrowser UI/copy failures before panel/copy. Nested actualSIGTERM outer143/DBstopped/Nextportopen, verifiedown recovery then actualGREEN. Old claim-form consumer1FAIL1control1.15s after copy update, same-change corrected assertion. Bootstrap missing browser is separate environment failure."
     },
     "green": {
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "sha": "8a060baf78cb77250b4ea75430b0955dae87de61",
       "command": "Current actualPG35 owned observer/HTTP-host + actualdev/prod browser and standalone minimalPG35 eligibility/HTTP/React consuming host",
       "evidence_url": "planning/task-evidence/T013-own-assessment-view/final-affected.log; managed-browser.log; final-pure.log; consumer-final-types.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json",
       "result": "PASS",
       "observed": "Final35PASS32.98s/current3files;162pure5.21s+1external1.57s=198freshselected; currentdev10PASS1.4m+production2PASS18.2s; currentown52-file typed/runtime minimalPG35/HTTP/React consuming hostPASS; all owned resourcesstop0/portclosed"
     },
     "refactor": {
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "sha": "8a060baf78cb77250b4ea75430b0955dae87de61",
       "command": "Meaningful source/privacy/scope/clock/realwaits/qualification/nonqualification/claim-only/coherence + mandatory current typegen/types/production/planning/lint/audit/format/source proof and cleanup",
       "evidence_url": "planning/task-evidence/T013-own-assessment-view/final-affected.log; managed-browser.log; final-pure.log; planning.log; typegen.log; typecheck.log; production-build.log; clean-lint.log; audit.log; review.json; cleanup.json; fixture-import-cleanup.json; source-hashes.json; consumer-source-hashes.json; build-source-probe.json; verified-whole-format.log; final-typecheck.log",
       "result": "PASS",
