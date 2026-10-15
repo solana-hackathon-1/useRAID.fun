@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-10-15T21:59:03.591299+00:00",
+  "name": "/raid-t013-trial-assessments-auto-20261015",
+  "id": "bcb9aea957c41677de309d5bd761d861d7a662e830f853981d0da2cb1f9d4493",
+  "task_label": "T013-trial-assessments",
+  "actual_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T21:56:31.543955974Z",
+    "FinishedAt": "2026-10-15T21:56:42.308610448Z"
+  },
+  "all_actual_normal_failure_runs_stop0": true,
+  "runner_signal_evidence": "Verified D2 signal handlers/owned child groups plus D4 bounded CLI/state diagnostics renamed; current normal/failure stop0/Runningfalse, no new interruption execution claimed",
+  "no_owned_server_or_preview": true,
+  "unrelated_resources_preserved": true,
+  "remaining_planning_containers": [],
+  "remaining_planning_networks": [],
+  "final_context_core_and_actual_observed_ref_consumer_stop0": true
+}

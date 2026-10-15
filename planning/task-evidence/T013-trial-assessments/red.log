@@ -1,0 +1,576 @@
+bcb9aea957c41677de309d5bd761d861d7a662e830f853981d0da2cb1f9d4493
+OWNED DATABASE: raid-t013-trial-assessments-auto-20261015 loopback port 32936
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32936"
+
+33 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+Applying migration `202610150005_practice_review_policies`
+Applying migration `202610160001_practice_trial_ownership`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+  └─ 202610150005_practice_review_policies/
+    └─ migration.sql
+  └─ 202610160001_practice_trial_ownership/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-assessment-db.test.ts (36 tests | 36 failed) 48424ms
+     × commits actual manual VERIFIED rank from original case/criteria/current ownership/approved policy rather than a claimant declaration or proposal 1511ms
+     × has no assessment/review from confirmed ownership alone 1385ms
+     × records reasoned MORE_EVIDENCE without creating a skill assessment 1541ms
+     × records reasoned NOT_DEMONSTRATED without creating a skill assessment 1995ms
+     × does not silently revoke or downgrade an existing VERIFIED assessment when a later review needs more evidence 3047ms
+     × appends actual verification history without inflating the sample size of repeated review of the same evidence 2754ms
+     × recovers the original historical result after correction/writeoff/policy withdrawal under current case read authority 1908ms
+     × rejects changed same-key body using the shared receipt contract 1327ms
+     × CAS protects both review and participant-skill source under simultaneous decisions 2073ms
+     × rejects stale or foreign expectedSubmissionReference 2227ms
+     × rejects stale or foreign expectedDefinitionReference 1715ms
+     × rejects stale or foreign expectedRubricReference 2159ms
+     × rejects stale or foreign expectedPolicyReference 2072ms
+     × rejects stale or foreign expectedOwnershipReference 1075ms
+     × rejects stale or foreign expectedReviewReference 1036ms
+     × rejects stale or foreign expectedAssessmentReference 1087ms
+     × requires a current confirmed ownership source even when every criterion is MET 2129ms
+     × requires every original required criterion MET and exact criterion coverage 1284ms
+     × cannot substitute ownership appointment, admin role or claimant for current assessment appointment 852ms
+     × denies lost own evaluator session for new decisions and original retries 826ms
+     × denies revoked current assignment for new writes/read/replay 1182ms
+     × denies withdrawn actual policy rather than treating a client label as approval 1126ms
+     × preserves off-state without creating a new review/rank or successful command receipt 833ms
+     × fails closed on current canRead denial 705ms
+     × fails closed on current canUsePolicy denial 723ms
+     × fails closed on current canReview denial 712ms
+     × rejects caller-invented committed facts { assessedRank: 'S' } 902ms
+     × rejects caller-invented committed facts { sampleSize: 1000 } 814ms
+     × rejects caller-invented committed facts { assessmentPolicyVersion: 'client-approved' } 855ms
+     × rejects caller-invented committed facts { approved: true } 1020ms
+     × rejects caller-invented committed facts { evidenceReferences: [ { recordId: 'guessed', revision: 1 } ] } 1012ms
+     × rejects malformed private reason before any persistence  960ms
+     × rejects malformed private reason before any persistence 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀 938ms
+     × rejects malformed private reason before any persistence x  1048ms
+     × rejects malformed private reason before any persistence x� 873ms
+     × returns private history only to the exact actual current assessment reviewer 710ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 36 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > commits actual manual VERIFIED rank from original case/criteria/current ownership/approved policy rather than a claimant declaration or proposal
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:374:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > has no assessment/review from confirmed ownership alone
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:6:9
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/practice-trial-assessment-db.test.ts:341:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:415:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > records reasoned MORE_EVIDENCE without creating a skill assessment
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > records reasoned NOT_DEMONSTRATED without creating a skill assessment
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:423:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > does not silently revoke or downgrade an existing VERIFIED assessment when a later review needs more evidence
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:432:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > appends actual verification history without inflating the sample size of repeated review of the same evidence
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:448:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > recovers the original historical result after correction/writeoff/policy withdrawal under current case read authority
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:466:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects changed same-key body using the shared receipt contract
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:498:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > CAS protects both review and participant-skill source under simultaneous decisions
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/practice-trial-assessment-db.test.ts:513:55
+    511|       recordAssessment({ ...assessmentInput(), decision: 'MORE_EVIDENC…
+    512|     ]);
+    513|     expect(r.filter((x) => x.status === 'fulfilled')).toHaveLength(1);
+       |                                                       ^
+    514|     expect(r.find((x) => x.status === 'rejected')).toMatchObject({
+    515|       reason: { code: 'REVISION_CHANGED' },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects stale or foreign expectedSubmissionReference
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects stale or foreign expectedDefinitionReference
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects stale or foreign expectedRubricReference
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects stale or foreign expectedPolicyReference
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects stale or foreign expectedOwnershipReference
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects stale or foreign expectedReviewReference
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects stale or foreign expectedAssessmentReference
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'REVISION_CHANGED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "REVISION_CHANGED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:529:6
+    527|     await expect(
+    528|       recordAssessment({ ...assessmentInput(), [field]: { recordId: 'f…
+    529|     ).rejects.toMatchObject({ code: 'REVISION_CHANGED' });
+       |      ^
+    530|   });
+    531|   it('requires a current confirmed ownership source even when every cr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > requires a current confirmed ownership source even when every criterion is MET
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'EVIDENCE_NOT_CONFIRMED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "EVIDENCE_NOT_CONFIRMED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:542:6
+    540|         expectedOwnershipReference: current.view.record.reference,
+    541|       }),
+    542|     ).rejects.toMatchObject({ code: 'EVIDENCE_NOT_CONFIRMED' });
+       |      ^
+    543|   });
+    544|   it('requires every original required criterion MET and exact criteri…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > requires every original required criterion MET and exact criterion coverage
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:547:6
+    545|     await expect(
+    546|       recordAssessment({ ...assessmentInput(), criteria: assessmentInp…
+    547|     ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+       |      ^
+    548|     await expect(
+    549|       recordAssessment({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > cannot substitute ownership appointment, admin role or claimant for current assessment appointment
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'RESOURCE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:556:75
+    554|   });
+    555|   it('cannot substitute ownership appointment, admin role or claimant …
+    556|     await expect(recordAssessment({ ...assessmentInput(), assignmentId…
+       |                                                                           ^
+    557|       code: 'RESOURCE_UNAVAILABLE',
+    558|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > denies lost own evaluator session for new decisions and original retries
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:568:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > denies revoked current assignment for new writes/read/replay
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:576:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > denies withdrawn actual policy rather than treating a client label as approval
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'RESOURCE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:596:6
+    594|         expectedPolicyReference: { recordId: assessmentPolicyId, revis…
+    595|       }),
+    596|     ).rejects.toMatchObject({ code: 'RESOURCE_UNAVAILABLE' });
+       |      ^
+    597|   });
+    598|   it('preserves off-state without creating a new review/rank or succes…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > preserves off-state without creating a new review/rank or successful command receipt
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'WRITES_DISABLED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "WRITES_DISABLED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:604:6
+    602|         allowNewWrites: false,
+    603|       }),
+    604|     ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
+       |      ^
+    605|     expect(
+    606|       await db.commandReceipt.count({ where: { commandKind: 'RecordPra…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > fails closed on current canRead denial
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > fails closed on current canUsePolicy denial
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > fails closed on current canReview denial
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'RESOURCE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:617:8
+    615|           [field]: () => false,
+    616|         }),
+    617|       ).rejects.toMatchObject({ code: 'RESOURCE_UNAVAILABLE' });
+       |        ^
+    618|     },
+    619|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects caller-invented committed facts { assessedRank: 'S' }
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects caller-invented committed facts { sampleSize: 1000 }
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects caller-invented committed facts { assessmentPolicyVersion: 'client-approved' }
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects caller-invented committed facts { approved: true }
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects caller-invented committed facts { evidenceReferences: [ { recordId: 'guessed', revision: 1 } ] }
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:627:71
+    625|     { evidenceReferences: [{ recordId: 'guessed', revision: 1 }] },
+    626|   ])('rejects caller-invented committed facts %s', async (patch) => {
+    627|     await expect(recordAssessment({ ...assessmentInput(), ...patch }))…
+       |                                                                       ^
+    628|       code: 'INVALID_INPUT',
+    629|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects malformed private reason before any persistence
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects malformed private reason before any persistence 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects malformed private reason before any persistence x 
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > rejects malformed private reason before any persistence x�
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-assessment-db.test.ts:634:71
+    632|     'rejects malformed private reason before any persistence %s',
+    633|     async (reason) => {
+    634|       await expect(recordAssessment({ ...assessmentInput(), reason }))…
+       |                                                                       ^
+    635|         code: 'INVALID_INPUT',
+    636|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/36]⎯
+
+ FAIL  tests/practice-trial-assessment-db.test.ts > T013D5 actual manual assessment storage > returns private history only to the exact actual current assessment reviewer
+Error: NOT_IMPLEMENTED
+ ❯ recordPracticeTrialAssessment src/skills/practice-trial-assessment-storage.ts:3:9
+      1| // Typed RED placeholders; no actual assessment persistence exists yet.
+      2| export async function recordPracticeTrialAssessment(..._args: unknown[…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialAssessment(..._args: unknown[])…
+ ❯ tests/practice-trial-assessment-db.test.ts:328:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-assessment-db.test.ts:640:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/36]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  36 failed (36)
+   Start at  02:34:35
+   Duration  49.38s (transform 409ms, setup 0ms, import 705ms, tests 48.42s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-trial-assessments-auto-20261015
+OWNED FINAL STATE: {"name": "/raid-t013-trial-assessments-auto-20261015", "id": "bcb9aea957c41677de309d5bd761d861d7a662e830f853981d0da2cb1f9d4493", "task_label": "T013-trial-assessments", "state": {"Status": "exited", "Running": false, "Paused": false, "Restarting": false, "OOMKilled": false, "Dead": false, "Pid": 0, "ExitCode": 0, "Error": "", "StartedAt": "2026-10-15T20:49:27.642366402Z", "FinishedAt": "2026-10-15T20:50:25.663219528Z"}}

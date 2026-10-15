@@ -1,0 +1,4 @@
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK generate34
+generate34 PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK typecheck
+typecheck PASS

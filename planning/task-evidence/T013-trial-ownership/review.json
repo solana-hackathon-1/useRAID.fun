@@ -15,7 +15,7 @@
     "Self-evaluation found canReview/canUsePolicy could close during newly executed private result selection. Actual2RED6.23s resolved commits before final fence; source/log retained, final executed-only current policy/grant/decision fence added. Historical authorized retries deliberately keep current-read-only behavior after writeoff/withdrawal.",
     "A follow-up actual2RED2.64s proved distinct canRead/canUsePolicy could close during the final grant query after policy authorization. Retained pre-fix source/log before adding actual-scope synchronous predicate fences after the last await. Final82/own consumer/current strict/production/affectedlint PASS; no assertion weakened."
   ],
-  "pending": "Authorized implementation/source pin/push/templateRef55PR/matched-head staging merge/fulltree-hash proof/actualCI; next actual assessment/reassessment/projections/APIUI, fullT013 NOT VERIFIED",
+  "pending": "Actual immutable assessment/reassessment/fraud decisions and committed eligibility source, then protected API/UI; parent55/independent/UAT/business/release NOT VERIFIED",
   "independent_UAT_business_release": "NOT VERIFIED",
   "resources": "Current owned fixture automaticstop0; earlier expanded stop command exceeded20sec and failed aggregate, preserved; later exact-name/label guard found stopped before restart, currentfixture stopped0. No unrelated resources touched.",
   "actual_checks": {
@@ -50,5 +50,12 @@
   ],
   "ended_at": "2026-10-15T20:39:10.541543+00:00",
   "elapsed_seconds": 1194.649,
-  "implementation_sha": "dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be"
+  "implementation_sha": "dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be",
+  "merged_main_sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+  "source_pin_sha": "609a2be4f7da68763284ff299ca2e03e8915f3e7",
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/225",
+  "full_main_tree_equals_tested_pin": true,
+  "exact_main_source_files": 143,
+  "exact_main_consumer_files": 42,
+  "hosted_result": "Actual Staging38804113731 billing before0steps; Manual Checks disabled_manually/no restore/no unchangedredispatch"
 }

@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D5 actual one-case manual assessment review/committed VERIFIED source/private history only; S/automated sources unsupported; assigned-case current-reference observation without other-case private bytes",
+  "status": "SELF-EVALUATED bounded source gates; fullT013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-16-T013-trial-assessments.md",
+  "migration_rollback": "Additive34 private immutable review and committed assessment families/versions/source FKs/current pointers/audit guards, no real seed/backfill. Disable new writes/dependent use; preserve original declarations and all immutable history/receipts/audits. No destructive rollback.",
+  "dependency_evidence": "Actual original saved case/definition/rubric/catalog, current D1 ASSESSMENT_REVIEW assignment/own session, audited D2 private evidence, exact actual approved D3 assessment policy, audited current actual D4 CONFIRMED ownership, held same transaction and current trusted namespace/scoped predicates. Own independently installed real minimalPG34 consumer.",
+  "open_decisions": "O09 numeric calibration/O11 retention/staffed operation/release remainOPEN. One-case MANUAL E-A only; S repeated independent evidence/automated result source unavailable, typed failclosed, no numeric thresholds chosen. Reasoned reassessment/fraud/committed eligibility/APIUI and independent acceptance next.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+  "candidate_sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+  "source_identity": "Base505f169 plus exact586source/45consumer hashes; all532runtime/test/script/schema paths identical to own verified build without missing/extra/stale files, own installation current. Implementation SHA will be pinned.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinnedPG16; actual34DDL/current own generation34-types-production and independently installed23packages24audited0vuln/current minimalPG34 host; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded actual manual assessment source author evidence only. Actual current case/session/evaluator/policy/CONFIRMED ownership/original rubric-tools, immutable attributed review and separate committed VERIFIED/current participant-skill source; nonverification leaves old rank, no silent lower-rank replacement. Single-case MANUAL E-A capability only; S/automation unavailable, no OPEN thresholds chosen, no new grant/capacity/money/provider/UI/real seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json; docs/raid-practice-trial-assessments.md; docs/tasks/2026-10-16-T013-trial-assessments.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current505 Staging38804113731 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current505 Staging38804113731 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current505 Staging38804113731 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current505 Staging38804113731 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current505 Staging38804113731 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current505 Staging38804113731 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current505 Staging38804113731 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "command": "ActualPG33 typed assessment placeholders; separate accepted-case capability and Root/event-key RED before relevant implementation; later rawSQL private access audit revision and reusable DTO pointer regressions before fixes",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/red.log; red-source.tar.gz; capability-red.log; capability-red-source.tar.gz; host-boundary-red.log; host-boundary-red-source.tar.gz; access-version-red.log; access-version-red-source.tar.gz; dto-red.log; dto-red-source.tar.gz; initial-green.log; initial-green-source.tar.gz; tdd.json; context-red.log; context-red-source.tar.gz; context-host-red.log; context-host-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "No actual verification from client proposal/label; require actual current original case/policy/ownership/criteria/actor and immutable source, exact private audit revision and coherent canonical current pointers.",
+      "observed_failure": "36FAIL49.38s+5capabilityFAIL7.92s+7host/eventFAIL. Initial32FAIL16PASS43.63s D1 strict caller had extra version, fixed caller without relaxing schema/tests. Later2rawSQLFAIL4.76s forged access audit aggregateVersion999; later3DTOFAIL1policyrev2controlPASS7.33s missing/foreign/past current pointers. Each relevant pre-fix source/log retained. Context discovery1FAIL3.65s+1RootFAIL before actual observer,6contextcontrolsPASS7.88s then full119/currentconsumer/sourcegates rerun."
+    },
+    "green": {
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "command": "Final actualPG34 three new test files plus independently installed strict/current minimalPG34 consuming host",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/context-final.log; context-consumer-wiring.log; context-consumer-types.log; context-consumer-wiring-types.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json",
+      "result": "PASS",
+      "observed": "Final119PASS191.54s/3files and current45-file independently installed minimalPG34 consuming host using actual observed refs, final strict/runtime/stop0PASS.586source/45consumer current proof."
+    },
+    "refactor": {
+      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "command": "Meaningful actual current-source/private audit/rawSQL/history/different-case-evaluator CAS/lock expiry/final scope and affected+mandatory gates",
+      "evidence_url": "planning/task-evidence/T013-trial-assessments/final-affected.log; affected-pure.log; planning.log; generate34.log; typecheck.log; production-build.log; schema-validate.log; lint.log; final-affected-lint.log; audit.log; review.json; cleanup.json; build-source-probe.json; context-code-check-driver.log; context-final-typecheck.log; context-lint.log; context-final.log; context-consumer-wiring.log; final-whole-format.log",
+      "result": "PASS",
+      "observed": "551selectedPASS=119final current+432same-task unchanged exact-source evidence (317SQL159.35s+114pure13.04s+1external1.76s);55planningPASS63.027s. Current context/runtime/tests strict/production/consumer/changedlintPASS; unchanged generation34/schema/typegen/audit/25oldlint baseline reused. Exact pre-context586source milestone archived; current freshwhole PASS; timedSELF 3495.121s. No fullT013/independent/hosted acceptance."
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "status": "SELF-EVALUATED bounded source gates; fullT013 NOT VERIFIED",
+  "started_at": "2026-10-15T21:04:34.266528+00:00",
+  "source": "Base505f169 + actual assessment34/module/Rootdefaultoff explicitnamespace/2privateauditkeys/3tests; PR225postCI WIP preserved",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I07",
+    "I10",
+    "I13",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_RED": "36behaviorFAIL49.38s+5capabilityFAIL7.92s+7host/eventFAIL; typed placeholders before relevant implementation, source/raw logs retained",
+  "GREEN": "Core48PASS53.15s then expanded106PASS146.96s/3files; actual distinct-case/evaluator canonical-rank CAS/lock expiry/final scope/private audit/42rawSQL invalid variants and immutable projections; all actual fixturestop0/Runningfalse",
+  "findings": [
+    "Actual D1 use scope has no version field; new module passed D2/D3 v1 input, corrected explicit shape without relaxing upstream schema/tests.",
+    "Single-case source supports manual E-A only; repeated independent S/automated results unavailable, typed failclosed rather than choosing OPEN calibration.",
+    "Catalogs are versioned namespaces, not a proven global skill registry; explicit Root approved catalog namespace and immutable assessment-family catalog/domain protect binding.",
+    "Nonverification review cannot implicitly revoke an existing rank; lower trial verification cannot silently replace a higher current VERIFIED rank.",
+    "Actual2RED4.76s rawSQL forged private access audit aggregateVersion999 committed for policy/ownership IDs; pre-fix source/log retained. SQL now requires policy-use audit target immutable submission revision1 and ownership-access exact dynamic finding revision; actual ownership revision2 control added, 109PASS147.33s, final119PASS191.54s.",
+    "Reusable view schema accepted missing/foreign/backward current assessment pointers despite an original committed snapshot; actual3RED1policyrev2controlPASS7.33s source/log retained before canonical-family/monotonic-pointer coherence. Final113 includes legitimate later policy revision and ownership revision2 controls.",
+    "Initial new-case assessment CAS discovery was missing when a prior participant-skill assessment existed and the evaluator had no old-case grant. Actual1RED3.65s+1RootRED before audited scoped observer; actual6context controlsPASS7.88s, no other-case private rank/answer fields selected. Caller obtains actual current refs without invented hints; policy discovery remains separate D3 observer."
+  ],
+  "pending": "Authorized implementation/source-pin commits, push, matched-head Ref55 merge, exact-main CI observation; then reasoned reassessment/current eligibility/APIUI",
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "resources": "All actual new/core/affected/consumer/external normal/failure owned fixture outcomesstop0/Runningfalse, planning containers/networks none, CLI/pools/build ended/no server/preview. Verified D2 signal groups and D4 timeout/state diagnostic renamed, no new interruption execution claimed; preserve unrelated resources.",
+  "actual_checks": {
+    "new": "Final119PASS191.54s/3files with current assigned-case context; before-context113PASS220.87s archived, no double count",
+    "pure": "8files114PASS13.04s/1DBskip to be targeted actual external host",
+    "planning": "55PASS63.027s/all3new files global/E04 inventory",
+    "root": "Current context/runtime/tests strict and productionWebpackPASS; final example observed-ref wiring/current Root strictPASS after source copy (ctime before typecheck log open verified). Exact unchanged generation34/model/schema/typegen/config/deps reused. Production runtime unchanged by final example-only wiring.",
+    "consumer": "Final45files/own23installed24audited0vuln/current strict and actual minimalPG34 actual observed-ref command wiring/current A/sample1/policy+ownership/nonverification/history/retry after withdrawal-writeoff/revocation/local5sstatement2slock5sidlePASS; all fixturestop0",
+    "schema": "Prisma34validatePASS/allactual34DDL fixturesPASS",
+    "lint": "Whole0errors25oldwarnings before additive context; final current runtime/Root/tests/context0errors0warnings, unchanged baseline reused",
+    "audit": "Root moderate-or-higher approved unexpired advisory policyPASS; not Root zero vulnerabilities",
+    "affected_sql": "9files317PASS159.35s D4/D3/D1/D2/submission and1externalhostPASS1.76s/3nontarget excluded",
+    "format": "PASS fresh tracked+nonignored WIP snapshot; final-whole-format.log; root-owned ignored artifact preserved",
+    "unique_selected": "551selectedPASS=119final current +432same-task unchanged exact-source evidence (317affectedSQL+114pure+1external),55planning separate"
+  },
+  "reused": [
+    "Exact unchanged Next routes/typegen/config/deps from D4; no route/UI added",
+    "Generation34/model schema and own generated client from pretype are exact unchanged; SQL audit guard changes verified in fresh actual fixtures, not falsely attributed to generation",
+    "After additive context observer, unchanged D4/D3/D1/D2/submission317/114pure/external1/planning55/Prisma34generation-schema/audit and whole25oldlint baseline source/deps/config/env remain exact. Final assessment core/context/Root composition/ownconsumer/types/build/affectedlint rerun."
+  ],
+  "skipped": [
+    "FullRoot suite/browser/devpreview (no browser-visible change)",
+    "Actual7hosted/independent/UAT/business/release not claimed",
+    "No real catalog/policy/reviewer/rank seeds, OPEN calibration/retention/staffed operating default, provider or Rootflag enablement"
+  ],
+  "source_hashes": "planning/task-evidence/T013-trial-assessments/source-hashes.json",
+  "consumer_source_hashes": "planning/task-evidence/T013-trial-assessments/consumer-source-hashes.json",
+  "source_counts": {
+    "relevant": 586,
+    "consumer": 45,
+    "complete_build_code_paths": 532
+  },
+  "ended_at": "2026-10-15T22:02:49.387889+00:00",
+  "elapsed_seconds": 3495.121
+}
