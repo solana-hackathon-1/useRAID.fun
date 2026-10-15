@@ -1,0 +1,11 @@
+
+/srv/projects/useRAIDfun/useRAID-fun/src/skills/practice-trial-assessment-storage.ts
+  1032:38  warning  React Hook "useScope" is called in function "recordPracticeTrialAssessment" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use"  react-hooks/rules-of-hooks
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/practice-trial-assessment-db.test.ts
+  192:3  warning  'observeApprovedPracticeReviewPolicy' is defined but never used  @typescript-eslint/no-unused-vars
+  229:3  warning  'PracticeTrialOwnershipRecordSchema' is defined but never used   @typescript-eslint/no-unused-vars
+  230:3  warning  'PracticeTrialOwnershipViewSchema' is defined but never used     @typescript-eslint/no-unused-vars
+  273:7  warning  'readOwnership' is assigned a value but never used               @typescript-eslint/no-unused-vars
+
+✖ 5 problems (0 errors, 5 warnings)

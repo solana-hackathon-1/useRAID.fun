@@ -1,0 +1,114 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-assessment-host.test.ts (5 tests | 5 failed) 22ms
+   × defaults writes off, exacttrue only, and requires explicit valid canonical catalog namespace 12ms
+   × composes original historical retry when writes or namespace off without fabricating current verification 3ms
+   × reads current exact canonical namespace and read/write policies on every decision check 2ms
+   × composes actual private history without new-write gate and drops result if read scope closes before delivery 2ms
+   × preserves successful status while dropping private delivery if reads close after a committed command 1ms
+ ❯ tests/practice-trial-assessment-boundary.test.ts (2 tests | 2 failed) 17ms
+   × accepts only opaque private assessment audit key practiceAssessmentReviewVersionId 14ms
+   × accepts only opaque private assessment audit key skillAssessmentVersionId 1ms
+
+ Test Files  2 failed (2)
+      Tests  7 failed (7)
+   Start at  02:41:03
+   Duration  609ms (transform 96ms, setup 0ms, import 201ms, tests 39ms, environment 0ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-assessment-boundary.test.ts > accepts only opaque private assessment audit key practiceAssessmentReviewVersionId
+ FAIL  tests/practice-trial-assessment-boundary.test.ts > accepts only opaque private assessment audit key skillAssessmentVersionId
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/practice-trial-assessment-boundary.test.ts:17:58
+     15|       payload: { [field]: 'version' },
+     16|     };
+     17|     expect(EventEnvelopeSchema.safeParse(event).success).toBe(true);
+       |                                                          ^
+     18|     for (const key of [
+     19|       'reason',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/practice-trial-assessment-host.test.ts > defaults writes off, exacttrue only, and requires explicit valid canonical catalog namespace
+AssertionError: expected undefined to deeply equal { writesAvailable: false, …(1) }
+
+- Expected:
+{
+  "unavailableReason": "DISABLED",
+  "writesAvailable": false,
+}
+
++ Received:
+undefined
+
+ ❯ tests/practice-trial-assessment-host.test.ts:26:57
+     24|   for (const v of [undefined, '', 'false', 'TRUE', '1']) {
+     25|     vi.stubEnv('PRACTICE_TRIAL_ASSESSMENTS_ENABLED', v);
+     26|     expect(practiceTrialAssessmentWriteConfiguration()).toEqual({
+       |                                                         ^
+     27|       writesAvailable: false,
+     28|       unavailableReason: 'DISABLED',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/practice-trial-assessment-host.test.ts > composes original historical retry when writes or namespace off without fabricating current verification
+Error: NOT_IMPLEMENTED
+ ❯ Module.recordPracticeTrialAssessmentFromHost src/lib/practice-trial-assessments-host.ts:6:9
+      4| }
+      5| export async function recordPracticeTrialAssessmentFromHost(..._args: …
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8| export async function readPracticeTrialAssessmentFromHost(..._args: un…
+ ❯ tests/practice-trial-assessment-host.test.ts:48:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/practice-trial-assessment-host.test.ts > reads current exact canonical namespace and read/write policies on every decision check
+Error: NOT_IMPLEMENTED
+ ❯ Module.recordPracticeTrialAssessmentFromHost src/lib/practice-trial-assessments-host.ts:6:9
+      4| }
+      5| export async function recordPracticeTrialAssessmentFromHost(..._args: …
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8| export async function readPracticeTrialAssessmentFromHost(..._args: un…
+ ❯ tests/practice-trial-assessment-host.test.ts:65:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/practice-trial-assessment-host.test.ts > composes actual private history without new-write gate and drops result if read scope closes before delivery
+Error: NOT_IMPLEMENTED
+ ❯ Module.readPracticeTrialAssessmentFromHost src/lib/practice-trial-assessments-host.ts:9:9
+      7| }
+      8| export async function readPracticeTrialAssessmentFromHost(..._args: un…
+      9|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+     10| }
+     11|
+ ❯ tests/practice-trial-assessment-host.test.ts:88:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/practice-trial-assessment-host.test.ts > preserves successful status while dropping private delivery if reads close after a committed command
+Error: NOT_IMPLEMENTED
+ ❯ Module.recordPracticeTrialAssessmentFromHost src/lib/practice-trial-assessments-host.ts:6:9
+      4| }
+      5| export async function recordPracticeTrialAssessmentFromHost(..._args: …
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8| export async function readPracticeTrialAssessmentFromHost(..._args: un…
+ ❯ tests/practice-trial-assessment-host.test.ts:100:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯

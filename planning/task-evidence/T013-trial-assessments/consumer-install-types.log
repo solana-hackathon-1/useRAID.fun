@@ -1,0 +1,10 @@
+
+added 23 packages, and audited 24 packages in 2s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> raid-practice-trial-assessment-example@1.0.0 typecheck
+> tsc --noEmit

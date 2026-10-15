@@ -1,0 +1,10 @@
+{
+  "agent": "Codex /root",
+  "started_at": "2026-10-15T20:47:45.845284+00:00",
+  "base": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+  "task": "T013D5",
+  "one_writer": true,
+  "no_delegation": true,
+  "preserved_work": "PR225 postCI metadata",
+  "source_capability": "one-case MANUAL E-A; S/automation unsupported until actual source, no calibration chosen"
+}

@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-assessment-host.test.ts (6 tests | 1 failed | 5 skipped) 10ms
+   × composes initial private context observation without guessed current refs and drops metadata if reads close after commit 8ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 skipped (6)
+   Start at  03:28:16
+   Duration  616ms (transform 267ms, setup 0ms, import 436ms, tests 10ms, environment 0ms)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-assessment-host.test.ts > composes initial private context observation without guessed current refs and drops metadata if reads close after commit
+Error: NOT_IMPLEMENTED
+ ❯ Module.observePracticeTrialAssessmentContextFromHost src/lib/practice-trial-assessments-host.ts:66:9
+     64|   ..._args: unknown[]
+     65| ): Promise<never> {
+     66|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+     67| }
+     68|
+ ❯ tests/practice-trial-assessment-host.test.ts:121:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
