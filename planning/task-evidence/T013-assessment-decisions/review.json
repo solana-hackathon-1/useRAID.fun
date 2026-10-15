@@ -1,0 +1,73 @@
+{
+  "status": "SELF-EVALUATED bounded source gates; fullT013 NOT VERIFIED",
+  "started_at": "2026-10-15T22:18:53.867499+00:00",
+  "base": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+  "scope": "D6 actual reasoned case/state only",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I07",
+    "I10",
+    "I13",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_RED": "29 actualPG34 behaviorFAIL40.25s against typed placeholders; opaqueauditkey1RED and missingRootsuite before relevant code, source/raw logs retained",
+  "GREEN": "35PASS52.88s, then91PASS169.31s actualPG35/3files;55planningPASS50.278s; strictgeneration35/Roottypes/PrismavalidatePASS; own consumer23installed24audited0vuln/typesPASS, runtime pending",
+  "findings": [
+    "Initial migration35 PLpgSQL IF needed parenthesized CASE expression; failedsource and actual owned PostgreSQL diagnostic retained; fixed and all35DDL deployed.",
+    "Initial schemaCLI lacked DATABASE_URL; explicit synthetic environment retryPASS, no code change.",
+    "Initial behavior34PASS1FAIL52.12s test bound pre-withdrawal policy revision1 while currentwithdrawalrev2; corrected control to actualrevision2, separatestale case retained; upstream policy contract unchanged.",
+    "Copied test declaration assertion referenced nonexistent SQL ownership column; corrected to actual participant private DTO observation before green; originalREDsource retained.",
+    "No automatic fraud conviction, real operating/appeal approval or eligibility permission inferred; actual manual case/current policy/scoped actor and original source remain mandatory.",
+    "Reusable decision views accepted unsupported action findings, changed original definition/evidence and a revoked prior state. Actual4RED9.07s before schema support/lineage/state coherence; final95PASS235.14s after fix.",
+    "Initial final strict check rejected mutable-attack test edits of readonly DTO properties (4TS2540 errors). Reconstructed mutable nested objects with spreads for adversarial parser input, preserving all assertions; current strict and productionWebpackPASS.",
+    "Initial affected lint8warnings reduced to1 copied let binding; removed unused fixture imports and used const, final affected0errors0warnings. Final current-source combined regression supersedes pre-style/readonly-test execution."
+  ],
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "preview": "No browser-visible change/server/preview",
+  "resources": "All current normal/failure owned fixture outcomesstop0/Runningfalse, consumer pools/build/CLI ended/no server/preview. Prior verified D2 signal groups/D4 timeout-state diagnostics renamed; no new interruption execution claimed. Preserve unrelated resources.",
+  "pending": "Authorized implementation/source-pin commits/push/Ref55PR/matched-head merge/exactmainCI; then private current committed eligibility source/assessment view/protected APIUI",
+  "source_counts": {
+    "relevant": 592,
+    "consumer": 46,
+    "complete_build_code_paths": 537
+  },
+  "source_hashes": "planning/task-evidence/T013-assessment-decisions/source-hashes.json",
+  "consumer_source_hashes": "planning/task-evidence/T013-assessment-decisions/consumer-source-hashes.json",
+  "actual_checks": {
+    "new_pre_final": "95PASS235.14s; final current source combined531pending",
+    "planning": "55PASS50.278s/all3newfiles global/E04",
+    "root": "Current generation35 reused unchanged schema/client after pretype; final strict and productionWebpackPASS; unchanged Next routes/typegen reused (no route/UI)",
+    "consumer": "Own46files/23installed24audited0vuln/current strict+actual minimalPG35 case/state/history/actions/retry/withdrawal/revocation/live5sstatement2slock5sidlePASS; pool ended; final combined fixturestop0/verifiedRunningfalse",
+    "lint": "Final affected9files0errors0warnings; Root25existing warnings baseline reused, no untested changedfiles",
+    "audit": "Root approved unexpired moderate-or-higher advisory policyPASS, not Root zero vulnerabilities",
+    "format": "PASS fresh tracked+nonignored WIP snapshot/whole-format.log; root-owned ignored artifact preserved",
+    "source": "All592relevant/46consumer hashes match own current build/consumer; all537runtime/test/script/schema files/no missing-extra-stale",
+    "affected": "Final531currentPASS498.52s/15files plus1externalPASS1.38s/3nontarget excluded; fresh154purePASS5.65s/1DBskip targeted by actual external host",
+    "pure": "Fresh8files154PASS5.65s/1DBskip; shared protocol opaque-key extension is a material reason to rerun, exact prior114 evidence not counted",
+    "new": "Final current15files531PASS498.52s (95D6+119D5+317source), including all prior provenance/state/permission/SQL controls and final mutable-attack fixture/const cleanup; earlier95PASS235.14s not double counted",
+    "unique_selected": "686freshselectedPASS=531actualPG35+154pure+1external;55planning separate"
+  },
+  "reused": [
+    "Exact unchanged Next routes/typegen/config/deps; no browser-visible change.",
+    "Exact schema35/model/deps/config and owned generated client from pretype; final current strict/production rerun.",
+    "Root25preexisting wholelint warnings baseline exact unchanged plus final current9affectedfiles0warnings; all changed JS/TS covered."
+  ],
+  "skipped": [
+    "FullRoot suite/browser/devpreview (no browser-visible change)",
+    "Actual7hosted/independent/UAT/business/release not claimed",
+    "No real data/policy/reviewer seeds, no Rootflag/provider/billing change, no unchanged hosted redispatch",
+    "No new SIGTERM execution; verified prior signal-safe groups/current normal-failurestop0 evidence retained"
+  ],
+  "ended_at": "2026-10-15T22:33:56.959135+00:00",
+  "elapsed_seconds": 903.092,
+  "implementation_sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+  "completion_validator": "Expectedexit1 exactly34missing obligations=27criteria+7hosted, no metadataerrors; completion.log"
+}

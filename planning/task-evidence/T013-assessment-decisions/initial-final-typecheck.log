@@ -1,0 +1,4 @@
+tests/practice-assessment-decision-db.test.ts(1040,23): error TS2540: Cannot assign to 'findings' because it is a read-only property.
+tests/practice-assessment-decision-db.test.ts(1044,25): error TS2540: Cannot assign to 'definitionReference' because it is a read-only property.
+tests/practice-assessment-decision-db.test.ts(1046,25): error TS2540: Cannot assign to 'evidenceReferences' because it is a read-only property.
+tests/practice-assessment-decision-db.test.ts(1047,58): error TS2540: Cannot assign to 'state' because it is a read-only property.

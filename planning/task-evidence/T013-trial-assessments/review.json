@@ -28,7 +28,7 @@
     "Reusable view schema accepted missing/foreign/backward current assessment pointers despite an original committed snapshot; actual3RED1policyrev2controlPASS7.33s source/log retained before canonical-family/monotonic-pointer coherence. Final113 includes legitimate later policy revision and ownership revision2 controls.",
     "Initial new-case assessment CAS discovery was missing when a prior participant-skill assessment existed and the evaluator had no old-case grant. Actual1RED3.65s+1RootRED before audited scoped observer; actual6context controlsPASS7.88s, no other-case private rank/answer fields selected. Caller obtains actual current refs without invented hints; policy discovery remains separate D3 observer."
   ],
-  "pending": "Authorized implementation/source-pin commits, push, matched-head Ref55 merge, exact-main CI observation; then reasoned reassessment/current eligibility/APIUI",
+  "pending": "Reasoned reassessment/fraud history and committed eligibility source, protected APIUI; fullT013/independent/UAT/business/release open",
   "independent_UAT_business_release": "NOT VERIFIED",
   "resources": "All actual new/core/affected/consumer/external normal/failure owned fixture outcomesstop0/Runningfalse, planning containers/networks none, CLI/pools/build ended/no server/preview. Verified D2 signal groups and D4 timeout/state diagnostic renamed, no new interruption execution claimed; preserve unrelated resources.",
   "actual_checks": {
@@ -64,5 +64,12 @@
   "ended_at": "2026-10-15T22:02:49.387889+00:00",
   "elapsed_seconds": 3495.121,
   "implementation_sha": "fe82060f38501ff89b999e2564df38cae2d971be",
-  "completion_validator": "Expected exit1 exactly34missing obligations:27criteria+7hosted; no metadata errors; completion.log"
+  "completion_validator": "Expected exit1 exactly34missing obligations:27criteria+7hosted; no metadata errors; completion.log",
+  "merged_main_sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+  "source_pin_sha": "ba2f2da08af065699b405422851d94f3d32d7edc",
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/226",
+  "full_main_tree_equals_tested_pin": true,
+  "exact_main_source_files": 586,
+  "exact_main_consumer_files": 45,
+  "hosted_result": "Staging38814499328 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch"
 }

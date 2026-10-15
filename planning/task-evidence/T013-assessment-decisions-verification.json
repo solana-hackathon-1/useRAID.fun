@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D6 actual reasoned capability/fraud-evidence case decisions, immutable committed state transitions and private current/historical state only",
+  "status": "SELF-EVALUATED bounded source gates; fullT013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-16-T013-assessment-decisions.md",
+  "migration_rollback": "Additive35 private immutable case decisions and committed state provenance; original verification rows/lineage unchanged. Disable new actions/dependent use, preserve all history/receipts/audits; no destructive rollback or real seed.",
+  "dependency_evidence": "Actual original case and current assessment/review/ownership, exact current approved assessment policy, current own evaluator Session/nonself ASSESSMENT_REVIEW appointment and host namespace/action scope in one transaction. Own independently installed minimalPG35 consumer strict and actual current runtimePASS.",
+  "open_decisions": "O09/O11/staffed public operation/notice/appeal/retention/release remainOPEN/NOT VERIFIED. Manual reasoned actual source only, no automatic fraud/reliability/account/financial effect or invented policy. Current eligibility/APIUI next.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+  "candidate_sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+  "source_identity": "Implementation 7a45bc34bcb2e8f05637db19672075ab7765694a; exact592relevant/46consumer hashes and all537build code paths/current own build+installed example; metadata-only source pin follows.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11/Zod4.6.5/pinnedPG16 actual35DDL; own23installed24audited0vuln/current strict+minimalPG35 consumer; actual current generation35/types/production build; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded D6 author source evidence only: actual current case/assessment/policy/ownership/current own evaluator Session/scoped appointment/namespace, immutable reasoned capability or assessment-evidence case, separate state events and preserved original lineage; no client proposal/signal becomes actual fraud or permission. Root defaultoff/no real seed/financial/provider/APIUI enablement. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json; docs/raid-practice-assessment-decisions.md; docs/tasks/2026-10-16-T013-assessment-decisions.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current3feStaging38814499328billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local evidence separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current3feStaging38814499328billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local evidence separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current3feStaging38814499328billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local evidence separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current3feStaging38814499328billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local evidence separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current3feStaging38814499328billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local evidence separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current3feStaging38814499328billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local evidence separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current3feStaging38814499328billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local evidence separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "command": "ActualPG34 typed decision/state placeholders; separate opaqueaudit key/Rootmissing module; later DTO provenance controls before schema fix",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/red.log; red-source.tar.gz; host-red.log; dto-red.log; dto-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "Only actual attributable current same-case/source/policy/authority can commit reasoned state transitions; coherent private snapshots and immutable history/provenance",
+      "observed_failure": "29FAIL40.25s; opaqueaudit key1FAIL and Root missing-module suite. Later4DTOFAIL9.07s inconsistent finding/definition/evidence/revoked-prior views; original source/rawlogs retained."
+    },
+    "green": {
+      "sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+      "command": "ActualPG35 three new suites and independently installed minimalPG35 consuming host",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/final-affected.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json; consumer-final-types.log",
+      "result": "PASS",
+      "observed": "Final current531PASS498.52s/15files (95new+119D5+317source), current own46-file independently installed minimalPG35 consuming hostPASS; all actual fixturesstop0/Runningfalse"
+    },
+    "refactor": {
+      "sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+      "command": "Meaningful provenance/rawSQL/current authority/CAS/immutability/privacy +affected/mandatory gates",
+      "evidence_url": "planning/task-evidence/T013-assessment-decisions/final-affected.log; affected-pure.log; planning.log; generate35.log; typecheck.log; production-build.log; schema-validate2.log; clean-lint.log; audit.log; whole-format.log; review.json; cleanup.json; source-hashes.json; consumer-source-hashes.json; build-source-probe.json",
+      "result": "PASS",
+      "observed": "686freshselectedPASS=531SQL498.52s+154pure5.65s+1external1.38s;55planning50.278s. Current strict-production/ownconsumer/affectedlint0/schema35/generation35/audit/freshformat/source592-consumer46-full537PASS; exact unchanged generation/typegen/25oldwholelint baseline reused; timedSELF903.092s. No fullT013/independent/hosted acceptance."
+    }
+  }
+}
