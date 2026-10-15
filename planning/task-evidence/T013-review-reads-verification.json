@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual immutable private submission/start/original definition/rubric and D1 finite per-submission/purpose assignment/current session/policy/expiry/revocation. Same held PostgreSQL READ_COMMITTED before private columns and after query; independently installed actual minimal PG consumer. Canonical28.3 case access requires private identifier-only authorized-attempt receipt/audit in the same transaction before private selection, current permission repeated after audit wait and body; host delivers only after commit.",
   "open_decisions": "O09 calibration and O11 retention/approved operating model remainOPEN; authorized read does not confirm ownership or assess rank. Actual decision stores/projections/APIs/UI/independent acceptance separate.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-  "candidate_sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-  "source_identity": "Base40fc279 plus exact118current source hashes and38own installed consumer hashes; final audited implementation/working tree exact in owned verified build/consumer. Metadata-only pin follows authorized implementation commit.",
+  "code_source_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
+  "candidate_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
+  "source_identity": "Implementation cb8e84315e0593f753ab829b5f9df09a64789ec4, all118current relevant source/38own consumer files exact in verified own build/installation; original phase RED sources and runner lifecycle regression retained. Metadata-only pin follows.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinned PostgreSQL16; own generated31 deps/current strict/build/independently installed23packages24audited0vuln consumer; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "25behaviorFAIL+1sanitizederror controlPASS8.94s and3hostFAIL before implementation; separate7DTO coherenceFAIL+7controlsPASS748ms before schema refinement. Canonical audit correction2FAIL1.73s before implementation. Separate actual runner SIGTERM RED\u2192GREEN retained as lifecycle evidence, not module RED."
     },
     "green": {
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
       "command": "ActualPG31 all3new files after canonical case-audit correction, signal-safe owned runner, and final independently installed realPG consumer",
       "evidence_url": "planning/task-evidence/T013-review-reads/access-audit-green.log; consumer-access-audit-types.log; consumer-access-audit.log; source-hashes.json; consumer-source-hashes.json",
       "result": "PASS",
       "observed": "49PASS17.20s; own23installed24audited0vuln strict/current actualPG/audit before private body/current authority/immutable original content/revocation/no business-outbox/local boundsPASS. All118source/38consumer files match own verified build/installation; owned fixturestop0, SIGTERM automaticcleanup separately verified."
     },
     "refactor": {
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
+      "sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
       "command": "Shared coherent strict private DTO/current held D1 authorization before and after private query; meaningful affected/mandatory gates",
       "evidence_url": "planning/task-evidence/T013-review-reads/affected-db.log; reused-evidence-source-proof.json; planning.log; final-typecheck.log; final-production-build.log; post-lint-typecheck.log; lint.log; final-affected-lint.log; audit.log; review.json; planning/task-evidence/T013-review-reads/access-audit-typecheck.log; access-audit-production-build.log; access-audit-lint.log; cleanup-signal-red.json; cleanup-signal-green.json",
       "result": "PASS",
