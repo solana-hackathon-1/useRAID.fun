@@ -16,6 +16,15 @@ async function transaction<T>(work: (tx: CommandReceiptTransaction) => Promise<T
     const client = await pool.connect();
     try {
       await client.query('BEGIN ISOLATION LEVEL READ COMMITTED');
+      await client.query("SET LOCAL statement_timeout='5s'");
+      await client.query("SET LOCAL lock_timeout='2s'");
+      await client.query("SET LOCAL idle_in_transaction_session_timeout='5s'");
+      const [statementBound] = (
+        await client.query<{ statement_timeout: string }>('SHOW statement_timeout')
+      ).rows;
+      const [lockBound] = (await client.query<{ lock_timeout: string }>('SHOW lock_timeout')).rows;
+      assert.equal(statementBound.statement_timeout, '5s');
+      assert.equal(lockBound.lock_timeout, '2s');
       const port: CommandReceiptTransaction = {
         dialect: 'POSTGRESQL',
         isolation: 'READ_COMMITTED',
@@ -56,7 +65,7 @@ const draft = {
   skillId: 'frontend',
   skillDomain: 'web',
   targetRank: 'A',
-  title: 'Synthetic interface practice',
+  title: ' ' + '😀'.repeat(100) + ' ',
   brief: 'Build and explain a synthetic accessible interface.',
   variantId: 'synthetic-one',
   inputs: [
@@ -142,6 +151,15 @@ try {
   );
   const first = await save();
   assert.equal(first.status, 'EXECUTED');
+  assert.equal(first.trial.definition.title, '😀'.repeat(100));
+  await assert.rejects(
+    () =>
+      save(
+        { ...input, expectedRevision: 1, draft: { ...draft, title: '😀'.repeat(101) } },
+        randomUUID(),
+      ),
+    /INVALID_INPUT/,
+  );
   assert.equal(first.trial.definition.reference.revision, 1);
   assert.equal(first.trial.verifiesSkill, false);
   assert.equal(first.trial.consumesCapacity, false);
@@ -181,6 +199,8 @@ try {
     JSON.stringify({
       synthetic: true,
       actualPostgreSQL: true,
+      storedUnicodeBound: true,
+      normalizedExactBoundTitle: true,
       immutableGlobalRubric: true,
       originalReceiptAfterRetirement: true,
       alternateScopedPolicy: true,

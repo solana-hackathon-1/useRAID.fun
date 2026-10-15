@@ -11,7 +11,7 @@
   "open_decisions": "O09 numeric scoring/calibration, O11 retention and actual approved operating/evaluator/provider policy remain unresolved; no production authority/policy seed.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
   "code_source_sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-  "candidate_sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
+  "candidate_sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
   "source_identity": "Implementation 786c3b23a2747b21bde914f4deb2c92b35522857 contains exact verified final code/test/config/schema/consumer/dependency bytes; following pin changes metadata only. Actual RED and failed Unicode sources remain separately archived.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/PostgreSQL16 pinned image; own generated30 build deps, own23installed24audit0vuln minimalPG consumer; synthetic only",
   "criteria": {
@@ -181,45 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-      "evidence_url": "planning/task-evidence/T013-practice-submissions/review.json",
-      "observed": "Exact future mergedmain hosted result pending; local evidence separate. Priorc2c3 Staging38766858695 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+      "observed": "Exact mergedmain automatic StagingFAILED before0steps due billing; original namedChecks disabled/not dispatched. Local evidence separate."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-      "evidence_url": "planning/task-evidence/T013-practice-submissions/review.json",
-      "observed": "Exact future mergedmain hosted result pending; local evidence separate. Priorc2c3 Staging38766858695 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+      "observed": "Exact mergedmain automatic StagingFAILED before0steps due billing; original namedChecks disabled/not dispatched. Local evidence separate."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-      "evidence_url": "planning/task-evidence/T013-practice-submissions/review.json",
-      "observed": "Exact future mergedmain hosted result pending; local evidence separate. Priorc2c3 Staging38766858695 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+      "observed": "Exact mergedmain automatic StagingFAILED before0steps due billing; original namedChecks disabled/not dispatched. Local evidence separate."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-      "evidence_url": "planning/task-evidence/T013-practice-submissions/review.json",
-      "observed": "Exact future mergedmain hosted result pending; local evidence separate. Priorc2c3 Staging38766858695 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+      "observed": "Exact mergedmain automatic StagingFAILED before0steps due billing; original namedChecks disabled/not dispatched. Local evidence separate."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-      "evidence_url": "planning/task-evidence/T013-practice-submissions/review.json",
-      "observed": "Exact future mergedmain hosted result pending; local evidence separate. Priorc2c3 Staging38766858695 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+      "observed": "Exact mergedmain automatic StagingFAILED before0steps due billing; original namedChecks disabled/not dispatched. Local evidence separate."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-      "evidence_url": "planning/task-evidence/T013-practice-submissions/review.json",
-      "observed": "Exact future mergedmain hosted result pending; local evidence separate. Priorc2c3 Staging38766858695 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+      "observed": "Exact mergedmain automatic StagingFAILED before0steps due billing; original namedChecks disabled/not dispatched. Local evidence separate."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": "786c3b23a2747b21bde914f4deb2c92b35522857",
-      "evidence_url": "planning/task-evidence/T013-practice-submissions/review.json",
-      "observed": "Exact future mergedmain hosted result pending; local evidence separate. Priorc2c3 Staging38766858695 billing before0steps/manualChecks originaldisabled/no unchanged redispatch."
+      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+      "observed": "Exact mergedmain automatic StagingFAILED before0steps due billing; original namedChecks disabled/not dispatched. Local evidence separate."
     }
   },
   "tdd": {
@@ -245,5 +245,14 @@
       "result": "PASS",
       "observed": "72new+178affectedSQL+144pure+1previouslyDBskipped externalhost=395PASS;55planningPASS50.634s. Own current host/generated30 types-build/schema/lint0errors25oldwarnings/audit/freshwholeformat. No weakened tests/SQL/text preservation; full suite/hosted not claimed."
     }
+  },
+  "post_merge_staging": {
+    "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+    "result": "NOT VERIFIED",
+    "observed": "FAILED before0steps with official GitHub account payments/spending-limit annotation",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38774846587",
+    "new_image": "NOT PUBLISHED by this run",
+    "manual_checks": "Originally disabled_manually API-verified; no enablement/redispatch/restoration obligation",
+    "source": "Actual merge tree equals verified pin; final code/test/config/schema/example/dependency hashes exact"
   }
 }
