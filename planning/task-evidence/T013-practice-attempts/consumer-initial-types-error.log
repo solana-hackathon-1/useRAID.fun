@@ -1,0 +1,9 @@
+
+added 23 packages, and audited 24 packages in 981ms
+
+found 0 vulnerabilities
+
+> raid-practice-trial-attempt-example@1.0.0 typecheck
+> tsc --noEmit
+
+skills/practice-trial-attempt-storage.ts(296,38): error TS7006: Parameter 'candidate' implicitly has an 'any' type.

@@ -1,0 +1,543 @@
+4f6780a1c6a88f4502cef3ba61695f903d10694cabc2264f6db314ec59f8f8a2
+OWNED DATABASE: raid-t013-practice-attempts-auto-20261015 loopback port 32868
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32868"
+
+28 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+(node:3167276) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 60)
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ❯ tests/practice-trial-attempt-db.test.ts (26 tests | 26 failed) 8157ms
+     × persists an immutable current canonical start with exact original definition/rubric/tool consent and no rank/grant/capacity/money 298ms
+     × requires an actual existing HUMAN without autoprovision 198ms
+     × rejects forged participantId before any effect 194ms
+     × rejects forged attemptHistory before any effect 182ms
+     × rejects forged attemptNumber before any effect 189ms
+     × rejects forged startedAt before any effect 184ms
+     × rejects forged persisted before any effect 176ms
+     × rejects forged assessedRank before any effect 176ms
+     × supports current own X and wallet sessions without admin or token purchase 180ms
+     × keeps foreign and missing private starts undisclosed 188ms
+     × rejects a expired session with total rollback 184ms
+     × rejects a revoked session with total rollback 202ms
+     × rejects a foreign session with total rollback 198ms
+     × rejects a unsupported session with total rollback 202ms
+     × denies suspension on new commands, replay and private reads 194ms
+     × retains the exact original receipt and private history after retirement and writes disabled 252ms
+     × disables only new intent and rejects changed idempotent bodies after current authorization 341ms
+     × requires the actual current definition and current active skill 392ms
+     × rejects accommodations until real scoped approved records exist, without consuming attempts 354ms
+     × counts every family start across revisions and enforces the current published maximum 236ms
+     × uses family-wide last actual start for current published cooldown without rewriting history 224ms
+     × serializes concurrent duplicate intent into one original start 238ms
+     × enforces a one-attempt definition across concurrent linked own sessions 256ms
+     × keeps family histories separate for different canonical participants 312ms
+     × rejects unknown definitions and malformed private read identifiers 268ms
+     × observes actual session expiry while blocked on family history 2316ms
+ ❯ tests/practice-trial-attempt-boundary.test.ts (1 test | 1 failed) 16ms
+   × permits only identifier references for a private start event 14ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 27 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-attempt-boundary.test.ts > permits only identifier references for a private start event
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/practice-trial-attempt-boundary.test.ts:15:56
+     13|     payload: { practiceTrialStartId: 'start' },
+     14|   };
+     15|   expect(EventEnvelopeSchema.safeParse(event).success).toBe(true);
+       |                                                        ^
+     16|   for (const field of ['answers', 'submission', 'definition', 'assesse…
+     17|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > persists an immutable current canonical start with exact original definition/rubric/tool consent and no rank/grant/capacity/money
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:135:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > requires an actual existing HUMAN without autoprovision
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'RESOURCE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-attempt-db.test.ts:166:33
+    164|     const missing = await actor(false, false);
+    165|     const before = await db.participant.count();
+    166|     await expect(start(missing)).rejects.toMatchObject({ code: 'RESOUR…
+       |                                 ^
+    167|     expect(await db.participant.count()).toBe(before);
+    168|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects forged participantId before any effect
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects forged attemptHistory before any effect
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects forged attemptNumber before any effect
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects forged startedAt before any effect
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects forged persisted before any effect
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects forged assessedRank before any effect
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-attempt-db.test.ts:177:68
+    175|     'assessedRank',
+    176|   ])('rejects forged %s before any effect', async (field) => {
+    177|     await expect(start(subject, { ...input(), [field]: 'forged' })).re…
+       |                                                                    ^
+    178|       code: 'INVALID_INPUT',
+    179|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > supports current own X and wallet sessions without admin or token purchase
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:182:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > keeps foreign and missing private starts undisclosed
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:189:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects a expired session with total rollback
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects a revoked session with total rollback
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects a foreign session with total rollback
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects a unsupported session with total rollback
+PrismaClientKnownRequestError:
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "PracticeTrialStart" does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/practice-trial-attempt-db.test.ts:197:22
+    195|     'rejects a %s session with total rollback',
+    196|     async (mode) => {
+    197|       const before = await counts();
+       |                      ^
+    198|       if (mode === 'expired')
+    199|         await db.session.update({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > denies suspension on new commands, replay and private reads
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:217:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > retains the exact original receipt and private history after retirement and writes disabled
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:229:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > disables only new intent and rejects changed idempotent bodies after current authorization
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:242:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > requires the actual current definition and current active skill
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'REVISION_CHANGED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "REVISION_CHANGED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-attempt-db.test.ts:258:43
+    256|   });
+    257|   it('requires the actual current definition and current active skill'…
+    258|     await expect(start(subject, input(2))).rejects.toMatchObject({ cod…
+       |                                           ^
+    259|     await start();
+    260|     await catalog(1, [{ ...skills[0], status: 'RETIRED' }]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects accommodations until real scoped approved records exist, without consuming attempts
+PrismaClientKnownRequestError:
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "PracticeTrialStart" does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/practice-trial-attempt-db.test.ts:266:20
+    264|   });
+    265|   it('rejects accommodations until real scoped approved records exist,…
+    266|     const before = await counts();
+       |                    ^
+    267|     await expect(
+    268|       start(subject, {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > counts every family start across revisions and enforces the current published maximum
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:276:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > uses family-wide last actual start for current published cooldown without rewriting history
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:284:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > serializes concurrent duplicate intent into one original start
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:293:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > enforces a one-attempt definition across concurrent linked own sessions
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/practice-trial-attempt-db.test.ts:312:60
+    310|     });
+    311|     const values = await Promise.allSettled([start(subject, input(2)),…
+    312|     expect(values.filter((v) => v.status === 'fulfilled')).toHaveLengt…
+       |                                                            ^
+    313|     for (const value of values)
+    314|       if (value.status === 'rejected')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > keeps family histories separate for different canonical participants
+Error: NOT_IMPLEMENTED
+ ❯ startPracticeTrial src/skills/practice-trial-attempt-storage.ts:21:9
+     19|   _options: { allowNewWrites: boolean },
+     20| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStar…
+     21|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     22| }
+     23| export async function readPracticeTrialStart(
+ ❯ tests/practice-trial-attempt-db.test.ts:99:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-attempt-db.test.ts:319:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > rejects unknown definitions and malformed private read identifiers
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'RESOURCE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-attempt-db.test.ts:327:6
+    325|     await expect(
+    326|       start(subject, { ...input(), definitionReference: { recordId: 'a…
+    327|     ).rejects.toMatchObject({ code: 'RESOURCE_UNAVAILABLE' });
+       |      ^
+    328|     await expect(read('bad identifier')).rejects.toMatchObject({ code:…
+    329|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/27]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > observes actual session expiry while blocked on family history
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'AUTHENTICATION_REQUIRED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-attempt-db.test.ts:353:29
+    351|         data: { expiresAt: new Date(Date.now() + 400) },
+    352|       });
+    353|       work = expect(start()).rejects.toMatchObject({ code: 'AUTHENTICA…
+       |                             ^
+    354|       const deadline = Date.now() + 2000;
+    355|       let blocked = false;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/27]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'AUTHENTICATION_REQUIRED' }
+ ❯ _Assertion.__VITEST_REJECTS__ node_modules/@vitest/expect/dist/index.js:1747:17
+ ❯ _Assertion.propertyGetter node_modules/chai/index.js:1570:27
+ ❯ Object.proxyGetter [as get] node_modules/chai/index.js:1659:22
+ ❯ tests/practice-trial-attempt-db.test.ts:353:29
+    351|         data: { expiresAt: new Date(Date.now() + 400) },
+    352|       });
+    353|       work = expect(start()).rejects.toMatchObject({ code: 'AUTHENTICA…
+       |                             ^
+    354|       const deadline = Date.now() + 2000;
+    355|       let blocked = false;
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+This error originated in "tests/practice-trial-attempt-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "observes actual session expiry while blocked on family history". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  2 failed (2)
+      Tests  27 failed (27)
+     Errors  1 error
+   Start at  21:25:57
+   Duration  9.06s (transform 252ms, setup 0ms, import 536ms, tests 8.17s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-practice-attempts-auto-20261015

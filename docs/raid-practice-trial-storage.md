@@ -32,6 +32,8 @@ Migration28 `202610150001_practice_trial_definitions` adds `PracticeTrial`, `Pra
 
 ## Installation, operations and replacement
 
+[Durable canonical practice starts](raid-practice-trial-attempts.md) now consume these actual approved definitions using current own sessions, an existing canonical HUMAN, immutable consent references and serialized family history. They preserve old starts after retirement without issuing assessments/ranks/grants. Submission/evaluator authority and non-null approved accommodations remain separate dependencies.
+
 Apply existing migrations before additive28; never rewrite old migrations. The [independently installed minimal PostgreSQL host](../examples/practice-trial-storage/README.md) owns its driver/account/session/policy and canonical receipt/catalog/practice SQL. It proves actual authorized publication, global rubric consistency, historical read, retirement/original replay with writes off and current revocation using an alternate local policy representation. It uses no Root install or live credentials.
 
 `PracticeTrialStorageError` codes are INVALID_INPUT, AUTHENTICATION_REQUIRED, ACCOUNT_RESTRICTED, FORBIDDEN, WRITES_DISABLED, STORAGE_CONTRACT, STORAGE_UNAVAILABLE, RESOURCE_UNAVAILABLE, REVISION_CHANGED, HISTORY_CONFLICT, SKILL_UNAVAILABLE, RUBRIC_CONFLICT and RUBRIC_REVISION_CHANGED. Shared receipt errors include IDEMPOTENCY_KEY_REUSED and RETRY_TRANSACTION. Unknown driver/policy errors are sanitized. Host maps protected API errors and supplies origin/CSRF/rate controls before exposing future HTTP. Observe request/command/error category, duration/retries; never log session hash or full private content.
