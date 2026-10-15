@@ -1,0 +1,21 @@
+{
+  "name": "/raid-t013-review-assignments-auto-20261015",
+  "id": "ec13cdc9ff15fc42629c78c8695eb4d35ec83265d6318228e29a57e9e2c769de",
+  "task_label": "T013-review-assignments",
+  "actual_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T18:01:43.344907652Z",
+    "FinishedAt": "2026-10-15T18:01:51.343744468Z"
+  },
+  "all_outcomes_stop0": true,
+  "no_owned_server_or_preview": true,
+  "unrelated_resources_preserved": true
+}

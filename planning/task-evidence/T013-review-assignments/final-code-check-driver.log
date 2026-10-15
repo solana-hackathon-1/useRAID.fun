@@ -1,0 +1,4 @@
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK final-typecheck
+final-typecheck PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK final-production-build
+final-production-build PASS

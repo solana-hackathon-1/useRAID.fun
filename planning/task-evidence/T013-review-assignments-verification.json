@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D1 explicit private per-submission/purpose finite evaluator assignments, immutable revocation and current locked use only",
+  "status": "VERIFIED_IN_TEST bounded explicit scoped review authority; fullT013NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-15-T013-review-assignments.md",
+  "migration_rollback": "Additive migration31 two immutable authority/history tables with required composite canonical subject dependencies from prior30; no seed/backfill/flag enablement. Disable new management writes, retain receipt/audit/history/revocations/current checks; never delete revocations to roll back.",
+  "dependency_evidence": "Actual immutable private submissions/starts/definitions and canonical HUMAN; current own User/Session X-admin management plus scoped policy; actual unrestricted evaluator current own session for use; sorted User locks/assignment mutex/database clock; independently installed minimal PG consumer.",
+  "open_decisions": "O09 calibration/scoring and O11 retention/approved staffed operating model remainOPEN; no actual evaluation/private answer reader/ownership confirmation/policy seed.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+  "candidate_sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+  "source_identity": "Base3082ada plus exact uncommitted source-hashes.json; original genuine RED archives before implementation. Implementation will be pinned after commit.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinned PostgreSQL16; own generated31 build deps and independently installed23package/24audited0vuln consumer; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded scoped assignment issue/revoke/current held exact-scope use author evidence only. Actual current identities/policy/expiry/revocation required; no private answer/ownership/assessment/rank/capacity/money/provider/UI/real authority seed. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json; docs/raid-practice-review-assignments.md; docs/tasks/2026-10-15-T013-review-assignments.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json",
+      "observed": "Exact future main hosted checks pending; current3082ada Staging38779630222 billing before0steps/manualoriginaldisabled. No unchanged redispatch; local checks separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json",
+      "observed": "Exact future main hosted checks pending; current3082ada Staging38779630222 billing before0steps/manualoriginaldisabled. No unchanged redispatch; local checks separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json",
+      "observed": "Exact future main hosted checks pending; current3082ada Staging38779630222 billing before0steps/manualoriginaldisabled. No unchanged redispatch; local checks separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json",
+      "observed": "Exact future main hosted checks pending; current3082ada Staging38779630222 billing before0steps/manualoriginaldisabled. No unchanged redispatch; local checks separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json",
+      "observed": "Exact future main hosted checks pending; current3082ada Staging38779630222 billing before0steps/manualoriginaldisabled. No unchanged redispatch; local checks separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json",
+      "observed": "Exact future main hosted checks pending; current3082ada Staging38779630222 billing before0steps/manualoriginaldisabled. No unchanged redispatch; local checks separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/review.json",
+      "observed": "Exact future main hosted checks pending; current3082ada Staging38779630222 billing before0steps/manualoriginaldisabled. No unchanged redispatch; local checks separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "command": "Owned actual PostgreSQL30 baseline tests/practice-review-assignment-db.test.ts against typed command stubs; separate Root host baseline; actual auth-before-target and expiry-policy self-review regressions before fixes",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/red.log; host-red.log; red-source.tar.gz; red-source-hashes.json; preauth-red.log; preauth-red-source.tar.gz; expiry-policy-red.log; expiry-policy-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "Actual explicit finite scope/current evaluator authority/history should be available, malformed/unauthorized inputs rejected before target enumeration and current host policy receives requested/saved duration.",
+      "observed_failure": "35behaviorFAIL10.75s +3hostFAIL before implementation. Separate auth-before-target1FAIL1.50s and expiry-policy1FAIL1.22s. Initial parser failure ran no tests and is separately retained; first actual21FAIL17PASS SQL ambiguity also retained with exact source."
+    },
+    "green": {
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "command": "ActualPG31 full new DB/boundary/host checks and independently own installed strict current minimalPG consuming host",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/final-green.log; consumer-install-types.log; consumer-final-types.log; consumer-final.log; source-hashes.json; consumer-source-hashes.json",
+      "result": "PASS",
+      "observed": "64PASS35.76s; own23installed24audited0vuln strict/current actualPG/duration/scope/revocation/original replay/boundsPASS. All103source/27consumer files match verified own build/installation; owned fixturestop0."
+    },
+    "refactor": {
+      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "command": "Sorted User/current Session/assignment locks, strict current scope/duration policy, immutable issue/revoke receipts and independently installed host; affected and mandatory gates",
+      "evidence_url": "planning/task-evidence/T013-review-assignments/affected-db.log; affected-pure.log; planning.log; final-typecheck.log; final-production-build.log; lint.log; final-affected-lint.log; audit.log; review.json",
+      "result": "PASS",
+      "observed": "393unique selectedPASS (64new+184SQL+144pure+1external),55planning55.112s, own generated31/final strict/productionWebpack/schema/lint whole0errors with25preexisting plus1new fixture warning corrected and finalaffected0warnings/auditPASS. Fresh whole formatterPASS. Source/consumer exact, every owned fixturestop0; no fullT013/independent/hosted acceptance."
+    }
+  }
+}

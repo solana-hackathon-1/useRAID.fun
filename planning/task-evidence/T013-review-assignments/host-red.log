@@ -1,0 +1,58 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-assignment-host.test.ts (3 tests | 3 failed) 36ms
+   × defaults management new writes off and accepts only exact true 25ms
+   × composes current X-admin host policy for issue and preserves original receipts when off 4ms
+   × composes current X-admin host policy for revoke and preserves original receipts when off 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-assignment-host.test.ts > defaults management new writes off and accepts only exact true
+AssertionError: expected { writesAvailable: true, …(1) } to deeply equal { writesAvailable: false, …(1) }
+
+- Expected
++ Received
+
+  {
+-   "unavailableReason": "DISABLED",
+-   "writesAvailable": false,
++   "unavailableReason": null,
++   "writesAvailable": true,
+  }
+
+ ❯ tests/practice-review-assignment-host.test.ts:10:237
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/practice-review-assignment-host.test.ts > composes current X-admin host policy for issue and preserves original receipts when off
+Error: NOT_IMPLEMENTED
+ ❯ issuePracticeReviewAssignmentFromHost src/lib/practice-review-assignments-host.ts:3:110
+      1| import type { PracticeReviewAssignmentCommand } from '../skills/practi…
+      2| export function practiceReviewAssignmentWriteConfiguration(): {writesA…
+      3| export async function issuePracticeReviewAssignmentFromHost(_command:P…
+       |                                                                                                              ^
+      4| export async function revokePracticeReviewAssignmentFromHost(_command:…
+      5|
+ ❯ tests/practice-review-assignment-host.test.ts:11:347
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/practice-review-assignment-host.test.ts > composes current X-admin host policy for revoke and preserves original receipts when off
+Error: NOT_IMPLEMENTED
+ ❯ revokePracticeReviewAssignmentFromHost src/lib/practice-review-assignments-host.ts:4:111
+      2| export function practiceReviewAssignmentWriteConfiguration(): {writesA…
+      3| export async function issuePracticeReviewAssignmentFromHost(_command:P…
+      4| export async function revokePracticeReviewAssignmentFromHost(_command:…
+       |                                                                                                               ^
+      5|
+ ❯ tests/practice-review-assignment-host.test.ts:11:347
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  23:32:46
+   Duration  636ms (transform 142ms, setup 0ms, import 198ms, tests 36ms, environment 0ms)
