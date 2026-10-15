@@ -1,0 +1,516 @@
+4a1683e2bd6b0aeecaddeced9aafdeb410faca7c8a268dd7f0e5637af205beca
+OWNED DATABASE: raid-t013-practice-submissions-auto-20261015 loopback port 32879
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32879"
+
+29 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-submission-db.test.ts (30 tests | 30 failed) 11920ms
+     × saves exact original consent and text whitespace as immutable private unconfirmed submission, never assessment 413ms
+     × reuses actual locked immutable own canonical participant without autoprovision 301ms
+     × rejects caller-forged participantId without consuming anything 307ms
+     × rejects caller-forged ownership without consuming anything 256ms
+     × rejects caller-forged assessedRank without consuming anything 259ms
+     × rejects caller-forged submittedAt without consuming anything 240ms
+     × rejects caller-forged reference without consuming anything 277ms
+     × rejects caller-forged evidenceReferences without consuming anything 248ms
+     × rejects caller-forged persisted without consuming anything 258ms
+     × binds expectedDefinitionReference to the actual immutable accepted start 367ms
+     × binds expectedRubricReference to the actual immutable accepted start 574ms
+     × keeps foreign and unknown starts unavailable and private submission IDs undisclosed 504ms
+     × rejects a expired current session with complete rollback 507ms
+     × rejects a revoked current session with complete rollback 515ms
+     × rejects a foreign current session with complete rollback 393ms
+     × rejects a unsupported current session with complete rollback 330ms
+     × denies current suspension on new intent, original replay and private reads 313ms
+     × finishes an accepted start after definition and catalog retirement without rewriting original consent 338ms
+     × preserves original receipt after retirement/disablement and denies only new intent 268ms
+     × distinguishes exact code whitespace in original intent and reauthorizes changed-key conflicts 275ms
+     × serializes duplicate intent into one exact original private submission 312ms
+     × allows only one final submission per saved start under concurrent different keys 348ms
+     × keeps submissions for separately authorized family attempts independent 268ms
+     × never puts private answers, explanations or assistance declarations in audit/outbox/receipts 268ms
+     × rejects unsupported or empty-visible answer text "\u0000" before any effect 254ms
+     × rejects unsupported or empty-visible answer text "\ud800" before any effect 309ms
+     × rejects unsupported or empty-visible answer text "   \r\n" before any effect 283ms
+     × preserves valid supplementary Unicode at the exact UTF16 bound and rejects overflow 276ms
+     × observes actual session expiry while waiting on the submission mutex 2359ms
+     × normalizes current owner-reader denials to its owned error while retaining authentication code 290ms
+ ❯ tests/practice-trial-submission-boundary.test.ts (1 test | 1 failed) 16ms
+   × accepts only an opaque private submission audit reference 14ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 31 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-submission-boundary.test.ts > accepts only an opaque private submission audit reference
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/practice-trial-submission-boundary.test.ts:15:56
+     13|     payload: { practiceTrialSubmissionId: 'submission' },
+     14|   };
+     15|   expect(EventEnvelopeSchema.safeParse(event).success).toBe(true);
+       |                                                        ^
+     16|   for (const field of ['answer', 'explanation', 'ownership', 'assessed…
+     17|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > saves exact original consent and text whitespace as immutable private unconfirmed submission, never assessment
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:171:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > reuses actual locked immutable own canonical participant without autoprovision
+Error: NOT_IMPLEMENTED
+ ❯ lockPracticeTrialParticipant src/skills/practice-trial-attempt-storage.ts:392:9
+    390|   _actorValue: SkillTaxonomyActor,
+    391| ): Promise<Readonly<Extract<z.output<typeof ParticipantSchema>, { kind…
+    392|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+    393| }
+    394|
+ ❯ tests/practice-trial-submission-db.test.ts:201:57
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:201:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects caller-forged participantId without consuming anything
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects caller-forged ownership without consuming anything
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects caller-forged assessedRank without consuming anything
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects caller-forged submittedAt without consuming anything
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects caller-forged reference without consuming anything
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects caller-forged evidenceReferences without consuming anything
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects caller-forged persisted without consuming anything
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-submission-db.test.ts:218:69
+    216|     'persisted',
+    217|   ])('rejects caller-forged %s without consuming anything', async (fie…
+    218|     await expect(submit(subject, { ...input(), [field]: 'forged' })).r…
+       |                                                                     ^
+    219|       code: 'INVALID_INPUT',
+    220|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > binds expectedDefinitionReference to the actual immutable accepted start
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > binds expectedRubricReference to the actual immutable accepted start
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'REVISION_CHANGED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "REVISION_CHANGED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-submission-db.test.ts:228:8
+    226|       await expect(
+    227|         submit(subject, { ...body, [field]: { ...body.expectedDefiniti…
+    228|       ).rejects.toMatchObject({ code: 'REVISION_CHANGED' });
+       |        ^
+    229|     },
+    230|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > keeps foreign and unknown starts unavailable and private submission IDs undisclosed
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'RESOURCE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-submission-db.test.ts:233:32
+    231|   it('keeps foreign and unknown starts unavailable and private submiss…
+    232|     const other = await actor();
+    233|     await expect(submit(other)).rejects.toMatchObject({ code: 'RESOURC…
+       |                                ^
+    234|     await expect(submit(subject, { ...input(), startId: randomUUID() }…
+    235|       code: 'RESOURCE_UNAVAILABLE',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects a expired current session with complete rollback
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects a revoked current session with complete rollback
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects a foreign current session with complete rollback
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects a unsupported current session with complete rollback
+PrismaClientKnownRequestError:
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "PracticeTrialSubmission" does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/practice-trial-submission-db.test.ts:244:22
+    242|     'rejects a %s current session with complete rollback',
+    243|     async (mode) => {
+    244|       const before = await counts();
+       |                      ^
+    245|       if (mode === 'expired')
+    246|         await db.session.update({
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > denies current suspension on new intent, original replay and private reads
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:264:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > finishes an accepted start after definition and catalog retirement without rewriting original consent
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:279:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > preserves original receipt after retirement/disablement and denies only new intent
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:287:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > distinguishes exact code whitespace in original intent and reauthorizes changed-key conflicts
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:301:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > serializes duplicate intent into one exact original private submission
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:314:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > allows only one final submission per saved start under concurrent different keys
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/practice-trial-submission-db.test.ts:323:60
+    321|   it('allows only one final submission per saved start under concurren…
+    322|     const values = await Promise.allSettled([submit(), submit()]);
+    323|     expect(values.filter((v) => v.status === 'fulfilled')).toHaveLengt…
+       |                                                            ^
+    324|     for (const value of values)
+    325|       if (value.status === 'rejected')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > keeps submissions for separately authorized family attempts independent
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:332:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > never puts private answers, explanations or assistance declarations in audit/outbox/receipts
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:344:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects unsupported or empty-visible answer text "\u0000" before any effect
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects unsupported or empty-visible answer text "\ud800" before any effect
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > rejects unsupported or empty-visible answer text "   \r\n" before any effect
+PrismaClientKnownRequestError:
+Invalid `prisma.$queryRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42P01`. Message: `relation "PracticeTrialSubmission" does not exist`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/practice-trial-submission-db.test.ts:359:22
+    357|     'rejects unsupported or empty-visible answer text %j before any ef…
+    358|     async (answer) => {
+    359|       const before = await counts();
+       |                      ^
+    360|       await expect(submit(subject, { ...input(), answer })).rejects.to…
+    361|         code: 'INVALID_INPUT',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > preserves valid supplementary Unicode at the exact UTF16 bound and rejects overflow
+Error: NOT_IMPLEMENTED
+ ❯ submitPracticeTrial src/skills/practice-trial-submission-storage.ts:26:9
+     24|   _options: { allowNewWrites: boolean },
+     25| ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTria…
+     26|   throw Error('NOT_IMPLEMENTED');
+       |         ^
+     27| }
+     28| export async function readPracticeTrialSubmission(
+ ❯ tests/practice-trial-submission-db.test.ts:135:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-submission-db.test.ts:368:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > observes actual session expiry while waiting on the submission mutex
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'AUTHENTICATION_REQUIRED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-submission-db.test.ts:400:30
+    398|         data: { expiresAt: new Date(Date.now() + 400) },
+    399|       });
+    400|       work = expect(submit()).rejects.toMatchObject({ code: 'AUTHENTIC…
+       |                              ^
+    401|       void work.catch(() => {});
+    402|       const deadline = Date.now() + 2000;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/31]⎯
+
+ FAIL  tests/practice-trial-submission-db.test.ts > T013C3 durable private practice submissions > normalizes current owner-reader denials to its owned error while retaining authentication code
+AssertionError: expected Error: NOT_IMPLEMENTED to be an instance of PracticeTrialSubmissionStorageError
+ ❯ tests/practice-trial-submission-db.test.ts:452:23
+    450|       ),
+    451|     );
+    452|     await expect(work).rejects.toBeInstanceOf(PracticeTrialSubmissionS…
+       |                       ^
+    453|     await expect(work).rejects.toMatchObject({ code: 'AUTHENTICATION_R…
+    454|     expect(observed).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/31]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  31 failed (31)
+   Start at  22:07:39
+   Duration  12.97s (transform 290ms, setup 0ms, import 674ms, tests 11.94s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-practice-submissions-auto-20261015

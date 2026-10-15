@@ -32,6 +32,8 @@ Private `skill.practice_trial_started.v1` audit uses the start UUID as aggregate
 
 ## Root composition, operations and reuse
 
+The additive `lockPracticeTrialParticipant(tx, actor)` shares this exact locked ordinary session/canonical HUMAN boundary with [private submission storage](raid-practice-trial-submissions.md). It returns frozen actual own identity inside the same bounded transaction, never a transferable authorization token or another subject's grant. Submission storage preserves original start consent/private answers and current authorization; it does not change historical STARTED into current lifecycle or assessed rank.
+
 Root `src/lib/practice-trial-attempts-host.ts` composes actual `runCommandTransaction(db,...)` and exact-true/default-false `PRACTICE_TRIAL_ATTEMPTS_ENABLED`. Disabled new intent retains current own original replay/read; no route, Studio privilege, live flag enablement or authority seed is supplied. Future HTTP must enforce current cookie/resource authority, origin/CSRF, account rate limits and protected error/unknown-intent recovery before exposing commands.
 
 Errors include INVALID_INPUT, AUTHENTICATION_REQUIRED, ACCOUNT_RESTRICTED, FORBIDDEN, RESOURCE_UNAVAILABLE, WRITES_DISABLED, STORAGE_CONTRACT, STORAGE_UNAVAILABLE, DEFINITION_UNAVAILABLE, SKILL_UNAVAILABLE, REVISION_CHANGED, ATTEMPT_LIMIT_REACHED, COOLDOWN_ACTIVE and ACCOMMODATION_UNAVAILABLE; canonical pure-contract failures remain typed and unknown driver failures sanitized. Shared receipt errors include IDEMPOTENCY_KEY_REUSED and RETRY_TRANSACTION. Invalid actual stored/host facts fail closed; no client hint repairs them.

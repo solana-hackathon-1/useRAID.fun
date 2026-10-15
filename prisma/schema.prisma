@@ -653,6 +653,7 @@ model CommandReceipt {
   practiceTrialVersion PracticeTrialVersion?
   @@unique([actorId, commandKind, idempotencyKey])
   practiceTrialStart PracticeTrialStart?
+  practiceTrialSubmission PracticeTrialSubmission?
 }
 model InboxDelivery {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -927,4 +928,26 @@ model PracticeTrialStart {
   taxonomyVersion SkillTaxonomyVersion @relation(fields: [taxonomyVersionId, taxonomyId, taxonomyRevision], references: [id, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialStart_taxonomy_fkey")
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialStart_receipt_fkey")
   @@unique([participantId, trialId, attemptNumber], map: "PracticeTrialStart_family_number_key")
+  submissions PracticeTrialSubmission[]
+  @@unique([id, participantId, accountId], map: "PracticeTrialStart_owner_key")
+}
+
+// Exact private response bytes and claimant declarations; ownership remains unconfirmed.
+model PracticeTrialSubmission {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  revision Int @default(1)
+  startId String @unique(map: "PracticeTrialSubmission_start_key") @db.Uuid
+  participantId String @db.Uuid
+  accountId String
+  answer String
+  explanation String
+  toolsUsed Json @db.JsonB
+  aiAssistanceUsed Boolean
+  assistanceDisclosure String
+  submittedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  receiptId String @unique(map: "PracticeTrialSubmission_receipt_key") @db.Uuid
+  requestId String
+  start PracticeTrialStart @relation(fields: [startId, participantId, accountId], references: [id, participantId, accountId], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialSubmission_start_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialSubmission_receipt_fkey")
+  @@unique([id, revision], map: "PracticeTrialSubmission_reference_key")
 }

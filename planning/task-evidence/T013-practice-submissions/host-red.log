@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-submission-host.test.ts (2 tests | 2 failed) 9ms
+   × defaults new private submissions off and accepts only exact true 6ms
+   × passes disabled new-write policy inside SQL and preserves authorized original replay 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-submission-host.test.ts > defaults new private submissions off and accepts only exact true
+Error: NOT_IMPLEMENTED
+ ❯ Module.practiceTrialSubmissionWriteConfiguration src/lib/practice-trial-submissions-host.ts:2:127
+      1| import type { SkillTaxonomyActor } from '../skills/taxonomy-storage';
+      2| export function practiceTrialSubmissionWriteConfiguration():{writesAva…
+       |                                                                                                                               ^
+      3| export async function submitPracticeTrialFromHost(_command:{actor:Skil…
+      4|
+ ❯ tests/practice-trial-submission-host.test.ts:10:118
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/practice-trial-submission-host.test.ts > passes disabled new-write policy inside SQL and preserves authorized original replay
+Error: NOT_IMPLEMENTED
+ ❯ Module.submitPracticeTrialFromHost src/lib/practice-trial-submissions-host.ts:3:164
+      1| import type { SkillTaxonomyActor } from '../skills/taxonomy-storage';
+      2| export function practiceTrialSubmissionWriteConfiguration():{writesAva…
+      3| export async function submitPracticeTrialFromHost(_command:{actor:Skil…
+       |                                                                                                                                                                    ^
+      4|
+ ❯ tests/practice-trial-submission-host.test.ts:15:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  22:10:27
+   Duration  305ms (transform 46ms, setup 0ms, import 67ms, tests 9ms, environment 0ms)
