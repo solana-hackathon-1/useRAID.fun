@@ -1,0 +1,15 @@
+Fresh tracked and WIP source /tmp/raid-t013-own-assessment-view-format-source-62xchjhf
+Checking formatting...
+[warn] planning/task-evidence/T013-own-assessment-view/browser-first-green/.last-run.json
+[warn] planning/task-evidence/T013-own-assessment-view/browser-first-green/own-assessments-owner-sees-83dce-real-recheck-and-revocation-desktop/error-context.md
+[warn] planning/task-evidence/T013-own-assessment-view/browser-first-green/own-assessments-owner-sees-83dce-real-recheck-and-revocation-mobile/error-context.md
+[warn] planning/task-evidence/T013-own-assessment-view/browser-red/.last-run.json
+[warn] planning/task-evidence/T013-own-assessment-view/browser-red/own-assessments-owner-sees-83dce-real-recheck-and-revocation-desktop/error-context.md
+[warn] planning/task-evidence/T013-own-assessment-view/browser-red/own-assessments-self-repor-3b1d8--separate-actual-assessment-desktop/error-context.md
+[warn] Code style issues found in 6 files. Run Prettier with --write to fix.
+Traceback (most recent call last):
+  File "/tmp/raid-t013-own-assessment-view-format-snapshot.py", line 13, in <module>
+    subprocess.run(['node_modules/.bin/prettier','--check','.'],cwd=dst,check=True)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['node_modules/.bin/prettier', '--check', '.']' returned non-zero exit status 1.

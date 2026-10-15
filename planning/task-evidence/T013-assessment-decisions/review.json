@@ -33,7 +33,7 @@
   "independent_UAT_business_release": "NOT VERIFIED",
   "preview": "No browser-visible change/server/preview",
   "resources": "All current normal/failure owned fixture outcomesstop0/Runningfalse, consumer pools/build/CLI ended/no server/preview. Prior verified D2 signal groups/D4 timeout-state diagnostics renamed; no new interruption execution claimed. Preserve unrelated resources.",
-  "pending": "Authorized implementation/source-pin commits/push/Ref55PR/matched-head merge/exactmainCI; then private current committed eligibility source/assessment view/protected APIUI",
+  "pending": "Actual current eligibility/private Raider assessment view/protected APIUI; fullT013/independent/UAT/business/release open",
   "source_counts": {
     "relevant": 592,
     "consumer": 46,
@@ -69,5 +69,12 @@
   "ended_at": "2026-10-15T22:33:56.959135+00:00",
   "elapsed_seconds": 903.092,
   "implementation_sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
-  "completion_validator": "Expectedexit1 exactly34missing obligations=27criteria+7hosted, no metadataerrors; completion.log"
+  "completion_validator": "Expectedexit1 exactly34missing obligations=27criteria+7hosted, no metadataerrors; completion.log",
+  "merged_main_sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+  "source_pin_sha": "f830f1f418a9d4db576c2879b827acd3c50612fa",
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/227",
+  "full_main_tree_equals_tested_pin": true,
+  "exact_main_source_files": 592,
+  "exact_main_consumer_files": 46,
+  "hosted_result": "Staging38818110343 billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch"
 }

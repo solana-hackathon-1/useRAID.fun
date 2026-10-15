@@ -1,0 +1,16 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3025
+- Network:       http://127.0.0.1:3025
+✓ Ready in 470ms
+✓ Running next.config.ts took 40ms
+
+○ Compiling /raider/skills/[skillId] ...
+ GET /raider/skills/frontend 200 in 1990ms
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 936ms (next.js: 219ms, application-code: 717ms)
+ GET /raider/skills/frontend 200 in 669ms (next.js: 43ms, application-code: 626ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 616ms (next.js: 28ms, application-code: 588ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[?25h

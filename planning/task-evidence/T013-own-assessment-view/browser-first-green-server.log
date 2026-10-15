@@ -1,0 +1,33 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3025
+- Network:       http://127.0.0.1:3025
+✓ Ready in 591ms
+✓ Running next.config.ts took 60ms
+
+○ Compiling /raider/skills/[skillId] ...
+ GET /raider/skills/frontend 200 in 1999ms
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 2.1s (next.js: 1207ms, application-code: 929ms)
+ GET /raider/skills/frontend 200 in 155ms (next.js: 31ms, application-code: 124ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1253ms (next.js: 22ms, application-code: 1231ms)
+ GET /raider/skills/frontend 200 in 843ms (next.js: 21ms, application-code: 822ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /api/v1/skill-assessments/frontend 401 in 3.2s (next.js: 3.0s, application-code: 185ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1369ms (next.js: 118ms, application-code: 1251ms)
+ GET /raider/skills/frontend 200 in 990ms (next.js: 33ms, application-code: 957ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 945ms (next.js: 21ms, application-code: 923ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 953ms (next.js: 26ms, application-code: 926ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /api/v1/skill-assessments/frontend 401 in 52ms (next.js: 39ms, application-code: 13ms)
+ GET /raider/skills/frontend 200 in 1149ms (next.js: 26ms, application-code: 1123ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 942ms (next.js: 22ms, application-code: 920ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[?25h

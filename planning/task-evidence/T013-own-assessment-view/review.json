@@ -1,0 +1,84 @@
+{
+  "status": "SELF-EVALUATED bounded source gates; fullT013 NOT VERIFIED",
+  "started_at": "2026-10-15T23:26:43.802524+00:00",
+  "base": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+  "scope": "D7 actual owned current summary/point-in-time eligibility source/private HTTP/React view; no business-state mutation",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I07",
+    "I10",
+    "I13",
+    "AC05",
+    "AC06",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_RED": [
+    "9actualPG35FAIL14.72s against owned-reader typed placeholder",
+    "4point-in-timeFAIL2controlsPASS0.472s before additive AT_OBSERVATION mode; existing leased CURRENT expiry unchanged",
+    "13HTTPFAIL+missingRootsuite before transport/host composition",
+    "2actual browser feature failures missing Assessment panel/false global claim wording; earlier missing managed-browser binary is environment failure, not feature RED",
+    "Nested actualSIGTERM RED outer143/DBstopped but separate Nextgroup kept port3025; verified owned-only recovery then signal-safe composed GREEN outer143/portclosed/DBStopped",
+    "Existing claim-form external consumer1FAIL1PASS1.15s after intentional copy correction, old assertion updated to precise claim-only wording; raw source/log retained"
+  ],
+  "actual_checks": {
+    "observer": "Final35PASS32.98s/3files (18actualPG35+17HTTP-host), all current namespace/time/privacy/scope/realwait/current-source controls",
+    "instant": "51purePASS1.64s including4new semantics/2controls, current broader pure gates pending",
+    "browser_dev": "FinalCI-managed10PASS1.4m desktop/mobile realdata/status/error/loading/foreignscope/keyboard/nooverflow/cleanhydration/screenshots; exact same executable JS after unused fixture import cleanup; separate currentdev screenshot restoration2PASS29.4s not double-counted, dev/prod output directories now separate",
+    "browser_production_before_refactor": "2PASS17.4s/private-no-store pages+API/actualrecheck-revoke; final keyed component source rebuild/rerun pending",
+    "root": "Current Nexttypegen/strict/productionWebpackPASS after keyedcomponent/CIconfig/claimexample changes; final artifact-path config TSC PASS; exact schema35generation/client reused",
+    "consumer": "Current52files/own28installed29audited0vuln/npmci/currentstrict+actualminimalPG35\u2192ownedfacts\u2192instanteligibility/HTTP/standaloneReactSSR/history/sessionrevocationPASS, all poolsended/fixturestop0",
+    "planning": "55PASS49.236s/new3unit+1browser inventories and actualdev-production CIsteps registered",
+    "lint": "Final22affectedfiles0errors0warnings; unchanged Root25wholelint-warning baseline reused",
+    "preview": "Dev http://127.0.0.1:3025/raider/skills/frontend, own/tmp/raid-t008-build-source-2xavo66l/currentWIPbase0e6/Next16.3.8Webpack/syntheticPG35/realownSessions; verifiedloopbackonly/no remoteforwarding; shown owner, auto-stopped. Production verification separate.",
+    "pure": "9files162PASS5.21s/1DBskip targeted by actual externalhost1PASS1.57s/3nontarget excluded; corrected old claim-form consuming example GREEN",
+    "browser_production": "Final current2PASS18.2s/desktop-mobile actualproductionbuild strictprivate/no-store page+API/recheck-revoke/cleanhydration/screenshots; ownedportclosed",
+    "audit": "Current Root moderate-or-higher approved/unexpired advisory policyPASS, not Rootzero vulnerabilities",
+    "source": "All612relevant/52consumer hashes exact current ownbuild/installed consumer; all549complete code files/no missing-extra-stale",
+    "unique_selected": "198freshselectedPASS=35newDB-HTTP-host+162pure/oldSSR+1external;12browser=10dev+2prod;55planning separate",
+    "format": "PASS fresh whole tracked+nonignored WIP snapshot/verified-whole-format.log; exactrawdiagnostic gzip retained, readable artifacts formatted; Root-owned ignored artifact preserved"
+  },
+  "findings": [
+    "Existing CURRENT validUntil==now correctly expired; introduced explicit AT_OBSERVATION rather than invented TTL or relaxed expiry.",
+    "Root HTTP correlation string annotation and explicit Readonly<Record<string,string>> empty audit payload fixed strict compiler errors; original logs retained.",
+    "Next16.3.8 deliberately sets ordinary dev pages no-cache,must-revalidate; strict private/no-store assertions retained in mandatory actual production run, APIstrict both. No framework patch.",
+    "Screenshot caret hiding before legacy form hydration injected style and caused React warning; wait for real controls hydration/use caretinitial, assert hydration console clean. No product warning suppression.",
+    "Keyed inner component resets scope/source without setstate in effect; portable Props exported.",
+    "R16 claim-form console example still expected false global NoAssessment text; updated same-change after actual fail, preserving unverified-claim assertion.",
+    "Final raw browser evidence Markdown/JSON failed formatter; preserved exact originals in .original.gz then formatted readable copies only; no source/assertion changes.",
+    "Production run had reused development output directory; outputs separated and actualdev2 screenshot cases rerun only to restore retained proof, no functional test double-count. Exact original diagnostic gzip retained; current screenshots separate."
+  ],
+  "resources": "All actual normal/failure current fixturesstop0/Runningfalse; dev/prod/managed server portsclosed, poolsended. Actual nested interruption RED/GREEN retained. Existing Chrome147 declared local host dependency/Playwright1.63; pending new managed binary installer stopped only after PID/cwd verification, no new install claimed. Preserve unrelated services/volumes/images/evidence.",
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "pending": "Authorized implementation/sourcepin commits/push/Ref55PR/matchedheadmerge/exact-mainCI; then actualtrial browse/start/submit and reviewerAPIUI",
+  "ended_at": "2026-10-15T23:43:41.785456+00:00",
+  "elapsed_seconds": 1017.983,
+  "branch": "codex/t006-linked-wallet-signin",
+  "head": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+  "source_hashes": "planning/task-evidence/T013-own-assessment-view/source-hashes.json",
+  "consumer_source_hashes": "planning/task-evidence/T013-own-assessment-view/consumer-source-hashes.json",
+  "source_counts": {
+    "relevant": 612,
+    "consumer": 52,
+    "complete_build_code_paths": 549
+  },
+  "reused": [
+    "Exact unchanged Prisma35 schema/config/dependencies/client from PR227 generation; actual35DDL fixtures/current app checks run.",
+    "Root25existing wholelint-warning baseline exactunchanged, all22changedfiles lint0/0.",
+    "Dev10source reused only after unusedfixture import elision emitted exactlyidentical JS; current dev2retention screenshot refresh separatelyPASS29.4s. No test count inflation."
+  ],
+  "skipped": [
+    "FullRoot suite/unrelated money/provider tests (no related change)",
+    "Physical-device/realwallet/representative UAT/independent review/business/release/hosted7checks NOT VERIFIED",
+    "Live Rootflags/catalog-policy-reviewer seeds/providers/billing/manualworkflow enablement or unchanged redispatch not performed"
+  ],
+  "implementation_sha": "8a060baf78cb77250b4ea75430b0955dae87de61",
+  "completion_validator": "Expectedexit1 exactly27criteria+7hosted missing, no metadataerrors; completion.log"
+}

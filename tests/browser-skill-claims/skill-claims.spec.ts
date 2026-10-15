@@ -93,7 +93,7 @@ test('owner discovers actual categories and saves a private unverified claim', a
   await page.getByRole('button', { name: 'Save private claim', exact: true }).click();
   await expect(page.locator('form').getByRole('status')).toContainText('Claim saved');
   await expect(
-    page.getByText('Self-reported; skill has not been assessed.', { exact: true }),
+    page.getByText('Self-reported claim; this claim does not verify a rank.', { exact: true }),
   ).toBeVisible();
   await page.reload();
   await expect(page.getByLabel('Self-reported experience', { exact: true })).toHaveValue(

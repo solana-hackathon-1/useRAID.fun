@@ -139,6 +139,8 @@ jobs:
         run: npx playwright test --config=playwright.project-proposals.config.ts
       - name: Private skill claims desktop and mobile suite
         run: npx playwright test --config=playwright.skill-claims.config.ts
+      - name: Private current assessment desktop and mobile suite
+        run: npx playwright test --config=playwright.own-assessments.config.ts
       - name: Administrative taxonomy API suite
         run: npx playwright test --config=playwright.skill-taxonomy.config.ts
       - name: Administrative catalog editor and maintenance suites
@@ -149,6 +151,8 @@ jobs:
         run: npm run build
         env:
           DEMO_MODE: 'false'
+      - name: Production private assessment cache and current-state suite
+        run: OWN_ASSESSMENT_SERVER_MODE=production npx playwright test --config=playwright.own-assessments.config.ts --grep 'owner sees actual current assessment'
       - name: Database-backed browser journey
         run: npm run test:live
         env:

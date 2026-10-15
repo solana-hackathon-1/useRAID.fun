@@ -1,0 +1,206 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/own-skill-assessment-http.test.ts (13 tests | 13 failed) 54ms
+   × returns only validated own summary with no-store and binds actual authenticated actor/path 39ms
+   × sanitizes authority denial 401 before source access with private headers 1ms
+   × sanitizes authority denial 403 before source access with private headers 1ms
+   × sanitizes authority denial 429 before source access with private headers 1ms
+   × validates malformed path after authority and before source 1ms
+   × denies rate limit before source 1ms
+   × fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"other","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"NO_ASSESSMENT","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false} 1ms
+   × fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"frontend","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"NO_ASSESSMENT","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false,"answer":"private-code-marker"} 1ms
+   × fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"frontend","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"VERIFIED","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false} 2ms
+   × fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"frontend","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"NO_ASSESSMENT","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false,"reason":"private-case-marker"} 1ms
+   × unavailable/disabled output carries no stale private view 1ms
+   × missing canonical skill source returns generic not-found without private diagnostics 1ms
+   × sanitizes host exceptions 1ms
+ ❯ tests/own-skill-assessment-host.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/own-skill-assessment-host.test.ts [ tests/own-skill-assessment-host.test.ts ]
+Error: Cannot find module '/src/lib/own-skill-assessments-host' imported from /srv/projects/useRAIDfun/useRAID-fun/tests/own-skill-assessment-host.test.ts
+ ❯ tests/own-skill-assessment-host.test.ts:8:1
+      6|   runCommandTransaction: vi.fn(async (_db, work) => work(storage.port)…
+      7| }));
+      8| import {
+       | ^
+      9|   ownSkillAssessmentReadConfiguration,
+     10|   readOwnSkillAssessmentFromHost,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > returns only validated own summary with no-store and binds actual authenticated actor/path
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:57:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > sanitizes authority denial 401 before source access with private headers
+ FAIL  tests/own-skill-assessment-http.test.ts > sanitizes authority denial 403 before source access with private headers
+ FAIL  tests/own-skill-assessment-http.test.ts > sanitizes authority denial 429 before source access with private headers
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:73:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > validates malformed path after authority and before source
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:81:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > denies rate limit before source
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:89:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"other","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"NO_ASSESSMENT","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false}
+ FAIL  tests/own-skill-assessment-http.test.ts > fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"frontend","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"NO_ASSESSMENT","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false,"answer":"private-code-marker"}
+ FAIL  tests/own-skill-assessment-http.test.ts > fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"frontend","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"VERIFIED","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false}
+ FAIL  tests/own-skill-assessment-http.test.ts > fails closed for incoherent or excessive host output without leaking fields {"version":"v1","private":true,"skillId":"frontend","skillDomain":"web","skillName":"Frontend","taxonomyReference":{"recordId":"catalog","revision":1},"assessmentReference":null,"recordedState":null,"effectiveStatus":"NO_ASSESSMENT","assessedRank":null,"issuedAt":null,"reassessmentAt":null,"reasonCategory":null,"observedAt":"2026-10-15T00:00:00.000Z","informational":true,"isAuthorizationToken":false,"createsPermissionGrant":false,"consumesCapacity":false,"createsFinancialObligation":false,"reason":"private-case-marker"}
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:108:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > unavailable/disabled output carries no stale private view
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:123:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > missing canonical skill source returns generic not-found without private diagnostics
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:134:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  tests/own-skill-assessment-http.test.ts > sanitizes host exceptions
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ privacy tests/own-skill-assessment-http.test.ts:52:42
+     50|   );
+     51| function privacy(r: Response) {
+     52|   expect(r.headers.get('cache-control')).toBe('private, no-store');
+       |                                          ^
+     53|   expect(r.headers.get('vary')).toContain('Cookie');
+     54| }
+ ❯ tests/own-skill-assessment-http.test.ts:140:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  13 failed (13)
+   Start at  04:28:52
+   Duration  521ms (transform 68ms, setup 0ms, import 63ms, tests 54ms, environment 0ms)

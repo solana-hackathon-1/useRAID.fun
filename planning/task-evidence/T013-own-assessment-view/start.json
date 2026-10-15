@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-10-15T22:40:49.867925+00:00",
+  "base": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+  "agent": "Codex /root",
+  "scope": "T013D7 own current assessment summary/actual eligibility source/HTTP/private UI",
+  "red": "9actualPG35fail14.72s before actual observer, source/raw log retained",
+  "preserved": "PR227postCI metadata"
+}

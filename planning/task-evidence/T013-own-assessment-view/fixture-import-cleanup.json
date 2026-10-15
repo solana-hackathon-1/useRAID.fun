@@ -1,0 +1,8 @@
+{
+  "file": "tests/helpers/own-assessment-fixture.ts",
+  "before_source_sha256": "e1da5a2d82018ef6d017131403ba9286a1c71613b81fa33627d32c7d6080350a",
+  "after_source_sha256": "a3b9a9431fe1860cc117fb2d242d45ba7721011ee871dd3444ff4b003342b4b4",
+  "emitted_javascript_sha256": "27c453b8c2c8dc3833d5877e014e62f4a60c8299fcdd5b0943922dea6ecbb641",
+  "emitted_javascript_identical": true,
+  "scope": "Remove unused named import only; actual fixture commands/behavior unchanged"
+}

@@ -403,3 +403,37 @@ describe('strict host and request boundary', () => {
     expect(explainSkillEligibility(c, i)).toEqual(result);
   });
 });
+
+describe('point-in-time observations without an invented freshness lease', () => {
+  function instant(skills: unknown[] = [assessment()], observedAt = now) {
+    return { ...member(), evidence: { status: 'AT_OBSERVATION', observedAt, skills } };
+  }
+  it('evaluates authorized facts only at their exact observed instant', () => {
+    expect(status(context([instant()]), input())).toBe('MET');
+  });
+  it('returns UNKNOWN if an instant observation is reused at a later evaluation time', () => {
+    expect(status(context([instant()], { now: '2026-10-14T01:00:00.001Z' }), input())).toBe(
+      'UNKNOWN',
+    );
+  });
+  it.each(['REVOKED', 'REASSESSMENT_REQUIRED'])(
+    'does not qualify actual %s evidence at observation',
+    (state) => {
+      expect(status(context([instant([assessment({ state })])]), input())).toBe('UNMET');
+    },
+  );
+  it('preserves strict expiry for the existing leased CURRENT contract', () => {
+    expect(status(context([member('alice', [assessment()], { validUntil: now })]), input())).toBe(
+      'UNKNOWN',
+    );
+  });
+  it('rejects a fabricated future validity field on an instant observation', () => {
+    const p = instant();
+    expect(() =>
+      explainSkillEligibility(
+        context([{ ...p, evidence: { ...p.evidence, validUntil: '2026-10-14T01:01:00.000Z' } }]),
+        input(),
+      ),
+    ).toThrow('INVALID_HOST_CONTRACT');
+  });
+});

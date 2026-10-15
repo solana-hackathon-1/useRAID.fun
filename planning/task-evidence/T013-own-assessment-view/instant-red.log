@@ -1,0 +1,59 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/skill-eligibility.test.ts (49 tests | 4 failed | 43 skipped) 28ms
+     × evaluates authorized facts only at their exact observed instant 16ms
+     × returns UNKNOWN if an instant observation is reused at a later evaluation time 1ms
+     × does not qualify actual REVOKED evidence at observation 1ms
+     × does not qualify actual REASSESSMENT_REQUIRED evidence at observation 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-eligibility.test.ts > point-in-time observations without an invented freshness lease > evaluates authorized facts only at their exact observed instant
+SkillEligibilityContractError: INVALID_HOST_CONTRACT
+ ❯ explainSkillEligibility src/skills/eligibility.ts:32:30
+     30| export function explainSkillEligibility(contextValue: unknown, inputVa…
+     31|   const parsed = SkillEligibilityContextSchema.safeParse(contextValue);
+     32|   if (!parsed.success) throw new SkillEligibilityContractError('INVALI…
+       |                              ^
+     33|   const context = parsed.data,
+     34|     input = parseSkillEligibilityInput(inputValue),
+ ❯ status tests/skill-eligibility.test.ts:72:10
+ ❯ tests/skill-eligibility.test.ts:412:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > point-in-time observations without an invented freshness lease > returns UNKNOWN if an instant observation is reused at a later evaluation time
+SkillEligibilityContractError: INVALID_HOST_CONTRACT
+ ❯ explainSkillEligibility src/skills/eligibility.ts:32:30
+     30| export function explainSkillEligibility(contextValue: unknown, inputVa…
+     31|   const parsed = SkillEligibilityContextSchema.safeParse(contextValue);
+     32|   if (!parsed.success) throw new SkillEligibilityContractError('INVALI…
+       |                              ^
+     33|   const context = parsed.data,
+     34|     input = parseSkillEligibilityInput(inputValue),
+ ❯ status tests/skill-eligibility.test.ts:72:10
+ ❯ tests/skill-eligibility.test.ts:415:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/skill-eligibility.test.ts > point-in-time observations without an invented freshness lease > does not qualify actual REVOKED evidence at observation
+ FAIL  tests/skill-eligibility.test.ts > point-in-time observations without an invented freshness lease > does not qualify actual REASSESSMENT_REQUIRED evidence at observation
+SkillEligibilityContractError: INVALID_HOST_CONTRACT
+ ❯ explainSkillEligibility src/skills/eligibility.ts:32:30
+     30| export function explainSkillEligibility(contextValue: unknown, inputVa…
+     31|   const parsed = SkillEligibilityContextSchema.safeParse(contextValue);
+     32|   if (!parsed.success) throw new SkillEligibilityContractError('INVALI…
+       |                              ^
+     33|   const context = parsed.data,
+     34|     input = parseSkillEligibilityInput(inputValue),
+ ❯ status tests/skill-eligibility.test.ts:72:10
+ ❯ tests/skill-eligibility.test.ts:422:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 2 passed | 43 skipped (49)
+   Start at  04:27:48
+   Duration  472ms (transform 155ms, setup 0ms, import 268ms, tests 28ms, environment 0ms)

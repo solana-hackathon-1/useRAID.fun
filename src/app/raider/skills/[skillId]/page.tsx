@@ -3,9 +3,16 @@ import { SkillClaimForm } from '@/components/skill-claim-form';
 import { loadPrivateSkillCatalog } from '@/lib/skill-claims-page';
 import { readSkillClaimState } from '@/lib/skill-claims-host';
 import { db } from '@/lib/db';
+import { OwnSkillAssessmentPanel } from '@/components/own-skill-assessment-panel';
+import {
+  readOwnSkillAssessmentFromHost,
+  ownSkillAssessmentReadConfiguration,
+} from '@/lib/own-skill-assessments-host';
+import type { OwnSkillAssessmentHttpState } from '@/skills/own-assessment-contracts';
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Private skill claim',
+  title: 'Private skill claim and assessment',
+  robots: { index: false, follow: false },
   description: 'Record your self-reported experience and private proof links.',
 };
 export default async function SkillClaimPage({ params }: { params: Promise<{ skillId: string }> }) {
@@ -25,6 +32,8 @@ export default async function SkillClaimPage({ params }: { params: Promise<{ ski
         name: string;
         state: Awaited<ReturnType<typeof readSkillClaimState>>;
         participantId: string;
+        skillDomain: string;
+        assessment: OwnSkillAssessmentHttpState;
       }
     | undefined;
   if (context.status === 'READY')
@@ -41,8 +50,31 @@ export default async function SkillClaimPage({ params }: { params: Promise<{ ski
           !state.claim ||
           (state.claim.participantId === participant.id &&
             state.claim.taxonomyReference.recordId === context.taxonomy.id)
-        )
-          loaded = { name: category.name, state, participantId: participant.id };
+        ) {
+          let assessment: OwnSkillAssessmentHttpState = {
+            version: 'v1',
+            view: null,
+            ...ownSkillAssessmentReadConfiguration(),
+          };
+          try {
+            const observed = await readOwnSkillAssessmentFromHost(context.actor, skillId);
+            if (
+              !observed.view ||
+              (observed.view.taxonomyReference.recordId === context.taxonomy.id &&
+                observed.view.skillDomain === category.domain)
+            )
+              assessment = observed;
+          } catch {
+            /* Private summary failures preserve the independently authorized claimant form. */
+          }
+          loaded = {
+            name: category.name,
+            state,
+            participantId: participant.id,
+            skillDomain: category.domain,
+            assessment,
+          };
+        }
       }
     } catch {
       /* Generic unavailable state never reveals private driver details. */
@@ -52,6 +84,12 @@ export default async function SkillClaimPage({ params }: { params: Promise<{ ski
       {loaded && context.status === 'READY' ? (
         <>
           <h1>{loaded.name}: private claim</h1>
+          <OwnSkillAssessmentPanel
+            initialState={loaded.assessment}
+            skillId={loaded.state.skillId}
+            skillDomain={loaded.skillDomain}
+            taxonomyId={context.taxonomy.id}
+          />
           <SkillClaimForm
             state={loaded.state}
             catalog={context.taxonomy}

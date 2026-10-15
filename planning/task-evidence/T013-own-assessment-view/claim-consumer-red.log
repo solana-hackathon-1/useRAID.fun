@@ -1,0 +1,69 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(html.includes('Self-reported; skill has not been assessed.'))
+
+    at <anonymous> (/tmp/raid-t012-form-ci-consumer-Ft6fm1/host.tsx:48:1)
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.23.1
+ ❯ tests/skill-claim-form-boundary.test.ts (2 tests | 1 failed) 932ms
+   × renders enabled/disabled independent host without hidden app or dispatch 923ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/skill-claim-form-boundary.test.ts > renders enabled/disabled independent host without hidden app or dispatch
+Error: Command failed: /home/rpandox/.hermes/node/bin/node /tmp/raid-t012-form-ci-consumer-Ft6fm1/node_modules/tsx/dist/cli.mjs host.tsx
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert(html.includes('Self-reported; skill has not been assessed.'))
+
+    at <anonymous> (/tmp/raid-t012-form-ci-consumer-Ft6fm1/host.tsx:48:1)
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v22.23.1
+
+ ❯ <anonymous> ../../../../tmp/raid-t012-form-ci-consumer-Ft6fm1/host.tsx:48:1
+ ❯ tests/skill-claim-form-boundary.test.ts:31:18
+     29|     });
+     30|   await symlink(join(process.cwd(), 'node_modules'), join(dir, 'node_m…
+     31|   const output = execFileSync(
+       |                  ^
+     32|     process.execPath,
+     33|     [join(dir, 'node_modules/tsx/dist/cli.mjs'), 'host.tsx'],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  05:09:07
+   Duration  1.15s (transform 29ms, setup 0ms, import 50ms, tests 932ms, environment 0ms)

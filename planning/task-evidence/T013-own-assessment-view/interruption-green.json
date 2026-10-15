@@ -1,0 +1,9 @@
+{
+  "observed_at": "2026-10-15T22:53:34.871968+00:00",
+  "phase": "green",
+  "outer_exit": 143,
+  "owned_server_pid": 158471,
+  "owned_port_still_open": false,
+  "owned_db_running": false,
+  "source": "/tmp/raid-t008-build-source-2xavo66l"
+}

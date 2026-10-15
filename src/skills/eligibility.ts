@@ -52,7 +52,12 @@ export function explainSkillEligibility(contextValue: unknown, inputValue: unkno
       evidenceKind: SkillMemberExplanation['evidenceKind'] = null,
       assessedRank: SkillMemberExplanation['assessedRank'] = null,
     ) => ({ participantId: subject.participant.id, status, reason, evidenceKind, assessedRank });
-    if (evidence.status !== 'CURRENT' || Date.parse(evidence.validUntil) <= now)
+    if (
+      evidence.status === 'UNAVAILABLE' ||
+      evidence.status === 'STALE' ||
+      (evidence.status === 'CURRENT' && Date.parse(evidence.validUntil) <= now) ||
+      (evidence.status === 'AT_OBSERVATION' && Date.parse(evidence.observedAt) !== now)
+    )
       return result('UNKNOWN', 'EVIDENCE_UNAVAILABLE');
     const fact = evidence.skills.find((s) => s.skillId === predicate.skillId);
     if (!fact) return result('UNMET', 'MISSING_SKILL');

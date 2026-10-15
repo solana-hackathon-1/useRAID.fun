@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610150004_practice_review_assignments/migration.sql

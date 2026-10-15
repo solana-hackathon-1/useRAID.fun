@@ -1,0 +1,244 @@
+f8003eaec73fe4360b35add7a22ad6d801ca5a9ca04b26ad5a1821ce12663920
+OWNED DATABASE: raid-t013-own-assessment-view-auto-20261015 loopback port 32957
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32957"
+
+35 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+Applying migration `202610150005_practice_review_policies`
+Applying migration `202610160001_practice_trial_ownership`
+Applying migration `202610160002_practice_trial_assessments`
+Applying migration `202610160003_assessment_decisions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+  └─ 202610150005_practice_review_policies/
+    └─ migration.sql
+  └─ 202610160001_practice_trial_ownership/
+    └─ migration.sql
+  └─ 202610160002_practice_trial_assessments/
+    └─ migration.sql
+  └─ 202610160003_assessment_decisions/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/own-skill-assessment-db.test.ts (9 tests | 9 failed) 13807ms
+     × observes only actual own current verification and feeds current facts into existing eligibility predicates 1964ms
+     × reads current REQUIRE_REASSESSMENT rather than the old VERIFIED snapshot 1890ms
+     × reads current REVOKE rather than the old VERIFIED snapshot 1942ms
+     × returns no assessment for another actual own participant instead of exposing someone else rank 1368ms
+     × rejects caller identity/source selectors {"participantId":"foreign"} 1372ms
+     × rejects caller identity/source selectors {"assessmentReference":{"recordId":"old","revision":1}} 1370ms
+     × rejects caller identity/source selectors {"skillId":"<script>"} 1251ms
+     × rejects caller identity/source selectors {"taxonomyId":" bad "} 1410ms
+     × denies current own read scope and revoked/wrong-owner session before fields 1232ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > observes only actual own current verification and feeds current facts into existing eligibility predicates
+Error: STORAGE_UNAVAILABLE
+ ❯ readOwnSkillAssessment src/skills/own-assessment-storage.ts:10:23
+      8|   _canRead: unknown,
+      9| ): Promise<never> {
+     10|   throw Object.assign(new Error('STORAGE_UNAVAILABLE'), { code: 'STORA…
+       |                       ^
+     11| }
+     12|
+ ❯ tests/own-skill-assessment-db.test.ts:337:40
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/own-skill-assessment-db.test.ts:403:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > reads current REQUIRE_REASSESSMENT rather than the old VERIFIED snapshot
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > reads current REVOKE rather than the old VERIFIED snapshot
+Error: STORAGE_UNAVAILABLE
+ ❯ readOwnSkillAssessment src/skills/own-assessment-storage.ts:10:23
+      8|   _canRead: unknown,
+      9| ): Promise<never> {
+     10|   throw Object.assign(new Error('STORAGE_UNAVAILABLE'), { code: 'STORA…
+       |                       ^
+     11| }
+     12|
+ ❯ tests/own-skill-assessment-db.test.ts:337:40
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/own-skill-assessment-db.test.ts:452:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > returns no assessment for another actual own participant instead of exposing someone else rank
+Error: STORAGE_UNAVAILABLE
+ ❯ readOwnSkillAssessment src/skills/own-assessment-storage.ts:10:23
+      8|   _canRead: unknown,
+      9| ): Promise<never> {
+     10|   throw Object.assign(new Error('STORAGE_UNAVAILABLE'), { code: 'STORA…
+       |                       ^
+     11| }
+     12|
+ ❯ tests/own-skill-assessment-db.test.ts:337:40
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/own-skill-assessment-db.test.ts:463:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > rejects caller identity/source selectors {"participantId":"foreign"}
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > rejects caller identity/source selectors {"assessmentReference":{"recordId":"old","revision":1}}
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > rejects caller identity/source selectors {"skillId":"<script>"}
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > rejects caller identity/source selectors {"taxonomyId":" bad "}
+AssertionError: expected Error: STORAGE_UNAVAILABLE { code: '…' } to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/own-skill-assessment-db.test.ts:477:6
+    475|     await expect(
+    476|       readOwn(subject, { version: 'v1', taxonomyId: catalogId, skillId…
+    477|     ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+       |      ^
+    478|   });
+    479|   it('denies current own read scope and revoked/wrong-owner session be…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/own-skill-assessment-db.test.ts > T013D7 actual owned current assessment summary > denies current own read scope and revoked/wrong-owner session before fields
+AssertionError: expected Error: STORAGE_UNAVAILABLE { code: '…' } to match object { code: 'RESOURCE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "RESOURCE_UNAVAILABLE",
++ Error {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/own-skill-assessment-db.test.ts:480:59
+    478|   });
+    479|   it('denies current own read scope and revoked/wrong-owner session be…
+    480|     await expect(readOwn(subject, undefined, () => false)).rejects.toM…
+       |                                                           ^
+    481|       code: 'RESOURCE_UNAVAILABLE',
+    482|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed (9)
+   Start at  04:23:30
+   Duration  14.72s (transform 436ms, setup 0ms, import 729ms, tests 13.81s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-own-assessment-view-auto-20261015
+OWNED FINAL STATE: {"name": "/raid-t013-own-assessment-view-auto-20261015", "id": "f8003eaec73fe4360b35add7a22ad6d801ca5a9ca04b26ad5a1821ce12663920", "task_label": "T013-own-assessment-view", "state": {"Status": "exited", "Running": false, "Paused": false, "Restarting": false, "OOMKilled": false, "Dead": false, "Pid": 0, "ExitCode": 0, "Error": "", "StartedAt": "2026-10-15T22:38:26.105872738Z", "FinishedAt": "2026-10-15T22:38:45.507873584Z"}}

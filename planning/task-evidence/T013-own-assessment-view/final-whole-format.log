@@ -1,0 +1,10 @@
+Fresh tracked and WIP source /tmp/raid-t013-own-assessment-view-format-source-r7bg9y3r
+Checking formatting...
+[warn] planning/task-evidence/T013-own-assessment-view/browser-production/.last-run.json
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+Traceback (most recent call last):
+  File "/tmp/raid-t013-own-assessment-view-format-snapshot.py", line 13, in <module>
+    subprocess.run(['node_modules/.bin/prettier','--check','.'],cwd=dst,check=True)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['node_modules/.bin/prettier', '--check', '.']' returned non-zero exit status 1.
