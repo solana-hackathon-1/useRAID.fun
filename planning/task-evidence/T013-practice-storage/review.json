@@ -1,0 +1,60 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-15T07:06:14.640081+00:00",
+  "source": "base47e722c plus new practice storage/contracts/migration28/Prisma mirror/shared actor wrapper/event identifier/Root host/defaultoff config/tests/consumer; PR217 post-CI work preserved",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "P07",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I10",
+    "I13",
+    "R15",
+    "R16",
+    "AC06",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_RED": "30 actual assertions failed against archived storage/host stubs and absent event field, real owned PG27; fixture stopped0. Later7SQLnullable failures with12raw controlsPASS before guard fix; original source/migration archived.",
+  "GREEN": "Final56newPASS12.61s,0unhandled; ownedPG28 stopped0",
+  "findings": [
+    "Initial30assertionsPASS but7unhandled fixture promise errors made aggregateFAIL; attach all rejection expectations concurrently, preserve every assertion/deadline, original log retained.",
+    "Raw SQL tests exposed nullable literal/type branches using three-valued logic; genuine7RED before IS DISTINCT FROM/IS NOT TRUE fix, no softened assertions.",
+    "Prisma validate initially lacked declared DATABASE_URL; actual P1012 tool result. Re-run with synthetic nonconnecting localhost URLPASS, no config/default/credential change.",
+    "Generated own consumer SQL string quoting corrected after formatter parse failure, no functional assertion weakened.",
+    "Planning invocation initially used nonexistent JS glob (shell no matches, no test ran); corrected to canonical Python unittest55PASS. One unneeded Next guide path lookup absent; no Next APIs were authored. Failed crosslink patch applied nothing, corrected to actual header."
+  ],
+  "independent_UAT_release": "NOT VERIFIED",
+  "resources": "Owned PG stopped0 after every run; actualRunningfalse/cleanup.json. All pools/CLI ended; no browser/Next server created. Preserve unrelated services/images/volumes/evidence.",
+  "actual_checks": {
+    "new": "56PASS12.61s/0unhandled on actual28DDL",
+    "affected_sql": "4files120PASS33.79s on actual28DDL",
+    "affected_pure": "11files192PASS17.03s/1DBskip; skipped externalhost separately1PASS1.35s/3nontarget excluded",
+    "planning": "55PASS54.139s",
+    "consumer": "Own23installed24audit0vuln; own strict types/actual minimalPG runtime/alternate policy/exact canonical bytesPASS",
+    "root": "Own generated28 dependencies Prisma generate/typegen/strict types/productionWebpackbuildPASS; all relevant final inputs exactly match verified build snapshot",
+    "lint": "Whole0errors25preexistingwarnings; no new warnings",
+    "audit": "Unchanged Root approved unexpired moderate-or-higher policyPASS, not Root zero vulnerabilities",
+    "schema": "Prisma validate explicit synthetic nonconnecting URLPASS",
+    "format": "Fresh whole Gittracked+nonignored WIP snapshot /tmp/raid-t013-practice-storage-format-source-61q9kt8n PASS; final metadata formatting next"
+  },
+  "source_hashes": "planning/task-evidence/T013-practice-storage/source-hashes.json",
+  "consumer_source": "planning/task-evidence/T013-practice-storage/consumer-source-hashes.json",
+  "reused": [
+    "Exact final code/config/schema/dependency/test inputs match own generated28 build snapshot and own installed PG consumer",
+    "Existing Root dependency policy, no dependency change"
+  ],
+  "skipped": [
+    "No browser-visible route/UI/preview; no browser suite",
+    "Full suite, actual hosted7 checks, independent review/UAT/business/release not claimed",
+    "No real publisher/rubric/evaluator/provider/runner/content safety authority or retention calibration seed; flags remain off"
+  ],
+  "ended_at": "2026-10-15T07:16:17.511951+00:00",
+  "elapsed_seconds": 602.872,
+  "completion_validator": "Expected34NOT VERIFIED (27fullcriteria+7hosted) only; no metadata errors. No self-approved exclusions."
+}

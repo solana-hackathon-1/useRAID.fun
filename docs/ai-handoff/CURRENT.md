@@ -1,3 +1,51 @@
+# Practice storage verified; authorized staging publication next — 2026-10-15T07:16:17.511951+00:00 — Codex /root
+
+Original branch/base47e722c, sole writer, prior PR217 post-CI WIP preserved. T013C1 actual immutable PracticeTrialVersion/global SkillRubricVersion/current family and28DDL/Prisma mirror/shared locked actor/private event/Root exacttrue defaultoff host implemented. Current actual X ADMIN/live own X session/dynamic allowlist publication and replay; ordinary current own reads, stable taxonomy/skill/domain and contiguous definitions/rubrics, current availability and retained retirement/history. No attempt/assessment/rank/grant/capacity/money/provider/Root route/UI or authority seed.
+
+Genuine30RED then7SQLnullableRED archived before fixes; initial30assertionPASS aggregateFAIL7unhandled preserved/fixed without weakened tests. Final56new+120actualSQL+192pure+1previouslyDBskipped externalhostPASS (369 selected),55planningPASS54.139s; own23install24audit0vuln strict/actualPG/alternate current policy/exact sourcePASS. Generated28 Root typegen/types/productionWebpackbuild/schema validate/lint0errors25oldwarnings/audit/freshwholeformatPASS. SELF-EVALUATED 2026-10-15T07:06:14.640081+00:00→2026-10-15T07:16:17.511951+00:00, 602.872s. Packet full34expected NOT VERIFIED27criteria+7hosted/no metadataerrors. Evidence/task/contracts/example updated; all exact source/build/consumer hashes retained.
+
+Owned PG stopped0 after every outcome, actualRunningfalse/cleanup.json, all CLI/pools ended; no browser/server/preview. Preserve unrelated resources/evidence. Full55/independent/UAT/business/release NOT VERIFIED; actual evaluator/content safety/operating and retention/calibration decisions unresolved. Next authorized implementation/pin/push/Ref55PR/matched-head merge DEC-2026-10-12-03 and actual newmain CI; then durable canonical attempts/scoped assessments and other dependency-ready work. Prior47e Staging38612782288 billing before0steps/manualChecks originallydisabled/no restoration obligation; no unchanged redispatch/delegation/branch switch.
+
+---
+
+# Durable practice publication milestone — 2026-10-15T07:06:14.640393+00:00 — Codex /root
+
+Original branch/base47e722c, sole writer, prior PR217 post-CI WIP preserved. T013C1 actual immutable PracticeTrialVersion/SkillRubricVersion/current family and additive28DDL/Prisma mirror, shared locked current actor/publisher wrapper, identifier-only private event, bounded storage/current-historical reads and Root exacttrue/defaultoff PRACTICE_TRIAL_PUBLICATION_ENABLED implemented. No attempt/assessment/rank/grant/capacity/money/provider/Root route/UI or real rubric/evaluator seed.
+
+Genuine30RED archived against stubs/event boundary on ownedPG27; all fixtures stopped0. Initial30assertionPASS aggregateFAIL due7late promise handlers; all expectations now attached concurrently, no weakening. Real SQL probes7nullableRED with12controlsPASS before strict nullable guard fix; final56newPASS12.61s/0unhandled on28DDL and ownedPGstop0. Schema validate with explicit synthetic DATABASE_URLPASS; initial missing-URL error retained in review. Own installed minimal PG consumer strict typesPASS; actual runtime/affected/mandatory source gates next. No active owned container/server currently; independent/UAT/full55/hosted acceptance NOT VERIFIED.
+
+Next independent PG consumer runtime, affected existing SQL and pure contracts, generated28 strict Root gates/docs/packet/timedSELF, authorized staging publication under DEC-2026-10-12-03 and actual exactmain CI. Known47e Staging38612782288 billing before0steps/manualChecks originallydisabled/no restoration obligation, no unchanged redispatch/delegation/branch switch.
+
+---
+
+# Assessment proposal contracts merged; approved trial storage is next — 2026-10-14T18:16:12.819849+00:00 — Codex /root
+
+Original branch `codex/t006-linked-wallet-signin`; local/main HEAD `47e722cc7f28a2b7d8a74e99b75090bb8ddfd095`. [PR217](https://github.com/solana-hackathon-1/useRAID.fun/pull/217) matched-head merge under DEC-2026-10-12-03, implementation `29fe14361a2aea26d83a15a1a2d93b95e5f7b540`, metadata-only pin `cf0988208918277046c0bc3c42af277e3ca0e401`. Actual merge tree equals verified pin; final code/test/config/example/dependency hashes match. Prior PR216 post-CI work preserved. Sole writer; no branch switch/delegation.
+
+Delivered T013B: strict private manual review, separate capability reassessment and reasoned fraud revocation preparation; current scoped evaluator authority before private domain/version disclosure, self-review denial, exact original approved definition/rubric/submission/evidence/current assessment or observed absence, complete relevant criterion reasons/ownership, retirement/history preservation. All outputs including nested assessment remain PROPOSED/unpersisted with no committed rank/access/capacity/money. Incomplete review/provider outage never erases historical capability. No Root API/UI, schema/all27DDL/dependency/flag enablement, actual evaluator/rubric authority seed, provider/runner or OPEN numerical calibration change.
+
+Genuine27originalRED then stronger nested-proposal27RED before implementation→27initialGREEN; historical-date equality1RED before fix→final29behavior+2boundary within132affectedPASS4.49s.55finalplanningPASS46.095s. Own installed9packages10audit0vulnerabilities strict types/exact current console/byte-digest scoped authority portsPASS. Initial Root strict TS18047/TS2531 test-null failures retained/fixed with explicit runtime contract guards, no casts/suppression/weakened expectations. Historical due-date equality aligns existing eligibility v1; new proposal due dates remain future. Final dedicated generated27 typegen/strict types/productionWebpackbuildPASS. Initial whole lint0errors25oldwarnings + finalchangedfiles0errors0warnings; unchanged root audit policy and freshwhole Git-source formatting/staged diffcheckPASS. Timed author review SELF-EVALUATED; fullvalidator34expected27criteria+7hosted NOT VERIFIED/no metadataerrors. Evidence `planning/task-evidence/T013-assessment-review/`, packet, task `docs/tasks/2026-10-14-T013-assessment-review.md`, contract/example.
+
+Exact [Staging38612782288](https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38612782288) FAILED before0steps with official account payments/spending-limit annotation. No new image from this run; rollout NOT VERIFIED. PRbody/packet/review record actual result. Manual Checks originally `disabled_manually`, APIverified, with no enablement/redispatch/restoration obligation. Last successful image remains d023/fb982407cba13e1f0ea74370a0bb0691f031d0c679eb7ce050bb35610f7f3d40; prior public530/1033 and VM SSH timeout not retried absent material access change. No billing/budget/runner/trigger/globalDNS/SSH key changes.
+
+No browser-visible work/preview; no task server/container/database/pool created. All CLI/test/build/formatter workers ended, no active owned resource. Preserve source/dependencies/raw evidence and unrelated services/images/volumes. Current WIP is post-CI packet/review/task/checkpoint/hosted result only; implementation unchanged. Preserve it in next authorized implementation commit. Full parent55/independent/UAT/business/release and actual approved authority/store/API/UI remain NOT VERIFIED/open. Work-state sync tool absent; obligation retained.
+
+Final post-CI metadata formatting PASS; completion validator retains34expected full/hosted NOT VERIFIED obligations and no metadata errors. Final source hashes unchanged; no active owned resource.
+
+Ordered next:
+
+1. T013C1 durable authorized practice-trial definitions and immutable qualitative rubric versions. Inspect taxonomy publication SQL/receipts/current-X ADMIN+actual allowlist policy and actual models/transactions first. Add actual approved immutable definition/rubric storage with whole-payload/version/history consistency and current authorized publisher at every guarded boundary. Do not invent numerical thresholds, real rubric examples or evaluator authority; keep Root new-write/production gates explicit and default off. Actual synthetic PostgreSQL races/replay/current authority/retirement/history and own-installed minimal consuming host are required before publication.
+2. Durable canonical trial attempts and scoped evaluator/assessment decision records, original receipts/audit/history and committed-only eligibility projection; then protected actual trial/reviewer APIs/screens. No proposal can become a VERIFIED fact or overwrite private claimant/history data without actual authorized durable commands.
+3. Continue other dependency-ready issues sequentially without human recommendation/testing wait; retain full independent/UAT/business/release acceptance separately. Observe actual hosted CI/image/site when availability changes, no unchanged billing redispatch.
+
+---
+
+# Assessment PR merged; exact staging observation pending — 2026-10-14T18:09:39.190699+00:00 — Codex /root
+
+https://github.com/solana-hackathon-1/useRAID.fun/pull/217 matched-head main merge 47e722cc7f28a2b7d8a74e99b75090bb8ddfd095 under DEC-2026-10-12-03. Original branch/localHEAD beforefetch cf0988208918277046c0bc3c42af277e3ca0e401, implementation29fe14361a2aea26d83a15a1a2d93b95e5f7b540. Exact132affected/55planning/owninstallcurrentconsumer/strict source gates preserved, no active owned resources/Root live enablement/delegation/branch switch. Full parent55/independent/UAT/business/release NOT VERIFIED. Next fetch/ffverify exact merge, actual exactmain CI/manualstate, then approved definition/attempt/assessment storage and current evaluator scope/receipts/history/APIs. No manual workflow restoration obligation.
+
+---
+
 # Assessment implementation committed; source pin next — 2026-10-14T18:07:47.883168+00:00 — Codex /root
 
 Implementation 29fe14361a2aea26d83a15a1a2d93b95e5f7b540 on original branch/basec898911;132affected/55planning/owninstalledcurrent consumer/strict types-build/lint-format-audit evidence and original failures retained. Prior PR216 post-CI work preserved; no active owned resource or Root enablement. Pin metadata/source SHA, authorized push/template Ref55 PR/matched-head merge, actual new-main CI next. Full parent55/independent/UAT/business/release remain NOT VERIFIED; no delegation/branch switch/manual-workflow restoration obligation.

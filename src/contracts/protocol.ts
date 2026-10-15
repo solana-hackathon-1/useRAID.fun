@@ -41,6 +41,7 @@ export const EventEnvelopeSchema = z
         projectProposalVersionId: InternalId.optional(),
         skillTaxonomyVersionId: InternalId.optional(),
         skillClaimVersionId: InternalId.optional(),
+        practiceTrialVersionId: InternalId.optional(),
       })
       .readonly(),
   })

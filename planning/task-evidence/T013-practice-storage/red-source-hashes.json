@@ -1,0 +1,7 @@
+{
+  "src/skills/practice-trial-storage.ts": "82150a26879ab6ae8f2a0e47e522a1becaec5b30bff2344bce40c9e97050f500",
+  "src/lib/practice-trials-host.ts": "45c4ede8d4d6ea31c91852099b03de337520ad644b3196ac4238ae4878ee85f7",
+  "tests/practice-trial-storage-db.test.ts": "37d9af21d365c402d44ed415425fcca4c9c936d958b41a4e915ce2abdce74f7b",
+  "tests/practice-trials-host.test.ts": "ab29298d98397f18777788c7c46c9b6a677e65a5bc9bedc0e7c8a0e0f744018c",
+  "tests/practice-trial-storage-boundary.test.ts": "68fa5ef7ab2d2af42ffc68985737ff9c2b756739a0e0e439912e4abd13b6666c"
+}

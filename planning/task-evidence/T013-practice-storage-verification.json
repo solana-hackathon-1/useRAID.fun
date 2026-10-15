@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013C1 authorized durable practice definitions and immutable global qualitative rubric versions only",
+  "status": "VERIFIED_IN_TEST bounded storage; full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED — independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-15-T013-practice-storage.md",
+  "migration_rollback": "Additive28 PracticeTrial/PracticeTrialVersion/SkillRubricVersion and Prisma mirror. No seed or live enablement. Disable new writes; retain old immutable history/receipts. Destructive rollback/retention repair requires reviewed recovery.",
+  "dependency_evidence": "Actual immutable catalog/current X ADMIN/live Session/actual dynamic scoped allowlist and receipt ports. Independently copied own npmci minimal PG host with canonical SQL and alternate local policy PASS; actual publisher appointments/content provenance/evaluator authority/attempt store remain dependencies.",
+  "open_decisions": "O09 numeric scoring/calibration, O11 retention and actual approved operating/evaluator/provider policy remain unresolved; no production authority/policy seed.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+  "candidate_sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+  "source_identity": "Base 47e722cc7f28a2b7d8a74e99b75090bb8ddfd095 plus exact uncommitted implementation inputs in source-hashes.json; implementation SHA will be pinned after authorized commit. RED source archives contain uncommitted tests/stubs and pre-fix SQL.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/PostgreSQL16 pinned image; dedicated own generated28 build deps; own npmci minimal PG consumer23packages24audit0vulnerabilities; synthetic fixtures only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C01",
+      "observed": "Authorized immutable approved practice/rubric publications and current/historical reads; no attempt/assessment or API/UI; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C02",
+      "observed": "LOCKED skill/access/money separation; safe practice DEFAULT; O09 numerical calibration/O11 retention/operating authority OPEN; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C03",
+      "observed": "Actual PracticeTrial current family, immutable PracticeTrialVersion/SkillRubricVersion, composite taxonomy/rubric/receipt/actor/projection FKs; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C04",
+      "observed": "Actual unrestricted X ADMIN/live own X session/current allowlist for publish/replay; unrestricted own wallet/X read; denied forged/removed/revoked/expired/suspended authority; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C05",
+      "observed": "First AVAILABLE then contiguous versioned AVAILABLE/RETIRED, stable skill/domain/catalog family; globally immutable rubric content; rollback on denial; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C06",
+      "observed": "Canonical account/session authority only; publication acquires no HUMAN mapping, work capacity or engagement; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C07",
+      "observed": "Exact immutable full approved definition/rubric/catalog snapshots retained; original receipt survives later publication/retirement/writesoff; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C08",
+      "observed": "No balances/reserves/obligations/assets/provider or financial effects; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C09",
+      "observed": "Identifier-only private audit/no public outbox; no answers/private evidence stored by this command; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C10",
+      "observed": "Actual receipt serializes duplicate intent; same key/payload original result, changed payload conflict; no duplicate versions/rubrics/audits; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C11",
+      "observed": "Actual SQL catalog/trial/rubric locks and User/Session boundaries; concurrent CAS/duplicate/global rubric/race expiry and raw rollback verified; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C12",
+      "observed": "No external calls under transaction; DB-clock/current local policy reauthorization after waits and before result; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C13",
+      "observed": "Explicit unavailable/forbidden/stale/global-rubric conflicts and preserved history; no browser route supplied; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C14",
+      "observed": "Strict body/normalization/UTF16/JSONB constraints, actual current authority, scoped private outputs; future HTTP origin/rate/CSRF remains required; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C15",
+      "observed": "Root exacttrue/defaultoff publication flag; disable new writes preserves authorized original replay; no live operating authority seed or rollout approval; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C16",
+      "observed": "Genuine30originalRED and7SQLnullableRED archived; final56new+120affectedSQL+192pure+1receipt consumer PASS,55planning and source gates; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C17",
+      "observed": "Author only SELF-EVALUATED; independent criterion review/representative UAT/business/release NOT VERIFIED; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C18",
+      "observed": "Exact task/evidence/source/cleanup/remaining durable attempts and scoped assessments recorded; prior PR217 post-CI WIP preserved; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-A01",
+      "observed": "Intended relevant skill/rank retained; no unrelated E-task grinding or money/holder-based promotion; assessment command remains absent; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-A02",
+      "observed": "Intended relevant skill/rank retained; actual evaluator/rank projection remains dependent work; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W01",
+      "observed": "Safe unpaid public/synthetic definitions only; publisher responsible for actual content provenance, purpose tag alone cannot inspect bytes; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W02",
+      "observed": "Original immutable rubric, tools/AI/time/limits/accommodation and retained retirement/history; attempt consent/store remains dependent work; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W03",
+      "observed": "Qualitative rubric publication only; no evaluator seed/runner/automated scoring/numerical calibration or rank issuance; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C19",
+      "observed": "30genuineRED before implementation,7SQLnullableRED before SQL fix, raw archives retained; no weakened assertions/deadlines; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C20",
+      "observed": "Stable injected PostgreSQL/current scoped policy/receipt contracts, exported shared locked actor; alternate own installed minimal host; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C21",
+      "observed": "Own installed23packages24audit0vuln strict/runtime/exact source and all declared deps/docs/migrations PASS; no hidden Root state; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C22",
+      "observed": "All3new tests E04/global discovery;55planningPASS; exact futuremain seven hostedchecks still NOT VERIFIED; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-storage.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
+      "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
+      "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
+      "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
+      "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
+      "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
+      "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
+      "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "command": "Owned PostgreSQL27 vitest new tests before implementation; later ownedPG28 raw nullable tests before SQL fix",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/red.log; red-source.tar.gz; red-source-hashes.json; sql-null-red.log; sql-null-red-source.tar.gz; sql-null-red-hashes.json",
+      "result": "FAIL",
+      "expected_failure": "Missing actual storage/authorization/history/global rubric/event contracts; direct SQL null literal/type gaps must fail",
+      "observed_failure": "30genuineRED against stubs/absent event, later7nullable SQL failures with12controlsPASS before fix; original source archives supply uncommitted tests not in baseSHA"
+    },
+    "green": {
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "command": "Actual ownedPG28 new3files; separately copied own npmci types/minimal PostgreSQL consumer",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/green-final.log; consumer-install-types.log; consumer-runtime.log; source-hashes.json; consumer-source-hashes.json",
+      "result": "PASS",
+      "observed": "56newPASS12.61s/0unhandled; own23installed24audit0vuln strict/types/actualPG runtime and alternate current policyPASS; all owned fixture stop0"
+    },
+    "refactor": {
+      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "command": "Concurrent rejection handler fix/strict nullableSQL after genuineRED; affected120SQL+192pure+1receipt consumer,55planning, generated28 Root typegen/typecheck/productionbuild/lint/audit/freshwholeformat",
+      "evidence_url": "planning/task-evidence/T013-practice-storage/initial-green-errors.log; sql-null-red.log; affected-db.log; affected-pure.log; receipt-consumer.log; planning.log; typecheck.log; production-build.log; review.json",
+      "result": "PASS",
+      "observed": "Initial30assertionsPASS aggregateFAIL7unhandled, expectations attached concurrently without weakening.7nullableRED fixed strict false-on-null. Final369selected behavior checksPASS and55planning; one DB-skipped pure case separately executedPASS,3nontarget tests excluded. Source/cleanup evidence retained; full suite/hosted not claimed."
+    }
+  }
+}

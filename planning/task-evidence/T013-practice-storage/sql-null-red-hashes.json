@@ -1,0 +1,5 @@
+{
+  "tests/practice-trial-storage-db.test.ts": "c8e167c965936c41d6979b2f7e08d786f9612a36e0cdf0a609649ac4126d4495",
+  "src/skills/practice-trial-storage.ts": "b128d602a314d27f85635699adee678084eeafe5a7c4e7fe06e9c747194f9633",
+  "prisma/migrations/202610150001_practice_trial_definitions/migration.sql": "19e861d8f057d5ea213a940b3b143174534121c63492a49942436786eb013f7a"
+}
