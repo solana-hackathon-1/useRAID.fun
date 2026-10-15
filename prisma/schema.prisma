@@ -6,6 +6,8 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  practiceReviewPolicyVersions PracticeReviewPolicyVersion[]
+
   issuedPracticeReviewAssignments PracticeTrialReviewAssignment[] @relation("PracticeReviewIssuer")
   evaluatedPracticeReviewAssignments PracticeTrialReviewAssignment[] @relation("PracticeReviewEvaluator")
   practiceReviewRevocations PracticeTrialReviewRevocation[] @relation("PracticeReviewRevoker")
@@ -660,6 +662,7 @@ model CommandReceipt {
   practiceTrialSubmission PracticeTrialSubmission?
   practiceTrialReviewAssignment PracticeTrialReviewAssignment?
   practiceTrialReviewRevocation PracticeTrialReviewRevocation?
+  practiceReviewPolicyVersion PracticeReviewPolicyVersion?
 }
 model InboxDelivery {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -912,6 +915,7 @@ model PracticeTrialVersion {
   @@unique([trialId, revision], map: "PracticeTrialVersion_revision_key")
   @@unique([id, trialId, skillId, skillDomain, taxonomyId, revision], map: "PracticeTrialVersion_pointer_key")
   practiceStarts PracticeTrialStart[]
+  reviewPolicies PracticeReviewPolicy[]
 }
 
 // Immutable historical practice starts; constraints/retry/receipt guards live in migration29.
@@ -988,4 +992,36 @@ model PracticeTrialReviewRevocation {
  assignment PracticeTrialReviewAssignment @relation(fields:[assignmentId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewRevocation_assignment_fkey")
  actor User @relation("PracticeReviewRevoker",fields:[revokedByAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewRevocation_actor_fkey")
  receipt CommandReceipt @relation(fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialReviewRevocation_receipt_fkey")
+}
+
+model PracticeReviewPolicy {
+ id String @id
+ definitionVersionId String @db.Uuid
+ purpose String
+ revision Int
+ currentVersionId String @db.Uuid
+ definitionVersion PracticeTrialVersion @relation(fields:[definitionVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeReviewPolicy_definition_fkey")
+ currentVersion PracticeReviewPolicyVersion @relation("CurrentReviewPolicy",fields:[currentVersionId,id,definitionVersionId,purpose,revision],references:[id,policyId,definitionVersionId,purpose,revision],onDelete:Restrict,onUpdate:Restrict,map:"PracticeReviewPolicy_version_fkey")
+ versions PracticeReviewPolicyVersion[] @relation("ReviewPolicyVersions")
+ @@unique([definitionVersionId,purpose],map:"PracticeReviewPolicy_scope_key")
+ @@unique([id,definitionVersionId,purpose],map:"PracticeReviewPolicy_family_key")
+}
+model PracticeReviewPolicyVersion {
+ id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+ policyId String
+ definitionVersionId String @db.Uuid
+ purpose String
+ revision Int
+ state String
+ guidance String
+ publishedByAccountId String
+ publishedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+ receiptId String @unique(map:"PracticeReviewPolicyVersion_receipt_key") @db.Uuid
+ requestId String
+ family PracticeReviewPolicy @relation("ReviewPolicyVersions",fields:[policyId,definitionVersionId,purpose],references:[id,definitionVersionId,purpose],onDelete:Restrict,onUpdate:Restrict,map:"PracticeReviewPolicyVersion_family_fkey")
+ currentFor PracticeReviewPolicy[] @relation("CurrentReviewPolicy")
+ publisher User @relation(fields:[publishedByAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeReviewPolicyVersion_actor_fkey")
+ receipt CommandReceipt @relation(fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeReviewPolicyVersion_receipt_fkey")
+ @@unique([policyId,revision],map:"PracticeReviewPolicyVersion_revision_key")
+ @@unique([id,policyId,definitionVersionId,purpose,revision],map:"PracticeReviewPolicyVersion_pointer_key")
 }

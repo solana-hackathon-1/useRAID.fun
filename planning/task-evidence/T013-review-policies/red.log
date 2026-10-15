@@ -1,0 +1,570 @@
+dc0cff9b44cb2cb99540b835187b208da01755eae6bc3d7dc2d7d4c371834152
+OWNED DATABASE: raid-t013-review-policies-auto-20261015 loopback port 32917
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32917"
+
+31 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-policy-db.test.ts (40 tests | 40 failed) 14303ms
+     × publishes actual immutable scoped policy provenance and current approved source without ownership or rank 493ms
+     × keeps original receipts/history with new writes off and after withdrawal; old approval cannot be selected for a new decision 350ms
+     × requires approved initial version and gates new writes without deleting approved records 371ms
+     × requires CAS/current contiguous history and permits explicit reapproval as the next version 336ms
+     × prevents competing policy families for the same actual definition and purpose 373ms
+     × does not migrate a policy family to another actual definition version or purpose 392ms
+     × resolves canonical policy by actual accepted definition/purpose, never a caller-selected other scope 342ms
+     × preserves original definition/rubric scope after retirement 463ms
+     × handles separately approved assessment purpose only with its own actual assignment 703ms
+     × requires current actual X-admin publication authority: wallet 833ms
+     × requires current actual X-admin publication authority: CREATOR 812ms
+     × requires current actual X-admin publication authority: no-x 875ms
+     × requires current actual X-admin publication authority: suspended 1009ms
+     × requires current actual X-admin publication authority: expired 923ms
+     × requires current actual X-admin publication authority: deleted 510ms
+     × requires exact true current scoped publication/use authority false 371ms
+     × requires exact true current scoped publication/use authority undefined 317ms
+     × requires exact true current scoped publication/use authority true 309ms
+     × rechecks management authority on replay and does not treat a saved policy as a bearer token 313ms
+     × denies admin policy guidance before private selection 310ms
+     × denies subject policy guidance before private selection 300ms
+     × denies other-evaluator policy guidance before private selection 306ms
+     × denies wrong-submission policy guidance before private selection 321ms
+     × denies wrong-purpose policy guidance before private selection 323ms
+     × denies revoked policy guidance before private selection 313ms
+     × requires evaluator current own session at use: expired 314ms
+     × requires evaluator current own session at use: deleted 343ms
+     × requires evaluator current own session at use: foreign-session 310ms
+     × requires evaluator current own session at use: suspended 314ms
+     × does not let ordinary authenticated users inspect private administration guidance 338ms
+     × returns current policy-unavailable for missing canonical scope without inventing approval 310ms
+     × stores only opaque private policy references in audit/outbox, never guidance or answer 387ms
+   × rejects malformed policy before any receipt/query { guidance: ' ' } 6ms
+   × rejects malformed policy before any receipt/query { guidance: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' } 1ms
+   × rejects malformed policy before any receipt/query { guidance: 'a\u0000b' } 1ms
+   × rejects malformed policy before any receipt/query { guidance: 'a�b' } 1ms
+   × rejects malformed policy before any receipt/query { state: 'AUTO_APPROVED' } 1ms
+   × rejects malformed policy before any receipt/query { expectedRevision: 2147483647 } 1ms
+   × rejects malformed policy before any receipt/query { definitionReference: { recordId: 'trial', revision: +0 } } 1ms
+   × rejects malformed policy before any receipt/query { approved: true } 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 40 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > publishes actual immutable scoped policy provenance and current approved source without ownership or rank
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:272:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > keeps original receipts/history with new writes off and after withdrawal; old approval cannot be selected for a new decision
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:299:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires approved initial version and gates new writes without deleting approved records
+AssertionError: expected PracticeReviewPolicyError: STORAGE_UNAVAI… { code: '…' } to match object { code: 'INITIAL_STATE_INVALID' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "INITIAL_STATE_INVALID",
++ PracticeReviewPolicyError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-policy-db.test.ts:328:74
+    326|   });
+    327|   it('requires approved initial version and gates new writes without d…
+    328|     await expect(publishPolicy({ ...policyInput(), state: 'WITHDRAWN' …
+       |                                                                          ^
+    329|       code: 'INITIAL_STATE_INVALID',
+    330|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires CAS/current contiguous history and permits explicit reapproval as the next version
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:338:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > prevents competing policy families for the same actual definition and purpose
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:357:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > does not migrate a policy family to another actual definition version or purpose
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:363:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > resolves canonical policy by actual accepted definition/purpose, never a caller-selected other scope
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:377:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > preserves original definition/rubric scope after retirement
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:397:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > handles separately approved assessment purpose only with its own actual assignment
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:401:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires current actual X-admin publication authority: wallet
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires current actual X-admin publication authority: CREATOR
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires current actual X-admin publication authority: no-x
+AssertionError: expected PracticeReviewPolicyError: STORAGE_UNAVAI… { code: '…' } to match object { code: 'FORBIDDEN' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ PracticeReviewPolicyError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-policy-db.test.ts:446:36
+    444|       if (change === 'deleted')
+    445|         await db.session.delete({ where: { tokenHash: publisher.sessio…
+    446|       await expect(publishPolicy()).rejects.toMatchObject({
+       |                                    ^
+    447|         code:
+    448|           change === 'suspended'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires current actual X-admin publication authority: suspended
+AssertionError: expected PracticeReviewPolicyError: STORAGE_UNAVAI… { code: '…' } to match object { code: 'ACCOUNT_RESTRICTED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "ACCOUNT_RESTRICTED",
++ PracticeReviewPolicyError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-policy-db.test.ts:446:36
+    444|       if (change === 'deleted')
+    445|         await db.session.delete({ where: { tokenHash: publisher.sessio…
+    446|       await expect(publishPolicy()).rejects.toMatchObject({
+       |                                    ^
+    447|         code:
+    448|           change === 'suspended'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires current actual X-admin publication authority: expired
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires current actual X-admin publication authority: deleted
+AssertionError: expected PracticeReviewPolicyError: STORAGE_UNAVAI… { code: '…' } to match object { code: 'AUTHENTICATION_REQUIRED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ PracticeReviewPolicyError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-policy-db.test.ts:446:36
+    444|       if (change === 'deleted')
+    445|         await db.session.delete({ where: { tokenHash: publisher.sessio…
+    446|       await expect(publishPolicy()).rejects.toMatchObject({
+       |                                    ^
+    447|         code:
+    448|           change === 'suspended'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires exact true current scoped publication/use authority false
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires exact true current scoped publication/use authority undefined
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires exact true current scoped publication/use authority true
+AssertionError: expected PracticeReviewPolicyError: STORAGE_UNAVAI… { code: '…' } to match object { code: 'FORBIDDEN' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ PracticeReviewPolicyError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-policy-db.test.ts:464:8
+    462|           canPublish: () => value as boolean,
+    463|         }),
+    464|       ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+       |        ^
+    465|       await publishPolicy();
+    466|       expect(await adminRead(policyId, undefined, publisher, () => val…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > rechecks management authority on replay and does not treat a saved policy as a bearer token
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:473:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > denies admin policy guidance before private selection
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > denies subject policy guidance before private selection
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > denies other-evaluator policy guidance before private selection
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > denies wrong-submission policy guidance before private selection
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > denies wrong-purpose policy guidance before private selection
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > denies revoked policy guidance before private selection
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:483:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires evaluator current own session at use: expired
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires evaluator current own session at use: deleted
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires evaluator current own session at use: foreign-session
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > requires evaluator current own session at use: suspended
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:520:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > does not let ordinary authenticated users inspect private administration guidance
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:540:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > returns current policy-unavailable for missing canonical scope without inventing approval
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ lockApprovedPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:95:9
+     93|   _canUse: (scope: PracticeReviewPolicyUseScope) => boolean,
+     94| ): Promise<PracticeReviewPolicyView | null> {
+     95|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     96| }
+     97|
+ ❯ tests/practice-review-policy-db.test.ts:254:40
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:546:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > T013D3 actual approved review policy source > stores only opaque private policy references in audit/outbox, never guidance or answer
+PracticeReviewPolicyError: STORAGE_UNAVAILABLE
+ ❯ publishPracticeReviewPolicy src/skills/practice-review-policy-storage.ts:78:9
+     76|   accessId: string;
+     77| }> {
+     78|   throw new PracticeReviewPolicyError('STORAGE_UNAVAILABLE');
+       |         ^
+     79| }
+     80| export async function readPracticeReviewPolicyAsAdmin(
+ ❯ tests/practice-review-policy-db.test.ts:228:5
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-policy-db.test.ts:556:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/40]⎯
+
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { guidance: ' ' }
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { guidance: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' }
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { guidance: 'a\u0000b' }
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { guidance: 'a�b' }
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { state: 'AUTO_APPROVED' }
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { expectedRevision: 2147483647 }
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { definitionReference: { recordId: 'trial', revision: +0 } }
+ FAIL  tests/practice-review-policy-db.test.ts > rejects malformed policy before any receipt/query { approved: true }
+AssertionError: expected PracticeReviewPolicyError: STORAGE_UNAVAI… { code: '…' } to match object { code: 'INVALID_INPUT' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ PracticeReviewPolicyError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-policy-db.test.ts:610:4
+    608|       { allowNewWrites: true, canPublish: () => true },
+    609|     ),
+    610|   ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+       |    ^
+    611|   expect(calls).toBe(0);
+    612| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/40]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  40 failed (40)
+   Start at  01:04:04
+   Duration  15.02s (transform 282ms, setup 0ms, import 498ms, tests 14.30s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-review-policies-auto-20261015

@@ -1,0 +1,47 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-15T19:44:22.726649+00:00",
+  "source": "Basef29e821 + actual policy source/migration32/Prisma/protocol-key/Rootdefaultoff/3tests/ownconsumer/docs; PR223 postCI/MEMORY WIP preserved",
+  "requirements": ["R06", "R11", "R12", "R15", "R16", "I05", "I10", "I13", "AC73", "AC74", "AC75"],
+  "genuine_RED": "40behaviorFAIL15.02s plus5host/eventFAIL; initial malformed fixture literal-backslashes corrected before production implementation,8genuine malformedFAIL901ms separately. Initial source/log and corrected source archives retained. Later current-source observer1RED1.40s before API and scope-wait expiredassignment1RED3.74s before early permission fence.",
+  "GREEN": "Core45PASS17.64s; observer47PASS15.62s; expanded82PASS32.62s actualPG32/all cleanupstop0",
+  "findings": [
+    "Actual canonical source observation needed for initial policy discovery without client-invented version; separate observed scoped API, exact expected reference still mandatory for later decision lookup.",
+    "Scope lock wait could outlive assignment before host policy callback; old code returned no guidance but callbackran1 vs expected0. GenuineRED before rechecking actual grant immediately after wait; prevents stale policy-use authorization/audit.",
+    "Canonical family uniqueness is per original actual definitionVersionId/purpose, not caller-chosen policy IDs; data approval never supplies reviewer permission/ownership/rank or OPEN calibration.",
+    "Whole lint exposed ReactHook naming false positive and unused mock input; renamed test helpers and strengthened argument-identity assertion, no contract assertion weakened. Final82current-source/strict/affectedlintPASS."
+  ],
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "resources": "All owned normal/failure fixturesstop0/actualRunningfalse/cleanup.json; allCLI/pools/build ended/no server/browser/preview. Latest verified renamed signal-safe runner used; preserve unrelated resources/images/volumes/evidence.",
+  "pending": "Authorized implementation/source pin/push/Ref55PR/matched-head staging merge and actualCI observation; fullT013/independent/UAT/business/release NOT VERIFIED",
+  "actual_checks": {
+    "new": "Final82PASS40.70s/3files, initial82PASS32.62s retained; final helper aliases/argument identity lint cleanup included",
+    "affected_sql": "8files177PASS55.79s D1/D2/C1/Unicode;1externalhostPASS1.34s/3nontarget excluded",
+    "pure": "8files144PASS10.98s/1DBskip, external host subsequently actualtargetPASS",
+    "unique_selected": "82+177+144+1=404selectedPASS, all fresh;55planning separate",
+    "planning": "55PASS52.124s/all3new files globalE04",
+    "consumer": "Own23installed24audited0vuln strict/current actualPG32/canonical observation/exact use/alternative-family denial/withdraw-reapprove/history/replay/revocation/local5sstatement2slock5sidlePASS; all40files exact",
+    "root": "Own generate32/strict/productionWebpackPASS; final current test aliases/identity assertion strictPASS. All124current relevant files match own build snapshot; existing Next route typegen exactly reused (no routes/config/dependency changes)",
+    "schema": "Prisma32validatePASS/allactual32migrate fixturesPASS; no seed/backfill",
+    "lint": "Whole0errors27warnings included2new (ReactHook falsepositive helper name and unused mock input); helper renamed and argument identity asserted, current affected0errors0warnings/25old retained",
+    "audit": "Root approved unexpired moderate-or-higher policyPASS, not zero Root vulnerabilities",
+    "format": "Fresh tracked plus nonignored WIP whole Prettier PASS; Root-owned ignored historical artifact preserved"
+  },
+  "source_hashes": "planning/task-evidence/T013-review-policies/source-hashes.json",
+  "consumer_source_hashes": "planning/task-evidence/T013-review-policies/consumer-source-hashes.json",
+  "reused": [
+    "Only exact unchanged Next routes/typegen/config/deps from T013D2; no route/UI added",
+    "Production runtime source unchanged by final test-only helper-name/argument assertion cleanup; final tests and strict types rerun"
+  ],
+  "skipped": [
+    "No browser-visible route/UI/preview/browser suite",
+    "FullRoot suite/actual7hostedchecks/independent/UAT/business/release not claimed",
+    "No real policy content/approval/calibration/retention default/Root flag/rank/ownership/provider enablement"
+  ],
+  "ended_at": "2026-10-15T20:04:35.973483+00:00",
+  "elapsed_seconds": 1213.247,
+  "metadata_invocations": [
+    "Finalization first attempted consumer hash paths relative to Root instead of example: FileNotFoundError before any source or metadata edits. Corrected base path; no behavior/gate repeated or source modified.",
+    "Mandatory cached diffcheck blocked commit for trailing whitespace in readable initial RED log; stripped readable whitespace, original raw .gz retained unchanged, then cached check passed."
+  ]
+}
