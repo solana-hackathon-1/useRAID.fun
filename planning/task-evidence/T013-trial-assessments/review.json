@@ -62,5 +62,7 @@
     "complete_build_code_paths": 532
   },
   "ended_at": "2026-10-15T22:02:49.387889+00:00",
-  "elapsed_seconds": 3495.121
+  "elapsed_seconds": 3495.121,
+  "implementation_sha": "fe82060f38501ff89b999e2564df38cae2d971be",
+  "completion_validator": "Expected exit1 exactly34missing obligations:27criteria+7hosted; no metadata errors; completion.log"
 }

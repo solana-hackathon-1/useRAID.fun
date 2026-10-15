@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual original saved case/definition/rubric/catalog, current D1 ASSESSMENT_REVIEW assignment/own session, audited D2 private evidence, exact actual approved D3 assessment policy, audited current actual D4 CONFIRMED ownership, held same transaction and current trusted namespace/scoped predicates. Own independently installed real minimalPG34 consumer.",
   "open_decisions": "O09 numeric calibration/O11 retention/staffed operation/release remainOPEN. One-case MANUAL E-A only; S repeated independent evidence/automated result source unavailable, typed failclosed, no numeric thresholds chosen. Reasoned reassessment/fraud/committed eligibility/APIUI and independent acceptance next.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
-  "candidate_sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
-  "source_identity": "Base505f169 plus exact586source/45consumer hashes; all532runtime/test/script/schema paths identical to own verified build without missing/extra/stale files, own installation current. Implementation SHA will be pinned.",
+  "code_source_sha": "fe82060f38501ff89b999e2564df38cae2d971be",
+  "candidate_sha": "fe82060f38501ff89b999e2564df38cae2d971be",
+  "source_identity": "Implementation fe82060f38501ff89b999e2564df38cae2d971be; exact586 relevant/45 consumer hashes and all532build source paths. Metadata-only source pin follows; no runtime change.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinnedPG16; actual34DDL/current own generation34-types-production and independently installed23packages24audited0vuln/current minimalPG34 host; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "36FAIL49.38s+5capabilityFAIL7.92s+7host/eventFAIL. Initial32FAIL16PASS43.63s D1 strict caller had extra version, fixed caller without relaxing schema/tests. Later2rawSQLFAIL4.76s forged access audit aggregateVersion999; later3DTOFAIL1policyrev2controlPASS7.33s missing/foreign/past current pointers. Each relevant pre-fix source/log retained. Context discovery1FAIL3.65s+1RootFAIL before actual observer,6contextcontrolsPASS7.88s then full119/currentconsumer/sourcegates rerun."
     },
     "green": {
-      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "sha": "fe82060f38501ff89b999e2564df38cae2d971be",
       "command": "Final actualPG34 three new test files plus independently installed strict/current minimalPG34 consuming host",
       "evidence_url": "planning/task-evidence/T013-trial-assessments/context-final.log; context-consumer-wiring.log; context-consumer-types.log; context-consumer-wiring-types.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json",
       "result": "PASS",
       "observed": "Final119PASS191.54s/3files and current45-file independently installed minimalPG34 consuming host using actual observed refs, final strict/runtime/stop0PASS.586source/45consumer current proof."
     },
     "refactor": {
-      "sha": "505f16918532a940cc9c4fd5093d2ff8fb41a629",
+      "sha": "fe82060f38501ff89b999e2564df38cae2d971be",
       "command": "Meaningful actual current-source/private audit/rawSQL/history/different-case-evaluator CAS/lock expiry/final scope and affected+mandatory gates",
       "evidence_url": "planning/task-evidence/T013-trial-assessments/final-affected.log; affected-pure.log; planning.log; generate34.log; typecheck.log; production-build.log; schema-validate.log; lint.log; final-affected-lint.log; audit.log; review.json; cleanup.json; build-source-probe.json; context-code-check-driver.log; context-final-typecheck.log; context-lint.log; context-final.log; context-consumer-wiring.log; final-whole-format.log",
       "result": "PASS",
