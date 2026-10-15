@@ -1,0 +1,7 @@
+{
+  "signal": "SIGTERM",
+  "parent_exit": 143,
+  "running_after_parent_exit": false,
+  "expected_running": false,
+  "result": "PASS"
+}

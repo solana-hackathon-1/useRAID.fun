@@ -1,0 +1,3 @@
+
+> raid-practice-review-read-example@1.0.0 typecheck
+> tsc --noEmit

@@ -1,0 +1,382 @@
+2bc43380d006608cb6bd4b468470c948ecaa1eb7758df121153d362cdf467451
+OWNED DATABASE: raid-t013-review-reads-auto-20261015 loopback port 32903
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32903"
+
+31 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-read-db.test.ts (26 tests | 25 failed) 8164ms
+     × returns exact private immutable submission, original full definition/rubric and actual assignment, never confirmation 530ms
+     × preserves original accepted consent and bytes after definition retirement/new writes disabled 483ms
+     × denies missing-assignment before any private-column query 427ms
+     × denies missing-submission before any private-column query 411ms
+     × denies wrong-submission before any private-column query 407ms
+     × denies wrong-purpose before any private-column query 390ms
+     × denies subject before any private-column query 372ms
+     × denies admin before any private-column query 355ms
+     × denies other-evaluator before any private-column query 425ms
+     × denies revoked before any private-column query 465ms
+     × requires exact true current read policy: false 333ms
+     × requires exact true current read policy: undefined 327ms
+     × requires exact true current read policy: true 354ms
+     × requires current evaluator own identity suspended 341ms
+     × requires current evaluator own identity expired 333ms
+     × requires current evaluator own identity deleted 324ms
+     × requires current evaluator own identity foreign-session 301ms
+     × does not return a loaded private body after current read policy changes during the query 296ms
+     × does not create command receipts, audit records, outbox or mutate the saved submission 299ms
+     × rejects malformed host answer projections after permission without returning body 307ms
+     × rejects malformed host definition projections after permission without returning body 347ms
+   × rejects malformed review input before queries { version: 'v2' } 2ms
+   × rejects malformed review input before queries { submissionId: 'bad' } 2ms
+   × rejects malformed review input before queries { purpose: 'ALL' } 2ms
+   × rejects malformed review input before queries { extra: true } 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 25 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > returns exact private immutable submission, original full definition/rubric and actual assignment, never confirmation
+PracticeReviewReadError: STORAGE_UNAVAILABLE
+ ❯ readPracticeTrialForReview src/skills/practice-review-read-storage.ts:35:9
+     33|   _canRead: (scope: PracticeReviewAssignmentUseScope) => boolean,
+     34| ): Promise<PracticeReviewReadRecord | null> {
+     35|   throw new PracticeReviewReadError('STORAGE_UNAVAILABLE');
+       |         ^
+     36| }
+     37|
+ ❯ tests/practice-review-read-db.test.ts:208:40
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-read-db.test.ts:229:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > preserves original accepted consent and bytes after definition retirement/new writes disabled
+PracticeReviewReadError: STORAGE_UNAVAILABLE
+ ❯ readPracticeTrialForReview src/skills/practice-review-read-storage.ts:35:9
+     33|   _canRead: (scope: PracticeReviewAssignmentUseScope) => boolean,
+     34| ): Promise<PracticeReviewReadRecord | null> {
+     35|   throw new PracticeReviewReadError('STORAGE_UNAVAILABLE');
+       |         ^
+     36| }
+     37|
+ ❯ tests/practice-review-read-db.test.ts:208:40
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-read-db.test.ts:250:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies missing-assignment before any private-column query
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies missing-submission before any private-column query
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies wrong-submission before any private-column query
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies wrong-purpose before any private-column query
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies subject before any private-column query
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies admin before any private-column query
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies other-evaluator before any private-column query
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > denies revoked before any private-column query
+PracticeReviewReadError: STORAGE_UNAVAILABLE
+ ❯ readPracticeTrialForReview src/skills/practice-review-read-storage.ts:35:9
+     33|   _canRead: (scope: PracticeReviewAssignmentUseScope) => boolean,
+     34| ): Promise<PracticeReviewReadRecord | null> {
+     35|   throw new PracticeReviewReadError('STORAGE_UNAVAILABLE');
+       |         ^
+     36| }
+     37|
+ ❯ tests/practice-review-read-db.test.ts:276:7
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-read-db.test.ts:275:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > requires exact true current read policy: false
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > requires exact true current read policy: undefined
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > requires exact true current read policy: true
+PracticeReviewReadError: STORAGE_UNAVAILABLE
+ ❯ readPracticeTrialForReview src/skills/practice-review-read-storage.ts:35:9
+     33|   _canRead: (scope: PracticeReviewAssignmentUseScope) => boolean,
+     34| ): Promise<PracticeReviewReadRecord | null> {
+     35|   throw new PracticeReviewReadError('STORAGE_UNAVAILABLE');
+       |         ^
+     36| }
+     37|
+ ❯ tests/practice-review-read-db.test.ts:298:11
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-read-db.test.ts:297:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > requires current evaluator own identity suspended
+AssertionError: expected PracticeReviewReadError: STORAGE_UNAVAILA… { code: '…' } to match object { code: 'ACCOUNT_RESTRICTED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "ACCOUNT_RESTRICTED",
++ PracticeReviewReadError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-read-db.test.ts:331:43
+    329|           ? { ...evaluator, sessionHash: subject.sessionHash }
+    330|           : evaluator;
+    331|       await expect(review(readInput(), a)).rejects.toMatchObject({
+       |                                           ^
+    332|         code: change === 'suspended' ? 'ACCOUNT_RESTRICTED' : 'AUTHENT…
+    333|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > requires current evaluator own identity expired
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > requires current evaluator own identity deleted
+AssertionError: expected PracticeReviewReadError: STORAGE_UNAVAILA… { code: '…' } to match object { code: 'AUTHENTICATION_REQUIRED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ PracticeReviewReadError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-read-db.test.ts:331:43
+    329|           ? { ...evaluator, sessionHash: subject.sessionHash }
+    330|           : evaluator;
+    331|       await expect(review(readInput(), a)).rejects.toMatchObject({
+       |                                           ^
+    332|         code: change === 'suspended' ? 'ACCOUNT_RESTRICTED' : 'AUTHENT…
+    333|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > requires current evaluator own identity foreign-session
+AssertionError: expected PracticeReviewReadError: STORAGE_UNAVAILA… { code: '…' } to match object { code: 'AUTHENTICATION_REQUIRED' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ PracticeReviewReadError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-read-db.test.ts:331:43
+    329|           ? { ...evaluator, sessionHash: subject.sessionHash }
+    330|           : evaluator;
+    331|       await expect(review(readInput(), a)).rejects.toMatchObject({
+       |                                           ^
+    332|         code: change === 'suspended' ? 'ACCOUNT_RESTRICTED' : 'AUTHENT…
+    333|       });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > does not return a loaded private body after current read policy changes during the query
+PracticeReviewReadError: STORAGE_UNAVAILABLE
+ ❯ readPracticeTrialForReview src/skills/practice-review-read-storage.ts:35:9
+     33|   _canRead: (scope: PracticeReviewAssignmentUseScope) => boolean,
+     34| ): Promise<PracticeReviewReadRecord | null> {
+     35|   throw new PracticeReviewReadError('STORAGE_UNAVAILABLE');
+       |         ^
+     36| }
+     37|
+ ❯ tests/practice-review-read-db.test.ts:340:7
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-read-db.test.ts:339:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > does not create command receipts, audit records, outbox or mutate the saved submission
+PracticeReviewReadError: STORAGE_UNAVAILABLE
+ ❯ readPracticeTrialForReview src/skills/practice-review-read-storage.ts:35:9
+     33|   _canRead: (scope: PracticeReviewAssignmentUseScope) => boolean,
+     34| ): Promise<PracticeReviewReadRecord | null> {
+     35|   throw new PracticeReviewReadError('STORAGE_UNAVAILABLE');
+       |         ^
+     36| }
+     37|
+ ❯ tests/practice-review-read-db.test.ts:208:40
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-review-read-db.test.ts:371:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > rejects malformed host answer projections after permission without returning body
+ FAIL  tests/practice-review-read-db.test.ts > T013D2 protected private practice reviewer reads > rejects malformed host definition projections after permission without returning body
+AssertionError: expected PracticeReviewReadError: STORAGE_UNAVAILA… { code: '…' } to match object { code: 'STORAGE_CONTRACT' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "STORAGE_CONTRACT",
++ PracticeReviewReadError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-read-db.test.ts:397:8
+    395|           ),
+    396|         ),
+    397|       ).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
+       |        ^
+    398|     },
+    399|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/25]⎯
+
+ FAIL  tests/practice-review-read-db.test.ts > rejects malformed review input before queries { version: 'v2' }
+ FAIL  tests/practice-review-read-db.test.ts > rejects malformed review input before queries { submissionId: 'bad' }
+ FAIL  tests/practice-review-read-db.test.ts > rejects malformed review input before queries { purpose: 'ALL' }
+ FAIL  tests/practice-review-read-db.test.ts > rejects malformed review input before queries { extra: true }
+AssertionError: expected PracticeReviewReadError: STORAGE_UNAVAILA… { code: '…' } to match object { code: 'INVALID_INPUT' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ PracticeReviewReadError {
++   "code": "STORAGE_UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-read-db.test.ts:426:6
+    424|         () => true,
+    425|       ),
+    426|     ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+       |      ^
+    427|     expect(calls).toBe(0);
+    428|   },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/25]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  25 failed | 1 passed (26)
+   Start at  23:56:59
+   Duration  8.94s (transform 341ms, setup 0ms, import 582ms, tests 8.16s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-review-reads-auto-20261015

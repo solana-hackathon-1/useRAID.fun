@@ -1,0 +1,4 @@
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK access-audit-typecheck
+access-audit-typecheck PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK access-audit-production-build
+access-audit-production-build PASS

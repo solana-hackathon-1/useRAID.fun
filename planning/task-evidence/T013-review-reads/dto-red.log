@@ -1,0 +1,44 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-review-read-boundary.test.ts (14 tests | 7 failed) 47ms
+   × rejects a review DTO with mismatched assignment submission 9ms
+   × rejects a review DTO with mismatched definition record 2ms
+   × rejects a review DTO with mismatched definition revision 2ms
+   × rejects a review DTO with mismatched rubric record 2ms
+   × rejects a review DTO with mismatched rubric revision 2ms
+   × rejects a review DTO with mismatched skill 1ms
+   × rejects a review DTO with mismatched domain 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-read-boundary.test.ts > rejects a review DTO with mismatched assignment submission
+ FAIL  tests/practice-review-read-boundary.test.ts > rejects a review DTO with mismatched definition record
+ FAIL  tests/practice-review-read-boundary.test.ts > rejects a review DTO with mismatched definition revision
+ FAIL  tests/practice-review-read-boundary.test.ts > rejects a review DTO with mismatched rubric record
+ FAIL  tests/practice-review-read-boundary.test.ts > rejects a review DTO with mismatched rubric revision
+ FAIL  tests/practice-review-read-boundary.test.ts > rejects a review DTO with mismatched skill
+ FAIL  tests/practice-review-read-boundary.test.ts > rejects a review DTO with mismatched domain
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/practice-review-read-boundary.test.ts:103:85
+    101|   ['domain', { submission: { ...record.submission, skillDomain: 'anoth…
+    102| ])('rejects a review DTO with mismatched %s', (_name, patch) => {
+    103|   expect(PracticeReviewReadRecordSchema.safeParse({ ...record, ...patc…
+       |                                                                                     ^
+    104| });
+    105| it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 7 passed (14)
+   Start at  00:02:33
+   Duration  748ms (transform 309ms, setup 0ms, import 477ms, tests 47ms, environment 0ms)

@@ -1,0 +1,147 @@
+
+> useraid@0.1.0 lint
+> eslint .
+
+
+/srv/projects/useRAIDfun/useRAID-fun/scripts/tracking-audit.ts
+  14:12  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/admin/page.tsx
+   77:11  warning  Do not use an `<a>` element to navigate to `/api/auth/x/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @next/next/no-html-link-for-pages
+  408:45  warning  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/admin/page.tsx:408:45
+  406 |               <p>
+  407 |                 Payout worker:{' '}
+> 408 |                 {settings.payoutWorkerAt && Date.now() - +settings.payoutWorkerAt < 120000
+      |                                             ^^^^^^^^^^ Cannot call impure function
+  409 |                   ? 'ready'
+  410 |                   : 'unavailable'}
+  411 |               </p>  react-hooks/purity
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/page.tsx
+  63:55  warning  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/creator/page.tsx:63:55
+  61 |         raiders: r._count.enrollments,
+  62 |         endsAt: r.endsAt.toISOString(),
+> 63 |         hoursLeft: Math.max(0, Math.ceil((+r.endsAt - Date.now()) / 3600000)),
+     |                                                       ^^^^^^^^^^ Cannot call impure function
+  64 |         legacy: r.studioVersion !== 1,
+  65 |         paid:
+  66 |           r.trackingPhase === 'ALLOCATED' &&  react-hooks/purity
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/launch/page.tsx
+  45:32  warning  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/launch/page.tsx:45:32
+  43 |     !settings.payoutPaused &&
+  44 |     !!settings.payoutWorkerAt &&
+> 45 |     +settings.payoutWorkerAt > Date.now() - 120000 &&
+     |                                ^^^^^^^^^^ Cannot call impure function
+  46 |     settings.operatorAddress === process.env.OPERATOR_PUBLIC_KEY;
+  47 |   return (
+  48 |     <>  react-hooks/purity
+
+/srv/projects/useRAIDfun/useRAID-fun/src/app/tokens/[mint]/page.tsx
+  38:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/discovery.tsx
+  38:56  warning  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/discovery.tsx:38:56
+  36 |   const active = raids.filter((r) => r.status === 'ACTIVE');
+  37 |   const sorted = useMemo(
+> 38 |     () => discoveryRows(raids, tab, search, onlyFresh, Date.now()),
+     |                                                        ^^^^^^^^^^ Cannot call impure function
+  39 |     [raids, search, tab, onlyFresh],
+  40 |   );
+  41 |   const featured = [...active]  react-hooks/purity
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/market.tsx
+  56:18  warning  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/market.tsx:56:18
+  54 |             {at && (
+  55 |               <p>
+> 56 |                 {Date.now() - +new Date(at) > 180000 ? 'Stale · ' : ''}Observed{' '}
+     |                  ^^^^^^^^^^ Cannot call impure function
+  57 |                 {formatUtcDateTime(at)}
+  58 |               </p>
+  59 |             )}  react-hooks/purity
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/studio-account-menu.tsx
+  60:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/studio-balance.tsx
+  281:42  warning  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/studio-balance.tsx:281:42
+  279 |                 t.status === 'AWAITING_TRANSFER' &&
+  280 |                 t.expiresAt &&
+> 281 |                 +new Date(t.expiresAt) < Date.now() && (
+      |                                          ^^^^^^^^^^ Cannot call impure function
+  282 |                   <p>
+  283 |                     Intent expired. If you sent funds, contact support with the transaction
+  284 |                     signature  react-hooks/purity
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/studio-editor.tsx
+   96:6   warning  React Hook useEffect has a missing dependency: 'lookupToken'. Either include it or remove the dependency array                                                                                                                                                                           react-hooks/exhaustive-deps
+  358:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/studio-home.tsx
+  104:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/tracking-panel.tsx
+  272:41  warning  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/tracking-panel.tsx:272:41
+  270 |         view.phase === 'REVIEW' &&
+  271 |         view.reviewEndsAt &&
+> 272 |         Date.parse(view.reviewEndsAt) > Date.now() && (
+      |                                         ^^^^^^^^^^ Cannot call impure function
+  273 |           <form
+  274 |             onSubmit={(e) => {
+  275 |               e.preventDefault();  react-hooks/purity
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/ui.tsx
+  23:7  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/wallet-login.tsx
+  106:26  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/x-connection.tsx
+  27:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/identity-link-authority-hook-db.test.ts
+  31:22  warning  '_session' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  31:37  warning  '_now' is assigned a value but never used      @typescript-eslint/no-unused-vars
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/practice-review-read-db.test.ts
+  6:10  warning  'executeIdempotentCommand' is defined but never used  @typescript-eslint/no-unused-vars
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/studio-db.test.ts
+  151:17  warning  '_id' is assigned a value but never used         @typescript-eslint/no-unused-vars
+  151:40  warning  '_signature' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  324:17  warning  '_id' is assigned a value but never used         @typescript-eslint/no-unused-vars
+  324:40  warning  '_signature' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/tracking-db.test.ts
+  1119:13  warning  '_id' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  1120:14  warning  '_tag' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 26 problems (0 errors, 26 warnings)

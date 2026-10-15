@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610140001_skill_taxonomy/migration.sql

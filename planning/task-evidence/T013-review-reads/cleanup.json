@@ -1,0 +1,23 @@
+{
+  "name": "/raid-t013-review-reads-auto-20261015",
+  "id": "2bc43380d006608cb6bd4b468470c948ecaa1eb7758df121153d362cdf467451",
+  "task_label": "T013-review-reads",
+  "actual_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T18:44:01.236986283Z",
+    "FinishedAt": "2026-10-15T18:44:11.193120163Z"
+  },
+  "normal_runs_stop0": true,
+  "signal_regression_red": "OriginalSIGTERM parent-15 leftRunningtrue; manually recovered verified owned fixturestop0",
+  "signal_regression_green": "Fixedrunner SIGTERM parent143/Runningfalse/automaticstop0",
+  "no_owned_server_or_preview": true,
+  "unrelated_resources_preserved": true
+}
