@@ -1,0 +1,14 @@
+{
+  "container_id": "44e84520bd57ea5e6f9bfb197da3f18dcf4da25193509078c52854aa99dfef77",
+  "name": "/raid-t013-practice-storage-auto-20261015",
+  "labels": {
+    "raid.task": "T013-practice-storage"
+  },
+  "running": false,
+  "finished_at": "2026-10-15T07:13:09.233209086Z",
+  "last_exit_code": 0,
+  "each_helper_stop_result": 0,
+  "browser_or_next_server": "none created",
+  "pools": "all CLI finally closed",
+  "preserve": "unrelated services/images/volumes and all evidence"
+}

@@ -31,6 +31,7 @@ model User {
   raiderPreferenceVersions RaiderPreferenceVersion[]
   guildDrafts GuildDraft[]
   skillTaxonomyVersions SkillTaxonomyVersion[]
+  practiceTrialVersions PracticeTrialVersion[]
 }
 // Immutable HUMAN foundation; checks/row guard live in the additive SQL migration.
 model Participant {
@@ -648,6 +649,7 @@ model CommandReceipt {
   projectProposalVersion GuildProjectProposalVersion?
   skillTaxonomyVersion SkillTaxonomyVersion?
   skillClaimVersion SkillClaimVersion?
+  practiceTrialVersion PracticeTrialVersion?
   @@unique([actorId, commandKind, idempotencyKey])
 }
 model InboxDelivery {
@@ -799,6 +801,7 @@ model SkillTaxonomyVersion {
   taxonomy SkillTaxonomy @relation("SkillTaxonomyHistory", fields: [taxonomyId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_catalog_fkey")
   currentFor SkillTaxonomy[] @relation("SkillTaxonomyPointer")
   skillClaimVersions SkillClaimVersion[]
+  practiceTrialVersions PracticeTrialVersion[]
   publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_actor_fkey")
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_receipt_fkey")
   @@unique([taxonomyId, revision], map: "SkillTaxonomyVersion_revision_key")
@@ -845,4 +848,56 @@ model SkillClaimVersion {
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_receipt_fkey")
   @@unique([skillClaimId, revision], map: "SkillClaimVersion_revision_key")
   @@unique([id, skillClaimId, participantId, accountId, skillId, skillDomain, taxonomyId, revision], map: "SkillClaimVersion_pointer_key")
+}
+
+// Safe admin-published practice definitions/rubrics; no attempts, assessments or rank grants.
+model PracticeTrial {
+  id String @id
+  skillId String
+  skillDomain String
+  taxonomyId String
+  revision Int
+  currentVersionId String @db.Uuid
+  currentVersion PracticeTrialVersion @relation("PracticeTrialPointer", fields: [currentVersionId, id, skillId, skillDomain, taxonomyId, revision], references: [id, trialId, skillId, skillDomain, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrial_version_fkey")
+  versions PracticeTrialVersion[] @relation("PracticeTrialHistory")
+  @@unique([id, skillId, skillDomain, taxonomyId], map: "PracticeTrial_family_key")
+}
+model SkillRubricVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rubricId String
+  revision Int
+  criteria Json @db.JsonB
+  introducedByTrialVersionId String @unique(map: "SkillRubricVersion_introduction_key") @db.Uuid
+  introducedBy PracticeTrialVersion @relation("PracticeRubricIntroduction", fields: [introducedByTrialVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillRubricVersion_introduction_fkey")
+  uses PracticeTrialVersion[] @relation("PracticeRubricUse")
+  @@unique([rubricId, revision], map: "SkillRubricVersion_revision_key")
+  @@unique([id, rubricId, revision], map: "SkillRubricVersion_pointer_key")
+}
+model PracticeTrialVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  trialId String
+  revision Int
+  skillId String
+  skillDomain String
+  taxonomyId String
+  taxonomyRevision Int
+  taxonomyVersionId String @db.Uuid
+  rubricId String
+  rubricRevision Int
+  rubricVersionId String @db.Uuid
+  definition Json @db.JsonB
+  availability String
+  receiptId String @unique(map: "PracticeTrialVersion_receipt_key") @db.Uuid
+  publishedByAccountId String
+  requestId String
+  publishedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  trial PracticeTrial @relation("PracticeTrialHistory", fields: [trialId, skillId, skillDomain, taxonomyId], references: [id, skillId, skillDomain, taxonomyId], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialVersion_family_fkey")
+  currentFor PracticeTrial[] @relation("PracticeTrialPointer")
+  taxonomyVersion SkillTaxonomyVersion @relation(fields: [taxonomyVersionId, taxonomyId, taxonomyRevision], references: [id, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialVersion_taxonomy_fkey")
+  rubricVersion SkillRubricVersion @relation("PracticeRubricUse", fields: [rubricVersionId, rubricId, rubricRevision], references: [id, rubricId, revision], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialVersion_rubric_fkey")
+  introducedRubric SkillRubricVersion? @relation("PracticeRubricIntroduction")
+  publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialVersion_actor_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialVersion_receipt_fkey")
+  @@unique([trialId, revision], map: "PracticeTrialVersion_revision_key")
+  @@unique([id, trialId, skillId, skillDomain, taxonomyId, revision], map: "PracticeTrialVersion_pointer_key")
 }

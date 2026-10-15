@@ -1,0 +1,276 @@
+raid-t013-practice-storage-auto-20261015
+OWNED DATABASE: raid-t013-practice-storage-auto-20261015 loopback port 32863
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32863"
+
+28 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-storage-db.test.ts (51 tests | 7 failed | 32 skipped) 4250ms
+     × direct SQL rejects nullable required literal version 218ms
+     × direct SQL rejects nullable required literal state 220ms
+     × direct SQL rejects nullable required literal purpose 207ms
+     × direct SQL rejects nullable required literal targetRank 246ms
+     × direct SQL rejects nullable required literal evaluatorMethod 217ms
+     × direct SQL rejects nullable nested material 211ms
+     × direct SQL rejects nullable nested aiAssistance 213ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > direct SQL rejects nullable required literal version
+AssertionError: promise resolved "{ status: 'EXECUTED', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "receiptId": "d15630be-f9a2-430f-a7bb-e3bdece29b75",
++   "resultRef": "6e2e7f4d-ddbd-4b4f-83f1-2ace2fdd218b",
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:140:109
+    138|   });
+    139|   it.each(['version','state','purpose','targetRank','evaluatorMethod']…
+    140|     await save();const before=await counts();await expect(direct({muta…
+       |                                                                                                             ^
+    141|   });
+    142|   it.each(['material','aiAssistance'] as const)('direct SQL rejects nu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > direct SQL rejects nullable required literal state
+AssertionError: promise resolved "{ status: 'EXECUTED', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "receiptId": "e64dceef-cd27-4617-80f3-cc6b8bf6de5f",
++   "resultRef": "6d0fe8f4-10bc-4169-8e61-20d65b2ec220",
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:140:109
+    138|   });
+    139|   it.each(['version','state','purpose','targetRank','evaluatorMethod']…
+    140|     await save();const before=await counts();await expect(direct({muta…
+       |                                                                                                             ^
+    141|   });
+    142|   it.each(['material','aiAssistance'] as const)('direct SQL rejects nu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > direct SQL rejects nullable required literal purpose
+AssertionError: promise resolved "{ status: 'EXECUTED', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "receiptId": "6568d95c-5e8a-4847-b5a1-436bc3cf62cd",
++   "resultRef": "1b48f98d-5b9a-46f4-8fb9-d392a00dc31e",
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:140:109
+    138|   });
+    139|   it.each(['version','state','purpose','targetRank','evaluatorMethod']…
+    140|     await save();const before=await counts();await expect(direct({muta…
+       |                                                                                                             ^
+    141|   });
+    142|   it.each(['material','aiAssistance'] as const)('direct SQL rejects nu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > direct SQL rejects nullable required literal targetRank
+AssertionError: promise resolved "{ status: 'EXECUTED', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "receiptId": "d059a7e6-4a0b-4595-a7f2-0e10417e5f3d",
++   "resultRef": "6bdfc16e-12e0-41dd-af61-7928b9080c8f",
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:140:109
+    138|   });
+    139|   it.each(['version','state','purpose','targetRank','evaluatorMethod']…
+    140|     await save();const before=await counts();await expect(direct({muta…
+       |                                                                                                             ^
+    141|   });
+    142|   it.each(['material','aiAssistance'] as const)('direct SQL rejects nu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > direct SQL rejects nullable required literal evaluatorMethod
+AssertionError: promise resolved "{ status: 'EXECUTED', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "receiptId": "a5c916eb-1e47-4bc4-8f5a-e46d9671a6ad",
++   "resultRef": "37e7e199-f8b1-4224-bfad-661306768419",
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:140:109
+    138|   });
+    139|   it.each(['version','state','purpose','targetRank','evaluatorMethod']…
+    140|     await save();const before=await counts();await expect(direct({muta…
+       |                                                                                                             ^
+    141|   });
+    142|   it.each(['material','aiAssistance'] as const)('direct SQL rejects nu…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > direct SQL rejects nullable nested material
+AssertionError: promise resolved "{ status: 'EXECUTED', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "receiptId": "c00179e8-845f-453d-ae16-79fc299f988f",
++   "resultRef": "7ac2a90c-67ec-47ba-96bc-bab849072c67",
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:143:209
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > direct SQL rejects nullable nested aiAssistance
+AssertionError: promise resolved "{ status: 'EXECUTED', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "receiptId": "476b7a53-80d8-4db1-b760-4bd74ae95891",
++   "resultRef": "fc3f0649-62e7-4cf5-b716-511e784ffbbc",
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:143:209
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 12 passed | 32 skipped (51)
+   Start at  12:44:14
+   Duration  4.96s (transform 302ms, setup 0ms, import 543ms, tests 4.25s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-practice-storage-auto-20261015

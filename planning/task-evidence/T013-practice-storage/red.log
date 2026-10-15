@@ -1,0 +1,456 @@
+44e84520bd57ea5e6f9bfb197da3f18dcf4da25193509078c52854aa99dfef77
+OWNED DATABASE: raid-t013-practice-storage-auto-20261015 loopback port 32861
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32861"
+
+27 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-storage-db.test.ts (25 tests | 25 failed) 15926ms
+     × persists actual actor-attributed definition/rubric/current pointer with one private audit and no outbox 229ms
+     × reads absent/current/historical records with current own ordinary wallet authority 136ms
+     × retains original receipt/body after later publication, retirement and disabled new writes 132ms
+     × denies current role removal for new publication and original replay 131ms
+     × denies current xId removal for new publication and original replay 128ms
+     × denies current allowlist removal for new publication and original replay 133ms
+     × denies current suspended removal for new publication and original replay 124ms
+     × denies current wallet removal for new publication and original replay 128ms
+     × denies foreign session on new/replay/read 131ms
+     × denies expired session on new/replay/read 127ms
+     × denies revoked session on new/replay/read 135ms
+     × denies invalid-via session on new/replay/read 124ms
+     × rejects body forgery/unsupported material/encoding before prepared effects 132ms
+     × enforces current catalog/version/domain/active status and stable trial family 124ms
+     × keeps rubric ID/version immutable across different trials, while new criteria require contiguous versions 126ms
+     × rejects changed command identity, stale revisions and disabled writes while reauthorizing conflict 155ms
+     × serializes actual independent publishers at trial revision 0 with one winner 197ms
+     × serializes actual independent publishers at trial revision 1 with one winner 225ms
+     × serializes duplicate receipt retries into one immutable publication 192ms
+     × rechecks current policy after real catalog wait and rolls back all prepared effects 2298ms
+     × rechecks current policy after real trial wait and rolls back all prepared effects 2154ms
+     × rechecks current policy after real rubric wait and rolls back all prepared effects 2151ms
+     × observes authority revoked before the user lock 2138ms
+     × observes authority revoked before the session lock 2159ms
+     × expires the actual session during a rubric wait before publication can commit 2200ms
+ ❯ tests/practice-trial-storage-boundary.test.ts (2 tests | 2 failed) 21ms
+   × accepts only identifier references in private practice publication audit 14ms
+   × rejects forged actor/options/body and unsupported PostgreSQL strings before any query 5ms
+ ❯ tests/practice-trials-host.test.ts (3 tests | 3 failed) 10ms
+   × defaults practice publication off and permits only exact true 6ms
+   × passes disabled new-write policy inside SQL while retaining authorized original replay 1ms
+   × reevaluates actual X allowlist from locked facts and denies Studio-only privilege 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 30 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-storage-boundary.test.ts > accepts only identifier references in private practice publication audit
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/practice-trial-storage-boundary.test.ts:8:56
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/30]⎯
+
+ FAIL  tests/practice-trial-storage-boundary.test.ts > rejects forged actor/options/body and unsupported PostgreSQL strings before any query
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-storage-boundary.test.ts:15:158
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > persists actual actor-attributed definition/rubric/current pointer with one private audit and no outbox
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:35:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > reads absent/current/historical records with current own ordinary wallet authority
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeTrialDefinition src/skills/practice-trial-storage.ts:6:9
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+      6|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      7| }
+      8|
+ ❯ tests/practice-trial-storage-db.test.ts:26:103
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:40:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > retains original receipt/body after later publication, retirement and disabled new writes
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:43:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies current role removal for new publication and original replay
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies current xId removal for new publication and original replay
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies current allowlist removal for new publication and original replay
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies current suspended removal for new publication and original replay
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies current wallet removal for new publication and original replay
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:46:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies foreign session on new/replay/read
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies expired session on new/replay/read
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies revoked session on new/replay/read
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > denies invalid-via session on new/replay/read
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:50:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > rejects body forgery/unsupported material/encoding before prepared effects
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:54:180
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > enforces current catalog/version/domain/active status and stable trial family
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'REVISION_CHANGED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "REVISION_CHANGED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-trial-storage-db.test.ts:59:97
+     57|   });
+     58|   it('enforces current catalog/version/domain/active status and stable…
+     59|     await expect(save(publisher,{...input(),taxonomyReference:{recordI…
+       |                                                                                                 ^
+     60|     await expect(save(publisher,{...input(),draft:{...input().draft,sk…
+     61|     await save();await catalog(publisher,1,[{...skills[0],status:'RETI…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > keeps rubric ID/version immutable across different trials, while new criteria require contiguous versions
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:65:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > rejects changed command identity, stale revisions and disabled writes while reauthorizing conflict
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:70:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > serializes actual independent publishers at trial revision 0 with one winner
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/practice-trial-storage-db.test.ts:73:210
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > serializes actual independent publishers at trial revision 1 with one winner
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:73:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > serializes duplicate receipt retries into one immutable publication
+Error: NOT_IMPLEMENTED
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:3:9
+      1| /** Genuine RED scaffold; no durable practice definition behavior exis…
+      2| export async function publishPracticeTrialDefinition(..._args: unknown…
+      3|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+      4| }
+      5| export async function readPracticeTrialDefinition(..._args: unknown[])…
+ ❯ tests/practice-trial-storage-db.test.ts:25:127
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:63:33
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+ ❯ tests/practice-trial-storage-db.test.ts:76:42
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > rechecks current policy after real catalog wait and rolls back all prepared effects
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > rechecks current policy after real trial wait and rolls back all prepared effects
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > rechecks current policy after real rubric wait and rolls back all prepared effects
+Error: No actual PostgreSQL lock wait observed
+ ❯ blocked tests/practice-trial-storage-db.test.ts:83:310
+
+ ❯ tests/practice-trial-storage-db.test.ts:85:92
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > observes authority revoked before the user lock
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > observes authority revoked before the session lock
+Error: No actual PostgreSQL lock wait observed
+ ❯ blocked tests/practice-trial-storage-db.test.ts:83:310
+
+ ❯ tests/practice-trial-storage-db.test.ts:88:92
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/30]⎯
+
+ FAIL  tests/practice-trial-storage-db.test.ts > T013C1 durable approved practice definitions > expires the actual session during a rubric wait before publication can commit
+Error: No actual PostgreSQL lock wait observed
+ ❯ blocked tests/practice-trial-storage-db.test.ts:83:310
+
+ ❯ tests/practice-trial-storage-db.test.ts:91:269
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/30]⎯
+
+ FAIL  tests/practice-trials-host.test.ts > defaults practice publication off and permits only exact true
+Error: NOT_IMPLEMENTED
+ ❯ Module.practiceTrialWriteConfiguration src/lib/practice-trials-host.ts:2:64
+      1| /** RED scaffold; host new publication has not been wired. */
+      2| export function practiceTrialWriteConfiguration(): any { throw new Err…
+       |                                                                ^
+      3| export async function publishPracticeTrialFromHost(..._args: unknown[]…
+      4|
+ ❯ tests/practice-trials-host.test.ts:10:119
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/30]⎯
+
+ FAIL  tests/practice-trials-host.test.ts > passes disabled new-write policy inside SQL while retaining authorized original replay
+Error: NOT_IMPLEMENTED
+ ❯ Module.publishPracticeTrialFromHost src/lib/practice-trials-host.ts:3:95
+      1| /** RED scaffold; host new publication has not been wired. */
+      2| export function practiceTrialWriteConfiguration(): any { throw new Err…
+      3| export async function publishPracticeTrialFromHost(..._args: unknown[]…
+       |                                                                                               ^
+      4|
+ ❯ tests/practice-trials-host.test.ts:15:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/30]⎯
+
+ FAIL  tests/practice-trials-host.test.ts > reevaluates actual X allowlist from locked facts and denies Studio-only privilege
+Error: NOT_IMPLEMENTED
+ ❯ Module.publishPracticeTrialFromHost src/lib/practice-trials-host.ts:3:95
+      1| /** RED scaffold; host new publication has not been wired. */
+      2| export function practiceTrialWriteConfiguration(): any { throw new Err…
+      3| export async function publishPracticeTrialFromHost(..._args: unknown[]…
+       |                                                                                               ^
+      4|
+ ❯ tests/practice-trials-host.test.ts:19:414
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/30]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  30 failed (30)
+   Start at  12:32:37
+   Duration  17.01s (transform 250ms, setup 0ms, import 555ms, tests 15.96s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-practice-storage-auto-20261015

@@ -1,0 +1,284 @@
+raid-t013-practice-storage-auto-20261015
+OWNED DATABASE: raid-t013-practice-storage-auto-20261015 loopback port 32862
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32862"
+
+28 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+(node:1893885) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 1)
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1893885) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 2)
+(node:1893885) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 3)
+(node:1893885) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 5)
+(node:1893885) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 4)
+(node:1893885) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 6)
+(node:1893885) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 7)
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 7 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PracticeTrialStorageError: FORBIDDEN
+ ❯ fail src/skills/practice-trial-storage.ts:28:9
+     26| export * from './practice-trial-storage-contracts';
+     27| function fail(code: PracticeTrialStorageError['code']): never {
+     28|   throw new PracticeTrialStorageError(code);
+       |         ^
+     29| }
+     30| function actorValid(value: unknown) {
+ ❯ authorize src/skills/practice-trial-storage.ts:64:53
+ ❯ src/skills/practice-trial-storage.ts:130:9
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:235:19
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:120:14
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'FORBIDDEN' }
+This error originated in "tests/practice-trial-storage-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "denies current role removal for new publication and original replay". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PracticeTrialStorageError: ACCOUNT_RESTRICTED
+ ❯ fail src/skills/practice-trial-storage.ts:28:9
+     26| export * from './practice-trial-storage-contracts';
+     27| function fail(code: PracticeTrialStorageError['code']): never {
+     28|   throw new PracticeTrialStorageError(code);
+       |         ^
+     29| }
+     30| function actorValid(value: unknown) {
+ ❯ authorize src/skills/practice-trial-storage.ts:64:53
+ ❯ src/skills/practice-trial-storage.ts:130:9
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:235:19
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:120:14
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'ACCOUNT_RESTRICTED' }
+This error originated in "tests/practice-trial-storage-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "denies current suspended removal for new publication and original replay". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PracticeTrialStorageError: FORBIDDEN
+ ❯ fail src/skills/practice-trial-storage.ts:28:9
+     26| export * from './practice-trial-storage-contracts';
+     27| function fail(code: PracticeTrialStorageError['code']): never {
+     28|   throw new PracticeTrialStorageError(code);
+       |         ^
+     29| }
+     30| function actorValid(value: unknown) {
+ ❯ authorize src/skills/practice-trial-storage.ts:64:53
+ ❯ src/skills/practice-trial-storage.ts:130:9
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:235:19
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:120:14
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'FORBIDDEN' }
+This error originated in "tests/practice-trial-storage-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "denies current wallet removal for new publication and original replay". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PracticeTrialStorageError: AUTHENTICATION_REQUIRED
+ ❯ fail src/skills/practice-trial-storage.ts:28:9
+     26| export * from './practice-trial-storage-contracts';
+     27| function fail(code: PracticeTrialStorageError['code']): never {
+     28|   throw new PracticeTrialStorageError(code);
+       |         ^
+     29| }
+     30| function actorValid(value: unknown) {
+ ❯ authorize src/skills/practice-trial-storage.ts:64:53
+ ❯ readPracticeTrialDefinition src/skills/practice-trial-storage.ts:318:3
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'AUTHENTICATION_REQUIRED' }
+This error originated in "tests/practice-trial-storage-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "denies expired session on new/replay/read". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PracticeTrialStorageError: AUTHENTICATION_REQUIRED
+ ❯ fail src/skills/practice-trial-storage.ts:28:9
+     26| export * from './practice-trial-storage-contracts';
+     27| function fail(code: PracticeTrialStorageError['code']): never {
+     28|   throw new PracticeTrialStorageError(code);
+       |         ^
+     29| }
+     30| function actorValid(value: unknown) {
+ ❯ authorize src/skills/practice-trial-storage.ts:64:53
+ ❯ src/skills/practice-trial-storage.ts:130:9
+ ❯ executeIdempotentCommand src/command-receipts/index.ts:235:19
+ ❯ publishPracticeTrialDefinition src/skills/practice-trial-storage.ts:120:14
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'AUTHENTICATION_REQUIRED' }
+This error originated in "tests/practice-trial-storage-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "denies expired session on new/replay/read". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PracticeTrialStorageError: AUTHENTICATION_REQUIRED
+ ❯ fail src/skills/practice-trial-storage.ts:28:9
+     26| export * from './practice-trial-storage-contracts';
+     27| function fail(code: PracticeTrialStorageError['code']): never {
+     28|   throw new PracticeTrialStorageError(code);
+       |         ^
+     29| }
+     30| function actorValid(value: unknown) {
+ ❯ authorize src/skills/practice-trial-storage.ts:64:53
+ ❯ readPracticeTrialDefinition src/skills/practice-trial-storage.ts:318:3
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'AUTHENTICATION_REQUIRED' }
+This error originated in "tests/practice-trial-storage-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "denies revoked session on new/replay/read". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PracticeTrialStorageError: AUTHENTICATION_REQUIRED
+ ❯ fail src/skills/practice-trial-storage.ts:28:9
+     26| export * from './practice-trial-storage-contracts';
+     27| function fail(code: PracticeTrialStorageError['code']): never {
+     28|   throw new PracticeTrialStorageError(code);
+       |         ^
+     29| }
+     30| function actorValid(value: unknown) {
+ ❯ authorize src/skills/practice-trial-storage.ts:64:53
+ ❯ readPracticeTrialDefinition src/skills/practice-trial-storage.ts:318:3
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:61:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'AUTHENTICATION_REQUIRED' }
+This error originated in "tests/practice-trial-storage-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "denies invalid-via session on new/replay/read". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  3 passed (3)
+      Tests  30 passed (30)
+     Errors  7 errors
+   Start at  12:39:55
+   Duration  7.55s (transform 299ms, setup 0ms, import 669ms, tests 6.32s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-practice-storage-auto-20261015

@@ -1,5 +1,7 @@
 # Versioned practice-trial contracts
 
+[Durable authorized definition/rubric storage](raid-practice-trial-storage.md) now supplies actual immutable publications, current scoped publisher authorization, global rubric consistency and original receipts. This pure preparation contract remains separate from durable attempts and assessment authority.
+
 T013A / issue55 owns `src/skills/practice-trial-contracts.ts` and `practice-trials.ts`. This is a pure reusable boundary for approved public/synthetic **unpaid platform practice**, with private unpersisted attempt preparation. It implements foundations for blueprint07.3/08.3/13/25.3 under R05/R06/R12/P07/I06/I07/I10/I13/R15/R16 and AC06/73–75. Authorized assessment decisions, actual public trial screens, durable attempts, code execution, rank grants and full T013 acceptance remain NOT VERIFIED.
 
 ## Public interface and dependencies

@@ -96,6 +96,17 @@ async function authorize(
     if (result !== true) fail('FORBIDDEN');
   }
 }
+/** Shared locked skill-store actor boundary; the returned identity is not an authorization token. */
+export async function lockSkillStorageActor(
+  tx: CommandReceiptTransaction,
+  actorValue: SkillTaxonomyActor,
+  policy?: SkillTaxonomyStorageOptions['canPublish'],
+): Promise<SkillTaxonomyActor> {
+  const actor = actorValid(actorValue);
+  if (policy !== undefined && typeof policy !== 'function') fail('STORAGE_CONTRACT');
+  await authorize(tx, actor, policy);
+  return actor;
+}
 async function loadVersion(
   tx: CommandReceiptTransaction,
   versionId: string,

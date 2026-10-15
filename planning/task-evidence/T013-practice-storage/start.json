@@ -1,0 +1,7 @@
+{
+  "agent": "Codex /root",
+  "started_at": "2026-10-15T06:46:20.828363+00:00",
+  "base_sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+  "prior_work": "PR217 post-CI packet/task/checkpoint/evidence preserved",
+  "scope": "T013C1 durable approved practice definitions/rubric versions; original branch/sole writer/no delegation"
+}
