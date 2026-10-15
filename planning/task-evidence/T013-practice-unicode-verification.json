@@ -3,177 +3,177 @@
   "scope": "T013C1 follow-up stored publication Unicode prequery error parity only",
   "status": "VERIFIED_IN_TEST bounded error-contract repair; full T013 NOT VERIFIED",
   "implementer": "Codex /root",
-  "reviewer": "NOT VERIFIED — independent reviewer not assigned/authorized",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
   "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
   "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-15-T013-practice-unicode.md",
   "migration_rollback": "Input-validation and synthetic consumer operational repair only. Pure schemas, all30DDL/Prisma/data/history/receipts/current authority unchanged. No migration/backfill/live enablement or destructive rollback.",
   "dependency_evidence": "Actual existing stored UTF16 SQL bound and normalized draft/publisher/receipt contracts; installed Zod4.6.5 codepoint behavior measured. Own installed current minimalPG consumer proves exact-bound normalization, prequery overflow and retained receipt/current authority with real local driver bounds.",
   "open_decisions": "O09 numeric scoring/calibration, O11 retention and actual approved operating/evaluator/provider policy remain unresolved; no production authority/policy seed.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-  "candidate_sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
-  "source_identity": "Base 5e9956b3966dbf9508c667f8e1258a528d8a11ec plus exact uncommitted source-hashes.json; authorized implementation SHA will be pinned after commit. Original actual existing-bug RED sources and consumer bound failure separately archived.",
+  "code_source_sha": "7520a48a7666c59105f0fc2900dc6dfe7be2586f",
+  "candidate_sha": "7520a48a7666c59105f0fc2900dc6dfe7be2586f",
+  "source_identity": "Implementation 7520a48a7666c59105f0fc2900dc6dfe7be2586f; all source-hashes exact; metadata-only source pin follows. Actual pre-implementation and consumer-bound RED sources retained.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/PostgreSQL16 pinned image; own generated30 build deps/own23installed24audit0vuln minimalPG consumer; synthetic only",
   "criteria": {
     "T013-C01": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C01",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
       "observed": "Normalized stored publication rejects UTF16 overflow as INVALID_INPUT before receipt/SQL; existing accepted set/pure schemas unchanged; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C02": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C02",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
       "observed": "Existing stored SQL UTF16 contract preserved; pure codepoint schemas not silently changed; no OPEN grading/retention/operating decision selected; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C03": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C03",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
       "observed": "Prospective draft text fields only; no schema/model/data/history mutation,30DDL/Prisma bytes unchanged; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C04": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C04",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
       "observed": "Actual current X ADMIN/live own X Session/dynamic publisher allowlist unchanged; invalid technical input never reaches SQL; no privilege expansion; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C05": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C05",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
       "observed": "Early invalid-input error replaces conservative late SQL rejection; valid normalized publication/replay transitions unchanged; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C06": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C06",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
       "observed": "No canonical identity/start/engagement/capacity change; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C07": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C07",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
       "observed": "Normalization precedes stored unit checks; valid exact-bound title/original receipt/historical definitions remain exact; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C08": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C08",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
       "observed": "No asset/reserve/balance/obligation/provider or financial effect; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C09": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C09",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
       "observed": "No public/private DTO or audit payload expansion; no new body logging; unchanged private histories; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C10": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C10",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
       "observed": "Invalid text causes zero receipt/query calls; exact normalized original replay retains idempotent outcome with writes disabled; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C11": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C11",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
       "observed": "Existing SQL/history/lock/authority guards retained, affected definitions/starts/private submissions and actual receipt consumerPASS; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C12": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C12",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
       "observed": "No provider/network work in domain module; own consumer real transaction-local bounds asserted after genuineRED operational fix; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C13": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C13",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
       "observed": "Precise existing INVALID_INPUT error for caller technical overflow; no browser flow change; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C14": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C14",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
       "observed": "Unsupported JSONB strings still rejected; all9field UTF16 bounds match unchanged SQL before queries; no assertion/fence weakening; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C15": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C15",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
       "observed": "No new Root flag/dependency/migration/operating seed; consumer settings are explicit synthetic technical bounds; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C16": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C16",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
       "observed": "11actual existing-bugRED/2valid controls before repair;13new+171affectedSQL+144pure+1externalhost=329PASS,55planning/current source gates; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C17": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C17",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
       "observed": "Author SELF-EVALUATED only, independent criterion review/UAT/business/release NOT VERIFIED; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C18": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C18",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
       "observed": "Exact task/source/primary validator semantics/failures/cleanup/current overnight handoff recorded; prior PR220 post-CI WIP preserved; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-A01": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-A01",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
       "observed": "No capability rank conversion or unrelated-work promotion change; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-A02": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-A02",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
       "observed": "Actual relevant authorized assessment still separate; no rank from wealth/roles; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-W01": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W01",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
       "observed": "Safe unpaid approved practice contracts unchanged; no production task/provider/runner conversion; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-W02": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W02",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
       "observed": "Original definition/rubric/limits/accommodation/history preserved; only normalized stored technical text validation repaired; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-W03": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W03",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
       "observed": "No actual evaluator/ownership/assessment authority introduced; missing full skill/trial acceptance remains explicit; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C19": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C19",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
       "observed": "9field schema failures plus prequery+actualPG =11genuineRED,2validcontrols before fix; own consumer server-bound RED before local bounds, exact archives retained; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C20": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C20",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
       "observed": "Existing versioned portable storage input/driver/current policy contracts preserved; own actual minimalPG host proves current-source substitution without Root state; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C21": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C21",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
       "observed": "Own23install24audit0vuln strict/current actualPG/Unicode/exact receipt/live bounds/sourcePASS; complete same-change docs/host dependencies; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     },
     "T013-C22": {
       "result": "NOT VERIFIED",
-      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/08/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C22",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
       "observed": "New test file E04/global discovery;55planningPASS; future exactmain7hosted checks still NOT VERIFIED; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/review.json; docs/raid-practice-trial-storage.md; docs/tasks/2026-10-15-T013-practice-unicode.md"
     }
@@ -232,14 +232,14 @@
       "observed_failure": "11fail(9schema/prequery/actualPG) with2valid controlsPASS before repair; actual late STORAGE_UNAVAILABLE vs INVALID_INPUT. Own consumer server statement_timeout0 expected5s before local bounds. Original sources archived; baseSHA alone omits uncommitted tests."
     },
     "green": {
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "sha": "7520a48a7666c59105f0fc2900dc6dfe7be2586f",
       "command": "ActualPG30 full new13cases and independently own installed strict/current minimal PostgreSQL consumer",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/green.log; consumer-install-types.log; consumer-final-types.log; consumer-final.log; source-hashes.json; consumer-source-hashes.json",
       "result": "PASS",
       "observed": "13PASS1.32s; own23installed24audit0vuln strict/current actualPG/normalized exact Unicode/overflow/original replay/current revocation/boundsPASS; every owned fixturestop0"
     },
     "refactor": {
-      "sha": "5e9956b3966dbf9508c667f8e1258a528d8a11ec",
+      "sha": "7520a48a7666c59105f0fc2900dc6dfe7be2586f",
       "command": "Normalize-first field unit checks, unchanged pure/SQL contracts, bounded current consumer; affected storage/pure/externalhost/planning/generated30 source gates",
       "evidence_url": "planning/task-evidence/T013-practice-unicode/affected-db.log; affected-pure.log; planning.log; typecheck.log; production-build.log; lint.log; audit.log; review.json",
       "result": "PASS",

@@ -1,3 +1,9 @@
+# Stored publication Unicode repair committed — 2026-10-15T17:42:15.408498+00:00 — Codex /root
+
+Implementation 7520a48a7666c59105f0fc2900dc6dfe7be2586f on original branch/base5e9956b, all329selected/55planning/current own consumer/source gatesPASS. Prior PR220 metadata preserved. Author SELF-EVALUATED; full27+7/independent/UAT/business/release NOT VERIFIED. Active owner12hour window through2026-10-16T03:36:22Z. Next metadata pin/push/templateRef55PR/exacthead merge/actualCI; then actual scoped ownership/evaluator authority/assessment and repeat. All owned resources stopped0; no browser/live flag/delegation/branch switch.
+
+---
+
 # Stored publication Unicode repair verified — 2026-10-15T17:41:45.518814+00:00 — Codex /root
 
 Active owner12hour goal through2026-10-16T03:36:22Z, original branch/base5e9956b, sole writer/no delegation/branch switch. Prior PR220 post-CI metadata WIP preserved. Stored publication all9normalized-field UTF16 input bounds now rejectINVALID before queries, unchanged pure/30DDL/history/authority/flags.
