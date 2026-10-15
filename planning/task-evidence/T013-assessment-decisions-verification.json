@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual original case and current assessment/review/ownership, exact current approved assessment policy, current own evaluator Session/nonself ASSESSMENT_REVIEW appointment and host namespace/action scope in one transaction. Own independently installed minimalPG35 consumer strict and actual current runtimePASS.",
   "open_decisions": "O09/O11/staffed public operation/notice/appeal/retention/release remainOPEN/NOT VERIFIED. Manual reasoned actual source only, no automatic fraud/reliability/account/financial effect or invented policy. Current eligibility/APIUI next.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
-  "candidate_sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
-  "source_identity": "Base3fe09235 plus exact592 relevant/46 consumer hashes and all537 build source files/no missing-extra-stale; own independently installed consuming example current. Implementation SHA will be pinned.",
+  "code_source_sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+  "candidate_sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+  "source_identity": "Implementation 7a45bc34bcb2e8f05637db19672075ab7765694a; exact592relevant/46consumer hashes and all537build code paths/current own build+installed example; metadata-only source pin follows.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11/Zod4.6.5/pinnedPG16 actual35DDL; own23installed24audited0vuln/current strict+minimalPG35 consumer; actual current generation35/types/production build; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "29FAIL40.25s; opaqueaudit key1FAIL and Root missing-module suite. Later4DTOFAIL9.07s inconsistent finding/definition/evidence/revoked-prior views; original source/rawlogs retained."
     },
     "green": {
-      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
       "command": "ActualPG35 three new suites and independently installed minimalPG35 consuming host",
       "evidence_url": "planning/task-evidence/T013-assessment-decisions/final-affected.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json; consumer-final-types.log",
       "result": "PASS",
       "observed": "Final current531PASS498.52s/15files (95new+119D5+317source), current own46-file independently installed minimalPG35 consuming hostPASS; all actual fixturesstop0/Runningfalse"
     },
     "refactor": {
-      "sha": "3fe09235a267930a0f51ff0d5d5db4acb18c5421",
+      "sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
       "command": "Meaningful provenance/rawSQL/current authority/CAS/immutability/privacy +affected/mandatory gates",
       "evidence_url": "planning/task-evidence/T013-assessment-decisions/final-affected.log; affected-pure.log; planning.log; generate35.log; typecheck.log; production-build.log; schema-validate2.log; clean-lint.log; audit.log; whole-format.log; review.json; cleanup.json; source-hashes.json; consumer-source-hashes.json; build-source-probe.json",
       "result": "PASS",

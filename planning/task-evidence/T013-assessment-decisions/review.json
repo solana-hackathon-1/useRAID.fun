@@ -67,5 +67,7 @@
     "No new SIGTERM execution; verified prior signal-safe groups/current normal-failurestop0 evidence retained"
   ],
   "ended_at": "2026-10-15T22:33:56.959135+00:00",
-  "elapsed_seconds": 903.092
+  "elapsed_seconds": 903.092,
+  "implementation_sha": "7a45bc34bcb2e8f05637db19672075ab7765694a",
+  "completion_validator": "Expectedexit1 exactly34missing obligations=27criteria+7hosted, no metadataerrors; completion.log"
 }
