@@ -1,0 +1,2 @@
+examples/practice-trial-attempts/skills/practice-trial-attempt-storage.ts(296,38): error TS7006: Parameter 'candidate' implicitly has an 'any' type.
+src/skills/practice-trial-attempt-storage.ts(296,38): error TS7006: Parameter 'candidate' implicitly has an 'any' type.

@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-attempt-host.test.ts (2 tests | 2 failed) 9ms
+   × defaults new practice starts off and accepts only exact true 6ms
+   × passes disabled new-write policy inside the SQL boundary while preserving original replay 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-attempt-host.test.ts > defaults new practice starts off and accepts only exact true
+Error: NOT_IMPLEMENTED
+ ❯ Module.practiceTrialAttemptWriteConfiguration src/lib/practice-trial-attempts-host.ts:2:134
+
+ ❯ tests/practice-trial-attempt-host.test.ts:10:125
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/practice-trial-attempt-host.test.ts > passes disabled new-write policy inside the SQL boundary while preserving original replay
+Error: NOT_IMPLEMENTED
+ ❯ Module.startPracticeTrialFromHost src/lib/practice-trial-attempts-host.ts:3:176
+
+ ❯ tests/practice-trial-attempt-host.test.ts:15:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  21:26:47
+   Duration  258ms (transform 45ms, setup 0ms, import 66ms, tests 9ms, environment 0ms)

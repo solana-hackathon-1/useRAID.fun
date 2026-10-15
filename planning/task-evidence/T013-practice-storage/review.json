@@ -57,5 +57,14 @@
   "ended_at": "2026-10-15T07:16:17.511951+00:00",
   "elapsed_seconds": 602.872,
   "completion_validator": "Expected34NOT VERIFIED (27fullcriteria+7hosted) only; no metadata errors. No self-approved exclusions.",
-  "implementation_commit": "769aebb38920b3a682a97a639c853b2d7946d820"
+  "implementation_commit": "769aebb38920b3a682a97a639c853b2d7946d820",
+  "post_merge_ci": {
+    "sha": "767afbe5210ed2f1f14b2e8fd99e92295c0d2033",
+    "result": "NOT VERIFIED",
+    "observed": "FAILED before0steps with official GitHub account payments/spending-limit annotation",
+    "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38697794649",
+    "new_image": "NOT PUBLISHED by this run",
+    "manual_checks": "Originally disabled_manually API-verified; no enablement/redispatch/restoration obligation",
+    "source": "Actual merge tree equals verified pin; all final code/test/config/schema/example/dependency hashes remain exact"
+  }
 }

@@ -1,0 +1,63 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-15T15:50:10.944742+00:00",
+  "source": "Base767afbe plus new start command/schema29/shared event/Root defaultoff host/3tests/own PG example; PR218 post-CI WIP preserved",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "P07",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I10",
+    "I13",
+    "R15",
+    "R16",
+    "AC06",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_RED": "27 original behavior/event failures against typed stub/missing event on realPG28, plus2Root-host failures before host implementation; exact sources archived. Original RED also1late assertion-promise error, preserved and immediately observed without altering original awaited assertion. Actual consumer server-bound RED before local bounds, then1realPG reader-error RED before owned normalization, sources archived.",
+  "initial_GREEN": "29newPASS8.70s then51expandedSQL/race/current authority checksPASS13.03s,0unhandled; ownedPG29stop0",
+  "findings": [
+    "OriginalRED late assertion-rejection handler fixed by immediate catch observer; the original promise is still awaited and every assertion/deadline retained.",
+    "Independent own-install strict types and Root strict types expose callback TS7006; explicit canonical schema-derived callback annotation fixes without cast/suppression/schema weakening.",
+    "Time expectations do not authorize a hard deadline; immutable STARTED history is not current lifecycle/assessment or an authorization token.",
+    "Non-null accommodations fail explicitly unavailable until actual scoped approved durable records exist, no seed or pretend boolean authority.",
+    "Own consumer initially had unbounded server statement/lock settings. Added real SHOW assertions first: actual0 expected5s RED, source archived and owned fixture stopped0. Added transaction-local5s statement/2s lock/5s idle bounds; assertions retained. These are synthetic host technical limits, not production policy.",
+    "Final adverse review found current session expiry inside approved-definition reader escaped as lower-level PracticeTrialStorageError. Real PostgreSQL1RED before fix and source archive retained; normalize reader errors to owned attempt class/preserve current authentication code. Added explicit code assertion, no softened checks. Rerun new behavior/consumer/strict source gates; reuse unaffected171SQL/144pure/planning/audit evidence only for exact unchanged inputs."
+  ],
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "resources": "Owned PG stopped0 after every success/failure; actualRunningfalse/cleanup.json. All pools/CLI ended. No browser/Next server/preview; preserve unrelated services/images/volumes and evidence.",
+  "actual_checks": {
+    "new": "Final55PASS22.05s/0unhandled after actual reader-error1RED fix; older29/51/54 evidence retained for prior source",
+    "affected": "8files222PASS52.75s includes earlier51new+171oldSQL; separately1externalhostPASS1.34s/3nontarget excluded;8pure144PASS7.17s/1DBskip subsequentlyexecuted",
+    "unique_selected": "55new+171affectedSQL+144pure+1previouslyDBskipped=371PASS",
+    "planning": "55PASS51.205s; all3newtests E04/global inventory",
+    "consumer": "Own23installed24audit0vuln strict/actual minimalPG/current reader-fix code/live bounds/exact canonical sourcePASS",
+    "root": "Final own generated29 Prisma generate/typegen/strict types/productionWebpackbuild after actual reader-error fix PASS; all final code/test/config/schema/example/dependency hashes match verified own snapshot and own install. Initial strict failure retained.",
+    "schema": "Prisma validate with explicit synthetic nonconnecting URLPASS",
+    "lint": "Whole0errors25oldwarnings; final changed files0errors0warnings",
+    "audit": "Unchanged Root approved unexpired moderate-or-higher policyPASS; not Root zero vulnerabilities",
+    "format": "Fresh whole tracked+nonignored WIP snapshot /tmp/raid-t013-practice-attempts-format-source-n8fv58zz PASS; final metadata format next"
+  },
+  "source_hashes": "planning/task-evidence/T013-practice-attempts/source-hashes.json",
+  "consumer_source": "planning/task-evidence/T013-practice-attempts/consumer-source-hashes.json",
+  "reused": [
+    "171unchanged old SQL cases from actual29DDL suite;144pure/planning/audit inputs exactly unchanged after new owned-error fix",
+    "Whole lint unaffected files; final changed module/test explicitly linted after fix",
+    "Older29/51/54new and earlier consumer/build evidence applies to its prior source only, retained without claiming it as final"
+  ],
+  "skipped": [
+    "No browser-visible route/UI/preview; no browser suite",
+    "Full suite and actual hosted7checks not claimed; independent/UAT/business/release NOT VERIFIED",
+    "No actual submission/evaluator/approved scoped accommodation/provider/runner/rank/operating seed or hard deadline/retention calibration"
+  ],
+  "ended_at": "2026-10-15T16:09:53.933020+00:00",
+  "elapsed_seconds": 1182.988,
+  "completion_validator": "Expected34NOT VERIFIED obligations27fullcriteria+7hosted only/no metadata errors; no self-approved exclusions.",
+  "implementation_commit": "585d9e8a1e77e29beed0b29361db6d9a91c111f7"
+}

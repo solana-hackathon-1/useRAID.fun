@@ -1,0 +1,14 @@
+{
+  "container_id": "4f6780a1c6a88f4502cef3ba61695f903d10694cabc2264f6db314ec59f8f8a2",
+  "name": "/raid-t013-practice-attempts-auto-20261015",
+  "labels": {
+    "raid.task": "T013-practice-attempts"
+  },
+  "running": false,
+  "last_exit_code": 0,
+  "finished_at": "2026-10-15T16:05:52.313548633Z",
+  "every_helper_stop_result": 0,
+  "browser_or_next_server": "none created",
+  "pools": "CLI finally closed; all workers ended",
+  "preserved": "all raw logs/source/dependencies and unrelated services/images/volumes"
+}

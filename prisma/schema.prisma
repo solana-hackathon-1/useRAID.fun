@@ -48,6 +48,7 @@ model Participant {
   skillClaims SkillClaim[]
   skillClaimVersions SkillClaimVersion[]
   @@unique([id, accountId])
+  practiceStarts PracticeTrialStart[]
 }
 // Additional verified wallet credentials; checks, guard and exclusivity triggers live in the SQL migration.
 model WalletLink {
@@ -651,6 +652,7 @@ model CommandReceipt {
   skillClaimVersion SkillClaimVersion?
   practiceTrialVersion PracticeTrialVersion?
   @@unique([actorId, commandKind, idempotencyKey])
+  practiceTrialStart PracticeTrialStart?
 }
 model InboxDelivery {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -806,6 +808,7 @@ model SkillTaxonomyVersion {
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillTaxonomyVersion_receipt_fkey")
   @@unique([taxonomyId, revision], map: "SkillTaxonomyVersion_revision_key")
   @@unique([id, taxonomyId, revision], map: "SkillTaxonomyVersion_pointer_key")
+  practiceStarts PracticeTrialStart[]
 }
 
 // Private claimant-controlled versions, separate from assessments/ranks/history.
@@ -861,6 +864,7 @@ model PracticeTrial {
   currentVersion PracticeTrialVersion @relation("PracticeTrialPointer", fields: [currentVersionId, id, skillId, skillDomain, taxonomyId, revision], references: [id, trialId, skillId, skillDomain, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrial_version_fkey")
   versions PracticeTrialVersion[] @relation("PracticeTrialHistory")
   @@unique([id, skillId, skillDomain, taxonomyId], map: "PracticeTrial_family_key")
+  practiceStarts PracticeTrialStart[]
 }
 model SkillRubricVersion {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -900,4 +904,27 @@ model PracticeTrialVersion {
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialVersion_receipt_fkey")
   @@unique([trialId, revision], map: "PracticeTrialVersion_revision_key")
   @@unique([id, trialId, skillId, skillDomain, taxonomyId, revision], map: "PracticeTrialVersion_pointer_key")
+  practiceStarts PracticeTrialStart[]
+}
+
+// Immutable historical practice starts; constraints/retry/receipt guards live in migration29.
+model PracticeTrialStart {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  participantId String @db.Uuid
+  accountId String
+  trialId String
+  definitionVersionId String @db.Uuid
+  taxonomyId String
+  taxonomyRevision Int
+  taxonomyVersionId String @db.Uuid
+  attemptNumber Int
+  startedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  receiptId String @unique(map: "PracticeTrialStart_receipt_key") @db.Uuid
+  requestId String
+  participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialStart_participant_fkey")
+  trial PracticeTrial @relation(fields: [trialId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialStart_trial_fkey")
+  definitionVersion PracticeTrialVersion @relation(fields: [definitionVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialStart_definition_fkey")
+  taxonomyVersion SkillTaxonomyVersion @relation(fields: [taxonomyVersionId, taxonomyId, taxonomyRevision], references: [id, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialStart_taxonomy_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialStart_receipt_fkey")
+  @@unique([participantId, trialId, attemptNumber], map: "PracticeTrialStart_family_number_key")
 }

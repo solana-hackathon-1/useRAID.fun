@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013C2 durable private canonical unpaid practice starts and own history only",
+  "status": "VERIFIED_IN_TEST bounded immutable starts; full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED — independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-15-T013-practice-attempts.md",
+  "migration_rollback": "Additive29 PracticeTrialStart and Prisma mirror; no seed/live enablement. Disable new starts; retain old immutable consent/history/receipts. Destructive rollback/repair requires reviewed recovery.",
+  "dependency_evidence": "Actual existing immutable canonical HUMAN, User/live own Session, saved current AVAILABLE full definition and active current catalog, receipt SQL/READ COMMITTED bounded retry host. Own installed minimal PG consumer supplies actual schema and scoped synthetic publisher; actual submissions/evaluator/accommodation authority remain dependencies.",
+  "open_decisions": "O09 numeric scoring/calibration, O11 retention and actual approved operating/evaluator/provider policy remain unresolved; no production authority/policy seed.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+  "candidate_sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+  "source_identity": "Implementation 585d9e8a1e77e29beed0b29361db6d9a91c111f7 contains exact verified final code/test/config/schema/consumer/dependency bytes; following pin changes metadata only. Original RED/failing phase sources remain archived.",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/PostgreSQL16 pinned image; own generated29 Root deps; independent own23installed24audit0vuln PG host; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C01",
+      "observed": "Canonical private start and immutable full consent/history only; no actual submission/assessment/rank/Root route/UI; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C02",
+      "observed": "LOCKED skill/access/money separation; safe public/synthetic DEFAULT; time expectations not an invented hard deadline; O09/O11/actual operating authority OPEN; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C03",
+      "observed": "Actual PracticeTrialStart, immutable canonical Participant, User/Session, current definition/catalog FKs and unique family number/receipt; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C04",
+      "observed": "Actual unrestricted own wallet/X session and existing canonical HUMAN for start/replay/read; forged/missing/foreign/revoked/expired/restricted denied; no autoprovision or admin/token requirement; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C05",
+      "observed": "STARTED immutable historical event with exact original definition and actual current taxonomy; published family limits/cooldown across revisions; no current lifecycle assertion; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C06",
+      "observed": "Canonical existing account/HUMAN across own linked sessions; no work engagement or capacity reservation; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C07",
+      "observed": "Exact immutable full definition/rubric/tools/AI/material/limits/variant consent; original receipt/private history retained after retirement/disablement; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C08",
+      "observed": "No balance/reserve/obligation/asset/provider or financial effect; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C09",
+      "observed": "Own private saved starts only; foreign/missing IDs return null; identifier-only private audit/no answer/submission/public outbox; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C10",
+      "observed": "Actual receipt one outcome under concurrent duplicate intent; changed body conflicts after current authorization; disabled new intent retains original replay; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C11",
+      "observed": "Actual User/session/Participant/catalog/trial/family locks, concurrent linked sessions/limit/cooldown/expiry/revocation and direct SQL rollback/immutable constraints; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C12",
+      "observed": "No external wait under transaction; current database-clock session checks; own live server bound assertions fail first then local limits verified; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C13",
+      "observed": "Typed denial/stale/limit/cooldown/unavailable/unknown commit recovery; no browser route supplied; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C14",
+      "observed": "Strict forged actor/history/body/ref bounds before query; no private foreign read, caller history or execution/network/content authority; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C15",
+      "observed": "Root exacttrue/defaultoff PRACTICE_TRIAL_ATTEMPTS_ENABLED; original replay/read preserved; no live authority/provider/fund enablement; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C16",
+      "observed": "27behavior/eventRED+2hostRED, consumer live-bound RED; final55new+171affectedSQL+144pure+1externalhostPASS (371selected),55planning and strict/source gates; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C17",
+      "observed": "SELF-EVALUATED only; independent criterion review/representative UAT/business/release NOT VERIFIED; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C18",
+      "observed": "Actual task/requirements/dependencies/source/failure/cleanup/handoff recorded; PR218 post-CI WIP preserved,12hour ongoing owner goal; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-A01",
+      "observed": "Relevant approved advanced intended target retained; starting practice grants no rank from unrelated E-task grinding; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-A02",
+      "observed": "Actual reviewer/rank projection remains separate dependent command; no wealth/token/evaluator purchase; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W01",
+      "observed": "Actual safe unpaid approved public/synthetic definition consumed; publisher still owns content provenance, purpose tag not inspection; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W02",
+      "observed": "Full immutable rubric/tools/AI/variant/time/limits consent and canonical family history; non-null approved accommodations explicitly unavailable pending actual scoped durable authority; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-W03",
+      "observed": "Historical start only, no submission/evaluator/automated scoring/assessment or invented hard deadline; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C19",
+      "observed": "Genuine27originalRED+2RootRED and live consumer bounds RED and1actualPG reader-error RED against archived source, failures retained; no weakened assertions/deadlines/schemas; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C20",
+      "observed": "Stable injected actual PostgreSQL/current ordinary identity/receipt contracts, explicit original saved definition approval; independent minimal host/alternate scoped publisher policy; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C21",
+      "observed": "Own npmci23packages24audit0vuln strict/actualPG/runtime bounds/exact source/complete dependency docs PASS; no hidden Root installation; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00–04/07–09/13/24.6–8/25.3/26/28–29/33.7/34/35/39–40; T013-C22",
+      "observed": "All3newtests E04/global/discovery;55planningPASS; exact futuremain7 hosted checks still NOT VERIFIED; bounded author evidence only; full criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json; docs/raid-practice-trial-attempts.md; docs/tasks/2026-10-15-T013-practice-attempts.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json",
+      "observed": "Exact future merged-main hosted result pending; local checks separate. Prior767a Staging38697794649 billing before0steps; original manualChecks disabled/no unchanged redispatch."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json",
+      "observed": "Exact future merged-main hosted result pending; local checks separate. Prior767a Staging38697794649 billing before0steps; original manualChecks disabled/no unchanged redispatch."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json",
+      "observed": "Exact future merged-main hosted result pending; local checks separate. Prior767a Staging38697794649 billing before0steps; original manualChecks disabled/no unchanged redispatch."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json",
+      "observed": "Exact future merged-main hosted result pending; local checks separate. Prior767a Staging38697794649 billing before0steps; original manualChecks disabled/no unchanged redispatch."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json",
+      "observed": "Exact future merged-main hosted result pending; local checks separate. Prior767a Staging38697794649 billing before0steps; original manualChecks disabled/no unchanged redispatch."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json",
+      "observed": "Exact future merged-main hosted result pending; local checks separate. Prior767a Staging38697794649 billing before0steps; original manualChecks disabled/no unchanged redispatch."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/review.json",
+      "observed": "Exact future merged-main hosted result pending; local checks separate. Prior767a Staging38697794649 billing before0steps; original manualChecks disabled/no unchanged redispatch."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "767afbe5210ed2f1f14b2e8fd99e92295c0d2033",
+      "command": "OwnedPG28 vitest new behavior/event against typed stubs, separateRoot host stub tests; later actual consumer SHOW assertions before local bounds; later real current-session expiry inside saved-definition read before owned-error normalization",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/red.log; red-source.tar.gz; red-source-hashes.json; host-red.log; host-red-source.tar.gz; host-red-source-hashes.json; consumer-bounds-red.log; consumer-bounds-red-source.tar.gz; consumer-bounds-red-hashes.json; reader-error-red.log; reader-error-red-source.tar.gz; reader-error-red-hashes.json",
+      "result": "FAIL",
+      "expected_failure": "Missing actual canonical durable start/read/history/private event/defaultoff host and missing enforced example transaction bounds",
+      "observed_failure": "27behavior/event failed before implementation plus2Root failures; actual consumer server statement_timeout0 expected5s before bounds fix. OriginalRED1late promise assertion also preserved; immediate observer retains original awaited assertion. BaseSHA does not contain archived uncommitted tests/stubs. Later1realPG readerErrorRED: actual PracticeTrialStorageError expected owned PracticeTrialAttemptStorageError before normalization."
+    },
+    "green": {
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "command": "Final actualPG29 new3files after owned reader-error fix; own installed strict/current minimal PostgreSQL consumer",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/green-reader-final.log; consumer-reader-final.log; consumer-types-reader-final.log; source-hashes.json; consumer-source-hashes.json",
+      "result": "PASS",
+      "observed": "Final55newPASS22.05s/0unhandled; own current source installed23packages24audit0vuln strict/runtime/bounds/canonical history PASS; every owned fixture stop0"
+    },
+    "refactor": {
+      "sha": "585d9e8a1e77e29beed0b29361db6d9a91c111f7",
+      "command": "Immediate rejection observer/explicit canonical callback type; actual affected SQL/pure/externalhost,55planning, generated29 strict/build/lint/audit/wholefreshformat; preserve current denial code and normalize lower-level reader error to owned command class after genuine1RED",
+      "evidence_url": "planning/task-evidence/T013-practice-attempts/affected-db-final.log; affected-pure.log; initial-typecheck.log; consumer-initial-types-error.log; final-tests-typecheck.log; production-build.log; review.json; reader-error-red.log; reader-final-lint.log; code-check-driver-reader-final.log",
+      "result": "PASS",
+      "observed": "55new+171affectedSQL+144pure+1externalhost=371selectedPASS;55planningPASS51.205s. Actual reader-error1RED before normalization, current error code preserved. TS7006 fixed schema-derived annotation. Final generated29 Root types/build/current consuming-host/changed-file lint/format; reused exact unchanged171SQL/144pure/planning/audit inputs. Full suite/hosted not claimed."
+    }
+  }
+}
