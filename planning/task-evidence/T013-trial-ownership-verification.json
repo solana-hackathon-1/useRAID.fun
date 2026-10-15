@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual original saved submission/definition/rubric, D1 current exact OWNERSHIP_REVIEW appointment/own session, D2 actual audited private case evidence, D3 actual current canonical approved policy UUID in same held transaction, current strict host scope. Actual standalone independently installed minimalPG33 consumer.",
   "open_decisions": "O09 numeric calibration/O11 retention/staffed operating approval remainOPEN; no defaults/real policy/evaluator/finding seed. Actual assessment/reassessment/projections/APIUI and independent acceptance next.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
-  "candidate_sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
-  "source_identity": "Base0c5c345 plus exact143source/42consumer hashes matching actual own verified build/current types/installation; implementationSHA to be pinned",
+  "code_source_sha": "dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be",
+  "candidate_sha": "dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be",
+  "source_identity": "Implementation dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be; exact143source/42consumer manifest matches own final verified build/current types/installation; subsequent pin metadata-only",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinnedPG16; actual33migrations/current own generated33strict/build and independent23package24audited0vuln consumer; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "27FAIL11.90s+5host/eventFAIL; initial31PASS1FAIL18.71s test used invented error name corrected to actual IDEMPOTENCY_KEY_REUSED; expanded69PASS1FAIL49.53s actual rawnullkind committed before explicit JSON string guard; original cleanup20sec timeout retained, no aggregatePASS for failed run. Final2FAIL6.23s after result selection; late2FAIL2.64s distinct current policy loss during final grant query, each source retained before fix."
     },
     "green": {
-      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "sha": "dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be",
       "command": "ActualPG33 final3newfiles and independently installed strict/current minimalPG33 ownership consumer",
       "evidence_url": "planning/task-evidence/T013-trial-ownership/late-scope-green.log; consumer-install-types.log; late-scope-consumer-types.log; source-hashes.json; consumer-source-hashes.json",
       "result": "PASS",
       "observed": "Final82PASS75.57s/3files after actual final-authority and last-grant-query RED/fences; own installed current42files/types/actualPG33 immutablefinding/correction/history/replayafterwithdrawal-writeoff/revocation/boundsPASS.143source/42consumer exact."
     },
     "refactor": {
-      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "sha": "dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be",
       "command": "Actual different-evaluator CAS/lock-wait expiry/current-policy/rawSQL/audit/immutable projection and meaningful affected+mandatory gates",
       "evidence_url": "planning/task-evidence/T013-trial-ownership/final-affected.log; affected-pure.log; planning.log; generate33.log; typecheck.log; final-typecheck.log; production-build.log; schema-validate.log; lint.log; final-affected-lint.log; audit.log; review.json; cleanup.json; late-scope-code-check-driver.log; late-scope-lint.log; late-scope-green.log",
       "result": "PASS",
