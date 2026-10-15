@@ -1,0 +1,22 @@
+{
+  "name": "/raid-t013-review-policies-auto-20261015",
+  "id": "dc0cff9b44cb2cb99540b835187b208da01755eae6bc3d7dc2d7d4c371834152",
+  "task_label": "T013-review-policies",
+  "actual_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T19:52:31.777246113Z",
+    "FinishedAt": "2026-10-15T19:54:20.856798314Z"
+  },
+  "actual_normal_failure_runs_stop0": true,
+  "runner_signal_evidence": "Exact renamed T013D2 signal-safe control; original SIGTERM RED/GREEN retained there, no new signal test claimed",
+  "no_owned_server_or_preview": true,
+  "unrelated_resources_preserved": true
+}

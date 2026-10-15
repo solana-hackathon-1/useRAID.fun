@@ -39,5 +39,19 @@
   "ended_at": "2026-10-15T18:53:05.372192+00:00",
   "elapsed_seconds": 1945.396,
   "completion_validator": "34expected NOT VERIFIED only=27T013 criteria+7hosted/no metadataerrors; independent/UAT/business/release/full55 remainopen",
-  "implementation_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4"
+  "implementation_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
+  "merge_sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+  "source_pin": "0f01eccccde1c7d7fd41305f71a892cb42bcabf2",
+  "hosted": {
+    "observed_at": "2026-10-15T18:58:51.027135+00:00",
+    "merge": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+    "source_pin": "0f01eccccde1c7d7fd41305f71a892cb42bcabf2",
+    "actual_merge_tree_matches_pin": true,
+    "run": 38789813134,
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38789813134",
+    "result": "FAIL before0steps; official account payments/spending limit annotation",
+    "manual_workflow": "originaldisabled_manually/APIverified/no enablement or restoration obligation",
+    "deployment": "NOT VERIFIED; no new image produced by this failed run",
+    "no_unchanged_redispatch": true
+  }
 }

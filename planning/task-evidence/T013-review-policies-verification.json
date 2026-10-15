@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D3 actual immutable approved policy source/current canonical scope/admin history/evaluator observation and exact decision lookup only",
+  "status": "SELF-EVALUATED bounded source; fullT013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-15-T013-review-policies.md",
+  "migration_rollback": "Additive32 policy family/version FK/history/audit model, no policy content/approval/evaluator/rank seed/backfill. Disable new publication and consuming reads/decisions as appropriate; preserve original history/withdrawal/receipts/audits. Publicationoff alone does not withdraw an existing source. No destructive rollback.",
+  "dependency_evidence": "Actual immutable original definition/rubric and current X-admin scoped policy publication with canonical one family per definitionVersion/purpose. Actual D1 scoped evaluator/current own session/assignment and same held current-policy scope mutex, private audit before guidance. Own installed real minimalPG consumer declares every dependency.",
+  "open_decisions": "O09 numeric calibration/O11 retention/staffed operating approval remainOPEN; APPROVED platform data is not external terms/calibration/release signoff, no content or defaults seeded. Actual ownership/assessment/fraud/projection/APIUI and independent acceptance next.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "ad032016e629de562a06d9edc238f9241cd1280a",
+  "candidate_sha": "ad032016e629de562a06d9edc238f9241cd1280a",
+  "source_identity": "Implementation ad032016e629de562a06d9edc238f9241cd1280a; exact124source/40ownconsumer manifest matches own verified build/installation; subsequent pin metadata-only",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinned PostgreSQL16; own generated32 build/current strict/production/independent23package24audited0vuln consumer; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded actual canonical approved-policy source author evidence only. Actual current X-admin/scoped publication, immutable original definition-purpose family/current pointer, current scoped evaluator/expected exact version, private audit before guidance. No arbitrary policy label/real policy seed/numeric calibration/ownership/rank/grant/capacity/money/provider/UI effect. Full numbered criterion and independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json; docs/raid-practice-review-policies.md; docs/tasks/2026-10-15-T013-review-policies.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
+      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
+      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
+      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
+      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
+      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
+      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
+      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "command": "ActualPG31 core against typed policy stubs before implementation; separate Root/event; corrected malformed fixtures; current observer and scope-wait expiry regressions before additions/fix",
+      "evidence_url": "planning/task-evidence/T013-review-policies/red-initial.log; red-initial-source.tar.gz; malformed-red.log; host-boundary-red.log; red-source.tar.gz; red-source-hashes.json; observer-red.log; observer-red-source.tar.gz; expiry-red.log; expiry-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "No fabricated policy labels; actual approved current canonical source with live actual scoped actor, private audit-before-guidance and immutable receipt/history; current assignment again after waits.",
+      "observed_failure": "40behaviorFAIL15.02s+5host/eventFAIL; malformed literal-backslash fixtures corrected before productioncode with8real malformedFAIL901ms separately. Observer1FAIL1.40s; expiredassignment after policy wait callback1vs0 FAIL3.74s (oldcode delivered no guidance)."
+    },
+    "green": {
+      "sha": "ad032016e629de562a06d9edc238f9241cd1280a",
+      "command": "ActualPG32 final3newfiles and independently installed strict/current real minimalPG32 consumer",
+      "evidence_url": "planning/task-evidence/T013-review-policies/final-db.log; consumer-install-types.log; consumer.log; source-hashes.json; consumer-source-hashes.json",
+      "result": "PASS",
+      "observed": "82PASS40.70s final source (earlier45/47/82 retained); own23installed24audited0vuln strict/current realPG/current observation/exact version/canonical scope/withdraw-reapprove/history/replay/revocation/localboundsPASS; all124source/40consumer files exact, everyfixturestop0."
+    },
+    "refactor": {
+      "sha": "ad032016e629de562a06d9edc238f9241cd1280a",
+      "command": "Canonical immutable source and held scoped policy resolution after waits; rawSQL/control/provenance/concurrency/audit, meaningful affected and mandatory gates",
+      "evidence_url": "planning/task-evidence/T013-review-policies/final-db.log; affected-pure.log; planning.log; generate32.log; typecheck.log; final-typecheck.log; production-build.log; schema-validate.log; lint.log; final-affected-lint.log; audit.log; review.json",
+      "result": "PASS",
+      "observed": "404fresh selectedPASS=82new+177affectedSQL+144pure+1external;55planningPASS52.124s. Own generation32/current strict/productionWebpack/schema/audit/consumerPASS, finalaffected0warnings/25old retained; exact unchanged route typegen reused. Fresh wholeformatPASS; timedSELF 1213.247s; fullpacket34expectedNOT only; no fullT013/independent/hosted acceptance."
+    }
+  }
+}

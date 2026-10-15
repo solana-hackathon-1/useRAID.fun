@@ -11,8 +11,8 @@
   "open_decisions": "O09 calibration and O11 retention/approved operating model remainOPEN; authorized read does not confirm ownership or assess rank. Actual decision stores/projections/APIs/UI/independent acceptance separate.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
   "code_source_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
-  "candidate_sha": "cb8e84315e0593f753ab829b5f9df09a64789ec4",
-  "source_identity": "Implementation cb8e84315e0593f753ab829b5f9df09a64789ec4, all118current relevant source/38own consumer files exact in verified own build/installation; original phase RED sources and runner lifecycle regression retained. Metadata-only pin follows.",
+  "candidate_sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+  "source_identity": "Implementation cb8e84315e0593f753ab829b5f9df09a64789ec4, all118current relevant source/38own consumer files exact in verified own build/installation; original phase RED sources and runner lifecycle regression retained. Metadata-only pin follows. Actual main f29e821c00b56fca0733b0dcc3d46b5291b93833 full tree equals pin 0f01eccccde1c7d7fd41305f71a892cb42bcabf2, all118source/38consumer files exact.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinned PostgreSQL16; own generated31 deps/current strict/build/independently installed23packages24audited0vuln consumer; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -181,45 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
-      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-reads/hosted-staging-result.json",
+      "observed": "Exact main Staging38789813134 failed before0steps with official billing/payment-limit annotation; seven mandatory hosted checks NOT VERIFIED. Manual originallydisabled/APIverified/no restore/no unchanged redispatch. Local gates separate."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
-      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-reads/hosted-staging-result.json",
+      "observed": "Exact main Staging38789813134 failed before0steps with official billing/payment-limit annotation; seven mandatory hosted checks NOT VERIFIED. Manual originallydisabled/APIverified/no restore/no unchanged redispatch. Local gates separate."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
-      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-reads/hosted-staging-result.json",
+      "observed": "Exact main Staging38789813134 failed before0steps with official billing/payment-limit annotation; seven mandatory hosted checks NOT VERIFIED. Manual originallydisabled/APIverified/no restore/no unchanged redispatch. Local gates separate."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
-      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-reads/hosted-staging-result.json",
+      "observed": "Exact main Staging38789813134 failed before0steps with official billing/payment-limit annotation; seven mandatory hosted checks NOT VERIFIED. Manual originallydisabled/APIverified/no restore/no unchanged redispatch. Local gates separate."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
-      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-reads/hosted-staging-result.json",
+      "observed": "Exact main Staging38789813134 failed before0steps with official billing/payment-limit annotation; seven mandatory hosted checks NOT VERIFIED. Manual originallydisabled/APIverified/no restore/no unchanged redispatch. Local gates separate."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
-      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-reads/hosted-staging-result.json",
+      "observed": "Exact main Staging38789813134 failed before0steps with official billing/payment-limit annotation; seven mandatory hosted checks NOT VERIFIED. Manual originallydisabled/APIverified/no restore/no unchanged redispatch. Local gates separate."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": "40fc2797db467aa86e24a27a043aa0da08391854",
-      "evidence_url": "planning/task-evidence/T013-review-reads/review.json",
-      "observed": "Future exact main hosted result pending; current40fc Staging38782945568 billing before0steps/manualoriginaldisabled/no restore/no unchanged redispatch. Local checks separate."
+      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+      "evidence_url": "planning/task-evidence/T013-review-reads/hosted-staging-result.json",
+      "observed": "Exact main Staging38789813134 failed before0steps with official billing/payment-limit annotation; seven mandatory hosted checks NOT VERIFIED. Manual originallydisabled/APIverified/no restore/no unchanged redispatch. Local gates separate."
     }
   },
   "tdd": {
@@ -245,5 +245,17 @@
       "result": "PASS",
       "observed": "330unique selected (49new+136affected+144exact reusedpure+1external);55planning42.551s. Canonical28.3 audit correction has genuine2RED before implementation. Current audit strict/productionWebpack/own consumer/lint0newwarnings/auditpolicyPASS;31DDL/Prisma/generate/typegen exactly reused. Final freshwholePASS/34expectedNOT-only packet/timedSELF complete. No fullT013/independent/hosted acceptance."
     }
+  },
+  "hosted_staging": {
+    "observed_at": "2026-10-15T18:58:51.027135+00:00",
+    "merge": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
+    "source_pin": "0f01eccccde1c7d7fd41305f71a892cb42bcabf2",
+    "actual_merge_tree_matches_pin": true,
+    "run": 38789813134,
+    "url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/38789813134",
+    "result": "FAIL before0steps; official account payments/spending limit annotation",
+    "manual_workflow": "originaldisabled_manually/APIverified/no enablement or restoration obligation",
+    "deployment": "NOT VERIFIED; no new image produced by this failed run",
+    "no_unchanged_redispatch": true
   }
 }
