@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual immutable catalog/current X ADMIN/live Session/actual dynamic scoped allowlist and receipt ports. Independently copied own npmci minimal PG host with canonical SQL and alternate local policy PASS; actual publisher appointments/content provenance/evaluator authority/attempt store remain dependencies.",
   "open_decisions": "O09 numeric scoring/calibration, O11 retention and actual approved operating/evaluator/provider policy remain unresolved; no production authority/policy seed.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
-  "candidate_sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
-  "source_identity": "Base 47e722cc7f28a2b7d8a74e99b75090bb8ddfd095 plus exact uncommitted implementation inputs in source-hashes.json; implementation SHA will be pinned after authorized commit. RED source archives contain uncommitted tests/stubs and pre-fix SQL.",
+  "code_source_sha": "769aebb38920b3a682a97a639c853b2d7946d820",
+  "candidate_sha": "769aebb38920b3a682a97a639c853b2d7946d820",
+  "source_identity": "Implementation 769aebb38920b3a682a97a639c853b2d7946d820 contains exact verified code/test/config/schema/consumer/dependency bytes; following pin changes metadata only. Original RED/failing sources remain separately archived.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/PostgreSQL16 pinned image; dedicated own generated28 build deps; own npmci minimal PG consumer23packages24audit0vulnerabilities; synthetic fixtures only",
   "criteria": {
     "T013-C01": {
@@ -181,43 +181,43 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
       "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
       "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
       "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
       "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
       "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
       "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "evidence_url": "planning/task-evidence/T013-practice-storage/review.json",
       "observed": "Exact future merged-main hosted result pending; local evidence is separate. Last47e Staging38612782288 billing before0steps; original manualChecks disabled; no unchanged redispatch."
     }
@@ -232,14 +232,14 @@
       "observed_failure": "30genuineRED against stubs/absent event, later7nullable SQL failures with12controlsPASS before fix; original source archives supply uncommitted tests not in baseSHA"
     },
     "green": {
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "command": "Actual ownedPG28 new3files; separately copied own npmci types/minimal PostgreSQL consumer",
       "evidence_url": "planning/task-evidence/T013-practice-storage/green-final.log; consumer-install-types.log; consumer-runtime.log; source-hashes.json; consumer-source-hashes.json",
       "result": "PASS",
       "observed": "56newPASS12.61s/0unhandled; own23installed24audit0vuln strict/types/actualPG runtime and alternate current policyPASS; all owned fixture stop0"
     },
     "refactor": {
-      "sha": "47e722cc7f28a2b7d8a74e99b75090bb8ddfd095",
+      "sha": "769aebb38920b3a682a97a639c853b2d7946d820",
       "command": "Concurrent rejection handler fix/strict nullableSQL after genuineRED; affected120SQL+192pure+1receipt consumer,55planning, generated28 Root typegen/typecheck/productionbuild/lint/audit/freshwholeformat",
       "evidence_url": "planning/task-evidence/T013-practice-storage/initial-green-errors.log; sql-null-red.log; affected-db.log; affected-pure.log; receipt-consumer.log; planning.log; typecheck.log; production-build.log; review.json",
       "result": "PASS",

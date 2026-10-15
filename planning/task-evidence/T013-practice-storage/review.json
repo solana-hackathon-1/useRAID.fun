@@ -56,5 +56,6 @@
   ],
   "ended_at": "2026-10-15T07:16:17.511951+00:00",
   "elapsed_seconds": 602.872,
-  "completion_validator": "Expected34NOT VERIFIED (27fullcriteria+7hosted) only; no metadata errors. No self-approved exclusions."
+  "completion_validator": "Expected34NOT VERIFIED (27fullcriteria+7hosted) only; no metadata errors. No self-approved exclusions.",
+  "implementation_commit": "769aebb38920b3a682a97a639c853b2d7946d820"
 }
