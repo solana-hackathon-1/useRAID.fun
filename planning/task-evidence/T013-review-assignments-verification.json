@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual immutable private submissions/starts/definitions and canonical HUMAN; current own User/Session X-admin management plus scoped policy; actual unrestricted evaluator current own session for use; sorted User locks/assignment mutex/database clock; independently installed minimal PG consumer.",
   "open_decisions": "O09 calibration/scoring and O11 retention/approved staffed operating model remainOPEN; no actual evaluation/private answer reader/ownership confirmation/policy seed.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
-  "candidate_sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
-  "source_identity": "Base3082ada plus exact uncommitted source-hashes.json; original genuine RED archives before implementation. Implementation will be pinned after commit.",
+  "code_source_sha": "6f7f192e3a76be976866fab238673563dfb65fd8",
+  "candidate_sha": "6f7f192e3a76be976866fab238673563dfb65fd8",
+  "source_identity": "Implementation 6f7f192e3a76be976866fab238673563dfb65fd8; exact expanded source-hashes manifest traverses canonical example directory symlinks; original RED archives retained, metadata-only pin follows.",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinned PostgreSQL16; own generated31 build deps and independently installed23package/24audited0vuln consumer; synthetic only",
   "criteria": {
     "T013-C01": {
@@ -232,14 +232,14 @@
       "observed_failure": "35behaviorFAIL10.75s +3hostFAIL before implementation. Separate auth-before-target1FAIL1.50s and expiry-policy1FAIL1.22s. Initial parser failure ran no tests and is separately retained; first actual21FAIL17PASS SQL ambiguity also retained with exact source."
     },
     "green": {
-      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "sha": "6f7f192e3a76be976866fab238673563dfb65fd8",
       "command": "ActualPG31 full new DB/boundary/host checks and independently own installed strict current minimalPG consuming host",
       "evidence_url": "planning/task-evidence/T013-review-assignments/final-green.log; consumer-install-types.log; consumer-final-types.log; consumer-final.log; source-hashes.json; consumer-source-hashes.json",
       "result": "PASS",
-      "observed": "64PASS35.76s; own23installed24audited0vuln strict/current actualPG/duration/scope/revocation/original replay/boundsPASS. All103source/27consumer files match verified own build/installation; owned fixturestop0."
+      "observed": "64PASS35.76s; own23installed24audited0vuln strict/current actualPG/duration/scope/revocation/original replay/boundsPASS. All113source/37consumer files match verified own build/installation; owned fixturestop0."
     },
     "refactor": {
-      "sha": "3082ada3d2f26c6e8b5c2753fc29c74af26a0e56",
+      "sha": "6f7f192e3a76be976866fab238673563dfb65fd8",
       "command": "Sorted User/current Session/assignment locks, strict current scope/duration policy, immutable issue/revoke receipts and independently installed host; affected and mandatory gates",
       "evidence_url": "planning/task-evidence/T013-review-assignments/affected-db.log; affected-pure.log; planning.log; final-typecheck.log; final-production-build.log; lint.log; final-affected-lint.log; audit.log; review.json",
       "result": "PASS",
