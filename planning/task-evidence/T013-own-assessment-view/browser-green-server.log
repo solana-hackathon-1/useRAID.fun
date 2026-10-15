@@ -1,0 +1,160 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3025
+- Network:       http://127.0.0.1:3025
+✓ Ready in 463ms
+✓ Running next.config.ts took 41ms
+
+○ Compiling /raider/skills/[skillId] ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1581ms (next.js: 921ms, application-code: 660ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1567ms (next.js: 20ms, application-code: 1547ms)
+ GET /api/v1/skill-assessments/frontend 200 in 5.9s (next.js: 5.2s, application-code: 743ms)
+ GET /api/v1/skill-assessments/frontend 200 in 168ms (next.js: 34ms, application-code: 135ms)
+ GET /api/v1/skill-assessments/frontend 200 in 132ms (next.js: 29ms, application-code: 103ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1356ms (next.js: 102ms, application-code: 1255ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+      <RedirectBoundary>
+        <RedirectErrorBoundary router={{...}}>
+          <InnerLayoutRouter url="/raider/sk..." tree={[...]} params={{skillId:"f..."}} cacheNode={{rsc:{...}, ...}} ...>
+            <SegmentViewNode type="page" pagePath="raider/ski...">
+              <SegmentTrieNode>
+              <SkillClaimPage>
+                <div className="studio">
+                  <h1>
+                  <OwnSkillAssessmentPanel>
+                  <SkillClaimForm state={{version:"v1", ...}} catalog={{version:"v1", ...}} participantId="25d2a71a-9...">
+                    <div className="orientatio...">
+                      <section className="orientatio...">
+                        <h2>
+                        <p>
+                        <p>
+                        <p>
+                        <p>
+                        <noscript>
+                        <form onSubmit={function submit} noValidate={true} aria-busy={true}>
+                          <fieldset className="orientatio..." disabled={true}>
+                            <legend>
+                            <label>
+                              <input
+                                aria-label="Self-reported experience"
+                                maxLength={200}
+                                value=""
+                                onChange={function onChange}
+-                               style={{caret-color:"transparent"}}
+                              >
+                              ...
+                            <label>
+                              <textarea
+                                aria-label="Private proof URLs"
+                                rows={5}
+                                maxLength={10244}
+                                value=""
+                                onChange={function onChange}
+-                               style={{caret-color:"transparent"}}
+                              >
+                              ...
+                          ...
+                      ...
+                  ...
+            ...
+          ...
+
+ GET /raider/skills/frontend 200 in 1313ms (next.js: 38ms, application-code: 1275ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /api/v1/skill-assessments/frontend 401 in 51ms (next.js: 34ms, application-code: 17ms)
+ GET /raider/skills/frontend 200 in 715ms (next.js: 29ms, application-code: 686ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1021ms (next.js: 26ms, application-code: 994ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 651ms (next.js: 20ms, application-code: 631ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /api/v1/skill-assessments/frontend 200 in 164ms (next.js: 43ms, application-code: 120ms)
+ GET /api/v1/skill-assessments/frontend 200 in 143ms (next.js: 35ms, application-code: 108ms)
+ GET /api/v1/skill-assessments/frontend 200 in 136ms (next.js: 28ms, application-code: 108ms)
+ GET /raider/skills/frontend 200 in 1297ms (next.js: 33ms, application-code: 1264ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+      <RedirectBoundary>
+        <RedirectErrorBoundary router={{...}}>
+          <InnerLayoutRouter url="/raider/sk..." tree={[...]} params={{skillId:"f..."}} cacheNode={{rsc:{...}, ...}} ...>
+            <SegmentViewNode type="page" pagePath="raider/ski...">
+              <SegmentTrieNode>
+              <SkillClaimPage>
+                <div className="studio">
+                  <h1>
+                  <OwnSkillAssessmentPanel>
+                  <SkillClaimForm state={{version:"v1", ...}} catalog={{version:"v1", ...}} participantId="c96a1d92-d...">
+                    <div className="orientatio...">
+                      <section className="orientatio...">
+                        <h2>
+                        <p>
+                        <p>
+                        <p>
+                        <p>
+                        <noscript>
+                        <form onSubmit={function submit} noValidate={true} aria-busy={true}>
+                          <fieldset className="orientatio..." disabled={true}>
+                            <legend>
+                            <label>
+                              <input
+                                aria-label="Self-reported experience"
+                                maxLength={200}
+                                value=""
+                                onChange={function onChange}
+-                               style={{caret-color:"transparent"}}
+                              >
+                              ...
+                            <label>
+                              <textarea
+                                aria-label="Private proof URLs"
+                                rows={5}
+                                maxLength={10244}
+                                value=""
+                                onChange={function onChange}
+-                               style={{caret-color:"transparent"}}
+                              >
+                              ...
+                          ...
+                      ...
+                  ...
+            ...
+          ...
+
+ GET /raider/skills/frontend 200 in 774ms (next.js: 27ms, application-code: 747ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /api/v1/skill-assessments/frontend 401 in 49ms (next.js: 34ms, application-code: 15ms)
+ GET /raider/skills/frontend 200 in 1021ms (next.js: 21ms, application-code: 1000ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 737ms (next.js: 27ms, application-code: 710ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[?25h

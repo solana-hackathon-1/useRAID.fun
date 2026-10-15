@@ -1,0 +1,46 @@
+{
+  "observed_at": "2026-10-15T23:37:21.345548+00:00",
+  "name": "/raid-t013-own-assessment-view-auto-20261015",
+  "id": "f8003eaec73fe4360b35add7a22ad6d801ca5a9ca04b26ad5a1821ce12663920",
+  "task_label": "T013-own-assessment-view",
+  "actual_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T23:32:06.476081411Z",
+    "FinishedAt": "2026-10-15T23:33:15.667019904Z"
+  },
+  "all_actual_normal_failure_runs_stop0": true,
+  "no_owned_server_or_preview": true,
+  "actual_interruption_RED": "outer143/databaseStopped but separately spawnedNext portopen, verifiedowned-only recovered",
+  "actual_interruption_GREEN": "outer143/Nextportclosed/databaseStopped after signal-safe group cleanup",
+  "dev_managed_lifecycle": {
+    "observed_at": "2026-10-15T23:23:05.318672+00:00",
+    "mode": "CI-compatible Playwright-owned Next development server, actual syntheticPG35, Chrome147/Playwright1.63",
+    "source": "/tmp/raid-t008-build-source-2xavo66l",
+    "url": "http://127.0.0.1:3025/raider/skills/frontend",
+    "owned_port_closed": true,
+    "test_exit": 0
+  },
+  "production_lifecycle": {
+    "started_at": "2026-10-15T23:32:45.954021+00:00",
+    "source": "/tmp/raid-t008-build-source-2xavo66l",
+    "base": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70+currentWIP",
+    "url": "http://127.0.0.1:3025/raider/skills/frontend",
+    "mode": "Next16.3.8 production build verification/syntheticPG35/realownSessions",
+    "access": "Verified loopback in this environment; remote forwarding unavailable/unverified",
+    "production_build_separate": true,
+    "pid": 263793,
+    "pgid": 263793,
+    "ended_at": "2026-10-15T23:33:05.851430+00:00",
+    "server_exit_code": 143,
+    "owned_port_closed": true
+  },
+  "unrelated_resources_preserved": true
+}

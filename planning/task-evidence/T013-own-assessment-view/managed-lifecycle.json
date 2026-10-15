@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-10-15T23:23:05.318672+00:00",
+  "mode": "CI-compatible Playwright-owned Next development server, actual syntheticPG35, Chrome147/Playwright1.63",
+  "source": "/tmp/raid-t008-build-source-2xavo66l",
+  "url": "http://127.0.0.1:3025/raider/skills/frontend",
+  "owned_port_closed": true,
+  "test_exit": 0
+}

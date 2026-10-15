@@ -1,0 +1,29 @@
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/own-skill-assessment-panel.tsx
+  53:5  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/srv/projects/useRAIDfun/useRAID-fun/src/components/own-skill-assessment-panel.tsx:53:5
+  51 |   useEffect(() => {
+  52 |     controller.current?.abort();
+> 53 |     setView(checked(initialState, skillId, skillDomain, taxonomyId));
+     |     ^^^^^^^ Avoid calling setState() directly within an effect
+  54 |     setBusy(false);
+  55 |     setMessage('');
+  56 |     return () => controller.current?.abort();  react-hooks/set-state-in-effect
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/helpers/own-assessment-fixture.ts
+   10:3  warning  'readPracticeTrialSubmission' is defined but never used  @typescript-eslint/no-unused-vars
+  165:7  warning  'revoke' is assigned a value but never used              @typescript-eslint/no-unused-vars
+  313:7  warning  'readAssessment' is assigned a value but never used      @typescript-eslint/no-unused-vars
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/own-skill-assessment-db.test.ts
+   13:3  warning  'readPracticeTrialSubmission' is defined but never used  @typescript-eslint/no-unused-vars
+  169:7  warning  'revoke' is assigned a value but never used              @typescript-eslint/no-unused-vars
+
+✖ 6 problems (0 errors, 6 warnings)

@@ -1,0 +1,1 @@
+../../../src/skills/own-assessment-contracts.ts

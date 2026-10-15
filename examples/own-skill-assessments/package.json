@@ -1,0 +1,27 @@
+{
+  "name": "raid-own-skill-assessment-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "migrate": "tsx migrate.ts",
+    "start": "tsx host.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "pg": "8.23.1",
+    "zod": "4.6.5",
+    "bs58": "6.0.0",
+    "tsx": "4.23.15",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "22.20.4",
+    "@types/react": "19.3.0"
+  }
+}

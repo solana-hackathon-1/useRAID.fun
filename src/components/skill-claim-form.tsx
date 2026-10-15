@@ -241,7 +241,7 @@ export function SkillClaimForm({
     <div className="orientation-layout">
       <section className="orientation-card">
         <h2>Your private claim</h2>
-        <p>Self-reported; skill has not been assessed.</p>
+        <p>Self-reported claim; this claim does not verify a rank.</p>
         <p>Saving does not verify a rank or grant work, code access or another active Raid.</p>
         {!available && (
           <p role="status">

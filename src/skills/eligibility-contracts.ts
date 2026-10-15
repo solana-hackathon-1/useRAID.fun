@@ -26,6 +26,11 @@ export const SkillEvidenceFactSchema = z.discriminatedUnion('kind', [
 ]);
 const Observation = z.discriminatedUnion('status', [
   z.strictObject({
+    status: z.literal('AT_OBSERVATION'),
+    observedAt: UtcTimestamp,
+    skills: z.array(SkillEvidenceFactSchema).max(1000),
+  }),
+  z.strictObject({
     status: z.literal('CURRENT'),
     observedAt: UtcTimestamp,
     validUntil: UtcTimestamp,
@@ -65,7 +70,8 @@ export const SkillEligibilityContextSchema = z
       const observed = Date.parse(evidence.observedAt);
       if (observed > now) invalid('Future observation.');
       if (evidence.status === 'STALE') continue;
-      if (Date.parse(evidence.validUntil) < observed) invalid('Expiry precedes observation.');
+      if (evidence.status === 'CURRENT' && Date.parse(evidence.validUntil) < observed)
+        invalid('Expiry precedes observation.');
       const current = new Set<string>();
       for (const fact of evidence.skills) {
         if (current.has(fact.skillId)) invalid('Ambiguous current evidence.');

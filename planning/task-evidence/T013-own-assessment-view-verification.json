@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D7 actual own current skill-assessment summary/private HTTP/React view and actual point-in-time eligibility source; no admission grant",
+  "status": "SELF-EVALUATED bounded source gates; fullT013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-16-T013-own-assessment-view.md",
+  "migration_rollback": "No new migration or business state/backfill. Depends on actual35DDL. Disable own reads/dependent UI; preserve original assessments/decisions/history/receipts/audits. No destructive rollback.",
+  "dependency_evidence": "Actual own User/live Session/canonical HUMAN/current published taxonomy and immutable canonical assessment pointer/DB clock; audited bounded read under held12022; internal actual eligibility facts stripped by Root. Own independently installed pg/React/HTTP minimalPG35 consumer.",
+  "open_decisions": "O09/O11/actual operating-notice-appeal-retention/independent-UAT-business-release remainOPEN/NOT VERIFIED. AT_OBSERVATION exact instant introduces no invented freshness TTL; existing CURRENT expiry unchanged. One-caseMANUALE-A source capability only; S/automation unsupported. Trial/reviewer APIUI next.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+  "candidate_sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+  "source_identity": "Base0e6 plus exact612relevant/52consumer/all549build code files/current ownbuild+installed host, no stale files; implementationSHA will be pinned",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11/Zod4.6.5/actualPG35 pinnedPG16; Playwright1.63 explicitChrome147 desktop/mobile emulation; own28packages29audited0vuln; development preview and production-build browser checks distinct; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded D7 author source evidence only: actual ownSession/canonicalHUMAN/namespace/domain/current pointer/DBtime; private bounded view with audit-before-fields and current scope after waits; actual point-in-time eligibility without invented TTL, no stale/current claim token; current status/refresh/error UI and protected no-store API. No rank, permission, capacity, account, money/provider effect. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json; docs/raid-own-skill-assessments.md; docs/tasks/2026-10-16-T013-own-assessment-view.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "command": "ActualPG35 own-observer placeholder; explicit instant-contract/HTTP-host/browser failures before corresponding implementation; nested preview interruption proof",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/red.log; red-source.tar.gz; instant-red.log; instant-red-source.tar.gz; http-red.log; http-red-source.tar.gz; browser-red.log; browser-red-source.tar.gz; interruption-red.json; browser-run-before-signal-fix.py; claim-consumer-red.log; claim-consumer-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "Only actual owned current committed facts/current scope can supply bounded private summary and exact-instant eligibility; no client claim/history/foreign source becomes verified; no private field/audit/source/state leak, stale data after authority loss or owned resource left running.",
+      "observed_failure": "9coreFAIL14.72s;4instantFAIL2controlsPASS0.472s;13HTTPFAIL+Rootmissing suite;2realbrowser UI/copy failures before panel/copy. Nested actualSIGTERM outer143/DBstopped/Nextportopen, verifiedown recovery then actualGREEN. Old claim-form consumer1FAIL1control1.15s after copy update, same-change corrected assertion. Bootstrap missing browser is separate environment failure."
+    },
+    "green": {
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "command": "Current actualPG35 owned observer/HTTP-host + actualdev/prod browser and standalone minimalPG35 eligibility/HTTP/React consuming host",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/final-affected.log; managed-browser.log; final-pure.log; consumer-final-types.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json",
+      "result": "PASS",
+      "observed": "Final35PASS32.98s/current3files;162pure5.21s+1external1.57s=198freshselected; currentdev10PASS1.4m+production2PASS18.2s; currentown52-file typed/runtime minimalPG35/HTTP/React consuming hostPASS; all owned resourcesstop0/portclosed"
+    },
+    "refactor": {
+      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
+      "command": "Meaningful source/privacy/scope/clock/realwaits/qualification/nonqualification/claim-only/coherence + mandatory current typegen/types/production/planning/lint/audit/format/source proof and cleanup",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/final-affected.log; managed-browser.log; final-pure.log; planning.log; typegen.log; typecheck.log; production-build.log; clean-lint.log; audit.log; review.json; cleanup.json; fixture-import-cleanup.json; source-hashes.json; consumer-source-hashes.json; build-source-probe.json; verified-whole-format.log; final-typecheck.log",
+      "result": "PASS",
+      "observed": "198freshselectedPASS=35DB/HTTP-host32.98s+162pure/oldSSR5.21s+1external1.57s;10dev+2prod18.2s browser (dev2retention refresh29.4s not doublecounted);55planning49.236s. Current typegen/strict/productionWebpack/consumer52/audit/lint0/wholeformat/source612-full549PASS; exact generation35/25oldwholelint baseline reused; final config-only strictPASS. TimedSELF1017.983s; no fullT013/independent/hosted acceptance."
+    }
+  }
+}

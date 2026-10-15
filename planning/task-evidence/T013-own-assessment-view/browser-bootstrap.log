@@ -1,0 +1,148 @@
+raid-t013-own-assessment-view-auto-20261015
+OWNED DATABASE: raid-t013-own-assessment-view-auto-20261015 loopback port 32960
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32960"
+
+35 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+Applying migration `202610150005_practice_review_policies`
+Applying migration `202610160001_practice_trial_ownership`
+Applying migration `202610160002_practice_trial_assessments`
+Applying migration `202610160003_assessment_decisions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+  └─ 202610150005_practice_review_policies/
+    └─ migration.sql
+  └─ 202610160001_practice_trial_ownership/
+    └─ migration.sql
+  └─ 202610160002_practice_trial_assessments/
+    └─ migration.sql
+  └─ 202610160003_assessment_decisions/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+OWNED VERIFIED PREVIEW: {"started_at": "2026-10-15T22:48:34.175105+00:00", "source": "/tmp/raid-t008-build-source-2xavo66l", "base": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70+currentWIP", "url": "http://127.0.0.1:3025/raider/skills/frontend", "mode": "Next16.3.8 development/webpack/actual syntheticPG35/real own sessions", "access": "Verified loopback in this environment; remote forwarding unavailable/unverified", "production_build_separate": true, "pid": 145688, "pgid": 145688}
+
+Running 1 test using 1 worker
+
+(node:146506) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/browser-own-assessments/own-assessments.spec.ts:10:1 › owner sees actual current assessment and refreshes after real recheck and revocation (4ms)
+
+
+  1) [desktop] › tests/browser-own-assessments/own-assessments.spec.ts:10:1 › owner sees actual current assessment and refreshes after real recheck and revocation
+
+    Error: browserType.launch: Executable doesn't exist at /home/rpandox/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+
+    Error Context: test-results/own-assessments/own-assessments-owner-sees-83dce-real-recheck-and-revocation-desktop/error-context.md
+
+    Error Context: test-results/own-assessments/own-assessments-owner-sees-83dce-real-recheck-and-revocation-desktop/error-context.md
+
+  1 failed
+    [desktop] › tests/browser-own-assessments/own-assessments.spec.ts:10:1 › owner sees actual current assessment and refreshes after real recheck and revocation
+OWNED PREVIEW CLEANUP: {"pid": 145688, "owned_port_closed": true, "server_exit": 0}
+OWNED CLEANUP: 0 raid-t013-own-assessment-view-auto-20261015
+OWNED FINAL STATE: {"name": "/raid-t013-own-assessment-view-auto-20261015", "id": "f8003eaec73fe4360b35add7a22ad6d801ca5a9ca04b26ad5a1821ce12663920", "task_label": "T013-own-assessment-view", "state": {"Status": "exited", "Running": false, "Paused": false, "Restarting": false, "OOMKilled": false, "Dead": false, "Pid": 0, "ExitCode": 0, "Error": "", "StartedAt": "2026-10-15T22:48:29.421875809Z", "FinishedAt": "2026-10-15T22:48:56.440347296Z"}}

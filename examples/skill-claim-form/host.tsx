@@ -45,7 +45,7 @@ const api: SkillClaimTransport = {
 };
 const props = { state, catalog, participantId: 'synthetic-owner', api };
 const html = renderToStaticMarkup(createElement(SkillClaimForm, props));
-assert(html.includes('Self-reported; skill has not been assessed.'));
+assert(html.includes('Self-reported claim; this claim does not verify a rank.'));
 assert(html.includes('Self-reported experience'));
 assert(html.includes('Private proof URLs'));
 assert(html.includes('Save private claim'));

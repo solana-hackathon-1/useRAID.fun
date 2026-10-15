@@ -1,0 +1,1 @@
+../../../src/components/own-skill-assessment-panel.tsx

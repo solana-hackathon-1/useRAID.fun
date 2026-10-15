@@ -1,0 +1,14 @@
+
+> raid-own-skill-assessment-example@1.0.0 typecheck
+> tsc --noEmit
+
+skills/own-assessment-storage.ts(142,17): error TS2322: Type 'Promise<{ resultRef: string; events: { type: string; aggregateId: string; aggregateVersion: number; payload: { skillAssessmentVersionId: string; } | { skillAssessmentVersionId?: undefined; }; publish: false; }[]; }>' is not assignable to type 'Promise<CommandOutcome>'.
+  Type '{ resultRef: string; events: { type: string; aggregateId: string; aggregateVersion: number; payload: { skillAssessmentVersionId: string; } | { skillAssessmentVersionId?: undefined; }; publish: false; }[]; }' is not assignable to type 'CommandOutcome'.
+    Types of property 'events' are incompatible.
+      Type '{ type: string; aggregateId: string; aggregateVersion: number; payload: { skillAssessmentVersionId: string; } | { skillAssessmentVersionId?: undefined; }; publish: false; }[]' is not assignable to type 'readonly DomainEventInput[]'.
+        Type '{ type: string; aggregateId: string; aggregateVersion: number; payload: { skillAssessmentVersionId: string; } | { skillAssessmentVersionId?: undefined; }; publish: false; }' is not assignable to type 'DomainEventInput'.
+          Types of property 'payload' are incompatible.
+            Type '{ skillAssessmentVersionId: string; } | { skillAssessmentVersionId?: undefined; }' is not assignable to type 'Readonly<Record<string, string>> | undefined'.
+              Type '{ skillAssessmentVersionId?: undefined; }' is not assignable to type 'Readonly<Record<string, string>>'.
+                Property 'skillAssessmentVersionId' is incompatible with index signature.
+                  Type 'undefined' is not assignable to type 'string'.

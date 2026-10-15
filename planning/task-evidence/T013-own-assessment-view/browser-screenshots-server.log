@@ -1,0 +1,27 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3025
+- Network:       http://127.0.0.1:3025
+✓ Ready in 465ms
+✓ Running next.config.ts took 43ms
+
+○ Compiling /raider/skills/[skillId] ...
+ GET /raider/skills/frontend 200 in 2.3s
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1356ms (next.js: 675ms, application-code: 681ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1287ms (next.js: 23ms, application-code: 1264ms)
+ GET /api/v1/skill-assessments/frontend 200 in 3.2s (next.js: 3.0s, application-code: 222ms)
+ GET /api/v1/skill-assessments/frontend 200 in 123ms (next.js: 24ms, application-code: 99ms)
+ GET /api/v1/skill-assessments/frontend 200 in 104ms (next.js: 22ms, application-code: 82ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/skills/frontend 200 in 1885ms (next.js: 119ms, application-code: 1766ms)
+ GET /raider/skills/frontend 200 in 727ms (next.js: 19ms, application-code: 708ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /api/v1/skill-assessments/frontend 200 in 123ms (next.js: 20ms, application-code: 102ms)
+ GET /api/v1/skill-assessments/frontend 200 in 112ms (next.js: 22ms, application-code: 90ms)
+ GET /api/v1/skill-assessments/frontend 200 in 114ms (next.js: 20ms, application-code: 95ms)
+ GET /raider/skills/frontend 200 in 1706ms (next.js: 21ms, application-code: 1684ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[?25h
