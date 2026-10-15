@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-submission-boundary.test.ts (5 tests | 4 failed) 26ms
+   × bounds answer using the declared UTF16 storage units 13ms
+   × bounds explanation using the declared UTF16 storage units 1ms
+   × bounds assistanceDisclosure using the declared UTF16 storage units 1ms
+   × bounds toolsUsed using the declared UTF16 storage units 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-submission-boundary.test.ts > bounds answer using the declared UTF16 storage units
+ FAIL  tests/practice-trial-submission-boundary.test.ts > bounds explanation using the declared UTF16 storage units
+ FAIL  tests/practice-trial-submission-boundary.test.ts > bounds assistanceDisclosure using the declared UTF16 storage units
+ FAIL  tests/practice-trial-submission-boundary.test.ts > bounds toolsUsed using the declared UTF16 storage units
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/practice-trial-submission-boundary.test.ts:41:83
+     39|   ['toolsUsed', { toolsUsed: ['😀'.repeat(101)] }],
+     40| ])('bounds %s using the declared UTF16 storage units', (_name, patch) …
+     41|   expect(SubmitPracticeTrialInputSchema.safeParse({ ...body, ...patch …
+       |                                                                                   ^
+     42| });
+     43|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  22:20:00
+   Duration  564ms (transform 222ms, setup 0ms, import 363ms, tests 26ms, environment 0ms)

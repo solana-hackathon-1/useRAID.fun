@@ -1,0 +1,66 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-15T16:46:16.946264+00:00",
+  "source": "Basec2c312f plus private submission core30DDL/Prisma/shared event/Root host/additive locked participant helper/3tests/CI/defaultoff env; prior PR219 post-CI WIP preserved",
+  "requirements": [
+    "R05",
+    "R06",
+    "R12",
+    "P07",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I10",
+    "I13",
+    "R15",
+    "R16",
+    "AC06",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "genuine_RED": "31behavior/helper/eventRED and2Root hostRED against archived typed stubs before implementation. Initial32PASS1FAIL actualUnicode late storage rejection; then4focused UTF16 fieldRED before explicit JS unit bound fix, sources archived.",
+  "GREEN": "37initialPASS11.77s then68expandedPASS20.17s; final72PASS23.71s/0unhandled on realPG30; every fixturestop0",
+  "findings": [
+    "Installed Zod4.6.5 max strings measure code points, while stored contract/SQL bounds useUTF16. ActualDB failure and4focusedRED retained; explicit string.length refinements align answer/explanation/disclosure/tool bounds without changing original text or relaxing SQL.",
+    "Ownership remainsUNCONFIRMED; declared tool/AI deviations can be recorded as evidence but never verify compliance or capability.",
+    "Code whitespace/line endings and SQL-shaped payload are preserved as literal private strings, not rendered/fetched/executed.",
+    "Known preexisting C1 publication stored-input Unicode late rejection recorded for the next bounded repair after C3; preserve current SQL/pure contracts/history."
+  ],
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "resources": "Owned PG stopped0 after every outcome, actualRunningfalse/cleanup.json. All CLI/pools/build ended, no browser/Next server/preview. Preserve unrelated resources/images/volumes/source/evidence.",
+  "actual_checks": {
+    "new": "72PASS23.71s/0unhandled; initial31RED+2hostRED,32initialPASS1FAIL,4focusedUnicodeRED then37PASS11.77s,68reviewPASS20.17s retained",
+    "affected_sql": "6files178PASS45.39s on actual30DDL; separately1externalhostPASS1.29s/3nontarget excluded",
+    "affected_pure": "8files144PASS7.68s/1DBskip subsequently executed",
+    "unique_selected": "72+178+144+1 =395selected behavior checksPASS",
+    "planning": "55PASS50.634s;3newfiles E04/global inventory",
+    "consumer": "Own23installed24audit0vuln strict/current minimalPG/runtime exact code/private consent/history/retirement/replay/live bounds/actual session revocationPASS",
+    "root": "Own generated30 Prisma generate/typegen/strict types/productionWebpackbuildPASS; all final code/test/config/schema/dependency/example source hashes exactly match verified own snapshot and own installation",
+    "schema": "Prisma validate30 explicit synthetic nonconnecting URLPASS",
+    "lint": "Whole0errors25oldwarnings, no new warnings",
+    "audit": "Unchanged Root approved unexpired moderate-or-higher policyPASS; not Root zero vulnerabilities",
+    "format": "Fresh whole Gittracked+nonignored WIP snapshot /tmp/raid-t013-practice-submissions-format-source-3annoqkr PASS; final metadata format next"
+  },
+  "source_hashes": "planning/task-evidence/T013-practice-submissions/source-hashes.json",
+  "consumer_source": "planning/task-evidence/T013-practice-submissions/consumer-source-hashes.json",
+  "reused": [
+    "Exact72new code/test/config/30SQL/dependency/environment unchanged for final source",
+    "No Root dependency change; affected existing stores and pure review/receipt contracts executed with actual current schema",
+    "All final own build/installed-source bytes match"
+  ],
+  "skipped": [
+    "No browser-visible route/UI/preview; no browser suite",
+    "Full Root suite/actual hosted7checks/independent review/UAT/business/release not claimed",
+    "No actual scoped ownership/evaluator/assessment/provider/runner/funds/approved accommodations or operating authority seed"
+  ],
+  "remaining_obligations": [
+    "Next bounded repair: preexisting C1 publication stored-input Unicode codepoint-vs-UTF16 late rejection; retain SQL/pure/history and add real RED first",
+    "Actual scoped ownership confirmation/evaluator decisions/assessment and protected API/UI; no user declaration becomes VERIFIED"
+  ],
+  "ended_at": "2026-10-15T17:03:42.218150+00:00",
+  "elapsed_seconds": 1045.272,
+  "completion_validator": "Expected34NOT VERIFIED27criteria+7hosted only/no metadata errors; no self-approved exclusion.",
+  "implementation_commit": "786c3b23a2747b21bde914f4deb2c92b35522857"
+}

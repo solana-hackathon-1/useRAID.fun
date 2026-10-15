@@ -1,0 +1,8 @@
+{
+  "zod_version": "4.6.5",
+  "installed_source": "node_modules/zod/v4/core/checks.js:$ZodCheckMaxLength",
+  "source_sha256": "bc42543274218aa7ef72192b3218d2a4a399e53df8de240a04d9ff275096f563",
+  "observed": "Installed max() measures code points; two supplementary symbols have4UTF16 units and max(2) accepts them. New store explicit technicalUTF16 bounds must refine string.length before SQL.",
+  "tdd": "Initial32PASS1FAIL due late STORAGE_UNAVAILABLE vs INVALID_INPUT for answer overflow; four focused field-boundary tests then genuine4RED before fix; original sources archived.",
+  "follow_up": "Existing C1 practice publication storage InputSchema also relies on code-point max() while SQL keeps declaredUTF16 bound. It rejects out-of-bound supplementary text conservatively in SQL, but should reject before query with INVALID_INPUT. Repair as next bounded task after C3; preserve current SQL/history/pure contracts and document actual stored-vs-pure bound semantics."
+}

@@ -1,0 +1,14 @@
+{
+  "container_id": "4a1683e2bd6b0aeecaddeced9aafdeb410faca7c8a268dd7f0e5637af205beca",
+  "name": "/raid-t013-practice-submissions-auto-20261015",
+  "labels": {
+    "raid.task": "T013-practice-submissions"
+  },
+  "running": false,
+  "last_exit_code": 0,
+  "finished_at": "2026-10-15T16:57:28.033376238Z",
+  "every_helper_stop_result": 0,
+  "browser_or_next_server": "none created",
+  "pools": "CLI finally closed; all workers ended",
+  "preserved": "raw logs/source/dependencies and unrelated services/images/volumes"
+}

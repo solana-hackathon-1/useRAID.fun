@@ -384,3 +384,12 @@ export async function readPracticeTrialStart(
   await authorize(tx, actor);
   return start;
 }
+/** Current locked own canonical HUMAN only; not an authorization token. */
+export async function lockPracticeTrialParticipant(
+  _tx: CommandReceiptTransaction,
+  _actorValue: SkillTaxonomyActor,
+): Promise<Readonly<Extract<z.output<typeof ParticipantSchema>, { kind: 'HUMAN' }>>> {
+  const actor = actorValid(_actorValue);
+  await authorize(_tx, actor);
+  return Object.freeze(await participantFor(_tx, actor));
+}

@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-10-15T16:19:58.947000+00:00",
+  "agent": "Codex /root",
+  "base": "c2c312f49b088f9f22d7785329763211420656c1",
+  "goal_window_end": "2026-10-16T03:36:22Z",
+  "prior_wip": "PR219 post-CI metadata preserved",
+  "status": "IN_PROGRESS; genuine tests before implementation"
+}
