@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-10-15T20:38:05.501294+00:00",
+  "earlier_failure": "Expanded test run Docker stop exceeded20seconds, failed aggregate and retained in expanded.log; next exact-name/label guard only restarts a stopped resource, current final actualstop0/Runningfalse verified. No earlier aggregatePASS claim.",
+  "signal_evidence": "Signal handlers/owned child groups reused from verified D2; new explicit CLI deadline/current-state diagnostic tested on current normal runs, no new SIGTERM test claimed",
+  "no_owned_server_or_preview": true,
+  "unrelated_resources_preserved": true,
+  "name": "/raid-t013-trial-ownership-auto-20261015",
+  "id": "f2c80a44df9ef3449e2bb6bc03fe2e6fb5b9061e876f3d9d854ef94e59a694a3",
+  "task_label": "T013-trial-ownership",
+  "actual_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-15T20:34:46.193418041Z",
+    "FinishedAt": "2026-10-15T20:36:15.823053673Z"
+  },
+  "remaining_planning_containers": [],
+  "remaining_planning_networks": [],
+  "final_actual_core_and_consumer_stop0": true
+}

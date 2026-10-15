@@ -1,0 +1,11 @@
+{
+  "red": "27genuine behaviorFAIL11.90s against typed command placeholders/actualPG32; fixturestop0",
+  "source": "red-source.tar.gz",
+  "fixture_correction_before_implementation": "Original unchanged-submission check incorrectly tried another new-key submission (would reject duplicate); changed to actual own historical read command before implementation, no expected behavior weakened.",
+  "initial_green": "31PASS1FAIL18.71s: changed same-key request correctly rejected with existing IDEMPOTENCY_KEY_REUSED; test used invented IDEMPOTENCY_CONFLICT, corrected to actual shared contract without weakening rejection. Actualfixturestop0",
+  "test_expansion_invocation": "First expansion edit locator did not match formatted import; ValueError before any file writes or tests, corrected exact append invocation.",
+  "sql_kind_red": "Expanded69PASS1FAIL49.53s actual rawSQL null kind erroneously committed because SQL NULL NOT IN is NULL; genuine behavior/source archived before adding explicit JSON string-kind guard. No assertion weakened.",
+  "final_authority_red": "2FAIL6.23s actual newly executed decision committed when canReview/canUsePolicy closed during private result selection; pre-fix source and raw log retained before executed-only final held-policy/current-grant/decision fence. Originalreplay after writeoff/withdrawal remains current-read-only by contract.",
+  "late_scope_red": "2FAIL2.64s actual independent canRead/canUsePolicy closure during final grant query after policy-use authorization; source retained before final actual-scope synchronous checks with no later await.",
+  "final_green": "82PASS75.57s/3files+own current realPG33 consuminghost/current strict/productionbuild/changedlintPASS; cleanupstop0/Runningfalse"
+}

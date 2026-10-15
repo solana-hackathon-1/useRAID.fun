@@ -1,7 +1,7 @@
 {
   "task_id": "T013",
   "scope": "T013D3 actual immutable approved policy source/current canonical scope/admin history/evaluator observation and exact decision lookup only",
-  "status": "SELF-EVALUATED bounded source; fullT013 NOT VERIFIED",
+  "status": "MERGED bounded source SELF-EVALUATED; fullT013 NOT VERIFIED",
   "implementer": "Codex /root",
   "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
   "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
@@ -181,45 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
-      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-review-policies/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38799178336 failed before0steps: official account payments/spending limit annotation; no image/deployment verified. Manual Checks originallydisabled/APIverified/no enablement/restore/no unchanged redispatch. Local evidence separate."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
-      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-review-policies/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38799178336 failed before0steps: official account payments/spending limit annotation; no image/deployment verified. Manual Checks originallydisabled/APIverified/no enablement/restore/no unchanged redispatch. Local evidence separate."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
-      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-review-policies/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38799178336 failed before0steps: official account payments/spending limit annotation; no image/deployment verified. Manual Checks originallydisabled/APIverified/no enablement/restore/no unchanged redispatch. Local evidence separate."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
-      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-review-policies/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38799178336 failed before0steps: official account payments/spending limit annotation; no image/deployment verified. Manual Checks originallydisabled/APIverified/no enablement/restore/no unchanged redispatch. Local evidence separate."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
-      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-review-policies/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38799178336 failed before0steps: official account payments/spending limit annotation; no image/deployment verified. Manual Checks originallydisabled/APIverified/no enablement/restore/no unchanged redispatch. Local evidence separate."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
-      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-review-policies/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38799178336 failed before0steps: official account payments/spending limit annotation; no image/deployment verified. Manual Checks originallydisabled/APIverified/no enablement/restore/no unchanged redispatch. Local evidence separate."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": "f29e821c00b56fca0733b0dcc3d46b5291b93833",
-      "evidence_url": "planning/task-evidence/T013-review-policies/review.json",
-      "observed": "Future exact main hosted result pending; currentf29 Staging38789813134 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local checks separate."
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-review-policies/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38799178336 failed before0steps: official account payments/spending limit annotation; no image/deployment verified. Manual Checks originallydisabled/APIverified/no enablement/restore/no unchanged redispatch. Local evidence separate."
     }
   },
   "tdd": {
@@ -245,5 +245,6 @@
       "result": "PASS",
       "observed": "404fresh selectedPASS=82new+177affectedSQL+144pure+1external;55planningPASS52.124s. Own generation32/current strict/productionWebpack/schema/audit/consumerPASS, finalaffected0warnings/25old retained; exact unchanged route typegen reused. Fresh wholeformatPASS; timedSELF 1213.247s; fullpacket34expectedNOT only; no fullT013/independent/hosted acceptance."
     }
-  }
+  },
+  "merged_main_sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233"
 }

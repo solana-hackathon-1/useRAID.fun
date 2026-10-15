@@ -1,0 +1,3 @@
+import subprocess
+commands=[['node_modules/.bin/vitest','run','tests/practice-trial-ownership-db.test.ts','tests/practice-trial-ownership-host.test.ts','tests/practice-trial-ownership-boundary.test.ts'],['node_modules/.bin/vitest','run','tests/practice-review-policy-db.test.ts','tests/practice-review-policy-host.test.ts','tests/practice-review-policy-boundary.test.ts','tests/practice-review-assignment-db.test.ts','tests/practice-review-read-db.test.ts','tests/practice-trial-submission-db.test.ts'],['node_modules/.bin/vitest','run','tests/command-receipts-boundary.test.ts','-t','minimal external host']]
+for command in commands:subprocess.run(command,check=True)

@@ -1,0 +1,299 @@
+raid-t013-trial-ownership-auto-20261015
+OWNED DATABASE: raid-t013-trial-ownership-auto-20261015 loopback port 32932
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32932"
+
+33 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+Applying migration `202610150005_practice_review_policies`
+Applying migration `202610160001_practice_trial_ownership`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+  └─ 202610150005_practice_review_policies/
+    └─ migration.sql
+  └─ 202610160001_practice_trial_ownership/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-ownership-db.test.ts (75 tests | 2 failed | 73 skipped) 4549ms
+     × rechecks current canReview after private result selection before committing a new finding 2637ms
+     × rechecks current canUsePolicy after private result selection before committing a new finding 1892ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-ownership-db.test.ts > T013D4 actual immutable trial ownership findings > rechecks current canReview after private result selection before committing a new finding
+AssertionError: promise resolved "{ status: 'EXECUTED', view: { …(7) } }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "status": "EXECUTED",
++   "view": {
++     "accessId": "5162b6c0-e46e-4d83-a420-43dc536d5702",
++     "currentReference": {
++       "recordId": "7081ada1-72bb-42b0-9564-c6838faf4eb0",
++       "revision": 1,
++     },
++     "isAuthorizationToken": false,
++     "isCurrent": true,
++     "private": true,
++     "record": {
++       "assignmentId": "0a8afae6-1ddf-4ba8-be77-0ee26803ca87",
++       "caseAccessId": "710c3184-4507-452e-bb95-c6b85260e89b",
++       "consumesCapacity": false,
++       "createsFinancialObligation": false,
++       "createsPermissionGrant": false,
++       "decision": "CONFIRM",
++       "definitionReference": {
++         "recordId": "synthetic-submission-trial",
++         "revision": 1,
++       },
++       "evaluatorAccountId": "cmv9ztf450002bq26uz70lnpb",
++       "id": "d9d3c4bb-7a95-40ec-b6b2-6e13f7bd78a1",
++       "isAuthorizationToken": false,
++       "observations": [
++         {
++           "detail": "Synthetic explanation reviewed against saved original solution.",
++           "kind": "EXPLANATION",
++         },
++         {
++           "detail": "Synthetic bounded modification observed.",
++           "kind": "MODIFICATION",
++         },
++       ],
++       "ownership": "CONFIRMED",
++       "participantId": "00ead31d-85e2-4ce8-8e25-d66049f681ce",
++       "persisted": true,
++       "policyAccessId": "5346c732-7f90-4040-b4d0-144bf8031d57",
++       "policyReference": {
++         "recordId": "synthetic-ownership-policy",
++         "revision": 1,
++       },
++       "policyVersionId": "5ab2c894-2b5e-4365-99fa-d12d5d1bca6a",
++       "reason": "Synthetic evaluator observed explanation and modification under original rules.",
++       "reference": {
++         "recordId": "7081ada1-72bb-42b0-9564-c6838faf4eb0",
++         "revision": 1,
++       },
++       "reviewedAt": "2026-10-15T20:30:19.242Z",
++       "rubricReference": {
++         "recordId": "synthetic-submission-rubric",
++         "revision": 1,
++       },
++       "skillDomain": "web",
++       "skillId": "frontend",
++       "submissionReference": {
++         "recordId": "7081ada1-72bb-42b0-9564-c6838faf4eb0",
++         "revision": 1,
++       },
++       "verifiesSkill": false,
++       "version": "v1",
++     },
++     "version": "v1",
++   },
+  }
+
+ ❯ tests/practice-trial-ownership-db.test.ts:952:28
+    950|         ),
+    951|       );
+    952|       await expect(failure).rejects.toMatchObject({ code: 'RESOURCE_UN…
+       |                            ^
+    953|       expect(await readOwnership()).toBeNull();
+    954|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/practice-trial-ownership-db.test.ts > T013D4 actual immutable trial ownership findings > rechecks current canUsePolicy after private result selection before committing a new finding
+AssertionError: promise resolved "{ status: 'EXECUTED', view: { …(7) } }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "status": "EXECUTED",
++   "view": {
++     "accessId": "d6710360-690b-46db-893f-53ab4ac2d6e0",
++     "currentReference": {
++       "recordId": "70a67964-aa29-46b2-91d0-8512a425e786",
++       "revision": 1,
++     },
++     "isAuthorizationToken": false,
++     "isCurrent": true,
++     "private": true,
++     "record": {
++       "assignmentId": "883d9261-826e-43fe-a105-14aa3fda07d2",
++       "caseAccessId": "b32c7496-d372-44f5-bc1e-e36de0333266",
++       "consumesCapacity": false,
++       "createsFinancialObligation": false,
++       "createsPermissionGrant": false,
++       "decision": "CONFIRM",
++       "definitionReference": {
++         "recordId": "synthetic-submission-trial",
++         "revision": 1,
++       },
++       "evaluatorAccountId": "cmv9zth800005bq26ilwyt3ud",
++       "id": "bdeca13c-9d19-4640-9fe1-de04bfda784d",
++       "isAuthorizationToken": false,
++       "observations": [
++         {
++           "detail": "Synthetic explanation reviewed against saved original solution.",
++           "kind": "EXPLANATION",
++         },
++         {
++           "detail": "Synthetic bounded modification observed.",
++           "kind": "MODIFICATION",
++         },
++       ],
++       "ownership": "CONFIRMED",
++       "participantId": "1867c76e-5d35-41c9-a8a1-01fd17e9d4c1",
++       "persisted": true,
++       "policyAccessId": "d3e61151-1b42-4cd1-80d3-436501955421",
++       "policyReference": {
++         "recordId": "synthetic-ownership-policy",
++         "revision": 1,
++       },
++       "policyVersionId": "40a24acf-d7a5-4391-a247-f6467c8f3d54",
++       "reason": "Synthetic evaluator observed explanation and modification under original rules.",
++       "reference": {
++         "recordId": "70a67964-aa29-46b2-91d0-8512a425e786",
++         "revision": 1,
++       },
++       "reviewedAt": "2026-10-15T20:30:21.238Z",
++       "rubricReference": {
++         "recordId": "synthetic-submission-rubric",
++         "revision": 1,
++       },
++       "skillDomain": "web",
++       "skillId": "frontend",
++       "submissionReference": {
++         "recordId": "70a67964-aa29-46b2-91d0-8512a425e786",
++         "revision": 1,
++       },
++       "verifiesSkill": false,
++       "version": "v1",
++     },
++     "version": "v1",
++   },
+  }
+
+ ❯ tests/practice-trial-ownership-db.test.ts:952:28
+    950|         ),
+    951|       );
+    952|       await expect(failure).rejects.toMatchObject({ code: 'RESOURCE_UN…
+       |                            ^
+    953|       expect(await readOwnership()).toBeNull();
+    954|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 73 skipped (75)
+   Start at  02:15:15
+   Duration  6.23s (transform 795ms, setup 0ms, import 1.17s, tests 4.55s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-trial-ownership-auto-20261015
+OWNED FINAL STATE: {"name": "/raid-t013-trial-ownership-auto-20261015", "id": "f2c80a44df9ef3449e2bb6bc03fe2e6fb5b9061e876f3d9d854ef94e59a694a3", "task_label": "T013-trial-ownership", "state": {"Status": "exited", "Running": false, "Paused": false, "Restarting": false, "OOMKilled": false, "Dead": false, "Pid": 0, "ExitCode": 0, "Error": "", "StartedAt": "2026-10-15T20:30:07.557949743Z", "FinishedAt": "2026-10-15T20:30:22.649720228Z"}}

@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D4 actual immutable attributed trial ownership findings/current canonical source/corrections and private history only",
+  "status": "SELF-EVALUATED bounded findings source; fullT013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-16-T013-trial-ownership.md",
+  "migration_rollback": "Additive33 finding/current pointer/history/FKs/audit guards, no real seed/backfill. Disable new ownership writes and dependent consumers, preserve original submission and all immutable history/receipts/audits. No destructive rollback.",
+  "dependency_evidence": "Actual original saved submission/definition/rubric, D1 current exact OWNERSHIP_REVIEW appointment/own session, D2 actual audited private case evidence, D3 actual current canonical approved policy UUID in same held transaction, current strict host scope. Actual standalone independently installed minimalPG33 consumer.",
+  "open_decisions": "O09 numeric calibration/O11 retention/staffed operating approval remainOPEN; no defaults/real policy/evaluator/finding seed. Actual assessment/reassessment/projections/APIUI and independent acceptance next.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+  "candidate_sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+  "source_identity": "Base0c5c345 plus exact143source/42consumer hashes matching actual own verified build/current types/installation; implementationSHA to be pinned",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/React19.3/Vitest4.1.11/Zod4.6.5/pinnedPG16; actual33migrations/current own generated33strict/build and independent23package24audited0vuln consumer; synthetic only",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded actual attributed manual ownership findings source author evidence only. Current exact evaluator/session/case/policy/original evidence, immutable correction/CAS/private history and actual access/audit provenance; original submit declaration remainsUNCONFIRMED. No rank/access/capacity/money/provider/UI effect or automatic fraud conviction. Full numbered criterion/independent acceptance NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json; docs/raid-practice-trial-ownership.md; docs/tasks/2026-10-16-T013-trial-ownership.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0c5 Staging38799178336 official billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local gates separate."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0c5 Staging38799178336 official billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local gates separate."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0c5 Staging38799178336 official billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local gates separate."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0c5 Staging38799178336 official billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local gates separate."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0c5 Staging38799178336 official billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local gates separate."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0c5 Staging38799178336 official billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local gates separate."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/review.json",
+      "observed": "Future exact mergedmain hosted result pending; current0c5 Staging38799178336 official billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local gates separate."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "command": "ActualPG32 against typed ownership command placeholders before implementation; separate Root/event-key RED; later rawSQL null observation-kind behavior before JSON string guard",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/red.log; red-source.tar.gz; host-boundary-red.log; host-boundary-red-source.tar.gz; expanded.log; sql-observation-kind-red-source.tar.gz; tdd.json; final-authority-red.log; final-authority-red-source.tar.gz; late-scope-red.log; late-scope-red-source.tar.gz",
+      "result": "FAIL",
+      "expected_failure": "Actual immutable attributed findings/canonical current case-policy source, private audit/provenance, original declaration preserved; no invalid JSON kind in rawSQL",
+      "observed_failure": "27FAIL11.90s+5host/eventFAIL; initial31PASS1FAIL18.71s test used invented error name corrected to actual IDEMPOTENCY_KEY_REUSED; expanded69PASS1FAIL49.53s actual rawnullkind committed before explicit JSON string guard; original cleanup20sec timeout retained, no aggregatePASS for failed run. Final2FAIL6.23s after result selection; late2FAIL2.64s distinct current policy loss during final grant query, each source retained before fix."
+    },
+    "green": {
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "command": "ActualPG33 final3newfiles and independently installed strict/current minimalPG33 ownership consumer",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/late-scope-green.log; consumer-install-types.log; late-scope-consumer-types.log; source-hashes.json; consumer-source-hashes.json",
+      "result": "PASS",
+      "observed": "Final82PASS75.57s/3files after actual final-authority and last-grant-query RED/fences; own installed current42files/types/actualPG33 immutablefinding/correction/history/replayafterwithdrawal-writeoff/revocation/boundsPASS.143source/42consumer exact."
+    },
+    "refactor": {
+      "sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+      "command": "Actual different-evaluator CAS/lock-wait expiry/current-policy/rawSQL/audit/immutable projection and meaningful affected+mandatory gates",
+      "evidence_url": "planning/task-evidence/T013-trial-ownership/final-affected.log; affected-pure.log; planning.log; generate33.log; typecheck.log; final-typecheck.log; production-build.log; schema-validate.log; lint.log; final-affected-lint.log; audit.log; review.json; cleanup.json; late-scope-code-check-driver.log; late-scope-lint.log; late-scope-green.log",
+      "result": "PASS",
+      "observed": "432selectedPASS=82final current +350same-task unchanged exact-source evidence (235SQL98.90s+114pure5.93s+1external2.12s);55planningPASS241.880s. Final current strict/productionWebpack/ownconsumer/changedlintPASS; unchanged33generation/schema/audit/typegen/25oldlint baseline reused. FinalfreshwholePASS/timedSELF1194.649s/packet34expectedNOTonly, no fullT013/independent/hosted acceptance."
+    }
+  }
+}
