@@ -1,0 +1,159 @@
+raid-t013-trial-ownership-auto-20261015
+OWNED DATABASE: raid-t013-trial-ownership-auto-20261015 loopback port 32927
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:32927"
+
+33 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+Applying migration `202610150005_practice_review_policies`
+Applying migration `202610160001_practice_trial_ownership`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+  └─ 202610150005_practice_review_policies/
+    └─ migration.sql
+  └─ 202610160001_practice_trial_ownership/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-trial-ownership-db.test.ts (65 tests | 1 failed) 47459ms
+     × raw SQL rejects non-enum observation kind null 622ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-ownership-db.test.ts > T013D4 actual immutable trial ownership findings > raw SQL rejects non-enum observation kind null
+AssertionError: promise resolved "'431a9eb0-19f0-4e09-b3e2-c2fb6c595a7f'" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+"431a9eb0-19f0-4e09-b3e2-c2fb6c595a7f"
+
+ ❯ tests/practice-trial-ownership-db.test.ts:806:6
+    804|     await expect(
+    805|       rawFinding({ observations: [{ kind, detail: 'Synthetic observati…
+    806|     ).rejects.toBeDefined();
+       |      ^
+    807|   });
+    808| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 69 passed (70)
+   Start at  02:00:05
+   Duration  49.53s (transform 542ms, setup 0ms, import 1.19s, tests 47.52s, environment 1ms)
+
+Traceback (most recent call last):
+  File "/tmp/raid-t013-trial-ownership-db-run.py", line 54, in <module>
+    stopped=subprocess.run(['docker','stop',name],capture_output=True,text=True,timeout=20)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 507, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 1134, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 1980, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/home/rpandox/tools/miniconda/lib/python3.9/subprocess.py", line 1178, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['docker', 'stop', 'raid-t013-trial-ownership-auto-20261015']' timed out after 20 seconds

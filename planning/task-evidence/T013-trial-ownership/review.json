@@ -1,0 +1,54 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_at": "2026-10-15T20:19:15.892825+00:00",
+  "source": "Base0c5c345 + actual ownership33/module/Rootdefaultoff/3tests/ownconsumer/docs; PR224postCI WIP preserved",
+  "requirements": ["R06", "R12", "R15", "R16", "I05", "I06", "I10", "I13", "AC73", "AC74", "AC75"],
+  "genuine_RED": "27behaviorFAIL11.90s+5host/eventFAIL; initialGREEN31PASS1FAIL wrong test shared errorname corrected to actual IDEMPOTENCY_KEY_REUSED; expanded69PASS1FAIL49.53s rawSQL null observation kind committed before explicit JSON string guard",
+  "GREEN": "70PASS85.43s actualPG33 after kind guard; every currentfixturestop0. Earlier expandedcleanup Docker stop timeout retained/reconciled separately, not aggregatePASS",
+  "findings": [
+    "SQL NULL NOT IN allowed raw null observation kind; actual RED source/log retained before explicit string type check.",
+    "Initial same-key rejection test invented errorname; actual shared contract rejects IDEMPOTENCY_KEY_REUSED, expectation corrected without weakening rejection.",
+    "Original unchanged submission check initially tried another new-key submission; corrected before implementation to actual historical own read.",
+    "Whole lint found four unused copied test conveniences; removed them and reran final78current-source/strict/affectedlint, no test assertion weakened.",
+    "Initial standalone Prisma validation lacked DATABASE_URL and failed before schema validation; corrected explicit synthetic no-connection URL and actual validatePASS, original failure retained.",
+    "Docker diagnostic broad ps exceeded10s during fixture load; read-only timeout, no services changed. Current cleanup runner now uses explicit --timeout10 with bounded45s CLI wait and actual final name/label/Running inspection; original cleanup timeout preserved, current normal consumer and78 runs automaticstop0/Runningfalse. Signal handlers/child group semantics reused from verified D2; no new interruption execution claimed.",
+    "Self-evaluation found canReview/canUsePolicy could close during newly executed private result selection. Actual2RED6.23s resolved commits before final fence; source/log retained, final executed-only current policy/grant/decision fence added. Historical authorized retries deliberately keep current-read-only behavior after writeoff/withdrawal.",
+    "A follow-up actual2RED2.64s proved distinct canRead/canUsePolicy could close during the final grant query after policy authorization. Retained pre-fix source/log before adding actual-scope synchronous predicate fences after the last await. Final82/own consumer/current strict/production/affectedlint PASS; no assertion weakened."
+  ],
+  "pending": "Authorized implementation/source pin/push/templateRef55PR/matched-head staging merge/fulltree-hash proof/actualCI; next actual assessment/reassessment/projections/APIUI, fullT013 NOT VERIFIED",
+  "independent_UAT_business_release": "NOT VERIFIED",
+  "resources": "Current owned fixture automaticstop0; earlier expanded stop command exceeded20sec and failed aggregate, preserved; later exact-name/label guard found stopped before restart, currentfixture stopped0. No unrelated resources touched.",
+  "actual_checks": {
+    "new": "Final82PASS75.57s/3files after both final-authority regressions; earlier78/80 evidence retained without double counting",
+    "consumer": "Final current42files/independently installed23packages24audited0vuln/current strict and actualPG33/immutable finding/correction/history/original retry after withdrawal-writeoff/current revocation/original unchanged submission/live5sstatement2slock5sidlePASS",
+    "root": "Own generation33 PASS earlier/exact unchanged source reused; final current82-test/source strict and productionWebpackPASS after final fences; no route/config/dependency change, exact previous route typegen reused",
+    "planning": "55PASS241.880s includes actual isolated reverse-proxy trust fixture; all3new files global/E04",
+    "pure": "8files114PASS5.93s/1DBskip to be targeted actual external host",
+    "schema": "Prisma33validatePASS with explicit synthetic URL; first invocation missing DATABASE_URL failed before validation and retained, no live DB connection",
+    "lint": "Whole baseline0errors25oldwarnings before final fences; final changed runtime/host/tests0errors0warnings after final fences, unchanged baseline files reused",
+    "audit": "Root moderate-or-higher approved unexpired policyPASS; not Root zero vulnerabilities",
+    "format": "Final fresh tracked and nonignored WIP whole Prettier PASS after final fences; Root-owned ignored historical artifact preserved",
+    "affected_sql": "6files235PASS98.90s D3/D1/D2/submission;1externalhostPASS2.12s/3nontarget excluded",
+    "unique_selected": "432selectedPASS=82final current +350same-task unchanged exact-source evidence (235affectedSQL+114pure+1external),55planning separate",
+    "completion": "Exact34expectedNOT only (27criteria+7hosted), no metadata errors; author review not independent acceptance"
+  },
+  "source_hashes": "planning/task-evidence/T013-trial-ownership/source-hashes.json",
+  "consumer_source_hashes": "planning/task-evidence/T013-trial-ownership/consumer-source-hashes.json",
+  "source_counts": {
+    "relevant": 143,
+    "consumer": 42
+  },
+  "reused": [
+    "Exact unchanged Next routes/typegen/config/deps from D3; no route added",
+    "Production runtime unchanged by final test-only expansions/unused-helper removal; final current tests/types rerun",
+    "After final new-decision authority fix, unchanged D3/D1/D2/submission/receipt affected235+114pure+1external, planning55, Prisma33generation/schema/audit evidence remain exact for their source/deps/config/env; final D4 core80/ownconsumer/types/build/affectedlint rerun."
+  ],
+  "skipped": [
+    "Full Root suite/browser/devpreview (no browser-visible change)",
+    "Independent/UAT/business/release/7actualhosted not claimed",
+    "No real content/reviewer/finding/policy/calibration/provider/financial/Rootflag enablement"
+  ],
+  "ended_at": "2026-10-15T20:39:10.541543+00:00",
+  "elapsed_seconds": 1194.649,
+  "implementation_sha": "dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be"
+}

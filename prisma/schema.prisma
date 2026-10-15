@@ -6,6 +6,7 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  practiceTrialOwnershipVersions PracticeTrialOwnershipVersion[]
   practiceReviewPolicyVersions PracticeReviewPolicyVersion[]
 
   issuedPracticeReviewAssignments PracticeTrialReviewAssignment[] @relation("PracticeReviewIssuer")
@@ -642,6 +643,9 @@ model XEndpointState {
 // Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
 // additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
 model CommandReceipt {
+  practiceTrialOwnershipVersion PracticeTrialOwnershipVersion? @relation("OwnershipCommandReceipt")
+  practiceTrialOwnershipCaseAccess PracticeTrialOwnershipVersion[] @relation("OwnershipCaseAccess")
+  practiceTrialOwnershipPolicyAccess PracticeTrialOwnershipVersion[] @relation("OwnershipPolicyAccess")
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   actorId String
   commandKind String
@@ -888,6 +892,7 @@ model SkillRubricVersion {
   @@unique([id, rubricId, revision], map: "SkillRubricVersion_pointer_key")
 }
 model PracticeTrialVersion {
+  ownershipVersions PracticeTrialOwnershipVersion[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   trialId String
   revision Int
@@ -944,6 +949,8 @@ model PracticeTrialStart {
 
 // Exact private response bytes and claimant declarations; ownership remains unconfirmed.
 model PracticeTrialSubmission {
+  ownership PracticeTrialOwnership?
+  ownershipVersions PracticeTrialOwnershipVersion[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   revision Int @default(1)
   startId String @unique(map: "PracticeTrialSubmission_start_key") @db.Uuid
@@ -964,6 +971,7 @@ model PracticeTrialSubmission {
 }
 
 model PracticeTrialReviewAssignment {
+  ownershipVersions PracticeTrialOwnershipVersion[]
  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
  submissionId String @db.Uuid
  evaluatorAccountId String
@@ -1007,6 +1015,7 @@ model PracticeReviewPolicy {
  @@unique([id,definitionVersionId,purpose],map:"PracticeReviewPolicy_family_key")
 }
 model PracticeReviewPolicyVersion {
+  ownershipVersions PracticeTrialOwnershipVersion[]
  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
  policyId String
  definitionVersionId String @db.Uuid
@@ -1024,4 +1033,40 @@ model PracticeReviewPolicyVersion {
  receipt CommandReceipt @relation(fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeReviewPolicyVersion_receipt_fkey")
  @@unique([policyId,revision],map:"PracticeReviewPolicyVersion_revision_key")
  @@unique([id,policyId,definitionVersionId,purpose,revision],map:"PracticeReviewPolicyVersion_pointer_key")
+}
+
+model PracticeTrialOwnership {
+ submissionId String @id @db.Uuid
+ revision Int
+ currentVersionId String @db.Uuid
+ submission PracticeTrialSubmission @relation(fields:[submissionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnership_submission_fkey")
+ currentVersion PracticeTrialOwnershipVersion @relation("CurrentTrialOwnership",fields:[currentVersionId,submissionId,revision],references:[id,submissionId,revision],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnership_version_fkey")
+}
+model PracticeTrialOwnershipVersion {
+ id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+ submissionId String @db.Uuid
+ revision Int
+ assignmentId String @db.Uuid
+ definitionVersionId String @db.Uuid
+ policyVersionId String @db.Uuid
+ evaluatorAccountId String
+ decision String
+ reason String
+ observations Json @db.JsonB
+ caseAccessReceiptId String @db.Uuid
+ policyAccessReceiptId String @db.Uuid
+ reviewedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+ receiptId String @unique(map:"PracticeTrialOwnershipVersion_receipt_key") @db.Uuid
+ requestId String
+ currentFor PracticeTrialOwnership[] @relation("CurrentTrialOwnership")
+ submission PracticeTrialSubmission @relation(fields:[submissionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_submission_fkey")
+ assignment PracticeTrialReviewAssignment @relation(fields:[assignmentId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_assignment_fkey")
+ definition PracticeTrialVersion @relation(fields:[definitionVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_definition_fkey")
+ policy PracticeReviewPolicyVersion @relation(fields:[policyVersionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_policy_fkey")
+ evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_evaluator_fkey")
+ caseAccess CommandReceipt @relation("OwnershipCaseAccess",fields:[caseAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_case_access_fkey")
+ policyAccess CommandReceipt @relation("OwnershipPolicyAccess",fields:[policyAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_policy_access_fkey")
+ receipt CommandReceipt @relation("OwnershipCommandReceipt",fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeTrialOwnershipVersion_receipt_fkey")
+ @@unique([submissionId,revision],map:"PracticeTrialOwnershipVersion_revision_key")
+ @@unique([id,submissionId,revision],map:"PracticeTrialOwnershipVersion_pointer_key")
 }

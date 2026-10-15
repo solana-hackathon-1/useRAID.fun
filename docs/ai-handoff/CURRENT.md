@@ -1,3 +1,49 @@
+# Attributed ownership findings committed; source pin/publication next — 2026-10-15T20:40:07.074091+00:00 — Codex /root
+
+Implementation dfe460ef5f0d051651a7b5b7088e0ceb6c2ef2be on original branch/base0c5c345.432selected (82final+350validsame-task unchanged source)/55planning/ownPG33/current strict and production build/final affectedlint/freshformat143source42consumerproofPASS; SELF1194.649s/full34expectedNOT. Cached diffcheckPASS before implementation commit. Genuine phased REDs/corrections/cleanupfailure and resolvedcurrentstop0 retained. No active ownedresource/preview. Next metadata-only pin/push/templateRef55PR/matched-head mainmerge/fulltree-hashproof/actualCI then actual assessment/reassessment/projections/APIUI through2026-10-16T03:36:22Z. Solewriter/no delegation/branchswitch. Parent55/independent/UAT/business/release/7hosted remainNOT VERIFIED; no real seeds/numeric policy/Rootflag/provider enablement.
+
+---
+
+# Ownership findings SELF-EVALUATED; source pin/publication next — 2026-10-15T20:39:10.541543+00:00 — Codex /root
+
+Original branch/base0c5c345, no D4commit yet, PR224postCI WIP preserved. Final82PASS75.57s/current ownPG33/strict/production build/changedlint PASS after genuine last-result2RED6.23s and last-grant2RED2.64s/fences; original27behavior+5host/event/rawnullkind1RED preserved.432selected=82final+350same-task unchanged exact-source evidence (235SQL+114pure+1external),55planning241.880s separate. Finalfreshwhole/source143consumer42proofPASS; timedSELF1194.649s/fullpacket34expectedNOT only. Original declaration staysUNCONFIRMED; immutable actual findings/CAS/history/current canonical policy/appointment/private audit, no rank/access/capacity/money/provider/real seeds/flags enabled.
+
+All current owned fixturesstop0/Runningfalse/planning containers and networksnone/no server or preview. Earlier expanded20sec stopCLI timeout remained a failed aggregate, current explicit45sec bound+actualstate check resolved resource; preserve failure/source/rawgzip and no new SIGTERM proof claimed. Sourcearchives include exact143-file pre-final-authority verified milestone. Full27+7/independent/UAT/business/release/#55 remainopen.
+
+Next authorized implementation+metadata pin/push/templateRef55PR/matched-head mainmerge/fulltree-hash proof/actualCI; then actual assessment/reassessment/projections/APIUI through2026-10-16T03:36:22Z. Solewriter/no delegation/branchswitch. CurrentmainStaging38799178336 billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch; preserve all evidence and unrelated services.
+
+---
+
+# Ownership self-review found final authority gap; actual RED/fix and final gates — 2026-10-15T20:31:57.578399+00:00 — Codex /root
+
+Original branch/base0c5c345/PR224postCI WIP preserved; no D4commit/PR yet. Immutable ownership33/current case-policy-CAS/private history built; genuine27RED+5host/eventRED and rawnullkind1RED→70/78GREEN retained. Prior428selected/55planning/ownPGconsumer/Root gates/freshformat/current143source42consumer proofPASS, but SELF caught canReview/canUsePolicy loss during new decision private result selection: actual2RED6.23s before executed-only final policy/grant/decision fence. Final80+ownconsumer/current strict+productionbuild/affectedlint running. Unaffected235SQL+114pure+1external/planning55/Prisma33generation/schema/audit/typegen exact evidence reused; no assertions weakened. Source manifest/packet/timedSELF/freshformat need refresh after final fix. All prior owned fixtures stopped0/Runningfalse/planning networks none; earlier20sec stopCLI timeout kept as failed old aggregate, current45sec bound plus actualstate checks PASS. No fresh SIGTERM execution claimed.
+
+Next finish current gates/sourceproof/packet/SELF then authorized implementation/pin/push/templateRef55PR/matched-head mainmerge/actualCI; then actual assessment/reassessment/projections/APIUI through2026-10-16T03:36:22Z. Solewriter/no delegation/branchswitch/no realseed/numericpolicy/Rootflag/providerenablement. Parent55/full27+7/independent/UAT/business/release remainNOT VERIFIED; mainStaging38799178336 billing0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Preserve evidence and unrelated services.
+
+---
+
+# Ownership findings core70PASS; consuming host and gates next — 2026-10-15T20:19:15.892825+00:00 — Codex /root
+
+Original branch/base0c5c345, ownerwindow through2026-10-16T03:36:22Z, solewriter/no delegation/branchswitch. D4 immutable attributed actual findings/currentCAS/migration33/Prisma/opaqueprivateaudit/Rootdefaultoff implemented; original submissionUNCONFIRMED/history preserved. Genuine27RED11.90s+5host/eventRED, expanded rawnullkind1RED49.53s before SQLstringguard, final70PASS85.43s/current ownedfixturestop0. Earlier expanded Docker stop exceeded20sec/aggregatefailed; old stoppedstate verified by next exact-label/name restartguard, preserve originalfailure and current recovery, no overalloldPASSclaim. TimedSELF started review.json. Own23installed24audited0vuln/typesPASS; actualPGconsumer/Root current generation33/types/build running or pending.
+
+Next current scope/wait/adversarial regression/ownPGconsumer/affectedplanning/schema/types/build/lint/audit/freshformat/sourceproof/packet/timedSELF/publication/actualCI, then assessment/reassessment/projections/APIUI. PR224postCI WIP preserved. Parent55/full27+7/independent/UAT/business/release remainopen; no real seeds/numericcalibration/provider/rank/access/capacity/money/flags enabled. MainStaging38799178336 billing0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Preserve evidence/unrelated services.
+
+---
+
+# Ownership findings store started — 2026-10-15T20:08:39.027645+00:00 — Codex /root
+
+T013D4 acceptance recorded before code in docs/tasks/2026-10-16-T013-trial-ownership.md; original branch/base0c5c345/PR224 postCI metadata WIP preserved. Actual immutable attributed reasoned findings, exact original case/definition/rubric/current approved policy and assignment, private access audit, append-only corrections/CAS/projection; no original declaration rewrite, automatic fraud/rank/access/capacity/money/flag/real seed. Next genuine RED then additive33/current-session scoped module/Rootdefaultoff/own consumer/docs/gates/SELF/packet/publication/actualCI. Full27+7/independent/UAT/business/release/parent55 open. Solewriter/no delegation/branchswitch; owner12hourwindow ends2026-10-16T03:36:22Z. All resources currentlystopped; currentmainStaging38799178336 billing before0steps/manualoriginaldisabled/no restore/no unchangedredispatch.
+
+---
+
+# Canonical review policies merged; ownership decision store next — 2026-10-15T20:06:45.943873+00:00 — Codex /root
+
+PR224 matched-head merged 0c5c345aecc79b883056a4b3d8cef06a3ecd1233; actual full tree equals pin37424129caa4c54387eb3b4ba70d2c0e6541276a, all124source/40consumer exact. Implementationad032016e629de562a06d9edc238f9241cd1280a.404fresh selected/55planning/ownPG32/Root gatesPASS, timedSELF1213.247s/full34expectedNOT only. Actual Staging38799178336 failed before0steps official account billing annotation; no image/deployment verified. Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. No real policy/evaluator seed/numeric calibration/ownership/rank/grant/provider/UI/flag enablement. All owned fixturesstop0/no server/preview. PostCI packet/review/task/CURRENT/hosted metadata WIP for next authorized commit.
+
+Active original owner12hour window through2026-10-16T03:36:22Z/09:21Nepal16October; same branch codex/t006-linked-wallet-signin, solewriter/no delegation/branch switch. Next actual immutable ownership findings under original private evidence/current OWNERSHIP_REVIEW assignment and exact actual approved canonical policy UUID held in same transaction; preserve original C3 UNCONFIRMED declaration receipt. Then actual assessment/reassessment/fraud history/committed projections/protected APIUI and repeat without human recommendation/testing wait. Parent55/independent/UAT/business/release/7hosted remainNOT VERIFIED, no issueclosure. Preserve all unfinished work/evidence/unrelated services; signal-safe latest runner. Last successful main/image d0234caf721435ccc99ac28c2da4af292a42bbe2/fb982407cba13e1f0ea74370a0bb0691f031d0c679eb7ce050bb35610f7f3d40; prior site530/1033/VM SSHtimeout not retested without material accesschange; work-state sync toolabsent/obligationretained.
+
+---
+
 # Approved policy source committed; source pin/publication next — 2026-10-15T20:05:20.991258+00:00 — Codex /root
 
 Implementation ad032016e629de562a06d9edc238f9241cd1280a on original branch/basef29e821.404freshselected/55planning/current ownPG32/Root gates/hashproofPASS, timedSELF1213.247s; full34expectedNOT/parent55/independent/UAT/business/release remainopen. Mandatory cached diffcheck blocked initial commit for readableRED log whitespace; corrected only readable whitespace, original rawgzip retained, then cachedcheckPASS/implementation committed. No resource running. Next metadata-only pin/push/templateRef55PR/matched-head merge/fulltree-hashproof/actualCI then actual ownership decisions/assessment/projections/APIUI through2026-10-16T03:36:22Z. Sole writer/no delegation/branch switch; no seeds/flags/provider/numeric policy.

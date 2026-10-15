@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610160001_practice_trial_ownership/migration.sql

@@ -13,7 +13,7 @@
   ],
   "independent_UAT_business_release": "NOT VERIFIED",
   "resources": "All owned normal/failure fixturesstop0/actualRunningfalse/cleanup.json; allCLI/pools/build ended/no server/browser/preview. Latest verified renamed signal-safe runner used; preserve unrelated resources/images/volumes/evidence.",
-  "pending": "Authorized implementation/source pin/push/Ref55PR/matched-head staging merge and actualCI observation; fullT013/independent/UAT/business/release NOT VERIFIED",
+  "pending": "Actual immutable ownership decisions, assessment/reassessment/fraud source/projections and protected APIs/UI; parent55/independent/UAT/business/release NOT VERIFIED",
   "actual_checks": {
     "new": "Final82PASS40.70s/3files, initial82PASS32.62s retained; final helper aliases/argument identity lint cleanup included",
     "affected_sql": "8files177PASS55.79s D1/D2/C1/Unicode;1externalhostPASS1.34s/3nontarget excluded",
@@ -44,5 +44,12 @@
     "Finalization first attempted consumer hash paths relative to Root instead of example: FileNotFoundError before any source or metadata edits. Corrected base path; no behavior/gate repeated or source modified.",
     "Mandatory cached diffcheck blocked commit for trailing whitespace in readable initial RED log; stripped readable whitespace, original raw .gz retained unchanged, then cached check passed."
   ],
-  "implementation_sha": "ad032016e629de562a06d9edc238f9241cd1280a"
+  "implementation_sha": "ad032016e629de562a06d9edc238f9241cd1280a",
+  "merged_main_sha": "0c5c345aecc79b883056a4b3d8cef06a3ecd1233",
+  "source_pin_sha": "37424129caa4c54387eb3b4ba70d2c0e6541276a",
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/224",
+  "full_main_tree_equals_tested_pin": true,
+  "exact_main_source_files": 124,
+  "exact_main_consumer_files": 40,
+  "hosted_result": "Actual Staging38799178336 billing before0steps; Manual Checks disabled_manually/no restore/no unchangedredispatch"
 }
