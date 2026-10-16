@@ -9,7 +9,7 @@
   "prior_wip": "PR228 postCI metadata preserved",
   "ended_utc": "2026-10-16T00:06:17.387608+00:00",
   "elapsed_seconds": 267.646231,
-  "source_identity": "Original branch base 03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c plus recorded WIP; source-hashes610/consumer39/full561 build code exact; metadata-only pin follows",
+  "source_identity": "Implementation e99269e47fcc93d87b8143dc30b67a00b9b7f91f /610relevant39consumer/full561 exact; metadata-onlypin",
   "requirements": "R06/R12/R15/R16/I05/I06/I07/I10/I13; actual own User/Session/HUMAN/trusted catalog/current definition/original accepted start/private submission/receipt; no rank/access/capacity/money",
   "actual_checks": {
     "selected": "346 unique selected PASS =115original C2/C3 SQL +14current D8 SQL +216pure HTTP/host/protocol/boundaries +1actualexternal receipts; earlier repeated11D8 not doublecounted",
@@ -39,5 +39,6 @@
   ],
   "cleanup": "All owned normal/failure resources stop0/Runningfalse; fixture abe47c9c61931541359539a9798035989808a99c8fe8506376b2a39b7276acc1/raid-t013-practice-portal-auto-20261016/tasklabelT013-practice-portal; no server/listener started; D7 actual signal cleanup implementation reused with exact own names",
   "skipped": "No browser-visible UI change; actual Raider UI/preview subsequent slice. No hosted rerun absent successful automatic staging/external billing change; no independent/UAT/business/release supplied",
-  "pending": "Explicit implementation commit/pin/push/matchedheadmerge/actualCI; then RaiderUI; full27+7/independent/UAT/business/release open"
+  "pending": "Explicit implementation commit/pin/push/matchedheadmerge/actualCI; then RaiderUI; full27+7/independent/UAT/business/release open",
+  "implementation_sha": "e99269e47fcc93d87b8143dc30b67a00b9b7f91f"
 }

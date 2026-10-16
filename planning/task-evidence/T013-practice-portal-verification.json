@@ -10,9 +10,9 @@
   "dependency_evidence": "Actual own Session/HUMAN/current explicitcatalog/currentactive taxonomy; C1publication catalog12012; C2namespacecallback/new intent; C3privateownoriginalterms/12016progress; independently npm-installed minimalPG HTTP host39sources.",
   "open_decisions": "O09/O11/calibration/operating-appeal-retention/independent-UAT-business-release OPEN. No S/automation/rank or real policy seed. RaiderUI next.",
   "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
-  "code_source_sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
-  "candidate_sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
-  "source_identity": "Base 03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c plus WIP/610source39consumer/full561build proof; implementation pin follows",
+  "code_source_sha": "e99269e47fcc93d87b8143dc30b67a00b9b7f91f",
+  "candidate_sha": "e99269e47fcc93d87b8143dc30b67a00b9b7f91f",
+  "source_identity": "Implementation e99269e47fcc93d87b8143dc30b67a00b9b7f91f; all610relevant/39consumer/full561build code exact; metadata-only source pin follows",
   "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11/Zod4.6.5/PG16pinned35DDL; own23packages24audited0vuln; no browser UI/server in this slice",
   "criteria": {
     "T013-C01": {
@@ -232,18 +232,18 @@
       "observed_failure": "8actualDBRED4.83s;24HTTP/bodyRED0.707s;3actualscopeRED8controlsPASS4.61s;Rootmissingmodule suite."
     },
     "green": {
-      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "sha": "e99269e47fcc93d87b8143dc30b67a00b9b7f91f",
       "command": "ActualPG35 core/new SQL +portableHTTP/Root/defaultbody/protocol boundaries +own minimalPG/HTTP consumer",
       "evidence_url": "planning/task-evidence/T013-practice-portal/core-regression.log; adverse.log; affected-pure.log; affected-boundaries.log; external-receipts.log; consumer-current.log; source-hashes.json",
       "result": "PASS",
       "observed": "346unique selectedPASS=115coreSQL+14currentD8SQL+216pure+1actualexternal; currentown39-source23installed24audited0vuln/strict/minimalPGHTTP PASS; allownedstop0."
     },
     "refactor": {
-      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "sha": "e99269e47fcc93d87b8143dc30b67a00b9b7f91f",
       "command": "Source/privacy/current waits/pagination/adverse boundaries, Nexttypegen-strict-production/finaltest-onlystrict/planning/lint/format/sourceproof; exact validschema/audit/oldlint evidence reused",
       "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; planning.log; code-check.log; final-typecheck.log; lint.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json; verified-whole-format.log",
       "result": "PASS",
-      "observed": "346selected/55planning/static/ownconsumer/source610-39-full561PASS; freshwholeformatter required beforecommit; initialfailures/strictfixtures retained andcorrected; no fullindependent/hosted/issueacceptance."
+      "observed": "346selected/55planning/static/ownconsumer/source610-39-full561PASS; freshwholeformatterPASS/validator34expectedmissing/no metadataerrors; initialfailures/strictfixtures retained andcorrected; no fullindependent/hosted/issueacceptance."
     }
   }
 }
