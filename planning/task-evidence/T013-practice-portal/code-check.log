@@ -1,0 +1,7 @@
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK typegen
+typegen PASS
+generate35 REUSED: exact unchanged Prisma schema/config/dependencies and owned generated client
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK typecheck
+typecheck PASS
+OWNED SOURCE /tmp/raid-t008-build-source-2xavo66l CHECK production-build
+production-build PASS

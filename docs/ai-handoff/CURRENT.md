@@ -1,3 +1,33 @@
+# Practice backend implementation committed; source pin/publication — 2026-10-16T00:06:46.040093+00:00 — Codex /root
+
+Implementation e99269e47fcc93d87b8143dc30b67a00b9b7f91f on originalbranch.346selected+55planning/currentNexttypes-production/own39consumer/source610-full561/lint-formatPASS; full27+7NOT VERIFIED. AllownedPGstop0/no preview. Next metadata-onlypin/push/Ref55PR/matchedmerge/actualCI; then RaidertrialUI through03:36:22Z. Solewriter/noagents/no liveflags-seeds-provider-billing.
+
+---
+
+# Practice portal backend source gates complete; publication next — 2026-10-16T00:05:24.356040+00:00 — Codex /root
+
+D8 actualtrustedcatalog/currentownprogress/privateHTTP/canonicalstart-submit/namespace-currentwritecallbacks implemented.346unique selected+55planningPASS; own39source23installed24audited0vuln/minimalPGHTTP/strict/currentRoottypes-build-lint/source610-full561PASS. AllownedPGstop0/no servers; no liveflags/seeds/providers. FullT01327+7/independent/UAT/business/releaseopen. Originalbranch/main03b7/solewriter/noagents; PR228postCIWIPpreserved. Nextfreshformat/validator/commitpin-push-Ref55matchedmerge/actualCI, then RaidertrialUI throughoriginal2026-10-16T03:36:22Z. Helpers /tmp/raid-t013-practice-portal-*.py; ownedbuild /tmp/raid-t008-build-source-2xavo66l; consumertmp path pointer.
+
+---
+
+# Practice portal backend TDD underway — 2026-10-15T23:54:10.775208+00:00 — Codex /root
+
+D7PR228 postCI WIP reconciled/preserved. D8 task acceptance docs/tasks/2026-10-16-T013-practice-portal.md; discovery/progress stubs + realPG behavior tests prepared beforeimplementation. Next actual8RED→implement currentcatalog/privateownread, protectedstart-submit HTTP/Root, owninstalledconsumer/gates/publication; subsequent UI. Originalbranch/main03b7/solewriter/noagents; originalwindow03:36:22Z. Fullindependent/UAT/releaseopen; no liveflags/seeds/providers.
+
+---
+
+# Private current assessment view merged; trial portal next — 2026-10-15T23:50:12.217333+00:00 — Codex /root
+
+PR228/main03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c entiretree==pine00ac18/all612source52consumer exact; implementation8a060ba.198selected(35DB-HTTP-host32.98s+162pure-oldSSR5.21s+1external1.57s)/12browser(10dev+2prod18.2s)/55planning49.236s/currentownPG35HTTPReactconsumer/typegen-types-production/lint-audit-freshformat/full549sourcePASS. TimedSELF1017.983s. Actual Staging38825458411 billingbefore0steps/no image-deploymentverified. Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. PostCI metadata WIP preservednextcommit. Full27+7/independent/UAT/business/release/parent55open; allownedPGstop0/serversportclosed/no preview.
+
+Next D8 actual public-safe trial browse/start/private own submission portal/APIUI using existingactualC1/C2/C3 sources, exactoriginaldefinition/rubric/consent, currentownSession/HUMAN and idempotency. No rankfrompractice, no capacity/money/grants, no unauthorizedanswer/codepublicroutes. Source listing mustbindexplicittrustedcatalog/currentactive taxonomy/currentAVAILABLEdefs; newstartcurrentCAS/attemptlimit/cooldown existingCore; historicalaccepted starts/submissions/replaysremainafterretirement/writeoff undercurrentownread. Keep expectedMinutes as expectation, accommodationsunsupportedSource failclosed, actualtool/AI declarations honest. ExistingpureStoredPracticeTrialDefinitionSchema/browser contracts usable; C2/C3storage DTO imports areNodecrypto—clientmustonlytypeimport or consume a separate pure thin DTO, do notduplicate validators/hiddenRootdeps. Need namespace scope onlynewstarts (acceptedhistory/retry preserved), boundedBody+session/origin/rate+stableidempotency/privateNoStore+escapedanswers, synthetic realPG35desktop-mobile and ownconsuminghost/R15 docs/genuineTDD/currentgates/cleanup/sourcepin/publication.
+
+SourceC1readPracticeTrialDefinition current/historicalordinarySession; C1publication locksUser→catalog12012/FORSHARE→trial12013; newlistingcanholdsamecatalogscope+row forcoherence. C2readPracticeTrialStart UUIDownonly and lockPracticeTrialParticipant exportactualHUMAN; C3readPracticeTrialSubmission UUIDownonly and submitpreservesexact answer40000/explain4000/disclosure4000/tools50. OriginalC2STARTED andC3ownershipUNCONFIRMED immutable—notcurrentprogress/evaluatorfinding. Rootflags publication/attempts/submissions alreadydefaultoff; newportalreads/defaultcatalogexplicitneeded. Latest safe nestedpreviewrunner /tmp/raid-t013-own-assessment-view-{db-run,browser-run}.py actualSIGTERMRED→GREEN ownsessiongroups/outer15s/deadline45s/actualstate; renameownname/label/paths fornewtask. Rootownbuildsnapshot /tmp/raid-t008-build-source-2xavo66l/generated35/actualdeps.
+
+Active original12hwindow through2026-10-16T03:36:22Z/09:21Nepal; samebranch/solewriter/no delegation/branchswitch/liveflag/real seed/provider/billing changes. Read installedNext16.3.8relevantguides beforeactualnewAPI/UI. Preserveevidence/unrelatedservices; no human recommendation/testing wait. Latestpublicsite/SSH failureshistoricalnotrerun withoutaccesschange; workstate toolabsentobligation retained.
+
+---
+
 # Own assessment implementation committed; source pin and publication — 2026-10-15T23:44:35.913190+00:00 — Codex /root
 
 Implementation8a060baf78cb77250b4ea75430b0955dae87de61 on originalbranch.198selected+12browser+55planning/currentRoottypes-production/ownPG35HTTPReactconsumer/source612-52-full549/lint-audit-formatPASS; timedSELF1017.983s; validator exactly27+7missing/no metadataerrors. Allownedresourcesstopped/no preview. Next metadata-onlypin/push/Ref55PR/matched-headmerge/actualCI; then actualtrialbrowse-start-submit/reviewerAPIUI through03:36:22Z. FullT013/independent/UAT/business/releaseopen; no liveflags/seeds/providers. Samebranch/solewriter/no delegation.

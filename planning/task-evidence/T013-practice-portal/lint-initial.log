@@ -1,0 +1,31 @@
+
+/srv/projects/useRAIDfun/useRAID-fun/src/skills/practice-portal-storage.ts
+  95:35  warning  '_publisher' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/practice-portal-db.test.ts
+    3:10  warning  'PrismaClient' is defined but never used                         @typescript-eslint/no-unused-vars
+    8:3   warning  'createPrismaCommandTransaction' is defined but never used       @typescript-eslint/no-unused-vars
+   10:10  warning  'executeIdempotentCommand' is defined but never used             @typescript-eslint/no-unused-vars
+   15:3   warning  'lockPracticeTrialParticipant' is defined but never used         @typescript-eslint/no-unused-vars
+   20:3   warning  'PracticeTrialSubmissionStorageError' is defined but never used  @typescript-eslint/no-unused-vars
+   22:10  warning  'SkillAssessmentSnapshotSchema' is defined but never used        @typescript-eslint/no-unused-vars
+  145:7   warning  'read' is assigned a value but never used                        @typescript-eslint/no-unused-vars
+  147:7   warning  'counts' is assigned a value but never used                      @typescript-eslint/no-unused-vars
+  267:59  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  274:23  warning  Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+
+/srv/projects/useRAIDfun/useRAID-fun/tests/practice-portal-host.test.ts
+   11:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   11:49  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:52  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:64  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   55:78  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:60  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   77:68  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  100:69  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 23 problems (0 errors, 23 warnings)

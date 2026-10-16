@@ -1,0 +1,19 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-portal-host.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-portal-host.test.ts [ tests/practice-portal-host.test.ts ]
+Error: Cannot find module '/src/lib/practice-portal-host' imported from /srv/projects/useRAIDfun/useRAID-fun/tests/practice-portal-host.test.ts
+ ❯ tests/practice-portal-host.test.ts:8:1
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  05:42:26
+   Duration  264ms (transform 68ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)

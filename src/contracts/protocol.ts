@@ -89,6 +89,14 @@ export const ERROR_CONTRACT = {
     'This request key was already used for a different command.',
     false,
   ],
+  PRACTICE_ATTEMPT_LIMIT_REACHED: [409, 'The published attempt limit has been reached.', false],
+  PRACTICE_COOLDOWN_ACTIVE: [409, 'The published retry waiting period is still active.', false],
+  PRACTICE_ALREADY_SUBMITTED: [
+    409,
+    'This attempt already has a saved submission. Refresh to view it.',
+    false,
+  ],
+  PRACTICE_ACCOMMODATION_UNAVAILABLE: [422, 'The requested accommodation is unavailable.', false],
   RATE_LIMITED: [429, 'Too many requests. Try again later.', true],
   SERVICE_UNAVAILABLE: [503, 'Service unavailable. Please try again.', true],
 } as const;

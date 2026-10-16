@@ -1,0 +1,223 @@
+
+ RUN  v4.1.11 /srv/projects/useRAIDfun/useRAID-fun
+
+ ❯ tests/practice-portal-http.test.ts (24 tests | 24 failed) 78ms
+     × routes exact own actor/source/key through invariant-owning start command 12ms
+     × preserves exact private submission bytes and truthful AI declaration 2ms
+     × delivers only owned validated progress with coherent original consent and source 1ms
+     × denies actor before private resource or command work 1ms
+     × denies rateLimit before private resource or command work 1ms
+     × checks origin before reading body or dispatching a write 1ms
+     × rejects caller-forged participantId 1ms
+     × rejects caller-forged actor 1ms
+     × rejects caller-forged assessment 1ms
+     × rejects caller-forged verifiedRank 1ms
+     × rejects private query selectors and binds submitted start to path 1ms
+     × rejects incoherent start output without private leakage 1ms
+     × rejects incoherent submit output without private leakage 1ms
+     × rejects cross-participant or rubric-mismatched progress from a faulty host 1ms
+     × maps missing resource/current conflict and sanitizes unavailable internal failures 1ms
+     × accepts valid maximum-size Unicode answer above old16KiB HTTP cap 1ms
+     × rejects oversized streamed body, missing key and wrong content type before host writes 1ms
+     × lists safe bounded catalog and accepts only an exclusive after cursor 1ms
+     × preserves default16KiB and allows explicitly bounded larger feature payload 34ms
+     × rejects invalid host maximum 0 7ms
+     × rejects invalid host maximum -1 2ms
+     × rejects invalid host maximum 1.5 2ms
+     × rejects invalid host maximum 1048577 1ms
+     × rejects invalid host maximum NaN 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > routes exact own actor/source/key through invariant-owning start command
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:17:112
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > preserves exact private submission bytes and truthful AI declaration
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:18:108
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > delivers only owned validated progress with coherent original consent and source
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:19:115
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > denies actor before private resource or command work
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > denies rateLimit before private resource or command work
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:20:122
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > checks origin before reading body or dispatching a write
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:21:96
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects caller-forged participantId
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects caller-forged actor
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects caller-forged assessment
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects caller-forged verifiedRank
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:22:129
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects private query selectors and binds submitted start to path
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:23:105
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects incoherent start output without private leakage
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects incoherent submit output without private leakage
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:24:122
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects cross-participant or rubric-mismatched progress from a faulty host
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:25:114
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > maps missing resource/current conflict and sanitizes unavailable internal failures
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:26:122
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > accepts valid maximum-size Unicode answer above old16KiB HTTP cap
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:27:105
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > rejects oversized streamed body, missing key and wrong content type before host writes
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:28:126
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > T013D8 portable private practice HTTP > lists safe bounded catalog and accepts only an exclusive after cursor
+Error: NOT_IMPLEMENTED
+ ❯ createPracticePortalHandlers src/skills/practice-portal-http.ts:1:75
+      1| export function createPracticePortalHandlers(_host: unknown): any { th…
+       |                                                                           ^
+      2|
+ ❯ setup tests/practice-portal-http.test.ts:12:553
+ ❯ tests/practice-portal-http.test.ts:29:109
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > bounded JSON explicit transport limit > preserves default16KiB and allows explicitly bounded larger feature payload
+Error: INVALID_COMMAND
+ ❯ readBoundedJson src/http-contracts/json.ts:28:36
+     26|       if (next.done) break;
+     27|       total += next.value.byteLength;
+     28|       if (total > MAX_BYTES) throw new JsonBodyFailure(413);
+       |                                    ^
+     29|       parts.push(next.value);
+     30|     }
+ ❯ tests/practice-portal-http.test.ts:32:223
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/24]⎯
+
+ FAIL  tests/practice-portal-http.test.ts > bounded JSON explicit transport limit > rejects invalid host maximum 0
+ FAIL  tests/practice-portal-http.test.ts > bounded JSON explicit transport limit > rejects invalid host maximum -1
+ FAIL  tests/practice-portal-http.test.ts > bounded JSON explicit transport limit > rejects invalid host maximum 1.5
+ FAIL  tests/practice-portal-http.test.ts > bounded JSON explicit transport limit > rejects invalid host maximum 1048577
+ FAIL  tests/practice-portal-http.test.ts > bounded JSON explicit transport limit > rejects invalid host maximum NaN
+AssertionError: promise resolved "{ version: 'v1', …(2) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "accommodationReference": null,
++   "definitionReference": {
++     "recordId": "synthetic-frontend-trial",
++     "revision": 2,
++   },
++   "version": "v1",
+  }
+
+ ❯ tests/practice-portal-http.test.ts:33:150
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/24]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  24 failed (24)
+   Start at  05:40:40
+   Duration  707ms (transform 239ms, setup 0ms, import 383ms, tests 78ms, environment 0ms)

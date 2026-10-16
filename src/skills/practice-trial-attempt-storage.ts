@@ -183,10 +183,25 @@ async function load(
 export async function startPracticeTrial(
   tx: CommandReceiptTransaction,
   command: StartPracticeTrialCommand,
-  options: { readonly allowNewWrites: boolean },
+  options: {
+    readonly allowNewWrites: boolean;
+    readonly canStart?: (
+      scope: Readonly<{
+        accountId: string;
+        participantId: string;
+        taxonomyId: string;
+        skillId: string;
+        skillDomain: string;
+      }>,
+    ) => boolean;
+  },
 ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; start: PracticeTrialStartRecord }> {
   const actor = actorValid(command?.actor);
-  if (typeof options?.allowNewWrites !== 'boolean') fail('STORAGE_CONTRACT');
+  if (
+    typeof options?.allowNewWrites !== 'boolean' ||
+    (options.canStart !== undefined && typeof options.canStart !== 'function')
+  )
+    fail('STORAGE_CONTRACT');
   const parsed = StartPracticeTrialInputSchema.safeParse(command.input);
   if (!parsed.success) fail('INVALID_INPUT');
   const input = parsed.data;
@@ -242,6 +257,23 @@ export async function startPracticeTrial(
         if (saved.availability !== 'AVAILABLE') fail('DEFINITION_UNAVAILABLE');
         const taxonomy = await readPublishedSkillTaxonomy(tx, actor, taxonomyId);
         if (!taxonomy || taxonomy.revision !== catalogs[0].revision) fail('STORAGE_CONTRACT');
+        const startScope = Object.freeze({
+          accountId: actor.accountId,
+          participantId: participant.id,
+          taxonomyId: taxonomy.id,
+          skillId: saved.definition.skillId,
+          skillDomain: saved.definition.skillDomain,
+        });
+        const checkScope = () => {
+          if (options.canStart === undefined) return;
+          try {
+            if (options.canStart(startScope) === true) return;
+          } catch {
+            /* Host policy failure denies new intent. */
+          }
+          fail('RESOURCE_UNAVAILABLE');
+        };
+        checkScope();
         await query(tx, 'SELECT pg_advisory_xact_lock(hashtextextended($1,12015))::text', [
           participant.id + ':' + trialId,
         ]);
@@ -307,6 +339,7 @@ export async function startPracticeTrial(
             );
           throw error;
         }
+        checkScope();
         const inserted = await query<{ id: string }>(
           tx,
           'INSERT INTO "PracticeTrialStart"("id","participantId","accountId","trialId","definitionVersionId","taxonomyId","taxonomyRevision","taxonomyVersionId","attemptNumber","startedAt","receiptId","requestId") VALUES($1::uuid,$2::uuid,$3,$4,$5::uuid,$6,$7::int,$8::uuid,$9::int,$10::timestamptz,$11::uuid,$12) RETURNING "id"::text',
@@ -327,6 +360,7 @@ export async function startPracticeTrial(
         );
         if (inserted.length !== 1 || inserted[0].id !== clock.id) fail('STORAGE_CONTRACT');
         await authorize(tx, actor);
+        checkScope();
         return {
           resultRef: clock.id,
           events: [
