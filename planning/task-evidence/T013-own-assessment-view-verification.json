@@ -1,7 +1,7 @@
 {
   "task_id": "T013",
   "scope": "T013D7 actual own current skill-assessment summary/private HTTP/React view and actual point-in-time eligibility source; no admission grant",
-  "status": "SELF-EVALUATED bounded source gates; fullT013 NOT VERIFIED",
+  "status": "MERGED bounded own assessment source/view SELF-EVALUATED; fullT013 NOT VERIFIED",
   "implementer": "Codex /root",
   "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
   "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
@@ -181,45 +181,45 @@
   "ci": {
     "planning-contracts": {
       "result": "NOT VERIFIED",
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
-      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38825458411 failed before0steps with official account billing/spending-limit annotation. No image/deployment verified; Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. Local evidence separate."
     },
     "static": {
       "result": "NOT VERIFIED",
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
-      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38825458411 failed before0steps with official account billing/spending-limit annotation. No image/deployment verified; Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. Local evidence separate."
     },
     "dependency-security": {
       "result": "NOT VERIFIED",
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
-      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38825458411 failed before0steps with official account billing/spending-limit annotation. No image/deployment verified; Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. Local evidence separate."
     },
     "test": {
       "result": "NOT VERIFIED",
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
-      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38825458411 failed before0steps with official account billing/spending-limit annotation. No image/deployment verified; Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. Local evidence separate."
     },
     "docker": {
       "result": "NOT VERIFIED",
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
-      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38825458411 failed before0steps with official account billing/spending-limit annotation. No image/deployment verified; Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. Local evidence separate."
     },
     "browser": {
       "result": "NOT VERIFIED",
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
-      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38825458411 failed before0steps with official account billing/spending-limit annotation. No image/deployment verified; Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. Local evidence separate."
     },
     "ci-gate": {
       "result": "NOT VERIFIED",
-      "sha": "0e6b55fcdbd12f9648f2185301bb59649e5d2e70",
-      "evidence_url": "planning/task-evidence/T013-own-assessment-view/review.json",
-      "observed": "Future exact mergedmain hosted result pending; current0e6Staging38818110343billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch. Local verification separate."
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Actual exact-main Staging38825458411 failed before0steps with official account billing/spending-limit annotation. No image/deployment verified; Manualoriginaldisabled/APIverified/no restore/no unchangedredispatch. Local evidence separate."
     }
   },
   "tdd": {
@@ -245,5 +245,6 @@
       "result": "PASS",
       "observed": "198freshselectedPASS=35DB/HTTP-host32.98s+162pure/oldSSR5.21s+1external1.57s;10dev+2prod18.2s browser (dev2retention refresh29.4s not doublecounted);55planning49.236s. Current typegen/strict/productionWebpack/consumer52/audit/lint0/wholeformat/source612-full549PASS; exact generation35/25oldwholelint baseline reused; final config-only strictPASS. TimedSELF1017.983s; no fullT013/independent/hosted acceptance."
     }
-  }
+  },
+  "merged_main_sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c"
 }

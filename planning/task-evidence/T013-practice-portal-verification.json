@@ -1,0 +1,249 @@
+{
+  "task_id": "T013",
+  "scope": "T013D8 protected current trial catalog/own progress/canonical start-submit HTTP boundary",
+  "status": "SELF-EVALUATED bounded backend; fullT013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent reviewer not assigned/authorized",
+  "blueprint_sha256": "7dfe74a5c324a1eddbf2c4a92d38e1f83390928045fec0a715918d80df879348",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-16-T013-practice-portal.md",
+  "migration_rollback": "No new migration. Disable portal reads/new-write flags; preserve original starts/submissions/private receipts/audits. Actual full35Root/minimal30consumer schema, no destructive rollback.",
+  "dependency_evidence": "Actual own Session/HUMAN/current explicitcatalog/currentactive taxonomy; C1publication catalog12012; C2namespacecallback/new intent; C3privateownoriginalterms/12016progress; independently npm-installed minimalPG HTTP host39sources.",
+  "open_decisions": "O09/O11/calibration/operating-appeal-retention/independent-UAT-business-release OPEN. No S/automation/rank or real policy seed. RaiderUI next.",
+  "release_gate_disposition": "Full parent55/independent/UAT/business/release NOT VERIFIED; bounded stage Git authority DEC-2026-10-12-03.",
+  "code_source_sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+  "candidate_sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+  "source_identity": "Base 03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c plus WIP/610source39consumer/full561build proof; implementation pin follows",
+  "verification_environment": "Node22.23.1/Next16.3.8Webpack/Vitest4.1.11/Zod4.6.5/PG16pinned35DDL; own23packages24audited0vuln; no browser UI/server in this slice",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C01",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C02",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C03",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C04",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C05",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C06",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C07",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C08",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C09",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C10",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C11",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C12",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C13",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C14",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C15",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C16",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C17",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C18",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A01",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-A02",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W01",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W02",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-W03",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C19",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C20",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C21",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md00\u201304/07/08/13/24.6\u20138/25.3/26/28\u201329/33.7/34/35/39\u201340; T013-C22",
+      "observed": "Bounded D8 author evidence only: protected currentcatalog/actualownprogress/canonical original start-submit HTTP/privateNoStore/boundedbody512KiB/origin-rate-identity/strictoutputcoherence/current namespace-write callbacks/replay preservation.346selected+55planning/ownminimalPGHTTP/static/sourcePASS. Full numbered criterion/independent/UAT/business/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; docs/raid-practice-portal.md; docs/tasks/2026-10-16-T013-practice-portal.md"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Prior mainStaging38825458411 billingbefore0steps; current exactmain observation follows publication. Manualoriginaldisabled/no restore/no unchangedredispatch."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Prior mainStaging38825458411 billingbefore0steps; current exactmain observation follows publication. Manualoriginaldisabled/no restore/no unchangedredispatch."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Prior mainStaging38825458411 billingbefore0steps; current exactmain observation follows publication. Manualoriginaldisabled/no restore/no unchangedredispatch."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Prior mainStaging38825458411 billingbefore0steps; current exactmain observation follows publication. Manualoriginaldisabled/no restore/no unchangedredispatch."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Prior mainStaging38825458411 billingbefore0steps; current exactmain observation follows publication. Manualoriginaldisabled/no restore/no unchangedredispatch."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Prior mainStaging38825458411 billingbefore0steps; current exactmain observation follows publication. Manualoriginaldisabled/no restore/no unchangedredispatch."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "evidence_url": "planning/task-evidence/T013-own-assessment-view/hosted-staging-result.json",
+      "observed": "Prior mainStaging38825458411 billingbefore0steps; current exactmain observation follows publication. Manualoriginaldisabled/no restore/no unchangedredispatch."
+    }
+  },
+  "tdd": {
+    "red": {
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "command": "Actual pinnedPG35 discovery/progress stubs, HTTP/body behavior tests before implementation and actual3scope failures before additive command callbacks; Root missing module",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/db-red.log; http-red.log; scope-red.log; host-red.log; prepare.py; scopes.py",
+      "result": "FAIL",
+      "expected_failure": "Current safe catalog/private own progress, original command namespace/currentwrite gate, bounded authorized privateHTTP must work without callerforgery; unsupported boundary fails before implementation",
+      "observed_failure": "8actualDBRED4.83s;24HTTP/bodyRED0.707s;3actualscopeRED8controlsPASS4.61s;Rootmissingmodule suite."
+    },
+    "green": {
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "command": "ActualPG35 core/new SQL +portableHTTP/Root/defaultbody/protocol boundaries +own minimalPG/HTTP consumer",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/core-regression.log; adverse.log; affected-pure.log; affected-boundaries.log; external-receipts.log; consumer-current.log; source-hashes.json",
+      "result": "PASS",
+      "observed": "346unique selectedPASS=115coreSQL+14currentD8SQL+216pure+1actualexternal; currentown39-source23installed24audited0vuln/strict/minimalPGHTTP PASS; allownedstop0."
+    },
+    "refactor": {
+      "sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+      "command": "Source/privacy/current waits/pagination/adverse boundaries, Nexttypegen-strict-production/finaltest-onlystrict/planning/lint/format/sourceproof; exact validschema/audit/oldlint evidence reused",
+      "evidence_url": "planning/task-evidence/T013-practice-portal/review.json; planning.log; code-check.log; final-typecheck.log; lint.log; source-hashes.json; consumer-source-hashes.json; build-source-probe.json; verified-whole-format.log",
+      "result": "PASS",
+      "observed": "346selected/55planning/static/ownconsumer/source610-39-full561PASS; freshwholeformatter required beforecommit; initialfailures/strictfixtures retained andcorrected; no fullindependent/hosted/issueacceptance."
+    }
+  }
+}

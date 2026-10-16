@@ -1,0 +1,17 @@
+src/skills/practice-portal-contracts.ts 111ms
+src/skills/practice-portal-http.ts 183ms
+src/skills/practice-portal-storage.ts 66ms
+src/lib/practice-portal-host.ts 47ms
+src/lib/practice-portal-http.ts 31ms
+src/skills/practice-trial-attempt-storage.ts 163ms
+src/skills/practice-trial-submission-storage.ts 88ms
+src/http-contracts/json.ts 17ms
+src/contracts/protocol.ts 29ms
+tests/practice-portal-db.test.ts 85ms
+tests/practice-portal-host.test.ts 40ms
+tests/practice-portal-http.test.ts 109ms
+src/app/api/v1/practice/route.ts 2ms
+src/app/api/v1/practice/starts/[startId]/route.ts 4ms
+src/app/api/v1/practice/starts/[startId]/submission/route.ts 3ms
+src/app/api/v1/practice/starts/route.ts 2ms
+docs/tasks/2026-10-16-T013-practice-portal.md 48ms (unchanged)

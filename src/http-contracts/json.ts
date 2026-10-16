@@ -4,14 +4,20 @@ export class JsonBodyFailure extends Error {
     super('INVALID_COMMAND');
   }
 }
-export async function readBoundedJson(request: Request) {
+export async function readBoundedJson(
+  request: Request,
+  options?: { readonly maximumBytes: number },
+) {
+  const maximumBytes = options === undefined ? MAX_BYTES : options.maximumBytes;
+  if (!Number.isSafeInteger(maximumBytes) || maximumBytes < 1 || maximumBytes > 1048576)
+    throw new JsonBodyFailure(422);
   if (
     request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json'
   )
     throw new JsonBodyFailure(415);
   const length = request.headers.get('content-length');
-  if (length !== null && (!/^\d+$/.test(length) || Number(length) > MAX_BYTES))
-    throw new JsonBodyFailure(Number(length) > MAX_BYTES ? 413 : 422);
+  if (length !== null && (!/^\d+$/.test(length) || Number(length) > maximumBytes))
+    throw new JsonBodyFailure(Number(length) > maximumBytes ? 413 : 422);
   if (!request.body) throw new JsonBodyFailure(422);
   const reader = request.body.getReader();
   let total = 0;
@@ -25,7 +31,7 @@ export async function readBoundedJson(request: Request) {
       const next = await Promise.race([reader.read(), timeout]);
       if (next.done) break;
       total += next.value.byteLength;
-      if (total > MAX_BYTES) throw new JsonBodyFailure(413);
+      if (total > maximumBytes) throw new JsonBodyFailure(413);
       parts.push(next.value);
     }
     const bytes = new Uint8Array(total);

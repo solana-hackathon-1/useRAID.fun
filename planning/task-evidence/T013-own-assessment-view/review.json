@@ -57,7 +57,7 @@
   ],
   "resources": "All actual normal/failure current fixturesstop0/Runningfalse; dev/prod/managed server portsclosed, poolsended. Actual nested interruption RED/GREEN retained. Existing Chrome147 declared local host dependency/Playwright1.63; pending new managed binary installer stopped only after PID/cwd verification, no new install claimed. Preserve unrelated services/volumes/images/evidence.",
   "independent_UAT_business_release": "NOT VERIFIED",
-  "pending": "Authorized implementation/sourcepin commits/push/Ref55PR/matchedheadmerge/exact-mainCI; then actualtrial browse/start/submit and reviewerAPIUI",
+  "pending": "Actual trial browse/start/submit and reviewerAPIUI; fullT013/independent/UAT/business/release open",
   "ended_at": "2026-10-15T23:43:41.785456+00:00",
   "elapsed_seconds": 1017.983,
   "branch": "codex/t006-linked-wallet-signin",
@@ -80,5 +80,12 @@
     "Live Rootflags/catalog-policy-reviewer seeds/providers/billing/manualworkflow enablement or unchanged redispatch not performed"
   ],
   "implementation_sha": "8a060baf78cb77250b4ea75430b0955dae87de61",
-  "completion_validator": "Expectedexit1 exactly27criteria+7hosted missing, no metadataerrors; completion.log"
+  "completion_validator": "Expectedexit1 exactly27criteria+7hosted missing, no metadataerrors; completion.log",
+  "merged_main_sha": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+  "source_pin_sha": "e00ac18e496d5e5c7961bc2465b52afdc9ba8131",
+  "pull_request": "https://github.com/solana-hackathon-1/useRAID.fun/pull/228",
+  "full_main_tree_equals_tested_pin": true,
+  "exact_main_source_files": 612,
+  "exact_main_consumer_files": 52,
+  "hosted_result": "Staging38825458411 billingbefore0steps/manualoriginaldisabled/no restore/no unchangedredispatch"
 }

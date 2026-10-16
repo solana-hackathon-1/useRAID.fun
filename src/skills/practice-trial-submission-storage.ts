@@ -261,10 +261,14 @@ function same(
 export async function submitPracticeTrial(
   tx: CommandReceiptTransaction,
   command: SubmitPracticeTrialCommand,
-  options: { readonly allowNewWrites: boolean },
+  options: { readonly allowNewWrites: boolean; readonly canSubmit?: () => boolean },
 ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTrialSubmissionRecord }> {
   const actor = actorValid(command?.actor);
-  if (typeof options?.allowNewWrites !== 'boolean') fail('STORAGE_CONTRACT');
+  if (
+    typeof options?.allowNewWrites !== 'boolean' ||
+    (options.canSubmit !== undefined && typeof options.canSubmit !== 'function')
+  )
+    fail('STORAGE_CONTRACT');
   const parsed = SubmitPracticeTrialInputSchema.safeParse(command.input);
   if (!parsed.success) fail('INVALID_INPUT');
   const input = parsed.data;
@@ -282,6 +286,16 @@ export async function submitPracticeTrial(
       async ({ receiptId }) => {
         await lockSkillStorageActor(tx, actor);
         if (!options.allowNewWrites) fail('WRITES_DISABLED');
+        const checkScope = () => {
+          if (options.canSubmit === undefined) return;
+          try {
+            if (options.canSubmit() === true) return;
+          } catch {
+            /* Fail closed. */
+          }
+          fail('RESOURCE_UNAVAILABLE');
+        };
+        checkScope();
         const participant = await owner(tx, actor),
           start = await acceptedStart(tx, actor, input.startId);
         if (start.participantId !== participant.id) fail('STORAGE_CONTRACT');
@@ -320,6 +334,7 @@ export async function submitPracticeTrial(
           clock.now.getTime() < Date.parse(start.startedAt)
         )
           fail('STORAGE_CONTRACT');
+        checkScope();
         const inserted = await query<{ id: string }>(
           tx,
           'INSERT INTO "PracticeTrialSubmission"("id","startId","participantId","accountId","answer","explanation","toolsUsed","aiAssistanceUsed","assistanceDisclosure","submittedAt","receiptId","requestId") VALUES($1::uuid,$2::uuid,$3::uuid,$4,$5,$6,$7::jsonb,$8::boolean,$9,$10::timestamptz,$11::uuid,$12) RETURNING "id"::text',
@@ -340,6 +355,7 @@ export async function submitPracticeTrial(
         );
         if (inserted.length !== 1 || inserted[0].id !== clock.id) fail('STORAGE_CONTRACT');
         await owner(tx, actor);
+        checkScope();
         return {
           resultRef: clock.id,
           events: [

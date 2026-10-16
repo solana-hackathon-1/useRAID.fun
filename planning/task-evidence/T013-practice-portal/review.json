@@ -1,0 +1,43 @@
+{
+  "status": "SELF-EVALUATED",
+  "started_utc": "2026-10-16T00:01:49.741377+00:00",
+  "agent": "Codex /root",
+  "base_head": "03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c",
+  "task": "T013D8 protected practice discovery/start/private submission HTTP",
+  "independent": "NOT VERIFIED",
+  "browser_preview": "Not applicable to API-only slice; subsequent UI owns real browser preview",
+  "prior_wip": "PR228 postCI metadata preserved",
+  "ended_utc": "2026-10-16T00:06:17.387608+00:00",
+  "elapsed_seconds": 267.646231,
+  "source_identity": "Original branch base 03b7fc3f56a0c0dd633fb27c9e46b69d70c9208c plus recorded WIP; source-hashes610/consumer39/full561 build code exact; metadata-only pin follows",
+  "requirements": "R06/R12/R15/R16/I05/I06/I07/I10/I13; actual own User/Session/HUMAN/trusted catalog/current definition/original accepted start/private submission/receipt; no rank/access/capacity/money",
+  "actual_checks": {
+    "selected": "346 unique selected PASS =115original C2/C3 SQL +14current D8 SQL +216pure HTTP/host/protocol/boundaries +1actualexternal receipts; earlier repeated11D8 not doublecounted",
+    "sql": "Original core regression126PASS64.36s included11D8; current14D8PASS12.38s; all35DDL realPG16",
+    "pure": "162PASS5.90s/7files +54PASS2.60s/5files",
+    "external_receipts": "1PASS2.69s;3nontarget excluded",
+    "planning": "55PASS55.507s",
+    "consumer": "Own23installed24audited0vulnerabilities/npmci/strict/minimalPG through30/actualprivateHTTP source39 PASS; current source refresh/runtime reverified",
+    "static": "Current Nexttypegen/strict/productionWebpack PASS; final test-only strict PASS; changed17fileslint0errors0warnings; currentfull561buildsource/610relevant/39consumer exact",
+    "format": "Fresh whole Gittracked+nonignoredWIP formatter PASS; Root-owned ignored T007 artifacts preserved",
+    "completion": "Expectedexit1 exactly34missing=27criteria+7hosted; no metadataerrors"
+  },
+  "reused": {
+    "schema": "Exact35Prisma/schema/dependency/config/generated client unchanged fromD7; no migration",
+    "audit": "D7 Root moderate-or-higher approved unexpired advisory policy, unchanged package-lock/package/config source; not Root0advisory claim",
+    "lint_baseline": "D7wholeRoot25existingwarnings; targetednew/modifiedfiles0",
+    "production": "Runtime/route source exact matches successful current build; subsequent new tests/import cleanup verified finalstrict"
+  },
+  "findings_fixes": [
+    "Initial8actualDBRED4.83s\u21928GREEN3.30s;24HTTP/body-optionRED0.707s\u219224GREEN1.83s;Root missing-module suite before Rootimplementation",
+    "New optional current namespace/write callbacks genuine3RED8controlsPASS4.61s before core change; final current regression14PASS",
+    "Initial40PASS2FAIL used absent Root-generated Prisma delegates in test counts; corrected to actual SQL counts, assertions retained; canonical schema35 generated separately in owned build",
+    "Initialstrict failed nullable saved-submission test values and dynamicmock index; narrowed real expected values/constcases; no product assertion weakening",
+    "23initiallintwarnings from copied unused imports/mockany; removed/typeannotated, targetedlint0; source behavior retained",
+    "Real pagination52families50+2/nooverlap; actualSessionexpiry after12016wait; no submission/privatecolumnselect before foreign own-start authority",
+    "Current policy checks inside invariant-owning receipt command preserve receipt\u2192User lock order; no pre-read reversing receipt locks"
+  ],
+  "cleanup": "All owned normal/failure resources stop0/Runningfalse; fixture abe47c9c61931541359539a9798035989808a99c8fe8506376b2a39b7276acc1/raid-t013-practice-portal-auto-20261016/tasklabelT013-practice-portal; no server/listener started; D7 actual signal cleanup implementation reused with exact own names",
+  "skipped": "No browser-visible UI change; actual Raider UI/preview subsequent slice. No hosted rerun absent successful automatic staging/external billing change; no independent/UAT/business/release supplied",
+  "pending": "Explicit implementation commit/pin/push/matchedheadmerge/actualCI; then RaiderUI; full27+7/independent/UAT/business/release open"
+}
