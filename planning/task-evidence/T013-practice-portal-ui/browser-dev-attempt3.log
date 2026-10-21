@@ -1,0 +1,91 @@
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 8 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  1 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission (5.4s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  2 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired (3.3s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  3 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data (2.1s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  4 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:141:1 › AI declaration is unavailable when the original definition prohibits AI (871ms)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  5 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission (2.8s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  6 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired (3.2s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✘  7 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data (1.9s)
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  8 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:141:1 › AI declaration is unavailable when the original definition prohibits AI (868ms)
+
+
+  1) [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('meta[name="robots"]')
+    Expected pattern: /noindex/
+    Error: strict mode violation: locator('meta[name="robots"]') resolved to 3 elements:
+        1) <meta name="robots" content="noindex, nofollow"/> aka locator('meta[name="robots"]').first()
+        2) <meta name="robots" content="noindex"/> aka locator('meta[name="robots"]').nth(1)
+        3) <meta name="robots" content="noindex"/> aka locator('body meta[name="robots"]')
+
+    Call log:
+      - Expect "toHaveAttribute" locator('meta[name="robots"]') with timeout 5000ms
+      - waiting for locator('meta[name="robots"]')
+
+
+      133 |   await expect(o.getByRole('heading', { name: /couldn.t be found/ })).toBeVisible();
+      134 |   await expect(o.getByText('Synthetic interface exercise')).toHaveCount(0);
+    > 135 |   await expect(o.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+          |                                                  ^
+      136 |   const api = await o.request.get('/api/v1/practice/starts/' + startId);
+      137 |   expect(api.status()).toBe(404);
+      138 |   await other.close();
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:135:50
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-desktop/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-desktop/error-context.md
+
+  2) [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('meta[name="robots"]')
+    Expected pattern: /noindex/
+    Error: strict mode violation: locator('meta[name="robots"]') resolved to 3 elements:
+        1) <meta name="robots" content="noindex, nofollow"/> aka locator('meta[name="robots"]').first()
+        2) <meta name="robots" content="noindex"/> aka locator('meta[name="robots"]').nth(1)
+        3) <meta name="robots" content="noindex"/> aka locator('body meta[name="robots"]')
+
+    Call log:
+      - Expect "toHaveAttribute" locator('meta[name="robots"]') with timeout 5000ms
+      - waiting for locator('meta[name="robots"]')
+
+
+      133 |   await expect(o.getByRole('heading', { name: /couldn.t be found/ })).toBeVisible();
+      134 |   await expect(o.getByText('Synthetic interface exercise')).toHaveCount(0);
+    > 135 |   await expect(o.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+          |                                                  ^
+      136 |   const api = await o.request.get('/api/v1/practice/starts/' + startId);
+      137 |   expect(api.status()).toBe(404);
+      138 |   await other.close();
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:135:50
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-mobile/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-mobile/error-context.md
+
+  2 failed
+    [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+    [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+  6 passed (25.5s)

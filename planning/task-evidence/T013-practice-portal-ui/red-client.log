@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-trial-portal-client.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-trial-portal-client.test.ts [ tests/practice-trial-portal-client.test.ts ]
+Error: Cannot find module '../src/skills/practice-portal-client' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-trial-portal-client.test.ts
+ ❯ tests/practice-trial-portal-client.test.ts:4:1
+      2| import { describe, expect, it, vi } from 'vitest';
+      3| import { definition } from '../examples/skill-assessments/fixtures';
+      4| import {
+       | ^
+      5|   PracticePortalStartResultSchema,
+      6|   PracticePortalSubmitResultSchema,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  09:35:57
+   Duration  176ms (transform 24ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

@@ -63,6 +63,12 @@ export async function readPracticeProgressFromHost(actor: SkillTaxonomyActor, id
   requireRead();
   return result;
 }
+export function practiceStartConfiguration() {
+  return writeConfig('PRACTICE_TRIAL_ATTEMPTS_ENABLED');
+}
+export function practiceSubmitConfiguration() {
+  return writeConfig('PRACTICE_TRIAL_SUBMISSIONS_ENABLED');
+}
 function writeConfig(flag: string) {
   const writesAvailable = process.env[flag] === 'true';
   return { writesAvailable, unavailableReason: writesAvailable ? null : ('DISABLED' as const) };

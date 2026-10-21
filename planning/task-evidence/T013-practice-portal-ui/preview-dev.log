@@ -1,0 +1,32 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:3026
+- Network:       http://127.0.0.1:3026
+- Environments: .env
+✓ Ready in 299ms
+✓ Running next.config.ts took 56ms
+
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/practice 200 in 1580ms (next.js: 1105ms, application-code: 475ms)
+ GET /raider/practice 200 in 210ms (next.js: 1.7ms, application-code: 208ms)
+ GET /raider/practice 200 in 30ms (next.js: 4ms, application-code: 26ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /creator/account 200 in 416ms (next.js: 366ms, application-code: 51ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /creator?auth=unavailable 200 in 378ms (next.js: 239ms, application-code: 139ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET / 200 in 549ms (next.js: 451ms, application-code: 98ms)
+ POST /api/events 200 in 352ms (next.js: 329ms, application-code: 23ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /creator 200 in 150ms (next.js: 58ms, application-code: 92ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /launch 200 in 1626ms (next.js: 1437ms, application-code: 189ms)
+ GET /methodology 200 in 731ms (next.js: 427ms, application-code: 304ms)
+ GET /launch 200 in 13ms (next.js: 1.6ms, application-code: 12ms)
+ GET /methodology 200 in 24ms (next.js: 3ms, application-code: 21ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /raider/practive 404 in 472ms (next.js: 315ms, application-code: 157ms)
+ GET /raider 404 in 37ms (next.js: 3ms, application-code: 34ms)
+ GET /raider/practice 200 in 80ms (next.js: 23ms, application-code: 57ms)
+ GET / 200 in 74ms (next.js: 15ms, application-code: 60ms)
+ POST /api/events 200 in 31ms (next.js: 4ms, application-code: 27ms)
+[?25h

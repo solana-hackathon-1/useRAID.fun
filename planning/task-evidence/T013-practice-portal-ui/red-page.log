@@ -1,0 +1,3 @@
+ FAIL  tests/practice-trial-portal-page.test.ts [ tests/practice-trial-portal-page.test.ts ]
+Error: Cannot find module '/src/lib/practice-portal-page' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-trial-portal-page.test.ts
+ Test Files  1 failed (1)

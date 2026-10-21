@@ -1,0 +1,247 @@
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+Running 8 tests using 1 worker
+
+  ✘  1 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission (290ms)
+  ✘  2 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired (158ms)
+  ✘  3 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data (160ms)
+  ✘  4 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:138:1 › AI declaration is unavailable when the original definition prohibits AI (158ms)
+  ✘  5 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission (161ms)
+  ✘  6 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired (202ms)
+  ✘  7 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data (160ms)
+  ✘  8 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:138:1 › AI declaration is unavailable when the original definition prohibits AI (149ms)
+
+
+  1) [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:23:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-browse-sta-d5a24-reload-the-saved-submission-desktop/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-browse-sta-d5a24-reload-the-saved-submission-desktop/error-context.md
+
+  2) [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:77:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-continue-a-99aaf--after-the-trial-is-retired-desktop/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-continue-a-99aaf--after-the-trial-is-retired-desktop/error-context.md
+
+  3) [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:100:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-desktop/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-desktop/error-context.md
+
+  4) [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:138:1 › AI declaration is unavailable when the original definition prohibits AI 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:141:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-AI-declara-06e16-nal-definition-prohibits-AI-desktop/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-AI-declara-06e16-nal-definition-prohibits-AI-desktop/error-context.md
+
+  5) [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:23:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-browse-sta-d5a24-reload-the-saved-submission-mobile/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-browse-sta-d5a24-reload-the-saved-submission-mobile/error-context.md
+
+  6) [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:77:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-continue-a-99aaf--after-the-trial-is-retired-mobile/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-continue-a-99aaf--after-the-trial-is-retired-mobile/error-context.md
+
+  7) [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:100:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-mobile/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-signed-out-f1e72--never-reveal-practice-data-mobile/error-context.md
+
+  8) [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:138:1 › AI declaration is unavailable when the original definition prohibits AI 
+
+    SkillTaxonomyStorageError: INVALID_INPUT
+
+       at ../../src/skills/taxonomy-storage.ts:21
+
+      19 | export * from './taxonomy-storage-contracts';
+      20 | function fail(code: SkillTaxonomyStorageError['code']): never {
+    > 21 |   throw new SkillTaxonomyStorageError(code);
+         |         ^
+      22 | }
+      23 | function actorValid(value: unknown): SkillTaxonomyActor {
+      24 |   const result = SkillTaxonomyActorSchema.safeParse(value);
+        at fail (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:21:9)
+        at actorValid (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:25:24)
+        at publishSkillTaxonomy (/Users/dushyant/Documents/useRAID.fun/src/skills/taxonomy-storage.ts:145:17)
+        at work (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:64:5)
+        at callback (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:93:28)
+        at Proxy._transactionWithCallback (/Users/dushyant/Documents/useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:24)
+        at retryWholeTransaction (/Users/dushyant/Documents/useRAID.fun/src/command-receipts/index.ts:304:14)
+        at runCommandTransaction (/Users/dushyant/Documents/useRAID.fun/src/lib/command-receipts-adapter.ts:74:12)
+        at seedPracticePortalFixture (/Users/dushyant/Documents/useRAID.fun/tests/helpers/practice-portal-fixture.ts:63:3)
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-portal/practice-portal.spec.ts:141:13
+
+    Error Context: test-results/practice-portal-development/practice-portal-AI-declara-06e16-nal-definition-prohibits-AI-mobile/error-context.md
+
+    Error Context: test-results/practice-portal-development/practice-portal-AI-declara-06e16-nal-definition-prohibits-AI-mobile/error-context.md
+
+  8 failed
+    [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission 
+    [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired 
+    [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+    [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:138:1 › AI declaration is unavailable when the original definition prohibits AI 
+    [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission 
+    [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired 
+    [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data 
+    [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:138:1 › AI declaration is unavailable when the original definition prohibits AI 

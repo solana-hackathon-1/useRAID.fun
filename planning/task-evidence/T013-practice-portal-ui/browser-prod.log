@@ -1,0 +1,14 @@
+
+Running 8 tests using 1 worker
+
+[WebServer] bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  ✓  1 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission (2.0s)
+  ✓  2 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired (2.5s)
+  ✓  3 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data (427ms)
+  ✓  4 [desktop] › tests/browser-practice-portal/practice-portal.spec.ts:140:1 › AI declaration is unavailable when the original definition prohibits AI (536ms)
+  ✓  5 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:22:1 › browse, start, submit privately, and reload the saved submission (1.7s)
+  ✓  6 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:74:1 › continue an existing attempt after reload; stays continuable after the trial is retired (2.6s)
+  ✓  7 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:99:1 › signed-out and foreign access never reveal practice data (434ms)
+  ✓  8 [mobile] › tests/browser-practice-portal/practice-portal.spec.ts:140:1 › AI declaration is unavailable when the original definition prohibits AI (497ms)
+
+  8 passed (12.5s)
