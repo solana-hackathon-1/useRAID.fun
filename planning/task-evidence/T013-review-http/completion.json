@@ -1,0 +1,232 @@
+{
+  "task_id": "T013",
+  "scope": "Evaluator case protected HTTP prerequisite",
+  "status": "SELF-EVALUATED bounded implementation, full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent review not assigned/authorized",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-21-T013-review-http.md",
+  "migration_rollback": "No migration; disable existing review read flag; retain immutable history/audits and owner submission reads.",
+  "dependency_evidence": "Actual PostgreSQL current assignment/private audit-before-body and own-installed HTTP host; source proof in production-source-proof.json. Vite audit repair has genuine dependency RED and locked8.3.4 GREEN.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "No enablement/publication/deployment; full criterion review, hosted CI and release gates absent.",
+  "baseline_sha": "c401909a723062bd4942596871a15229b63bb81b",
+  "source_identity": "UNCOMMITTED implementation on baseline SHA, identified by final source-hashes.json. Baseline SHA in TDD fields is not a claim that these changes exist in a commit.",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded protected evaluator case GET implemented; evaluator screen and finding commands are later slices.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Current finite assignment/purpose/session/audited source reused; no real appointments or flags enabled; O09/O11 remain open.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Existing immutable case/assignment/read-audit entities only; no schema/migration/business state mutation.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "53 new API/Root tests plus existing real-PG current assignment/expiry/revocation tests and own-installed HTTP consumer; independent acceptance absent.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "No financial effect; this bounded read cannot settle or allocate.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Strict output binding/excess-field rejection, safe errors/privateNoStore/VaryCookie; actual compiled signedout GET/HEAD401.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "No new screen in this prerequisite; desktop/mobile evaluator UI remains unimplemented.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Default-off reads preserved. No deployment/operating approval/production claim.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Representative UAT and business sign-off not performed.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "This bounded slice exposes reads only, not evaluator assessment/reassessment command UI.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "This bounded slice exposes reads only, not evaluator assessment/reassessment command UI.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "This bounded slice exposes reads only, not evaluator assessment/reassessment command UI.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded author evidence in review.json and task; full criterion and independent acceptance remain unverified.",
+      "evidence_url": "planning/task-evidence/T013-review-http/review.json; docs/tasks/2026-10-21-T013-review-http.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "command": "vitest run tests/practice-review-http.test.ts; vitest run tests/practice-review-http-host.test.ts; vitest run tests/dependency-compatibility.test.ts",
+      "sha": "c401909a723062bd4942596871a15229b63bb81b",
+      "evidence_url": "planning/task-evidence/T013-review-http/red-behavior.log; root-red.log; dependency-red.log",
+      "expected_failure": "Missing exact-scope HTTP behavior/Root wiring and vulnerable locked Vite fail.",
+      "observed_failure": "42 behavior failures (temporary unsupported stub also left a rejected-param unhandled error), missing Root route module, dependency floor1fail6pass. Initial missing-module RED retained separately."
+    },
+    "green": {
+      "result": "PASS",
+      "command": "vitest new HTTP/Root tests; own npm-install/typecheck/PG/HTTP example; patched dependency tests",
+      "sha": "c401909a723062bd4942596871a15229b63bb81b",
+      "evidence_url": "planning/task-evidence/T013-review-http/green.log; root-green.log; consumer.log; dependency-green.log",
+      "observed": "42API and8Root GREEN; own actualPG/HTTP original/private denial/audit/revocation PASS; patched dependency7PASS. Final API additions later45PASS."
+    },
+    "refactor": {
+      "result": "PASS",
+      "command": "vitest run tests/practice-review-http.test.ts tests/practice-review-http-host.test.ts tests/docs-links.test.ts; python3 planning/task-evidence/T013-review-http/db-run.py node_modules/.bin/vitest run",
+      "sha": "c401909a723062bd4942596871a15229b63bb81b",
+      "evidence_url": "planning/task-evidence/T013-review-http/refactor.log; affected.log; planning/task-evidence/T013-review-http/final-full.log",
+      "observed": "Final toolchain full suite198files/2837tests PASS318.13s; cleanup0. Earlier194API/Root/docs and188affected pass; current ownPGHTTP/source/build/types/audit policy pass. Independent/hosted full task acceptance absent."
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    }
+  }
+}

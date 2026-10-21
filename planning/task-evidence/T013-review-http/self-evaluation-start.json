@@ -1,0 +1,19 @@
+{
+  "utc": "2026-10-21T04:25:56.303714+00:00",
+  "label": "SELF-EVALUATED",
+  "head": "c401909a723062bd4942596871a15229b63bb81b",
+  "files": {
+    "src/skills/practice-review-http.ts": "6eca9a6d86d03d03ee92f746bc8348fa72837c1187ecc4b4c06e99dd77341261",
+    "src/lib/practice-review-http.ts": "a1da84c9a97b32ace3179ab7f1fde76c63c4c1dff378ce993ae10088e47625d0",
+    "src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/route.ts": "d97446cbe72cb251a2cdf7742bcc455b00f33408f0644d23644d8e939063c079",
+    "tests/practice-review-http.test.ts": "2cd45529d54f0188f2b1140246e07097156e92be5b20bb2d5000bb92f3a49e1e",
+    "tests/practice-review-http-host.test.ts": "7d95232d6f646d36c0afc18af750b8fe7c54e32ae023c4cba3b511c8b9da449d",
+    "examples/practice-review-reads/host.ts": "f58decb8ab92286e74cb3d2521291fef0d9a463cff9bf4e8ed8fb7f13b6608c9",
+    "src/skills/practice-review-read-storage.ts": "1ad8172232b82a80c01a4ca5690173a1d0387157122855d7691ce42b53a34571",
+    "src/lib/practice-review-reads-host.ts": "6da1f40fd1ed0fd66715c0246bedf2cea07bdfc4b9152e8223f56d30071e6389",
+    "src/skills/practice-review-assignment-storage.ts": "0b7af58412c06ea2c6bfae8c2a965a263d43f5400d4327b33d9719976b94084b",
+    "src/lib/command-receipts-adapter.ts": "f815a3f269f526a205b9b00fdd553c76f632703e9d515858c340c60e188f315f",
+    "prisma/schema.prisma": "90dd50d6ea56e886b67efbf58e3bce47fe2063c6bdb79416f72001b6f7034b45",
+    "package-lock.json": "6aa3822efe168564405f1c0efc474b2b5252bce1a127a630921dd7e175e8e868"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "baselineSha": "c401909a723062bd4942596871a15229b63bb81b",
+  "workingTree": "UNCOMMITTED; exclude preexisting next-env.d.ts/WARP.md/.claude/worktrees; CURRENT.md is mutable checkpoint",
+  "files": {
+    "src/skills/practice-review-http.ts": {
+      "sha256": "6eca9a6d86d03d03ee92f746bc8348fa72837c1187ecc4b4c06e99dd77341261",
+      "symlink": null
+    },
+    "src/lib/practice-review-http.ts": {
+      "sha256": "a1da84c9a97b32ace3179ab7f1fde76c63c4c1dff378ce993ae10088e47625d0",
+      "symlink": null
+    },
+    "src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/route.ts": {
+      "sha256": "d97446cbe72cb251a2cdf7742bcc455b00f33408f0644d23644d8e939063c079",
+      "symlink": null
+    },
+    "tests/practice-review-http.test.ts": {
+      "sha256": "2cd45529d54f0188f2b1140246e07097156e92be5b20bb2d5000bb92f3a49e1e",
+      "symlink": null
+    },
+    "tests/practice-review-http-host.test.ts": {
+      "sha256": "7d95232d6f646d36c0afc18af750b8fe7c54e32ae023c4cba3b511c8b9da449d",
+      "symlink": null
+    },
+    "tests/dependency-compatibility.test.ts": {
+      "sha256": "a31f62fcdfc306ab2310897d61ac2d7872a0466ca61c92d9ae3ffe03895e513c",
+      "symlink": null
+    },
+    "examples/practice-review-reads/host.ts": {
+      "sha256": "f58decb8ab92286e74cb3d2521291fef0d9a463cff9bf4e8ed8fb7f13b6608c9",
+      "symlink": null
+    },
+    "examples/practice-review-reads/README.md": {
+      "sha256": "e82ad99ab1a7d6a3291dbad80d460b90eb21a5eb13fe6220092255b5bf9ae3d9",
+      "symlink": null
+    },
+    "examples/practice-review-reads/skills/practice-review-http.ts": {
+      "sha256": "6eca9a6d86d03d03ee92f746bc8348fa72837c1187ecc4b4c06e99dd77341261",
+      "symlink": "../../../src/skills/practice-review-http.ts"
+    },
+    "docs/raid-practice-review-http.md": {
+      "sha256": "cce04b70f5deee06531783faff4996a7f6f0dd5357e451497f95895b4601f435",
+      "symlink": null
+    },
+    "docs/raid-practice-review-reads.md": {
+      "sha256": "ad124073a890474008794253db4686d773984cf39ff6d0903696f313790e78ef",
+      "symlink": null
+    },
+    "docs/raid-module-reuse.md": {
+      "sha256": "d8bf168c8b52ad7f93bd7c62b4137849b01b5e82a0eb81faa8625effec5dcb52",
+      "symlink": null
+    },
+    "docs/tasks/2026-10-21-T013-review-http.md": {
+      "sha256": "2097563c78886cdb4135e846d9f3aeba0537622970430f39744d3c0e711a1519",
+      "symlink": null
+    },
+    "planning/raid-ci-matrix.json": {
+      "sha256": "25a9a49219f3c45f6b0e0db837aa6d8f5d4162b1e7b982f3823983f5489db30b",
+      "symlink": null
+    },
+    "package-lock.json": {
+      "sha256": "de163672b05fa80196cad5c7cb1ee3c392876c659264b082fb25bf0444597812",
+      "symlink": null
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mode": "production next start",
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-http-build-vow38woc",
+  "pid": 90265,
+  "loopbackPort": 63143,
+  "checks": [],
+  "ownedServerStopped": true,
+  "result": 1
+}

@@ -1,3 +1,7 @@
+import {
+  createPracticeReviewHandlers,
+  PracticeReviewHttpError,
+} from './skills/practice-review-http';
 import { readPracticeTrialForReview } from './skills/practice-review-read-storage';
 import {
   issuePracticeReviewAssignment,
@@ -440,6 +444,77 @@ try {
       },
     ],
   );
+  // HTTP composition is independent of Next/Prisma/Root auth and delivers only after COMMIT.
+  let httpActor = evaluator;
+  let readsAvailable = true;
+  const http = createPracticeReviewHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => httpActor,
+    rateLimit: (current) => {
+      assert.equal(current.accountId, httpActor.accountId);
+    },
+    read: async (current, input) => ({
+      version: 'v1',
+      review: await transaction((tx) =>
+        readPracticeTrialForReview(tx, current, input, () => readsAvailable),
+      ),
+      readsAvailable,
+      unavailableReason: readsAvailable ? null : 'DISABLED',
+    }),
+  });
+  const httpRead = (purpose = 'OWNERSHIP_REVIEW') =>
+    http.GET(
+      new Request(
+        'http://localhost/api/v1/practice/reviews/' +
+          assignment.id +
+          '/submissions/' +
+          appointmentInput.submissionId +
+          '?purpose=' +
+          purpose,
+      ),
+      Promise.resolve({ assignmentId: assignment.id, submissionId: appointmentInput.submissionId }),
+    );
+  const actualHttp = await httpRead();
+  assert.equal(actualHttp.status, 200);
+  assert.equal(actualHttp.headers.get('cache-control'), 'private, no-store');
+  assert.equal(actualHttp.headers.get('vary'), 'Cookie');
+  const delivered = await actualHttp.json();
+  assert.deepEqual(delivered.review.submission, submitted.submission);
+  assert.deepEqual(delivered.review.definition, started.start.definition);
+  assert.equal(delivered.review.assignment.evaluatorAccountId, evaluator.accountId);
+  assert.equal(delivered.review.submission.ownership, 'UNCONFIRMED');
+  const assertHttpDenied = async (status: number, purpose?: string) => {
+    const response = await httpRead(purpose);
+    assert.equal(response.status, status);
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    const body = await response.text();
+    assert(!body.includes(submissionInput.answer));
+    assert(!body.includes(submissionInput.explanation));
+    assert(!body.includes(submissionInput.assistanceDisclosure));
+  };
+  await assertHttpDenied(404, 'ASSESSMENT_REVIEW');
+  httpActor = actor; // Admin role alone cannot read an explicitly appointed evaluator's case.
+  await assertHttpDenied(404);
+  httpActor = evaluator;
+  readsAvailable = false;
+  await assertHttpDenied(503);
+  readsAvailable = true;
+  const unauthenticated = createPracticeReviewHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => {
+      throw new PracticeReviewHttpError(401);
+    },
+    rateLimit: () => {
+      throw new Error('Unexpected unauthenticated rate access');
+    },
+    read: async () => {
+      throw new Error('Unexpected unauthenticated private access');
+    },
+  });
+  assert.equal((await unauthenticated.GET(new Request('http://localhost'), {})).status, 401);
+
   assert.deepEqual(
     await transaction((tx) =>
       lockPracticeReviewAssignment(
@@ -496,6 +571,7 @@ try {
     await transaction((tx) => readPracticeTrialForReview(tx, evaluator, reviewInput, () => true)),
     null,
   );
+  await assertHttpDenied(404); // Actual saved revocation is observed by the HTTP/storage composition.
   assert.deepEqual((await assign(false)).assignment, assignment);
   assert.equal(
     (
@@ -528,6 +604,8 @@ try {
       synthetic: true,
       actualPostgreSQL: true,
       actualProtectedPrivateReviewRead: true,
+      actualProtectedHttpReadAfterCommit: true,
+      httpForeignPurposeRevocationDisabledAndAuthenticationDenied: true,
       exactOriginalPrivateBytesAndRubric: true,
       noPrivateSelectionWithoutAssignment: true,
       noReturnedBytesAfterRevocation: true,

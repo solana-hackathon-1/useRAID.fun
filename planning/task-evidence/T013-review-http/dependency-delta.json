@@ -1,0 +1,91 @@
+{
+  "lockfileSha256": "de163672b05fa80196cad5c7cb1ee3c392876c659264b082fb25bf0444597812",
+  "changedPackages": {
+    "node_modules/@oxc-project/types": {
+      "before": "0.151.0",
+      "after": "0.154.0"
+    },
+    "node_modules/@rolldown/binding-android-arm-eabi": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-android-arm64": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-darwin-arm64": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-darwin-x64": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-freebsd-x64": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-linux-arm-gnueabihf": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-linux-arm64-gnu": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-linux-arm64-musl": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-linux-ppc64-gnu": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-linux-s390x-gnu": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-linux-x64-gnu": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-linux-x64-musl": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-openharmony-arm64": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-win32-arm64-msvc": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/@rolldown/binding-win32-x64-msvc": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/nanoid": {
+      "before": "3.3.19",
+      "after": "3.3.20"
+    },
+    "node_modules/postcss": {
+      "before": "8.5.28",
+      "after": "8.5.31"
+    },
+    "node_modules/rolldown": {
+      "before": "1.2.11",
+      "after": "1.2.14"
+    },
+    "node_modules/vite": {
+      "before": "8.3.1",
+      "after": "8.3.4"
+    }
+  },
+  "allowlistUnchanged": true,
+  "sources": [
+    "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+    "https://github.com/advisories/GHSA-698v-4r3x-3vcv",
+    "https://github.com/advisories/GHSA-r825-w8mm-5pxw"
+  ]
+}

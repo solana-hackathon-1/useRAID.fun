@@ -1,0 +1,7 @@
+
+> useraid@0.1.0 audit:check
+> tsx scripts/audit-check.ts
+
+moderate vite GHSA-698v-4r3x-3vcv: not allowlisted
+moderate vite GHSA-r825-w8mm-5pxw: not allowlisted
+high vite GHSA-587h-7wmj-h5pm: not allowlisted

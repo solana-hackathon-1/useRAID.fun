@@ -1,0 +1,9 @@
+tests/raid-evidence.test.ts(5,18): error TS2307: Cannot find module '../planning/raid-scenarios.json' or its corresponding type declarations.
+tests/raid-evidence.test.ts(124,29): error TS7031: Binding element 'id' implicitly has an 'any' type.
+tests/raid-evidence.test.ts(124,33): error TS7031: Binding element 'scenario' implicitly has an 'any' type.
+tests/raid-evidence.test.ts(124,43): error TS7031: Binding element 'expected' implicitly has an 'any' type.
+tests/raid-evidence.test.ts(129,10): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/raid-evidence.test.ts(145,40): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/raid-evidence.test.ts(145,43): error TS7006: Parameter 'i' implicitly has an 'any' type.
+tests/raid-evidence.test.ts(151,28): error TS7006: Parameter 's' implicitly has an 'any' type.
+tests/raid-evidence.test.ts(158,38): error TS7006: Parameter 's' implicitly has an 'any' type.

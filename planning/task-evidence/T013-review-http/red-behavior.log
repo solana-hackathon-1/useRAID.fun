@@ -1,0 +1,482 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-http.test.ts (42 tests | 42 failed) 26ms
+   × returns exact original bytes/rubric and unconfirmed ownership only for current scoped actor 20ms
+   × sanitizes authority 401 before private source 0ms
+   × sanitizes authority 403 before private source 0ms
+   × sanitizes authority 429 before private source 0ms
+   × rate limits actual account before private source 0ms
+   × rejects missing, duplicate and unknown query authority:  0ms
+   × rejects missing, duplicate and unknown query authority: ?purpose=NOPE 0ms
+   × rejects missing, duplicate and unknown query authority: ?purpose=OWNERSHIP_REVIEW&purpose=OWNERSHIP_REVIEW 0ms
+   × rejects missing, duplicate and unknown query authority: ?purpose=OWNERSHIP_REVIEW&actor=evaluator 0ms
+   × rejects invalid/forged route context before private source null 0ms
+   × rejects invalid/forged route context before private source {} 0ms
+   × rejects invalid/forged route context before private source {"assignmentId":"not-uuid","submissionId":"2cb2c9c7-b1fc-4648-a021-be9c3051fada"} 0ms
+   × rejects invalid/forged route context before private source {"assignmentId":"810d9ee5-2ce2-4f01-8ad7-173627d1dff9","submissionId":"not-uuid"} 0ms
+   × rejects invalid/forged route context before private source {"assignmentId":"810d9ee5-2ce2-4f01-8ad7-173627d1dff9","submissionId":"2cb2c9c7-b1fc-4648-a021-be9c3051fada","accountId":"forged"} 0ms
+   × rejects unsupported method without private source 0ms
+   × returns a non-enumerable404 for absent or denied case 0ms
+   × fails closed on disabled/mismatched/excessive host output 0 0ms
+   × fails closed on disabled/mismatched/excessive host output 1 0ms
+   × fails closed on disabled/mismatched/excessive host output 2 0ms
+   × fails closed on disabled/mismatched/excessive host output 3 0ms
+   × fails closed on disabled/mismatched/excessive host output 4 0ms
+   × fails closed on disabled/mismatched/excessive host output 5 0ms
+   × fails closed on disabled/mismatched/excessive host output 6 0ms
+   × fails closed on disabled/mismatched/excessive host output 7 0ms
+   × fails closed on disabled/mismatched/excessive host output 8 0ms
+   × fails closed on disabled/mismatched/excessive host output 9 0ms
+   × maps safe storage error AUTHENTICATION_REQUIRED 0ms
+   × maps safe storage error ACCOUNT_RESTRICTED 0ms
+   × maps safe storage error FORBIDDEN 0ms
+   × maps safe storage error RESOURCE_UNAVAILABLE 0ms
+   × maps safe storage error INVALID_INPUT 0ms
+   × maps safe storage error STORAGE_CONTRACT 0ms
+   × maps safe storage error STORAGE_UNAVAILABLE 0ms
+   × sanitizes unknown/transaction errors 0ms
+   × sanitizes unknown/transaction errors 0ms
+   × rejects malformed host actor without invoking storage 0ms
+   × contains rejected params and request-id callback failures without leaking diagnostics 0ms
+   × rejects missing host contract actor 1ms
+   × rejects missing host contract rateLimit 0ms
+   × rejects missing host contract read 0ms
+   × rejects missing host contract requestId 0ms
+   × rejects missing host contract version 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 42 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-http.test.ts > returns exact original bytes/rubric and unconfirmed ownership only for current scoped actor
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-review-http.test.ts:67:27
+     65| it('returns exact original bytes/rubric and unconfirmed ownership only…
+     66|   const response = await get();
+     67|   expect(response.status).toBe(200);
+       |                           ^
+     68|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     69|   expect(response.headers.get('vary')).toBe('Cookie');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > sanitizes authority 401 before private source
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:77:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > sanitizes authority 403 before private source
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:77:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > sanitizes authority 429 before private source
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:77:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > rate limits actual account before private source
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:82:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > rejects missing, duplicate and unknown query authority: 
+ FAIL  tests/practice-review-http.test.ts > rejects missing, duplicate and unknown query authority: ?purpose=NOPE
+ FAIL  tests/practice-review-http.test.ts > rejects missing, duplicate and unknown query authority: ?purpose=OWNERSHIP_REVIEW&purpose=OWNERSHIP_REVIEW
+ FAIL  tests/practice-review-http.test.ts > rejects missing, duplicate and unknown query authority: ?purpose=OWNERSHIP_REVIEW&actor=evaluator
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:87:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > rejects invalid/forged route context before private source null
+ FAIL  tests/practice-review-http.test.ts > rejects invalid/forged route context before private source {}
+ FAIL  tests/practice-review-http.test.ts > rejects invalid/forged route context before private source {"assignmentId":"not-uuid","submissionId":"2cb2c9c7-b1fc-4648-a021-be9c3051fada"}
+ FAIL  tests/practice-review-http.test.ts > rejects invalid/forged route context before private source {"assignmentId":"810d9ee5-2ce2-4f01-8ad7-173627d1dff9","submissionId":"not-uuid"}
+ FAIL  tests/practice-review-http.test.ts > rejects invalid/forged route context before private source {"assignmentId":"810d9ee5-2ce2-4f01-8ad7-173627d1dff9","submissionId":"2cb2c9c7-b1fc-4648-a021-be9c3051fada","accountId":"forged"}
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:95:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > rejects unsupported method without private source
+AssertionError: expected 503 to be 405 // Object.is equality
+
+- Expected
++ Received
+
+- 405
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:99:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > returns a non-enumerable404 for absent or denied case
+AssertionError: expected 503 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:104:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 0
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 1
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 2
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 3
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 4
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 5
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 6
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 7
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 8
+ FAIL  tests/practice-review-http.test.ts > fails closed on disabled/mismatched/excessive host output 9
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-review-http.test.ts:58:49
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+     60|   const body = await response.text();
+ ❯ tests/practice-review-http.test.ts:119:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > maps safe storage error AUTHENTICATION_REQUIRED
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:126:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > maps safe storage error ACCOUNT_RESTRICTED
+ FAIL  tests/practice-review-http.test.ts > maps safe storage error FORBIDDEN
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:126:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > maps safe storage error RESOURCE_UNAVAILABLE
+AssertionError: expected 503 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:126:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > maps safe storage error INVALID_INPUT
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-review-http.test.ts:57:27
+     55| );
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+       |                           ^
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+ ❯ tests/practice-review-http.test.ts:126:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > maps safe storage error STORAGE_CONTRACT
+ FAIL  tests/practice-review-http.test.ts > maps safe storage error STORAGE_UNAVAILABLE
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-review-http.test.ts:58:49
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+     60|   const body = await response.text();
+ ❯ tests/practice-review-http.test.ts:126:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > sanitizes unknown/transaction errors
+ FAIL  tests/practice-review-http.test.ts > sanitizes unknown/transaction errors
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-review-http.test.ts:58:49
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+     60|   const body = await response.text();
+ ❯ tests/practice-review-http.test.ts:131:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > rejects malformed host actor without invoking storage
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-review-http.test.ts:58:49
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+     60|   const body = await response.text();
+ ❯ tests/practice-review-http.test.ts:135:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > contains rejected params and request-id callback failures without leaking diagnostics
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-review-http.test.ts:58:49
+     56| async function denied(response: Response, status: number) {
+     57|   expect(response.status).toBe(status);
+     58|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+       |                                                 ^
+     59|   expect(response.headers.get('vary')).toBe('Cookie');
+     60|   const body = await response.text();
+ ❯ tests/practice-review-http.test.ts:140:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/42]⎯
+
+ FAIL  tests/practice-review-http.test.ts > rejects missing host contract actor
+ FAIL  tests/practice-review-http.test.ts > rejects missing host contract rateLimit
+ FAIL  tests/practice-review-http.test.ts > rejects missing host contract read
+ FAIL  tests/practice-review-http.test.ts > rejects missing host contract requestId
+ FAIL  tests/practice-review-http.test.ts > rejects missing host contract version
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/practice-review-http.test.ts:144:86
+    142| });
+    143| it.each(['actor', 'rateLimit', 'read', 'requestId', 'version'])('rejec…
+    144|   expect(() => createPracticeReviewHandlers({ ...host, [key]: undefine…
+       |                                                                                      ^
+    145| });
+    146|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/42]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Error: private-marker
+ ❯ tests/practice-review-http.test.ts:140:83
+    138| it('contains rejected params and request-id callback failures without …
+    139|   host.requestId.mockImplementation(() => { throw new Error('private-m…
+    140|   const body = await denied(await get('?purpose=OWNERSHIP_REVIEW', Pro…
+       |                                                                                   ^
+    141|   expect(body.error.requestId).toMatch(/^[0-9a-f-]{36}$/);
+    142| });
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+ ❯ runWithCancel node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+ ❯ runWithTimeout node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+This error originated in "tests/practice-review-http.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  42 failed (42)
+     Errors  1 error
+   Start at  10:05:10
+   Duration  259ms (transform 66ms, setup 0ms, import 129ms, tests 26ms, environment 0ms)
+

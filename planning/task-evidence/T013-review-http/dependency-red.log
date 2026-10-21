@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/dependency-compatibility.test.ts (7 tests | 1 failed) 69ms
+     × clean installs exclude vulnerable vite releases 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/dependency-compatibility.test.ts > security repair dependency contracts > clean installs exclude vulnerable vite releases
+AssertionError: vite: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/dependency-compatibility.test.ts:35:7
+     33|       versions(name).every((version) => atLeast(version, floor)),
+     34|       name,
+     35|     ).toBe(true);
+       |       ^
+     36|   });
+     37|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  10:13:56
+   Duration  247ms (transform 11ms, setup 0ms, import 74ms, tests 69ms, environment 0ms)
+

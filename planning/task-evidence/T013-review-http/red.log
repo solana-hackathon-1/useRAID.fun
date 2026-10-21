@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-http.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-http.test.ts [ tests/practice-review-http.test.ts ]
+Error: Cannot find module '../src/skills/practice-review-http' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-review-http.test.ts
+ ❯ tests/practice-review-http.test.ts:4:1
+      2| import { beforeEach, expect, it, vi } from 'vitest';
+      3| import { definition } from '../examples/skill-assessments/fixtures';
+      4| import {
+       | ^
+      5|   createPracticeReviewHandlers,
+      6|   PracticeReviewHttpError,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  10:04:56
+   Duration  134ms (transform 17ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

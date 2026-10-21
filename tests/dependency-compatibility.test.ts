@@ -26,6 +26,7 @@ describe('security repair dependency contracts', () => {
     ['next', '16.3.8'],
     ['sharp', '0.35.5'],
     ['source-map-js', '1.2.2'],
+    ['vite', '8.3.3'],
   ])('clean installs exclude vulnerable %s releases', (name, floor) => {
     expect(versions(name).length).toBeGreaterThan(0);
     expect(
