@@ -2,6 +2,7 @@ import { InternalId } from '../contracts/ids';
 import {
   recordPracticeAssessmentDecision,
   readPracticeTrialAssessmentState,
+  readPracticeAssessmentDecision,
   type PracticeTrialAssessmentCommand,
 } from '../skills/practice-trial-assessment-storage';
 import type { SkillTaxonomyActor } from '../skills/taxonomy-storage';
@@ -50,6 +51,22 @@ export async function readPracticeTrialAssessmentStateFromHost(
 ) {
   const view = await runCommandTransaction(db, (tx) =>
     readPracticeTrialAssessmentState(
+      tx,
+      actor,
+      input,
+      () => practiceReviewReadConfiguration().readsAvailable,
+    ),
+  );
+  const config = practiceReviewReadConfiguration();
+  return { version: 'v1' as const, view: config.readsAvailable ? view : null, ...config };
+}
+
+export async function readPracticeAssessmentDecisionFromHost(
+  actor: SkillTaxonomyActor,
+  input: unknown,
+) {
+  const view = await runCommandTransaction(db, (tx) =>
+    readPracticeAssessmentDecision(
       tx,
       actor,
       input,

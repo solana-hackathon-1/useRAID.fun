@@ -1,0 +1,16 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:64254
+- Network:       http://127.0.0.1:64254
+✓ Ready in 281ms
+✓ Running next.config.ts took 57ms
+
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /methodology 200 in 864ms (next.js: 697ms, application-code: 168ms)
+ GET /methodology 200 in 28ms (next.js: 3ms, application-code: 25ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice/e1771d26-e1b5-4d82-baca-62db179c1322/submissions/9f12aff1-1e53-47a1-a14a-55a589913dd1?purpose=OWNERSHIP_REVIEW 200 in 1141ms (next.js: 753ms, application-code: 388ms)
+ GET /evaluator/practice/e1771d26-e1b5-4d82-baca-62db179c1322/submissions/9f12aff1-1e53-47a1-a14a-55a589913dd1?purpose=OWNERSHIP_REVIEW 200 in 252ms (next.js: 18ms, application-code: 234ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice/e1771d26-e1b5-4d82-baca-62db179c1322/submissions/9f12aff1-1e53-47a1-a14a-55a589913dd1?purpose=OWNERSHIP_REVIEW 200 in 205ms (next.js: 5ms, application-code: 199ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)

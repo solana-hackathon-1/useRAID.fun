@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T013-assessment-ui/prepare-preview.py", line 12, in <module>
+    relative=p.relative_to(root);assert (target/relative).is_file() and p.read_bytes()==(target/relative).read_bytes(),str(relative)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: tests/__pycache__/test_raid_completion.cpython-312.pyc

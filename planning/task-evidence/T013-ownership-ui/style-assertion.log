@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-editor.test.ts (5 tests | 1 failed) 25ms
+   × keeps the server-rendered form disabled until client handlers are ready 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-editor.test.ts > keeps the server-rendered form disabled until client handlers are ready
+AssertionError: expected '<div style="white-space:pre-wrap;over…' to contain '<fieldset disabled="">'
+
+- Expected
++ Received
+
+- <fieldset disabled="">
++ <div style="white-space:pre-wrap;overflow-wrap:anywhere"><p>This finding does not verify a rank, decide fraud guilt or grant access.</p><section class="orientation-card" aria-label="Current ownership finding"><h2>Current ownership finding</h2><p>No ownership finding recorded. The original submission declaration is not a finding.</p></section><section class="orientation-card" aria-label="Approved ownership policy"><h2>Approved ownership policy</h2><p>Policy synthetic-policy, version 1.</p><p>&lt;script&gt;private-policy-marker&lt;/script&gt;</p></section><form class="orientation-card"><h2>Record ownership finding</h2><fieldset class="orientation-fields" disabled=""><legend>Reasoned finding</legend><label for="ownership-decision">Finding</label><select id="ownership-decision" required=""><option value="" selected="">Choose a finding</option><option value="CONFIRM">Confirm ownership</option><option value="DISPUTE">Dispute ownership</option><option value="MORE_EVIDENCE">Request more evidence</option></select><label for="ownership-reason">Reason</label><textarea id="ownership-reason" required="" maxLength="2000" rows="4"></textarea><div class="orientation-fields" style="margin:0"><label for="observation-kind-0">Observation 1 type</label><select id="observation-kind-0"><option value="EXPLANATION" selected="">Explanation</option><option value="MODIFICATION">Modification</option><option value="ATTRIBUTION">Attribution</option><option value="OTHER">Other</option></select><label for="observation-detail-0">Observation 1</label><textarea id="observation-detail-0" required="" maxLength="2000" rows="3"></textarea></div><div class="orientation-actions"><button class="button secondary" type="button">Add observation</button><button class="button" type="submit">Save finding</button></div></fieldset><p>A save uses the policy and finding versions shown here. Keep this page open if its outcome is uncertain; retry the same request.</p></form><button type="button" class="button secondary" disabled="">Recheck current case</button><div style="white-space:pre-wrap;overflow-wrap:anywhere"><section class="orientation-card" aria-label="Review scope"><h2>Ownership review</h2><p>Private evidence for this assigned case. Access was checked for this page and may change. Recheck before relying on it.</p><p>Assignment expires: <time dateTime="2030-01-01T00:00:00.000Z">1 Jan 2030, 00:00 UTC</time>.</p></section><section class="orientation-card" aria-labelledby="original-submission"><h2 id="original-submission">Original submission</h2><p>Submitted: <time dateTime="2026-10-15T00:00:00.000Z">15 Oct 2026, 00:00 UTC</time>.</p><p>Original ownership declaration: Unconfirmed. This original submission does not include later ownership findings or assessment results.</p><h3>Answer</h3><pre style="white-space:pre-wrap;overflow-wrap:anywhere">
++
++   &lt;script&gt;private-answer-marker&lt;/script&gt;
++ </pre><h3>Explanation</h3><p>private-explanation-marker &lt;img src=x&gt;</p><h3>Declared tools and assistance</h3><p>Tools declared: editor.</p><p>AI assistance declared: Yes.</p><p>private-disclosure-marker</p><p>Declarations alone do not establish ownership, compliance or assessed skill.</p></section><section class="orientation-card" aria-labelledby="original-criteria"><h2 id="original-criteria">Original review criteria</h2><p>Synthetic interface exercise — frontend (web), practice level A.</p><ul><li><strong>Required:</strong> Working behavior and edge cases</li><li><strong>Required:</strong> Explain and modify the solution</li></ul><p>The authorized reviewer applies every required criterion.</p><p>Evaluation: Manual review.</p><p>Rubric: synthetic-rubric, version 3.</p></section><details class="orientation-card"><summary>Original task and agreed conditions</summary><h2>Original task</h2><p>Build and explain a synthetic accessible interface.</p><p>Expected time: about 60 minutes (an expectation, not a deadline).</p><p>Variant: synthetic-variant-two. Definition: synthetic-frontend-trial, version 2.</p><h3>Materials</h3><section><h4>Fixture (Synthetic)</h4><pre style="white-space:pre-wrap;overflow-wrap:anywhere">Invented records only.</pre></section><h3>Permitted tools and AI assistance</h3><p>Permitted tools: editor, browser.</p><p>AI assistance is allowed.</p><p>Explain and modify your work; disclose assistance.</p><p>Maximum attempts: 3. Cooldown: 60 seconds.</p><h3>Accommodations policy</h3><p>Request an approved scoped accommodation.</p></details></div></div>
+
+ ❯ tests/practice-ownership-editor.test.ts:36:16
+     34| it('keeps the server-rendered form disabled until client handlers are …
+     35|   const html = renderToStaticMarkup(createElement(PracticeOwnershipEdi…
+     36|   expect(html).toContain('<fieldset disabled="">');
+       |                ^
+     37| });
+     38| it('labels an original replay as historical when a newer current findi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  12:54:43
+   Duration  313ms (transform 98ms, setup 0ms, import 179ms, tests 25ms, environment 0ms)
+

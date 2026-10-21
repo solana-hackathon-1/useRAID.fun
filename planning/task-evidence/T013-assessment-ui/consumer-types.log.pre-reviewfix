@@ -1,0 +1,4 @@
+
+> raid-practice-assessment-decision-example@1.0.0 typecheck
+> tsc --noEmit
+

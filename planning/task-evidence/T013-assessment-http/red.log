@@ -1,0 +1,847 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assessment-http.test.ts (173 tests | 172 failed) 44ms
+   × review reads current result through actual scoped host and private headers 20ms
+   × review accepts explicit historical revision under current reader authority 0ms
+   × review rejects invalid query ?revision=01 0ms
+   × review rejects invalid query ?revision=0 0ms
+   × review rejects invalid query ?revision=-1 0ms
+   × review rejects invalid query ?revision=1e0 0ms
+   × review rejects invalid query ?revision=2147483648 0ms
+   × review rejects invalid query ?revision=1&revision=2 0ms
+   × review rejects invalid query ?purpose=ASSESSMENT_REVIEW 0ms
+   × review rejects invalid query ?actor=forged 0ms
+   × review rejects malformed path 0 0ms
+   × review rejects malformed path 1 0ms
+   × review rejects malformed path 2 0ms
+   × review rejects malformed path 3 0ms
+   × review returns non-enumerable missing404 and unavailable503 0ms
+   × review binds source and requested revision/currentness 0ms
+   × review denies authority 401 before reading 0ms
+   × review denies authority 403 before reading 0ms
+   × review denies authority 429 before reading 0ms
+   × review sanitizes arbitrary host exceptions and contains rejected params 0ms
+   × review supports HEAD with the same read authority and rejects other verbs 0ms
+   × review rejects malformed output envelope 0 0ms
+   × review rejects malformed output envelope 1 0ms
+   × review rejects malformed output envelope 2 0ms
+   × review normalizes and saves with server actor, original stable key and origin first 1ms
+   × review preserves committed EXECUTED with body hidden after reads close 1ms
+   × review preserves committed REPLAYED with body hidden after reads close 0ms
+   × review permits historical original replay while writes disabled/misconfigured 0ms
+   × review checks origin before authentication or malformed body 0ms
+   × review requires stable valid key 0 0ms
+   × review requires stable valid key 1 0ms
+   × review requires stable valid key 2 0ms
+   × review requires stable valid key 3 0ms
+   × review rejects forged/invalid body 0 0ms
+   × review rejects forged/invalid body 1 0ms
+   × review rejects forged/invalid body 2 0ms
+   × review rejects forged/invalid body 3 0ms
+   × review rejects forged/invalid body 4 0ms
+   × review rejects forged/invalid body 5 0ms
+   × review rejects forged/invalid body 6 0ms
+   × review enforces bounded JSON 0 0ms
+   × review enforces bounded JSON 1 0ms
+   × review enforces bounded JSON 2 0ms
+   × review enforces bounded JSON 3 0ms
+   × review denies query and account quota before storage 0ms
+   × review maps safe canonical error INVALID_INPUT 0ms
+   × review maps safe canonical error AUTHENTICATION_REQUIRED 0ms
+   × review maps safe canonical error ACCOUNT_RESTRICTED 0ms
+   × review maps safe canonical error RESOURCE_UNAVAILABLE 0ms
+   × review maps safe canonical error REVISION_CHANGED 0ms
+   × review maps safe canonical error FAMILY_CHANGED 0ms
+   × review maps safe canonical error EVIDENCE_NOT_CONFIRMED 0ms
+   × review maps safe canonical error RUBRIC_NOT_MET 0ms
+   × review maps safe canonical error HIGH_RANK_EVIDENCE_REQUIRED 0ms
+   × review maps safe canonical error AUTOMATED_EVIDENCE_UNAVAILABLE 0ms
+   × review maps safe canonical error TOOLS_POLICY_NOT_MET 0ms
+   × review maps safe canonical error CURRENT_HIGHER_ASSESSMENT 0ms
+   × review maps safe canonical error WRITES_DISABLED 0ms
+   × review maps safe canonical error STORAGE_CONTRACT 0ms
+   × review maps safe canonical error STORAGE_UNAVAILABLE 0ms
+   × review returns conflict for changed same-key command and sanitizes untyped diagnostics 0ms
+   × review rejects valid-shaped but command-mismatched reason 0ms
+   × review rejects valid-shaped but command-mismatched evaluatorAccountId 0ms
+   × review rejects valid-shaped but command-mismatched assignmentId 0ms
+   × review rejects valid-shaped but command-mismatched policyReference 0ms
+   × review rejects valid-shaped but command-mismatched confidenceStatement 0ms
+   × review rejects valid-shaped but command-mismatched criteria 0ms
+   × review rejects valid-shaped but command-mismatched reassessmentAt 0ms
+   × state reads current result through actual scoped host and private headers 0ms
+   × state accepts explicit historical revision under current reader authority 0ms
+   × state rejects invalid query ?revision=01 0ms
+   × state rejects invalid query ?revision=0 0ms
+   × state rejects invalid query ?revision=-1 0ms
+   × state rejects invalid query ?revision=1e0 0ms
+   × state rejects invalid query ?revision=2147483648 0ms
+   × state rejects invalid query ?revision=1&revision=2 0ms
+   × state rejects invalid query ?purpose=ASSESSMENT_REVIEW 0ms
+   × state rejects invalid query ?actor=forged 0ms
+   × state rejects malformed path 0 0ms
+   × state rejects malformed path 1 0ms
+   × state rejects malformed path 2 0ms
+   × state rejects malformed path 3 0ms
+   × state returns non-enumerable missing404 and unavailable503 0ms
+   × state binds source and requested revision/currentness 0ms
+   × state denies authority 401 before reading 0ms
+   × state denies authority 403 before reading 0ms
+   × state denies authority 429 before reading 0ms
+   × state sanitizes arbitrary host exceptions and contains rejected params 0ms
+   × state supports HEAD with the same read authority and rejects other verbs 0ms
+   × state rejects malformed output envelope 0 0ms
+   × state rejects malformed output envelope 1 0ms
+   × state rejects malformed output envelope 2 0ms
+   × decisions reads current result through actual scoped host and private headers 0ms
+   × decisions accepts explicit historical revision under current reader authority 0ms
+   × decisions rejects invalid query ?revision=01 0ms
+   × decisions rejects invalid query ?revision=0 0ms
+   × decisions rejects invalid query ?revision=-1 0ms
+   × decisions rejects invalid query ?revision=1e0 0ms
+   × decisions rejects invalid query ?revision=2147483648 0ms
+   × decisions rejects invalid query ?revision=1&revision=2 0ms
+   × decisions rejects invalid query ?purpose=ASSESSMENT_REVIEW 0ms
+   × decisions rejects invalid query ?actor=forged 0ms
+   × decisions rejects malformed path 0 0ms
+   × decisions rejects malformed path 1 0ms
+   × decisions rejects malformed path 2 0ms
+   × decisions rejects malformed path 3 1ms
+   × decisions returns non-enumerable missing404 and unavailable503 0ms
+   × decisions binds source and requested revision/currentness 0ms
+   × decisions denies authority 401 before reading 0ms
+   × decisions denies authority 403 before reading 0ms
+   × decisions denies authority 429 before reading 0ms
+   × decisions sanitizes arbitrary host exceptions and contains rejected params 0ms
+   × decisions supports HEAD with the same read authority and rejects other verbs 0ms
+   × decisions rejects malformed output envelope 0 0ms
+   × decisions rejects malformed output envelope 1 0ms
+   × decisions rejects malformed output envelope 2 0ms
+   × decisions normalizes and saves with server actor, original stable key and origin first 0ms
+   × decisions preserves committed EXECUTED with body hidden after reads close 0ms
+   × decisions preserves committed REPLAYED with body hidden after reads close 0ms
+   × decisions permits historical original replay while writes disabled/misconfigured 0ms
+   × decisions checks origin before authentication or malformed body 0ms
+   × decisions requires stable valid key 0 0ms
+   × decisions requires stable valid key 1 0ms
+   × decisions requires stable valid key 2 0ms
+   × decisions requires stable valid key 3 0ms
+   × decisions rejects forged/invalid body 0 0ms
+   × decisions rejects forged/invalid body 1 0ms
+   × decisions rejects forged/invalid body 2 0ms
+   × decisions rejects forged/invalid body 3 0ms
+   × decisions rejects forged/invalid body 4 0ms
+   × decisions rejects forged/invalid body 5 0ms
+   × decisions rejects forged/invalid body 6 0ms
+   × decisions enforces bounded JSON 0 0ms
+   × decisions enforces bounded JSON 1 0ms
+   × decisions enforces bounded JSON 2 0ms
+   × decisions enforces bounded JSON 3 0ms
+   × decisions denies query and account quota before storage 0ms
+   × decisions maps safe canonical error INVALID_INPUT 0ms
+   × decisions maps safe canonical error AUTHENTICATION_REQUIRED 0ms
+   × decisions maps safe canonical error ACCOUNT_RESTRICTED 0ms
+   × decisions maps safe canonical error RESOURCE_UNAVAILABLE 0ms
+   × decisions maps safe canonical error REVISION_CHANGED 0ms
+   × decisions maps safe canonical error FAMILY_CHANGED 0ms
+   × decisions maps safe canonical error EVIDENCE_NOT_CONFIRMED 0ms
+   × decisions maps safe canonical error RUBRIC_NOT_MET 0ms
+   × decisions maps safe canonical error HIGH_RANK_EVIDENCE_REQUIRED 0ms
+   × decisions maps safe canonical error AUTOMATED_EVIDENCE_UNAVAILABLE 0ms
+   × decisions maps safe canonical error TOOLS_POLICY_NOT_MET 0ms
+   × decisions maps safe canonical error CURRENT_HIGHER_ASSESSMENT 0ms
+   × decisions maps safe canonical error WRITES_DISABLED 0ms
+   × decisions maps safe canonical error STORAGE_CONTRACT 0ms
+   × decisions maps safe canonical error STORAGE_UNAVAILABLE 0ms
+   × decisions returns conflict for changed same-key command and sanitizes untyped diagnostics 0ms
+   × decisions rejects valid-shaped but command-mismatched reason 0ms
+   × decisions rejects valid-shaped but command-mismatched evaluatorAccountId 0ms
+   × decisions rejects valid-shaped but command-mismatched assignmentId 0ms
+   × decisions rejects valid-shaped but command-mismatched policyReference 0ms
+   × decisions rejects valid-shaped but command-mismatched findings 0ms
+   × decisions rejects valid-shaped but command-mismatched caseReviewReference 0ms
+   × decisions rejects valid-shaped but command-mismatched ownershipReference 0ms
+   × requires complete trusted host requestId 1ms
+   × requires complete trusted host origin 0ms
+   × requires complete trusted host actor 0ms
+   × requires complete trusted host rateLimit 0ms
+   × requires complete trusted host readReview 0ms
+   × requires complete trusted host recordReview 0ms
+   × requires complete trusted host readState 0ms
+   × requires complete trusted host readDecision 0ms
+   × requires complete trusted host recordDecision 0ms
+   × requires complete trusted host version 0ms
+   × rejects invalid host actor without reading or writing 0ms
+   × rejects mismatched decision category and capability-only fraud evidence 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 172 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review reads current result through actual scoped host and private headers
+ FAIL  tests/practice-assessment-http.test.ts > state reads current result through actual scoped host and private headers
+ FAIL  tests/practice-assessment-http.test.ts > decisions reads current result through actual scoped host and private headers
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assessment-http.test.ts:22:134
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review accepts explicit historical revision under current reader authority
+ FAIL  tests/practice-assessment-http.test.ts > state accepts explicit historical revision under current reader authority
+ FAIL  tests/practice-assessment-http.test.ts > decisions accepts explicit historical revision under current reader authority
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assessment-http.test.ts:23:741
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?revision=01
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?revision=0
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?revision=-1
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?revision=1e0
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?revision=2147483648
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?revision=1&revision=2
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?purpose=ASSESSMENT_REVIEW
+ FAIL  tests/practice-assessment-http.test.ts > review rejects invalid query ?actor=forged
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?revision=01
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?revision=0
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?revision=-1
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?revision=1e0
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?revision=2147483648
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?revision=1&revision=2
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?purpose=ASSESSMENT_REVIEW
+ FAIL  tests/practice-assessment-http.test.ts > state rejects invalid query ?actor=forged
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?revision=01
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?revision=0
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?revision=-1
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?revision=1e0
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?revision=2147483648
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?revision=1&revision=2
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?purpose=ASSESSMENT_REVIEW
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects invalid query ?actor=forged
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:24:217
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review rejects malformed path 0
+ FAIL  tests/practice-assessment-http.test.ts > review rejects malformed path 1
+ FAIL  tests/practice-assessment-http.test.ts > review rejects malformed path 2
+ FAIL  tests/practice-assessment-http.test.ts > review rejects malformed path 3
+ FAIL  tests/practice-assessment-http.test.ts > state rejects malformed path 0
+ FAIL  tests/practice-assessment-http.test.ts > state rejects malformed path 1
+ FAIL  tests/practice-assessment-http.test.ts > state rejects malformed path 2
+ FAIL  tests/practice-assessment-http.test.ts > state rejects malformed path 3
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects malformed path 0
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects malformed path 1
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects malformed path 2
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects malformed path 3
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:25:134
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review returns non-enumerable missing404 and unavailable503
+ FAIL  tests/practice-assessment-http.test.ts > state returns non-enumerable missing404 and unavailable503
+ FAIL  tests/practice-assessment-http.test.ts > decisions returns non-enumerable missing404 and unavailable503
+AssertionError: expected 503 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:26:131
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review binds source and requested revision/currentness
+ FAIL  tests/practice-assessment-http.test.ts > state binds source and requested revision/currentness
+ FAIL  tests/practice-assessment-http.test.ts > decisions binds source and requested revision/currentness
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:152
+
+ ❯ tests/practice-assessment-http.test.ts:27:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review denies authority 401 before reading
+ FAIL  tests/practice-assessment-http.test.ts > state denies authority 401 before reading
+ FAIL  tests/practice-assessment-http.test.ts > decisions denies authority 401 before reading
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:28:170
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review denies authority 403 before reading
+ FAIL  tests/practice-assessment-http.test.ts > state denies authority 403 before reading
+ FAIL  tests/practice-assessment-http.test.ts > decisions denies authority 403 before reading
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:28:170
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review denies authority 429 before reading
+ FAIL  tests/practice-assessment-http.test.ts > state denies authority 429 before reading
+ FAIL  tests/practice-assessment-http.test.ts > decisions denies authority 429 before reading
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:28:170
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review sanitizes arbitrary host exceptions and contains rejected params
+ FAIL  tests/practice-assessment-http.test.ts > state sanitizes arbitrary host exceptions and contains rejected params
+ FAIL  tests/practice-assessment-http.test.ts > decisions sanitizes arbitrary host exceptions and contains rejected params
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:152
+
+ ❯ tests/practice-assessment-http.test.ts:29:236
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review supports HEAD with the same read authority and rejects other verbs
+ FAIL  tests/practice-assessment-http.test.ts > state supports HEAD with the same read authority and rejects other verbs
+ FAIL  tests/practice-assessment-http.test.ts > decisions supports HEAD with the same read authority and rejects other verbs
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assessment-http.test.ts:30:142
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review rejects malformed output envelope 0
+ FAIL  tests/practice-assessment-http.test.ts > review rejects malformed output envelope 1
+ FAIL  tests/practice-assessment-http.test.ts > review rejects malformed output envelope 2
+ FAIL  tests/practice-assessment-http.test.ts > state rejects malformed output envelope 0
+ FAIL  tests/practice-assessment-http.test.ts > state rejects malformed output envelope 1
+ FAIL  tests/practice-assessment-http.test.ts > state rejects malformed output envelope 2
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects malformed output envelope 0
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects malformed output envelope 1
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects malformed output envelope 2
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:152
+
+ ❯ tests/practice-assessment-http.test.ts:31:222
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review normalizes and saves with server actor, original stable key and origin first
+ FAIL  tests/practice-assessment-http.test.ts > decisions normalizes and saves with server actor, original stable key and origin first
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assessment-http.test.ts:33:181
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review preserves committed EXECUTED with body hidden after reads close
+ FAIL  tests/practice-assessment-http.test.ts > review preserves committed REPLAYED with body hidden after reads close
+ FAIL  tests/practice-assessment-http.test.ts > decisions preserves committed EXECUTED with body hidden after reads close
+ FAIL  tests/practice-assessment-http.test.ts > decisions preserves committed REPLAYED with body hidden after reads close
+SyntaxError: Unexpected end of JSON input
+ ❯ tests/practice-assessment-http.test.ts:34:290
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review permits historical original replay while writes disabled/misconfigured
+ FAIL  tests/practice-assessment-http.test.ts > decisions permits historical original replay while writes disabled/misconfigured
+SyntaxError: Unexpected end of JSON input
+ ❯ tests/practice-assessment-http.test.ts:35:510
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review checks origin before authentication or malformed body
+ FAIL  tests/practice-assessment-http.test.ts > decisions checks origin before authentication or malformed body
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:36:150
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review requires stable valid key 0
+ FAIL  tests/practice-assessment-http.test.ts > review requires stable valid key 1
+ FAIL  tests/practice-assessment-http.test.ts > review requires stable valid key 2
+ FAIL  tests/practice-assessment-http.test.ts > review requires stable valid key 3
+ FAIL  tests/practice-assessment-http.test.ts > decisions requires stable valid key 0
+ FAIL  tests/practice-assessment-http.test.ts > decisions requires stable valid key 1
+ FAIL  tests/practice-assessment-http.test.ts > decisions requires stable valid key 2
+ FAIL  tests/practice-assessment-http.test.ts > decisions requires stable valid key 3
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:37:101
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review rejects forged/invalid body 0
+ FAIL  tests/practice-assessment-http.test.ts > review rejects forged/invalid body 1
+ FAIL  tests/practice-assessment-http.test.ts > review rejects forged/invalid body 2
+ FAIL  tests/practice-assessment-http.test.ts > review rejects forged/invalid body 3
+ FAIL  tests/practice-assessment-http.test.ts > review rejects forged/invalid body 4
+ FAIL  tests/practice-assessment-http.test.ts > review rejects forged/invalid body 5
+ FAIL  tests/practice-assessment-http.test.ts > review rejects forged/invalid body 6
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects forged/invalid body 0
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects forged/invalid body 1
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects forged/invalid body 2
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects forged/invalid body 3
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects forged/invalid body 4
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects forged/invalid body 5
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects forged/invalid body 6
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:38:202
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review enforces bounded JSON 0
+ FAIL  tests/practice-assessment-http.test.ts > decisions enforces bounded JSON 0
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:39:221
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review enforces bounded JSON 1
+ FAIL  tests/practice-assessment-http.test.ts > decisions enforces bounded JSON 1
+AssertionError: expected 503 to be 415 // Object.is equality
+
+- Expected
++ Received
+
+- 415
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:39:221
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review enforces bounded JSON 2
+ FAIL  tests/practice-assessment-http.test.ts > review enforces bounded JSON 3
+ FAIL  tests/practice-assessment-http.test.ts > decisions enforces bounded JSON 2
+ FAIL  tests/practice-assessment-http.test.ts > decisions enforces bounded JSON 3
+AssertionError: expected 503 to be 413 // Object.is equality
+
+- Expected
++ Received
+
+- 413
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:39:221
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review denies query and account quota before storage
+ FAIL  tests/practice-assessment-http.test.ts > decisions denies query and account quota before storage
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:40:74
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error INVALID_INPUT
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error EVIDENCE_NOT_CONFIRMED
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error RUBRIC_NOT_MET
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error HIGH_RANK_EVIDENCE_REQUIRED
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error TOOLS_POLICY_NOT_MET
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error INVALID_INPUT
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error EVIDENCE_NOT_CONFIRMED
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error RUBRIC_NOT_MET
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error HIGH_RANK_EVIDENCE_REQUIRED
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error TOOLS_POLICY_NOT_MET
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:41:921
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error AUTHENTICATION_REQUIRED
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error AUTHENTICATION_REQUIRED
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:41:921
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error ACCOUNT_RESTRICTED
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error ACCOUNT_RESTRICTED
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:41:921
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error RESOURCE_UNAVAILABLE
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error RESOURCE_UNAVAILABLE
+AssertionError: expected 503 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:41:921
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error REVISION_CHANGED
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error FAMILY_CHANGED
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error CURRENT_HIGHER_ASSESSMENT
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error REVISION_CHANGED
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error FAMILY_CHANGED
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error CURRENT_HIGHER_ASSESSMENT
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:41:921
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error AUTOMATED_EVIDENCE_UNAVAILABLE
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error WRITES_DISABLED
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error STORAGE_CONTRACT
+ FAIL  tests/practice-assessment-http.test.ts > review maps safe canonical error STORAGE_UNAVAILABLE
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error AUTOMATED_EVIDENCE_UNAVAILABLE
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error WRITES_DISABLED
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error STORAGE_CONTRACT
+ FAIL  tests/practice-assessment-http.test.ts > decisions maps safe canonical error STORAGE_UNAVAILABLE
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:152
+
+ ❯ tests/practice-assessment-http.test.ts:41:921
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review returns conflict for changed same-key command and sanitizes untyped diagnostics
+ FAIL  tests/practice-assessment-http.test.ts > decisions returns conflict for changed same-key command and sanitizes untyped diagnostics
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:42:184
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review rejects valid-shaped but command-mismatched reason
+ FAIL  tests/practice-assessment-http.test.ts > review rejects valid-shaped but command-mismatched evaluatorAccountId
+ FAIL  tests/practice-assessment-http.test.ts > review rejects valid-shaped but command-mismatched assignmentId
+ FAIL  tests/practice-assessment-http.test.ts > review rejects valid-shaped but command-mismatched policyReference
+ FAIL  tests/practice-assessment-http.test.ts > review rejects valid-shaped but command-mismatched confidenceStatement
+ FAIL  tests/practice-assessment-http.test.ts > review rejects valid-shaped but command-mismatched criteria
+ FAIL  tests/practice-assessment-http.test.ts > review rejects valid-shaped but command-mismatched reassessmentAt
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects valid-shaped but command-mismatched reason
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects valid-shaped but command-mismatched evaluatorAccountId
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects valid-shaped but command-mismatched assignmentId
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects valid-shaped but command-mismatched policyReference
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects valid-shaped but command-mismatched findings
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects valid-shaped but command-mismatched caseReviewReference
+ FAIL  tests/practice-assessment-http.test.ts > decisions rejects valid-shaped but command-mismatched ownershipReference
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:152
+
+ ❯ tests/practice-assessment-http.test.ts:43:724
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host requestId
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host origin
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host actor
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host rateLimit
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host readReview
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host recordReview
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host readState
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host readDecision
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host recordDecision
+ FAIL  tests/practice-assessment-http.test.ts > requires complete trusted host version
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/practice-assessment-http.test.ts:46:260
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > rejects invalid host actor without reading or writing
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:152
+
+ ❯ tests/practice-assessment-http.test.ts:47:128
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/172]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > rejects mismatched decision category and capability-only fraud evidence
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-assessment-http.test.ts:20:93
+
+ ❯ tests/practice-assessment-http.test.ts:48:94
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/172]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 3 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Error: private-diagnostic
+ ❯ tests/practice-assessment-http.test.ts:29:277
+
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+ ❯ runWithCancel node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+ ❯ runWithTimeout node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+This error originated in "tests/practice-assessment-http.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Error: private-diagnostic
+ ❯ tests/practice-assessment-http.test.ts:29:277
+
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+ ❯ runWithCancel node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+ ❯ runWithTimeout node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+This error originated in "tests/practice-assessment-http.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Error: private-diagnostic
+ ❯ tests/practice-assessment-http.test.ts:29:277
+
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+ ❯ runWithCancel node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+ ❯ runWithTimeout node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+This error originated in "tests/practice-assessment-http.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  172 failed | 1 passed (173)
+     Errors  3 errors
+   Start at  13:08:29
+   Duration  340ms (transform 99ms, setup 0ms, import 169ms, tests 44ms, environment 0ms)
+

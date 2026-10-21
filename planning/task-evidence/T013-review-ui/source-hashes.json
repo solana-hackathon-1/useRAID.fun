@@ -1,0 +1,122 @@
+{
+  "baselineSha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "workingTree": "UNCOMMITTED; CURRENT.md mutable checkpoint; exclude existing next-env.d.ts/WARP.md/.claude/worktrees",
+  "ownedSourceFiles": {
+    ".github/workflows/checks.yml": {
+      "sha256": "3f86b14abcd68b308d7958f5ccd383fad7302138be3b6c5d86a927fc9a695a94",
+      "symlink": null
+    },
+    "docs/raid-module-reuse.md": {
+      "sha256": "1ae427f2eb151a2481fc4e07eff1d82cc411b076fd35b0b2e55a0e7b189dfe92",
+      "symlink": null
+    },
+    "docs/raid-practice-review-http.md": {
+      "sha256": "8cfe934848748fdeda91e9f31d5b3c9130faa7c1676984bc83e67782dc7c6031",
+      "symlink": null
+    },
+    "docs/raid-practice-review-ui.md": {
+      "sha256": "fdccf8fd5af93e89534e22b3e2097c43ffef35f50cd83ff2a7245127e4f98f5e",
+      "symlink": null
+    },
+    "docs/tasks/2026-10-21-T013-review-ui.md": {
+      "sha256": "2b3b892dc74d0ada02717133ff70f2804a0fee1dcea5937923109543ee0721c9",
+      "symlink": null
+    },
+    "examples/practice-review-reads/README.md": {
+      "sha256": "f6ebf11cc9bbafafcbac6bfad097053b90341a9a71623ece5e6b04cc03797b16",
+      "symlink": null
+    },
+    "examples/practice-review-reads/components/practice-review-case.tsx": {
+      "sha256": "d258ab3fdaa2b283394c3d3f6d419e8376724d2f0190b8d4b65c4d27d171d4eb",
+      "symlink": "../../../src/components/practice-review-case.tsx"
+    },
+    "examples/practice-review-reads/connection.ts": {
+      "sha256": "6ddacbc8388fb23b084941ea840e5e7373317f78a7e321d8f53ea6361c8a27b8",
+      "symlink": null
+    },
+    "examples/practice-review-reads/host.ts": {
+      "sha256": "feacd9cc834c22c6dbdcdd43269a106cd20ac349d0087180261e798fa06e4452",
+      "symlink": null
+    },
+    "examples/practice-review-reads/migrate.ts": {
+      "sha256": "c4e052c40c3a4dd42b00b00a5428c83d10b36eeb3d940c23a3743ff7c6823ecf",
+      "symlink": null
+    },
+    "examples/practice-review-reads/package-lock.json": {
+      "sha256": "6aae3b0fadace68702c480605ed51e35497af9a52360b3516550b80072031b95",
+      "symlink": null
+    },
+    "examples/practice-review-reads/package.json": {
+      "sha256": "9aa462efe20571df9deab100cdb3169a9141bc818623cd58e9f9d990683739f0",
+      "symlink": null
+    },
+    "examples/practice-review-reads/tsconfig.json": {
+      "sha256": "9b90af83e16eb3a654253820d90b21b4632379934f034b7b612c34c83cbad594",
+      "symlink": null
+    },
+    "planning/raid-ci-matrix.json": {
+      "sha256": "853448f12514d47f1915a36d3486c29c9f2e9bff27c5ed5ed470240d1d055c7c",
+      "symlink": null
+    },
+    "playwright.practice-review.config.ts": {
+      "sha256": "d585a7b2d3fe2450365eebd033fe6e7d4d807634ac7febd75a8bc5111e48b89d",
+      "symlink": null
+    },
+    "src/app/evaluator/practice/[assignmentId]/submissions/[submissionId]/loading.tsx": {
+      "sha256": "a18f221f5eadd02f35d65d32c25584b091bb2df078c9f39415e89ff5be563c0b",
+      "symlink": null
+    },
+    "src/app/evaluator/practice/[assignmentId]/submissions/[submissionId]/not-found.tsx": {
+      "sha256": "4b14c1f2f6abbb0e143a38c6e46a1c9ec96807764985c2cafde669b87c149814",
+      "symlink": null
+    },
+    "src/app/evaluator/practice/[assignmentId]/submissions/[submissionId]/page.tsx": {
+      "sha256": "f166615db0709fb66814e8f6fb4c1452573a25f19632673e95c42ce3a5a346bb",
+      "symlink": null
+    },
+    "src/components/practice-review-case.tsx": {
+      "sha256": "d258ab3fdaa2b283394c3d3f6d419e8376724d2f0190b8d4b65c4d27d171d4eb",
+      "symlink": null
+    },
+    "src/lib/practice-review-page.ts": {
+      "sha256": "1defddd5f6d5ca4a423e95e6bfeb45846fbea1b94df6e913ab90e316cf4c5131",
+      "symlink": null
+    },
+    "src/skills/practice-review-http.ts": {
+      "sha256": "b6af749e752af64b7b6a570a7905b42f9e77c7a3132f0cec312de6685a6ea949",
+      "symlink": null
+    },
+    "src/skills/practice-review-page.ts": {
+      "sha256": "426b10d9663fc0374e5a2c217f76c9452ac572f2199c06c04451e6a93314bcd4",
+      "symlink": null
+    },
+    "tests/browser-practice-review/practice-review.spec.ts": {
+      "sha256": "bb93e0110a867e099c4203bfb410e8d09dc67b299bbaef20e31f58a26b67b7d8",
+      "symlink": null
+    },
+    "tests/helpers/practice-review-browser-fixture.ts": {
+      "sha256": "e3c2f59922551dccdfc50a8e224fecf141ae5c6951f590fe9753846d8a8ab511",
+      "symlink": null
+    },
+    "tests/helpers/practice-review-preview-seed.ts": {
+      "sha256": "f3f2edd6cad477e186d2f7220bc5a143d3612f9d1676e26f87e5ce79d1adee28",
+      "symlink": null
+    },
+    "tests/helpers/practice-review-view-fixture.ts": {
+      "sha256": "29b0e56a27616ed6cc3b909d5b00afada98a96bee826c9fdd38a72ce8b54153f",
+      "symlink": null
+    },
+    "tests/practice-review-page.test.ts": {
+      "sha256": "841773b952a8e59d3aec2a298eb3d383779d8b708424117df76db343c855457f",
+      "symlink": null
+    },
+    "tests/practice-review-root-page.test.ts": {
+      "sha256": "f2016cd16dfb08c6d14c2eaabe19e7c2451fae9d47c7f9f019ac14222672133f",
+      "symlink": null
+    },
+    "tests/practice-review-view.test.ts": {
+      "sha256": "e6f30200fc994fe7198d88906710c1b4886d222bfc624065a611b95fe8a5487b",
+      "symlink": null
+    }
+  }
+}

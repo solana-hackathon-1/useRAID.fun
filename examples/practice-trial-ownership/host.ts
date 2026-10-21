@@ -1,3 +1,12 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { PracticeOwnershipEditor } from './components/practice-ownership-editor';
+import { readPracticeOwnershipContext } from './skills/practice-ownership-context';
+import {
+  createPracticeOwnershipHandlers,
+  PracticeOwnershipHttpError,
+  PracticeOwnershipHttpWriteResultSchema,
+} from './skills/practice-ownership-http';
 import {
   recordPracticeTrialOwnership,
   readPracticeTrialOwnership,
@@ -598,14 +607,89 @@ try {
         },
       ),
     );
-  const ownership = await findOwnership();
+  // Synthetic transport identity is a server-owned fixture, never a request field.
+  let httpActor = evaluator;
+  let writesAvailable = true;
+  const http = createPracticeOwnershipHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    origin(request) {
+      if (request.headers.get('Origin') !== 'https://ownership.example')
+        throw new PracticeOwnershipHttpError(403);
+    },
+    actor: async () => httpActor,
+    rateLimit() {
+      /* No public listener: outer host owns quota enforcement. */
+    },
+    read: async (current, input) => ({
+      version: 'v1',
+      readsAvailable: true,
+      unavailableReason: null,
+      view: await transaction((tx) => readPracticeTrialOwnership(tx, current, input, () => true)),
+    }),
+    record: async (command) => ({
+      version: 'v1',
+      ...(await transaction((tx) =>
+        recordPracticeTrialOwnership(tx, command, {
+          allowNewWrites: writesAvailable,
+          canRead: (scope) => scope.subjectAccountId === learner.accountId,
+          canUsePolicy: (scope) => scope.policyVersionId === publishedPolicy.policy.id,
+          canReview,
+        }),
+      )),
+      readsAvailable: true,
+      writesAvailable,
+      unavailableReason: writesAvailable ? null : 'DISABLED',
+    }),
+  });
+  const httpPath = {
+    assignmentId: assignment.id,
+    submissionId: submitted.submission.reference.recordId,
+  };
+  const httpGet = (query = '?purpose=OWNERSHIP_REVIEW') =>
+    http.GET(new Request('https://ownership.example/ownership' + query), Promise.resolve(httpPath));
+  const httpPost = (body: unknown = ownershipBody, key = ownershipKey) =>
+    http.POST(
+      new Request('https://ownership.example/ownership', {
+        method: 'POST',
+        headers: {
+          Origin: 'https://ownership.example',
+          'Content-Type': 'application/json',
+          'Idempotency-Key': key,
+        },
+        body: JSON.stringify(body),
+      }),
+      Promise.resolve(httpPath),
+    );
+  const editorContext = await transaction((tx) =>
+    readPracticeOwnershipContext(tx, evaluator, reviewInput, () => true),
+  );
+  assert(editorContext);
+  assert.equal(editorContext.policy?.policy.id, publishedPolicy.policy.id);
+  assert.equal(editorContext.ownership, null);
+  const editorHTML = renderToStaticMarkup(
+    createElement(PracticeOwnershipEditor, {
+      context: { ...editorContext, writesAvailable: true },
+    }),
+  );
+  assert(editorHTML.includes('Record ownership finding'));
+  assert(editorHTML.includes('Original submission'));
+  assert(!editorHTML.includes('This screen does not record review decisions'));
+  assert.equal((await httpGet()).status, 404);
+  const savedResponse = await httpPost();
+  assert.equal(savedResponse.status, 200);
+  assert.equal(savedResponse.headers.get('cache-control'), 'private, no-store');
+  assert.equal(savedResponse.headers.get('vary'), 'Cookie');
+  const saved = PracticeOwnershipHttpWriteResultSchema.parse(await savedResponse.json());
+  assert(saved.view);
+  const ownership = { ...saved, view: saved.view };
   assert.equal(ownership.status, 'EXECUTED');
   assert.equal(ownership.view.record.ownership, 'CONFIRMED');
   assert.equal(ownership.view.record.verifiesSkill, false);
   assert.equal(ownership.view.record.createsPermissionGrant, false);
   assert.equal(ownership.view.record.policyVersionId, publishedPolicy.policy.id);
   assert.equal(ownership.view.isCurrent, true);
-  const correctedOwnership = await findOwnership(
+  const correctionResponse = await httpPost(
     {
       ...ownershipBody,
       expectedOwnershipReference: ownership.view.record.reference,
@@ -614,8 +698,43 @@ try {
     },
     randomUUID(),
   );
+  assert.equal(correctionResponse.status, 200);
+  const correction = PracticeOwnershipHttpWriteResultSchema.parse(await correctionResponse.json());
+  assert(correction.view);
+  const correctedOwnership = { ...correction, view: correction.view };
+  assert.equal(
+    (
+      await http.GET(
+        new Request('https://ownership.example/ownership?purpose=OWNERSHIP_REVIEW', {
+          method: 'HEAD',
+        }),
+        Promise.resolve(httpPath),
+      )
+    ).status,
+    200,
+  );
   assert.equal(correctedOwnership.view.record.ownership, 'UNCONFIRMED');
   assert.equal(correctedOwnership.view.record.reference.revision, 2);
+  const staleResponse = await httpPost(ownershipBody, randomUUID());
+  assert.equal(staleResponse.status, 409);
+  assert.equal((await staleResponse.json()).error.code, 'REVISION_CHANGED');
+  const changedKey = await httpPost({ ...ownershipBody, reason: 'Changed payload' }, ownershipKey);
+  assert.equal(changedKey.status, 409);
+  assert.equal((await changedKey.json()).error.code, 'IDEMPOTENCY_KEY_REUSED');
+  const historicalResponse = await httpGet('?purpose=OWNERSHIP_REVIEW&revision=1');
+  assert.equal(historicalResponse.status, 200);
+  const historical = await historicalResponse.json();
+  assert.deepEqual(historical.view.record, ownership.view.record);
+  assert.equal(historical.view.isCurrent, false);
+  const currentResponse = await httpGet();
+  assert.equal(currentResponse.status, 200);
+  assert.equal((await currentResponse.json()).view.record.reference.revision, 2);
+  httpActor = actor;
+  const foreignResponse = await httpGet();
+  assert.equal(foreignResponse.status, 404);
+  assert(!JSON.stringify(await foreignResponse.json()).includes(ownershipBody.reason));
+  httpActor = evaluator;
+  assert.equal((await httpGet('?purpose=ASSESSMENT_REVIEW')).status, 404);
   const originalFinding = await transaction((tx) =>
     readPracticeTrialOwnership(tx, evaluator, { ...reviewInput, revision: 1 }, () => true),
   );
@@ -643,6 +762,19 @@ try {
     randomUUID(),
   );
   assert.equal(withdrawnPolicy.policy.reference.revision, 2);
+  writesAvailable = false;
+  const retriedResponse = await httpPost();
+  assert.equal(retriedResponse.status, 200);
+  const retried = PracticeOwnershipHttpWriteResultSchema.parse(await retriedResponse.json());
+  assert.equal(retried.status, 'REPLAYED');
+  assert.equal(retried.writesAvailable, false);
+  assert.deepEqual(retried.view?.record, ownership.view.record);
+  assert.equal(retried.view?.isCurrent, false);
+  const disabledResponse = await httpPost(
+    { ...ownershipBody, expectedOwnershipReference: correctedOwnership.view.record.reference },
+    randomUUID(),
+  );
+  assert.equal(disabledResponse.status, 503);
   const ownershipReplay = await findOwnership(ownershipBody, ownershipKey, false);
   assert.equal(ownershipReplay.status, 'REPLAYED');
   assert.deepEqual(ownershipReplay.view.record, ownership.view.record);
@@ -724,6 +856,10 @@ try {
     await transaction((tx) => readPracticeTrialOwnership(tx, evaluator, reviewInput, () => true)),
     null,
   );
+  assert.equal((await httpGet()).status, 404);
+  const revokedRetry = await httpPost();
+  assert.equal(revokedRetry.status, 404);
+  assert(!JSON.stringify(await revokedRetry.json()).includes(ownershipBody.reason));
   await assert.rejects(
     () => findOwnership(ownershipBody, ownershipKey, false),
     /RESOURCE_UNAVAILABLE/,
@@ -764,6 +900,7 @@ try {
       immutableOwnershipCorrectionAndCAS: true,
       originalOwnershipRetryAfterPolicyWithdrawal: true,
       privateOwnershipHistoryCurrentScope: true,
+      ownershipHttpCurrentHistoryRetryRevocation: true,
       ownershipFindingsNeverVerifyRank: true,
       noCallerInventedPolicyVersion: true,
       uniqueOriginalDefinitionPurposePolicy: true,

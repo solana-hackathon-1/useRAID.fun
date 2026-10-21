@@ -1,0 +1,110 @@
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 13ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.1s
+  Running TypeScript ...
+  Finished TypeScript in 10.6s ...
+  Collecting page data using 10 workers ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  Generating static pages using 10 workers (0/18) ...
+  Generating static pages using 10 workers (4/18) 
+  Generating static pages using 10 workers (8/18) 
+  Generating static pages using 10 workers (13/18) 
+✓ Generating static pages using 10 workers (18/18) in 92ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /admin
+├ ƒ /admin/skills
+├ ƒ /api/admin/[action]
+├ ƒ /api/admin/payments
+├ ƒ /api/admin/usdc
+├ ƒ /api/auth/[action]
+├ ƒ /api/auth/x
+├ ƒ /api/auth/x/callback
+├ ƒ /api/auth/x/disconnect
+├ ƒ /api/balance
+├ ƒ /api/balance/[action]
+├ ƒ /api/discovery
+├ ƒ /api/events
+├ ƒ /api/health
+├ ƒ /api/launch/[id]
+├ ƒ /api/launch/[id]/enroll
+├ ƒ /api/launch/[id]/renew
+├ ƒ /api/launch/[id]/retry
+├ ƒ /api/launch/[id]/submit
+├ ƒ /api/launch/prepare
+├ ƒ /api/launch/upload
+├ ƒ /api/media/[id]
+├ ƒ /api/raids
+├ ƒ /api/raids/[id]
+├ ƒ /api/raids/[id]/brief
+├ ƒ /api/raids/[id]/disputes
+├ ƒ /api/raids/[id]/enroll
+├ ƒ /api/raids/[id]/fund
+├ ƒ /api/raids/[id]/report
+├ ƒ /api/raids/[id]/resolve
+├ ƒ /api/raids/[id]/submit
+├ ƒ /api/studio/image
+├ ƒ /api/studio/preview
+├ ƒ /api/studio/quote
+├ ƒ /api/studio/sandbox
+├ ƒ /api/tokens/[mint]
+├ ƒ /api/v1/admin/skill-taxonomies/[id]
+├ ƒ /api/v1/guild-drafts
+├ ƒ /api/v1/guild-drafts/[id]
+├ ƒ /api/v1/guild-drafts/[id]/project-proposal
+├ ƒ /api/v1/me/orientation
+├ ƒ /api/v1/practice
+├ ƒ /api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]
+├ ƒ /api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/ownership
+├ ƒ /api/v1/practice/starts
+├ ƒ /api/v1/practice/starts/[startId]
+├ ƒ /api/v1/practice/starts/[startId]/submission
+├ ƒ /api/v1/skill-assessments/[skillId]
+├ ƒ /api/v1/skill-claims/[skillId]
+├ ƒ /api/v1/skill-taxonomies/[id]
+├ ƒ /api/wallet/challenge
+├ ƒ /api/wallet/verify
+├ ƒ /creator
+├ ƒ /creator/account
+├ ƒ /creator/balance
+├ ƒ /creator/guild-drafts
+├ ƒ /creator/guild-drafts/[id]
+├ ƒ /creator/guild-drafts/[id]/project
+├ ƒ /creator/guild-drafts/new
+├ ƒ /creator/new
+├ ƒ /creator/raids/[id]
+├ ƒ /evaluator/practice/[assignmentId]/submissions/[submissionId]
+├ ƒ /evaluator/practice/[assignmentId]/submissions/[submissionId]/ownership
+├ ○ /icon.svg
+├ ƒ /launch
+├ ƒ /methodology
+├ ƒ /privacy
+├ ƒ /raider/onboarding
+├ ƒ /raider/practice
+├ ƒ /raider/practice/[startId]
+├ ƒ /raider/skills
+├ ƒ /raider/skills/[skillId]
+├ ƒ /raids/[id]
+├ ƒ /studio-test
+├ ƒ /test-center
+└ ƒ /tokens/[mint]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

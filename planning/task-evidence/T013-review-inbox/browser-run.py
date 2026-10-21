@@ -1,0 +1,40 @@
+import os,subprocess,signal,socket,time,json,urllib.request,sys
+from pathlib import Path
+mode=sys.argv[1];assert mode in ['development','production']
+root=Path.cwd();source=Path(Path('/tmp/raid-t013-review-inbox-build-path').read_text());e=root/'planning/task-evidence/T013-review-inbox'
+class Interrupted(BaseException):
+ def __init__(self, sig):self.code=128+sig
+def interrupt(sig, frame):raise Interrupted(sig)
+for sig in [signal.SIGTERM,signal.SIGINT]:signal.signal(sig,interrupt)
+def stop(p):
+ if p is not None and p.poll() is None:
+  os.killpg(p.pid,signal.SIGTERM)
+  try:p.wait(timeout=8)
+  except subprocess.TimeoutExpired:os.killpg(p.pid,signal.SIGKILL);p.wait(timeout=5)
+with socket.socket() as s:s.bind(('127.0.0.1',0));port=s.getsockname()[1]
+url='http://127.0.0.1:'+str(port)
+env=dict(os.environ,NODE_ENV='production' if mode=='production' else 'development',NEXT_TELEMETRY_DISABLED='1',DEMO_MODE='false',ADMIN_X_IDS='',X_ADMIN_USER_ID='',APP_URL=url,NEXT_PUBLIC_APP_URL=url,USDC_NETWORK='devnet',PRACTICE_REVIEW_READS_ENABLED='true',PRACTICE_PORTAL_READS_ENABLED='false',PRACTICE_TRIAL_ATTEMPTS_ENABLED='false',PRACTICE_TRIAL_SUBMISSIONS_ENABLED='false',SKILL_ASSESSMENT_READS_ENABLED='false',SKILL_CLAIMS_ENABLED='false',RAIDER_ONBOARDING_ENABLED='false',PRACTICE_TRIAL_ASSESSMENTS_ENABLED='false',PRACTICE_ASSESSMENT_DECISIONS_ENABLED='false',ACCOUNT_FOLDS_ENABLED='false',WALLET_LINKS_ENABLED='false',LIVE_COLLECTION_APPROVED='false',LAUNCH_ENABLED='false',PAYOUT_ENABLED='false',X_TRACKING_V2_SETTLEMENT_ENABLED='false',PRACTICE_REVIEW_INBOX_BROWSER_URL=url,PRACTICE_REVIEW_INBOX_EXTERNAL_PREVIEW='true',PRACTICE_REVIEW_INBOX_SERVER_MODE=mode)
+server=None;runner=None;code=1;log=(e/('server-'+mode+'.log')).open('w')
+try:
+ args=['node_modules/.bin/next','start' if mode=='production' else 'dev']+([] if mode=='production' else ['--webpack'])+['--hostname','127.0.0.1','--port',str(port)]
+ server=subprocess.Popen(args,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+ for attempt in range(240):
+  try:
+   with urllib.request.urlopen(url+'/methodology',timeout=1) as response:
+    if response.status==200:break
+  except Exception:
+   if server.poll() is not None:raise RuntimeError('Owned server exited')
+   time.sleep(.25)
+ else:raise RuntimeError('Owned server unreachable')
+ print('OWNED '+mode+' BROWSER:',url,'source',str(source),'pid',server.pid,flush=True)
+ runner=subprocess.Popen(['node_modules/.bin/playwright','test','--config=playwright.practice-review-inbox.config.ts']+sys.argv[2:],cwd=root,env=dict(env,NODE_ENV='test'),start_new_session=True)
+ code=runner.wait()
+except Interrupted as error:code=error.code
+finally:
+ for sig in [signal.SIGTERM,signal.SIGINT]:signal.signal(sig,signal.SIG_IGN)
+ stop(runner);stop(server);log.close()
+ with socket.socket() as s:closed=s.connect_ex(('127.0.0.1',port))!=0
+ if not closed:code=1
+ (e/('browser-'+mode+'-resources.json')).write_text(json.dumps({'mode':mode,'url':url,'source':str(source),'serverPid':server.pid if server else None,'serverStopped':closed,'result':code},indent=2)+'\n')
+ print('OWNED SERVER CLOSED:',closed,flush=True)
+raise SystemExit(code)

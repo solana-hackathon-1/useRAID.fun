@@ -25,7 +25,7 @@ export const practiceReviewPrivateHeaders = Object.freeze({
   Vary: 'Cookie',
 });
 const Params = z.strictObject({ assignmentId: z.uuid(), submissionId: z.uuid() });
-const Result = z
+export const PracticeReviewHttpResultSchema = z
   .strictObject({
     version: z.literal('v1'),
     readsAvailable: z.boolean(),
@@ -112,7 +112,9 @@ export function createPracticeReviewHandlers(host: PracticeReviewHttpHost) {
           purpose: query.get('purpose'),
         });
         if (!input.success) fail('INVALID_INPUT');
-        const parsed = Result.safeParse(await host.read(actor.data, input.data));
+        const parsed = PracticeReviewHttpResultSchema.safeParse(
+          await host.read(actor.data, input.data),
+        );
         if (!parsed.success) fail('STORAGE_CONTRACT');
         if (!parsed.data.readsAvailable) fail('STORAGE_UNAVAILABLE');
         const review = parsed.data.review;

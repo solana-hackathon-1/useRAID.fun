@@ -1,0 +1,14 @@
+{
+  "mode": "development",
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assessment-ui-preview-0n0m7mq0",
+  "syntheticOnly": true,
+  "runnerPid": 33680,
+  "serverPid": 33683,
+  "url": "http://127.0.0.1:52811/evaluator/practice/7aff38fc-d727-4ca8-a434-ee969946f74f/submissions/bcb7dca5-e281-425a-92a2-48a6ef24613c/assessment",
+  "openUrl": "http://127.0.0.1:52819/open",
+  "serverPort": 52811,
+  "helperPort": 52819,
+  "databaseContainer": "raid-t013-assessment-ui-preview-final-20261021",
+  "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+  "result": "RUNNING"
+}

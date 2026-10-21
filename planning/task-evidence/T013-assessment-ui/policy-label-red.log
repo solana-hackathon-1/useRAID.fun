@@ -1,0 +1,30 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assessment-editor.test.ts (5 tests | 1 failed) 25ms
+   × labels historical saved decision explicitly 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-editor.test.ts > labels historical saved decision explicitly
+AssertionError: expected '<section class="orientation-card" ari…' to contain 'Recheck to refresh the source context…'
+
+Expected: "Recheck to refresh the source context and policy shown above."
+Received: "<section class="orientation-card" aria-label="Saved assessment"><h2>Saved decision (historical)</h2><p>A newer assessment exists. Recheck the current case.</p><p>REASSESSMENT_REQUIRED · version 2</p><p>private-decision-reason</p><ul><li>CAPABILITY_EVIDENCE: private-finding</li></ul></section>"
+
+ ❯ tests/practice-assessment-editor.test.ts:59:16
+     57|   expect(html).toContain('Saved decision (historical)');
+     58|   expect(html).toContain('A newer assessment exists');
+     59|   expect(html).toContain('Recheck to refresh the source context and po…
+       |                ^
+     60| });
+     61|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  15:54:05
+   Duration  356ms (transform 128ms, setup 0ms, import 220ms, tests 25ms, environment 0ms)
+

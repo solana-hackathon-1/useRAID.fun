@@ -1,0 +1,232 @@
+{
+  "task_id": "T013",
+  "scope": "Current own finite appointment metadata inbox,20+1UUID pagination, separate metadata authority, identifier-only private access audit, realRootsession/cookie/sharedquota/flag/postcommitgate, protectedGET/HEAD and native noindex inbox links to existing independently scoped case/ownership/assessment routes.",
+  "status": "SELF-EVALUATED; bounded implementation VERIFIED_IN_TEST; full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent review not assigned/authorized",
+  "handoff": "docs/tasks/2026-10-21-T013-review-inbox.md; docs/ai-handoff/CURRENT.md; planning/task-evidence/T013-review-inbox/review.json",
+  "migration_rollback": "No schema; disable existing review-read gate, retain immutable appointments/revocations/receipts/private evidence/history; metadata access does not authorize case bytes.",
+  "dependency_evidence": "Actual prior assignment/reader89PASS, current9newPG/73unitRoot, ownminimalPGHTTPReact45files/currenttypes/build/browser; combined current author evidence only.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "No enablement/publication/deployment; full criterion review, hosted CI and release gates absent.",
+  "baseline_sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "source_identity": "Uncommitted context/form plus preserved prior UI/HTTP/identity work; compiler-source-proof.json1278exactfiles, independentconsumer55exactfiles, preview-source-proof.json separate devcache. No commit/push/merge/branch change.",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded author evidence:82newlocal,324uniqueaffected+docs,16currentdesktopmobilebrowser, independent owninstalledPGHTTPReact/currenttypes/build/staticPASS. Fullcriterion/independent/UAT/hosted/operating/release remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/review.json; docs/tasks/2026-10-21-T013-review-inbox.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "vitest run tests/practice-review-inbox-storage.test.ts; vitest run tests/practice-review-inbox-http.test.ts; vitest run tests/practice-review-inbox-page.test.ts",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/storage-red.log; http-red.log; page-red.log",
+      "expected_failure": "Missing current-own finite metadata discovery, strict transport and inbox rendering before implementation.",
+      "observed_failure": "18storagefail;19HTTPfail7controlsPASS;14page/viewfail4controlsPASS.",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "vitest run five new unit/Root files; owneddb-run vitest run tests/practice-review-inbox-db.test.ts",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/units-green.log; database-current.log; root-regression.log",
+      "observed": "73unitRootPASS;9actualPGPASS; feature62GREEN plus11regression, no fabricated RootRED.",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "vitest run newunitRoot+docs; owneddb browserdevprod; independentlyinstalled minimalPGHTTPReact; currenttypegen/tsc/productionbuild; static/planning/sourceproof",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "evidence_url": "planning/task-evidence/T013-review-inbox/refactor-docs.log; review.json",
+      "observed": "226newunitRoot+docsPASS;89priorSQL regressionPASS reused+9currentPG;16currentbrowser;ownconsumer/types/build/static/planningPASS. Fullcriteria NOT VERIFIED.",
+      "result": "PASS"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    }
+  }
+}

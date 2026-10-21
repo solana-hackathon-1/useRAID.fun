@@ -1,0 +1,13 @@
+{
+  "openUrl": "http://127.0.0.1:65453/open",
+  "caseUrl": "http://127.0.0.1:65447/evaluator/practice/12ca6393-3844-4582-a5c8-87c849e18af0/submissions/85e62d4b-574e-4601-a4b5-d6589671c009/ownership",
+  "status": 200,
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-ownership-ui-build-tjivdhga",
+  "mode": "development",
+  "synthetic": true,
+  "desktopMobileFormEnabled": true,
+  "approvedPolicyAndOriginalEvidenceVisible": true,
+  "supervisorPid": 15774,
+  "stopCommand": "kill 15774",
+  "retained": true
+}

@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assessment-editor.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-editor.test.ts [ tests/practice-assessment-editor.test.ts ]
+Error: Cannot find module '../src/components/practice-assessment-editor' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-assessment-editor.test.ts
+ ❯ tests/practice-assessment-editor.test.ts:4:1
+      2| import {renderToStaticMarkup} from 'react-dom/server';
+      3| import {createElement} from 'react';
+      4| import {PracticeAssessmentEditor,SavedAssessmentResult} from '../src/c…
+       | ^
+      5| import {assessmentContextFixture as context} from './helpers/practice-…
+      6| import {assessmentDecisionView} from './helpers/practice-assessment-ht…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  15:45:03
+   Duration  131ms (transform 12ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

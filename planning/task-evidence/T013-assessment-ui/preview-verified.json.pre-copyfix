@@ -1,0 +1,39 @@
+{
+  "resource": {
+    "mode": "development",
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assessment-ui-preview-6_ek6i2r",
+    "syntheticOnly": true,
+    "runnerPid": 32563,
+    "serverPid": 32573,
+    "url": "http://127.0.0.1:52488/evaluator/practice/63440678-97ee-460a-b64d-de82582e031b/submissions/eb8093c0-5968-4e72-8a42-8c6027835ae8/assessment",
+    "openUrl": "http://127.0.0.1:52496/open",
+    "serverPort": 52488,
+    "helperPort": 52496,
+    "databaseContainer": "raid-t013-assessment-ui-preview-20261021",
+    "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+    "result": "RUNNING"
+  },
+  "checks": [
+    {
+      "name": "desktop",
+      "status": 200,
+      "formEnabled": true,
+      "approvedPolicy": true,
+      "noOverflow": true,
+      "labelsAboveControls": true,
+      "url": "http://127.0.0.1:52488/evaluator/practice/63440678-97ee-460a-b64d-de82582e031b/submissions/eb8093c0-5968-4e72-8a42-8c6027835ae8/assessment"
+    },
+    {
+      "name": "mobile",
+      "status": 200,
+      "formEnabled": true,
+      "approvedPolicy": true,
+      "noOverflow": true,
+      "labelsAboveControls": true,
+      "url": "http://127.0.0.1:52488/evaluator/practice/63440678-97ee-460a-b64d-de82582e031b/submissions/eb8093c0-5968-4e72-8a42-8c6027835ae8/assessment"
+    }
+  ],
+  "verifiedAt": "2026-10-21T10:15:54.822Z",
+  "mode": "development",
+  "synthetic": true
+}

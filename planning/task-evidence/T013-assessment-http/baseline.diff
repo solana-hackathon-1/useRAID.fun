@@ -1,0 +1,887 @@
+diff --git a/.github/workflows/checks.yml b/.github/workflows/checks.yml
+index cb87ed3..0351b8d 100644
+--- a/.github/workflows/checks.yml
++++ b/.github/workflows/checks.yml
+@@ -143,6 +143,10 @@ jobs:
+         run: npx playwright test --config=playwright.own-assessments.config.ts
+       - name: Practice trial portal desktop and mobile suite
+         run: npx playwright test --config=playwright.practice-portal.config.ts
++      - name: Evaluator case evidence desktop and mobile suite
++        run: npx playwright test --config=playwright.practice-review.config.ts
++      - name: Ownership finding desktop and mobile suite
++        run: npx playwright test --config=playwright.practice-ownership.config.ts
+       - name: Administrative taxonomy API suite
+         run: npx playwright test --config=playwright.skill-taxonomy.config.ts
+       - name: Administrative catalog editor and maintenance suites
+@@ -157,6 +161,10 @@ jobs:
+         run: OWN_ASSESSMENT_SERVER_MODE=production npx playwright test --config=playwright.own-assessments.config.ts --grep 'owner sees actual current assessment'
+       - name: Production practice trial portal suite
+         run: PRACTICE_PORTAL_SERVER_MODE=production npx playwright test --config=playwright.practice-portal.config.ts
++      - name: Production evaluator case evidence suite
++        run: PRACTICE_REVIEW_SERVER_MODE=production npx playwright test --config=playwright.practice-review.config.ts
++      - name: Production ownership finding suite
++        run: PRACTICE_OWNERSHIP_SERVER_MODE=production npx playwright test --config=playwright.practice-ownership.config.ts
+       - name: Database-backed browser journey
+         run: npm run test:live
+         env:
+diff --git a/docs/ai-handoff/CURRENT.md b/docs/ai-handoff/CURRENT.md
+index b0eb194..872359a 100644
+--- a/docs/ai-handoff/CURRENT.md
++++ b/docs/ai-handoff/CURRENT.md
+@@ -1,3 +1,85 @@
++# Codex — ownership context/form verified locally; final synthetic preview retained — 2026-10-21T07:14:30.586659+00:00
++
++**SELF-EVALUATED / UNCOMMITTED** on `claude/t013-practice-trial-ui`, HEAD1877b2a (still1ahead origin). Preserved prior evaluator UI/ownershipHTTP/identity and generated next-env/WARP/worktrees. No commit/push/merge/branch/delegation. FullT013/independent criterion review/hostedNode22/UAT/business/operating/release and parkedidentity protocol remain NOT VERIFIED.
++
++**Delivered:** dedicated `/evaluator/practice/[assignmentId]/submissions/[submissionId]/ownership`, linked from assigned ownership case only. Canonical one-transaction original case/current approved policy/current finding/final finite assignment+read check; actual Root cookie/hash/accountquota, post-commit gate and strict coherent context. Missing policy/writeoff read-only. Pure canonical ownership/results extraction retains previous storage/HTTP exports;4dependent storage examples link new pure contract; ownPGHTTPReact consumer. Accessible reasoned CONFIRM/DISPUTE/MORE_EVIDENCE form, exact source/policy/current finding refs; stable in-memory pending key/body, busy/uncertain edit/newwrite/recheck lock, same-request retry, known-denial visiblecontext clearing, stale/keycollision handling, saved-nullview acknowledgement, explicit historical replay. No browser persistence/autoresubmit after reload; keep uncertain page open. React escapes notes/policy/code. Existing original UNCONFIRMED declaration remains distinct. No new domain policy/schema/flags/realappointment/rank/grant/capacity/money/provider effects.
++
++**Evidence:** `planning/task-evidence/T013-ownership-ui/`, `docs/tasks/2026-10-21-T013-ownership-ui.md`, `docs/raid-practice-ownership-ui.md`. Genuine21controllerRED,10contextfail3controls/viewmissingmodule + strictassignment/authbody/hydration-history/visualgeometryRED retained. Final50newPASS (22client14context5SSR9Rootregression);359selected actualPGPASS/12files44.66s,12later additions→371uniqueaffected +147docs→518unique.309finalrefactor/docsPASS2.06s;55planningPASS15.606s. Finaldev8/8PASS28.1s +prod8/8PASS17.8s desktop/mobile actualrootauth/cookie/origin/quota/save/correction/stale/unknown200+concurrentcorrection+withdrawnpolicy identicalkeybody historicalreplay/revocation/signout/no-policy/foreignadmin denial/keyboard/nooverflow/inertmarkup/geometry/productionprivateNoStore. Own30packages31audited0vuln strict+actualminimalPGHTTPReactPASS,50exactfiles. Current typegen/strictTS/productionWebpack/finaltypes PASS;1246compiler/test/example/schema/configfiles exact. Ownedlint0errors3warnings (hydrationeffectadvisory +2testunusedbindings) retained, identity/format/diffPASS. RootsecuritypolicyPASS reused exact1877package/lock/audit/allowlist; priorfull2837 not rerun/claimed. No hostedNode22/Dockerimage/realprovider/load/independent/UAT/release verification. Validator expectedexit1 exactly27fullcriteriaNOTVERIFIED+7missinghostedchecks, no metadataerrors. TimedSELF 2026-10-21T06:54:58.062921+00:00 → 2026-10-21T07:15:41.585609+00:00, 1243.523s. Root composition tests are regression evidence after featureRED, not fabricated preimplementationRootRED.
++
++**Findings fixed:** strict final assignment source rejects extra version; auth401 malformedbody must stillclearcontext; actual browser7pass1fail showed pre-hydration select reset, so SSR controls remain disabled until handlersready; historical replay explicitly labeled old; visual cramped labels fixedusingexistingformstyles. All reproductions/earlier logs retained, no timeout increase/behavior assertion weakened. Incidental SSR assertion now requires disabled while allowing newclassattribute; exact oldattributeorder notpolicy. Production/currentconsumer rerun after material fixes. Theme styles are explicit host dependency; ownconsumer proves semanticrender, Rootbrowser proves theme/layout.
++
++**Verified retained final synthetic preview:** http://127.0.0.1:49324/open → actualform at127.0.0.1:49313. Modedevelopment; source `/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-ownership-ui-build-7zd38m0t`. Supervisor16680/inner16709/Next16712/helper49324/session36570; dedicated PG `raid-t013-ownership-ui-preview-20261021`. Loopback helper supplies only synthetic owncookie; no productauthbypass/productionflags. Approx8h session/assignment; desktop/mobile enabledform/currentpolicy/originalevidence/geometry verified and screenshots visuallychecked. Open-in-Codexqueued. Stop only wholeownedpreview: `kill 16680` (signal-safe Next/helper/PG cleanup). Superseded task-owned15774 stopped/replaced afterspacingfix. Prior owner read-only preview99844/64262/PG55007 and oldpracticePG61953 retained untouched; original3026no listener.
++
++**Cleanup:** disposable `raid-t013-ownership-ui-20261021` automaticstop0/Runningfalse; final dev/prod testserver portsclosed. No unrelated services/images/volumes/evidence removed. Evidence/source manifests retained. Git staging empty.
++
++**Next:** bounded assessment context/decision action API/UI using actual original case, approved assessment policy/current version refs and stable receipts; then independent/exactcandidate hostedNode22/UAT/operating/release evidence when available. Publish only under applicable explicit owner Git authority; keep incompletefullcriteria/identityreview visible and preserve all uncommitted work/previews.
++
++---
++
++# Codex milestone — ownership form/current context built; final visual gates — 2026-10-21T07:08:49.219177+00:00
++
++Same1877b2a/ahead1, all uncommitted prior work preserved; no Git publication/delegation. Implemented canonical current case/policy/finding transaction + final scope/read check, pure canonical ownership/results extraction retaining exports/consumer links, injectable stable-pending controller, private dynamic ownership page and accessible reasoned form/link.50new checks pass;359selected including actualPG pass;309final refactor/docs/55planning pass; own30packages31audited0vuln/PGHTTPReact50files pass. Current strict/productionbuild pass. Dev8/prod8 after hydration+historical fix pass; latest spacing fix has genuine geometry RED and current browser/consumer rerun underway. Known ownedlint0errors3warnings recorded (hydration readiness effect +2testunusedbindings), not suppressed. Initial strict assignment final-call version mismatch, malformed auth body, hydration race and historical replay labeling all have retained reproducing RED/GREEN. No core schema/flags/policy/real appointment/rank/access/capacity/money effects.
++
++Temporary new synthetic ownership preview supervisor15774/helper65453/Next65447/PGraid-t013-ownership-ui-preview-20261021 is older pre-spacing snapshot; stoponlykill15774, replacement after final gates. Prior owner read-only preview99844/64262 and oldpracticePG61953 untouched. All disposable test PG/servers auto-stop between runs; current final verifier may be active. FullT013/independent/UAT/hostedNode22/business/release/parkedidentityNOTVERIFIED. Next final source manifest/timedSELF/packet/new verified preview, then bounded assessment actions.
++
++---
++
++# Codex takeover — ownership context and form — 2026-10-21T06:43:45.299551+00:00
++
++Continue build: same branch1877b2a/ahead1, prior UI+ownership HTTP uncommitted work preserved. Next bounded actual approved-policy/current finding context and reasoned ownership form, exact refs/CAS/stable pending retry and denial/stale states. No commit/push/merge/branch/delegation/flags/real appointments. Existing previews retained; separate synthetic fixtures/test resources. Acceptance in docs/tasks/2026-10-21-T013-ownership-ui.md; TDD before implementation. Independent/UAT/hosted/fullT013/identity review remain NOT VERIFIED.
++
++---
++
++# Codex — ownership finding HTTP verified locally; UI preview retained — 2026-10-21T06:34:57.894383+00:00
++
++**SELF-EVALUATED / UNCOMMITTED** on `claude/t013-practice-trial-ui`, HEAD1877b2a (still1ahead origin). Continued owner build request, preserved all prior evaluator UI work, generated next-env/WARP/worktrees. No commit/push/merge/branch/delegation. FullT013/independent criterion review/UAT/hostedNode22/business/release and parked identity protocol remain NOT VERIFIED.
++
++**Delivered:** dynamic Node GET/HEAD/POST `/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/ownership`; portable strict v1 transport plus Root actual cookie/hash/origin/accountquota and existing canonical transaction-held ownership source. Explicit current/history purpose/revision; historical author not confused with current authority. Origin-first bounded256KiB reasoned POST, exact original references/policy/CAS/stablekey, strict output binding/safeerrors/privateNoStore/VaryCookie. Original replay survives writeoff/policy withdrawal under current assignment authority. Committed200status retained withnull privateview if reads close. No core business/schema/flag/appointment/rank/grant/capacity/money/provider changes. Actual policy/context/action UI remains next slice. R15/R16docs and own minimalPGHTTP consumer updated;2tests registeredE04/CIinventory.
++
++**Evidence:** `planning/task-evidence/T013-ownership-http/`, task `docs/tasks/2026-10-21-T013-ownership-http.md`, contract `docs/raid-practice-ownership-http.md`. Genuine88behaviorRED+1unhandledparams→88PASS, Root missingmodule→10PASS; selfreviewHEADregression1fail90pass→91PASS. Final101new+4existinghost=105refactorPASS;250finalcombinedrefactor/docsPASS1.13s;341selected/9files/43.97s actualPG PASS,3added regressions yield344unique affected +145docs=489unique.55planningPASS14.655s. Own npmci24packages25audited0vuln/strict/minimalPGGET-HEAD-POST save/correction/history/staleCAS/changedkey/foreign/wrongpurpose/withdrawal-writeoff replay/revocationPASS;44exactfiles. Current typegen/strictTS/productionWebpack/ownedlint0/identity/format/diffPASS;1221compiler/test/example/schema/configfiles exact.4compiled GET/HEAD/validoriginPOST401+foreignoriginPOST403/privateNoStore/VaryCookie/safe responsePASS. Prior rootsecurityPASS reused only exact package/lock/audit/allowlist; no dependencies changed. Prior2837full not rerun/claimed. Prior16browserPASS applies only to unchangedexactsource read-only screen; new authenticatedRootcommand not end-to-end browser-tested. No Dockerimage/hostedNode22/provider/load/independent/UAT/release claim. Validator expectedexit1 exactly27criteriaNOTVERIFIED+7missinghostedchecks, no metadataerrors. TimedSELF 2026-10-21T06:25:40.956753+00:00 → 2026-10-21T06:34:57.894383+00:00, 556.938s. HEAD fix triggered current compiler/consumer rerun; earlierlogs/source retained. No assertions weakened.
++
++**Resources:** disposablePG `raid-t013-ownership-http-20261021` automaticstop0/Runningfalse; owned production server stopped/portclosed. Existing synthetic **read-only** preview http://127.0.0.1:64262/open reverified200/nativeRecheck; source `/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l` (priorUI; does NOT include new ownershipAPI), mode development; supervisor99844/Next99866/helper64262/PG `raid-t013-review-ui-preview-20261021`55007 retained per owner. Stop only wholeownedpreview: `kill 99844`; original session84289. Old `raid-practice-ui-20261021`61953 untouched/running;3026originalno listener. No volumes/images/evidence removed.
++
++**Next:** (1) actual approved-policy/current ownership context + reasoned evaluator action form, current session/assignment, expected source/current finding refs, stable pending command/body recovery and recheck/revocation states; (2) bounded assessment action API/UI; (3) independent criterion review/exactcandidate hostedNode22CI/UAT/operating/release evidence when available. Keep source manifests and missingfullcriteria visible; Git publication only under applicable explicit owner authorization. Preserve parked identity work and all prior UI/evidence.
++
++---
++
++# Codex takeover — protected ownership finding transport — 2026-10-21T06:20:29.544139+00:00
++
++Continuing owner build request on claude/t013-practice-trial-ui /1877b2a (ahead1). Preserved all uncommitted evaluator case screen/evidence and generated next-env/WARP/worktrees. Next bounded slice: strict private GET current/history and origin-protected idempotent POST ownership finding using existing actual assignment/policy/CAS storage. No schema/domain rule, rank, grant, capacity, money, flag enablement or appointment change. No commit/push/merge/branch/delegation. Acceptance before code in docs/tasks/2026-10-21-T013-ownership-http.md. Retain prior preview supervisor99844/PG raid-t013-review-ui-preview-20261021; separate disposable test DB only. Independent review/UAT/hostedCI/fullT013/identity protocol remain NOT VERIFIED.
++
++---
++
++# Codex — evaluator case screen verified locally; synthetic preview retained — 2026-10-21T05:08:31.850268+00:00
++
++**SELF-EVALUATED; UI UNCOMMITTED on `claude/t013-practice-trial-ui`, HEAD1877b2a (still1ahead origin).** Chose screen before publication under continued build request. No push/commit/merge/branch change/agents. Prior generated next-env/WARP/worktrees preserved. Independent criterion review/UAT/hostedNode22/business/release/fullT013 and parked identity protocol remain NOT VERIFIED.
++
++**Delivered:** `/evaluator/practice/[assignmentId]/submissions/[submissionId]?purpose=OWNERSHIP_REVIEW|ASSESSMENT_REVIEW` dynamic server page composes existing protected GET per opening/native recheck. Portable server loader and stateless React view, type-only canonical DTO/no browser Nodecrypto; exact escaped original submission/rubric/task/tool-AI declarations, generic metadata/noindex/local loading-notfound/errors, originalownershipUNCONFIRMED distinct from later findings. Shared HTTP result schema exported unchanged. R15/R16 docs/current independently installed PostgreSQL/HTTP/React consumer;3unitfiles+browser spec registered inE04/CI dev+prod. No schema/business/rank/capacity/money/provider/productionflag change.
++
++**Evidence:** `planning/task-evidence/T013-review-ui/`, task `docs/tasks/2026-10-21-T013-review-ui.md`, contract `docs/raid-practice-review-ui.md`. Genuine23behaviorfails+1control→24PASS and Root missing-moduleRED→7PASS;134selected actualPG/API/SSR +174refactor/docs PASS (277unique). Own30packages/31audited0vuln strict/actualPGHTTPReactPASS,39source/schema/dependency files exact. Dev8/8 +prod8/8 desktop/mobilePASS; strict/current productionWebpack/357sourceproof/ownedlint/identity/planning55/format/diffPASS. Root dependencies unchanged; parent2837full not rerun/claimed for UI. TimedSELF 2026-10-21T05:01:33.427602+00:00 → 2026-10-21T05:08:31.850268+00:00, 418.423s. Validator exit1 exactly27criteriaNOTVERIFIED+7missinghostedchecks. Skipped Dockerimage/hostedNode22/independent/UAT/provider/load/release; localNode26. Earlierdev6fails/2pass and setup failures retained; corrected devNextcachemode/Prismamodel/Root401 semantics, wrong readiness and testNODE_ENV without weakening production cache/fixture guards. Actual APIprivateNoStore/VaryCookie and productionHTMLprivateNoStore proved. Baseline handoff discrepancy recorded: actual1877b2a dependencydelta8.3.1→8.3.4/20entries (not single8.3.3delta); unchangedthisturn.
++
++**Verified retained preview:** http://127.0.0.1:64262/open → synthetic assigned case at127.0.0.1:64254. Modedevelopment; source `/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l`. Dedicated PG `raid-t013-review-ui-preview-20261021`, supervisor99844/inner99861/Next99866/helper64262/session84289. Loopback-only fixture helper sets synthetic cookie; no product auth bypass/production source gate. Approx8h fixture assignment/session. Desktop/mobile screenshots visually checked, redirect/currentcase verified; open-in-Codex queued. Stop only this whole preview: `kill 99844` (signal-safe cleanup of helper/Next/labeledPG). All test resources stopped0/Runningfalse. Previous `raid-practice-ui-20261021`/61953 running untouched; original3026no listener. No volume/image/evidence removed.
++
++**Next:** inspect/review exact uncommitted screen, keep preview until owner no longer needs it; then bounded ownership/current assessment action API/UI with actual current policy/context/CAS/idempotent commands. Do not treat original declaration/view as finding/authority. Publish only under applicable explicit owner authority; preserve independent/CI/UAT/operating/release and unfinished identity obligations.
++
++---
++
++# Codex milestone — evaluator evidence screen/browser gates pass; preview retained — 2026-10-21T05:05:50.552726+00:00
++
++**SELF-EVALUATED / uncommitted on1877b2a, same branch; no push/commit/merge/delegation.** Read-only evaluator case page composes existing protected audited GET on every open/native recheck; portable stateless React view uses type-only DTO (no browser Nodecrypto imports), exact original code/rubric/declared tools and historical ownership label, generic metadata/noindex/local loading/not-found/error states. No new business state/schema/real appointment/production flag. Genuine23behaviorRED+1control→24PASS and Root missing-moduleRED→7PASS; final134selected (9files incl actualPG assignment/session/expiry/revocation)+174refactor/SSR/docs (4files,143docs;31new overlap) PASS. Own30packages31audited0vuln strict+realPG/HTTP/React hostPASS. Development8/8 and production8/8 desktop/mobile browser checks PASS; current strict types/productionWebpack/ownedlint/identity/planning55PASS. Test resources automaticstop0. Formal independent/UAT/hosted/fullT013 stillNOT VERIFIED.
++
++**Preview verified and retained:** [open synthetic evaluator case](http://127.0.0.1:64262/open) redirects to actual scoped case on127.0.0.1:64254. Modedevelopment, source `/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l`, owner-only synthetic setup, supervisor99844/inner99861/Next99866, helper64262; PG `raid-t013-review-ui-preview-20261021` ownlabel. This loopback-only fixture helper sets only a synthetic session cookie; no app route/auth bypass, Root policies still required. Approx8hour synthetic assignment/session. Verified redirect, currentcase, safe rendering; screenshots retained. Stop only this whole preview: `kill 99844` (signal-safe supervisor closes helper/Next and stops its exact labeled PG). Session84289 owns preview lifetime. Existing `raid-practice-ui-20261021`/61953 remains untouched, old3026listener absent. TestPG `raid-t013-review-ui-20261021` Running=false.
++
++Harness findings retained in `planning/task-evidence/T013-review-ui/`: wrongreadinessroute corrected; browser uses actual Prisma `PracticeTrialReviewAssignment`; suspendedRootsession correctly maps401/sign-in. InstalledNext forces devHTMLno-cache/must-revalidate; productionprivate/no-store assertion retained andpassed; APIprivate/no-store+VaryCookie testedboth. Production fixture guard initially correctly rejectedNODE_ENVproduction; corrected testprocess toNODE_ENVtest while realserver staysproduction (guard not weakened). Initial6browserfails/2pass and alloriginal logs retained. First detached preview launcher did not persist; foreground managed session nowverified. Final timed source/packet/checkpoint next.
++
++---
++
++# Codex takeover — evaluator case screen before push — 2026-10-21T04:49:16.166249+00:00
++
++Continuing original build request with the evaluator case screen first, keeping local branch unpublished. Reconciled `1877b2a` on `claude/t013-practice-trial-ui` (ahead1); only original generated next-env edit/WARP/worktrees present, preserved. Reviewed committed HTTP authority/Root route and prior source/evidence. Claude read-through is recorded; formal criterion review/UAT/hosted CI remain NOT VERIFIED. Correction: actual no3026listener; old preview PG61953 remains running untouched. This task uses a separate synthetic DB/server. Chosen bounded UI: server-rendered evidence-only case via existing API authority on every opening/recheck; no duplicate browser validators/Nodecrypto client imports, new findings/actions/appointments/enablement. Task acceptance in `docs/tasks/2026-10-21-T013-review-ui.md`; TDD next. No agents, Git publication or branch changes.
++
++---
++
+ # Claude — reviewed Codex evaluator case GET slice and committed locally — 2026-10-21T06:00:00Z
+ 
+ Owner asked "review and commit". Code review of `src/skills/practice-review-http.ts`, `src/lib/practice-review-http.ts`, the route, tests, lockfile and dependency test: strict GET, evaluator identity bound to session account and to assignment/submission/purpose, private/no-store + Vary Cookie, safe error mapping, host-injected authority. No blocking findings. Observations: (1) the existing audit-before-read writes an access-attempt row on GET (identifier-only); a cross-site GET carrying the evaluator's cookie could add audit noise but cannot read the response — acceptable, revisit if audit volume matters; (2) lockfile change is lock-only vite 8.3.3→8.3.4 with registry.npmjs.org URLs, package.json unchanged. Re-run by me: 81 targeted tests pass (28 DB-gated skipped, not re-run; Codex recorded full 198 files/2837 tests), tsc 0, identity fence PASS, ESLint 0 errors on owned files, planning 55/55, prettier clean. This is a reviewer read-through, NOT the formal independent criterion review/UAT; those remain NOT VERIFIED. Committed locally on `claude/t013-practice-trial-ui`; NOT pushed (push not requested). Preview (pid 83628 / PG container) still running.
+diff --git a/docs/raid-module-reuse.md b/docs/raid-module-reuse.md
+index 941b704..099cf4e 100644
+--- a/docs/raid-module-reuse.md
++++ b/docs/raid-module-reuse.md
+@@ -142,3 +142,9 @@ The [private proposal React form](raid-project-proposal-form.md) extends that in
+ [Private practice portal boundary](raid-practice-portal.md) composes actual current catalog discovery and canonical own start/private submission commands through an injectable bounded HTTP host, with current namespace/write callbacks and immutable replay. The independently installed minimal PostgreSQL/HTTP consumer declares real source/identity/transaction dependencies and verifies safe discovery, exact private progress, retry after retirement/writeoff and current session revocation. Root defaults closed; Raider screens and independent/UAT/release acceptance remain separate.
+ 
+ [Protected evaluator case HTTP](raid-practice-review-http.md) adds a strict private/no-store v1 GET over the current exact-scope audited reader, with server-resolved actor, account rate limit, safe errors and output-target checks. The separately installed PostgreSQL review-read example consumes actual original cases through the Web handler and rejects wrong actor/purpose, disablement and saved revocation. Root defaults closed; evaluator UI, findings APIs and independent/UAT/release evidence remain separate.
++
++[Evaluator case evidence screen](raid-practice-review-ui.md) adds an injected server-only page loader over the current audited GET and a stateless portable React evidence view with type-only storage dependencies. The own-installed PostgreSQL/HTTP/React host renders a real authorized response; desktop/mobile Root checks use isolated synthetic fixtures. Actual findings/command UI and independent/UAT/release gates remain separate.
++
++Private [ownership finding HTTP v1](raid-practice-ownership-http.md) composes actual current assignment/policy/CAS commands through mandatory injected session/origin/quota/read/record callbacks. Canonical strict DTOs, stable retry identity, historical authorship and committed-result/read-gate semantics are preserved. The independently installed [ownership PostgreSQL host](../examples/practice-trial-ownership/README.md) consumes GET/HEAD/POST including save/correction/history/withdrawal/revocation; no Root global or implicit production approval.
++
++The [assigned ownership form](raid-practice-ownership-ui.md) adds server-only coherent current context, canonical pure ownership/results contracts, an injectable stable-request controller and accessible React editor. Existing storage/HTTP exports remain compatible; all ownership-storage examples declare the new pure dependency. The independently installed PostgreSQL/HTTP/React host renders actual approved context and consumes existing save/history/correction/replay contracts without Root globals.
+diff --git a/docs/raid-practice-review-http.md b/docs/raid-practice-review-http.md
+index 8ca4144..b8a709a 100644
+--- a/docs/raid-practice-review-http.md
++++ b/docs/raid-practice-review-http.md
+@@ -26,3 +26,5 @@ Root `src/lib/practice-review-http.ts` resolves `requireUser()` plus hashed actu
+ The [separately installable PostgreSQL example](../examples/practice-review-reads/README.md) now consumes the HTTP handler with its own dependencies and actual synthetic persisted cases. It verifies commit-before-delivery, original bytes/rubric, admin-without-assignment and wrong-purpose denial, disabled reads, authentication and actual saved revocation. Existing reader tests verify audit-before-body and expiry/revocation while SQL waits; adapter tests verify Root cookie/rate/route composition. The example invokes Web handlers directly; it is not a deployed browser or real-provider test.
+ 
+ Rollback disables review reads and retains immutable cases, appointments/revocations, receipts/audits and separate owner-only submission access. Revocation cannot recall material already disclosed. The evaluator screen, review submission API, notice/appeal model, calibration/retention policy and independent/UAT/release acceptance remain subsequent work.
++
++The [evaluator case screen](raid-practice-review-ui.md) now composes this GET directly on the server for each opening/recheck. `PracticeReviewHttpResultSchema` is exported for server host composition; its authority and response behavior are unchanged. The view renders original evidence only; review-command UI remains separate.
+diff --git a/docs/raid-practice-trial-ownership.md b/docs/raid-practice-trial-ownership.md
+index d5b6c4d..dd5b79d 100644
+--- a/docs/raid-practice-trial-ownership.md
++++ b/docs/raid-practice-trial-ownership.md
+@@ -33,3 +33,5 @@ Root `src/lib/practice-trial-ownership-host.ts` wraps the shared guarded transac
+ Use [the standalone example](../examples/practice-trial-ownership/README.md): independently install all declared runtime/types dependencies, apply minimal real account/session/participant plus receipt/catalog/practice/assignment/policy/ownership SQL, verify real PostgreSQL current scope/correction/history/replay/revocation and local5s statement/2s lock/5s idle bounds. Replace driver or policy predicates only if all transaction/identity/audit/concurrency contracts remain. Canonical source symlinks must be dereferenced when copied; Root node_modules symlinks do not prove independent consumption.
+ 
+ Migration33 is additive, with no real finding/policy/reviewer seed/backfill. Disable new writes and dependent consumers for recovery while retaining immutable case/history/receipts/audits. Do not delete history, reset revisions, mutate accepted evidence or silently substitute a different policy. Recover unknown-success operations with their original key and inspect exact current history under scoped authority. Retention/erasure, appeals/staffed operation, numerical calibration, actual assessments/projections/APIUI, independent review/UAT/business/release acceptance remain separate obligations. This staging source merge does not close parent55 or waive those gates.
++
++The [protected ownership HTTP prerequisite](raid-practice-ownership-http.md) exposes current/historical findings and idempotent reasoned commands using this same canonical storage. Its strict server-owned actor/origin/quota/target boundary and independently installed PostgreSQL consumer preserve existing default-off policies and replay semantics. This does not supply an action form, new appointments, rank verification or full independent acceptance.
+diff --git a/examples/practice-review-reads/README.md b/examples/practice-review-reads/README.md
+index 73636c0..d0aad96 100644
+--- a/examples/practice-review-reads/README.md
++++ b/examples/practice-review-reads/README.md
+@@ -16,3 +16,7 @@ DATABASE_URL=postgresql://postgres:synthetic-only@127.0.0.1:5432/useraid_practic
+ ```
+ 
+ Credentials/port are examples for a dedicated fixture. Independent verification must install this package's own declared dependencies; a Root node_modules symlink is insufficient. Replace local policy only with another current approved exact-scope implementation and preserve current actor/grant/expiry/revocation checks in the same transaction, immutable original receipts and consent, and no body logging/public caching. The host also consumes `createPracticeReviewHandlers` from the canonical `skills/practice-review-http.ts` symlink using Web Request/Response. Its actor resolver and quota port are explicit synthetic host callbacks; the read callback commits the actual transaction before returning the validated v1 envelope. It verifies exact original private bytes/rubric and private/no-store headers, wrong-purpose and admin-without-assignment404, disabled503, unauthenticated401 and actual saved revocation404. These direct handler calls do not start an HTTP listener or browser. Root cookie/rate composition has separate tests; independent/UAT/business/release acceptance remains unverified. See [HTTP contract](../../docs/raid-practice-review-http.md). No actual ownership/assessment decision, real operating approval, grade/calibration/retention policy or Root enablement is supplied. See ../../docs/raid-practice-review-reads.md for public contracts, errors and recovery.
++
++## Portable evidence screen
++
++The same independent host now declares React/ReactDOM and their type packages, dereferences `components/practice-review-case.tsx`, strictly validates the actual committed HTTP response, and renders `PracticeReviewCase` through ReactDOM server. It asserts original rubric/history labels, the expectation-not-deadline copy, no mutation and no dispatch/input/form/script during rendering. The component has only a type import of the canonical server DTO; it has no runtime Next/Prisma/Root dependency. Hosts must authorize and validate before rendering. Installation/run commands above exercise this path too; it is not a browser or formal independent review. See [evaluator screen contract](../../docs/raid-practice-review-ui.md).
+diff --git a/examples/practice-review-reads/host.ts b/examples/practice-review-reads/host.ts
+index 3f1c6bf..66bae7b 100644
+--- a/examples/practice-review-reads/host.ts
++++ b/examples/practice-review-reads/host.ts
+@@ -1,3 +1,7 @@
++import { createElement } from 'react';
++import { renderToStaticMarkup } from 'react-dom/server';
++import { PracticeReviewCase } from './components/practice-review-case';
++import { PracticeReviewHttpResultSchema } from './skills/practice-review-http';
+ import {
+   createPracticeReviewHandlers,
+   PracticeReviewHttpError,
+@@ -484,6 +488,18 @@ try {
+   assert.deepEqual(delivered.review.definition, started.start.definition);
+   assert.equal(delivered.review.assignment.evaluatorAccountId, evaluator.accountId);
+   assert.equal(delivered.review.submission.ownership, 'UNCONFIRMED');
++  const checkedDelivery = PracticeReviewHttpResultSchema.parse(delivered);
++  assert(checkedDelivery.review);
++  const beforeRender = structuredClone(checkedDelivery.review);
++  const html = renderToStaticMarkup(
++    createElement(PracticeReviewCase, { review: checkedDelivery.review }),
++  );
++  assert(html.includes('Original review criteria'));
++  assert(html.includes('Original ownership declaration: Unconfirmed'));
++  assert(html.includes('not a deadline'));
++  assert(!/<script|<iframe|<input|<button|<form/.test(html));
++  assert.deepEqual(checkedDelivery.review, beforeRender);
++
+   const assertHttpDenied = async (status: number, purpose?: string) => {
+     const response = await httpRead(purpose);
+     assert.equal(response.status, status);
+@@ -605,6 +621,7 @@ try {
+       actualPostgreSQL: true,
+       actualProtectedPrivateReviewRead: true,
+       actualProtectedHttpReadAfterCommit: true,
++      actualPortableReactEvidenceView: true,
+       httpForeignPurposeRevocationDisabledAndAuthenticationDenied: true,
+       exactOriginalPrivateBytesAndRubric: true,
+       noPrivateSelectionWithoutAssignment: true,
+diff --git a/examples/practice-review-reads/package-lock.json b/examples/practice-review-reads/package-lock.json
+index 4efe2eb..de52d7b 100644
+--- a/examples/practice-review-reads/package-lock.json
++++ b/examples/practice-review-reads/package-lock.json
+@@ -10,11 +10,15 @@
+       "dependencies": {
+         "bs58": "6.0.0",
+         "pg": "8.23.1",
++        "react": "19.3.0",
++        "react-dom": "19.3.0",
+         "tsx": "4.23.15",
+         "zod": "4.6.5"
+       },
+       "devDependencies": {
+         "@types/node": "22.20.4",
++        "@types/react": "19.3.0",
++        "@types/react-dom": "19.3.0",
+         "typescript": "5.9.3"
+       },
+       "engines": {
+@@ -447,6 +451,26 @@
+         "undici-types": "~6.21.0"
+       }
+     },
++    "node_modules/@types/react": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/@types/react/-/react-19.3.0.tgz",
++      "integrity": "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "csstype": "^3.2.2"
++      }
++    },
++    "node_modules/@types/react-dom": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/@types/react-dom/-/react-dom-19.3.0.tgz",
++      "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==",
++      "dev": true,
++      "license": "MIT",
++      "peerDependencies": {
++        "@types/react": "^19.3.0"
++      }
++    },
+     "node_modules/base-x": {
+       "version": "5.0.1",
+       "resolved": "https://registry.npmjs.org/base-x/-/base-x-5.0.1.tgz",
+@@ -462,6 +486,13 @@
+         "base-x": "^5.0.0"
+       }
+     },
++    "node_modules/csstype": {
++      "version": "3.2.3",
++      "resolved": "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz",
++      "integrity": "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/esbuild": {
+       "version": "0.28.2",
+       "resolved": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.2.tgz",
+@@ -645,6 +676,33 @@
+         "node": ">=0.10.0"
+       }
+     },
++    "node_modules/react": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/react/-/react-19.3.0.tgz",
++      "integrity": "sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==",
++      "license": "MIT",
++      "engines": {
++        "node": ">=0.10.0"
++      }
++    },
++    "node_modules/react-dom": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz",
++      "integrity": "sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==",
++      "license": "MIT",
++      "dependencies": {
++        "scheduler": "^0.28.0"
++      },
++      "peerDependencies": {
++        "react": "^19.3.0"
++      }
++    },
++    "node_modules/scheduler": {
++      "version": "0.28.0",
++      "resolved": "https://registry.npmjs.org/scheduler/-/scheduler-0.28.0.tgz",
++      "integrity": "sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==",
++      "license": "MIT"
++    },
+     "node_modules/split2": {
+       "version": "4.2.0",
+       "resolved": "https://registry.npmjs.org/split2/-/split2-4.2.0.tgz",
+diff --git a/examples/practice-review-reads/package.json b/examples/practice-review-reads/package.json
+index a1a3971..443f707 100644
+--- a/examples/practice-review-reads/package.json
++++ b/examples/practice-review-reads/package.json
+@@ -12,13 +12,17 @@
+     "pg": "8.23.1",
+     "zod": "4.6.5",
+     "bs58": "6.0.0",
+-    "tsx": "4.23.15"
++    "tsx": "4.23.15",
++    "react": "19.3.0",
++    "react-dom": "19.3.0"
+   },
+   "engines": {
+     "node": ">=22.12.0"
+   },
+   "devDependencies": {
+     "typescript": "5.9.3",
+-    "@types/node": "22.20.4"
++    "@types/node": "22.20.4",
++    "@types/react": "19.3.0",
++    "@types/react-dom": "19.3.0"
+   }
+ }
+diff --git a/examples/practice-review-reads/tsconfig.json b/examples/practice-review-reads/tsconfig.json
+index f2027e7..c45783a 100644
+--- a/examples/practice-review-reads/tsconfig.json
++++ b/examples/practice-review-reads/tsconfig.json
+@@ -5,7 +5,8 @@
+     "target": "es2022",
+     "strict": true,
+     "skipLibCheck": true,
+-    "noEmit": true
++    "noEmit": true,
++    "jsx": "react-jsx"
+   },
+-  "include": ["host.ts", "contracts/**/*.ts", "skills/**/*.ts"]
++  "include": ["host.ts", "contracts/**/*.ts", "skills/**/*.ts", "components/**/*.tsx"]
+ }
+diff --git a/examples/practice-trial-ownership/README.md b/examples/practice-trial-ownership/README.md
+index 1e4d274..b907ea2 100644
+--- a/examples/practice-trial-ownership/README.md
++++ b/examples/practice-trial-ownership/README.md
+@@ -16,3 +16,7 @@ DATABASE_URL=postgresql://postgres:synthetic-only@127.0.0.1:5432/useraid_practic
+ ```
+ 
+ Credentials/port are synthetic examples; use only a dedicated owned fixture. Install dependencies independently. Replace pg or scoped policy predicates while preserving all source/current-authority/audit/transaction/failure/clock contracts. No actual policy content/evaluator/finding is seeded in Root. O09/O11/staffed operating approval, actual rank assessment/reassessment/projections/APIUI and independent/UAT/business/release acceptance remain separate. See [module contracts](../../docs/raid-practice-trial-ownership.md) for API/events/errors/migration/recovery and [task evidence](../../planning/task-evidence/T013-trial-ownership/) for actual results.
++
++The example now also consumes the portable [ownership HTTP contract](../../docs/raid-practice-ownership-http.md) through Web Request/Response GET/HEAD/POST. Synthetic server-owned identity/origin configuration composes real transactions; no public listener is exposed and real hosts must supply quotas/auth/origin. The test records and corrects findings, checks current/history and stale CAS, rejects changed retry bodies, replays the original command after withdrawal/writeoff, and denies foreign/wrong-purpose/revoked scope without notes. The canonical HTTP source and bounded JSON dependency are explicitly linked and copied for independent installation. Root adapters/routes remain separate; the action UI and full assessment acceptance remain unverified.
++
++The [ownership form](../../docs/raid-practice-ownership-ui.md) extends this own-installed host with explicit React/ReactDOM/types and canonical context/client/pure-schema/component links. It observes actual original case + approved policy + current finding in one committed transaction, then server-renders the real editor and original evidence. Existing HTTP save/correction/retry/history tests remain actual PostgreSQL. No Next or Root auth is required. Pending private command recovery in the editor lasts only for the mounted controller, with no browser persistence; durable cross-device drafts remain unsupported.
+diff --git a/examples/practice-trial-ownership/host.ts b/examples/practice-trial-ownership/host.ts
+index 004f937..c8202f1 100644
+--- a/examples/practice-trial-ownership/host.ts
++++ b/examples/practice-trial-ownership/host.ts
+@@ -1,3 +1,12 @@
++import { createElement } from 'react';
++import { renderToStaticMarkup } from 'react-dom/server';
++import { PracticeOwnershipEditor } from './components/practice-ownership-editor';
++import { readPracticeOwnershipContext } from './skills/practice-ownership-context';
++import {
++  createPracticeOwnershipHandlers,
++  PracticeOwnershipHttpError,
++  PracticeOwnershipHttpWriteResultSchema,
++} from './skills/practice-ownership-http';
+ import {
+   recordPracticeTrialOwnership,
+   readPracticeTrialOwnership,
+@@ -598,14 +607,89 @@ try {
+         },
+       ),
+     );
+-  const ownership = await findOwnership();
++  // Synthetic transport identity is a server-owned fixture, never a request field.
++  let httpActor = evaluator;
++  let writesAvailable = true;
++  const http = createPracticeOwnershipHandlers({
++    version: 'v1',
++    requestId: randomUUID,
++    origin(request) {
++      if (request.headers.get('Origin') !== 'https://ownership.example')
++        throw new PracticeOwnershipHttpError(403);
++    },
++    actor: async () => httpActor,
++    rateLimit() {
++      /* No public listener: outer host owns quota enforcement. */
++    },
++    read: async (current, input) => ({
++      version: 'v1',
++      readsAvailable: true,
++      unavailableReason: null,
++      view: await transaction((tx) => readPracticeTrialOwnership(tx, current, input, () => true)),
++    }),
++    record: async (command) => ({
++      version: 'v1',
++      ...(await transaction((tx) =>
++        recordPracticeTrialOwnership(tx, command, {
++          allowNewWrites: writesAvailable,
++          canRead: (scope) => scope.subjectAccountId === learner.accountId,
++          canUsePolicy: (scope) => scope.policyVersionId === publishedPolicy.policy.id,
++          canReview,
++        }),
++      )),
++      readsAvailable: true,
++      writesAvailable,
++      unavailableReason: writesAvailable ? null : 'DISABLED',
++    }),
++  });
++  const httpPath = {
++    assignmentId: assignment.id,
++    submissionId: submitted.submission.reference.recordId,
++  };
++  const httpGet = (query = '?purpose=OWNERSHIP_REVIEW') =>
++    http.GET(new Request('https://ownership.example/ownership' + query), Promise.resolve(httpPath));
++  const httpPost = (body: unknown = ownershipBody, key = ownershipKey) =>
++    http.POST(
++      new Request('https://ownership.example/ownership', {
++        method: 'POST',
++        headers: {
++          Origin: 'https://ownership.example',
++          'Content-Type': 'application/json',
++          'Idempotency-Key': key,
++        },
++        body: JSON.stringify(body),
++      }),
++      Promise.resolve(httpPath),
++    );
++  const editorContext = await transaction((tx) =>
++    readPracticeOwnershipContext(tx, evaluator, reviewInput, () => true),
++  );
++  assert(editorContext);
++  assert.equal(editorContext.policy?.policy.id, publishedPolicy.policy.id);
++  assert.equal(editorContext.ownership, null);
++  const editorHTML = renderToStaticMarkup(
++    createElement(PracticeOwnershipEditor, {
++      context: { ...editorContext, writesAvailable: true },
++    }),
++  );
++  assert(editorHTML.includes('Record ownership finding'));
++  assert(editorHTML.includes('Original submission'));
++  assert(!editorHTML.includes('This screen does not record review decisions'));
++  assert.equal((await httpGet()).status, 404);
++  const savedResponse = await httpPost();
++  assert.equal(savedResponse.status, 200);
++  assert.equal(savedResponse.headers.get('cache-control'), 'private, no-store');
++  assert.equal(savedResponse.headers.get('vary'), 'Cookie');
++  const saved = PracticeOwnershipHttpWriteResultSchema.parse(await savedResponse.json());
++  assert(saved.view);
++  const ownership = { ...saved, view: saved.view };
+   assert.equal(ownership.status, 'EXECUTED');
+   assert.equal(ownership.view.record.ownership, 'CONFIRMED');
+   assert.equal(ownership.view.record.verifiesSkill, false);
+   assert.equal(ownership.view.record.createsPermissionGrant, false);
+   assert.equal(ownership.view.record.policyVersionId, publishedPolicy.policy.id);
+   assert.equal(ownership.view.isCurrent, true);
+-  const correctedOwnership = await findOwnership(
++  const correctionResponse = await httpPost(
+     {
+       ...ownershipBody,
+       expectedOwnershipReference: ownership.view.record.reference,
+@@ -614,8 +698,43 @@ try {
+     },
+     randomUUID(),
+   );
++  assert.equal(correctionResponse.status, 200);
++  const correction = PracticeOwnershipHttpWriteResultSchema.parse(await correctionResponse.json());
++  assert(correction.view);
++  const correctedOwnership = { ...correction, view: correction.view };
++  assert.equal(
++    (
++      await http.GET(
++        new Request('https://ownership.example/ownership?purpose=OWNERSHIP_REVIEW', {
++          method: 'HEAD',
++        }),
++        Promise.resolve(httpPath),
++      )
++    ).status,
++    200,
++  );
+   assert.equal(correctedOwnership.view.record.ownership, 'UNCONFIRMED');
+   assert.equal(correctedOwnership.view.record.reference.revision, 2);
++  const staleResponse = await httpPost(ownershipBody, randomUUID());
++  assert.equal(staleResponse.status, 409);
++  assert.equal((await staleResponse.json()).error.code, 'REVISION_CHANGED');
++  const changedKey = await httpPost({ ...ownershipBody, reason: 'Changed payload' }, ownershipKey);
++  assert.equal(changedKey.status, 409);
++  assert.equal((await changedKey.json()).error.code, 'IDEMPOTENCY_KEY_REUSED');
++  const historicalResponse = await httpGet('?purpose=OWNERSHIP_REVIEW&revision=1');
++  assert.equal(historicalResponse.status, 200);
++  const historical = await historicalResponse.json();
++  assert.deepEqual(historical.view.record, ownership.view.record);
++  assert.equal(historical.view.isCurrent, false);
++  const currentResponse = await httpGet();
++  assert.equal(currentResponse.status, 200);
++  assert.equal((await currentResponse.json()).view.record.reference.revision, 2);
++  httpActor = actor;
++  const foreignResponse = await httpGet();
++  assert.equal(foreignResponse.status, 404);
++  assert(!JSON.stringify(await foreignResponse.json()).includes(ownershipBody.reason));
++  httpActor = evaluator;
++  assert.equal((await httpGet('?purpose=ASSESSMENT_REVIEW')).status, 404);
+   const originalFinding = await transaction((tx) =>
+     readPracticeTrialOwnership(tx, evaluator, { ...reviewInput, revision: 1 }, () => true),
+   );
+@@ -643,6 +762,19 @@ try {
+     randomUUID(),
+   );
+   assert.equal(withdrawnPolicy.policy.reference.revision, 2);
++  writesAvailable = false;
++  const retriedResponse = await httpPost();
++  assert.equal(retriedResponse.status, 200);
++  const retried = PracticeOwnershipHttpWriteResultSchema.parse(await retriedResponse.json());
++  assert.equal(retried.status, 'REPLAYED');
++  assert.equal(retried.writesAvailable, false);
++  assert.deepEqual(retried.view?.record, ownership.view.record);
++  assert.equal(retried.view?.isCurrent, false);
++  const disabledResponse = await httpPost(
++    { ...ownershipBody, expectedOwnershipReference: correctedOwnership.view.record.reference },
++    randomUUID(),
++  );
++  assert.equal(disabledResponse.status, 503);
+   const ownershipReplay = await findOwnership(ownershipBody, ownershipKey, false);
+   assert.equal(ownershipReplay.status, 'REPLAYED');
+   assert.deepEqual(ownershipReplay.view.record, ownership.view.record);
+@@ -724,6 +856,10 @@ try {
+     await transaction((tx) => readPracticeTrialOwnership(tx, evaluator, reviewInput, () => true)),
+     null,
+   );
++  assert.equal((await httpGet()).status, 404);
++  const revokedRetry = await httpPost();
++  assert.equal(revokedRetry.status, 404);
++  assert(!JSON.stringify(await revokedRetry.json()).includes(ownershipBody.reason));
+   await assert.rejects(
+     () => findOwnership(ownershipBody, ownershipKey, false),
+     /RESOURCE_UNAVAILABLE/,
+@@ -764,6 +900,7 @@ try {
+       immutableOwnershipCorrectionAndCAS: true,
+       originalOwnershipRetryAfterPolicyWithdrawal: true,
+       privateOwnershipHistoryCurrentScope: true,
++      ownershipHttpCurrentHistoryRetryRevocation: true,
+       ownershipFindingsNeverVerifyRank: true,
+       noCallerInventedPolicyVersion: true,
+       uniqueOriginalDefinitionPurposePolicy: true,
+diff --git a/examples/practice-trial-ownership/package-lock.json b/examples/practice-trial-ownership/package-lock.json
+index 912cd49..4d3818a 100644
+--- a/examples/practice-trial-ownership/package-lock.json
++++ b/examples/practice-trial-ownership/package-lock.json
+@@ -10,11 +10,15 @@
+       "dependencies": {
+         "bs58": "6.0.0",
+         "pg": "8.23.1",
++        "react": "19.3.0",
++        "react-dom": "19.3.0",
+         "tsx": "4.23.15",
+         "zod": "4.6.5"
+       },
+       "devDependencies": {
+         "@types/node": "22.20.4",
++        "@types/react": "19.3.0",
++        "@types/react-dom": "19.3.0",
+         "typescript": "5.9.3"
+       },
+       "engines": {
+@@ -447,6 +451,26 @@
+         "undici-types": "~6.21.0"
+       }
+     },
++    "node_modules/@types/react": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/@types/react/-/react-19.3.0.tgz",
++      "integrity": "sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "csstype": "^3.2.2"
++      }
++    },
++    "node_modules/@types/react-dom": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/@types/react-dom/-/react-dom-19.3.0.tgz",
++      "integrity": "sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==",
++      "dev": true,
++      "license": "MIT",
++      "peerDependencies": {
++        "@types/react": "^19.3.0"
++      }
++    },
+     "node_modules/base-x": {
+       "version": "5.0.1",
+       "resolved": "https://registry.npmjs.org/base-x/-/base-x-5.0.1.tgz",
+@@ -462,6 +486,13 @@
+         "base-x": "^5.0.0"
+       }
+     },
++    "node_modules/csstype": {
++      "version": "3.2.3",
++      "resolved": "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz",
++      "integrity": "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/esbuild": {
+       "version": "0.28.2",
+       "resolved": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.2.tgz",
+@@ -645,6 +676,33 @@
+         "node": ">=0.10.0"
+       }
+     },
++    "node_modules/react": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/react/-/react-19.3.0.tgz",
++      "integrity": "sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==",
++      "license": "MIT",
++      "engines": {
++        "node": ">=0.10.0"
++      }
++    },
++    "node_modules/react-dom": {
++      "version": "19.3.0",
++      "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz",
++      "integrity": "sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==",
++      "license": "MIT",
++      "dependencies": {
++        "scheduler": "^0.28.0"
++      },
++      "peerDependencies": {
++        "react": "^19.3.0"
++      }
++    },
++    "node_modules/scheduler": {
++      "version": "0.28.0",
++      "resolved": "https://registry.npmjs.org/scheduler/-/scheduler-0.28.0.tgz",
++      "integrity": "sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==",
++      "license": "MIT"
++    },
+     "node_modules/split2": {
+       "version": "4.2.0",
+       "resolved": "https://registry.npmjs.org/split2/-/split2-4.2.0.tgz",
+diff --git a/examples/practice-trial-ownership/package.json b/examples/practice-trial-ownership/package.json
+index 839fb2f..a31af5c 100644
+--- a/examples/practice-trial-ownership/package.json
++++ b/examples/practice-trial-ownership/package.json
+@@ -12,13 +12,17 @@
+     "pg": "8.23.1",
+     "zod": "4.6.5",
+     "bs58": "6.0.0",
+-    "tsx": "4.23.15"
++    "tsx": "4.23.15",
++    "react": "19.3.0",
++    "react-dom": "19.3.0"
+   },
+   "engines": {
+     "node": ">=22.12.0"
+   },
+   "devDependencies": {
+     "typescript": "5.9.3",
+-    "@types/node": "22.20.4"
++    "@types/node": "22.20.4",
++    "@types/react": "19.3.0",
++    "@types/react-dom": "19.3.0"
+   }
+ }
+diff --git a/examples/practice-trial-ownership/tsconfig.json b/examples/practice-trial-ownership/tsconfig.json
+index f2027e7..c45783a 100644
+--- a/examples/practice-trial-ownership/tsconfig.json
++++ b/examples/practice-trial-ownership/tsconfig.json
+@@ -5,7 +5,8 @@
+     "target": "es2022",
+     "strict": true,
+     "skipLibCheck": true,
+-    "noEmit": true
++    "noEmit": true,
++    "jsx": "react-jsx"
+   },
+-  "include": ["host.ts", "contracts/**/*.ts", "skills/**/*.ts"]
++  "include": ["host.ts", "contracts/**/*.ts", "skills/**/*.ts", "components/**/*.tsx"]
+ }
+diff --git a/next-env.d.ts b/next-env.d.ts
+index ce4e94a..a419cbe 100644
+--- a/next-env.d.ts
++++ b/next-env.d.ts
+@@ -1,7 +1,7 @@
+ /// <reference types="next" />
+ /// <reference types="next/image-types/global" />
+-import "./.next/types/routes.d.ts";
+-import "./.next/types/root-params.d.ts";
++import "./.next/dev/types/routes.d.ts";
++import "./.next/dev/types/root-params.d.ts";
+ 
+ // NOTE: This file should not be edited
+ // see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
+diff --git a/planning/raid-ci-matrix.json b/planning/raid-ci-matrix.json
+index cdc5510..357c2b2 100644
+--- a/planning/raid-ci-matrix.json
++++ b/planning/raid-ci-matrix.json
+@@ -114,8 +114,19 @@
+     "tests/practice-review-read-boundary.test.ts",
+     "tests/practice-review-read-db.test.ts",
+     "tests/practice-review-read-host.test.ts",
++    "tests/practice-ownership-page.test.ts",
++    "tests/practice-ownership-client.test.ts",
++    "tests/practice-ownership-context.test.ts",
++    "tests/practice-ownership-editor.test.ts",
++    "tests/practice-ownership-http.test.ts",
++    "tests/practice-ownership-http-host.test.ts",
+     "tests/practice-review-http.test.ts",
+     "tests/practice-review-http-host.test.ts",
++    "tests/practice-review-page.test.ts",
++    "tests/practice-review-view.test.ts",
++    "tests/practice-review-root-page.test.ts",
++    "tests/browser-practice-review/practice-review.spec.ts",
++    "tests/browser-practice-ownership/practice-ownership.spec.ts",
+     "tests/practice-trial-assessment-boundary.test.ts",
+     "tests/practice-trial-assessment-db.test.ts",
+     "tests/practice-trial-assessment-host.test.ts",
+@@ -545,8 +556,19 @@
+         "tests/practice-review-read-boundary.test.ts",
+         "tests/practice-review-read-db.test.ts",
+         "tests/practice-review-read-host.test.ts",
++        "tests/practice-ownership-page.test.ts",
++        "tests/practice-ownership-client.test.ts",
++        "tests/practice-ownership-context.test.ts",
++        "tests/practice-ownership-editor.test.ts",
++        "tests/practice-ownership-http.test.ts",
++        "tests/practice-ownership-http-host.test.ts",
+         "tests/practice-review-http.test.ts",
+         "tests/practice-review-http-host.test.ts",
++        "tests/practice-review-page.test.ts",
++        "tests/practice-review-view.test.ts",
++        "tests/practice-review-root-page.test.ts",
++        "tests/browser-practice-review/practice-review.spec.ts",
++        "tests/browser-practice-ownership/practice-ownership.spec.ts",
+         "tests/practice-trial-assessment-boundary.test.ts",
+         "tests/practice-trial-assessment-db.test.ts",
+         "tests/practice-trial-assessment-host.test.ts",
+diff --git a/src/skills/practice-review-http.ts b/src/skills/practice-review-http.ts
+index da956fe..795878f 100644
+--- a/src/skills/practice-review-http.ts
++++ b/src/skills/practice-review-http.ts
+@@ -25,7 +25,7 @@ export const practiceReviewPrivateHeaders = Object.freeze({
+   Vary: 'Cookie',
+ });
+ const Params = z.strictObject({ assignmentId: z.uuid(), submissionId: z.uuid() });
+-const Result = z
++export const PracticeReviewHttpResultSchema = z
+   .strictObject({
+     version: z.literal('v1'),
+     readsAvailable: z.boolean(),
+@@ -112,7 +112,9 @@ export function createPracticeReviewHandlers(host: PracticeReviewHttpHost) {
+           purpose: query.get('purpose'),
+         });
+         if (!input.success) fail('INVALID_INPUT');
+-        const parsed = Result.safeParse(await host.read(actor.data, input.data));
++        const parsed = PracticeReviewHttpResultSchema.safeParse(
++          await host.read(actor.data, input.data),
++        );
+         if (!parsed.success) fail('STORAGE_CONTRACT');
+         if (!parsed.data.readsAvailable) fail('STORAGE_UNAVAILABLE');
+         const review = parsed.data.review;
+diff --git a/src/skills/practice-trial-ownership-storage.ts b/src/skills/practice-trial-ownership-storage.ts
+index 36a3434..18b36af 100644
+--- a/src/skills/practice-trial-ownership-storage.ts
++++ b/src/skills/practice-trial-ownership-storage.ts
+@@ -1,6 +1,4 @@
+ import { z } from 'zod';
+-import { InternalId, UtcTimestamp } from '../contracts/ids';
+-import { SkillVersionReferenceSchema } from './contracts';
+ import { SkillTaxonomyActorSchema, type SkillTaxonomyActor } from './taxonomy-storage';
+ import { PracticeTrialDefinitionSchema } from './practice-trial-contracts';
+ import {
+@@ -19,112 +17,14 @@ import {
+   type CommandReceiptTransaction,
+   type SqlBinding,
+ } from '../command-receipts';
+-const Reference = SkillVersionReferenceSchema.unwrap()
+-  .extend({ revision: z.number().int().min(1).max(2147483647) })
+-  .readonly();
+-const Text = z
+-  .string()
+-  .trim()
+-  .min(1)
+-  .max(2000)
+-  .refine(
+-    (s) =>
+-      s.length <= 2000 &&
+-      !/\u0000|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(s),
+-  );
+-const Observations = z
+-  .array(
+-    z
+-      .strictObject({
+-        kind: z.enum(['EXPLANATION', 'MODIFICATION', 'ATTRIBUTION', 'OTHER']),
+-        detail: Text,
+-      })
+-      .readonly(),
+-  )
+-  .min(1)
+-  .max(20)
+-  .readonly();
+-const Decision = z.enum(['CONFIRM', 'DISPUTE', 'MORE_EVIDENCE']);
+-const purpose = z.enum(['OWNERSHIP_REVIEW', 'ASSESSMENT_REVIEW']);
+-export const RecordPracticeTrialOwnershipInputSchema = z
+-  .strictObject({
+-    version: z.literal('v1'),
+-    assignmentId: z.uuid(),
+-    submissionId: z.uuid(),
+-    expectedSubmissionReference: Reference,
+-    expectedDefinitionReference: Reference,
+-    expectedRubricReference: Reference,
+-    expectedPolicyReference: Reference,
+-    expectedOwnershipReference: Reference.nullable(),
+-    decision: Decision,
+-    reason: Text,
+-    observations: Observations,
+-  })
+-  .readonly();
+-export const ReadPracticeTrialOwnershipInputSchema = z
+-  .strictObject({
+-    version: z.literal('v1'),
+-    assignmentId: z.uuid(),
+-    submissionId: z.uuid(),
+-    purpose,
+-    revision: z.number().int().min(1).max(2147483647).optional(),
+-  })
+-  .readonly();
+-export const PracticeTrialOwnershipRecordSchema = z
+-  .strictObject({
+-    version: z.literal('v1'),
+-    id: z.uuid(),
+-    reference: Reference,
+-    submissionReference: Reference,
+-    participantId: z.uuid(),
+-    definitionReference: Reference,
+-    rubricReference: Reference,
+-    skillId: InternalId,
+-    skillDomain: InternalId,
+-    assignmentId: z.uuid(),
+-    policyVersionId: z.uuid(),
+-    policyReference: Reference,
+-    evaluatorAccountId: InternalId,
+-    decision: Decision,
+-    ownership: z.enum(['CONFIRMED', 'DISPUTED', 'UNCONFIRMED']),
+-    reason: Text,
+-    observations: Observations,
+-    caseAccessId: z.uuid(),
+-    policyAccessId: z.uuid(),
+-    reviewedAt: UtcTimestamp,
+-    persisted: z.literal(true),
+-    verifiesSkill: z.literal(false),
+-    isAuthorizationToken: z.literal(false),
+-    createsPermissionGrant: z.literal(false),
+-    consumesCapacity: z.literal(false),
+-    createsFinancialObligation: z.literal(false),
+-  })
+-  .refine(
+-    (v) =>
+-      v.reference.recordId === v.submissionReference.recordId &&
+-      v.submissionReference.revision === 1 &&
+-      v.ownership === ownership(v.decision),
+-  )
+-  .readonly();
+-export const PracticeTrialOwnershipViewSchema = z
+-  .strictObject({
+-    version: z.literal('v1'),
+-    private: z.literal(true),
+-    record: PracticeTrialOwnershipRecordSchema,
+-    currentReference: Reference,
+-    isCurrent: z.boolean(),
+-    accessId: z.uuid(),
+-    isAuthorizationToken: z.literal(false),
+-  })
+-  .refine(
+-    (v) =>
+-      v.currentReference.recordId === v.record.reference.recordId &&
+-      v.currentReference.revision >= v.record.reference.revision &&
+-      v.isCurrent === (v.currentReference.revision === v.record.reference.revision),
+-  )
+-  .readonly();
+-export type PracticeTrialOwnershipRecord = z.output<typeof PracticeTrialOwnershipRecordSchema>;
+-export type PracticeTrialOwnershipView = z.output<typeof PracticeTrialOwnershipViewSchema>;
++export * from './practice-trial-ownership-contracts';
++import {
++  RecordPracticeTrialOwnershipInputSchema,
++  ReadPracticeTrialOwnershipInputSchema,
++  PracticeTrialOwnershipViewSchema,
++  PracticeOwnershipDecisionSchema as Decision,
++  type PracticeTrialOwnershipView,
++} from './practice-trial-ownership-contracts';
+ export interface PracticeTrialOwnershipCommand {
+   readonly actor: SkillTaxonomyActor;
+   readonly input: unknown;

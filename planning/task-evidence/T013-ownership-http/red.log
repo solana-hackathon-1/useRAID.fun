@@ -1,0 +1,904 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-http.test.ts (88 tests | 88 failed) 37ms
+   × reads canonical current finding via explicit assignment and purpose with private headers 20ms
+   × reads historical finding by another author/assignment through current assessment appointment 0ms
+   × records normalized canonical reason and observations using actual actor and stable command key 1ms
+   × permits original historical replay while new writes disabled 0ms
+   × retains committed EXECUTED status without private body after read gate closes 0ms
+   × retains committed REPLAYED status without private body after read gate closes 0ms
+   × does not confuse write availability with committed outcome or read availability 2ms
+   × rejects invalid read query  0ms
+   × rejects invalid read query ?purpose=OTHER 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&purpose=OWNERSHIP_REVIEW 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&actor=evaluator 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=01 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=1e0 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=0 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=-1 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=2147483648 0ms
+   × rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=1&revision=2 0ms
+   × rejects malformed path {} 0ms
+   × rejects malformed path null 0ms
+   × rejects malformed path {"assignmentId":"bad","submissionId":"5ce3a129-32ba-455c-a8f8-8e65441b6009"} 0ms
+   × rejects malformed path {"assignmentId":"f6537961-5607-4092-816f-270e9fa49ab9","submissionId":"5ce3a129-32ba-455c-a8f8-8e65441b6009","actor":"forged"} 0ms
+   × rejects forged/malformed finding body 0 0ms
+   × rejects forged/malformed finding body 1 0ms
+   × rejects forged/malformed finding body 2 0ms
+   × rejects forged/malformed finding body 3 0ms
+   × rejects forged/malformed finding body 4 0ms
+   × rejects forged/malformed finding body 5 0ms
+   × rejects forged/malformed finding body 6 0ms
+   × requires valid stable command key null 0ms
+   × requires valid stable command key  0ms
+   × requires valid stable command key bad key 0ms
+   × requires valid stable command key xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0ms
+   × rejects unknown write query before command 0ms
+   × enforces bounded strict JSON 0 0ms
+   × enforces bounded strict JSON 1 0ms
+   × enforces bounded strict JSON 2 0ms
+   × enforces bounded strict JSON 3 0ms
+   × checks origin before private authentication or streamed body 0ms
+   × sanitizes authority 401 before source 0ms
+   × sanitizes authority 403 before source 0ms
+   × sanitizes authority 429 before source 0ms
+   × limits account before source 0ms
+   × rejects malformed host actor 0ms
+   × maps canonical storage error AUTHENTICATION_REQUIRED without private diagnostics 0ms
+   × maps canonical storage error ACCOUNT_RESTRICTED without private diagnostics 0ms
+   × maps canonical storage error RESOURCE_UNAVAILABLE without private diagnostics 0ms
+   × maps canonical storage error WRITES_DISABLED without private diagnostics 0ms
+   × maps canonical storage error REVISION_CHANGED without private diagnostics 0ms
+   × maps canonical storage error INVALID_INPUT without private diagnostics 0ms
+   × maps canonical storage error STORAGE_CONTRACT without private diagnostics 0ms
+   × maps canonical storage error STORAGE_UNAVAILABLE without private diagnostics 0ms
+   × maps changed same-key command to safe409 0ms
+   × sanitizes untrusted exceptions 0 0ms
+   × sanitizes untrusted exceptions 1 0ms
+   × sanitizes untrusted exceptions 2 0ms
+   × contains rejected async params even when auth denies first; fallback requestId safe 0ms
+   × returns non-enumerable404 for absent current finding 0ms
+   × fails closed on malformed/disabled/wrong current read output 0 0ms
+   × fails closed on malformed/disabled/wrong current read output 1 0ms
+   × fails closed on malformed/disabled/wrong current read output 2 0ms
+   × fails closed on malformed/disabled/wrong current read output 3 0ms
+   × fails closed on malformed/disabled/wrong current read output 4 0ms
+   × fails closed on malformed/disabled/wrong current read output 5 0ms
+   × fails closed on malformed/disabled/wrong current read output 6 0ms
+   × rejects host returning another historical revision 0ms
+   × fails closed on malformed/mismatched command output 0 0ms
+   × fails closed on malformed/mismatched command output 1 0ms
+   × fails closed on malformed/mismatched command output 2 0ms
+   × fails closed on malformed/mismatched command output 3 0ms
+   × fails closed on malformed/mismatched command output 4 0ms
+   × fails closed on malformed/mismatched command output 5 0ms
+   × fails closed on malformed/mismatched command output 6 0ms
+   × fails closed on malformed/mismatched command output 7 0ms
+   × fails closed on malformed/mismatched command output 8 0ms
+   × fails closed on malformed/mismatched command output 9 0ms
+   × fails closed on malformed/mismatched command output 10 0ms
+   × fails closed on malformed/mismatched command output 11 0ms
+   × fails closed on malformed/mismatched command output 12 0ms
+   × fails closed on malformed/mismatched command output 13 0ms
+   × fails closed on malformed/mismatched command output 14 0ms
+   × fails closed on malformed/mismatched command output 15 0ms
+   × rejects missing host port origin 1ms
+   × rejects missing host port actor 0ms
+   × rejects missing host port rateLimit 0ms
+   × rejects missing host port read 0ms
+   × rejects missing host port record 0ms
+   × rejects missing host port requestId 0ms
+   × rejects missing host port version 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 88 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > reads canonical current finding via explicit assignment and purpose with private headers
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-ownership-http.test.ts:46:55
+     44| }
+     45| it('reads canonical current finding via explicit assignment and purpos…
+     46|   const response=await get(); expect(response.status).toBe(200); expec…
+       |                                                       ^
+     47|   expect(response.headers.get('cache-control')).toBe('private, no-stor…
+     48|   expect(host.read).toHaveBeenCalledExactlyOnceWith(actor,{version:'v1…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > reads historical finding by another author/assignment through current assessment appointment
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-ownership-http.test.ts:53:94
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > records normalized canonical reason and observations using actual actor and stable command key
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-ownership-http.test.ts:57:96
+     55| });
+     56| it('records normalized canonical reason and observations using actual …
+     57|   const response=await post({...input,reason:'  '+input.reason+'  '});…
+       |                                                                                                ^
+     58|   expect(await response.json()).toEqual(writeResult);
+     59|   expect(host.record).toHaveBeenCalledExactlyOnceWith({actor,input,ide…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > permits original historical replay while new writes disabled
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-ownership-http.test.ts:66:94
+     64| it('permits original historical replay while new writes disabled',asyn…
+     65|   const result={...writeResult,status:'REPLAYED',writesAvailable:false…
+     66|   host.record.mockResolvedValue(result); const response=await post();e…
+       |                                                                                              ^
+     67| });
+     68| it.each(['EXECUTED','REPLAYED'])('retains committed %s status without …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > retains committed EXECUTED status without private body after read gate closes
+ FAIL  tests/practice-ownership-http.test.ts > retains committed REPLAYED status without private body after read gate closes
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-ownership-http.test.ts:70:93
+     68| it.each(['EXECUTED','REPLAYED'])('retains committed %s status without …
+     69|   const result={...writeResult,status,view:null,readsAvailable:false,w…
+     70|   host.record.mockResolvedValue(result);const response=await post();ex…
+       |                                                                                             ^
+     71| });
+     72| it('does not confuse write availability with committed outcome or read…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > does not confuse write availability with committed outcome or read availability
+AssertionError: expected {} to deeply equal { version: 'v1', …(5) }
+
+- Expected
++ Received
+
+- {
+-   "readsAvailable": true,
+-   "status": "EXECUTED",
+-   "unavailableReason": "DISABLED",
+-   "version": "v1",
+-   "view": {
+-     "accessId": "15ad7a2d-19bd-476e-baed-de225a2fb8f5",
+-     "currentReference": {
+-       "recordId": "5ce3a129-32ba-455c-a8f8-8e65441b6009",
+-       "revision": 1,
+-     },
+-     "isAuthorizationToken": false,
+-     "isCurrent": true,
+-     "private": true,
+-     "record": {
+-       "assignmentId": "f6537961-5607-4092-816f-270e9fa49ab9",
+-       "caseAccessId": "b9093cbf-5355-495d-b6e5-bbf4f09130cc",
+-       "consumesCapacity": false,
+-       "createsFinancialObligation": false,
+-       "createsPermissionGrant": false,
+-       "decision": "CONFIRM",
+-       "definitionReference": {
+-         "recordId": "a4635079-e6d9-4004-bdea-c341f7a2cd24",
+-         "revision": 1,
+-       },
+-       "evaluatorAccountId": "evaluator",
+-       "id": "3dff752a-4505-4ffa-9ed5-256ddc130f08",
+-       "isAuthorizationToken": false,
+-       "observations": [
+-         {
+-           "detail": "private-observation",
+-           "kind": "EXPLANATION",
+-         },
+-       ],
+-       "ownership": "CONFIRMED",
+-       "participantId": "554d768d-da31-4d1c-8c4f-b8e612c53a55",
+-       "persisted": true,
+-       "policyAccessId": "ecc4f5ca-b165-40cc-af0c-b333ed6c1c09",
+-       "policyReference": {
+-         "recordId": "d6c0d441-e565-465f-b9d4-971408295759",
+-         "revision": 1,
+-       },
+-       "policyVersionId": "b27b7fae-8ae1-480e-a948-10695881ac47",
+-       "reason": "private-reason",
+-       "reference": {
+-         "recordId": "5ce3a129-32ba-455c-a8f8-8e65441b6009",
+-         "revision": 1,
+-       },
+-       "reviewedAt": "2026-10-21T00:00:00.000Z",
+-       "rubricReference": {
+-         "recordId": "79421afe-7ae0-404a-b575-f2ed41b66583",
+-         "revision": 1,
+-       },
+-       "skillDomain": "web",
+-       "skillId": "frontend",
+-       "submissionReference": {
+-         "recordId": "5ce3a129-32ba-455c-a8f8-8e65441b6009",
+-         "revision": 1,
+-       },
+-       "verifiesSkill": false,
+-       "version": "v1",
+-     },
+-     "version": "v1",
+-   },
+-   "writesAvailable": false,
+- }
++ {}
+
+ ❯ tests/practice-ownership-http.test.ts:74:39
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query 
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OTHER
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&purpose=OWNERSHIP_REVIEW
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&actor=evaluator
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=01
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=1e0
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=0
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=-1
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=2147483648
+ FAIL  tests/practice-ownership-http.test.ts > rejects invalid read query ?purpose=OWNERSHIP_REVIEW&revision=1&revision=2
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:77:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > rejects malformed path {}
+ FAIL  tests/practice-ownership-http.test.ts > rejects malformed path null
+ FAIL  tests/practice-ownership-http.test.ts > rejects malformed path {"assignmentId":"bad","submissionId":"5ce3a129-32ba-455c-a8f8-8e65441b6009"}
+ FAIL  tests/practice-ownership-http.test.ts > rejects malformed path {"assignmentId":"f6537961-5607-4092-816f-270e9fa49ab9","submissionId":"5ce3a129-32ba-455c-a8f8-8e65441b6009","actor":"forged"}
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:80:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > rejects forged/malformed finding body 0
+ FAIL  tests/practice-ownership-http.test.ts > rejects forged/malformed finding body 1
+ FAIL  tests/practice-ownership-http.test.ts > rejects forged/malformed finding body 2
+ FAIL  tests/practice-ownership-http.test.ts > rejects forged/malformed finding body 3
+ FAIL  tests/practice-ownership-http.test.ts > rejects forged/malformed finding body 4
+ FAIL  tests/practice-ownership-http.test.ts > rejects forged/malformed finding body 5
+ FAIL  tests/practice-ownership-http.test.ts > rejects forged/malformed finding body 6
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:83:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > requires valid stable command key null
+ FAIL  tests/practice-ownership-http.test.ts > requires valid stable command key 
+ FAIL  tests/practice-ownership-http.test.ts > requires valid stable command key bad key
+ FAIL  tests/practice-ownership-http.test.ts > requires valid stable command key xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:86:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > rejects unknown write query before command
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:88:65
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > enforces bounded strict JSON 0
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:92:77
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > enforces bounded strict JSON 1
+AssertionError: expected 503 to be 415 // Object.is equality
+
+- Expected
++ Received
+
+- 415
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:92:77
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > enforces bounded strict JSON 2
+ FAIL  tests/practice-ownership-http.test.ts > enforces bounded strict JSON 3
+AssertionError: expected 503 to be 413 // Object.is equality
+
+- Expected
++ Received
+
+- 413
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:92:77
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > checks origin before private authentication or streamed body
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:94:76
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > sanitizes authority 401 before source
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:98:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > sanitizes authority 403 before source
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:98:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > sanitizes authority 429 before source
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:98:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > limits account before source
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:101:121
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > rejects malformed host actor
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:87
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                                                                                       ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:102:103
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error AUTHENTICATION_REQUIRED without private diagnostics
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:106:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error ACCOUNT_RESTRICTED without private diagnostics
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:106:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error RESOURCE_UNAVAILABLE without private diagnostics
+AssertionError: expected 503 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:106:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error WRITES_DISABLED without private diagnostics
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error STORAGE_CONTRACT without private diagnostics
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error STORAGE_UNAVAILABLE without private diagnostics
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:87
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                                                                                       ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:106:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error REVISION_CHANGED without private diagnostics
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:106:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > maps canonical storage error INVALID_INPUT without private diagnostics
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:106:78
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > maps changed same-key command to safe409
+AssertionError: expected 503 to be 409 // Object.is equality
+
+- Expected
++ Received
+
+- 409
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:109:144
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > sanitizes untrusted exceptions 0
+ FAIL  tests/practice-ownership-http.test.ts > sanitizes untrusted exceptions 1
+ FAIL  tests/practice-ownership-http.test.ts > sanitizes untrusted exceptions 2
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:87
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                                                                                       ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:110:246
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > contains rejected async params even when auth denies first; fallback requestId safe
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:113:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > returns non-enumerable404 for absent current finding
+AssertionError: expected 503 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 503
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:27
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                           ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:115:130
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/disabled/wrong current read output 0
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/disabled/wrong current read output 1
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/disabled/wrong current read output 2
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/disabled/wrong current read output 3
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/disabled/wrong current read output 4
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/disabled/wrong current read output 5
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/disabled/wrong current read output 6
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:87
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                                                                                       ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:123:127
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > rejects host returning another historical revision
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:87
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                                                                                       ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:124:73
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 0
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 1
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 2
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 3
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 4
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 5
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 6
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 7
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 8
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 9
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 10
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 11
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 12
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 13
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 14
+ FAIL  tests/practice-ownership-http.test.ts > fails closed on malformed/mismatched command output 15
+AssertionError: expected null to be 'private, no-store' // Object.is equality
+
+- Expected:
+"private, no-store"
+
++ Received:
+null
+
+ ❯ denied tests/practice-ownership-http.test.ts:40:87
+     38| }), options.path ?? Promise.resolve(params));
+     39| async function denied(response: Response, status: number, code?: strin…
+     40|   expect(response.status).toBe(status); expect(response.headers.get('c…
+       |                                                                                       ^
+     41|   expect(response.headers.get('vary')).toBe('Cookie'); expect(response…
+     42|   const text = await response.text(); for (const secret of ['private-r…
+ ❯ tests/practice-ownership-http.test.ts:130:120
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/88]⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > rejects missing host port origin
+ FAIL  tests/practice-ownership-http.test.ts > rejects missing host port actor
+ FAIL  tests/practice-ownership-http.test.ts > rejects missing host port rateLimit
+ FAIL  tests/practice-ownership-http.test.ts > rejects missing host port read
+ FAIL  tests/practice-ownership-http.test.ts > rejects missing host port record
+ FAIL  tests/practice-ownership-http.test.ts > rejects missing host port requestId
+ FAIL  tests/practice-ownership-http.test.ts > rejects missing host port version
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ tests/practice-ownership-http.test.ts:131:196
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/88]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+Error: private-diagnostic
+ ❯ tests/practice-ownership-http.test.ts:113:62
+    111| it('contains rejected async params even when auth denies first; fallba…
+    112|   host.actor.mockRejectedValue(new PracticeOwnershipHttpError(401));ho…
+    113|   const body=await denied(await get(undefined,Promise.reject(new Error…
+       |                                                              ^
+    114| });
+    115| it('returns non-enumerable404 for absent current finding',async()=>{ho…
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+ ❯ runWithCancel node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+ ❯ runWithTimeout node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2956:64
+
+This error originated in "tests/practice-ownership-http.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  88 failed (88)
+     Errors  1 error
+   Start at  12:06:44
+   Duration  353ms (transform 85ms, setup 0ms, import 162ms, tests 37ms, environment 0ms)
+

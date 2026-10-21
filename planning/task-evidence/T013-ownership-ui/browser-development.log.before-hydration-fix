@@ -1,0 +1,51 @@
+OWNED development BROWSER: http://127.0.0.1:65183 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-ownership-ui-build-b7eavwqa pid 13957
+
+Running 8 tests using 1 worker
+
+(node:14024) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:16:1 › appointed evaluator saves, rechecks and corrects a finding using exact source (10.9s)
+(node:14039) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:53:1 › uncertain response retries identical command after approved policy withdrawal (1.7s)
+  ✓  3 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:82:1 › stale finding requires recheck and revoked access hides visible private context (3.3s)
+  ✓  4 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:102:1 › missing policy, signed-out account and wrong evaluator never offer a new finding (2.3s)
+(node:14060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:16:1 › appointed evaluator saves, rechecks and corrects a finding using exact source (2.8s)
+  ✓  6 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:53:1 › uncertain response retries identical command after approved policy withdrawal (2.9s)
+  ✓  7 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:82:1 › stale finding requires recheck and revoked access hides visible private context (2.6s)
+  ✓  8 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:102:1 › missing policy, signed-out account and wrong evaluator never offer a new finding (2.2s)
+
+
+  1) [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:16:1 › appointed evaluator saves, rechecks and corrects a finding using exact source 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/UNCONFIRMED · version 2/)
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText(/UNCONFIRMED · version 2/) with timeout 5000ms
+      - waiting for getByText(/UNCONFIRMED · version 2/)
+
+
+      44 |   await fill(page, 'MORE_EVIDENCE', 'Synthetic reasoned correction.');
+      45 |   await page.getByRole('button', { name: 'Save finding', exact: true }).click();
+    > 46 |   await expect(page.getByText(/UNCONFIRMED · version 2/)).toBeVisible();
+         |                                                           ^
+      47 |   expect(await db.practiceTrialOwnershipVersion.count()).toBe(2);
+      48 |   expect(fetched).toEqual([]);
+      49 |   expect(errors).toEqual([]);
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-ownership/practice-ownership.spec.ts:46:59
+
+    Error Context: test-results/practice-ownership-development/practice-ownership-appoint-40b00--finding-using-exact-source-desktop/error-context.md
+
+    Error Context: test-results/practice-ownership-development/practice-ownership-appoint-40b00--finding-using-exact-source-desktop/error-context.md
+
+  1 failed
+    [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:16:1 › appointed evaluator saves, rechecks and corrects a finding using exact source 
+  7 passed (30.2s)
+OWNED SERVER CLOSED: True

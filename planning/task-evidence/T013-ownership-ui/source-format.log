@@ -1,0 +1,26 @@
+src/skills/practice-ownership-client.ts 40ms
+src/skills/practice-ownership-context.ts 8ms
+src/skills/practice-ownership-http.ts 14ms
+src/skills/practice-ownership-results.ts 3ms
+src/skills/practice-trial-ownership-contracts.ts 5ms
+src/skills/practice-trial-ownership-storage.ts 21ms
+src/lib/practice-ownership-http.ts 2ms (unchanged)
+src/lib/practice-ownership-page.ts 2ms
+src/components/practice-ownership-editor.tsx 11ms
+src/components/practice-review-case.tsx 6ms
+src/app/evaluator/practice/[assignmentId]/submissions/[submissionId]/page.tsx 3ms
+src/app/evaluator/practice/[assignmentId]/submissions/[submissionId]/ownership/page.tsx 1ms
+tests/practice-ownership-client.test.ts 9ms
+tests/practice-ownership-context.test.ts 6ms
+tests/practice-ownership-editor.test.ts 2ms
+tests/practice-ownership-http-host.test.ts 6ms (unchanged)
+tests/practice-ownership-http.test.ts 14ms (unchanged)
+tests/helpers/practice-ownership-browser-fixture.ts 4ms
+tests/helpers/practice-ownership-view-fixture.ts 1ms
+tests/browser-practice-ownership/practice-ownership.spec.ts 6ms
+playwright.practice-ownership.config.ts 3ms (unchanged)
+examples/practice-trial-ownership/host.ts 29ms
+examples/practice-trial-ownership/tsconfig.json 5ms
+examples/practice-trial-ownership/package.json 1ms (unchanged)
+planning/raid-ci-matrix.json 8ms
+.github/workflows/checks.yml 16ms (unchanged)

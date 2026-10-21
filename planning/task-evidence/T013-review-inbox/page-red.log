@@ -1,0 +1,245 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-inbox-page.test.ts (18 tests | 14 failed) 37ms
+   × loads a fresh protected metadata response without an actual network request 30ms
+   × rejects unknown/duplicate/malformed query before dispatch { after: [ 'a', 'b' ] } 0ms
+   × rejects unknown/duplicate/malformed query before dispatch { actor: 'foreign' } 0ms
+   × rejects unknown/duplicate/malformed query before dispatch { after: 'invalid' } 0ms
+   × maps HTTP401 without consuming stale/error private bytes 0ms
+   × maps HTTP403 without consuming stale/error private bytes 0ms
+   × maps HTTP429 without consuming stale/error private bytes 0ms
+   × maps HTTP422 without consuming stale/error private bytes 0ms
+   × renders purpose-specific links without case prefetch, explicit UTC expiry and no authority claim 4ms
+   × renders empty observation and native next page with bounded current cursor 0ms
+   × renders usefulSIGN_IN state with no private evidence 0ms
+   × renders usefulDENIED state with no private evidence 0ms
+   × renders usefulRATE_LIMITED state with no private evidence 0ms
+   × renders usefulUNAVAILABLE state with no private evidence 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > loads a fresh protected metadata response without an actual network request
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'READY', page: { …(7) } }
+
+- Expected
++ Received
+
+  {
+-   "page": {
+-     "accessId": "c3889116-e8b6-479b-81e3-a6f25c032985",
+-     "entries": [
+-       {
+-         "assignmentId": "4f6580d0-f911-4ac0-84a9-6d6113ec9a19",
+-         "expiresAt": "2026-10-21T13:00:00.000Z",
+-         "issuedAt": "2026-10-21T11:00:00.000Z",
+-         "purpose": "OWNERSHIP_REVIEW",
+-         "submissionId": "d3a1f731-3ad3-4f06-8826-23a0ddf78561",
+-       },
+-       {
+-         "assignmentId": "f01c72f3-787b-4ea1-b7c0-b44e36e15052",
+-         "expiresAt": "2026-10-21T13:00:00.000Z",
+-         "issuedAt": "2026-10-21T11:00:00.000Z",
+-         "purpose": "ASSESSMENT_REVIEW",
+-         "submissionId": "2bd2bca7-534e-4d3c-8530-bac5dd93f2b7",
+-       },
+-     ],
+-     "isAuthorizationToken": false,
+-     "nextCursor": null,
+-     "observedAt": "2026-10-21T12:00:00.000Z",
+-     "private": true,
+-     "version": "v1",
+-   },
+-   "status": "READY",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-inbox-page.test.ts:10:138
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > rejects unknown/duplicate/malformed query before dispatch { after: [ 'a', 'b' ] }
+ FAIL  tests/practice-review-inbox-page.test.ts > rejects unknown/duplicate/malformed query before dispatch { actor: 'foreign' }
+ FAIL  tests/practice-review-inbox-page.test.ts > rejects unknown/duplicate/malformed query before dispatch { after: 'invalid' }
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'NOT_FOUND' }
+
+- Expected
++ Received
+
+  {
+-   "status": "NOT_FOUND",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-inbox-page.test.ts:14:79
+     12| });
+     13| it.each([{after:['a','b']},{actor:'foreign'},{after:'invalid'}])('reje…
+     14|  const get=vi.fn();expect(await createPracticeReviewInboxLoader(get)(s…
+       |                                                                               ^
+     15| });
+     16| it.each([[401,'SIGN_IN'],[403,'DENIED'],[429,'RATE_LIMITED'],[503,'UNA…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > maps HTTP401 without consuming stale/error private bytes
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'SIGN_IN' }
+
+- Expected
++ Received
+
+  {
+-   "status": "SIGN_IN",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-inbox-page.test.ts:17:146
+     15| });
+     16| it.each([[401,'SIGN_IN'],[403,'DENIED'],[429,'RATE_LIMITED'],[503,'UNA…
+     17|  const get=vi.fn().mockResolvedValue(new Response('private-answer-mark…
+       |                                                                                                                                                  ^
+     18| });
+     19| it.each(['extra','cursor','malformed'])('fails closed on incoherent su…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > maps HTTP403 without consuming stale/error private bytes
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'DENIED' }
+
+- Expected
++ Received
+
+  {
+-   "status": "DENIED",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-inbox-page.test.ts:17:146
+     15| });
+     16| it.each([[401,'SIGN_IN'],[403,'DENIED'],[429,'RATE_LIMITED'],[503,'UNA…
+     17|  const get=vi.fn().mockResolvedValue(new Response('private-answer-mark…
+       |                                                                                                                                                  ^
+     18| });
+     19| it.each(['extra','cursor','malformed'])('fails closed on incoherent su…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > maps HTTP429 without consuming stale/error private bytes
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'RATE_LIMITED' }
+
+- Expected
++ Received
+
+  {
+-   "status": "RATE_LIMITED",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-inbox-page.test.ts:17:146
+     15| });
+     16| it.each([[401,'SIGN_IN'],[403,'DENIED'],[429,'RATE_LIMITED'],[503,'UNA…
+     17|  const get=vi.fn().mockResolvedValue(new Response('private-answer-mark…
+       |                                                                                                                                                  ^
+     18| });
+     19| it.each(['extra','cursor','malformed'])('fails closed on incoherent su…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > maps HTTP422 without consuming stale/error private bytes
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'NOT_FOUND' }
+
+- Expected
++ Received
+
+  {
+-   "status": "NOT_FOUND",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-review-inbox-page.test.ts:17:146
+     15| });
+     16| it.each([[401,'SIGN_IN'],[403,'DENIED'],[429,'RATE_LIMITED'],[503,'UNA…
+     17|  const get=vi.fn().mockResolvedValue(new Response('private-answer-mark…
+       |                                                                                                                                                  ^
+     18| });
+     19| it.each(['extra','cursor','malformed'])('fails closed on incoherent su…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > renders purpose-specific links without case prefetch, explicit UTC expiry and no authority claim
+AssertionError: expected '<div>Unavailable</div>' to contain 'Your practice reviews'
+
+Expected: "Your practice reviews"
+Received: "<div>Unavailable</div>"
+
+ ❯ tests/practice-review-inbox-page.test.ts:25:15
+     23| it('renders purpose-specific links without case prefetch, explicit UTC…
+     24|  const p=page();const html=renderToStaticMarkup(createElement(Practice…
+     25|  expect(html).toContain('Your practice reviews');expect(html).toContai…
+       |               ^
+     26|  for(const row of p.entries){const path='/evaluator/practice/'+row.ass…
+     27|  expect(html).toContain('href="'+path+'?purpose='+row.purpose+'"');exp…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > renders empty observation and native next page with bounded current cursor
+AssertionError: expected '<div>Unavailable</div>' to contain 'No current assignments'
+
+Expected: "No current assignments"
+Received: "<div>Unavailable</div>"
+
+ ❯ tests/practice-review-inbox-page.test.ts:32:148
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > renders usefulSIGN_IN state with no private evidence
+AssertionError: expected '<div>Unavailable</div>' to contain 'Sign in'
+
+Expected: "Sign in"
+Received: "<div>Unavailable</div>"
+
+ ❯ tests/practice-review-inbox-page.test.ts:36:100
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > renders usefulDENIED state with no private evidence
+AssertionError: expected '<div>Unavailable</div>' to contain 'unavailable for your account'
+
+Expected: "unavailable for your account"
+Received: "<div>Unavailable</div>"
+
+ ❯ tests/practice-review-inbox-page.test.ts:36:100
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > renders usefulRATE_LIMITED state with no private evidence
+AssertionError: expected '<div>Unavailable</div>' to contain 'Too many requests'
+
+Expected: "Too many requests"
+Received: "<div>Unavailable</div>"
+
+ ❯ tests/practice-review-inbox-page.test.ts:36:100
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  tests/practice-review-inbox-page.test.ts > renders usefulUNAVAILABLE state with no private evidence
+AssertionError: expected '<div>Unavailable</div>' to contain 'currently unavailable'
+
+Expected: "currently unavailable"
+Received: "<div>Unavailable</div>"
+
+ ❯ tests/practice-review-inbox-page.test.ts:36:100
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  14 failed | 4 passed (18)
+   Start at  19:08:40
+   Duration  174ms (transform 16ms, setup 0ms, import 37ms, tests 37ms, environment 0ms)
+

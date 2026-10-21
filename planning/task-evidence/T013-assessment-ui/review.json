@@ -1,0 +1,116 @@
+{
+  "label": "SELF-EVALUATED; bounded implementation VERIFIED_IN_TEST; full T013 NOT VERIFIED",
+  "agent": "Codex /root solewriter; no delegation",
+  "startUtc": "2026-10-21T10:05:35.381273+00:00",
+  "endUtc": "2026-10-21T10:26:16.005623+00:00",
+  "elapsedSeconds": 1240.62435,
+  "baselineSha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "branch": "claude/t013-practice-trial-ui",
+  "sourceIdentity": "Uncommitted context/form plus preserved prior UI/HTTP/identity work; compiler-source-proof.json1278exactfiles, independentconsumer55exactfiles, preview-source-proof.json separate devcache. No commit/push/merge/branch change.",
+  "requirementsChecked": [
+    "R05",
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I07",
+    "I10",
+    "I11",
+    "I13",
+    "D07",
+    "D08",
+    "D13",
+    "AC04\u201307(partial)",
+    "AC42\u201343(partial)",
+    "AC73\u201375(partial)",
+    "blueprint23/24.6\u20138/25.3/26/28\u201329/33/34/39/40"
+  ],
+  "outcome": "One canonical transaction of original assessment case/approvedpolicy/ownership/currentCASrefs/currentreview/samecasestate/finalfiniteassignment, Root cookie/quota/postcommitgate and namespace flags; pure canonical assessment/results extraction preserving existing exports/3dependentexamplelinks; shared singlepending review-or-decision controller and dedicated accessible private page/assignedlink.",
+  "effects": "Existing SQL/authority/CAS/receipts only. No new schema/domainpolicy/threshold/productionflag/realappointment/provider/reputation/accountrestriction/grant/capacity/money effect. Original submission remains UNCONFIRMED history.",
+  "verification": {
+    "tdd": "Context9behaviorRED+3controls\u219212PASS;controller27behaviorRED+2controls\u219229PASS;view missingmoduleRED\u21925PASS. Historicalpolicylabel1fail4pass and evaluatorcopy1fail4pass retained\u21925PASS. Root10regression after featureRED, not fabricated RootRED.56newUIchecks plus prior196newHTTPchecks =252new this resumed work.",
+    "selected": "515PASS/14files141.46s realPostgreSQL after pureextraction/refactor in affected.log.pre-copyfix. Final copy changed only component+its5SSR+canonicalexamplealias; exact510reused +5currentSSR in final-refactor.log, proven affected-reuse.json (no unexplained changes).433finalPASS/8files1.84s includes56UI+195HTTP/Root+31sharedcontracts+151docs.666unique affected+docs; no fullparent2837 rerun/claim.",
+    "consumer": "Ownnpmci30packages31audited0vuln, strict types and current minimalPGHTTPReactPASS; 55exactfiles. Actualinitial/currentreassessment context and SSRreview/decision forms plus canonicalHTTP verify/nonverification/recheck/revoke/history/stale+key409/foreign404/writeoff+withdrawal original replay/readclosure/revocation.",
+    "browserDevelopment": "Final10/10desktop+mobilePASS, browser-development.log and browser-development-resources.json. ActualRootcookie/origin/quota/currentpolicy/originalcriteria/VERIFY\u2192nonverificationpreservesstate\u2192REASSESSMENT_REQUIRED\u2192REVOKED; two original lostresponse/historicalreplays after correction+withdrawal, exactkind/body/key; staleCAS/revocationclearscontext/no-policy/signout/foreignadmin404; keyboard/nooverflow/inertmarkup/geometry/noindex/genericmetadata. Server stopped/portclosed.",
+    "browserProduction": "Final10/10samejourneysPASS47.5s on current actualnextstart; privateNoStoreHTML enforced. Server stopped/portclosed. Earlier20pass pre-reviewfix and20pass pre-copyfix retained; finalcurrentonly claimed.",
+    "typesBuild": "CurrentNexttypegen/strictTS/productionWebpackPASS; 1278currentcompiler/source/test/example/schema/config files exact. GeneratedNexttypeartifacts/caches excluded explicitly, originalrootnext-env preserved. Current10compiledGET/HEAD/POSTauth/origin/privateNoStore/VaryCookie/safeBodyPASS, serverclosed.",
+    "static": "Ownedlint0errors0warnings after import/hydrationrefactor;55planningPASS16.788s;identityASTfencePASS;format/diff checks retained. Newtests+browser registeredglobal/E04+dev/prodworkflow.",
+    "reuse": "Rootsecurity policy priorPASS only exact1877package/lock/audit/allowlist unchanged; current independentReactconsumer npm audit0vuln. Affected515 composition precisely recorded, no repeatedSQL for displaycopy.",
+    "skips": "No fullsuite, Dockerimage, hostedNode22, provider/load, independentcriterion/UAT/business/staffedoperating/release verification. LocalNode26, Next16.3.8/Vitest4.1.11/PlaywrightChromium/pinnedPG16. Development preview is separate from productionbuild and realUAT."
+  },
+  "findingsAndFixes": [
+    "Controller historicaldecision fixture initially mixed original case IDs with another result; strict result binding correctly stayedUNCERTAIN. Corrected fixture source, failure retained; no success assertion weakened.",
+    "Pure assessment/result schemas extracted verbatim with retained storage/HTTP exports, helper aliases and three existing consuming dependency links; full affectedPG/host checks passed.",
+    "Selfreview found context policy could appear current after saved historical replay. Reproducing1fail4pass, explicit observed-before-save heading and refresh instruction; browser historical replay now checks it.",
+    "HydrationdisabledSSR preserved using useSyncExternalStore client/server snapshot, removing effectsetState advisory without suppressions. Currentbrowser actions prove enabled handlers. Removed unused imports/testbindings and escaped literal apostrophe; ownedlint0.",
+    "Visualreview caught implementation jargon in empty state. Reproducing1fail4pass; plain evaluatorcopy and clearer outcome explanations; currentSSR433/consumer/browser/build rerun. First attempted replacement left old empty text and correctly remained1fail432pass; retained logs, corrected actual source.",
+    "Initialpreviewsource proof attempted generatedPythonbytecode ignored during copying; excluded only generatedcache, proved canonicalfiles. Initialfailedpreview wrapper automaticstop0 retained. Firstreuseproof expected two differingpaths; actual third is canonicalexamplecomponent symlink, explicitly resolved/equated.",
+    "Finalpreview uses independent exactsource/devcache so browser/test/cache resources stay separate. Superseded turn-owned32542 retired only after finalpreview verified; original ownership previews untouched. No assertion/timebudget/production gate weakened."
+  ],
+  "preview": {
+    "openUrl": "http://127.0.0.1:52819/open",
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assessment-ui-preview-0n0m7mq0",
+    "mode": "development",
+    "checks": [
+      {
+        "name": "desktop",
+        "status": 200,
+        "formEnabled": true,
+        "approvedPolicy": true,
+        "noOverflow": true,
+        "labelsAboveControls": true,
+        "url": "http://127.0.0.1:52811/evaluator/practice/7aff38fc-d727-4ca8-a434-ee969946f74f/submissions/bcb7dca5-e281-425a-92a2-48a6ef24613c/assessment"
+      },
+      {
+        "name": "mobile",
+        "status": 200,
+        "formEnabled": true,
+        "approvedPolicy": true,
+        "noOverflow": true,
+        "labelsAboveControls": true,
+        "url": "http://127.0.0.1:52811/evaluator/practice/7aff38fc-d727-4ca8-a434-ee969946f74f/submissions/bcb7dca5-e281-425a-92a2-48a6ef24613c/assessment"
+      }
+    ],
+    "supervisorPid": 33604,
+    "innerPid": 33680,
+    "nextPid": 33683,
+    "container": "raid-t013-assessment-ui-preview-final-20261021",
+    "session": 98108,
+    "stopCommand": "kill 33604",
+    "retained": true,
+    "synthetic": "Dedicated loopback helper sets only actual synthetic owncookie; no productauthbypass/productionflags. ~8hour evaluator session/appointment. Desktop/mobile screenshots visuallychecked."
+  },
+  "resources": {
+    "resources": [
+      {
+        "name": "raid-t013-assessment-ui-20261021",
+        "running": false,
+        "label": "T013-assessment-ui"
+      },
+      {
+        "name": "raid-t013-assessment-ui-preview-20261021",
+        "running": false,
+        "label": "T013-assessment-ui-preview"
+      },
+      {
+        "name": "raid-t013-assessment-ui-preview-final-20261021",
+        "running": true,
+        "label": "T013-assessment-ui-preview-final"
+      },
+      {
+        "name": "raid-t013-assessment-http-20261021",
+        "running": false,
+        "label": "T013-assessment-http"
+      }
+    ],
+    "retainedFinalPreview": "kill 33604 stops only final own Next/helper/PG",
+    "priorOwnershipPreviews": "Preserved untouched;16680/99844 and older PG remain prior ownership.",
+    "supersededPreview": "32542 replaced after final current preview verified; expectedSIGTERM143/automaticstop0; preview-driver.log.pre-copyfix"
+  },
+  "reviewStatus": "Independent criterion review, representativeUAT/business/staffedoperating/release/hostedNode22 and parkedidentity protocol remain NOT VERIFIED. Validator intentionally rejects27fullcriteria+7hostedchecks; no issue closure.",
+  "board": "Live165issues160open5closed; T013BlockedT012/full0of27reviewed, stale localimplementation fields. No openPRs. T006closedissue/boardInProgress mismatch retained. Remote main5295db4 is ancestor of local work; no remotecheckpoint newer than local work assumed. No remote mutation.",
+  "next": "Evaluator assignment inbox: current own finite assignment discovery with minimal authorized metadata, then links into existing scoped case/ownership/assessment forms. Preserve pending independent/hosted/UAT/operating/release/identity obligations; Git publication only under applicable explicit owner authority."
+}

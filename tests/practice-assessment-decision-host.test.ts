@@ -3,6 +3,7 @@ const storage = vi.hoisted(() => ({ record: vi.fn(), read: vi.fn(), observe: vi.
 vi.mock('../src/skills/practice-trial-assessment-storage', () => ({
   recordPracticeAssessmentDecision: storage.record,
   readPracticeTrialAssessmentState: storage.read,
+  readPracticeAssessmentDecision: storage.observe,
 }));
 vi.mock('../src/lib/db', () => ({ db: {} }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({
@@ -12,6 +13,7 @@ import {
   practiceAssessmentDecisionWriteConfiguration,
   recordPracticeAssessmentDecisionFromHost,
   readPracticeTrialAssessmentStateFromHost,
+  readPracticeAssessmentDecisionFromHost,
 } from '../src/lib/practice-assessment-decisions-host';
 const actor = { accountId: 'synthetic', sessionHash: 'a'.repeat(64) },
   command = { actor, input: {}, idempotencyKey: 'original', requestId: 'r' };
@@ -103,4 +105,24 @@ it('preserves successful status while dropping private delivery if reads close a
     readsAvailable: false,
   });
   expect(storage.record).toHaveBeenCalledTimes(1);
+});
+
+it('composes explicit historical decision under current read policy, then drops private delivery after commit if reads close', async () => {
+  vi.stubEnv('PRACTICE_REVIEW_READS_ENABLED', 'true');
+  const input = { version: 'v1', assignmentId: 'case', submissionId: 'submission', revision: 2 };
+  storage.observe.mockImplementation(async (tx, a, i, canRead) => {
+    expect(tx).toBe(storage.port);
+    expect(a).toBe(actor);
+    expect(i).toBe(input);
+    expect(canRead({})).toBe(true);
+    vi.stubEnv('PRACTICE_REVIEW_READS_ENABLED', 'false');
+    expect(canRead({})).toBe(false);
+    return { private: true };
+  });
+  expect(await readPracticeAssessmentDecisionFromHost(actor, input)).toEqual({
+    version: 'v1',
+    view: null,
+    readsAvailable: false,
+    unavailableReason: 'DISABLED',
+  });
 });

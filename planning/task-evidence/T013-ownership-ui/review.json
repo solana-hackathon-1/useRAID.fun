@@ -1,0 +1,96 @@
+{
+  "label": "SELF-EVALUATED; bounded implementation VERIFIED_IN_TEST; full T013 NOT VERIFIED",
+  "agent": "Codex /root, sole writer; no delegation",
+  "baselineSha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "branch": "claude/t013-practice-trial-ui",
+  "sourceIdentity": "Uncommitted context/form on1877b2a with prior UI+HTTP preserved;1246current compiler/test/example/schema/config files exact,50own-installed consumer files exact; source-hashes.json. No commit/push/merge/branch change.",
+  "scope": "Actual approved-policy/current ownership context, canonical pure ownership/results schemas preserving existing exports, injectable stable pending controller and accessible private dedicated ownership form/link.",
+  "requirementsChecked": [
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I11",
+    "I13",
+    "D07",
+    "D08",
+    "D13",
+    "AC04\u201307(partial)",
+    "AC40(partial)",
+    "AC42\u201343(partial)",
+    "AC73\u201375(partial)",
+    "blueprint23/24.6\u20138/26/28\u201329/33/34/39/40"
+  ],
+  "authorityAndEffects": "Single canonical transaction actual User/Session/finite assignment + original evidence/current approved policy/current finding/final assignment/read check; Root current own cookie/quota and final read flag. Actual storage authorizes every new command/replay. Missing policy/read-write-off is explicit. Historical author not conflated with current authority. Existing immutable finding/current pointer/receipts/ID-only audits only; no schema/newpolicy/flags/realappointments/rank/grant/capacity/money/provider effect.",
+  "verification": {
+    "tdd": "21controllerbehaviorRED\u219221PASS,10contextfail3controls\u219213PASS; view missingmoduleRED\u21923PASS. Additional strict-final-assignment1fail13pass, malformedauthbody1fail21pass, hydration/historicalSSR2fail3pass and actualgeometryRED all retained. Final22client+14context+5SSR+9Rootregression=50newPASS; Root composition regression written after initial feature RED/implementation, no fabricated Root-before-implementation RED claim.",
+    "selected": "359PASS/12files44.66s including realPG ownership/policy/private read/current authority/CAS/history/replay and original case/page regressions. Final12additional tests yield371unique affected. Final309PASS/9files2.06s includes50new+101ownershipHTTP/Root+11existingview/Root+147docs;518unique affected+docs, not a full-suite claim.",
+    "consumer": "Own npmci30packages31audited0vuln, strict types and actual minimalPGHTTPReact PASS. Canonical original case+approvedpolicy+currentfinding context rendered through real editor; existing HTTP save/correction/current/history/CAS/changedkey/withdrawal-writeoff replay/revocation remain actualSQL.50source/dependency/schema/component files exact; independent node_modules.",
+    "browserDevelopment": "Final8/8desktop+mobilePASS28.1s; actual current session/cookie/rootorigin/quota, original evidence/approvedpolicy/save/correction/stale/no-policy/signout/foreign current admin without assignment/revocation/historical samekey+body replay after lost200 and policywithdrawal; keyboard save, no overflow/script/image execution; label above full-width control geometry. Own server stopped/portclosed.",
+    "browserProduction": "Final8/8same journeysPASS17.8s, actual nextstart privateNoStoreHTML/noindex/genericmetadata and command actions. Ownserver stopped/portclosed. Earlier passing runs and7pass1fail hydration run retained; no tests weakened to bypass behavior.",
+    "typesBuild": "Final Nexttypegen/strictTS/productionWebpack and final strict types PASS;1246 exact files in isolated source; private .env not copied, original next-env artifact preserved. Production rebuild repeated only after material hydration/history/layout fixes.",
+    "static": "Final owned lint0errors3warnings (intentional hydration readiness setState-in-effect advisory +2test-only unused destructured fields), not suppressed. Identity AST fence PASS;55finalplanningPASS15.606s; formatting/diff checks recorded.",
+    "reused": "Root security policy PASS from T013-review-http/audit-final.log with exact package/lock/audit script/allowlist match1877b2a. Current own React consumer audited0vuln. No new external advisory lookup claimed.",
+    "skipped": "No full parent2837 rerun/claim because Root dependency/domain/schema semantics unchanged and affected SQL/wholetypes/currentbuild/browser/consumer checks cover bounded change. Prior16read-only browser results are historical source only, not current-context acceptance. No hostedNode22/Dockerimage/realSIWSprovider/independent criterion/UAT/business/operating/release/load verification. LocalNode26/Next16.3.8/Vitest4.1.11/PlaywrightChromium and pinnedPG16.",
+    "finalMetadata": "147currentdocs PASS; selected formatting and diff clean; exact owned hashes/staging empty; final types and lint exit0 (3warnings); validator expected27criteria+7hosted omissions."
+  },
+  "findingsAndFixes": [
+    "Strict final assignment port accepts only assignmentId/submissionId/purpose, not v1 metadata. Added reproducing1fail13pass, removed extra version at that port; actual PG/browser context now passes.",
+    "Malformed JSON body on an HTTP401 initially turned into generic uncertain status. Added1fail21pass regression and preserve status while parsing invalid response body asnull; visible context now clears on known denial.",
+    "Browser rerun7pass1fail showed a select resetting when interacted with before React hydration after native reload. Added SSR disabled-until-ready RED and hydration guard; retained 5second assertions/timeouts and final16browser passes.",
+    "Review found historical replay could be labeled current. Added SSR RED and actual browser concurrent correction before withdrawn-policy replay; explicit Saved finding (historical)/newer-current notice now passes.",
+    "Visual preview had cramped inline labels/controls. Actual bounding-box probe RED; used existing orientation form/card/actions stylesheet classes, added unchanged geometry assertion to desktop/mobile tests, final16browser and desktop/mobile preview PASS.",
+    "Style class insertion invalidated an overly literal SSR assertion requiring disabled to be the first/only attribute. Retained original failure, asserted the same required disabled attribute while allowing style classes; no disable behavior assertion removed. Browser readiness and geometry remain strict.",
+    "No canonical domain validation, old storage/HTTP export, audit/receipt invariant or production flag weakened. Three linter warnings remain explicitly recorded."
+  ],
+  "preview": {
+    "openUrl": "http://127.0.0.1:49324/open",
+    "caseUrl": "http://127.0.0.1:49313/evaluator/practice/a07ba99d-3459-4dbe-af6a-057f42205f9b/submissions/35a0e5d5-0fd7-4b67-b2fd-e5558d55da0e/ownership",
+    "status": 200,
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-ownership-ui-build-7zd38m0t",
+    "mode": "development",
+    "synthetic": true,
+    "desktopMobileFormEnabled": true,
+    "approvedPolicyAndOriginalEvidenceVisible": true,
+    "labelsAboveControls": true,
+    "supervisorPid": 16680,
+    "stopCommand": "kill 16680",
+    "retained": true
+  },
+  "resources": {
+    "testContainer": "/raid-t013-ownership-ui-20261021",
+    "label": "T013-ownership-ui",
+    "running": false,
+    "automaticStops": "affected.log and verification-driver.log own cleanup0; browser resources JSON confirms both server ports closed",
+    "retainedPreview": {
+      "openUrl": "http://127.0.0.1:49324/open",
+      "caseUrl": "http://127.0.0.1:49313/evaluator/practice/a07ba99d-3459-4dbe-af6a-057f42205f9b/submissions/35a0e5d5-0fd7-4b67-b2fd-e5558d55da0e/ownership",
+      "status": 200,
+      "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-ownership-ui-build-7zd38m0t",
+      "mode": "development",
+      "synthetic": true,
+      "desktopMobileFormEnabled": true,
+      "approvedPolicyAndOriginalEvidenceVisible": true,
+      "labelsAboveControls": true,
+      "supervisorPid": 16680,
+      "stopCommand": "kill 16680",
+      "retained": true
+    },
+    "priorResources": "Read-only preview99844/64262 and oldpracticePG61953 retained untouched; superseded task-owned preview15774 stopped0 and replaced after final visual fix; no volumes/images/evidence removed"
+  },
+  "completion": "27fullcriteria NOT VERIFIED +7missinghostedCI; validator recorded separately. Author checks/preview do not supply independent criterion/UAT/operating/release acceptance; parked identity protocol still unreviewed.",
+  "next": [
+    "Bounded assessment context/decision action API/UI using actual original evidence, approved assessment policy/current sources and stable receipts.",
+    "Independent criterion review/exactcandidate hostedNode22/UAT/operating/release evidence when staffed/authorized; no production enablement inferred.",
+    "Git publication only under applicable explicit owner authority; preserve all prior uncommitted work/1877b2a unpushed and owner previews."
+  ],
+  "timing": {
+    "start": "2026-10-21T06:54:58.062921+00:00",
+    "end": "2026-10-21T07:15:41.585609+00:00",
+    "elapsedSeconds": 1243.523
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "mode": "production next start",
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assessment-ui-build-qx206pmy",
+  "port": 52966,
+  "pid": 34187,
+  "checks": [
+    {
+      "route": "/assessment",
+      "method": "GET",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/assessment",
+      "method": "HEAD",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/assessment",
+      "method": "POST",
+      "origin": "http://127.0.0.1:52966",
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/assessment",
+      "method": "POST",
+      "origin": "https://foreign.example",
+      "status": 403,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/state",
+      "method": "GET",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/state",
+      "method": "HEAD",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/decisions",
+      "method": "GET",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/decisions",
+      "method": "HEAD",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/decisions",
+      "method": "POST",
+      "origin": "http://127.0.0.1:52966",
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "route": "/decisions",
+      "method": "POST",
+      "origin": "https://foreign.example",
+      "status": 403,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    }
+  ],
+  "ownedServerStopped": true,
+  "result": 0
+}

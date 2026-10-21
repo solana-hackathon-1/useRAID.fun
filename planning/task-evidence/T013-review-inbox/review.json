@@ -1,0 +1,170 @@
+{
+  "label": "SELF-EVALUATED; bounded implementation VERIFIED_IN_TEST; full T013 NOT VERIFIED",
+  "agent": "Codex /root sole writer; no delegation",
+  "startUtc": "2026-10-21T13:31:06.032372+00:00",
+  "endUtc": "2026-10-21T13:42:53.618078+00:00",
+  "elapsedSeconds": 707.585706,
+  "baselineSha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "branch": "claude/t013-practice-trial-ui",
+  "sourceIdentity": {
+    "priorWork": "baseline.json retains preexisting changes; no branch/commit/push/merge",
+    "productFiles": 381,
+    "compilerFiles": 1257,
+    "independentConsumerFiles": 45,
+    "proofs": [
+      "production-source-proof.json",
+      "compiler-source-proof.json",
+      "consumer-source-proof.json",
+      "preview-source-proof.json",
+      "reuse-proof.json"
+    ]
+  },
+  "requirementsChecked": [
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I11",
+    "I13",
+    "AC04-07",
+    "AC42-43",
+    "AC70",
+    "AC73-75"
+  ],
+  "outcome": "Current own finite appointment metadata inbox,20+1UUID pagination, separate metadata authority, identifier-only private access audit, realRootsession/cookie/sharedquota/flag/postcommitgate, protectedGET/HEAD and native noindex inbox links to existing independently scoped case/ownership/assessment routes.",
+  "effects": "No schema, real appointment, production flag, policy calibration, case evidence selection, rank/reputation/grant/capacity/money/provider effect. Only new private list-access receipt/audit.",
+  "verification": {
+    "tdd": "18storageRED\u219218PASS;HTTP19behaviorRED+7controls\u219226PASS;page/view14behaviorRED+4controls\u219218PASS;62new feature checks.11Rootregression authored after feature RED; not fabricated preimplementation Root RED.",
+    "database": "Initial98selected:96PASS(89existing+7new) and2new fixture pg_sleep void deserialization failures. Corrected return cast without assertion changes; current9newPASS3.86s. Existing89exact regression results reused. Real own/foreignadmin/revocation/expiryafterwait/sessionexpiry/auditrollback/20+1pages and heldlockrevocation. Final exact-source typed tests9PASS3.86s in database-final-exact.log; automaticstop0.",
+    "refactorDocs": "73newunit/Root plus153docs =226PASS1.64s;153current docsPASS0.547s after contract copy clarification.82unique newlocalchecks (73+9);324unique affected+docs (82+89+153).",
+    "consumer": "Separate own npmci30packages31audited0vuln; strict types and actual minimalPGHTTPReactPASS;45matchingfiles; current ownmetadata/alternatepolicy/foreignadmin/policydenial/GETHEAD/render/revocation, existing originalcase/read contracts retained.",
+    "browser": "8devPASS21.0s +8prodPASS13.9s; only first case then extended to also open actual assessment form, current2devPASS14.5s+2prodPASS8.3s replace thatcase;6unchanged eachmode reused.16unique currentdesktopmobilechecks. Both actualfindingroutes/currentRootcookie/quota/SQL, originalcasekeyboard,23rows20+3pages, revoke/signout/admin/querydenial, no private evidence inlist, noindex/nooverflow and productionprivateNoStoreHTML.",
+    "compiler": "Currenttypegen/strictTS/productionWebpackPASS; product/schema/config/dependencies exact381files; currentstrictTS after testonly selector/assessmentnavigation/previewseed edits; compiler-source-proof records all current source/test/example/schema/config files. Production binary reuse proven, no product edits after build.",
+    "static": "55planningPASS15.386s; ownedlint0errors0warnings incl finalpreviewseed; identityASTfencePASS;format/diff and sourcehashchecks recorded. Tests registered global/E04 and dev/prod workflow. Final owned PrettierPASS (task append initial warning preserved/fixed), final diffcheck and handoffdocs checked.",
+    "reuse": "Prior rootdependencysecurity policy only exactunchanged package/lock/audit/head; no fresh root advisory claim. No parentfull2837 repeated/claimed.",
+    "skips": "No hostedNode22/Dockerimage/realprovider/load/fullsuite/independentcriterion/UAT/business/staffedoperating/release/parkedidentity verification. LocalNode26/installedNext16.3.8/Vitest4.1.11/PlaywrightChromium/pinnedPG16.",
+    "completion": "completion.json and validator output; all full27criteria and7hostedchecks remainNOTVERIFIED."
+  },
+  "findingsAndFixes": [
+    "Selfreview ensured metadata discovery does not reuse case read or select answers/reasons/definition/subject; current own listing is separate account-metadata authority and every case/action reauthorizes.",
+    "Finalheld DB clock/session observation filters assignment expiry after waits; realPG sessionexpiry rolls auditback, actual revoke waits behind shared evaluatorUserlock.",
+    "Initial storage-refactor mock lacked observedAt in finalclock;3failures retained/corrected fixture. Actual implementation contracts not weakened.",
+    "Initial realPG2expiry tests used pg_sleep void unsupported by Prisma raw deserializer. Cast synthetic sleepresult totext; no assertions/timeouts changed.",
+    "Strictcompiler caught8missing testparameterannotations; an initial mechanical edit annotated calls as well and parser rejected it. Both diagnostics retained; corrected actual methods/calls, finalstrict/compilerPASS.",
+    "Firstactualbrowser6pass2fail reached ownershipform but heading selector matched existingh1+h2. Exactlevel1 selector; retained original source/logs/screenshots. All8thenPASS. Added actualassessmentform navigation during selfreview and reran only affected firstcase bothviewports/modes; remaining6each exact unchanged.",
+    "Clarified documented disabled policy403 vs postcommitdisabled503 rather than claiming one false status.",
+    "Reviewed desktop/mobile screenshots: existingtheme/panels readable, nativebuttons wrap, no horizontaloverflow or privatecontent ininbox. Separate exactdevelopmentcache/PG preview retained; earlier previews untouched."
+  ],
+  "preview": {
+    "resource": {
+      "mode": "development",
+      "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-preview-o340gxmf",
+      "syntheticOnly": true,
+      "runnerPid": 47173,
+      "serverPid": 47177,
+      "url": "http://127.0.0.1:54344/evaluator/practice",
+      "openUrl": "http://127.0.0.1:54352/open",
+      "serverPort": 54344,
+      "helperPort": 54352,
+      "databaseContainer": "raid-t013-review-inbox-preview-20261021",
+      "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+      "result": "RUNNING"
+    },
+    "checks": [
+      {
+        "name": "desktop",
+        "status": 200,
+        "currentOwnAssignments": 2,
+        "noPrivateEvidenceInInbox": true,
+        "protectedApi": true,
+        "noOverflow": true,
+        "noIndex": true,
+        "keyboardCaseLink": true,
+        "pageErrors": []
+      },
+      {
+        "name": "mobile",
+        "status": 200,
+        "currentOwnAssignments": 2,
+        "noPrivateEvidenceInInbox": true,
+        "protectedApi": true,
+        "noOverflow": true,
+        "noIndex": true,
+        "keyboardCaseLink": true,
+        "pageErrors": []
+      }
+    ],
+    "verifiedAt": "2026-10-21T13:36:48.023Z",
+    "mode": "development",
+    "synthetic": true,
+    "supervisorPid": 47150,
+    "stopOnlyOwnedResource": "kill 47150",
+    "openInCodex": "queued"
+  },
+  "cleanup": {
+    "testDatabase": {
+      "name": "/raid-t013-review-inbox-20261021",
+      "running": false,
+      "automaticStops": "database.log/database-current.log/verification-driver.log/browser-both-driver.log/browser-links-driver.log all cleanup0;database-final-exact.log cleanup0"
+    },
+    "testServers": [
+      {
+        "evidence": "planning/task-evidence/T013-review-inbox/browser-development-resources.json.full-pass-before-assessment-link",
+        "port": 54108,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-review-inbox/browser-development-resources.json",
+        "port": 54274,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-review-inbox/browser-development-resources.json.initial-selector-failure",
+        "port": 54002,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-review-inbox/browser-production-resources.json.full-pass-before-assessment-link",
+        "port": 54196,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-review-inbox/browser-production-resources.json",
+        "port": 54315,
+        "closed": true,
+        "recordedStopped": true
+      }
+    ],
+    "retainedPreview": {
+      "supervisorPid": 47150,
+      "mode": "development",
+      "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-preview-o340gxmf",
+      "syntheticOnly": true,
+      "runnerPid": 47173,
+      "serverPid": 47177,
+      "url": "http://127.0.0.1:54344/evaluator/practice",
+      "openUrl": "http://127.0.0.1:54352/open",
+      "serverPort": 54344,
+      "helperPort": 54352,
+      "databaseContainer": "raid-t013-review-inbox-preview-20261021",
+      "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+      "result": "RUNNING",
+      "stopOnlyOwnedResource": "kill 47150"
+    },
+    "unrelatedResources": "Prior assessment52819/supervisor33604 and ownership49324/supervisor16680 listeners verified retained; older previews/containers/worktrees untouched. No volume/image/evidence removal."
+  },
+  "remaining": [
+    "Formal independent criterion review of combined current candidate",
+    "HostedNode22/exactcandidate CI and any applicable operating/UAT/business/release evidence",
+    "FullT013 numbered criteria and parked identity review remainNOTVERIFIED",
+    "Next bounded implementation: protected administrator assignment issue/revoke HTTP over existing current X-admin/scopedmanagement/finiteassignment/receipt contracts; then management view. No realappointments or gateenablement inferred."
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "resources": [
+    {
+      "name": "raid-t013-assessment-ui-20261021",
+      "running": false,
+      "label": "T013-assessment-ui"
+    },
+    {
+      "name": "raid-t013-assessment-ui-preview-20261021",
+      "running": false,
+      "label": "T013-assessment-ui-preview"
+    },
+    {
+      "name": "raid-t013-assessment-ui-preview-final-20261021",
+      "running": true,
+      "label": "T013-assessment-ui-preview-final"
+    },
+    {
+      "name": "raid-t013-assessment-http-20261021",
+      "running": false,
+      "label": "T013-assessment-http"
+    }
+  ],
+  "retainedFinalPreview": "kill 33604 stops only final own Next/helper/PG",
+  "priorOwnershipPreviews": "Preserved untouched;16680/99844 and older PG remain prior ownership.",
+  "supersededPreview": "32542 replaced after final current preview verified; expectedSIGTERM143/automaticstop0; preview-driver.log.pre-copyfix"
+}

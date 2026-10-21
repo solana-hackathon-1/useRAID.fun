@@ -1,0 +1,7 @@
+{
+  "baseCommit": "1877b2a",
+  "viteBefore": "8.3.1",
+  "viteAfter": "8.3.4",
+  "changedLockEntries": 20,
+  "note": "Incoming read-through described only Vite8.3.3 to8.3.4; actual parent-to-commit includes8.3.1 to8.3.4 and compatible transitive updates. This UI makes no further root dependency changes."
+}

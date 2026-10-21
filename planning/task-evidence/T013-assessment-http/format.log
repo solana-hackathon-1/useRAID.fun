@@ -1,0 +1,13 @@
+src/skills/practice-assessment-http.ts 50ms
+src/contracts/protocol.ts 8ms
+src/lib/practice-assessment-http.ts 3ms
+src/lib/practice-assessment-decisions-host.ts 3ms (unchanged)
+src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/assessment/decisions/route.ts 1ms
+src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/assessment/route.ts 1ms
+src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/assessment/state/route.ts 1ms
+tests/practice-assessment-http.test.ts 19ms
+tests/practice-assessment-http-host.test.ts 9ms
+tests/practice-assessment-decision-host.test.ts 6ms
+tests/helpers/practice-assessment-http-fixture.ts 3ms
+examples/practice-assessment-decisions/host.ts 34ms
+docs/tasks/2026-10-21-T013-assessment-http.md 18ms (unchanged)

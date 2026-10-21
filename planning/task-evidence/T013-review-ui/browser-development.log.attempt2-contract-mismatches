@@ -1,0 +1,163 @@
+OWNED development BROWSER: http://127.0.0.1:63968 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l pid 98332
+
+Running 8 tests using 1 worker
+
+(node:98345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks (1.9s)
+(node:98362) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 [desktop] › tests/browser-practice-review/practice-review.spec.ts:63:1 › visitor, wrong evaluator and wrong purpose never get private HTML (1.3s)
+(node:98369) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  3 [desktop] › tests/browser-practice-review/practice-review.spec.ts:93:1 › saved revocation and current session loss remove details on recheck (2.9s)
+  ✘  4 [desktop] › tests/browser-practice-review/practice-review.spec.ts:113:1 › expired appointments and restricted accounts fail closed (7.3s)
+(node:98392) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 [mobile] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks (902ms)
+(node:98398) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  6 [mobile] › tests/browser-practice-review/practice-review.spec.ts:63:1 › visitor, wrong evaluator and wrong purpose never get private HTML (1.3s)
+(node:98405) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  7 [mobile] › tests/browser-practice-review/practice-review.spec.ts:93:1 › saved revocation and current session loss remove details on recheck (2.8s)
+  ✘  8 [mobile] › tests/browser-practice-review/practice-review.spec.ts:113:1 › expired appointments and restricted accounts fail closed (7.2s)
+
+
+  1) [desktop] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "no-store"
+    Received string:    "no-cache, must-revalidate"
+
+      26 |     page.getByRole('heading', { name: 'Original submission', exact: true }),
+      27 |   ).toBeVisible();
+    > 28 |   expect(response?.headers()['cache-control']).toContain('no-store');
+         |                                                ^
+      29 |   expect(response?.headers()['cache-control']).toContain('private');
+      30 |   expect(await page.title()).not.toContain(f.definition.title);
+      31 |   expect(await page.locator('meta[name="robots"]').getAttribute('content')).toContain('noindex');
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review/practice-review.spec.ts:28:48
+
+    Error Context: test-results/practice-review-development/practice-review-assigned-e-7ddef-ubric-and-keyboard-rechecks-desktop/error-context.md
+
+    Error Context: test-results/practice-review-development/practice-review-assigned-e-7ddef-ubric-and-keyboard-rechecks-desktop/error-context.md
+
+  2) [desktop] › tests/browser-practice-review/practice-review.spec.ts:63:1 › visitor, wrong evaluator and wrong purpose never get private HTML 
+
+    TypeError: Cannot read properties of undefined (reading 'findUniqueOrThrow')
+
+      70 |   await expect(page.getByRole('heading', { name: /not found/i })).toBeVisible();
+      71 |   expect(await denied?.text()).not.toContain('review-private-answer-marker');
+    > 72 |   await db.practiceReviewAssignment.findUniqueOrThrow({ where: { id: f.assignment.id } });
+         |                                     ^
+      73 |   // A different real current account's session, without the appointment.
+      74 |   const other = await db.session.findFirstOrThrow({
+      75 |     where: { userId: { not: f.evaluatorId }, via: 'wallet' },
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review/practice-review.spec.ts:72:37
+
+    Error Context: test-results/practice-review-development/practice-review-visitor-wr-c50af-pose-never-get-private-HTML-desktop/error-context.md
+
+    Error Context: test-results/practice-review-development/practice-review-visitor-wr-c50af-pose-never-get-private-HTML-desktop/error-context.md
+
+  3) [desktop] › tests/browser-practice-review/practice-review.spec.ts:113:1 › expired appointments and restricted accounts fail closed 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('This case is unavailable for your account.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('This case is unavailable for your account.') with timeout 5000ms
+      - waiting for getByText('This case is unavailable for your account.')
+
+
+      122 |   await page.context().addCookies([{ name: 'raid_session', value: f.cookie, url: baseURL }]);
+      123 |   await page.goto(f.path);
+    > 124 |   await expect(page.getByText('This case is unavailable for your account.')).toBeVisible();
+          |                                                                              ^
+      125 |   expect(await page.content()).not.toContain('review-private-answer-marker');
+      126 | });
+      127 |
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review/practice-review.spec.ts:124:78
+
+    Error Context: test-results/practice-review-development/practice-review-expired-ap-ea901-ricted-accounts-fail-closed-desktop/error-context.md
+
+    Error Context: test-results/practice-review-development/practice-review-expired-ap-ea901-ricted-accounts-fail-closed-desktop/error-context.md
+
+  4) [mobile] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "no-store"
+    Received string:    "no-cache, must-revalidate"
+
+      26 |     page.getByRole('heading', { name: 'Original submission', exact: true }),
+      27 |   ).toBeVisible();
+    > 28 |   expect(response?.headers()['cache-control']).toContain('no-store');
+         |                                                ^
+      29 |   expect(response?.headers()['cache-control']).toContain('private');
+      30 |   expect(await page.title()).not.toContain(f.definition.title);
+      31 |   expect(await page.locator('meta[name="robots"]').getAttribute('content')).toContain('noindex');
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review/practice-review.spec.ts:28:48
+
+    Error Context: test-results/practice-review-development/practice-review-assigned-e-7ddef-ubric-and-keyboard-rechecks-mobile/error-context.md
+
+    Error Context: test-results/practice-review-development/practice-review-assigned-e-7ddef-ubric-and-keyboard-rechecks-mobile/error-context.md
+
+  5) [mobile] › tests/browser-practice-review/practice-review.spec.ts:63:1 › visitor, wrong evaluator and wrong purpose never get private HTML 
+
+    TypeError: Cannot read properties of undefined (reading 'findUniqueOrThrow')
+
+      70 |   await expect(page.getByRole('heading', { name: /not found/i })).toBeVisible();
+      71 |   expect(await denied?.text()).not.toContain('review-private-answer-marker');
+    > 72 |   await db.practiceReviewAssignment.findUniqueOrThrow({ where: { id: f.assignment.id } });
+         |                                     ^
+      73 |   // A different real current account's session, without the appointment.
+      74 |   const other = await db.session.findFirstOrThrow({
+      75 |     where: { userId: { not: f.evaluatorId }, via: 'wallet' },
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review/practice-review.spec.ts:72:37
+
+    Error Context: test-results/practice-review-development/practice-review-visitor-wr-c50af-pose-never-get-private-HTML-mobile/error-context.md
+
+    Error Context: test-results/practice-review-development/practice-review-visitor-wr-c50af-pose-never-get-private-HTML-mobile/error-context.md
+
+  6) [mobile] › tests/browser-practice-review/practice-review.spec.ts:113:1 › expired appointments and restricted accounts fail closed 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('This case is unavailable for your account.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('This case is unavailable for your account.') with timeout 5000ms
+      - waiting for getByText('This case is unavailable for your account.')
+
+
+      122 |   await page.context().addCookies([{ name: 'raid_session', value: f.cookie, url: baseURL }]);
+      123 |   await page.goto(f.path);
+    > 124 |   await expect(page.getByText('This case is unavailable for your account.')).toBeVisible();
+          |                                                                              ^
+      125 |   expect(await page.content()).not.toContain('review-private-answer-marker');
+      126 | });
+      127 |
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review/practice-review.spec.ts:124:78
+
+    Error Context: test-results/practice-review-development/practice-review-expired-ap-ea901-ricted-accounts-fail-closed-mobile/error-context.md
+
+    Error Context: test-results/practice-review-development/practice-review-expired-ap-ea901-ricted-accounts-fail-closed-mobile/error-context.md
+
+  6 failed
+    [desktop] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks 
+    [desktop] › tests/browser-practice-review/practice-review.spec.ts:63:1 › visitor, wrong evaluator and wrong purpose never get private HTML 
+    [desktop] › tests/browser-practice-review/practice-review.spec.ts:113:1 › expired appointments and restricted accounts fail closed 
+    [mobile] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks 
+    [mobile] › tests/browser-practice-review/practice-review.spec.ts:63:1 › visitor, wrong evaluator and wrong purpose never get private HTML 
+    [mobile] › tests/browser-practice-review/practice-review.spec.ts:113:1 › expired appointments and restricted accounts fail closed 
+  2 passed (28.6s)
+OWNED SERVER CLOSED: True

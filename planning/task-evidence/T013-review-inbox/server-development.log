@@ -1,0 +1,35 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:54274
+- Network:       http://127.0.0.1:54274
+✓ Ready in 229ms
+✓ Running next.config.ts took 16ms
+
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /methodology 200 in 478ms (next.js: 274ms, application-code: 204ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice 200 in 473ms (next.js: 254ms, application-code: 220ms)
+ GET /api/v1/practice/reviews 200 in 212ms (next.js: 155ms, application-code: 56ms)
+ HEAD /api/v1/practice/reviews 200 in 30ms (next.js: 0.8ms, application-code: 29ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice/93c85567-13ca-4233-939d-15245ec64e39/submissions/d688472b-6d81-412c-8f81-914ab24d0a6a?purpose=OWNERSHIP_REVIEW 200 in 939ms (next.js: 534ms, application-code: 405ms)
+ GET /evaluator/practice 200 in 126ms (next.js: 12ms, application-code: 114ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice/93c85567-13ca-4233-939d-15245ec64e39/submissions/d688472b-6d81-412c-8f81-914ab24d0a6a/ownership 200 in 1582ms (next.js: 988ms, application-code: 595ms)
+ GET /evaluator/practice 200 in 86ms (next.js: 3ms, application-code: 83ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice/2f26b873-74c6-4b8d-9c22-96064bf275aa/submissions/d688472b-6d81-412c-8f81-914ab24d0a6a/assessment 200 in 2.2s (next.js: 776ms, application-code: 1429ms)
+ GET /evaluator/practice 200 in 82ms (next.js: 3ms, application-code: 79ms)
+ GET /api/v1/practice/reviews 200 in 34ms (next.js: 3ms, application-code: 31ms)
+ HEAD /api/v1/practice/reviews 200 in 22ms (next.js: 0.6ms, application-code: 21ms)
+ GET /evaluator/practice/a886a81b-38ff-4d86-be7d-d8c75cb2d34d/submissions/830a696e-adca-4216-8e5e-d85437806cee?purpose=OWNERSHIP_REVIEW 200 in 209ms (next.js: 4ms, application-code: 204ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice 200 in 112ms (next.js: 1.8ms, application-code: 110ms)
+ GET /evaluator/practice/a886a81b-38ff-4d86-be7d-d8c75cb2d34d/submissions/830a696e-adca-4216-8e5e-d85437806cee/ownership 200 in 384ms (next.js: 4ms, application-code: 379ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice 200 in 109ms (next.js: 1.4ms, application-code: 107ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /evaluator/practice/4c19e0f8-2a52-476f-80a1-1204e7bc5844/submissions/830a696e-adca-4216-8e5e-d85437806cee/assessment 200 in 718ms (next.js: 2ms, application-code: 716ms)
+[?25h

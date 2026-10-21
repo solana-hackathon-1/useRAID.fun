@@ -1,0 +1,42 @@
+{
+  "mode": "production next start",
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-ownership-http-build-q8jiun8f",
+  "port": 64859,
+  "pid": 8764,
+  "checks": [
+    {
+      "method": "GET",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "method": "HEAD",
+      "origin": null,
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "method": "POST",
+      "origin": "http://127.0.0.1:64859",
+      "status": 401,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    },
+    {
+      "method": "POST",
+      "origin": "https://foreign.example",
+      "status": 403,
+      "privateNoStore": true,
+      "varyCookie": true,
+      "safeBody": true
+    }
+  ],
+  "ownedServerStopped": true,
+  "result": 0
+}

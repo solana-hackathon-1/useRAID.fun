@@ -1,0 +1,14 @@
+OWNED production BROWSER: http://127.0.0.1:64154 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l pid 98887
+Error: Refusing to run database fixtures with NODE_ENV=production.
+    at assertTestDatabase (file:///Users/dushyant/Documents/useRAID.fun/tests/helpers/db-guard.ts:5:11)
+    at file:///Users/dushyant/Documents/useRAID.fun/playwright.practice-review.config.ts:3:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:642:26)
+    at requireOrImport (/Users/dushyant/Documents/useRAID.fun/node_modules/playwright/lib/common/index.js:1081:12)
+    at loadUserConfig (/Users/dushyant/Documents/useRAID.fun/node_modules/playwright/lib/common/index.js:1268:46)
+    at loadConfig (/Users/dushyant/Documents/useRAID.fun/node_modules/playwright/lib/common/index.js:1275:22)
+    at Object.loadConfigFromFile (/Users/dushyant/Documents/useRAID.fun/node_modules/playwright/lib/common/index.js:1490:10)
+    at runTests (/Users/dushyant/Documents/useRAID.fun/node_modules/playwright/lib/cli/testActions.js:46:18)
+    at _Command.<anonymous> (/Users/dushyant/Documents/useRAID.fun/node_modules/playwright/lib/program.js:55:7)
+OWNED SERVER CLOSED: True

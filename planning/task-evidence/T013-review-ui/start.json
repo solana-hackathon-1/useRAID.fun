@@ -1,0 +1,7 @@
+{
+  "utc": "2026-10-21T04:49:16.166249+00:00",
+  "head": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "branch": "claude/t013-practice-trial-ui",
+  "preexisting": ["next-env.d.ts", "WARP.md", ".claude/worktrees/"],
+  "scope": "server-rendered read-only evaluator case screen; exact committed API authority"
+}

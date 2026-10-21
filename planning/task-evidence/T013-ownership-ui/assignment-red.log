@@ -1,0 +1,23 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-context.test.ts (14 tests | 1 failed) 9ms
+   × passes only exact assignment-use fields to the strict final authority source 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-context.test.ts > passes only exact assignment-use fields to the strict final authority source
+Error: INVALID_INPUT
+ ❯ tests/practice-ownership-context.test.ts:29:146
+
+ ❯ Module.readPracticeOwnershipContext src/skills/practice-ownership-context.ts:24:25
+ ❯ tests/practice-ownership-context.test.ts:30:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  12:36:57
+   Duration  266ms (transform 85ms, setup 0ms, import 154ms, tests 9ms, environment 0ms)
+

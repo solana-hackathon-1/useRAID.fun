@@ -1,0 +1,10 @@
+{
+  "rootSecurityInputsMatch1877b2a": {
+    "package.json": "e22649fb67d895a0fe3f0443a4b6f95a410894797f31b958d7e8bfd478e0d48b",
+    "package-lock.json": "de163672b05fa80196cad5c7cb1ee3c392876c659264b082fb25bf0444597812",
+    "scripts/audit-check.ts": "9429ab8c34b53ee59b6ee3c14a8d987ddd53ec914de73cf74761d622f517a6fe",
+    "audit-allowlist.json": "6311124a1c8e1f47aba2a7e838890a16f17e71957b2fe1068f68d40803692df7"
+  },
+  "sourceOfSecurityEvidence": "T013-review-http/audit-final.log; exact Root dependency/configuration/policy unchanged. Own updated consumer npmci30packages31audited0vuln current. No new external audit advisory lookup claimed.",
+  "notReused": "Prior full2837 and previous browser16 apply only to their recorded source; current affected tests and new16browser gates recorded separately."
+}

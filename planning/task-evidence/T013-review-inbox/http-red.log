@@ -1,0 +1,229 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-inbox-http.test.ts (26 tests | 19 failed) 24ms
+   × returns only strict own metadata after actor/quota/committed host, dropping internal account binding 19ms
+   × accepts exactly one UUID ordering cursor, normalized to canonical case 0ms
+   × rejects invalid or authority-bearing query ?after=bad 0ms
+   × rejects invalid or authority-bearing query ?after= 0ms
+   × rejects invalid or authority-bearing query ?after=f922f5b2-466c-4cee-bcac-07057211993e&after=1f982278-ee16-4d8d-a129-9b46336e396e 0ms
+   × rejects invalid or authority-bearing query ?evaluatorAccountId=foreign 0ms
+   × rejects invalid or authority-bearing query ?purpose=ASSESSMENT_REVIEW 0ms
+   × rejects invalid or authority-bearing query ?limit=500 0ms
+   × authenticates and limits before query validation HTTP401 0ms
+   × authenticates and limits before query validation HTTP403 0ms
+   × authenticates and limits before query validation HTTP429 0ms
+   × enforces quota before SQL even on valid input 0ms
+   × keeps success/error GET private/no-store/VaryCookie, with empty HEAD 0ms
+   × keeps success/error HEAD private/no-store/VaryCookie, with empty HEAD 0ms
+   × maps storageAUTHENTICATION_REQUIRED safely 0ms
+   × maps storageACCOUNT_RESTRICTED safely 0ms
+   × maps storageFORBIDDEN safely 0ms
+   × rejects unsupported method without listing 0ms
+   × rejects incomplete host contracts 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > returns only strict own metadata after actor/quota/committed host, dropping internal account binding
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:13:26
+     11| it('returns only strict own metadata after actor/quota/committed host,…
+     12|  const handlers=createPracticeReviewInboxHandlers(host);const response…
+     13|  expect(response.status).toBe(200);const body=await response.json();ex…
+       |                          ^
+     14|  expect(body).not.toHaveProperty('accountId');expect(JSON.stringify(bo…
+     15|  expect(host.list).toHaveBeenCalledWith(actor,{version:'v1',after:null…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > accepts exactly one UUID ordering cursor, normalized to canonical case
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:21:91
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects invalid or authority-bearing query ?after=bad
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects invalid or authority-bearing query ?after=
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects invalid or authority-bearing query ?after=f922f5b2-466c-4cee-bcac-07057211993e&after=1f982278-ee16-4d8d-a129-9b46336e396e
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects invalid or authority-bearing query ?evaluatorAccountId=foreign
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects invalid or authority-bearing query ?purpose=ASSESSMENT_REVIEW
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects invalid or authority-bearing query ?limit=500
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:25:81
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > authenticates and limits before query validation HTTP401
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:29:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > authenticates and limits before query validation HTTP403
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:29:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > authenticates and limits before query validation HTTP429
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:29:26
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > enforces quota before SQL even on valid input
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:31:207
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > keeps success/error GET private/no-store/VaryCookie, with empty HEAD
+ FAIL  tests/practice-review-inbox-http.test.ts > keeps success/error HEAD private/no-store/VaryCookie, with empty HEAD
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:43:131
+     41| });
+     42| it.each(['GET','HEAD'] as const)('keeps success/error %s private/no-st…
+     43|  const handler=createPracticeReviewInboxHandlers(host)[method];let res…
+       |                                                                                                                                   ^
+     44|  expect(response.headers.get('cache-control')).toBe('private, no-store…
+     45|  if(method==='HEAD')expect(await response.text()).toBe('');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > maps storageAUTHENTICATION_REQUIRED safely
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:50:141
+     48| });
+     49| it.each([['AUTHENTICATION_REQUIRED',401],['ACCOUNT_RESTRICTED',403],['…
+     50|  host.list.mockRejectedValue(new SkillTaxonomyStorageError(code));expe…
+       |                                                                                                                                             ^
+     51| });
+     52| it('rejects unsupported method without listing',async()=>{expect((awai…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > maps storageACCOUNT_RESTRICTED safely
+ FAIL  tests/practice-review-inbox-http.test.ts > maps storageFORBIDDEN safely
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:50:141
+     48| });
+     49| it.each([['AUTHENTICATION_REQUIRED',401],['ACCOUNT_RESTRICTED',403],['…
+     50|  host.list.mockRejectedValue(new SkillTaxonomyStorageError(code));expe…
+       |                                                                                                                                             ^
+     51| });
+     52| it('rejects unsupported method without listing',async()=>{expect((awai…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects unsupported method without listing
+AssertionError: expected 503 to be 405 // Object.is equality
+
+- Expected
++ Received
+
+- 405
++ 503
+
+ ❯ tests/practice-review-inbox-http.test.ts:52:142
+     50|  host.list.mockRejectedValue(new SkillTaxonomyStorageError(code));expe…
+     51| });
+     52| it('rejects unsupported method without listing',async()=>{expect((awai…
+       |                                                                                                                                              ^
+     53| it('rejects incomplete host contracts',()=>{expect(()=>createPracticeR…
+     54|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+ FAIL  tests/practice-review-inbox-http.test.ts > rejects incomplete host contracts
+AssertionError: expected [Function] to throw an error
+ ❯ tests/practice-review-inbox-http.test.ts:53:159
+     51| });
+     52| it('rejects unsupported method without listing',async()=>{expect((awai…
+     53| it('rejects incomplete host contracts',()=>{expect(()=>createPracticeR…
+       |                                                                                                                                                               ^
+     54|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  19 failed | 7 passed (26)
+   Start at  19:07:10
+   Duration  232ms (transform 65ms, setup 0ms, import 108ms, tests 24ms, environment 0ms)
+

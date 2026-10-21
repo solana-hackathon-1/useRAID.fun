@@ -1,0 +1,11 @@
+{
+  "url": "http://127.0.0.1:64262/open",
+  "caseURL": "http://127.0.0.1:64254/evaluator/practice/e1771d26-e1b5-4d82-baca-62db179c1322/submissions/9f12aff1-1e53-47a1-a14a-55a589913dd1?purpose=OWNERSHIP_REVIEW",
+  "status": 200,
+  "nativeRecheckPresent": true,
+  "mode": "development",
+  "source": "prior UI snapshot recorded in T013-review-ui/preview-resources.json",
+  "supervisorPid": 99844,
+  "retained": true,
+  "stopCommand": "kill 99844"
+}

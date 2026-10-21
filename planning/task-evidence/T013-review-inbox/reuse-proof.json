@@ -1,0 +1,39 @@
+{
+  "verifiedAt": "2026-10-21T13:39:28.184195+00:00",
+  "productBuild": {
+    "matchingFiles": 381,
+    "allCurrentHashesMatch": true,
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-build-yhmpltoz"
+  },
+  "browser": "6 unchanged checks per mode from full-pass-before-assessment-link logs;2 current checks per mode replace the extended navigation test. No changed-product result reused.",
+  "unchangedBrowserCasesSha256": "1468f9d38da93c5d8098b668cb14af5abd72dbfe6222de47e5dfb02b3d22d131",
+  "matchingSnapshotSources": [
+    "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-build-pjce2r60/tests/browser-practice-review-inbox/practice-review-inbox.spec.ts",
+    "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-build-ck3fdh9e/tests/browser-practice-review-inbox/practice-review-inbox.spec.ts",
+    "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-build-yhmpltoz/tests/browser-practice-review-inbox/practice-review-inbox.spec.ts"
+  ],
+  "priorRegression": "89 unchanged assignment/reader tests PASS in database-initial-fixture-failure.log; current9 new database checks replace the7pass+2fixturefail new checks. Existing assignment/reader implementation, tests, schema and dependencies match the current final compiler snapshot.",
+  "rootSecurity": {
+    "package.json": {
+      "sha256": "e22649fb67d895a0fe3f0443a4b6f95a410894797f31b958d7e8bfd478e0d48b",
+      "exactPriorCompilerSource": true,
+      "sameAsHead": true
+    },
+    "package-lock.json": {
+      "sha256": "de163672b05fa80196cad5c7cb1ee3c392876c659264b082fb25bf0444597812",
+      "exactPriorCompilerSource": true,
+      "sameAsHead": true
+    },
+    "scripts/audit-check.ts": {
+      "sha256": "9429ab8c34b53ee59b6ee3c14a8d987ddd53ec914de73cf74761d622f517a6fe",
+      "exactPriorCompilerSource": true,
+      "sameAsHead": true
+    },
+    "audit-allowlist.json": {
+      "sha256": "6311124a1c8e1f47aba2a7e838890a16f17e71957b2fe1068f68d40803692df7",
+      "exactPriorCompilerSource": true,
+      "sameAsHead": true
+    }
+  },
+  "securityLimit": "Exact unchanged dependency-policy evidence reused from prior assessment review; no fresh root advisory scan claimed."
+}

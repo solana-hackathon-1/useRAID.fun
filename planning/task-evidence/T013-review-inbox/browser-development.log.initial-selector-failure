@@ -1,0 +1,83 @@
+OWNED development BROWSER: http://127.0.0.1:54002 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-build-yhmpltoz pid 45630
+
+Running 8 tests using 1 worker
+
+(node:46012) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 [desktop] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:5:1 › own current inbox has minimal metadata and keyboard links to actual scoped original case and finding form (5.8s)
+(node:46454) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [desktop] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:52:1 › pagination retains current own ordering and refresh returns to first page (3.0s)
+  ✓  3 [desktop] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:70:1 › revocation and signout remove current metadata on refresh; visitor API is private401 (1.8s)
+  ✓  4 [desktop] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:89:1 › current administrator has no evaluator assignments; actor query cannot select another inbox (831ms)
+(node:46509) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 [mobile] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:5:1 › own current inbox has minimal metadata and keyboard links to actual scoped original case and finding form (3.2s)
+(node:46535) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  6 [mobile] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:52:1 › pagination retains current own ordering and refresh returns to first page (2.9s)
+  ✓  7 [mobile] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:70:1 › revocation and signout remove current metadata on refresh; visitor API is private401 (1.8s)
+  ✓  8 [mobile] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:89:1 › current administrator has no evaluator assignments; actor query cannot select another inbox (785ms)
+
+
+  1) [desktop] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:5:1 › own current inbox has minimal metadata and keyboard links to actual scoped original case and finding form 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Ownership review', exact: true })
+    Expected: visible
+    Error: strict mode violation: getByRole('heading', { name: 'Ownership review', exact: true }) resolved to 2 elements:
+        1) <h1>Ownership review</h1> aka locator('h1')
+        2) <h2>Ownership review</h2> aka getByRole('region', { name: 'Review scope' }).getByRole('heading', { name: 'Ownership review' })
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Ownership review', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Ownership review', exact: true })
+
+
+      47 |   await page.goto('/evaluator/practice');
+      48 |   await page.getByRole('link', { name: 'Review ownership', exact: true }).click();
+    > 49 |   await expect(page.getByRole('heading', { name: 'Ownership review', exact: true })).toBeVisible();
+         |                                                                                      ^
+      50 |   await expect(page.getByText(/review-private-explanation-marker/)).toBeVisible();
+      51 | });
+      52 | test('pagination retains current own ordering and refresh returns to first page', async ({
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:49:86
+
+    Error Context: planning/task-evidence/T013-review-inbox/browser-development/practice-review-inbox-own--4326f-ginal-case-and-finding-form-desktop/error-context.md
+
+    Error Context: planning/task-evidence/T013-review-inbox/browser-development/practice-review-inbox-own--4326f-ginal-case-and-finding-form-desktop/error-context.md
+
+  2) [mobile] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:5:1 › own current inbox has minimal metadata and keyboard links to actual scoped original case and finding form 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Ownership review', exact: true })
+    Expected: visible
+    Error: strict mode violation: getByRole('heading', { name: 'Ownership review', exact: true }) resolved to 2 elements:
+        1) <h1>Ownership review</h1> aka locator('h1')
+        2) <h2>Ownership review</h2> aka getByRole('region', { name: 'Review scope' }).getByRole('heading', { name: 'Ownership review' })
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Ownership review', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Ownership review', exact: true })
+
+
+      47 |   await page.goto('/evaluator/practice');
+      48 |   await page.getByRole('link', { name: 'Review ownership', exact: true }).click();
+    > 49 |   await expect(page.getByRole('heading', { name: 'Ownership review', exact: true })).toBeVisible();
+         |                                                                                      ^
+      50 |   await expect(page.getByText(/review-private-explanation-marker/)).toBeVisible();
+      51 | });
+      52 | test('pagination retains current own ordering and refresh returns to first page', async ({
+        at /Users/dushyant/Documents/useRAID.fun/tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:49:86
+
+    Error Context: planning/task-evidence/T013-review-inbox/browser-development/practice-review-inbox-own--4326f-ginal-case-and-finding-form-mobile/error-context.md
+
+    Error Context: planning/task-evidence/T013-review-inbox/browser-development/practice-review-inbox-own--4326f-ginal-case-and-finding-form-mobile/error-context.md
+
+  2 failed
+    [desktop] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:5:1 › own current inbox has minimal metadata and keyboard links to actual scoped original case and finding form 
+    [mobile] › tests/browser-practice-review-inbox/practice-review-inbox.spec.ts:5:1 › own current inbox has minimal metadata and keyboard links to actual scoped original case and finding form 
+  6 passed (22.5s)
+OWNED SERVER CLOSED: True

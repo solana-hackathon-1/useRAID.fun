@@ -1,0 +1,270 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-context.test.ts (13 tests | 10 failed) 8ms
+   × uses canonical case, policy, finding and final current authority in the same transaction 4ms
+   × retains explicitly absent approved policy as read-only context 1ms
+   × rejects assessment-purpose form scope 1ms
+   × rejects malformed/cross-case policy 0 0ms
+   × rejects malformed/cross-case policy 1 0ms
+   × rejects malformed/cross-case policy 2 0ms
+   × rejects malformed/cross-case policy 3 0ms
+   × rejects malformed/cross-case policy 4 0ms
+   × rejects foreign returned evaluator 0ms
+   × exports strict coherent context schema for reusable server hosts 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-context.test.ts > uses canonical case, policy, finding and final current authority in the same transaction
+AssertionError: expected null to deeply equal { version: 'v1', …(3) }
+
+- Expected:
+{
+  "ownership": null,
+  "policy": {
+    "accessId": "34c1fe5b-0423-4c9c-b568-624962a984bf",
+    "isAuthorizationToken": false,
+    "policy": {
+      "confirmsOwnership": false,
+      "consumesCapacity": false,
+      "createsFinancialObligation": false,
+      "createsPermissionGrant": false,
+      "definitionReference": {
+        "recordId": "synthetic-frontend-trial",
+        "revision": 2,
+      },
+      "guidance": "private-policy",
+      "id": "74a69dd8-952a-49a3-9efe-225d353b71b1",
+      "isAuthorizationToken": false,
+      "persisted": true,
+      "publishedAt": "2026-10-21T00:00:00.000Z",
+      "publishedByAccountId": "issuer",
+      "purpose": "OWNERSHIP_REVIEW",
+      "reference": {
+        "recordId": "policy",
+        "revision": 1,
+      },
+      "rubricReference": {
+        "recordId": "synthetic-rubric",
+        "revision": 3,
+      },
+      "skillDomain": "web",
+      "skillId": "frontend",
+      "state": "APPROVED",
+      "targetRank": "A",
+      "verifiesSkill": false,
+      "version": "v1",
+    },
+    "private": true,
+    "version": "v1",
+  },
+  "review": {
+    "accessId": "33333333-3333-4333-8333-333333333333",
+    "assignment": {
+      "evaluatorAccountId": "evaluator",
+      "expiresAt": "2030-01-01T00:00:00.000Z",
+      "id": "11111111-1111-4111-8111-111111111111",
+      "isAuthorizationToken": false,
+      "issuedAt": "2026-10-15T00:00:00.000Z",
+      "issuedByAccountId": "issuer",
+      "purpose": "OWNERSHIP_REVIEW",
+      "reason": "Synthetic scoped review",
+      "state": "ISSUED",
+      "submissionId": "22222222-2222-4222-8222-222222222222",
+      "version": "v1",
+    },
+    "definition": {
+      "accommodationPolicy": "Request an approved scoped accommodation.",
+      "brief": "Build and explain a synthetic accessible interface.",
+      "cooldownSeconds": 60,
+      "evaluatorMethod": "MANUAL",
+      "expectedMinutes": 60,
+      "inputs": [
+        {
+          "content": "Invented records only.",
+          "label": "Fixture",
+          "material": "SYNTHETIC",
+        },
+      ],
+      "maximumAttempts": 3,
+      "passConditions": "The authorized reviewer applies every required criterion.",
+      "publishedAt": "2026-10-13T00:00:00.000Z",
+      "purpose": "UNPAID_PLATFORM_PRACTICE",
+      "reference": {
+        "recordId": "synthetic-frontend-trial",
+        "revision": 2,
+      },
+      "rubric": {
+        "criteria": [
+          {
+            "description": "Working behavior and edge cases",
+            "id": "behavior",
+            "required": true,
+          },
+          {
+            "description": "Explain and modify the solution",
+            "id": "ownership",
+            "required": true,
+          },
+        ],
+        "reference": {
+          "recordId": "synthetic-rubric",
+          "revision": 3,
+        },
+      },
+      "skillDomain": "web",
+      "skillId": "frontend",
+      "state": "PUBLISHED",
+      "targetRank": "A",
+      "title": "Synthetic interface exercise",
+      "tools": {
+        "aiAssistance": "ALLOWED",
+        "disclosure": "Explain and modify your work; disclose assistance.",
+        "permitted": [
+          "editor",
+          "browser",
+        ],
+      },
+      "variantId": "synthetic-variant-two",
+      "version": "v1",
+    },
+    "isAuthorizationToken": false,
+    "private": true,
+    "submission": {
+      "aiAssistanceUsed": true,
+      "answer": "
+  <script>private-answer-marker</script>
+",
+      "assistanceDisclosure": "private-disclosure-marker",
+      "consumesCapacity": false,
+      "createsFinancialObligation": false,
+      "createsPermissionGrant": false,
+      "definitionReference": {
+        "recordId": "synthetic-frontend-trial",
+        "revision": 2,
+      },
+      "explanation": "private-explanation-marker <img src=x>",
+      "isAuthorizationToken": false,
+      "ownership": "UNCONFIRMED",
+      "participantId": "55555555-5555-4555-8555-555555555555",
+      "persisted": true,
+      "reference": {
+        "recordId": "22222222-2222-4222-8222-222222222222",
+        "revision": 1,
+      },
+      "rubricReference": {
+        "recordId": "synthetic-rubric",
+        "revision": 3,
+      },
+      "skillDomain": "web",
+      "skillId": "frontend",
+      "startId": "44444444-4444-4444-8444-444444444444",
+      "state": "SUBMITTED",
+      "submittedAt": "2026-10-15T00:00:00.000Z",
+      "toolsUsed": [
+        "editor",
+      ],
+      "verifiesSkill": false,
+      "version": "v1",
+    },
+    "version": "v1",
+  },
+  "version": "v1",
+}
+
++ Received:
+null
+
+ ❯ tests/practice-ownership-context.test.ts:13:126
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/practice-ownership-context.test.ts > retains explicitly absent approved policy as read-only context
+AssertionError: expected null to match object { policy: null }
+
+- Expected:
+{
+  "policy": null,
+}
+
++ Received:
+null
+
+ ❯ tests/practice-ownership-context.test.ts:15:137
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/practice-ownership-context.test.ts > rejects assessment-purpose form scope
+AssertionError: promise resolved "null" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+null
+
+ ❯ tests/practice-ownership-context.test.ts:18:121
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/practice-ownership-context.test.ts > rejects malformed/cross-case policy 0
+ FAIL  tests/practice-ownership-context.test.ts > rejects malformed/cross-case policy 1
+ FAIL  tests/practice-ownership-context.test.ts > rejects malformed/cross-case policy 2
+ FAIL  tests/practice-ownership-context.test.ts > rejects malformed/cross-case policy 3
+ FAIL  tests/practice-ownership-context.test.ts > rejects malformed/cross-case policy 4
+AssertionError: promise resolved "null" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+null
+
+ ❯ tests/practice-ownership-context.test.ts:25:113
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/practice-ownership-context.test.ts > rejects foreign returned evaluator
+AssertionError: promise resolved "null" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+null
+
+ ❯ tests/practice-ownership-context.test.ts:26:176
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/practice-ownership-context.test.ts > exports strict coherent context schema for reusable server hosts
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/practice-ownership-context.test.ts:27:178
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 3 passed (13)
+   Start at  12:30:28
+   Duration  251ms (transform 75ms, setup 0ms, import 132ms, tests 8ms, environment 0ms)
+

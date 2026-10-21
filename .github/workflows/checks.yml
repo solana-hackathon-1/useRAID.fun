@@ -143,6 +143,14 @@ jobs:
         run: npx playwright test --config=playwright.own-assessments.config.ts
       - name: Practice trial portal desktop and mobile suite
         run: npx playwright test --config=playwright.practice-portal.config.ts
+      - name: Evaluator case evidence desktop and mobile suite
+        run: npx playwright test --config=playwright.practice-review.config.ts
+      - name: Evaluator assignment inbox desktop and mobile suite
+        run: npx playwright test --config=playwright.practice-review-inbox.config.ts
+      - name: Ownership finding desktop and mobile suite
+        run: npx playwright test --config=playwright.practice-ownership.config.ts
+      - name: Assessment review and decision browser checks
+        run: npx playwright test --config=playwright.practice-assessment.config.ts
       - name: Administrative taxonomy API suite
         run: npx playwright test --config=playwright.skill-taxonomy.config.ts
       - name: Administrative catalog editor and maintenance suites
@@ -157,6 +165,14 @@ jobs:
         run: OWN_ASSESSMENT_SERVER_MODE=production npx playwright test --config=playwright.own-assessments.config.ts --grep 'owner sees actual current assessment'
       - name: Production practice trial portal suite
         run: PRACTICE_PORTAL_SERVER_MODE=production npx playwright test --config=playwright.practice-portal.config.ts
+      - name: Production evaluator case evidence suite
+        run: PRACTICE_REVIEW_SERVER_MODE=production npx playwright test --config=playwright.practice-review.config.ts
+      - name: Production evaluator assignment inbox suite
+        run: PRACTICE_REVIEW_INBOX_SERVER_MODE=production npx playwright test --config=playwright.practice-review-inbox.config.ts
+      - name: Production ownership finding suite
+        run: PRACTICE_OWNERSHIP_SERVER_MODE=production npx playwright test --config=playwright.practice-ownership.config.ts
+      - name: Production assessment review and decision browser checks
+        run: PRACTICE_ASSESSMENT_SERVER_MODE=production npx playwright test --config=playwright.practice-assessment.config.ts
       - name: Database-backed browser journey
         run: npm run test:live
         env:

@@ -1,0 +1,21 @@
+OWNED production BROWSER: http://127.0.0.1:52640 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assessment-ui-build-e_qp2k7n pid 32942
+
+Running 10 tests using 1 worker
+
+(node:32953) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [desktop] › tests/browser-practice-assessment/practice-assessment.spec.ts:39:1 › actual original-case verify, nonverification, reassessment and revocation preserve history (9.9s)
+  ✓   2 [desktop] › tests/browser-practice-assessment/practice-assessment.spec.ts:92:1 › lost review response replays identical command after later review and policy withdrawal (3.0s)
+  ✓   3 [desktop] › tests/browser-practice-assessment/practice-assessment.spec.ts:125:1 › lost state decision replays original history after newer revocation and withdrawal (6.5s)
+  ✓   4 [desktop] › tests/browser-practice-assessment/practice-assessment.spec.ts:159:1 › stale review requires recheck and revoked appointment clears visible private context (4.3s)
+  ✓   5 [desktop] › tests/browser-practice-assessment/practice-assessment.spec.ts:179:1 › missing policy and signed-out sessions expose no action or private source (894ms)
+(node:33012) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [mobile] › tests/browser-practice-assessment/practice-assessment.spec.ts:39:1 › actual original-case verify, nonverification, reassessment and revocation preserve history (9.7s)
+  ✓   7 [mobile] › tests/browser-practice-assessment/practice-assessment.spec.ts:92:1 › lost review response replays identical command after later review and policy withdrawal (3.0s)
+  ✓   8 [mobile] › tests/browser-practice-assessment/practice-assessment.spec.ts:125:1 › lost state decision replays original history after newer revocation and withdrawal (5.1s)
+  ✓   9 [mobile] › tests/browser-practice-assessment/practice-assessment.spec.ts:159:1 › stale review requires recheck and revoked appointment clears visible private context (3.6s)
+  ✓  10 [mobile] › tests/browser-practice-assessment/practice-assessment.spec.ts:179:1 › missing policy and signed-out sessions expose no action or private source (890ms)
+
+  10 passed (47.9s)
+OWNED SERVER CLOSED: True

@@ -1,0 +1,197 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-client.test.ts (21 tests | 21 failed) 9ms
+   × builds exact canonical source/body with actual context and one stable key 2ms
+   × rejects invalid fields before key or transport 0 2ms
+   × rejects invalid fields before key or transport 1 0ms
+   × rejects invalid fields before key or transport 2 0ms
+   × rejects invalid fields before key or transport 3 0ms
+   × prevents new save without configured writes and canonical approved policy 0 0ms
+   × prevents new save without configured writes and canonical approved policy 1 0ms
+   × retains identical immutable body/key across unknown outcome, blocking new commands 0ms
+   × blocks duplicate clicks while actual save is in flight 0ms
+   × hides context after authority loss 401 2ms
+   × hides context after authority loss 403 0ms
+   × hides context after authority loss 404 0ms
+   × requires recheck after stale current reference 0ms
+   × blocks changed-key collision without claiming save or generating a replacement key 0ms
+   × keeps retry identity for transport status 429 0ms
+   × keeps retry identity for transport status 503 0ms
+   × contains network exceptions and malformed success without losing pending command 0ms
+   × accepts committed success with read gate closed without inventing an unsaved failure 0ms
+   × validates result target and author before displaying saved private finding 0ms
+   × allows editing again only after definite invalid input rejection 0ms
+   × notifies subscribers for actual state transitions 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 21 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > builds exact canonical source/body with actual context and one stable key
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ tests/practice-ownership-client.test.ts:17:18
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > rejects invalid fields before key or transport 0
+ FAIL  tests/practice-ownership-client.test.ts > rejects invalid fields before key or transport 1
+ FAIL  tests/practice-ownership-client.test.ts > rejects invalid fields before key or transport 2
+ FAIL  tests/practice-ownership-client.test.ts > rejects invalid fields before key or transport 3
+AssertionError: expected 'UNAVAILABLE' to be 'EDITING' // Object.is equality
+
+Expected: "EDITING"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:21:344
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > prevents new save without configured writes and canonical approved policy 0
+ FAIL  tests/practice-ownership-client.test.ts > prevents new save without configured writes and canonical approved policy 1
+AssertionError: expected 'UNAVAILABLE' to be 'READ_ONLY' // Object.is equality
+
+Expected: "READ_ONLY"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:22:342
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > retains identical immutable body/key across unknown outcome, blocking new commands
+TypeError: undefined is not iterable (cannot read property Symbol(Symbol.iterator))
+ ❯ tests/practice-ownership-client.test.ts:24:75
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > blocks duplicate clicks while actual save is in flight
+AssertionError: expected 'UNAVAILABLE' to be 'BUSY' // Object.is equality
+
+Expected: "BUSY"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:28:247
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > hides context after authority loss 401
+ FAIL  tests/practice-ownership-client.test.ts > hides context after authority loss 403
+ FAIL  tests/practice-ownership-client.test.ts > hides context after authority loss 404
+AssertionError: expected { phase: 'UNAVAILABLE', …(2) } to match object { phase: 'DENIED', context: null }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "context": null,
+-   "phase": "DENIED",
++   "phase": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-ownership-client.test.ts:29:169
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > requires recheck after stale current reference
+AssertionError: expected 'UNAVAILABLE' to be 'STALE' // Object.is equality
+
+Expected: "STALE"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:30:200
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > blocks changed-key collision without claiming save or generating a replacement key
+AssertionError: expected 'UNAVAILABLE' to be 'BLOCKED' // Object.is equality
+
+Expected: "BLOCKED"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:31:246
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > keeps retry identity for transport status 429
+ FAIL  tests/practice-ownership-client.test.ts > keeps retry identity for transport status 503
+AssertionError: expected 'UNAVAILABLE' to be 'UNCERTAIN' // Object.is equality
+
+Expected: "UNCERTAIN"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:32:262
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > contains network exceptions and malformed success without losing pending command
+AssertionError: expected 'UNAVAILABLE' to be 'UNCERTAIN' // Object.is equality
+
+Expected: "UNCERTAIN"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:33:240
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > accepts committed success with read gate closed without inventing an unsaved failure
+AssertionError: expected { phase: 'UNAVAILABLE', …(2) } to match object { phase: 'SAVED', context: null }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "context": null,
+-   "phase": "SAVED",
++   "phase": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-ownership-client.test.ts:34:339
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > validates result target and author before displaying saved private finding
+AssertionError: expected 'UNAVAILABLE' to be 'UNCERTAIN' // Object.is equality
+
+Expected: "UNCERTAIN"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:35:315
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > allows editing again only after definite invalid input rejection
+AssertionError: expected 'UNAVAILABLE' to be 'EDITING' // Object.is equality
+
+Expected: "EDITING"
+Received: "UNAVAILABLE"
+
+ ❯ tests/practice-ownership-client.test.ts:36:221
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/21]⎯
+
+ FAIL  tests/practice-ownership-client.test.ts > notifies subscribers for actual state transitions
+AssertionError: expected "vi.fn()" to be called 2 times, but got 0 times
+ ❯ tests/practice-ownership-client.test.ts:37:199
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/21]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  21 failed (21)
+   Start at  12:28:45
+   Duration  254ms (transform 70ms, setup 0ms, import 136ms, tests 9ms, environment 0ms)
+

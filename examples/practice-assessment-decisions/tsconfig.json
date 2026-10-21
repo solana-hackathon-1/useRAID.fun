@@ -5,7 +5,14 @@
     "target": "es2022",
     "strict": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
-  "include": ["host.ts", "contracts/**/*.ts", "skills/**/*.ts"]
+  "include": [
+    "host.ts",
+    "contracts/**/*.ts",
+    "skills/**/*.ts",
+    "components/**/*.tsx",
+    "http-contracts/**/*.ts"
+  ]
 }

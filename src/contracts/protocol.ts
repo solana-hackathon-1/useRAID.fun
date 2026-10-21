@@ -97,6 +97,21 @@ export const ERROR_CONTRACT = {
     false,
   ],
   PRACTICE_ACCOMMODATION_UNAVAILABLE: [422, 'The requested accommodation is unavailable.', false],
+  FAMILY_CHANGED: [409, 'Refresh the current skill catalog before continuing.', false],
+  EVIDENCE_NOT_CONFIRMED: [422, 'Current confirmed ownership evidence is required.', false],
+  RUBRIC_NOT_MET: [422, 'The required rubric criteria have not been met.', false],
+  HIGH_RANK_EVIDENCE_REQUIRED: [422, 'This rank requires additional independent evidence.', false],
+  AUTOMATED_EVIDENCE_UNAVAILABLE: [
+    503,
+    'The required automated evidence source is unavailable.',
+    true,
+  ],
+  TOOLS_POLICY_NOT_MET: [422, 'The submission does not meet its accepted tools policy.', false],
+  CURRENT_HIGHER_ASSESSMENT: [
+    409,
+    'Use a reasoned reassessment for the current higher rank.',
+    false,
+  ],
   RATE_LIMITED: [429, 'Too many requests. Try again later.', true],
   SERVICE_UNAVAILABLE: [503, 'Service unavailable. Please try again.', true],
 } as const;

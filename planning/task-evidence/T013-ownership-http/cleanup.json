@@ -1,0 +1,9 @@
+{
+  "testContainer": "raid-t013-ownership-http-20261021",
+  "verifiedLabel": "T013-ownership-http",
+  "running": false,
+  "automaticStops": "affected.log and consumer-driver.log stop0",
+  "productionServer": "production-smoke.json stopped/port closed",
+  "retainedPreview": "prior supervisor99844 and PG preserved; retained-preview.json verified; stop only kill99844",
+  "unrelated": "raid-practice-ui-20261021 loopback61953 running preserved; no volume/image/evidence removal"
+}

@@ -1,0 +1,14 @@
+{
+  "mode": "development",
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l",
+  "syntheticOnly": true,
+  "runnerPid": 99861,
+  "serverPid": 99866,
+  "url": "http://127.0.0.1:64254/evaluator/practice/e1771d26-e1b5-4d82-baca-62db179c1322/submissions/9f12aff1-1e53-47a1-a14a-55a589913dd1?purpose=OWNERSHIP_REVIEW",
+  "openUrl": "http://127.0.0.1:64262/open",
+  "serverPort": 64254,
+  "helperPort": 64262,
+  "databaseContainer": "raid-t013-review-ui-preview-20261021",
+  "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+  "result": "RUNNING"
+}

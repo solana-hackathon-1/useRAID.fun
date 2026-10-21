@@ -1,3 +1,13 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { PracticeAssessmentEditor } from './components/practice-assessment-editor';
+import { readPracticeAssessmentContext } from './skills/practice-assessment-context';
+import {
+  createPracticeAssessmentHandlers,
+  PracticeAssessmentHttpError,
+  PracticeAssessmentReviewWriteResultSchema,
+  PracticeAssessmentDecisionWriteResultSchema,
+} from './skills/practice-assessment-http';
 import {
   recordPracticeAssessmentDecision,
   readPracticeTrialAssessmentState,
@@ -705,6 +715,125 @@ try {
         },
       ),
     );
+  let httpWrites = true;
+  let httpReads = true;
+  let closeHttpReadsAfterCommit = false;
+  let httpActor = evaluator;
+  const httpRead = async (work: () => Promise<unknown>) => {
+    const view = httpReads ? await work() : null;
+    return {
+      version: 'v1',
+      readsAvailable: httpReads,
+      unavailableReason: httpReads ? null : 'DISABLED',
+      view: httpReads ? view : null,
+    };
+  };
+  const http = createPracticeAssessmentHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    origin: (request) => {
+      if (request.headers.get('origin') !== 'http://localhost')
+        throw new PracticeAssessmentHttpError(403);
+    },
+    actor: async () => httpActor,
+    rateLimit: () => {}, // This finite offline fixture issues no public listener; a network host must inject its account quota.
+    readReview: (a, i) =>
+      httpRead(() => transaction((tx) => readPracticeTrialAssessment(tx, a, i, () => httpReads))),
+    readState: (a, i) =>
+      httpRead(() =>
+        transaction((tx) => readPracticeTrialAssessmentState(tx, a, i, () => httpReads)),
+      ),
+    readDecision: (a, i) =>
+      httpRead(() =>
+        transaction((tx) => readPracticeAssessmentDecision(tx, a, i, () => httpReads)),
+      ),
+    recordReview: async (command) => {
+      const result = await transaction((tx) =>
+        recordPracticeTrialAssessment(tx, command, {
+          allowNewWrites: httpWrites,
+          canRead: (scope) => httpReads && scope.subjectAccountId === learner.accountId,
+          canUsePolicy: (scope) =>
+            httpReads && scope.policyVersionId === assessmentPolicy.policy.id,
+          canReview: (scope) => httpWrites && httpReads && canAssess(scope),
+        }),
+      );
+      if (closeHttpReadsAfterCommit) {
+        httpReads = false;
+        closeHttpReadsAfterCommit = false;
+      }
+      return {
+        version: 'v1',
+        ...result,
+        readsAvailable: httpReads,
+        view: httpReads ? result.view : null,
+        writesAvailable: httpWrites,
+        unavailableReason: httpWrites ? null : 'DISABLED',
+      };
+    },
+    recordDecision: async (command) => {
+      const result = await transaction((tx) =>
+        recordPracticeAssessmentDecision(tx, command, {
+          allowNewWrites: httpWrites,
+          canRead: (scope) => httpReads && scope.subjectAccountId === learner.accountId,
+          canUsePolicy: (scope) =>
+            httpReads && scope.policyVersionId === assessmentPolicy.policy.id,
+          canDecide: (scope) =>
+            httpWrites &&
+            httpReads &&
+            scope.participantId === learnerParticipantId &&
+            scope.taxonomyId === catalogId &&
+            scope.assignmentId === assessmentGrant.id,
+        }),
+      );
+      if (closeHttpReadsAfterCommit) {
+        httpReads = false;
+        closeHttpReadsAfterCommit = false;
+      }
+      return {
+        version: 'v1',
+        ...result,
+        readsAvailable: httpReads,
+        view: httpReads ? result.view : null,
+        writesAvailable: httpWrites,
+        unavailableReason: httpWrites ? null : 'DISABLED',
+      };
+    },
+  });
+  const httpParams = {
+    assignmentId: assessmentGrant.id,
+    submissionId: submitted.submission.reference.recordId,
+  };
+  const httpGet = (kind: 'review' | 'state' | 'decisions', query = '') =>
+    http[kind].GET(new Request('http://localhost/assessment' + query), Promise.resolve(httpParams));
+  const httpPost = (kind: 'review' | 'decisions', body: unknown, key: string) =>
+    http[kind].POST(
+      new Request('http://localhost/assessment', {
+        method: 'POST',
+        headers: {
+          Origin: 'http://localhost',
+          'Content-Type': 'application/json',
+          'Idempotency-Key': key,
+        },
+        body: JSON.stringify(body),
+      }),
+      Promise.resolve(httpParams),
+    );
+  async function httpSaveReview(body: unknown, key = assessmentKey) {
+    const response = await httpPost('review', body, key);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('cache-control'), 'private, no-store');
+    const result = PracticeAssessmentReviewWriteResultSchema.parse(await response.json());
+    assert(result.view);
+    return { ...result, view: result.view };
+  }
+  async function httpSaveDecision(body: unknown, key = decisionKey) {
+    const response = await httpPost('decisions', body, key);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('vary'), 'Cookie');
+    const result = PracticeAssessmentDecisionWriteResultSchema.parse(await response.json());
+    assert(result.view);
+    return { ...result, view: result.view };
+  }
   const observedAssessmentContext = await transaction((tx) =>
     observePracticeTrialAssessmentContext(
       tx,
@@ -725,7 +854,33 @@ try {
     ownership.view.record.reference,
   );
   assert.equal(observedAssessmentContext.verifiesSkill, false);
-  const verified = await assess({
+  const pageContext = await transaction((tx) =>
+    readPracticeAssessmentContext(
+      tx,
+      evaluator,
+      { ...readInputForContext(), purpose: 'ASSESSMENT_REVIEW' },
+      () => true,
+    ),
+  );
+  function readInputForContext() {
+    return {
+      version: 'v1',
+      assignmentId: assessmentGrant.id,
+      submissionId: submitted.submission.reference.recordId,
+    };
+  }
+  assert(pageContext);
+  assert.equal(pageContext.assessmentState, null);
+  assert.equal(pageContext.ownership?.record.ownership, 'CONFIRMED');
+  const editorMarkup = renderToStaticMarkup(
+    createElement(PracticeAssessmentEditor, {
+      context: { ...pageContext, reviewWritesAvailable: true, decisionWritesAvailable: true },
+    }),
+  );
+  assert(editorMarkup.includes('Record assessment review'));
+  assert(editorMarkup.includes('Approved assessment policy'));
+  assert(editorMarkup.includes('disabled=""'));
+  const verified = await httpSaveReview({
     ...assessmentBody,
     expectedOwnershipReference: observedAssessmentContext.currentOwnershipReference,
     expectedReviewReference: observedAssessmentContext.currentReviewReference,
@@ -755,7 +910,7 @@ try {
     verified.view.assessment!.reference,
   );
   assert.deepEqual(nextAssessmentContext?.currentReviewReference, verified.view.review.reference);
-  const further = await assess(
+  const further = await httpSaveReview(
     {
       ...assessmentBody,
       expectedReviewReference: nextAssessmentContext!.currentReviewReference,
@@ -827,12 +982,42 @@ try {
         },
       ),
     );
-  const recheck = await decide();
+  const recheck = await httpSaveDecision(decisionBody);
+  assert.equal(
+    (await httpPost('decisions', { ...decisionBody, reason: 'Changed same key' }, decisionKey))
+      .status,
+    409,
+  );
+  assert.equal((await httpPost('decisions', decisionBody, randomUUID())).status, 409);
+  assert.equal((await httpGet('state')).status, 200);
+  assert.equal((await httpGet('decisions')).status, 200);
+  assert.equal((await httpGet('decisions', '?revision=1')).status, 404); // Original VERIFIED version is not a decision.
+  assert.equal((await httpGet('review', '?revision=1')).status, 200);
+  httpActor = actor;
+  assert.equal((await httpGet('state')).status, 404);
+  httpActor = evaluator;
+
   assert.equal(recheck.status, 'EXECUTED');
   assert.equal(recheck.view.assessment.state, 'REASSESSMENT_REQUIRED');
   assert.deepEqual(recheck.view.priorAssessment, verified.view.assessment);
   assert.equal(recheck.view.assessment.sampleSize, 1);
-  const revoked = await decide(
+  const recheckContext = await transaction((tx) =>
+    readPracticeAssessmentContext(
+      tx,
+      evaluator,
+      { ...readInputForContext(), purpose: 'ASSESSMENT_REVIEW' },
+      () => true,
+    ),
+  );
+  assert(recheckContext);
+  assert.equal(recheckContext.assessmentState?.assessment.state, 'REASSESSMENT_REQUIRED');
+  const decisionMarkup = renderToStaticMarkup(
+    createElement(PracticeAssessmentEditor, {
+      context: { ...recheckContext, reviewWritesAvailable: true, decisionWritesAvailable: true },
+    }),
+  );
+  assert(decisionMarkup.includes('Record assessment state decision'));
+  const revoked = await httpSaveDecision(
     {
       ...decisionBody,
       expectedAssessmentReference: recheck.view.assessment.reference,
@@ -881,11 +1066,24 @@ try {
     recheck.view.decision,
   );
   await saveAssessmentPolicy({ ...assessmentPolicyInput, expectedRevision: 1, state: 'WITHDRAWN' });
-  const originalDecision = await decide(decisionBody, decisionKey, false);
+  httpWrites = false;
+  const originalDecision = await httpSaveDecision(decisionBody, decisionKey);
+  assert.equal((await httpGet('decisions', '?revision=2')).status, 200);
+  assert.equal((await httpGet('state', '?revision=1')).status, 200);
+  assert.equal((await httpGet('state')).status, 200);
+
   assert.equal(originalDecision.status, 'REPLAYED');
   assert.deepEqual(originalDecision.view.decision, recheck.view.decision);
   assert.equal(originalDecision.view.isCurrent, false);
-  const originalAssessment = await assess(assessmentBody, assessmentKey, false);
+  const originalAssessment = await httpSaveReview(assessmentBody, assessmentKey);
+  closeHttpReadsAfterCommit = true;
+  const hiddenResponse = await httpPost('review', assessmentBody, assessmentKey);
+  assert.equal(hiddenResponse.status, 200);
+  const hidden = PracticeAssessmentReviewWriteResultSchema.parse(await hiddenResponse.json());
+  assert.equal(hidden.status, 'REPLAYED');
+  assert.equal(hidden.view, null);
+  httpReads = true;
+
   assert.equal(originalAssessment.status, 'REPLAYED');
   assert.equal(originalAssessment.view.isCurrentAssessment, false);
   assert.deepEqual(originalAssessment.view.review, verified.view.review);
@@ -1043,6 +1241,11 @@ try {
     null,
   );
   await assert.rejects(() => decide(decisionBody, decisionKey, false), /RESOURCE_UNAVAILABLE/);
+  for (const kind of ['review', 'state', 'decisions'] as const)
+    assert.equal((await httpGet(kind)).status, 404);
+  assert.equal((await httpPost('review', assessmentBody, assessmentKey)).status, 404);
+  assert.equal((await httpPost('decisions', decisionBody, decisionKey)).status, 404);
+
   assert.deepEqual((await assign(false)).assignment, assignment);
   assert.equal(
     (
@@ -1073,6 +1276,12 @@ try {
   console.log(
     JSON.stringify({
       synthetic: true,
+      actualProtectedAssessmentHttp: true,
+      actualCurrentAssessmentContextAndReactForm: true,
+      httpVerifyRecheckRevokeHistoryAndExactReplay: true,
+      httpChangedKeyAndStaleVersion409: true,
+      httpReadClosurePreservesCommittedStatus: true,
+      httpRevocationDeniesAllPrivateReadsAndRetries: true,
       actualPostgreSQL: true,
       actualCanonicalApprovedPolicySource: true,
       actualAttributedOwnershipHistory: true,

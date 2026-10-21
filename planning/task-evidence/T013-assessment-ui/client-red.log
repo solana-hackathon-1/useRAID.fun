@@ -1,0 +1,187 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assessment-client.test.ts (29 tests | 27 failed) 10ms
+   × review binds exact observed context and normalizes editable fields 2ms
+   × review locks both forms while pending and retries identical key/body 0ms
+   × review clears all private context on known denial401 1ms
+   × review clears all private context on known denial403 0ms
+   × review clears all private context on known denial404 0ms
+   × review requires recheck forREVISION_CHANGED 0ms
+   × review requires recheck forFAMILY_CHANGED 0ms
+   × review requires recheck forCURRENT_HIGHER_ASSESSMENT 0ms
+   × review preserves committed status when private view closes 0ms
+   × review keeps malformed200 uncertain and collisions blocked 0ms
+   × review prevents duplicate in-flight calls 0ms
+   × decisions binds exact observed context and normalizes editable fields 0ms
+   × decisions locks both forms while pending and retries identical key/body 0ms
+   × decisions clears all private context on known denial401 0ms
+   × decisions clears all private context on known denial403 0ms
+   × decisions clears all private context on known denial404 0ms
+   × decisions requires recheck forREVISION_CHANGED 0ms
+   × decisions requires recheck forFAMILY_CHANGED 0ms
+   × decisions requires recheck forCURRENT_HIGHER_ASSESSMENT 0ms
+   × decisions preserves committed status when private view closes 0ms
+   × decisions keeps malformed200 uncertain and collisions blocked 0ms
+   × decisions prevents duplicate in-flight calls 0ms
+   × prevents decision without readable current same-case state and policy/write gates 0ms
+   × returns to editing on a definite domain validation rejection 0ms
+   × keeps safe wire status for malformed auth JSON and sends exact same-origin no-store command 1ms
+   × does not trust a valid-shaped successful result for a different command 0ms
+   × recovers historical exact decision replay after uncertain outcome 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 27 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > review binds exact observed context and normalizes editable fields
+ FAIL  tests/practice-assessment-client.test.ts > decisions binds exact observed context and normalizes editable fields
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ tests/practice-assessment-client.test.ts:10:157
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > review locks both forms while pending and retries identical key/body
+ FAIL  tests/practice-assessment-client.test.ts > decisions locks both forms while pending and retries identical key/body
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ tests/practice-assessment-client.test.ts:11:249
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > review clears all private context on known denial401
+ FAIL  tests/practice-assessment-client.test.ts > review clears all private context on known denial403
+ FAIL  tests/practice-assessment-client.test.ts > review clears all private context on known denial404
+ FAIL  tests/practice-assessment-client.test.ts > decisions clears all private context on known denial401
+ FAIL  tests/practice-assessment-client.test.ts > decisions clears all private context on known denial403
+ FAIL  tests/practice-assessment-client.test.ts > decisions clears all private context on known denial404
+AssertionError: expected 'EDITING' to be 'DENIED' // Object.is equality
+
+Expected: "DENIED"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:12:225
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > review requires recheck forREVISION_CHANGED
+ FAIL  tests/practice-assessment-client.test.ts > review requires recheck forFAMILY_CHANGED
+ FAIL  tests/practice-assessment-client.test.ts > review requires recheck forCURRENT_HIGHER_ASSESSMENT
+ FAIL  tests/practice-assessment-client.test.ts > decisions requires recheck forREVISION_CHANGED
+ FAIL  tests/practice-assessment-client.test.ts > decisions requires recheck forFAMILY_CHANGED
+ FAIL  tests/practice-assessment-client.test.ts > decisions requires recheck forCURRENT_HIGHER_ASSESSMENT
+AssertionError: expected 'EDITING' to be 'STALE' // Object.is equality
+
+Expected: "STALE"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:13:267
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > review preserves committed status when private view closes
+ FAIL  tests/practice-assessment-client.test.ts > decisions preserves committed status when private view closes
+AssertionError: expected 'EDITING' to be 'SAVED' // Object.is equality
+
+Expected: "SAVED"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:14:321
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > review keeps malformed200 uncertain and collisions blocked
+ FAIL  tests/practice-assessment-client.test.ts > decisions keeps malformed200 uncertain and collisions blocked
+AssertionError: expected 'EDITING' to be 'UNCERTAIN' // Object.is equality
+
+Expected: "UNCERTAIN"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:16:231
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > review prevents duplicate in-flight calls
+ FAIL  tests/practice-assessment-client.test.ts > decisions prevents duplicate in-flight calls
+AssertionError: expected 'EDITING' to be 'BUSY' // Object.is equality
+
+Expected: "BUSY"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:17:251
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > prevents decision without readable current same-case state and policy/write gates
+AssertionError: expected 'EDITING' to be 'READ_ONLY' // Object.is equality
+
+Expected: "READ_ONLY"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:19:451
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > returns to editing on a definite domain validation rejection
+AssertionError: expected '' to contain 'ownership'
+
+- Expected
++ Received
+
+- ownership
+
+ ❯ tests/practice-assessment-client.test.ts:20:306
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > keeps safe wire status for malformed auth JSON and sends exact same-origin no-store command
+AssertionError: expected { status: 503, body: null } to deeply equal { status: 401, body: null }
+
+- Expected
++ Received
+
+  {
+    "body": null,
+-   "status": 401,
++   "status": 503,
+  }
+
+ ❯ tests/practice-assessment-client.test.ts:21:339
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > does not trust a valid-shaped successful result for a different command
+AssertionError: expected 'EDITING' to be 'UNCERTAIN' // Object.is equality
+
+Expected: "UNCERTAIN"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:22:350
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/27]⎯
+
+ FAIL  tests/practice-assessment-client.test.ts > recovers historical exact decision replay after uncertain outcome
+AssertionError: expected 'EDITING' to be 'SAVED' // Object.is equality
+
+Expected: "SAVED"
+Received: "EDITING"
+
+ ❯ tests/practice-assessment-client.test.ts:23:505
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/27]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  27 failed | 2 passed (29)
+   Start at  15:43:02
+   Duration  271ms (transform 95ms, setup 0ms, import 152ms, tests 10ms, environment 0ms)
+

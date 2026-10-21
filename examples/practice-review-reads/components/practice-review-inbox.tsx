@@ -1,0 +1,1 @@
+../../../src/components/practice-review-inbox.tsx

@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-editor.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-editor.test.ts [ tests/practice-ownership-editor.test.ts ]
+Error: Cannot find module '../src/components/practice-ownership-editor' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-ownership-editor.test.ts
+ ❯ tests/practice-ownership-editor.test.ts:4:1
+      2| import {renderToStaticMarkup} from 'react-dom/server';
+      3| import {createElement} from 'react';
+      4| import {PracticeOwnershipEditor} from '../src/components/practice-owne…
+       | ^
+      5| import {ownershipContextFixture as context} from './helpers/practice-o…
+      6| it('renders actual approved guidance, current absence and original esc…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  12:33:26
+   Duration  138ms (transform 12ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

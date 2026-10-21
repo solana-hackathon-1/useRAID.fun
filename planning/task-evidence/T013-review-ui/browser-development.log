@@ -1,0 +1,19 @@
+OWNED development BROWSER: http://127.0.0.1:64069 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l pid 98642
+
+Running 8 tests using 1 worker
+
+(node:98661) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks (3.6s)
+  ✓  2 [desktop] › tests/browser-practice-review/practice-review.spec.ts:75:1 › visitor, wrong evaluator and wrong purpose never get private HTML (1.9s)
+  ✓  3 [desktop] › tests/browser-practice-review/practice-review.spec.ts:105:1 › saved revocation and current session loss remove details on recheck (2.9s)
+  ✓  4 [desktop] › tests/browser-practice-review/practice-review.spec.ts:125:1 › expired appointments and restricted accounts fail closed (2.3s)
+(node:98691) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks (2.0s)
+  ✓  6 [mobile] › tests/browser-practice-review/practice-review.spec.ts:75:1 › visitor, wrong evaluator and wrong purpose never get private HTML (1.6s)
+  ✓  7 [mobile] › tests/browser-practice-review/practice-review.spec.ts:105:1 › saved revocation and current session loss remove details on recheck (2.7s)
+  ✓  8 [mobile] › tests/browser-practice-review/practice-review.spec.ts:125:1 › expired appointments and restricted accounts fail closed (2.2s)
+
+  8 passed (20.3s)
+OWNED SERVER CLOSED: True

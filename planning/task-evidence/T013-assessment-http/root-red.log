@@ -1,0 +1,42 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assessment-http-host.test.ts (0 test)
+ ❯ tests/practice-assessment-decision-host.test.ts (6 tests | 1 failed) 5ms
+   × composes explicit historical decision under current read policy, then drops private delivery after commit if reads close 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-http-host.test.ts [ tests/practice-assessment-http-host.test.ts ]
+Error: Cannot find module '/src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/assessment/route' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-assessment-http-host.test.ts
+ ❯ tests/practice-assessment-http-host.test.ts:54:1
+     52|   type PracticeAssessmentHttpHost,
+     53| } from '../src/skills/practice-assessment-http';
+     54| import {
+       | ^
+     55|   GET,
+     56|   POST,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-decision-host.test.ts > composes explicit historical decision under current read policy, then drops private delivery after commit if reads close
+TypeError: readPracticeAssessmentDecisionFromHost is not a function
+ ❯ tests/practice-assessment-decision-host.test.ts:118:16
+    116|     expect(canRead({})).toBe(false); return { private: true };
+    117|   });
+    118|   expect(await readPracticeAssessmentDecisionFromHost(actor,input)).to…
+       |                ^
+    119| });
+    120|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  1 failed | 5 passed (6)
+   Start at  13:10:48
+   Duration  448ms (transform 120ms, setup 0ms, import 56ms, tests 5ms, environment 0ms)
+

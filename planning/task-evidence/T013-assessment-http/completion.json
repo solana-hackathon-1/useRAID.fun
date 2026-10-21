@@ -1,0 +1,232 @@
+{
+  "task_id": "T013",
+  "scope": "Protected assessment review/state/decision HTTP; actual Root current cookie/quota/origin and existing canonical storage; independent minimalPGHTTP consumer. Assessment form next.",
+  "status": "SELF-EVALUATED; bounded implementation VERIFIED_IN_TEST; fullT013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent review not assigned/authorized",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-21-T013-assessment-http.md",
+  "migration_rollback": "No migration; existing new-write/read gates; retain immutable findings/receipts/history. Correct only through current authorized command/CAS.",
+  "dependency_evidence": "Existing canonical SQL/receipt/authority/domain; current independently installedPGHTTP and production manifests; no new Root dependency or schema.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "No enablement/publication/deployment; full criterion review, hosted CI and release gates absent.",
+  "baseline_sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "source_identity": "Uncommitted; source-hashes.json; baseline.json distinguishes prior work. Production/consumer exact-source manifests retained. No Git/delegation/enablement/remote write.",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded author evidence only:196newchecks;441selected actualPGPASS;149docs+55planningPASS;own installedminimalPGHTTP/currenttypes/production/tencompiledsmoke/staticPASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/review.json; docs/tasks/2026-10-21-T013-assessment-http.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "node_modules/.bin/vitest run tests/practice-assessment-http.test.ts",
+      "expected_failure": "Unimplemented assessment transport rejects required current/history/action/private responses and host validation.",
+      "observed_failure": "172behaviorfail+1control;3unhandledpathrejects in scaffold; retainedred.log",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/red.log"
+    },
+    "green": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "node_modules/.bin/vitest run tests/practice-assessment-http.test.ts",
+      "observed": "173PASS initialGREEN",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/green.log"
+    },
+    "refactor": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "node_modules/.bin/vitest run tests/practice-assessment-http.test.ts tests/practice-assessment-http-host.test.ts tests/practice-assessment-decision-host.test.ts tests/practice-trial-assessment-host.test.ts tests/shared-contracts.test.ts tests/docs-links.test.ts",
+      "observed": "387PASS finalrefactor including196new+11existinghosts+31sharedcontracts+149docs",
+      "evidence_url": "planning/task-evidence/T013-assessment-http/refactor.log"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    }
+  }
+}

@@ -1,0 +1,325 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assessment-http.test.ts (173 tests | 5 failed) 70ms
+   × review accepts explicit historical revision under current reader authority 3ms
+   × review permits historical original replay while writes disabled/misconfigured 2ms
+   × state accepts explicit historical revision under current reader authority 0ms
+   × decisions accepts explicit historical revision under current reader authority 0ms
+   × decisions permits historical original replay while writes disabled/misconfigured 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review accepts explicit historical revision under current reader authority
+ FAIL  tests/practice-assessment-http.test.ts > state accepts explicit historical revision under current reader authority
+ FAIL  tests/practice-assessment-http.test.ts > decisions accepts explicit historical revision under current reader authority
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assessment-http.test.ts:23:741
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > review permits historical original replay while writes disabled/misconfigured
+AssertionError: expected { error: { …(4) } } to deeply equal { version: 'v1', …(5) }
+
+- Expected
++ Received
+
+  {
+-   "readsAvailable": true,
+-   "status": "REPLAYED",
+-   "unavailableReason": "MISCONFIGURED",
+-   "version": "v1",
+-   "view": {
+-     "accessId": "d1cdcb37-7bbe-40c4-8d56-f141cff65fca",
+-     "assessment": {
+-       "assessedRank": "A",
+-       "assessmentPolicyVersion": "5fcbd90b-790c-41cc-b545-b8a1b8c8f02a",
+-       "confidenceStatement": "private-confidence",
+-       "definitionReference": {
+-         "recordId": "01186bd7-2eab-46a7-af0e-5abfe06ffca3",
+-         "revision": 1,
+-       },
+-       "evaluatorAccountId": "evaluator",
+-       "evidenceReferences": [
+-         {
+-           "recordId": "dd561689-c803-488c-be7d-23e5a0fb73f4",
+-           "revision": 1,
+-         },
+-       ],
+-       "issuedAt": "2026-10-21T01:00:00.000Z",
+-       "participantId": "b8ea6527-fecc-4e2f-995e-11c8e67c6bf2",
+-       "reassessmentAt": null,
+-       "reference": {
+-         "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-         "revision": 5,
+-       },
+-       "rubricReference": {
+-         "recordId": "1783b4f4-5f4b-4f52-97dc-b43431072687",
+-         "revision": 1,
+-       },
+-       "sampleSize": 1,
+-       "skillDomain": "web",
+-       "skillId": "frontend",
+-       "state": "VERIFIED",
+-       "submissionReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "version": "v1",
+-     },
+-     "currentAssessmentReference": {
+-       "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-       "revision": 5,
+-     },
+-     "currentReviewReference": {
+-       "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-       "revision": 3,
+-     },
+-     "isAuthorizationToken": false,
+-     "isCurrentAssessment": false,
+-     "isCurrentReview": false,
+-     "private": true,
+-     "review": {
+-       "assessmentReference": {
+-         "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-         "revision": 5,
+-       },
+-       "assignmentId": "8bc0037b-0dc2-44a0-bc5b-34c61b095e48",
+-       "confidenceStatement": "private-confidence",
+-       "consumesCapacity": false,
+-       "createsFinancialObligation": false,
+-       "createsPermissionGrant": false,
+-       "createsVerifiedAssessment": true,
+-       "criteria": [
+-         {
+-           "criterionId": "behavior",
+-           "reason": "private-criterion",
+-           "result": "MET",
+-         },
+-       ],
+-       "decision": "VERIFY",
+-       "definitionReference": {
+-         "recordId": "01186bd7-2eab-46a7-af0e-5abfe06ffca3",
+-         "revision": 1,
+-       },
+-       "evaluatorAccountId": "evaluator",
+-       "id": "7f7197df-3497-4862-b532-6cba59bc8188",
+-       "isAuthorizationToken": false,
+-       "ownershipReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "ownershipVersionId": "360c0a66-156a-44b7-91ca-03c3febabef5",
+-       "participantId": "b8ea6527-fecc-4e2f-995e-11c8e67c6bf2",
+-       "persisted": true,
+-       "policyReference": {
+-         "recordId": "a6d31a0d-226d-4b3b-a7b5-48db27251ef0",
+-         "revision": 1,
+-       },
+-       "policyVersionId": "5fcbd90b-790c-41cc-b545-b8a1b8c8f02a",
+-       "reason": "private-reason",
+-       "reassessmentAt": null,
+-       "reference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 3,
+-       },
+-       "reviewedAt": "2026-10-21T01:00:00.000Z",
+-       "rubricReference": {
+-         "recordId": "1783b4f4-5f4b-4f52-97dc-b43431072687",
+-         "revision": 1,
++   "error": {
++     "code": "SERVICE_UNAVAILABLE",
++     "message": "Service unavailable. Please try again.",
++     "requestId": "request-1",
++     "retryable": true,
+    },
+-       "skillDomain": "web",
+-       "skillId": "frontend",
+-       "submissionReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "taxonomyReference": {
+-         "recordId": "2e9f091a-21c5-489d-aacc-642261234164",
+-         "revision": 1,
+-       },
+-       "version": "v1",
+-     },
+-     "version": "v1",
+-   },
+-   "writesAvailable": false,
+  }
+
+ ❯ tests/practice-assessment-http.test.ts:35:518
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/practice-assessment-http.test.ts > decisions permits historical original replay while writes disabled/misconfigured
+AssertionError: expected { error: { …(4) } } to deeply equal { version: 'v1', …(5) }
+
+- Expected
++ Received
+
+  {
+-   "readsAvailable": true,
+-   "status": "REPLAYED",
+-   "unavailableReason": "MISCONFIGURED",
+-   "version": "v1",
+-   "view": {
+-     "accessId": "a3f817b4-fa46-435e-9f0a-78e7471ea5c6",
+-     "assessment": {
+-       "assessedRank": "A",
+-       "assessmentPolicyVersion": "18ac56a5-6b1c-4448-a13c-765d0d8add9a",
+-       "confidenceStatement": "private-confidence",
+-       "definitionReference": {
+-         "recordId": "01186bd7-2eab-46a7-af0e-5abfe06ffca3",
+-         "revision": 1,
+-       },
+-       "evaluatorAccountId": "evaluator",
+-       "evidenceReferences": [
+-         {
+-           "recordId": "dd561689-c803-488c-be7d-23e5a0fb73f4",
+-           "revision": 1,
+-         },
+-       ],
+-       "issuedAt": "2026-10-21T02:00:00.000Z",
+-       "participantId": "b8ea6527-fecc-4e2f-995e-11c8e67c6bf2",
+-       "reassessmentAt": "2026-12-01T00:00:00.000Z",
+-       "reference": {
+-         "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-         "revision": 5,
+-       },
+-       "rubricReference": {
+-         "recordId": "1783b4f4-5f4b-4f52-97dc-b43431072687",
+-         "revision": 1,
+-       },
+-       "sampleSize": 1,
+-       "skillDomain": "web",
+-       "skillId": "frontend",
+-       "state": "REASSESSMENT_REQUIRED",
+-       "submissionReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "version": "v1",
+-     },
+-     "currentAssessmentReference": {
+-       "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-       "revision": 5,
+-     },
+-     "decision": {
+-       "action": "REQUIRE_REASSESSMENT",
+-       "assessmentReference": {
+-         "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-         "revision": 5,
+-       },
+-       "assignmentId": "8bc0037b-0dc2-44a0-bc5b-34c61b095e48",
+-       "caseReviewReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "consumesCapacity": false,
+-       "createsFinancialObligation": false,
+-       "createsPermissionGrant": false,
+-       "decidedAt": "2026-10-21T02:00:00.000Z",
+-       "dueAt": "2026-12-01T00:00:00.000Z",
+-       "evaluatorAccountId": "evaluator",
+-       "findings": [
+-         {
+-           "detail": "private-finding",
+-           "kind": "CAPABILITY_EVIDENCE",
+-         },
+-       ],
+-       "id": "ec84e3ba-6e80-4198-b48a-568f379ea430",
+-       "isAuthorizationToken": false,
+-       "ownershipReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "persisted": true,
+-       "policyReference": {
+-         "recordId": "24e157dd-b1ac-4001-9f04-c2b3666f7cc5",
+-         "revision": 1,
+-       },
+-       "policyVersionId": "18ac56a5-6b1c-4448-a13c-765d0d8add9a",
+-       "priorAssessmentReference": {
+-         "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-         "revision": 1,
+-       },
+-       "reason": "private-decision-reason",
+-       "reasonCategory": "CAPABILITY_RECHECK",
+-       "submissionReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "version": "v1",
+-     },
+-     "isAuthorizationToken": false,
+-     "isCurrent": false,
+-     "priorAssessment": {
+-       "assessedRank": "A",
+-       "assessmentPolicyVersion": "5fcbd90b-790c-41cc-b545-b8a1b8c8f02a",
+-       "confidenceStatement": "private-confidence",
+-       "definitionReference": {
+-         "recordId": "01186bd7-2eab-46a7-af0e-5abfe06ffca3",
+-         "revision": 1,
+-       },
+-       "evaluatorAccountId": "evaluator",
+-       "evidenceReferences": [
+-         {
+-           "recordId": "dd561689-c803-488c-be7d-23e5a0fb73f4",
+-           "revision": 1,
+-         },
+-       ],
+-       "issuedAt": "2026-10-21T01:00:00.000Z",
+-       "participantId": "b8ea6527-fecc-4e2f-995e-11c8e67c6bf2",
+-       "reassessmentAt": null,
+-       "reference": {
+-         "recordId": "1c8d8fef-ddc3-4634-b2ab-a5fed6af17ea",
+-         "revision": 1,
+-       },
+-       "rubricReference": {
+-         "recordId": "1783b4f4-5f4b-4f52-97dc-b43431072687",
+-         "revision": 1,
+-       },
+-       "sampleSize": 1,
+-       "skillDomain": "web",
+-       "skillId": "frontend",
+-       "state": "VERIFIED",
+-       "submissionReference": {
+-         "recordId": "34b67039-27ad-46f3-98e6-cf602213c968",
+-         "revision": 1,
+-       },
+-       "version": "v1",
++   "error": {
++     "code": "SERVICE_UNAVAILABLE",
++     "message": "Service unavailable. Please try again.",
++     "requestId": "request-1",
++     "retryable": true,
+    },
+-     "private": true,
+-     "version": "v1",
+-   },
+-   "writesAvailable": false,
+  }
+
+ ❯ tests/practice-assessment-http.test.ts:35:518
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 168 passed (173)
+   Start at  13:09:59
+   Duration  346ms (transform 100ms, setup 0ms, import 169ms, tests 70ms, environment 0ms)
+

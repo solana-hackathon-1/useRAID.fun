@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assessment-editor.test.ts (5 tests | 1 failed) 27ms
+   × makes original ownership and actual verification distinct, and disables verification without confirmed ownership 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assessment-editor.test.ts > makes original ownership and actual verification distinct, and disables verification without confirmed ownership
+AssertionError: expected '<div style="white-space:pre-wrap;over…' to contain 'No current skill assessment is availa…'
+
+- Expected
++ Received
+
+- No current skill assessment is available for this case
++ <div style="white-space:pre-wrap;overflow-wrap:anywhere"><p>An assessment records demonstrated skill under the original rubric. It creates no private access, work slot or payment.</p><section class="orientation-card" aria-label="Current assessment context"><h2>Current assessment context</h2><p>Current ownership finding: None recorded.</p><p>No assessment review recorded for this case.</p><p>No current skill assessment is readable for this case. A concurrency reference may exist without permission to another case&#x27;s private assessment.</p></section><section class="orientation-card" aria-label="Approved assessment policy"><h2>Approved assessment policy</h2><p>Policy synthetic-policy, version 1.</p><p>&lt;script&gt;private-policy-marker&lt;/script&gt;</p></section><form class="orientation-card"><h2>Record assessment review</h2><p>Verification requires confirmed ownership, every required criterion met and supported evidence. Requesting more evidence or recording that skill was not demonstrated preserves any existing assessment.</p><p>Verification is unavailable without current confirmed ownership and supported manual evidence. S rank requires additional independent evidence; automated result sources are not available here.</p><fieldset class="orientation-fields" disabled=""><legend>Reasoned assessment review</legend><label for="assessment-decision">Review outcome</label><select id="assessment-decision" required=""><option value="" selected="">Choose an outcome</option><option value="VERIFY" disabled="">Verify demonstrated skill</option><option value="MORE_EVIDENCE">Request more evidence</option><option value="NOT_DEMONSTRATED">Skill not demonstrated</option></select><label for="assessment-reason">Review reason</label><textarea id="assessment-reason" required="" maxLength="2000" rows="3"></textarea><label for="assessment-confidence">Confidence statement</label><textarea id="assessment-confidence" required="" maxLength="2000" rows="3"></textarea><div class="orientation-fields" style="margin:0"><p>Working behavior and edge cases (required)</p><label for="assessment-result-0">Criterion 1 result</label><select id="assessment-result-0" required=""><option value="" selected="">Choose a result</option><option value="MET">Met</option><option value="NOT_MET">Not met</option><option value="UNCERTAIN">Uncertain</option></select><label for="assessment-criterion-0">Criterion 1 reason</label><textarea id="assessment-criterion-0" required="" maxLength="2000" rows="3"></textarea></div><div class="orientation-fields" style="margin:0"><p>Explain and modify the solution (required)</p><label for="assessment-result-1">Criterion 2 result</label><select id="assessment-result-1" required=""><option value="" selected="">Choose a result</option><option value="MET">Met</option><option value="NOT_MET">Not met</option><option value="UNCERTAIN">Uncertain</option></select><label for="assessment-criterion-1">Criterion 2 reason</label><textarea id="assessment-criterion-1" required="" maxLength="2000" rows="3"></textarea></div><label for="assessment-date">Optional reassessment date (UTC)</label><input id="assessment-date" type="text" placeholder="2026-12-01T00:00:00.000Z" value=""/><button class="button" type="submit">Save assessment review</button></fieldset></form><p>Commands use the source and policy versions observed on this page. Keep it open during an uncertain save and retry the same request.</p><button type="button" class="button secondary" disabled="">Recheck current case</button><div style="white-space:pre-wrap;overflow-wrap:anywhere"><section class="orientation-card" aria-label="Review scope"><h2>Assessment review</h2><p>Private evidence for this assigned case. Access was checked for this page and may change. Recheck before relying on it.</p><p>Assignment expires: <time dateTime="2030-01-01T00:00:00.000Z">1 Jan 2030, 00:00 UTC</time>.</p></section><section class="orientation-card" aria-labelledby="original-submission"><h2 id="original-submission">Original submission</h2><p>Submitted: <time dateTime="2026-10-15T00:00:00.000Z">15 Oct 2026, 00:00 UTC</time>.</p><p>Original ownership declaration: Unconfirmed. This original submission does not include later ownership findings or assessment results.</p><h3>Answer</h3><pre style="white-space:pre-wrap;overflow-wrap:anywhere">
++
++   &lt;script&gt;private-answer-marker&lt;/script&gt;
++ </pre><h3>Explanation</h3><p>private-explanation-marker &lt;img src=x&gt;</p><h3>Declared tools and assistance</h3><p>Tools declared: editor.</p><p>AI assistance declared: Yes.</p><p>private-disclosure-marker</p><p>Declarations alone do not establish ownership, compliance or assessed skill.</p></section><section class="orientation-card" aria-labelledby="original-criteria"><h2 id="original-criteria">Original review criteria</h2><p>Synthetic interface exercise — frontend (web), practice level A.</p><ul><li><strong>Required:</strong> Working behavior and edge cases</li><li><strong>Required:</strong> Explain and modify the solution</li></ul><p>The authorized reviewer applies every required criterion.</p><p>Evaluation: Manual review.</p><p>Rubric: synthetic-rubric, version 3.</p></section><details class="orientation-card"><summary>Original task and agreed conditions</summary><h2>Original task</h2><p>Build and explain a synthetic accessible interface.</p><p>Expected time: about 60 minutes (an expectation, not a deadline).</p><p>Variant: synthetic-variant-two. Definition: synthetic-frontend-trial, version 2.</p><h3>Materials</h3><section><h4>Fixture (Synthetic)</h4><pre style="white-space:pre-wrap;overflow-wrap:anywhere">Invented records only.</pre></section><h3>Permitted tools and AI assistance</h3><p>Permitted tools: editor, browser.</p><p>AI assistance is allowed.</p><p>Explain and modify your work; disclose assistance.</p><p>Maximum attempts: 3. Cooldown: 60 seconds.</p><h3>Accommodations policy</h3><p>Request an approved scoped accommodation.</p></details></div></div>
+
+ ❯ tests/practice-assessment-editor.test.ts:39:16
+     37|   expect(html).toContain('Original ownership declaration: Unconfirmed'…
+     38|   expect(html).toMatch(/<option value="VERIFY" disabled=""/);
+     39|   expect(html).toContain('No current skill assessment is available for…
+       |                ^
+     40| });
+     41| it('labels historical saved decision explicitly', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 7 passed (8)
+      Tests  1 failed | 432 passed (433)
+   Start at  16:02:44
+   Duration  1.97s (transform 168ms, setup 0ms, import 563ms, tests 593ms, environment 0ms)
+

@@ -1,0 +1,1 @@
+../../../src/components/practice-assessment-editor.tsx

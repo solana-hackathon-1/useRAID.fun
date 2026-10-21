@@ -4,6 +4,7 @@ import {
   lockPracticeReviewAssignment,
   type PracticeReviewAssignmentScope,
 } from './skills/practice-review-assignment-storage';
+import { createPracticeReviewAssignmentHandlers } from './skills/practice-review-assignment-http';
 import {
   submitPracticeTrial,
   readPracticeTrialSubmission,
@@ -416,6 +417,98 @@ try {
     null,
   );
   assert.deepEqual((await assign(false)).assignment, assignment);
+  // The same canonical commands behind strict administrator HTTP; the host owns origin, actor and quota.
+  const httpPolicy = (scope: PracticeReviewAssignmentScope) =>
+    setPolicy(scope) &&
+    scope.subjectAccountId === learner.accountId &&
+    scope.evaluatorAccountId === evaluator.accountId;
+  const httpResult = <T extends object>(outcome: T) => ({
+    version: 'v1' as const,
+    ...outcome,
+    writesAvailable: true,
+    unavailableReason: null,
+  });
+  const http = createPracticeReviewAssignmentHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    origin: () => undefined,
+    actor: async () => actor,
+    rateLimit: () => undefined,
+    issue: async (command) =>
+      httpResult(
+        await transaction((tx) =>
+          issuePracticeReviewAssignment(tx, command, {
+            allowNewWrites: true,
+            canManage: httpPolicy,
+          }),
+        ),
+      ),
+    revoke: async (command) =>
+      httpResult(
+        await transaction((tx) =>
+          revokePracticeReviewAssignment(tx, command, {
+            allowNewWrites: true,
+            canManage: httpPolicy,
+          }),
+        ),
+      ),
+  });
+  const httpIssueBody = {
+    ...appointmentInput,
+    purpose: 'ASSESSMENT_REVIEW',
+    expiresAt: new Date(Date.now() + 60000).toISOString(),
+    reason: 'Synthetic administrator HTTP appointment.',
+  };
+  const httpPost = (path: string, body: unknown, idempotencyKey: string) =>
+    new Request('http://synthetic.invalid' + path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'Idempotency-Key': idempotencyKey },
+      body: JSON.stringify(body),
+    });
+  const httpKey = randomUUID();
+  const httpIssued = await http.issue(
+    httpPost('/api/v1/admin/practice/review-assignments', httpIssueBody, httpKey),
+  );
+  assert.equal(httpIssued.status, 200);
+  assert.equal(httpIssued.headers.get('Cache-Control'), 'private, no-store');
+  const httpAssignment = (await httpIssued.json()).assignment;
+  const httpReplay = await http.issue(
+    httpPost('/api/v1/admin/practice/review-assignments', httpIssueBody, httpKey),
+  );
+  assert.deepEqual((await httpReplay.json()).assignment, httpAssignment);
+  const httpReuse = await http.issue(
+    httpPost(
+      '/api/v1/admin/practice/review-assignments',
+      { ...httpIssueBody, reason: 'Synthetic different body.' },
+      httpKey,
+    ),
+  );
+  assert.equal(httpReuse.status, 409);
+  const httpRevokePath = `/api/v1/admin/practice/review-assignments/${httpAssignment.id}/revocations`;
+  const httpRevoke = await http.revoke(
+    httpPost(
+      httpRevokePath,
+      { version: 'v1', assignmentId: httpAssignment.id, reason: 'Synthetic HTTP revoke.' },
+      randomUUID(),
+    ),
+    { assignmentId: httpAssignment.id },
+  );
+  assert.equal(httpRevoke.status, 200);
+  assert.equal(
+    await transaction((tx) =>
+      lockPracticeReviewAssignment(
+        tx,
+        evaluator,
+        {
+          assignmentId: httpAssignment.id,
+          submissionId: appointmentInput.submissionId,
+          purpose: 'ASSESSMENT_REVIEW',
+        },
+        () => true,
+      ),
+    ),
+    null,
+  );
   assert.equal(
     (
       await transaction((tx) =>
@@ -449,6 +542,7 @@ try {
       explicitSubmissionPurposeAndExpiry: true,
       actualEvaluatorSessionAndScopedPolicy: true,
       immutableRevocationAndOriginalReceipt: true,
+      strictAdministratorHttpIssueReplayRevoke: true,
       privateAnswersNotReadByAssignmentPort: true,
       immutablePrivateSubmission: true,
       exactCodeWhitespace: true,

@@ -1,0 +1,56 @@
+{
+  "testDatabase": {
+    "name": "/raid-t013-review-inbox-20261021",
+    "running": false,
+    "automaticStops": "database.log/database-current.log/verification-driver.log/browser-both-driver.log/browser-links-driver.log all cleanup0; database-final-exact.log cleanup0"
+  },
+  "testServers": [
+    {
+      "evidence": "planning/task-evidence/T013-review-inbox/browser-development-resources.json.full-pass-before-assessment-link",
+      "port": 54108,
+      "closed": true,
+      "recordedStopped": true
+    },
+    {
+      "evidence": "planning/task-evidence/T013-review-inbox/browser-development-resources.json",
+      "port": 54274,
+      "closed": true,
+      "recordedStopped": true
+    },
+    {
+      "evidence": "planning/task-evidence/T013-review-inbox/browser-development-resources.json.initial-selector-failure",
+      "port": 54002,
+      "closed": true,
+      "recordedStopped": true
+    },
+    {
+      "evidence": "planning/task-evidence/T013-review-inbox/browser-production-resources.json.full-pass-before-assessment-link",
+      "port": 54196,
+      "closed": true,
+      "recordedStopped": true
+    },
+    {
+      "evidence": "planning/task-evidence/T013-review-inbox/browser-production-resources.json",
+      "port": 54315,
+      "closed": true,
+      "recordedStopped": true
+    }
+  ],
+  "retainedPreview": {
+    "supervisorPid": 47150,
+    "mode": "development",
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-inbox-preview-o340gxmf",
+    "syntheticOnly": true,
+    "runnerPid": 47173,
+    "serverPid": 47177,
+    "url": "http://127.0.0.1:54344/evaluator/practice",
+    "openUrl": "http://127.0.0.1:54352/open",
+    "serverPort": 54344,
+    "helperPort": 54352,
+    "databaseContainer": "raid-t013-review-inbox-preview-20261021",
+    "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+    "result": "RUNNING",
+    "stopOnlyOwnedResource": "kill 47150"
+  },
+  "unrelatedResources": "Prior assessment52819/supervisor33604 and ownership49324/supervisor16680 listeners verified retained; older previews/containers/worktrees untouched. No volume/image/evidence removal."
+}

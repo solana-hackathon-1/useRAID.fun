@@ -1,0 +1,22 @@
+{
+  "status": "SELF-EVALUATED",
+  "start": "2026-10-21T13:31:06.032372+00:00",
+  "head": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "scope": "Current own evaluator appointment inbox; no independent acceptance",
+  "requirements": [
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I11",
+    "I13",
+    "AC04-07",
+    "AC42-43",
+    "AC70",
+    "AC73-75"
+  ]
+}

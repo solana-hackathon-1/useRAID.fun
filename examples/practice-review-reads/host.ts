@@ -1,3 +1,11 @@
+import { listPracticeReviewInbox } from './skills/practice-review-inbox-storage';
+import { createPracticeReviewInboxHandlers } from './skills/practice-review-inbox-http';
+import { createPracticeReviewInboxLoader } from './skills/practice-review-inbox-page';
+import { PracticeReviewInbox } from './components/practice-review-inbox';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { PracticeReviewCase } from './components/practice-review-case';
+import { PracticeReviewHttpResultSchema } from './skills/practice-review-http';
 import {
   createPracticeReviewHandlers,
   PracticeReviewHttpError,
@@ -484,6 +492,18 @@ try {
   assert.deepEqual(delivered.review.definition, started.start.definition);
   assert.equal(delivered.review.assignment.evaluatorAccountId, evaluator.accountId);
   assert.equal(delivered.review.submission.ownership, 'UNCONFIRMED');
+  const checkedDelivery = PracticeReviewHttpResultSchema.parse(delivered);
+  assert(checkedDelivery.review);
+  const beforeRender = structuredClone(checkedDelivery.review);
+  const html = renderToStaticMarkup(
+    createElement(PracticeReviewCase, { review: checkedDelivery.review }),
+  );
+  assert(html.includes('Original review criteria'));
+  assert(html.includes('Original ownership declaration: Unconfirmed'));
+  assert(html.includes('not a deadline'));
+  assert(!/<script|<iframe|<input|<button|<form/.test(html));
+  assert.deepEqual(checkedDelivery.review, beforeRender);
+
   const assertHttpDenied = async (status: number, purpose?: string) => {
     const response = await httpRead(purpose);
     assert.equal(response.status, status);
@@ -547,6 +567,65 @@ try {
     ),
     null,
   );
+  // Own appointment metadata is separately authorized; it never selects case evidence.
+  const metadataPolicy = ({ accountId }: { accountId: string }) =>
+    accountId === evaluator.accountId;
+  const alternateMetadataPolicy = ({ accountId }: { accountId: string }) =>
+    [evaluator.accountId].includes(accountId);
+  const inboxInput = { version: 'v1', after: null };
+  const inbox = await transaction((tx) =>
+    listPracticeReviewInbox(tx, evaluator, inboxInput, metadataPolicy),
+  );
+  assert.equal(inbox.page.entries.length, 1);
+  assert.equal(inbox.page.entries[0].assignmentId, assignment.id);
+  assert.equal(JSON.stringify(inbox.page).includes('answer'), false);
+  assert.equal(JSON.stringify(inbox.page).includes('reason'), false);
+  assert.deepEqual(
+    (
+      await transaction((tx) =>
+        listPracticeReviewInbox(tx, evaluator, inboxInput, alternateMetadataPolicy),
+      )
+    ).page.entries,
+    inbox.page.entries,
+  );
+  assert.equal(
+    (await transaction((tx) => listPracticeReviewInbox(tx, actor, inboxInput, () => true))).page
+      .entries.length,
+    0,
+  );
+  await assert.rejects(
+    () => transaction((tx) => listPracticeReviewInbox(tx, evaluator, inboxInput, () => false)),
+    /FORBIDDEN/,
+  );
+  const inboxHttp = createPracticeReviewInboxHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => evaluator,
+    rateLimit: () => {},
+    list: async (a, i) => ({
+      version: 'v1',
+      readsAvailable: true,
+      unavailableReason: null,
+      result: await transaction((tx) => listPracticeReviewInbox(tx, a, i, metadataPolicy)),
+    }),
+  });
+  const inboxResponse = await inboxHttp.GET(
+    new Request('http://synthetic.test/api/v1/practice/reviews'),
+  );
+  assert.equal(inboxResponse.status, 200);
+  assert.equal(inboxResponse.headers.get('cache-control'), 'private, no-store');
+  assert.equal((await inboxResponse.json()).accountId, undefined);
+  const inboxState = await createPracticeReviewInboxLoader(inboxHttp.GET)({});
+  assert.equal(inboxState.status, 'READY');
+  const inboxHtml = renderToStaticMarkup(createElement(PracticeReviewInbox, { state: inboxState }));
+  assert.ok(inboxHtml.includes('Your practice reviews'));
+  assert.ok(inboxHtml.includes('/ownership'));
+  assert.equal(inboxHtml.includes(submissionInput.answer), false);
+  const inboxHead = await inboxHttp.HEAD(
+    new Request('http://synthetic.test/api/v1/practice/reviews', { method: 'HEAD' }),
+  );
+  assert.equal(inboxHead.status, 200);
+  assert.equal(await inboxHead.text(), '');
   await transaction((tx) =>
     revokePracticeReviewAssignment(
       tx,
@@ -570,6 +649,11 @@ try {
   assert.equal(
     await transaction((tx) => readPracticeTrialForReview(tx, evaluator, reviewInput, () => true)),
     null,
+  );
+  assert.equal(
+    (await transaction((tx) => listPracticeReviewInbox(tx, evaluator, inboxInput, metadataPolicy)))
+      .page.entries.length,
+    0,
   );
   await assertHttpDenied(404); // Actual saved revocation is observed by the HTTP/storage composition.
   assert.deepEqual((await assign(false)).assignment, assignment);
@@ -605,6 +689,8 @@ try {
       actualPostgreSQL: true,
       actualProtectedPrivateReviewRead: true,
       actualProtectedHttpReadAfterCommit: true,
+      actualPortableReactEvidenceView: true,
+      actualOwnMetadataInboxHttpReactRevocationAndAlternatePolicy: true,
       httpForeignPurposeRevocationDisabledAndAuthenticationDenied: true,
       exactOriginalPrivateBytesAndRubric: true,
       noPrivateSelectionWithoutAssignment: true,

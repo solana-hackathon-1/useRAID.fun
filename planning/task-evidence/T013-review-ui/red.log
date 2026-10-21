@@ -1,0 +1,37 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-page.test.ts (0 test)
+ ❯ tests/practice-review-view.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-page.test.ts [ tests/practice-review-page.test.ts ]
+Error: Cannot find module '../src/skills/practice-review-page' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-review-page.test.ts
+ ❯ tests/practice-review-page.test.ts:2:1
+      1| import { beforeEach, expect, it, vi } from 'vitest';
+      2| import { createPracticeReviewPageLoader } from '../src/skills/practice…
+       | ^
+      3| import { reviewScope, reviewViewFixture as review } from './helpers/pr…
+      4| const get = vi.fn();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/practice-review-view.test.ts [ tests/practice-review-view.test.ts ]
+Error: Cannot find module '../src/components/practice-review-case' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-review-view.test.ts
+ ❯ tests/practice-review-view.test.ts:4:1
+      2| import { renderToStaticMarkup } from 'react-dom/server';
+      3| import { expect, it } from 'vitest';
+      4| import { PracticeReviewCase } from '../src/components/practice-review-…
+       | ^
+      5| import { reviewViewFixture as review } from './helpers/practice-review…
+      6| const render = (value = review) => renderToStaticMarkup(createElement(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  10:35:24
+   Duration  248ms (transform 17ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

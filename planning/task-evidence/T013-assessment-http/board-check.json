@@ -1,0 +1,57 @@
+{
+  "at": "2026-10-21T07:21:48.374812+00:00",
+  "source": "gh authenticated repository CLI; connector search denied422",
+  "project": "https://github.com/orgs/solana-hackathon-1/projects/1",
+  "issueCount": 165,
+  "open": 160,
+  "closed": 5,
+  "openPRs": 0,
+  "statuses": {
+    "Backlog": 23,
+    "Blocked": 114,
+    "Done": 4,
+    "In Progress": 1,
+    "In Review": 2,
+    "Needs decision": 20,
+    "Ready": 1
+  },
+  "selected": [
+    {
+      "title": "[T006] Preserve canonical identity across verified wallet links",
+      "status": "In Progress",
+      "blocked reason": null,
+      "completion review": "Not reviewed",
+      "criteria coverage": "0/27 full-task criteria verified (validator exit 1). Storage slice reviewed only by author-side substitute (Claude).",
+      "cI status": "Passed",
+      "evidence": "PR183 c196ee7: separate non-author follow-up ACCEPTED WITH CONDITIONS; full829/feature96, D2/D6 each2 failures caught, LR01/LR02/LR03/LR07 satisfied, seven CI checks PASS. Connected-X owner choice recorded DEC-2026-10-09-01; enforcement/revoke/flag/linked signin remain PR-B. B1 worker implementing; independent review in progress; old storage host/isolation/privilege review ongoing. Full0/27; AC01 PARTIAL; no merge/live approval."
+    },
+    {
+      "title": "[T012] Add stable skill taxonomy and evidence records",
+      "status": "Blocked",
+      "blocked reason": "Await verified prerequisites: T002 #44, T006 #48",
+      "completion review": "Not reviewed",
+      "criteria coverage": "0 / 27 verified; each criterion requires reviewed evidence",
+      "cI status": "Not run",
+      "evidence": "Not recorded \u2014 attach actual SHA/environment/result and reviewed sign-off."
+    },
+    {
+      "title": "[T013] Deliver public trials and authorized assessment review",
+      "status": "Blocked",
+      "blocked reason": "Await verified prerequisites: T012 #54",
+      "completion review": "Not reviewed",
+      "criteria coverage": "0 / 27 verified; each criterion requires reviewed evidence",
+      "cI status": "Not run",
+      "evidence": "Not recorded \u2014 attach actual SHA/environment/result and reviewed sign-off."
+    },
+    {
+      "title": "[T014] Explain structured skill eligibility and anti-spam review",
+      "status": "Blocked",
+      "blocked reason": "Await verified prerequisites: T012 #54, T013 #55",
+      "completion review": "Not reviewed",
+      "criteria coverage": "0 / 27 verified; each criterion requires reviewed evidence",
+      "cI status": "Not run",
+      "evidence": "Not recorded \u2014 attach actual SHA/environment/result and reviewed sign-off."
+    }
+  ],
+  "finding": "Remote board omits recent bounded implementation, and correctly retains missing full acceptance. No board/issue mutation or comment authorized/performed."
+}

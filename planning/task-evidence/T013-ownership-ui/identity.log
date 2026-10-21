@@ -1,0 +1,5 @@
+
+> useraid@0.1.0 identity:check
+> tsx scripts/check-identity-locks.ts
+
+PASS: identity AST fence; reviewed exceptions and User FK inventory

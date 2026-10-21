@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-http.test.ts (91 tests | 1 failed) 54ms
+   × supports framework-generated HEAD with the same current read authority 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-http.test.ts > supports framework-generated HEAD with the same current read authority
+AssertionError: expected 405 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 405
+
+ ❯ tests/practice-ownership-http.test.ts:412:27
+    410| it('supports framework-generated HEAD with the same current read autho…
+    411|   const response = await handlers().GET(new Request('http://localhost/…
+    412|   expect(response.status).toBe(200);expect(host.read).toHaveBeenCalled…
+       |                           ^
+    413| });
+    414| it('rejects unsupported methods without storage and declares supported…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 90 passed (91)
+   Start at  12:11:06
+   Duration  331ms (transform 97ms, setup 0ms, import 155ms, tests 54ms, environment 0ms)
+

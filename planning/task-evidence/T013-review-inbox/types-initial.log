@@ -1,0 +1,8 @@
+tests/practice-review-inbox-db.test.ts(25,28): error TS7006: Parameter 'sql' implicitly has an 'any' type.
+tests/practice-review-inbox-db.test.ts(25,33): error TS7006: Parameter 'bindings' implicitly has an 'any' type.
+tests/practice-review-inbox-db.test.ts(97,28): error TS7006: Parameter 'sql' implicitly has an 'any' type.
+tests/practice-review-inbox-db.test.ts(97,33): error TS7006: Parameter 'bindings' implicitly has an 'any' type.
+tests/practice-review-inbox-db.test.ts(122,30): error TS7006: Parameter 'sql' implicitly has an 'any' type.
+tests/practice-review-inbox-db.test.ts(122,35): error TS7006: Parameter 'bindings' implicitly has an 'any' type.
+tests/practice-review-inbox-db.test.ts(206,28): error TS7006: Parameter 'sql' implicitly has an 'any' type.
+tests/practice-review-inbox-db.test.ts(206,33): error TS7006: Parameter 'bindings' implicitly has an 'any' type.

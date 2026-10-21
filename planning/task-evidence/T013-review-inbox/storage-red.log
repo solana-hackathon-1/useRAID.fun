@@ -1,0 +1,248 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-inbox-storage.test.ts (18 tests | 18 failed) 10ms
+   × lists bounded own current metadata only, audits before selecting, and binds the internal owner 2ms
+   × uses own UUID ordering position with20 entries and one lookahead; never returns the lookahead 0ms
+   × returns an honest empty current observation 0ms
+   × rejects client authority/invalid ordering input before SQL { version: 'v1', after: null, accountId: 'foreign' } 3ms
+   × rejects client authority/invalid ordering input before SQL { version: 'v1', after: 'bad' } 0ms
+   × rejects client authority/invalid ordering input before SQL { version: 'v2', after: null } 0ms
+   × denies a revoked session before discovering even an empty inbox 0ms
+   × denies restricted accounts 0ms
+   × fails closed for nontrue metadata policy false 0ms
+   × fails closed for nontrue metadata policy true 0ms
+   × fails closed for nontrue metadata policy undefined 0ms
+   × rechecks current session and policy after audit waits before selection 0ms
+   × does not return metadata after current policy closes during selection 0ms
+   × does not select metadata if the access audit fails 0ms
+   × rejects incoherent host rows duplicate 0ms
+   × rejects incoherent host rows expired 0ms
+   × rejects incoherent host rows unsorted 0ms
+   × rejects incoherent host rows extra 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 18 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > lists bounded own current metadata only, audits before selecting, and binds the internal owner
+Error: NOT_IMPLEMENTED
+ ❯ Module.listPracticeReviewInbox src/skills/practice-review-inbox-storage.ts:10:9
+      8|   _canDiscover: (scope: Readonly<{ accountId: string }>) => boolean,
+      9| ): Promise<{ accountId: string; page: PracticeReviewInboxPage }> {
+     10|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+     11| }
+     12|
+ ❯ tests/practice-review-inbox-storage.test.ts:43:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > uses own UUID ordering position with20 entries and one lookahead; never returns the lookahead
+Error: NOT_IMPLEMENTED
+ ❯ Module.listPracticeReviewInbox src/skills/practice-review-inbox-storage.ts:10:9
+      8|   _canDiscover: (scope: Readonly<{ accountId: string }>) => boolean,
+      9| ): Promise<{ accountId: string; page: PracticeReviewInboxPage }> {
+     10|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+     11| }
+     12|
+ ❯ tests/practice-review-inbox-storage.test.ts:56:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > returns an honest empty current observation
+Error: NOT_IMPLEMENTED
+ ❯ Module.listPracticeReviewInbox src/skills/practice-review-inbox-storage.ts:10:9
+      8|   _canDiscover: (scope: Readonly<{ accountId: string }>) => boolean,
+      9| ): Promise<{ accountId: string; page: PracticeReviewInboxPage }> {
+     10|   throw new Error('NOT_IMPLEMENTED');
+       |         ^
+     11| }
+     12|
+ ❯ tests/practice-review-inbox-storage.test.ts:62:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > rejects client authority/invalid ordering input before SQL { version: 'v1', after: null, accountId: 'foreign' }
+ FAIL  tests/practice-review-inbox-storage.test.ts > rejects client authority/invalid ordering input before SQL { version: 'v1', after: 'bad' }
+ FAIL  tests/practice-review-inbox-storage.test.ts > rejects client authority/invalid ordering input before SQL { version: 'v2', after: null }
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:66:65
+     64| });
+     65| it.each([{version:'v1',after:null,accountId:'foreign'},{version:'v1',a…
+     66|   await expect(listPracticeReviewInbox(tx,actor,input,()=>true)).rejec…
+       |                                                                 ^
+     67| });
+     68| it('denies a revoked session before discovering even an empty inbox',a…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > denies a revoked session before discovering even an empty inbox
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'AUTHENTICATION_REQUIRED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:69:97
+     67| });
+     68| it('denies a revoked session before discovering even an empty inbox',a…
+     69|   valid=false;await expect(listPracticeReviewInbox(tx,actor,{version:'…
+       |                                                                                                 ^
+     70|   expect(calls.join(' ')).not.toContain('FROM "PracticeTrialReviewAssi…
+     71| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > denies restricted accounts
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'ACCOUNT_RESTRICTED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "ACCOUNT_RESTRICTED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:73:101
+     71| });
+     72| it('denies restricted accounts',async()=>{
+     73|   restricted=true;await expect(listPracticeReviewInbox(tx,actor,{versi…
+       |                                                                                                     ^
+     74| });
+     75| it.each([false, 'true', undefined])('fails closed for nontrue metadata…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > fails closed for nontrue metadata policy false
+ FAIL  tests/practice-review-inbox-storage.test.ts > fails closed for nontrue metadata policy true
+ FAIL  tests/practice-review-inbox-storage.test.ts > fails closed for nontrue metadata policy undefined
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'FORBIDDEN' }
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:76:97
+     74| });
+     75| it.each([false, 'true', undefined])('fails closed for nontrue metadata…
+     76|   await expect(listPracticeReviewInbox(tx,actor,{version:'v1',after:nu…
+       |                                                                                                 ^
+     77|   expect(calls.join(' ')).not.toContain('FROM "PracticeTrialReviewAssi…
+     78| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > rechecks current session and policy after audit waits before selection
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'AUTHENTICATION_REQUIRED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:81:85
+     79| it('rechecks current session and policy after audit waits before selec…
+     80|   audit.execute.mockImplementation(async()=>{valid=false;return {statu…
+     81|   await expect(listPracticeReviewInbox(tx,actor,{version:'v1',after:nu…
+       |                                                                                     ^
+     82|   expect(calls.join(' ')).not.toContain('FROM "PracticeTrialReviewAssi…
+     83| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > does not return metadata after current policy closes during selection
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'FORBIDDEN' }
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:87:92
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > does not select metadata if the access audit fails
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'STORAGE_UNAVAILABLE' }
+
+- Expected
++ Received
+
+- {
+-   "code": "STORAGE_UNAVAILABLE",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:91:85
+     89| it('does not select metadata if the access audit fails',async()=>{
+     90|   audit.execute.mockRejectedValue(new Error('private driver secret'));
+     91|   await expect(listPracticeReviewInbox(tx,actor,{version:'v1',after:nu…
+       |                                                                                     ^
+     92|   expect(calls.join(' ')).not.toContain('FROM "PracticeTrialReviewAssi…
+     93| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/18]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > rejects incoherent host rows duplicate
+ FAIL  tests/practice-review-inbox-storage.test.ts > rejects incoherent host rows expired
+ FAIL  tests/practice-review-inbox-storage.test.ts > rejects incoherent host rows unsorted
+ FAIL  tests/practice-review-inbox-storage.test.ts > rejects incoherent host rows extra
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'STORAGE_CONTRACT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "STORAGE_CONTRACT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-review-inbox-storage.test.ts:99:85
+     97|   if(kind==='unsorted')rows=[entry(2),entry(1)];
+     98|   if(kind==='extra')Object.assign(rows[0],{answer:'secret'});
+     99|   await expect(listPracticeReviewInbox(tx,actor,{version:'v1',after:nu…
+       |                                                                                     ^
+    100| });
+    101|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/18]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  18 failed (18)
+   Start at  19:04:59
+   Duration  215ms (transform 25ms, setup 0ms, import 83ms, tests 10ms, environment 0ms)
+

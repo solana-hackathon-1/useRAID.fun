@@ -1,0 +1,14 @@
+{
+  "synthetic": true,
+  "mode": "development",
+  "url": "http://127.0.0.1:64262/open",
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l",
+  "bootstrapRedirectAndCurrentCase": true,
+  "responseStatus": 200,
+  "caseReadable": true,
+  "noInjectedExecution": true,
+  "retained": true,
+  "supervisorPid": 99844,
+  "stopCommand": "kill 99844",
+  "expires": "Synthetic evaluator session and assignment last approximately8hours"
+}

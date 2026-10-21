@@ -1,0 +1,232 @@
+{
+  "task_id": "T013",
+  "scope": "GET/HEAD current or historical ownership finding; same-origin idempotent POST using existing canonical storage; Root cookie/quota/route adapter, current reusable docs and own PG HTTP consumer. No action UI/policy discovery yet.",
+  "status": "SELF-EVALUATED; bounded implementation verified locally; full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent review not assigned/authorized",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-21-T013-ownership-http.md",
+  "migration_rollback": "No migration; existing new-write/read gates; retain immutable findings/receipts/history. Correct only through current authorized command/CAS.",
+  "dependency_evidence": "Existing canonical ownership/assignment/policy SQL; own npm-installed PGHTTP host44matching files, 1221matching compiler/test/example files; no Root dependency change.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "No enablement/publication/deployment; full criterion review, hosted CI and release gates absent.",
+  "baseline_sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "source_identity": "Uncommitted ownership HTTP plus preserved prior evaluator UI; source-hashes.json; 1221 current compiler/test/example files and44 own-installed consumer files exact. No Git commit/push/merge/branch change.",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded author HTTP evidence only:101new checks,344unique affected including actual PG,145docs,55planning, own installed PGHTTP, current types/production/4compiled smoke/static PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/review.json; docs/tasks/2026-10-21-T013-ownership-http.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest run tests/practice-ownership-http.test.ts; vitest run tests/practice-ownership-http-host.test.ts",
+      "expected_failure": "Unavailable ownership transport fails scoped reads/commands/privacy/retry validation; Root route absent. HEAD regression expects same read authority.",
+      "observed_failure": "88behaviorfail+1unhandled params error; Root missing module; HEAD1fail90pass. Original source/logs retained.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/red.log; root-red.log; red-source.tar.gz; head-red.log"
+    },
+    "green": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest ownership HTTP/Root; selected actualPG; standalone npmci/types/migrate/start",
+      "observed": "88portable+10Root initialPASS; final91portable+10RootPASS; actualPG341selectedPASS; current independentconsumerPASS.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/green.log; root-green.log; affected.log; consumer.log"
+    },
+    "refactor": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest ownership HTTP/Root/default-off host; docs-links; strict types; nextbuild --webpack; compiled smoke",
+      "observed": "105refactorPASS (101new+4existing);145docs/55planning/currenttypes/build/4compiledsmoke/static/sourceproofPASS. Fullsuite not rerun/claimed.",
+      "evidence_url": "planning/task-evidence/T013-ownership-http/refactor.log; docs.log; production-build.log; production-smoke.json; production-source-proof.json"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    }
+  }
+}

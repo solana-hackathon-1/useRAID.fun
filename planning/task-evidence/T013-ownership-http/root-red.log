@@ -1,0 +1,25 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-ownership-http-host.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-ownership-http-host.test.ts [ tests/practice-ownership-http-host.test.ts ]
+Error: Cannot find module '/src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/ownership/route' imported from /Users/dushyant/Documents/useRAID.fun/tests/practice-ownership-http-host.test.ts
+ ❯ tests/practice-ownership-http-host.test.ts:46:1
+     44|   type PracticeOwnershipHttpHost,
+     45| } from '../src/skills/practice-ownership-http';
+     46| import {
+       | ^
+     47|   GET,
+     48|   POST,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  12:07:51
+   Duration  224ms (transform 77ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

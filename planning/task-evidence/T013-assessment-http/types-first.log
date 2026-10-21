@@ -1,0 +1,2 @@
+examples/practice-assessment-decisions/host.ts(743,50): error TS2345: Argument of type 'string' is not assignable to parameter of type '`${string}-${string}-${string}-${string}-${string}`'.
+examples/practice-assessment-decisions/host.ts(754,50): error TS2345: Argument of type 'string' is not assignable to parameter of type '`${string}-${string}-${string}-${string}-${string}`'.

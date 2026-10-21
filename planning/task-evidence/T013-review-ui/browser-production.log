@@ -1,0 +1,139 @@
+raid-t013-review-ui-20261021
+OWNED DATABASE: raid-t013-review-ui-20261021 loopback port 55006
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:55006"
+
+35 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+Applying migration `202610150005_practice_review_policies`
+Applying migration `202610160001_practice_trial_ownership`
+Applying migration `202610160002_practice_trial_assessments`
+Applying migration `202610160003_assessment_decisions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+  └─ 202610150005_practice_review_policies/
+    └─ migration.sql
+  └─ 202610160001_practice_trial_ownership/
+    └─ migration.sql
+  └─ 202610160002_practice_trial_assessments/
+    └─ migration.sql
+  └─ 202610160003_assessment_decisions/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
+OWNED production BROWSER: http://127.0.0.1:64169 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-review-ui-build-gfin6j0l pid 99110
+
+Running 8 tests using 1 worker
+
+(node:99123) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks (1.8s)
+  ✓  2 [desktop] › tests/browser-practice-review/practice-review.spec.ts:75:1 › visitor, wrong evaluator and wrong purpose never get private HTML (359ms)
+  ✓  3 [desktop] › tests/browser-practice-review/practice-review.spec.ts:105:1 › saved revocation and current session loss remove details on recheck (1.3s)
+  ✓  4 [desktop] › tests/browser-practice-review/practice-review.spec.ts:125:1 › expired appointments and restricted accounts fail closed (1.4s)
+(node:99254) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/browser-practice-review/practice-review.spec.ts:9:1 › assigned evaluator reads exact private evidence, original rubric and keyboard rechecks (1.8s)
+  ✓  6 [mobile] › tests/browser-practice-review/practice-review.spec.ts:75:1 › visitor, wrong evaluator and wrong purpose never get private HTML (371ms)
+  ✓  7 [mobile] › tests/browser-practice-review/practice-review.spec.ts:105:1 › saved revocation and current session loss remove details on recheck (1.3s)
+  ✓  8 [mobile] › tests/browser-practice-review/practice-review.spec.ts:125:1 › expired appointments and restricted accounts fail closed (1.4s)
+
+  8 passed (11.0s)
+OWNED SERVER CLOSED: True
+OWNED CLEANUP: 0 raid-t013-review-ui-20261021 

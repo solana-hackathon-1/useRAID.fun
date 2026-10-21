@@ -1,0 +1,58 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-inbox-storage.test.ts (18 tests | 3 failed) 10ms
+   × lists bounded own current metadata only, audits before selecting, and binds the internal owner 5ms
+   × uses own UUID ordering position with20 entries and one lookahead; never returns the lookahead 1ms
+   × returns an honest empty current observation 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > lists bounded own current metadata only, audits before selecting, and binds the internal owner
+SkillTaxonomyStorageError: STORAGE_CONTRACT
+ ❯ fail src/skills/practice-review-inbox-storage.ts:20:9
+     18| } from './practice-review-inbox-contracts';
+     19| function fail(code: SkillTaxonomyStorageError['code']): never {
+     20|   throw new SkillTaxonomyStorageError(code);
+       |         ^
+     21| }
+     22| async function query<Row>(
+ ❯ Module.listPracticeReviewInbox src/skills/practice-review-inbox-storage.ts:123:56
+ ❯ tests/practice-review-inbox-storage.test.ts:59:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > uses own UUID ordering position with20 entries and one lookahead; never returns the lookahead
+SkillTaxonomyStorageError: STORAGE_CONTRACT
+ ❯ fail src/skills/practice-review-inbox-storage.ts:20:9
+     18| } from './practice-review-inbox-contracts';
+     19| function fail(code: SkillTaxonomyStorageError['code']): never {
+     20|   throw new SkillTaxonomyStorageError(code);
+       |         ^
+     21| }
+     22| async function query<Row>(
+ ❯ Module.listPracticeReviewInbox src/skills/practice-review-inbox-storage.ts:123:56
+ ❯ tests/practice-review-inbox-storage.test.ts:87:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/practice-review-inbox-storage.test.ts > returns an honest empty current observation
+SkillTaxonomyStorageError: STORAGE_CONTRACT
+ ❯ fail src/skills/practice-review-inbox-storage.ts:20:9
+     18| } from './practice-review-inbox-contracts';
+     19| function fail(code: SkillTaxonomyStorageError['code']): never {
+     20|   throw new SkillTaxonomyStorageError(code);
+       |         ^
+     21| }
+     22| async function query<Row>(
+ ❯ Module.listPracticeReviewInbox src/skills/practice-review-inbox-storage.ts:123:56
+ ❯ tests/practice-review-inbox-storage.test.ts:99:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 15 passed (18)
+   Start at  19:06:25
+   Duration  191ms (transform 45ms, setup 0ms, import 84ms, tests 10ms, environment 0ms)
+

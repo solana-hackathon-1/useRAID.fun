@@ -1,0 +1,37 @@
+{
+  "label": "SELF-EVALUATED; bounded HTTP implementation VERIFIED_IN_TEST; full T013 NOT VERIFIED",
+  "startUtc": "2026-10-21T07:29:45.761502+00:00",
+  "endUtc": "2026-10-21T09:54:15.517209+00:00",
+  "elapsedSeconds": 8669.755707,
+  "baselineSha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "branch": "claude/t013-practice-trial-ui",
+  "source": "Uncommitted; source-hashes.json; baseline.json distinguishes prior work. Production/consumer exact-source manifests retained. No Git/delegation/enablement/remote write.",
+  "requirementsChecked": "Task acceptance; R05/R06/R11/R12/R15/R16/I05/I06/I07/I10/I11/I13; original case/current assignment/policy/ownership/CAS/receipts; exact output and state boundary; no money/grant/capacity/reputation.",
+  "verification": {
+    "red": "172 failing behavior tests+1control/3path rejection errors from unimplemented scaffold. root-red: missing Root route + new read-decision host test fails,5existing pass.",
+    "green": "173 transport PASS; Root12+new read-decision1+existing5 PASS=191. Final183transport+12Root+newhost1=196new; 441 selected checks/9files116.72s including realPG PASS.",
+    "refactor": "387 checks/6files1.47s PASS includes196new,11existinghosts,31sharedcontracts,149docs. 590unique affected+docs, not a full-suite claim.",
+    "consumer": "npmci24packages25audited0vuln/strict types/minimal actualPG/WebRequestHTTP PASS; actual VERIFY/nonverification/reassessment/revoke/history/stale+changedkey409/foreign404/writeoff+withdrawal original replay/postCOMMIT hide/revokedscope;49exactfiles see consumer-source-proof.json.",
+    "build": "isolated current Nexttypegen/strictTS/productionWebpack PASS; tencompiledGET/HEAD/POSTorigin/auth/privateNoStore/VaryCookie/safeBody checks PASS, serverclosed. Finalroottypes recorded separately.",
+    "static": "ownedeslint0errors0warnings;55planningPASS17.028s;identityASTfencePASS;format/diff checks recorded.",
+    "skips": "No new browser-visible page. Prior ownership preview retained/reverified200, its browser evidence applies to its separate source only. No fullparent2837 rerun, Dockerimage, hostedNode22, realprovider/load, independentreview/UAT/business/operating/release; localNode26. Root dependencies/schema/domain unchanged; affected realPG+sharedprotocol regression, current types/build/consumer gates cover this slice.",
+    "reused": "Rootsecurity policy priorPASS only unchanged exactpackage/lock/audit/allowlist; consumer own install audited0vuln. No new advisory claim.",
+    "typesFinal": "PASS types-final-corrected.log; test mutation cast uses unknown intermediate explicitly because variant fixture fields are intentionally conditional; no runtime change."
+  },
+  "findingsAndFixes": [
+    "Historical test fixture initially mutated shared current/source ref aliases, yielding5failures; replace currentrefs without changing required behavior/assertions. Failure retained.",
+    "FirststrictTS caught example passing genericstable key to UUID-inferred old helper; review then forwarded complete authenticated command actor/key/request into canonical storage instead of substituting fixture evaluator. Finalconsumer type/PG passed.",
+    "Readclosure fixture now explicitly closes after canonical COMMIT, preserving true current-read checks inside storage.",
+    "README changed during successful consumer run; manifest correctly rejected only README. Retained failure, refreshed README and verified all already-executed code/dependencies unchanged; no redundant rerun.",
+    "Additional nonverification/revocation/lineage/foreigncase/outputcoherence checks pass; test-only mutation types replace any without runtime/assertion changes.",
+    "Final strict compile rejected test-only intersection because nullable review date and decision date conflict. Kept runtime assertions unchanged, narrowed mutation surface type; first failure types-final.log retained, corrected result types-corrected.log."
+  ],
+  "resources": {
+    "taskContainer": "raid-t013-assessment-http-20261021",
+    "automaticStop": 0,
+    "compiledServer": "production-smoke.json: tenchecks/serverportclosed",
+    "retainedPreview": "prior ownership http://127.0.0.1:49324/open supervisor16680 reverified200; stoponlykill16680; prior olderpreviews untouched"
+  },
+  "independent": "NOT VERIFIED; full27criteria+7hostedchecks remain absent",
+  "next": "Actual assessment context and reasoned form/current review+state+decisions, safe stable pending key/body, current policy refs, denial/stale/replay behavior; then independent/UAT/hosted/operating/release evidence when staffed/authorized."
+}

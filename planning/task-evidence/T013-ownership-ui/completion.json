@@ -1,0 +1,232 @@
+{
+  "task_id": "T013",
+  "scope": "Actual approved-policy/current ownership context, canonical pure ownership/results schemas preserving existing exports, injectable stable pending controller and accessible private dedicated ownership form/link.",
+  "status": "SELF-EVALUATED; bounded implementation VERIFIED_IN_TEST; full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent review not assigned/authorized",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-21-T013-ownership-ui.md",
+  "migration_rollback": "No migration; existing new-write/read gates; retain immutable findings/receipts/history. Correct only through current authorized command/CAS.",
+  "dependency_evidence": "Actual canonical current source+existing protected ownershipAPI; own PGHTTPReact30packages31audited0vuln,50exact sourcefiles,1246exactcompilerfiles; Root dependencies unchanged.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "No enablement/publication/deployment; full criterion review, hosted CI and release gates absent.",
+  "baseline_sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "source_identity": "Uncommitted context/form on1877b2a with prior UI+HTTP preserved;1246current compiler/test/example/schema/config files exact,50own-installed consumer files exact; source-hashes.json. No commit/push/merge/branch change.",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded author context/form evidence:50new checks,359selected actualPG +12later regressions,309final refactor/docs,55planning,16finaldev/prodbrowser, currenttypes/build/ownPGHTTPReact/sourceproof PASS. Full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review.json; docs/tasks/2026-10-21-T013-ownership-ui.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest ownership-client/context/editor; actual browser and geometry probe",
+      "expected_failure": "Missing scoped current context/form and stable command recovery; adverse authority/hydration/historical provenance before fixes.",
+      "observed_failure": "21controllerfail;10contextfail3controls;viewmissingmodule; strictassignment1fail13pass, authbody1fail21pass, readiness/history2fail3pass; actualgeometryfailure retained.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/client-red.log; context-red.log; view-red.log; assignment-red.log; auth-body-red.log; review-fixes-red.log; visual-red.log"
+    },
+    "green": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest ownershipclient/context/editor/Root; actualPGselected; owninstalledPGHTTPReact; Playwrightdev/prod",
+      "observed": "50newPASS;359selectedPASS; current ownconsumerPASS;16finalbrowserPASS after genuine defects fixed.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/review-fixes-green.log; affected.log; consumer.log; browser-development.log; browser-production.log"
+    },
+    "refactor": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest owned and affected modules/docs; types; nextbuild --webpack; planning/lint/identity/format",
+      "observed": "309PASS;55planning/currenttypes/build/ownedlint0errors3warnings/identity/sourceproof/preview PASS; parentfullsuite not rerun or claimed.",
+      "evidence_url": "planning/task-evidence/T013-ownership-ui/final-refactor.log; types-final.log; production-build.log; production-source-proof.json; preview-verified.json"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    }
+  }
+}

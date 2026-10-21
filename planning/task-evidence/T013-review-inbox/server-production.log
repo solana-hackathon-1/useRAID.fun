@@ -1,0 +1,6 @@
+▲ Next.js 16.3.8
+- Local:         http://127.0.0.1:54315
+- Network:       http://127.0.0.1:54315
+✓ Ready in 88ms
+✓ Running next.config.ts took 17ms
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)

@@ -1,0 +1,12 @@
+
+/Users/dushyant/Documents/useRAID.fun/src/skills/practice-trial-ownership-storage.ts
+  24:3  warning  'PracticeTrialOwnershipRecordSchema' is defined but never used  @typescript-eslint/no-unused-vars
+  27:8  warning  'PracticeTrialOwnershipRecord' is defined but never used        @typescript-eslint/no-unused-vars
+
+/Users/dushyant/Documents/useRAID.fun/tests/practice-ownership-client.test.ts
+   29:25  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   29:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  147:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+✖ 5 problems (0 errors, 5 warnings)
+

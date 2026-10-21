@@ -1,0 +1,21 @@
+{
+  "src/skills/practice-assessment-http.ts": "1c1bc255be34a9f1d8b6c8350fd8a21e6ee0f7025097339ed5aeb5e516fa96d6",
+  "src/lib/practice-assessment-http.ts": "6b3f9956ea4d98145385cd68ec031a40f51942cb069fce15416be8659b40fa50",
+  "src/lib/practice-assessment-decisions-host.ts": "b11be8f061305881dbe63fdb53ed77b202e15d3aba6a07139d68520a596fd84e",
+  "src/contracts/protocol.ts": "b5cd4950d60d652b2d7c4532b13a72dc7e8b0d2c5c622868d3ab7bbfa323822f",
+  "tests/practice-assessment-http.test.ts": "df9fd0e3fc97d20c393441826388c9ae80ef8ec5fda954bba2682f041839530e",
+  "tests/practice-assessment-http-host.test.ts": "e7e601e199fb0a81db17c89a83df24e58872e5d30cc413017a4bb45d7f22a196",
+  "tests/practice-assessment-decision-host.test.ts": "f42be691e2128cd05580db5d88422a5ac6b8357980ffd7db2549681493cbdcb3",
+  "tests/helpers/practice-assessment-http-fixture.ts": "0690f0f2fe0637a6d5499460d3046a1995d16fd9bdc2d55614a7cf9077671bb7",
+  "planning/raid-ci-matrix.json": "14fdf75a960911ed81c992d2cf33894ccf7ed84ac9a6085117bc4516f6c422bb",
+  "docs/raid-practice-assessment-http.md": "7b54f946e77fba1549e4ae8a0ee8d0baef5dc1389808155463da4e7747806d0a",
+  "docs/tasks/2026-10-21-T013-assessment-http.md": "0cbaf96e88d096cd51e5aab5bf342406c4fd5141d446ac1897d9a74bc87d5458",
+  "docs/raid-module-reuse.md": "50a57736594cfbaede32c1136dc32cb57767ddae1c4e240d6fc9377d944ee64a",
+  "docs/raid-practice-trial-assessments.md": "4de5c48b447f87bdd67301fe220e8618e784b59019dbc8c98eeb0192c733c339",
+  "docs/raid-practice-assessment-decisions.md": "46e596bf0843263a41a7f3b644e1272b1365fd079c7ee3ac3c8b7d221ed0c341",
+  "examples/practice-assessment-decisions/host.ts": "2103397ddb0e8883a96f50e7f0046f0225672678ea6864aa0ee2367c7dc119b3",
+  "examples/practice-assessment-decisions/README.md": "561b44075d67f8bcffec785944a99f21e696a5368f79570e00ae3c049e29043d",
+  "src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/assessment/route.ts": "b7d7ab62a50324f1c6e23df19765f3a447d021936af81e281071858d43f2c23c",
+  "src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/assessment/state/route.ts": "aa6e18c5fba85fdba78303b238bd3a8c0b8b3d07bd3857739d6418efcdf210c3",
+  "src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/assessment/decisions/route.ts": "a35f25a7064f922ee762f0b8633338055abbf8d283cfe5870bbc3559d6936cfe"
+}

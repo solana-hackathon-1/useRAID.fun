@@ -1,0 +1,232 @@
+{
+  "task_id": "T013",
+  "scope": "Read-only evaluator exact-case server page and portable React evidence view",
+  "status": "SELF-EVALUATED bounded implementation, full T013 NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "NOT VERIFIED \u2014 independent review not assigned/authorized",
+  "handoff": "docs/ai-handoff/CURRENT.md; docs/tasks/2026-10-21-T013-review-ui.md",
+  "migration_rollback": "No migration; disable existing review read flag; retain immutable history/audits and owner submission reads.",
+  "dependency_evidence": "Existing committed protected GET/current assigned SQL reader; own30packages31audited0vuln PostgreSQL/HTTP/React consumer; production-source-proof.json and consumer-source-proof.json.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "No enablement/publication/deployment; full criterion review, hosted CI and release gates absent.",
+  "baseline_sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "source_identity": "Uncommitted UI on1877b2a identified by source-hashes.json. TDD sha is parent baseline, not an implementation commit.",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded author UI evidence only:31new loader/view/Root checks,134selected incl realPG,174refactor/docs,16browser dev/prod, ownPG/HTTP/React, strict/build/static pass; full criterion/independent/UAT/hosted/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/review.json; docs/tasks/2026-10-21-T013-review-ui.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "result": "FAIL",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest run tests/practice-review-page.test.ts tests/practice-review-view.test.ts; vitest run tests/practice-review-root-page.test.ts",
+      "expected_failure": "Missing exact-case page/evidence view and Root wiring fail meaningful behavior tests before implementation.",
+      "observed_failure": "23behaviorfails/1controlpass on unsupported stubs; Root page absent-module failure. Original source tar retained.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/red-behavior.log; root-red.log; red-source.tar.gz"
+    },
+    "green": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest page/view/Root/HTTP; actualPG selected; owninstalledPGHTTPReact; Playwright dev+prod",
+      "observed": "24unitGREEN +7Root; selected134PASS; current owninstalledPGHTTPReact PASS;16browserPASS after documented harness corrections.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/green.log; root-green.log; affected.log; consumer.log; browser-development.log; browser-production.log"
+    },
+    "refactor": {
+      "result": "PASS",
+      "sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+      "command": "vitest run tests/docs-links.test.ts tests/practice-review-page.test.ts tests/practice-review-view.test.ts tests/practice-review-root-page.test.ts; tsc; nextbuild --webpack",
+      "observed": "174PASS; current strict types/build/lint/format/identity/planning and source proof. Full2837 baseline not rerun or claimed for new UI.",
+      "evidence_url": "planning/task-evidence/T013-review-ui/refactor.log; types.log; final-types.log; production-build.log; production-source-proof.json"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    }
+  }
+}

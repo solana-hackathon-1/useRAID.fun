@@ -1,0 +1,71 @@
+{
+  "label": "SELF-EVALUATED; bounded implementation verified locally; full T013 NOT VERIFIED",
+  "agent": "Codex /root (sole writer, no delegation)",
+  "branch": "claude/t013-practice-trial-ui",
+  "baselineSha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "sourceIdentity": "Uncommitted ownership HTTP plus preserved prior evaluator UI; source-hashes.json; 1221 current compiler/test/example files and44 own-installed consumer files exact. No Git commit/push/merge/branch change.",
+  "requirementsChecked": [
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I11",
+    "I13",
+    "D07",
+    "D08",
+    "D13",
+    "AC04\u201307(partial)",
+    "AC40(partial)",
+    "AC42\u201343(partial)",
+    "AC73\u201375(partial)",
+    "blueprint24.8/33/34/39/40"
+  ],
+  "scope": "GET/HEAD current or historical ownership finding; same-origin idempotent POST using existing canonical storage; Root cookie/quota/route adapter, current reusable docs and own PG HTTP consumer. No action UI/policy discovery yet.",
+  "authorityAndEffects": "Current server Session/account plus actual exact evaluator appointment/purpose; admin alone no access. New ownership command requires canonical approved policy, original source references and CAS. Replay retains original finding after writeoff/policy withdrawal under current assignment authority. Existing immutable version/current pointer, receipt and ID-only audit only; no schema/core rule/flag/appointment/rank/grant/capacity/money/provider changes.",
+  "verification": {
+    "red": "88behavior failures against unavailable transport seam plus1unhandled rejected-param error retained. Root absent-module RED. HEAD regression1fail90pass before fix; no assertions weakened.",
+    "green": "88portable +10Root PASS. Final91portable+10Root=101new checks; refactor105 includes4existing default-off host checks.",
+    "affected": "341PASS/9files/43.97s incl actual PG ownership/read/policy authority, history/CAS/replay/expiry/revocation/audit plus portable and Root APIs. After HEAD/current-target/method additions,105PASS/3files;344unique affected tests total, no repeated full suite.",
+    "docs": "145PASS current docs-links; affected+docs489unique. Planning55/55PASS14.655s.",
+    "consumer": "Own npmci24packages25audited0vuln, strict types and actual minimal PostgreSQL migrate/GET/HEAD/POST PASS. Real HTTP save/correction/current/history/staleCAS/changed-key/foreign/wrongpurpose/withdrawal-writeoff replay/revoked retry; original submission staysUNCONFIRMED.44source/dependency/schema files exact; independentNodeModules true.",
+    "typesProduction": "Final Nexttypegen/strictTS/productionWebpack PASS.1221source/schema/config/test/example files match isolated snapshot. Original checkout Next-generated file preserved. Earlier build retained before HEAD fix; current build rerun for material source change.",
+    "compiledSmoke": "4production requests PASS: signedoutGET/HEAD/valid-originPOST401, foreign-originPOST403; privateNoStore/VaryCookie/noCORS/safeJSON or emptyHEAD. Owned server stopped/portclosed. Does not prove authenticated Root end-to-end save; mocked Root adapter + actual PG portable HTTP are separate evidence.",
+    "static": "Owned ESLint0; identity AST fence PASS; selectedformat/diff checks recorded.",
+    "reused": "Prior exact Root security-policy PASS from audit-final.log; package.json/package-lock/audit script/allowlist match1877b2a. Prior16dev/prod browser checks apply only to unchanged case screen, not new command UI; source hashes matched. Retained old read-only preview reverified200/nativeRecheck.",
+    "skipped": "Full198files2837tests coversparentonly; no full-suite rerun because dependency/domain/schema unchanged. No new screen/browser suite, hostedNode22/Dockerimage/independent criterion/UAT/business/release/load/provider run. LocalNode26/Next16.3.8/Vitest4.1.11/pinnedPG16. Reuse is exact recorded source/dependencies/environment only.",
+    "finalCombinedRefactor": "250PASS/4files/1.13s:91portable+10Root+4existing default-off host+145docs; all final formatting and diff checks pass. No duplicate unique-test count."
+  },
+  "findingsAndFixes": [
+    "Automatic Next HEAD initially received405 for an authenticated read. Added meaningful reproducing test1fail90pass, allowedHEAD through same current GET authority, now91portablePASS and actual consumerHEAD200; Next strips wire body. Current compiler/consumer rerun after this material fix.",
+    "Initial unavailable seam left rejected route-param promise unobserved; contained immediately in final handler, including origin/auth failures. Original88fail+1error retained.",
+    "No storage, lock ordering, schema, existing default flags or assertions weakened. Canonical record author is historical provenance, not current reader identity; explicit historical-other-author case passes.",
+    "Read gate may close after commit: preserve200 EXECUTED/REPLAYED status withnullview, never claim a committed outcome failed; write availability can independently close."
+  ],
+  "resources": "Disposable raid-t013-ownership-http-20261021 automatically stopped0/Runningfalse; production server stopped/portclosed. Existing UI supervisor99844/PG and old raid-practice-ui-20261021 retained untouched; no volumes/images/evidence removed.",
+  "preview": {
+    "url": "http://127.0.0.1:64262/open",
+    "caseURL": "http://127.0.0.1:64254/evaluator/practice/e1771d26-e1b5-4d82-baca-62db179c1322/submissions/9f12aff1-1e53-47a1-a14a-55a589913dd1?purpose=OWNERSHIP_REVIEW",
+    "status": 200,
+    "nativeRecheckPresent": true,
+    "mode": "development",
+    "source": "prior UI snapshot recorded in T013-review-ui/preview-resources.json",
+    "supervisorPid": 99844,
+    "retained": true,
+    "stopCommand": "kill 99844"
+  },
+  "completion": "27numbered fullcriteria NOT VERIFIED +7hostedchecks absent; validator run recorded separately; author verification is not independent acceptance.",
+  "next": [
+    "Approved-policy/current ownership context and reasoned evaluator action UI with exact original case/references, stable pending key/body and recovery after uncertain save.",
+    "Assessment action API/UI as separate bounded slice; preserve independent/UAT/hosted/operating/release and parked identity obligations.",
+    "Git publication only under applicable explicit owner authorization; preserve all working-tree changes and retained preview."
+  ],
+  "timing": {
+    "start": "2026-10-21T06:25:40.956753+00:00",
+    "end": "2026-10-21T06:34:57.894383+00:00",
+    "elapsedSeconds": 556.938
+  }
+}

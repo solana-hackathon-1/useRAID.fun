@@ -1,0 +1,19 @@
+OWNED development BROWSER: http://127.0.0.1:65291 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-ownership-ui-build-tjivdhga pid 14493
+
+Running 8 tests using 1 worker
+
+(node:14513) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:16:1 › appointed evaluator saves, rechecks and corrects a finding using exact source (6.1s)
+  ✓  2 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:53:1 › uncertain response retries identical command after approved policy withdrawal (1.8s)
+  ✓  3 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:84:1 › stale finding requires recheck and revoked access hides visible private context (3.2s)
+  ✓  4 [desktop] › tests/browser-practice-ownership/practice-ownership.spec.ts:104:1 › missing policy, signed-out account and wrong evaluator never offer a new finding (2.3s)
+(node:14560) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:16:1 › appointed evaluator saves, rechecks and corrects a finding using exact source (2.8s)
+  ✓  6 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:53:1 › uncertain response retries identical command after approved policy withdrawal (4.3s)
+  ✓  7 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:84:1 › stale finding requires recheck and revoked access hides visible private context (2.7s)
+  ✓  8 [mobile] › tests/browser-practice-ownership/practice-ownership.spec.ts:104:1 › missing policy, signed-out account and wrong evaluator never offer a new finding (2.4s)
+
+  8 passed (26.7s)
+OWNED SERVER CLOSED: True

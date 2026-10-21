@@ -1,0 +1,23 @@
+{
+  "baselineSha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "branch": "claude/t013-practice-trial-ui",
+  "source": "Uncommitted additions on1877b2a plus preserved prior UI; no implementation commit exists",
+  "sha256": {
+    "src/skills/practice-ownership-http.ts": "c2901a8674e73a8ff2af4e324884bd25711dacc90ff935bdae3bfc455878f5cc",
+    "src/lib/practice-ownership-http.ts": "2a99bde8d18e98660bafee3cd62edcee8be14ea0d1f5bca2c8ae9d2cdbdd9bb0",
+    "src/app/api/v1/practice/reviews/[assignmentId]/submissions/[submissionId]/ownership/route.ts": "186521c23a4be0058fe7428c228bf27bdea31c3f9a5f77ffbcf1770ba49222dd",
+    "tests/practice-ownership-http.test.ts": "e26c70befa0f4d3d39799f22bd2bc4f58fe5b87c112185a2deaf6d7b1c26222a",
+    "tests/practice-ownership-http-host.test.ts": "c580cc33df3d8056fb6245809f080c5c9ccdc1f0a97eb400b9fa713cbaa80e83",
+    "examples/practice-trial-ownership/host.ts": "4a7aeea55f811593dd6db27fcc016ae9861f1d9681b098b0e794735a5a888b88",
+    "examples/practice-trial-ownership/README.md": "98896eae603ef8943de456299a4fb26135316a108ade0c4d69ad6524cf8d5c54",
+    "examples/practice-trial-ownership/skills/practice-ownership-http.ts": "c2901a8674e73a8ff2af4e324884bd25711dacc90ff935bdae3bfc455878f5cc",
+    "examples/practice-trial-ownership/http-contracts/json.ts": "96fac5f00ea58421feba35d1a0c6ae631bcf8e1c79e6a74b94ddf238c83d905f",
+    "docs/raid-practice-ownership-http.md": "2e2b5c5817b53ef70f084506bdca009f7510aa8b1953e69b2df2ed9fd1e71212",
+    "docs/raid-practice-trial-ownership.md": "2b8f84270515b54f9b9e4d580904a934b3de080b2848b6f0e06e8156fa8e2e80",
+    "docs/raid-module-reuse.md": "e42b1cb287f5b93f730c39b90eb1079d59ee93089c6b8d5809e691a9f1aab46f",
+    "docs/tasks/2026-10-21-T013-ownership-http.md": "27d14c223f6c056b67ffcb0f864424be290f61c226eee22ab8111a58bed6a2be",
+    "planning/raid-ci-matrix.json": "ac2e6e644bd7b8312f0c7397f43bae622b99b0e7240b0ade4dfd715af73022f9"
+  },
+  "preserved": "Prior evaluator UI pinned by reuse-proof.json; generatednext-env/WARP/.claude/worktrees retained; no staging/publication",
+  "stagedFiles": []
+}
