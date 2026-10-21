@@ -22,6 +22,12 @@ export default async function SkillCatalogPage() {
       <div className="studio">
         <h1>Private skill claims</h1>
         <p role="status">The skill catalog is currently unavailable. Try again later.</p>
+        <p>
+          <Link className="inline-link" href="/raider/practice">
+            Practice trials
+          </Link>{' '}
+          are unpaid exercises with public or synthetic material. They do not verify a rank.
+        </p>
         <Link className="inline-link" href="/raider/onboarding">
           Raider orientation
         </Link>
@@ -48,6 +54,12 @@ export default async function SkillCatalogPage() {
       ) : (
         <p>No active skill categories are available.</p>
       )}
+      <p>
+        <Link className="inline-link" href="/raider/practice">
+          Practice trials
+        </Link>{' '}
+        are unpaid exercises with public or synthetic material. They do not verify a rank.
+      </p>
       <Link className="inline-link" href="/raider/onboarding">
         Raider orientation
       </Link>

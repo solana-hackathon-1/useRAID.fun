@@ -1,5 +1,13 @@
 <!-- Merge order 2026-10-16: remote prefix (origin/main 5295db4) first, then local reconciliation prefix (original main 2992a78 working tree), then shared base from a2085ff. Entries are not globally timestamp-sorted. -->
 
+# Claude — published branch claude/t013-practice-trial-ui; skills→practice link — 2026-10-21T05:00:00Z
+
+**SELF-EVALUATED.** Owner explicitly authorized commit+push ("commit this and push and continue with no conflicts"). Created branch `claude/t013-practice-trial-ui` at `origin/main` 5295db4 via `update-ref`/`symbolic-ref` + index-only reset (working tree untouched; local `main` still `2992a78`, not modified). Pushed commits `6dce6cd` (practice trial UI) and `35f9b61` (identity-lock WIP, fence fixes, reconciliation, evidence); fast-forwardable from origin/main (no conflicts). NOT merged, NO PR opened (merge/PR not authorized). Excluded from commits: `next-env.d.ts` (dev-server artifact), `WARP.md`, `.claude/worktrees/`. Hosted CI on Node 22, independent review, UAT NOT VERIFIED; parked identity protocol still unreviewed, links/folds default-off.
+
+**Follow-up slice (uncommitted when written):** `/raider/skills` links to `/raider/practice` (signed-in states only; states practice does not verify a rank). RED 2/3 → GREEN 3/3 `tests/raider-skills-practice-link.test.ts`, registered in CI matrix; affected vitest 287 pass; tsc 0; eslint clean; planning 55/55. Preview server (pid 83628, http://127.0.0.1:3026) and PG container `raid-practice-ui-20261021` still running for owner inspection; stop: `kill 83628 && docker stop raid-practice-ui-20261021`.
+
+---
+
 # Claude — T013 Raider practice trial UI built locally (uncommitted); independent acceptance pending — 2026-10-21T04:00:00Z
 
 **SELF-EVALUATED / LOCAL, UNCOMMITTED.** Owner said "continue building"; the recorded Codex next step after PR229 was the Raider trial UI over the merged practice-portal API (`docs/tasks/2026-10-16-T013-practice-portal.md`). Working tree still `origin/main` 5295db4 content + local WIP on HEAD `2992a78`; no commit/branch/stash/push/merge/deploy; no agents; no live flags/seeds/providers. Read installed Next 16.3.8 dynamic-route docs first.
