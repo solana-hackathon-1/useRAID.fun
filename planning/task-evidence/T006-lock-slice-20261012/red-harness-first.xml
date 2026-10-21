@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="5" errors="0" time="22.99783725">
+    <testsuite name="tests/identity-protocol-db.test.ts" timestamp="2026-10-12T11:34:17.587Z" hostname="0xd.local" tests="6" failures="5" errors="0" skipped="0" time="22.99783725">
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, writerFirst" time="1.180210958">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:83,&quot;blockers&quot;:[81],&quot;table&quot;:&quot;Session&quot;}]}
+
+            </system-out>
+            <failure message="expected [ …(1) ] to deeply equal []" type="AssertionError">
+AssertionError: expected [ …(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   PrismaClientUnknownRequestError {
++     &quot;message&quot;: &quot;
++ Invalid `tx.session.deleteMany()` invocation in
++ /Users/dushyant/Documents/useRAID.fun/tests/identity-protocol-db.test.ts:95:24
++
++   92 await tx.$queryRaw`SELECT id FROM \&quot;User\&quot; WHERE id=${user.id} FOR UPDATE`;
++   93 rooted.open();
++   94 if (order === &apos;mergeFirst&apos;) await releaseMerge.promise;
++ → 95 await tx.session.deleteMany(
++ Error occurred during query execution:
++ ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \&quot;40P01\&quot;, message: \&quot;deadlock detected\&quot;, severity: \&quot;ERROR\&quot;, detail: Some(\&quot;Process 83 waits for ShareLock on transaction 844; blocked by process 81.\\nProcess 81 waits for ShareLock on transaction 845; blocked by process 83.\&quot;), column: None, hint: Some(\&quot;See server log for query details.\&quot;) }), transient: false })&quot;,
++     &quot;clientVersion&quot;: &quot;6.19.3&quot;,
++     &quot;name&quot;: &quot;PrismaClientUnknownRequestError&quot;,
++   },
++ ]
+
+ ❯ tests/identity-protocol-db.test.ts:106:22
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, mergeFirst" time="1.104526709">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:81,&quot;blockers&quot;:[83],&quot;table&quot;:&quot;Session&quot;},{&quot;pid&quot;:83,&quot;blockers&quot;:[81],&quot;table&quot;:&quot;Session&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; SHARE serializes account restriction with actual sign-in issuance" time="0.042993959">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/identity-protocol-db.test.ts:130:30
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst" time="20.02964325">
+            <failure message="Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;." type="Error">
+Error: Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with &quot;testTimeout&quot;.
+ ❯ tests/identity-protocol-db.test.ts:135:41
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst" time="0.053484042">
+            <failure message="
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42710`. Message: `ERROR: trigger &quot;zz_protocol_finance_pause&quot; for relation &quot;UsdcAllocation&quot; already exists`" type="PrismaClientKnownRequestError">
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42710`. Message: `ERROR: trigger &quot;zz_protocol_finance_pause&quot; for relation &quot;UsdcAllocation&quot; already exists`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/identity-protocol-db.test.ts:146:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: &apos;P2010&apos;, meta: { code: &apos;42710&apos;, message: &apos;ERROR: trigger &quot;zz_protocol_finance_pause&quot; for relation &quot;UsdcAllocation&quot; already exists&apos; }, clientVersion: &apos;6.19.3&apos;, batchRequestIdx: undefined }
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2 obviously nonempty account is rejected before any strong root acquisition" time="0.582765459">
+            <failure message="expected null to match object { ok: false, error: { status: 409 } }" type="AssertionError">
+AssertionError: expected null to match object { ok: false, error: { status: 409 } }
+
+- Expected:
+{
+  &quot;error&quot;: {
+    &quot;status&quot;: 409,
+  },
+  &quot;ok&quot;: false,
+}
+
++ Received:
+null
+
+ ❯ tests/identity-protocol-db.test.ts:182:20
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

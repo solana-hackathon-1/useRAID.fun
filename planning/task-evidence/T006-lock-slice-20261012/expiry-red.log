@@ -1,0 +1,38 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > denies a primary sign-in whose claimed challenge expires while waiting for its final root
+{"waitTrace":[{"pid":669,"blockers":[670],"table":"User"}]}
+
+ ❯ tests/identity-protocol-db.test.ts (8 tests | 1 failed | 7 skipped) 746ms
+     × denies a primary sign-in whose claimed challenge expires while waiting for its final root 744ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > denies a primary sign-in whose claimed challenge expires while waiting for its final root
+AssertionError: expected null to match object { status: 401 }
+
+- Expected:
+{
+  "status": 401,
+}
+
++ Received:
+null
+
+ ❯ tests/identity-protocol-db.test.ts:425:29
+    423|       await new Promise((resolve) => setTimeout(resolve, +expiry - Dat…
+    424|       release.open(); await held;
+    425|       expect(await pending).toMatchObject({ status: 401 });
+       |                             ^
+    426|       expect(await db.session.count({ where: { userId: user.id } })).t…
+    427|       expect((await db.walletChallenge.findUniqueOrThrow({ where: { di…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  18:09:26
+   Duration  1.22s (transform 137ms, setup 0ms, import 356ms, tests 746ms, environment 0ms)
+

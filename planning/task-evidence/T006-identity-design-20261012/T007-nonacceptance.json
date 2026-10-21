@@ -1,0 +1,136 @@
+{
+  "task_id": "T007",
+  "scope": "Current-source identity protocol design and owner policy preparation; no production implementation",
+  "status": "IN_PROGRESS / NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": null,
+  "baseline_sha": "2992a78cc77112569740abf0522d399994c77910",
+  "handoff": "docs/tasks/T006-identity-design-20261012.md",
+  "migration_rollback": "No application/schema/migration change. Future selective session attribution requires reviewed additive DDL; not delivered.",
+  "dependency_evidence": [
+    "Historical design unaccepted; current-source author reproductions fail; primitive SQL checks are narrow evidence only."
+  ],
+  "open_decisions": [
+    "Suspended self-revoke",
+    "Existing unattributed session rollout",
+    "Canonical signed destination serialization/handle-change and pending challenge compatibility",
+    "Global protocol acceptance and module consumer compatibility",
+    "O11 recovery/retention; capacity and G10 durability"
+  ],
+  "release_gate_disposition": "Linking/folds remain disabled. No UAT/business/independent/release gates passed.",
+  "tdd": {
+    "non_code_rationale": "This bounded prerequisite amends a design and records owner policy; executable probes characterize missing behavior and primitives only, no GREEN application implementation is claimed.",
+    "acceptance_defined_before_execution": true,
+    "reviewer": null
+  },
+  "criteria": {
+    "T007-C01": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C02": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C03": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C04": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C05": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C06": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C07": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C08": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C09": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C10": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C11": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C12": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C13": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C14": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C15": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C16": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C17": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C18": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-A01": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-A02": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-W01": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-W02": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-W03": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C19": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C20": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C21": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    },
+    "T007-C22": {
+      "result": "NOT VERIFIED",
+      "observed": "Full-task criterion not verified by this design-only author packet; Claude independent design/implementation review and full-scope evidence remain pending."
+    }
+  }
+}

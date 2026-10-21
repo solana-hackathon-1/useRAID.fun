@@ -1,0 +1,1 @@
+.next/types/validator.ts(251,39): error TS2307: Cannot find module '../../src/app/api/creator/route.js' or its corresponding type declarations.

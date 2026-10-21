@@ -1,0 +1,12 @@
+No difference detected.
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+

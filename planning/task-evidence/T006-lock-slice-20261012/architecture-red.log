@@ -1,0 +1,70 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/identity-lock-architecture.test.ts (1 test | 1 failed) 1976ms
+   × every identity writer enters the shared protocol boundary 1975ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-lock-architecture.test.ts > every identity writer enters the shared protocol boundary
+AssertionError: expected [ …(36) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "src/lib/account-merge.ts:60: identity mutation bypasses scoped protocol writer",
++   "src/lib/account-merge.ts:63: identity mutation bypasses scoped protocol writer",
++   "src/lib/account-merge.ts:64: identity mutation bypasses scoped protocol writer",
++   "src/lib/account-merge.ts:65: identity mutation bypasses scoped protocol writer",
++   "src/lib/account-merge.ts:67: identity mutation bypasses scoped protocol writer",
++   "src/lib/account-merge.ts:79: identity mutation bypasses scoped protocol writer",
++   "src/lib/account-merge.ts:80: identity mutation bypasses scoped protocol writer",
++   "src/lib/account-merge.ts:81: identity mutation bypasses scoped protocol writer",
++   "src/lib/wallet-auth.ts:215: identity mutation bypasses scoped protocol writer",
++   "src/lib/wallet-auth.ts:217: identity mutation bypasses scoped protocol writer",
++   "src/lib/wallet-auth.ts:221: identity mutation bypasses scoped protocol writer",
++   "src/lib/wallet-auth.ts:236: identity mutation bypasses scoped protocol writer",
++   "src/lib/wallet-auth.ts:285: identity mutation bypasses scoped protocol writer",
++   "src/lib/wallet-auth.ts:286: identity mutation bypasses scoped protocol writer",
++   "src/lib/worker-jobs.ts:282: identity mutation bypasses scoped protocol writer",
++   "src/lib/worker-jobs.ts:284: identity mutation bypasses scoped protocol writer",
++   "src/lib/studio-sandbox.ts:19: identity mutation bypasses scoped protocol writer",
++   "src/lib/studio-sandbox.ts:28: identity mutation bypasses scoped protocol writer",
++   "src/lib/studio-sandbox.ts:41: identity mutation bypasses scoped protocol writer",
++   "src/lib/studio-sandbox.ts:79: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:144: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:145: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:159: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:183: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:220: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:231: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:254: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:260: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:261: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:278: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth.ts:279: identity mutation bypasses scoped protocol writer",
++   "src/lib/x-oauth-routes.ts:116: identity mutation bypasses scoped protocol writer",
++   "src/app/api/studio/sandbox/route.ts:17: identity mutation bypasses scoped protocol writer",
++   "src/app/api/auth/[action]/route.ts:27: identity mutation bypasses scoped protocol writer",
++   "src/app/api/admin/[action]/route.ts:84: identity mutation bypasses scoped protocol writer",
++   "src/app/api/admin/[action]/route.ts:85: identity mutation bypasses scoped protocol writer",
++ ]
+
+ ❯ tests/identity-lock-architecture.test.ts:8:45
+      6|   const root = process.cwd();
+      7|   const files = globSync('src/**/*.ts').map((file) => path.join(root, …
+      8|   expect(identityArchitecture(root, files)).toEqual([]);
+       |                                             ^
+      9| });
+     10|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  17:23:13
+   Duration  2.26s (transform 51ms, setup 0ms, import 177ms, tests 1.98s, environment 0ms)
+

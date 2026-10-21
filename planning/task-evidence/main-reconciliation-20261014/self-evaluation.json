@@ -1,0 +1,23 @@
+{
+  "label": "SELF-EVALUATED",
+  "utc_start": "2026-10-14T01:30:27.863473+00:00",
+  "utc_end": "2026-10-14T01:45:55.461766+00:00",
+  "elapsed_seconds": 927.598293,
+  "HEAD": "2992a78cc77112569740abf0522d399994c77910",
+  "target": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+  "source_manifest": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source-manifest.json",
+  "source_preservation": "preservation-final.json",
+  "result": "Reconciled; verification blockers retained; independent acceptance pending",
+  "findings": [
+    "architecture/new-writer inventory",
+    "standalone example dependency",
+    "CI inventory",
+    "historical whitespace"
+  ],
+  "fixes": [
+    "nine-file composition",
+    "unique decision IDs/current references",
+    "final fingerprints",
+    "test host network corrected without assertion changes"
+  ]
+}

@@ -1,0 +1,147 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/identity-link.test.ts (31 tests | 3 failed) 26ms
+     × links a new address in the documented lock order and returns the existing participant 9ms
+     × creates the participant mapping only inside a fresh link 1ms
+     × missing account rejects without participant or link writes 0ms
+ ❯ tests/wallet-link-credentials.test.ts (31 tests | 2 failed | 9 skipped) 14ms
+     × resolves only internal account/participant context under subject then account locks, without writes 6ms
+     × revokes once, preserves permanent reservation, and repeats without another UPDATE 1ms
+ ❯ tests/wallet-credential-lookup.test.ts (12 tests | 1 failed) 15ms
+     × takes subject/account/link locks in contract order 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > links a new address in the documented lock order and returns the existing participant
+AssertionError: expected [ Array(8) ] to deeply equal [ 'lock', 'user', …(5) ]
+
+- Expected
++ Received
+
+  [
+    "lock",
++   "lock",
+    "user",
++   "user",
+    "participant-find",
+-   "primary",
+    "ownership",
+    "counts",
+    "link-insert",
+  ]
+
+ ❯ tests/identity-link.test.ts:124:20
+    122|     });
+    123|     // WR12: subject advisory lock, then User row lock, then reads, th…
+    124|     expect(tags()).toEqual([
+       |                    ^
+    125|       'lock',
+    126|       'user',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > creates the participant mapping only inside a fresh link
+AssertionError: expected [ Array(3) ] to deeply equal [ 'participant-share', …(2) ]
+
+- Expected
++ Received
+
+  [
+-   "participant-share",
++   "counts",
+    "participant-insert",
+    "link-insert",
+  ]
+
+ ❯ tests/identity-link.test.ts:155:51
+    153|     const result = await linkVerifiedWallet(tx, input());
+    154|     expect(result.participantId).toBe(PARTICIPANT);
+    155|     expect(calls.map(({ tag }) => tag).slice(-3)).toEqual([
+       |                                                   ^
+    156|       'participant-share',
+    157|       'participant-insert',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > missing account rejects without participant or link writes
+AssertionError: expected [ 'lock', 'lock', 'user', 'user' ] to deeply equal [ 'lock', 'user' ]
+
+- Expected
++ Received
+
+  [
+    "lock",
++   "lock",
++   "user",
+    "user",
+  ]
+
+ ❯ tests/identity-link.test.ts:205:20
+    203|     const { tx, tags } = fakePort({ user: null });
+    204|     expect(await code(linkVerifiedWallet(tx, input()))).toBe('ACCOUNT_…
+    205|     expect(tags()).toEqual(['lock', 'user']);
+       |                    ^
+    206|   });
+    207|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > takes subject/account/link locks in contract order
+AssertionError: expected 'SELECT "accountId" FROM "WalletLink" …' to contain 'pg_advisory_xact_lock'
+
+Expected: "pg_advisory_xact_lock"
+Received: "SELECT "accountId" FROM "WalletLink" WHERE "address" = $1"
+
+ ❯ tests/wallet-credential-lookup.test.ts:76:20
+     74|     await lookupWalletLink(h.port, address);
+     75|     const sql = h.query.mock.calls.map(([sql]) => sql);
+     76|     expect(sql[0]).toContain('pg_advisory_xact_lock');
+       |                    ^
+     77|     expect(sql[2]).toContain('FOR NO KEY UPDATE');
+     78|     expect(sql[3]).toContain('FOR SHARE');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > resolves only internal account/participant context under subject then account locks, without writes
+AssertionError: expected 'SELECT \'PRIMARY\' AS "source", "user…' to contain 'pg_advisory_xact_lock'
+
+- Expected
++ Received
+
+- pg_advisory_xact_lock
++ SELECT 'PRIMARY' AS "source", "userId" AS "accountId", NULL::text AS "id", NULL::text AS "participantId", NULL::text AS "status", NULL::text AS "networkIdentity", NULL::text AS "revokedAt" FROM "WalletIdentity" WHERE "address" = $1
++ UNION ALL
++ SELECT 'LINK', "accountId", "id"::text, "participantId"::text, "status", "networkIdentity",
++   to_char("revokedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') FROM "WalletLink" WHERE "address" = $1
+
+ ❯ tests/wallet-link-credentials.test.ts:136:26
+    134|       address: EXTRA,
+    135|     });
+    136|     expect(calls[0].sql).toContain('pg_advisory_xact_lock');
+       |                          ^
+    137|     expect(calls[0].bindings).toEqual([`wallet-subject:${EXTRA}`]);
+    138|     expect(calls.find((c) => c.sql.includes('FROM "User"'))?.bindings)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > revokes once, preserves permanent reservation, and repeats without another UPDATE
+IdentityLinkError: STORAGE_CONTRACT
+ ❯ translate src/identity-link/index.ts:129:50
+    127| function translate(error: unknown): IdentityLinkError {
+    128|   if (error instanceof IdentityLinkError) return error;
+    129|   if (error instanceof IdentityLockError) return new IdentityLinkError…
+       |                                                  ^
+    130|   if (error instanceof IdentityStorageError)
+    131|     return new IdentityLinkError(
+ ❯ revokeWalletCredential src/identity-link/index.ts:495:11
+ ❯ tests/wallet-link-credentials.test.ts:177:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  3 failed | 1 passed (4)
+      Tests  6 failed | 92 passed | 9 skipped (107)
+   Start at  17:47:23
+   Duration  989ms (transform 140ms, setup 0ms, import 510ms, tests 62ms, environment 0ms)
+

@@ -1,0 +1,255 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+{"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":171,"blocker":169,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+{"walletLinkRace":"link-then-legacy-insert","waiter":169,"blocker":171,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+{"walletLinkRace":"legacy-insert-then-link","waiter":171,"blocker":169,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+{"walletLinkRace":"link-vs-rotate-link-first","waiter":169,"blocker":171,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > rotate holding the subject vs link of that address: link waits, then reports a conflict
+{"walletLinkRace":"link-vs-rotate-rotate-first","waiter":171,"blocker":169,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+{"walletLinkRace":"link-vs-merge-delete-first","waiter":169,"blocker":172,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+{"walletLinkRace":"link-vs-merge-as-keep","waiter":172,"blocker":169,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+{"walletLinkRace":"link-vs-user-row-update","waiter":169,"blocker":172,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ ❯ tests/identity-link-db.test.ts (37 tests | 3 failed) 1658ms
+     ✓ catalog contains the reviewed constraints, indexes and enabled triggers (D14) 76ms
+       ✓ a pre-provisioned participant is byte-identical after linking W2 and W3; money and payout rows unchanged (WR09) 85ms
+       ✓ lazy creation: the first link creates one mapping with link provenance; later links reuse it 46ms
+       ✓ unchanged legacy link path still answers 409 for a second wallet until sign-in resolution ships (baseline) 95ms
+       ✓ raw SQL cannot reassign a revoked address to a second account (LR01, D13) 44ms
+       ✓ raw SQL cannot link an existing primary address to alice (LR02) 29ms
+       ✓ raw SQL cannot link an existing primary address to bob (LR02) 31ms
+       ✓ two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge 88ms
+       ✓ link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user 56ms
+       ✓ legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict 41ms
+       ✓ old binary raw INSERT of a linked or revoked address fails with the exclusivity constraint (D4) 33ms
+       ✓ legacy sign-in with a linked or revoked address fails closed with no new account or session (rollout characterization) 49ms
+       ✓ legacy link of a linked address by an account without a primary is rejected by the trigger 30ms
+       ✓ trigger conflict and unique-index conflict both classify as sanitized UNIQUE_CONFLICT; the message never reaches logs 35ms
+       × link vs link on one account with different addresses serializes at the User row lock; one participant 38ms
+       ✓ link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary 41ms
+       ✓ rotate holding the subject vs link of that address: link waits, then reports a conflict 40ms
+       × legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back 46ms
+       × legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan 55ms
+       ✓ legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit 51ms
+       ✓ a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle 48ms
+       ✓ the same proof twice is one row; a proof reused for another address is a conflict that adds nothing 56ms
+       ✓ own primary is an idempotent no-op that never creates a participant 23ms
+       ✓ requires an existing primary wallet and creates nothing otherwise (WR05) 29ms
+       ✓ state machine: no delete, only ACTIVE to REVOKED, revoked address stays reserved for everyone 55ms
+       ✓ check constraints and the composite participant foreign key reject inconsistent rows 30ms
+       ✓ legacy User delete and merge of a linked account roll back entirely 43ms
+       ✓ a linked wallet-only account is rejected by the real wallet sign-in fold path and the merge helper (WR06 behavior) 47ms
+       ✓ a suspended account is restricted: no mapping, no link, challenge not consumed 32ms
+       ✓ a suspended account re-linking its own wallet is restricted, not ALREADY_LINKED (WR08) 35ms
+       ✓ injected serialization failure at participant ensure retries the whole callback with the same identity 37ms
+       ✓ injected serialization failure at link insert retries the whole callback with the same identity 36ms
+       ✓ the adapter rejects SERIALIZABLE before touching link tables (D13) 12ms
+       ✓ the adapter rejects REPEATABLE READ before touching link tables (D13) 15ms
+       ✓ per-account caps hold at the database: active cap, then total ceiling including revoked rows 78ms
+       ✓ rotation to a fresh address works with links present; rotation onto an own link is refused by the fence 32ms
+       ✓ ensureHumanParticipant provenance is untouched by a no-op link replay 28ms
+ ❯ tests/wallet-auth-db.test.ts (25 tests | 3 failed) 16331ms
+     ✓ creates wallet-only user, consumes challenge once, and rejects stale challenge 81ms
+     ✓ refuses linking wallet already owned by another X identity 8ms
+     ✓ issues a Sign-In With Solana formatted challenge 4ms
+     ✓ binds a challenge to the signer state it was issued for 43ms
+     ✓ does not let a link signature perform a wallet rotation 31ms
+     ✓ refuses to sign a suspended owner in and creates no session 44ms
+     ✓ rotates the session and records how it was issued 44ms
+     ✓ keeps an X session an X session when the same user links a wallet 26ms
+     ✓ does not renew expired X authority through a wallet signature 48ms
+     ✓ does not borrow or delete another account's live X session 27ms
+     ✓ requires authenticated account context before preserving X authority 45ms
+     ✓ normalizes unknown session authority to wallet authority 26ms
+     × observes a concurrently revoked X session before carrying its authority forward 5060ms
+     × observes a concurrently expired X session before carrying its authority forward 5092ms
+     × observes a concurrently downgraded X session before carrying its authority forward 5066ms
+     ✓ requires an X session for administrator access 17ms
+       ✓ moves a wallet from an empty wallet-only account onto the signed-in X account 128ms
+       ✓ keeps the wallet account when the X account is the empty one 94ms
+       ✓ refuses when both accounts have activity 42ms
+       ✓ refuses when the wallet owner joined a Raid 42ms
+       ✓ replaces the address and records the previous one 54ms
+       ✓ keeps an existing enrollment on the wallet snapshotted when it was made 48ms
+       ✓ refuses while a withdrawal or live deposit is open 92ms
+       ✓ refuses an address owned by another account and a second change within 7 days 106ms
+       ✓ requires a connected X account 39ms
+ ✓ tests/x-oauth-db.test.ts (17 tests) 1000ms
+ ✓ tests/worker-db.test.ts (15 tests) 1329ms
+       ✓ does not write a collection error onto a raid when a finance job fails  513ms
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > delete wins: provision blocks on User key lock then denies missing account without orphan
+{"storageRace":true,"waiter":183,"blocker":181,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > independent create/create race returns one committed identity and first provenance
+{"storageRace":true,"waiter":181,"blocker":183,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+
+ ❯ tests/identity-storage-db.test.ts (12 tests | 2 failed) 586ms
+     ✓ contains an enabled mapping mutation fence and validated restrictive User FK 54ms
+     ✓ stable sequential retry keeps original ID/provenance and restricted reads 31ms
+     ✓ rejects deletion/key/provenance mutation while allowing profile and no-op updates 34ms
+     × new guard preserves both mapped accounts and all credential effects 25ms
+     ✓ allows genuine unmapped empty absorption into a mapped keeper; reverse denies 66ms
+     ✓ verified wallet flow preserves mapped keeper and denies two mapped accounts without consuming proof 159ms
+     ✓ retains exact synthetic financial/history rows and original monetary fences 39ms
+     × provision wins against old binary at final DELETE; entire auth transaction rolls back 53ms
+     ✓ delete wins: provision blocks on User key lock then denies missing account without orphan 33ms
+     ✓ independent create/create race returns one committed identity and first provenance 29ms
+     ✓ classifies actual PostgreSQL/Prisma 40001 and retries the whole callback 25ms
+     ✓ classifies actual PostgreSQL/Prisma 40P01 and retries the whole callback 26ms
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+{"waitTrace":[{"pid":187,"blockers":[185],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+{"waitTrace":[{"pid":185,"blockers":[187],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+{"waitTrace":[{"pid":187,"blockers":[185],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":185,"blockers":[187],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":186,"blockers":[185],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+{"waitTrace":[{"pid":185,"blockers":[186],"table":"User"}]}
+
+ ✓ tests/identity-protocol-db.test.ts (7 tests) 438ms
+ ✓ tests/studio-db.test.ts (14 tests) 489ms
+ ✓ tests/x-oauth-first-link-race-db.test.ts (5 tests) 572ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at the User row lock; one participant
+AssertionError: expected 'SELECT 1 AS "locked" FROM (SELECT pg_…' to match /FOR NO KEY UPDATE/
+
+- Expected:
+/FOR NO KEY UPDATE/
+
++ Received:
+"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""
+
+ ❯ observeBlock tests/identity-link-db.test.ts:116:30
+    114|     );
+    115|     if (found[0]?.blockers.includes(blocker)) {
+    116|       expect(found[0].query).toMatch(statement);
+       |                              ^
+    117|       // Evidence comes from the PostgreSQL lock graph, never from ela…
+    118|       console.info(
+ ❯ tests/identity-link-db.test.ts:569:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+AssertionError: expected 'UPDATE "public"."WalletIdentity" SET …' to match /DELETE FROM .*"User"/
+
+- Expected:
+/DELETE FROM .*"User"/
+
++ Received:
+"UPDATE \"public\".\"WalletIdentity\" SET \"userId\" = $1 WHERE \"public\".\"WalletIdentity\".\"userId\" = $2"
+
+ ❯ observeBlock tests/identity-link-db.test.ts:116:30
+    114|     );
+    115|     if (found[0]?.blockers.includes(blocker)) {
+    116|       expect(found[0].query).toMatch(statement);
+       |                              ^
+    117|       // Evidence comes from the PostgreSQL lock graph, never from ela…
+    118|       console.info(
+ ❯ tests/identity-link-db.test.ts:645:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+AssertionError: expected 'RETRY_TRANSACTION' to be 'ACCOUNT_NOT_FOUND' // Object.is equality
+
+Expected: "ACCOUNT_NOT_FOUND"
+Received: "RETRY_TRANSACTION"
+
+ ❯ tests/identity-link-db.test.ts:682:52
+    680|       }
+    681|       await first.done;
+    682|       expect(codeOf((await second.outcome).error)).toBe('ACCOUNT_NOT_F…
+       |                                                    ^
+    683|       expect(await db.$queryRawUnsafe('SELECT 1 FROM "WalletLink"')).t…
+    684|       expect(await db.$queryRawUnsafe('SELECT 1 FROM "Participant"')).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  tests/identity-storage-db.test.ts > T006 actual additive database fences > new guard preserves both mapped accounts and all credential effects
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ ensureHumanParticipant src/identity-storage/index.ts:103:51
+    101|     await requireIdentityLocks(tx, locks, { accounts: [{ id: input.acc…
+    102|   } catch (error) {
+    103|     if (error instanceof IdentityLockError) throw new IdentityStorageE…
+       |                                                   ^
+    104|     throw error;
+    105|   }
+ ❯ tests/identity-storage-db.test.ts:185:7
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ tests/identity-storage-db.test.ts:183:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  tests/identity-storage-db.test.ts > T006 actual additive database fences > provision wins against old binary at final DELETE; entire auth transaction rolls back
+AssertionError: expected 'UPDATE "public"."WalletIdentity" SET …' to match /DELETE FROM .*"User"/i
+
+- Expected:
+/DELETE FROM .*"User"/i
+
++ Received:
+"UPDATE \"public\".\"WalletIdentity\" SET \"userId\" = $1 WHERE \"public\".\"WalletIdentity\".\"userId\" = $2"
+
+ ❯ observeBlock tests/identity-storage-db.test.ts:49:29
+     47|     );
+     48|     if (rows[0]?.blockers.includes(blocker)) {
+     49|       expect(rows[0].query).toMatch(statement);
+       |                             ^
+     50|       // Evidence comes from the DB lock graph, never from elapsed sle…
+     51|       console.info(
+ ❯ tests/identity-storage-db.test.ts:335:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+AssertionError: actual Session DELETE blocked by an independent transaction: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/wallet-auth-db.test.ts:291:89
+    289|           await new Promise((done) => setTimeout(done, 10));
+    290|         }
+    291|         expect(observed, 'actual Session DELETE blocked by an independ…
+       |                                                                                         ^
+    292|         release();
+    293|         await held;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+
+ Test Files  3 failed | 5 passed (8)
+      Tests  8 failed | 124 passed (132)
+   Start at  17:43:08
+   Duration  24.86s (transform 293ms, setup 0ms, import 1.61s, tests 22.40s, environment 0ms)
+

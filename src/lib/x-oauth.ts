@@ -1,12 +1,18 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { claimOAuthAttempt } from './identity-leaves';
+import { createHash, timingSafeEqual, randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { Prisma, type OAuthAttempt } from '@prisma/client';
+import { type OAuthAttempt } from '@prisma/client';
 import { db } from './db';
 import { accountFoldsEnabled, config } from './config';
 import { hash, random } from './auth-primitives';
 import { adminXIds } from './admins';
 import { allowedImageUrl } from './image-hosts';
 import { absorbAccount, isEmptyAccount, lockIdentity } from './account-merge';
+import { prepareIdentity, identityWriter, identityClock } from './identity-protocol';
+import { runCommandTransaction } from './command-receipts-adapter';
+import { replanIdentity } from '../identity-locks';
+import { sweepIdentityLeaves } from './identity-cleanup';
+import { HttpError } from './errors';
 import { reserveUsage, settleReservation } from './providers/x';
 
 export class OAuthError extends Error {
@@ -131,24 +137,35 @@ export async function startAttempt(sessionHash: string | null) {
   const state = random(),
     verifier = random();
   let clearSession = false;
-  await db.$transaction(async (tx) => {
-    let session = sessionHash
-      ? await tx.session.findUnique({ where: { tokenHash: sessionHash }, include: { user: true } })
+  await sweepIdentityLeaves('OAuthAttempt', new Date(), true);
+  const requestedSession = sessionHash;
+  await runCommandTransaction(db, async (_port, tx) => {
+    const observed = requestedSession
+      ? await tx.session.findUnique({
+          where: { tokenHash: requestedSession },
+          include: { user: true },
+        })
       : null;
-    if (sessionHash && (!session || session.expiresAt <= new Date() || session.user.suspended)) {
-      session = null;
-      sessionHash = null;
-      clearSession = true;
-    }
-    if (session?.user.xId) await lockIdentity(tx, session.user.xId);
-    await tx.oAuthAttempt.deleteMany({ where: { expiresAt: { lte: new Date() } } });
-    await tx.oAuthAttempt.create({
+    const locks = await prepareIdentity(tx, {
+      accounts: observed ? [{ id: observed.userId, mode: 'SHARE' }] : [],
+    });
+    const now = await identityClock(tx);
+    const session = requestedSession
+      ? await tx.session.findUnique({
+          where: { tokenHash: requestedSession },
+          include: { user: true },
+        })
+      : null;
+    if (session && session.userId !== observed?.userId) replanIdentity();
+    const active = session && session.expiresAt > now && !session.user.suspended ? session : null;
+    clearSession = !!requestedSession && !active;
+    await identityWriter(tx, locks).oAuthAttempt.create({
       data: {
         stateHash: hash(state),
         verifier,
-        expiresAt: new Date(Date.now() + 600000),
-        userId: session?.userId,
-        sessionHash,
+        expiresAt: new Date(now.getTime() + 600000),
+        userId: active?.userId,
+        sessionHash: active ? requestedSession : null,
       },
     });
   });
@@ -156,88 +173,111 @@ export async function startAttempt(sessionHash: string | null) {
 }
 export async function claimAttempt(state: string, sessionHash: string | null) {
   // Keep the claimed row until completion so disconnect can cancel an in-flight callback.
-  const claimed = await db.oAuthAttempt.updateMany({
-    where: {
-      stateHash: hash(state),
-      consumedAt: null,
-      expiresAt: { gt: new Date() },
-      sessionHash,
-    },
-    data: { consumedAt: new Date() },
-  });
+  const claimed = await claimOAuthAttempt(hash(state), sessionHash, new Date());
   if (claimed.count !== 1) throw new OAuthError('state');
   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHash: hash(state) } });
   if (!attempt) throw new OAuthError('state');
   return attempt;
 }
 export async function completeConnection(attempt: OAuthAttempt, profile: XIdentity) {
-  const sessionToken = random();
-  await db.$transaction(
-    async (tx) => {
-      // Lock the permanent owner even for an attempted connection to a different identity.
+  // Provider exchange is outside this retry boundary. Stable local IDs survive every re-plan.
+  const sessionToken = random(),
+    newUserId = randomUUID();
+  try {
+    await runCommandTransaction(db, async (_port, tx) => {
+      const observedOwner = attempt.userId
+        ? await tx.user.findUnique({ where: { id: attempt.userId } })
+        : null;
+      if (attempt.userId && !observedOwner) throw new OAuthError('session');
+      if (observedOwner?.xId && observedOwner.xId !== profile.id) throw new OAuthError('identity');
+      const observedUser = await tx.user.findUnique({ where: { xId: profile.id } });
+      let fold: { keep: string; drop: string } | undefined;
+      if (observedOwner && observedUser && observedOwner.id !== observedUser.id) {
+        if (
+          !accountFoldsEnabled() ||
+          observedOwner.xId ||
+          (await tx.walletIdentity.findUnique({ where: { userId: observedUser.id } }))
+        )
+          throw new OAuthError('identity');
+        // A2: reject known activity before the strong merge roots; guarded check follows below.
+        if (await isEmptyAccount(tx, observedOwner.id))
+          fold = { keep: observedUser.id, drop: observedOwner.id };
+        else if (await isEmptyAccount(tx, observedUser.id))
+          fold = { keep: observedOwner.id, drop: observedUser.id };
+        else throw new OAuthError('identity');
+      }
+      const accounts = fold
+        ? [
+            { id: fold.keep, mode: 'UPDATE' as const },
+            { id: fold.drop, mode: 'UPDATE' as const },
+          ]
+        : observedOwner
+          ? [
+              {
+                id: observedOwner.id,
+                mode: observedOwner.xId ? ('NO KEY UPDATE' as const) : ('UPDATE' as const),
+              },
+            ]
+          : observedUser
+            ? [{ id: observedUser.id, mode: 'NO KEY UPDATE' as const }]
+            : [{ id: newUserId, mode: 'UPDATE' as const, create: true }];
+      const locks = await prepareIdentity(tx, {
+        accounts,
+        xIds: [profile.id],
+        balances: fold ? [fold.keep, fold.drop] : [],
+        attemptHashes: [attempt.stateHash],
+      });
+      const writes = identityWriter(tx, locks),
+        now = await identityClock(tx);
       let owner = attempt.userId
         ? await tx.user.findUnique({ where: { id: attempt.userId } })
         : null;
-      if (attempt.userId && !owner) throw new OAuthError('session');
-      await lockIdentity(tx, owner?.xId || profile.id);
-      const live = await tx.oAuthAttempt.deleteMany({
-        where: {
-          stateHash: attempt.stateHash,
-          consumedAt: { not: null },
-          expiresAt: { gt: new Date() },
-        },
-      });
-      if (live.count !== 1) throw new OAuthError('state');
-      if (attempt.userId) {
-        const session = await tx.session.findUnique({ where: { tokenHash: attempt.sessionHash! } });
-        if (!session || session.userId !== attempt.userId || session.expiresAt <= new Date())
-          throw new OAuthError('session');
-        if (owner!.xId && owner!.xId !== profile.id) throw new OAuthError('identity');
-      }
       let user = await tx.user.findUnique({ where: { xId: profile.id } });
-      if (user?.suspended) throw new OAuthError('suspended');
-      if (owner && user && owner.id !== user.id) {
-        // Two accounts for one person. Folding is gated off for launch (see accountFoldsEnabled).
-        if (!accountFoldsEnabled()) throw new OAuthError('identity');
-        // Fold the one with no activity into the other.
-        if (owner.xId || (await tx.walletIdentity.findUnique({ where: { userId: user.id } })))
-          throw new OAuthError('identity');
-        if (await isEmptyAccount(tx, owner.id)) {
-          await absorbAccount(tx, user.id, owner.id);
-          owner = null;
-        } else if (await isEmptyAccount(tx, user.id)) {
-          await absorbAccount(tx, owner.id, user.id);
-          user = null;
-        } else throw new OAuthError('identity');
+      if (owner?.xId !== observedOwner?.xId || user?.id !== observedUser?.id) replanIdentity();
+      const live = await tx.oAuthAttempt.findUnique({ where: { stateHash: attempt.stateHash } });
+      if (
+        !live?.consumedAt ||
+        live.expiresAt <= now ||
+        live.userId !== attempt.userId ||
+        live.sessionHash !== attempt.sessionHash
+      )
+        throw new OAuthError('state');
+      if (attempt.userId) {
+        const session = attempt.sessionHash
+          ? await tx.session.findUnique({ where: { tokenHash: attempt.sessionHash } })
+          : null;
+        if (!session || session.userId !== attempt.userId || session.expiresAt <= now)
+          throw new OAuthError('session');
+      }
+      if (owner?.suspended || user?.suspended) throw new OAuthError('suspended');
+      if (fold) {
+        await absorbAccount(tx, fold.keep, fold.drop, locks);
+        user = await tx.user.findUniqueOrThrow({ where: { id: fold.keep } });
+        owner = null;
       }
       const admin = adminXIds().includes(profile.id);
-      // Admin comes from the environment allowlist on every sign-in; a stored ADMIN role that fell off it is demoted.
       const access = (role?: string) =>
         admin ? { role: 'ADMIN' } : role === 'ADMIN' ? { role: 'CREATOR' } : {};
-      if (owner) {
-        // `owner` was read before the lock, so its xId may be stale. Bind only while the stored identity is
-        // still unset or already this profile; a concurrent callback that bound another identity wins.
-        const bound = await tx.user.updateMany({
-          where: { id: owner.id, OR: [{ xId: null }, { xId: profile.id }] },
+      const target = owner || user;
+      if (target) {
+        const bound = await writes.user.updateMany({
+          where: { id: target.id, OR: [{ xId: null }, { xId: profile.id }] },
           data: {
-            xId: profile.id,
+            // A same-X reconnect must not write the key column under a weaker root.
+            ...(target.xId ? {} : { xId: profile.id }),
             handle: profile.username,
-            ...access(owner.role),
+            ...access(target.role),
           },
         });
         if (bound.count !== 1) throw new OAuthError('identity');
-        user = await tx.user.findUniqueOrThrow({ where: { id: owner.id } });
+        user = await tx.user.findUniqueOrThrow({ where: { id: target.id } });
       } else
-        user = await tx.user.upsert({
-          where: { xId: profile.id },
-          create: {
+        user = await writes.user.create({
+          data: {
+            id: newUserId,
             xId: profile.id,
             handle: profile.username,
             role: admin ? 'ADMIN' : 'CREATOR',
-          },
-          update: {
-            handle: profile.username,
-            ...access(user?.role),
           },
         });
       const existing = await tx.xAccount.findUnique({ where: { xUserId: profile.id } });
@@ -251,31 +291,39 @@ export async function completeConnection(attempt: OAuthAttempt, profile: XIdenti
             ? profile.profile_image_url
             : null,
       };
-      await tx.xAccount.upsert({
+      await writes.xAccount.upsert({
         where: { userId: user.id },
         create: { userId: user.id, ...data },
         update: data,
       });
-      if (attempt.sessionHash)
-        await tx.session.deleteMany({ where: { tokenHash: attempt.sessionHash } });
-      await tx.session.create({
+      // Merge may already have deleted the attempt/session; no second acquisition is allowed.
+      if (await tx.oAuthAttempt.findUnique({ where: { stateHash: attempt.stateHash } }))
+        await writes.oAuthAttempt.deleteMany({ where: { stateHash: attempt.stateHash } });
+      if (
+        attempt.sessionHash &&
+        (await tx.session.findUnique({ where: { tokenHash: attempt.sessionHash } }))
+      )
+        await writes.session.deleteMany({ where: { tokenHash: attempt.sessionHash } });
+      await writes.session.create({
         data: {
           tokenHash: hash(sessionToken),
           userId: user.id,
           via: 'x',
-          expiresAt: new Date(Date.now() + 7 * 86400000),
+          expiresAt: new Date(now.getTime() + 7 * 86400000),
         },
       });
-    },
-    { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
-  );
+    });
+  } catch (error) {
+    if (error instanceof HttpError && error.status === 409) throw new OAuthError('identity');
+    throw error;
+  }
   return sessionToken;
 }
 export async function disconnectX(userId: string) {
-  await db.$transaction(async (tx) => {
-    const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
-    if (user.xId) await lockIdentity(tx, user.xId);
-    await tx.oAuthAttempt.deleteMany({ where: { userId } });
-    await tx.xAccount.deleteMany({ where: { userId } });
+  await runCommandTransaction(db, async (_port, tx) => {
+    const locks = await prepareIdentity(tx, { accounts: [{ id: userId, mode: 'NO KEY UPDATE' }] });
+    const writes = identityWriter(tx, locks);
+    await writes.oAuthAttempt.deleteMany({ where: { userId } });
+    await writes.xAccount.deleteMany({ where: { userId } });
   });
 }

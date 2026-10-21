@@ -1,0 +1,897 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+{"waitTrace":[{"pid":867,"blockers":[866],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+{"waitTrace":[{"pid":866,"blockers":[867],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+{"waitTrace":[{"pid":867,"blockers":[866],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":866,"blockers":[867],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":868,"blockers":[866],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+{"waitTrace":[{"pid":866,"blockers":[868],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > finance holds SHARE for the creator status predicate while preserving the exact settlement
+{"waitTrace":[{"pid":867,"blockers":[866],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > denies a primary sign-in whose claimed challenge expires while waiting for its final root
+{"waitTrace":[{"pid":866,"blockers":[867],"table":"User"}]}
+
+ ❯ tests/identity-protocol-db.test.ts (10 tests | 1 failed) 1362ms
+     ✓ X1 actual wallet session replacement vs strong root, writerFirst 250ms
+     ✓ X1 actual wallet session replacement vs strong root, mergeFirst 26ms
+     ✓ SHARE serializes account restriction with actual sign-in issuance 42ms
+     ✓ A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst 74ms
+     ✓ A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst 48ms
+     ✓ finance holds SHARE for the creator status predicate while preserving the exact settlement 49ms
+     × finance rechecks creator restriction after acquiring its final root, before any settlement insert 35ms
+     ✓ denies a primary sign-in whose claimed challenge expires while waiting for its final root  679ms
+     ✓ A2 obviously nonempty account is rejected before any strong root acquisition 90ms
+     ✓ A3 real User-delete 23503 becomes terminal account-not-empty and rolls back the merge 67ms
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > denies a link whose X session expires while it waits for the Session row lock
+{"lockOrderWait":{"blocker":871,"waiter":870,"needle":"FROM \"Session\""}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > denies a link whose X session expires while it waits for the XAccount row lock
+{"lockOrderWait":{"blocker":871,"waiter":870,"needle":"FROM \"XAccount\""}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > does not deadlock a merge against an X reconnect of the same account
+{"lockOrderWait":{"blocker":871,"waiter":870,"needle":"OAuthAttempt"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > does not deadlock a merge against an X reconnect of the same account
+{"lockOrderWait":{"blocker":870,"waiter":874,"needle":"pg_advisory_xact_lock"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > refuses a merge when the dropped account connected X while the merge waited for its row
+{"lockOrderWait":{"blocker":871,"waiter":874,"needle":"FOR UPDATE"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus merge > serializes without a deadlock and fails the merge closed after the connection wins
+{"lockOrderWait":{"blocker":871,"waiter":874,"needle":"OAuthAttempt"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus merge > serializes without a deadlock and fails the merge closed after the connection wins
+{"lockOrderWait":{"blocker":874,"waiter":870,"needle":"pg_advisory_xact_lock"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+{"lockOrderWait":{"blocker":871,"waiter":870,"needle":"OAuthAttempt"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+{"lockOrderWait":{"blocker":870,"waiter":874,"needle":"pg_advisory_xact_lock"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > lets unrelated merges and a first X connection proceed without waiting on each other
+{"lockOrderWait":{"blocker":871,"waiter":874,"needle":"OAuthAttempt"}}
+
+ ✓ tests/wallet-link-lock-order-db.test.ts (7 tests) 6204ms
+     ✓ denies a link whose X session expires while it waits for the Session row lock  2849ms
+     ✓ denies a link whose X session expires while it waits for the XAccount row lock  2803ms
+ ✓ tests/tracking-db.test.ts (48 tests) 3053ms
+Environment variables loaded from .env
+Environment variables loaded from .env
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+ ✓ tests/identity-link-migration.test.ts (4 tests) 3371ms
+     ✓ applies twice, matches the Prisma schema with no drift, and records one row per migration  3365ms
+ ❯ tests/identity-lock-architecture.test.ts (2 tests | 1 failed) 901356ms
+   × every identity writer enters the shared protocol boundary 900868ms
+   ✓ rejects direct, aliased, destructured, nested, raw, and type-erased bypasses  487ms
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":897,"waiters":[896]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":897,"waiters":[896]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":897,"waiters":[896]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":897,"waiters":[896]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:401","denied:401","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > makes a revoke or X disconnect that arrives after the decision wait for the link to commit
+{"authorityLateWriters":{"command":896,"writers":[898,899]}}
+
+ ✓ tests/wallet-link-authority-db.test.ts (12 tests) 3130ms
+     ✓ denies a session that expires naturally while the command waits for the lock  1884ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  564ms
+ ✓ tests/wallet-auth-isolation-db.test.ts (2 tests) 2164ms
+     ✓ preserves permitted wallet and X account folds under database default repeatable read  1119ms
+     ✓ preserves permitted wallet and X account folds under database default serializable  1044ms
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > blocks the second identical command on the first backend, then replays it
+{"receiptRace":true,"waiter":911,"blocker":912,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > lets the waiting command execute when the first one rolls back
+{"receiptRace":true,"waiter":912,"blocker":911,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > reports a conflict, not a replay, when the waiting command has another payload
+{"receiptRace":true,"waiter":911,"blocker":912,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > inbound provider deliveries (AC32 foundation) > blocks the duplicate on the first backend while the first handler is open
+{"receiptRace":true,"waiter":914,"blocker":910,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+ ✓ tests/command-receipts-db.test.ts (28 tests) 1748ms
+       ✓ survives a genuine PostgreSQL deadlock between two different commands  1081ms
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+{"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":920,"blocker":918,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+{"walletLinkRace":"link-then-legacy-insert","waiter":918,"blocker":920,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+{"walletLinkRace":"legacy-insert-then-link","waiter":920,"blocker":918,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at its common primary subject; one participant
+{"walletLinkRace":"link-vs-link-same-account","waiter":918,"blocker":920,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+{"walletLinkRace":"link-vs-rotate-link-first","waiter":920,"blocker":918,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > rotate holding the subject vs link of that address: link waits, then reports a conflict
+{"walletLinkRace":"link-vs-rotate-rotate-first","waiter":918,"blocker":920,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+{"walletLinkRace":"link-vs-merge-as-drop","waiter":920,"blocker":918,"blockedStatement":"UPDATE \"public\".\"WalletIdentity\" SET \"userId\" = $1 WHERE \"public\".\"WalletIdentity\".\"userId\" = $2"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+{"walletLinkRace":"link-vs-merge-delete-first","waiter":918,"blocker":920,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+{"walletLinkRace":"link-vs-merge-as-keep","waiter":920,"blocker":918,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+{"walletLinkRace":"link-vs-user-row-update","waiter":918,"blocker":920,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ ✓ tests/identity-link-db.test.ts (37 tests) 1398ms
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+{"sessionRace":"revoked","waiter":925,"blocker":923}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+{"sessionRace":"expired","waiter":923,"blocker":925}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+{"sessionRace":"downgraded","waiter":925,"blocker":923}
+
+ ❯ tests/wallet-auth-db.test.ts (25 tests | 2 failed) 899384ms
+     ✓ creates wallet-only user, consumes challenge once, and rejects stale challenge 84ms
+     ✓ refuses linking wallet already owned by another X identity 8ms
+     ✓ issues a Sign-In With Solana formatted challenge 4ms
+     ✓ binds a challenge to the signer state it was issued for 45ms
+     ✓ does not let a link signature perform a wallet rotation 34ms
+     ✓ refuses to sign a suspended owner in and creates no session 48ms
+     ✓ rotates the session and records how it was issued 46ms
+     ✓ keeps an X session an X session when the same user links a wallet 27ms
+     ✓ does not renew expired X authority through a wallet signature 49ms
+     ✓ does not borrow or delete another account's live X session 29ms
+     ✓ requires authenticated account context before preserving X authority 52ms
+     ✓ normalizes unknown session authority to wallet authority 26ms
+     ✓ observes a concurrently revoked X session before carrying its authority forward 53ms
+     ✓ observes a concurrently expired X session before carrying its authority forward 36ms
+     × observes a concurrently downgraded X session before carrying its authority forward 898150ms
+     ✓ requires an X session for administrator access 42ms
+       ✓ moves a wallet from an empty wallet-only account onto the signed-in X account 102ms
+       ✓ keeps the wallet account when the X account is the empty one 93ms
+       ✓ refuses when both accounts have activity 41ms
+       ✓ refuses when the wallet owner joined a Raid 38ms
+       ✓ replaces the address and records the previous one 47ms
+       ✓ keeps an existing enrollment on the wallet snapshotted when it was made 53ms
+       × refuses while a withdrawal or live deposit is open 90ms
+       ✓ refuses an address owned by another account and a second change within 7 days 124ms
+       ✓ requires a connected X account 41ms
+ ❯ tests/x-oauth-db.test.ts (17 tests | 16 failed) 241ms
+     × creates identity metadata and updates changed username without changing ownership 53ms
+     × only one callback can claim a state and session binding cannot be changed 13ms
+     ✓ rejects expired state 11ms
+     × serializes duplicate account creation 24ms
+     × rejects a different identity for a signed-in user 15ms
+     × rejects an X connection owned by another user 12ms
+     × disconnect preserves sessions, user, and raids and cancels a claimed callback 18ms
+     × disconnect and callback race always ends disconnected 11ms
+     × rejects a session removed during authorization 9ms
+     × suspended accounts cannot sign in and admin ID uses existing role 9ms
+     × demotes a stored ADMIN whose id left the environment allowlist 9ms
+     × demotes through the owner path as well 9ms
+       × signs in as the existing X account and takes over the wallet of an empty wallet-only account 9ms
+       × refuses when both accounts have activity and changes nothing 9ms
+       × absorbs an empty X account into the signed-in wallet account that has activity 9ms
+     × ignores retired creator approval configuration in test 10ms
+     × ignores retired creator approval configuration in production 8ms
+ ❯ tests/x-oauth-first-link-race-db.test.ts (5 tests | 5 failed) 174ms
+     × a stale second callback cannot replace the identity bound by an earlier non-admin callback 63ms
+     × a stale second callback cannot replace the identity bound by an earlier admin callback 29ms
+     × callbacks released together bind exactly one identity 28ms
+     × overlapping row updates: the callback blocked on the winner's row is re-evaluated and refused 27ms
+     × two sessions confirming the same X identity both succeed and keep one binding 26ms
+stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)
+{"linkedSigninRace":true,"waiter":931,"blocker":929,"blockedStatement":"SELECT \"id\" FROM \"WalletLink\" WHERE \"id\" = $1::uuid FOR SHARE"}
+
+stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)
+{"linkedSigninRace":true,"waiter":930,"blocker":931,"blockedStatement":"UPDATE \"public\".\"WalletLink\" SET \"status\" = $1, \"revokedAt\" = $2 WHERE \"public\".\"WalletLink\".\"accountId\" = $3"}
+
+ ✓ tests/wallet-linked-signin-db.test.ts (15 tests) 918ms
+ ✓ tests/identity-link-boundary.test.ts (6 tests) 875ms
+   ✓ copied challenge helper resolves its declared host dependencies and production network policy  324ms
+   ✓ minimal external host links a second wallet using explicit dependencies  517ms
+ ❯ tests/wallet-link-signin-db.test.ts (8 tests | 6 failed) 397ms
+     × signs in as the linking account with a wallet session when the switch is on 86ms
+     × keeps an existing linked credential usable when new linking is switched off 32ms
+     × never signs in through a revoked link, with the switch on or off 23ms
+     × gives revoked and wrong-network reservations the same released denial without changing state 24ms
+     ✓ serializes two fresh signed challenges into one account with two independent wallet sessions 104ms
+     × denies a suspended owner with no session 28ms
+     × allows same-account reauthentication while denying foreign legacy links and payout rotation 26ms
+     ✓ keeps ordinary primary-wallet sign-in and unknown-wallet sign-up unchanged 49ms
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held resolve-first locks
+{"credentialRace":true,"waiter":939,"blocker":937,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held revoke-first locks
+{"credentialRace":true,"waiter":937,"blocker":939,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held account-lock locks
+{"credentialRace":true,"waiter":939,"blocker":937,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default repeatable read while a link commits
+{"credentialRace":true,"waiter":941,"blocker":939,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default serializable while a link commits
+{"credentialRace":true,"waiter":943,"blocker":939,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+ ✓ tests/wallet-link-credentials.test.ts (31 tests) 642ms
+ ✓ tests/rewards-finance.test.ts (34 tests) 579ms
+ ❯ tests/worker-db.test.ts (15 tests | 4 failed) 513ms
+     ✓ moves due SCHEDULED raids to ACTIVE 77ms
+     ✓ ends ACTIVE v2 raids past endsAt and resets their finalization cursors 35ms
+       ✓ reconciles recorded work while launchpads are unavailable and nothing else 46ms
+       ✓ ignores a prepared launch that has been idle for a day 32ms
+       ✓ polls busy launches every minute and idle ones hourly once launchpads are on 42ms
+       × ranks finance work below collection and keeps the launch id as the serialising key 25ms
+       × does not write a collection error onto a raid when a finance job fails 22ms
+     × finishes an unknown job kind without throwing 21ms
+     × records a failing job and keeps going 18ms
+     ✓ assertSchemaCurrent passes on the migrated database and rejects a newer migration 15ms
+     ✓ step() logs and swallows errors 14ms
+       ✓ does not enqueue collect jobs while collection is paused 54ms
+       ✓ keeps settling other raids when one raid throws 32ms
+       ✓ does not re-finalize APPROVED raids and only retries payable allocations 47ms
+       ✓ expires dead-lettered jobs after thirty days 32ms
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > provision wins against old binary at final DELETE; entire auth transaction rolls back
+{"storageRace":true,"waiter":949,"blocker":947,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\".\"User\".\"role\", \"public\".\"User\".\"approved\", \"public\".\"User\".\"suspended\", \"public\".\"User\".\"affiliation\", \"public\".\"User\".\"createdAt\""}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > delete wins: provision blocks on User key lock then denies missing account without orphan
+{"storageRace":true,"waiter":947,"blocker":949,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > independent create/create race returns one committed identity and first provenance
+{"storageRace":true,"waiter":949,"blocker":947,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+
+ ✓ tests/identity-storage-db.test.ts (12 tests) 512ms
+ ❯ tests/wallet-link-additional-db.test.ts (7 tests | 3 failed) 318ms
+     ✓ is off by default for challenge issue and verification and writes nothing 52ms
+       × links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed 52ms
+       ✓ denies an account with no connected X at issue and verify; the challenge stays unconsumed 28ms
+       ✓ requires the caller's own live session 86ms
+       × rejects replay, another account's challenge, a wrong-purpose challenge and a bad signature 25ms
+       × returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link 25ms
+       ✓ denies a suspended account and rolls the whole attempt back 26ms
+stderr | tests/tracking.test.ts > raid-specific search query > falls back to the unfiltered query when the author list exceeds the limit
+X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+ ✓ tests/tracking.test.ts (17 tests) 490ms
+ ✓ tests/identity-locks-db.test.ts (7 tests) 470ms
+ ✓ tests/studio-db.test.ts (14 tests) 442ms
+ ✓ tests/identity-storage-boundary.test.ts (3 tests) 350ms
+   ✓ minimal external host resolves a real mapping using explicit dependencies  347ms
+ ✓ tests/command-receipts-boundary.test.ts (4 tests) 368ms
+   ✓ minimal external host runs the documented flow using explicit dependencies  363ms
+ ✓ tests/identity-link-authority-hook-db.test.ts (9 tests) 231ms
+ ✓ tests/identity-preflight-boundary.test.ts (1 test) 256ms
+ ❯ tests/usdc-ops-db.test.ts (9 tests | 1 failed) 219ms
+     ✓ releases a hidden raid pool once and blocks settlement afterwards 65ms
+     ✓ refuses release once settled, and settlement cannot follow a release key 19ms
+     ✓ releases a funded SOL raid with exactly one refund row 17ms
+     ✓ credits an expired deposit only through the audited admin override 12ms
+     ✓ answers a replayed signature with 409 instead of a unique-index failure 7ms
+     ✓ refuses to reject a withdrawal already paid on-chain 11ms
+     ✓ holds withdrawals for 24 hours after a wallet change 8ms
+     ✓ reconciles ledger liabilities and pending rewards against custody 18ms
+     × keeps creator-supplied token metadata per raid until the market provider verifies it 21ms
+ ✓ tests/pump-launch.test.ts (2 tests) 61ms
+ ✓ tests/wallet-network.test.ts (12 tests) 72ms
+ ✓ tests/x-oauth.test.ts (12 tests) 33ms
+ ✓ tests/identity-link.test.ts (31 tests) 23ms
+ ✓ tests/studio.test.ts (14 tests) 14ms
+ ✓ tests/identity-preflight.test.ts (48 tests) 12ms
+ ✓ tests/wallet-routes.test.ts (11 tests) 13ms
+ ✓ tests/x-oauth-routes.test.ts (12 tests) 11ms
+ ✓ tests/usdc-receipt.test.ts (6 tests) 15ms
+ ✓ tests/command-receipts.test.ts (46 tests) 9ms
+ ✓ tests/usdc-chain.test.ts (3 tests) 10ms
+ ✓ tests/rewards.test.ts (3 tests) 8ms
+ ✓ tests/wallet-credential-lookup.test.ts (12 tests) 8ms
+ ✓ tests/identity-storage.test.ts (33 tests) 7ms
+ ✓ tests/wallet-link-proof.test.ts (19 tests) 6ms
+ ✓ tests/studio-preview-route.test.ts (3 tests) 5ms
+ ✓ tests/wallet-auth-transaction.test.ts (4 tests) 3ms
+ ✓ tests/wallet-session-authority.test.ts (11 tests) 2ms
+ ✓ tests/studio-menu.test.ts (3 tests) 2ms
+ ✓ tests/wallet-picker.test.ts (3 tests) 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 39 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-lock-architecture.test.ts > every identity writer enters the shared protocol boundary
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/identity-lock-architecture.test.ts:5:1
+      3| import path from 'node:path';
+      4| import { identityArchitecture } from './helpers/identity-architecture';
+      5| it('every identity writer enters the shared protocol boundary', () => {
+       | ^
+      6|   const root = process.cwd();
+      7|   const files = globSync('src/**/*.ts').map((file) => path.join(root, …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/39]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > finance rechecks creator restriction after acquiring its final root, before any settlement insert
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ tests/identity-protocol-db.test.ts:457:43
+    455|     expect(changed).toBe(true);
+    456|     expect(await db.usdcAllocation.count()).toBe(0);
+    457|     expect(await db.usdcTransfer.count()).toBe(0);
+       |                                           ^
+    458|     expect(
+    459|       await db.balanceEntry.findUnique({ where: { key: 'raid-settle:' …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/39]⎯
+
+ FAIL  tests/usdc-ops-db.test.ts > USDC operations > keeps creator-supplied token metadata per raid until the market provider verifies it
+TypeError: Cannot read properties of null (reading 'payload')
+ ❯ Module.runJob src/lib/worker-jobs.ts:353:17
+    351| }
+    352| export async function runJob(job: Job) {
+    353|   const p = job.payload as {
+       |                 ^
+    354|     launchId: string;
+    355|     raidId: string;
+ ❯ tests/usdc-ops-db.test.ts:375:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/39]⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+Error: Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/wallet-auth-db.test.ts:239:57
+    237|     );
+    238|   });
+    239|   it.each(['revoked', 'expired', 'downgraded'] as const)(
+       |                                                         ^
+    240|     'observes a concurrently %s X session before carrying its authorit…
+    241|     async (change) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/39]⎯
+
+ FAIL  tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > wallet rotation > refuses while a withdrawal or live deposit is open
+Error: Finish pending deposits and withdrawals first.
+ ❯ src/lib/wallet-auth.ts:314:21
+    312|       },
+    313|     });
+    314|     if (open) throw new HttpError(409, 'Finish pending deposits and wi…
+       |                     ^
+    315|     if (current.rotatedAt && +now - +current.rotatedAt < ROTATION_COOL…
+    316|       throw new HttpError(429, 'You can change your wallet once every …
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ walletTransaction src/lib/wallet-auth.ts:39:5
+ ❯ Module.rotateWallet src/lib/wallet-auth.ts:282:3
+ ❯ tests/wallet-auth-db.test.ts:474:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/39]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ tests/wallet-link-additional-db.test.ts:126:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/39]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > rejects replay, another account's challenge, a wrong-purpose challenge and a bad signature
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ tests/wallet-link-additional-db.test.ts:229:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/39]⎯
+
+ FAIL  tests/wallet-link-additional-db.test.ts > B2a additional wallet link command (default-off, connected X) > enabled > returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ tests/wallet-link-additional-db.test.ts:297:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/39]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > signs in as the linking account with a wallet session when the switch is on
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ linked tests/wallet-link-signin-db.test.ts:59:7
+ ❯ tests/wallet-link-signin-db.test.ts:96:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/39]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > keeps an existing linked credential usable when new linking is switched off
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ linked tests/wallet-link-signin-db.test.ts:59:7
+ ❯ tests/wallet-link-signin-db.test.ts:111:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/39]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > never signs in through a revoked link, with the switch on or off
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ linked tests/wallet-link-signin-db.test.ts:59:7
+ ❯ tests/wallet-link-signin-db.test.ts:132:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/39]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > gives revoked and wrong-network reservations the same released denial without changing state
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ linked tests/wallet-link-signin-db.test.ts:59:7
+ ❯ tests/wallet-link-signin-db.test.ts:148:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/39]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > denies a suspended owner with no session
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ linked tests/wallet-link-signin-db.test.ts:59:7
+ ❯ tests/wallet-link-signin-db.test.ts:213:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/39]⎯
+
+ FAIL  tests/wallet-link-signin-db.test.ts > B2b existing-credential sign-in (released behavior; new linking remains gated) > allows same-account reauthentication while denying foreign legacy links and payout rotation
+Error: Wallet challenge expired or signature invalid.
+ ❯ linkFailure src/lib/wallet-auth.ts:380:10
+    378|   if (!(error instanceof IdentityLinkError)) return null;
+    379|   const [status, message] = LINK_HTTP[error.code] ?? [503, 'Wallet lin…
+    380|   return new HttpError(status, message);
+       |          ^
+    381| }
+    382| // Adds a sign-in wallet to the caller's own account. The payout walle…
+ ❯ linkAdditionalWallet src/lib/wallet-auth.ts:425:11
+ ❯ linked tests/wallet-link-signin-db.test.ts:59:7
+ ❯ tests/wallet-link-signin-db.test.ts:223:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/39]⎯
+
+ FAIL  tests/worker-db.test.ts > worker jobs module > launch jobs > ranks finance work below collection and keeps the launch id as the serialising key
+TypeError: Cannot read properties of null (reading 'id')
+ ❯ tests/worker-db.test.ts:197:34
+    195|       expect(reconcile.priority).toBe(5);
+    196|       expect(collect.priority).toBe(10);
+    197|       expect((await claimJob())!.id).toBe(collect.id);
+       |                                  ^
+    198|     });
+    199|     it('does not write a collection error onto a raid when a finance j…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/39]⎯
+
+ FAIL  tests/worker-db.test.ts > worker jobs module > launch jobs > does not write a collection error onto a raid when a finance job fails
+TypeError: Cannot read properties of null (reading 'payload')
+ ❯ Module.runJob src/lib/worker-jobs.ts:353:17
+    351| }
+    352| export async function runJob(job: Job) {
+    353|   const p = job.payload as {
+       |                 ^
+    354|     launchId: string;
+    355|     raidId: string;
+ ❯ tests/worker-db.test.ts:207:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/39]⎯
+
+ FAIL  tests/worker-db.test.ts > worker jobs module > finishes an unknown job kind without throwing
+AssertionError: promise rejected "TypeError: Cannot read properties of null…" instead of resolving
+ ❯ tests/worker-db.test.ts:218:30
+    216|     await enqueue('mystery', 'mystery:1', {});
+    217|     const job = (await claimJob())!;
+    218|     await expect(runJob(job)).resolves.toBeUndefined();
+       |                              ^
+    219|     expect((await db.job.findUniqueOrThrow({ where: { id: job.id } }))…
+    220|   });
+
+Caused by: TypeError: Cannot read properties of null (reading 'payload')
+ ❯ Module.runJob src/lib/worker-jobs.ts:353:17
+ ❯ tests/worker-db.test.ts:218:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/39]⎯
+
+ FAIL  tests/worker-db.test.ts > worker jobs module > records a failing job and keeps going
+AssertionError: promise rejected "TypeError: Cannot read properties of null…" instead of resolving
+ ❯ tests/worker-db.test.ts:225:30
+    223|     await enqueue('collect', 'collect:missing', { raidId: 'missing-rai…
+    224|     const job = (await claimJob())!;
+    225|     await expect(runJob(job)).resolves.toBeUndefined();
+       |                              ^
+    226|     const row = await db.job.findUniqueOrThrow({ where: { id: job.id }…
+    227|     expect(row.error).toBeTruthy();
+
+Caused by: TypeError: Cannot read properties of null (reading 'payload')
+ ❯ Module.runJob src/lib/worker-jobs.ts:353:17
+ ❯ tests/worker-db.test.ts:225:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > creates identity metadata and updates changed username without changing ownership
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:31:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > only one callback can claim a state and session binding cannot be changed
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:41:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > serializes duplicate account creation
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/x-oauth-db.test.ts:60:60
+     58|   it('serializes duplicate account creation', async () => {
+     59|     const results = await Promise.allSettled([connect(), connect()]);
+     60|     expect(results.every((r) => r.status === 'fulfilled')).toBe(true);
+       |                                                            ^
+     61|     expect(await db.user.count()).toBe(1);
+     62|     expect(await db.xAccount.count()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > rejects a different identity for a signed-in user
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:65:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > rejects an X connection owned by another user
+AssertionError: expected Error: state { code: 'state' } to match object { code: 'identity' }
+
+- Expected
++ Received
+
+- {
+-   "code": "identity",
++ OAuthError {
++   "code": "state",
+  }
+
+ ❯ tests/x-oauth-db.test.ts:77:28
+     75|       data: { userId: owner.id, xUserId: profile.id, username: 'alice'…
+     76|     });
+     77|     await expect(connect()).rejects.toMatchObject({ code: 'identity' }…
+       |                            ^
+     78|     expect(await db.user.count()).toBe(1);
+     79|     expect((await db.xAccount.findFirstOrThrow()).userId).toBe(owner.i…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > disconnect preserves sessions, user, and raids and cancels a claimed callback
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:82:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > disconnect and callback race always ends disconnected
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:106:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > rejects a session removed during authorization
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:118:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > suspended accounts cannot sign in and admin ID uses existing role
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:126:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > demotes a stored ADMIN whose id left the environment allowlist
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:134:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > demotes through the owner path as well
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:144:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > signs in as the existing X account and takes over the wallet of an empty wallet-only account
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:177:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > refuses when both accounts have activity and changes nothing
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:191:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > absorbs an empty X account into the signed-in wallet account that has activity
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:201:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/39]⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > ignores retired creator approval configuration in test
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > ignores retired creator approval configuration in production
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ tests/x-oauth-db.test.ts:218:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/39]⎯
+
+ FAIL  tests/x-oauth-first-link-race-db.test.ts > first X identity binding under concurrent callbacks (PostgreSQL) > a stale second callback cannot replace the identity bound by an earlier non-admin callback
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ race tests/x-oauth-first-link-race-db.test.ts:106:23
+ ❯ tests/x-oauth-first-link-race-db.test.ts:185:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/39]⎯
+
+ FAIL  tests/x-oauth-first-link-race-db.test.ts > first X identity binding under concurrent callbacks (PostgreSQL) > a stale second callback cannot replace the identity bound by an earlier admin callback
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ race tests/x-oauth-first-link-race-db.test.ts:106:23
+ ❯ tests/x-oauth-first-link-race-db.test.ts:188:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/39]⎯
+
+ FAIL  tests/x-oauth-first-link-race-db.test.ts > first X identity binding under concurrent callbacks (PostgreSQL) > callbacks released together bind exactly one identity
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ race tests/x-oauth-first-link-race-db.test.ts:106:23
+ ❯ tests/x-oauth-first-link-race-db.test.ts:191:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/39]⎯
+
+ FAIL  tests/x-oauth-first-link-race-db.test.ts > first X identity binding under concurrent callbacks (PostgreSQL) > overlapping row updates: the callback blocked on the winner's row is re-evaluated and refused
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ race tests/x-oauth-first-link-race-db.test.ts:106:23
+ ❯ tests/x-oauth-first-link-race-db.test.ts:194:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/39]⎯
+
+ FAIL  tests/x-oauth-first-link-race-db.test.ts > first X identity binding under concurrent callbacks (PostgreSQL) > two sessions confirming the same X identity both succeed and keep one binding
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ tests/x-oauth-first-link-race-db.test.ts:198:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/39]⎯
+
+
+ Test Files  9 failed | 39 passed (48)
+      Tests  39 failed | 638 passed (677)
+   Start at  04:11:34
+   Duration  2739.67s (transform 549ms, setup 0ms, import 903.36s, tests 1831.48s, environment 2ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-lock-slice-20261012/accepted-candidate.xml

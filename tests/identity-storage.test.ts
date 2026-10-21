@@ -1,3 +1,4 @@
+import { protocolFixture } from './helpers/lock-port-fixture';
 import { describe, expect, it, vi } from 'vitest';
 import {
   ensureHumanParticipant,
@@ -15,7 +16,15 @@ const human = { id: 'd4bbeef1-55a8-4d8e-8d03-f3b012f92401', kind: 'HUMAN', accou
 const input = { accountId: 'alice', actorAccountId: 'alice', requestId: 'request-1' };
 function port(...rows: unknown[][]) {
   const query = vi.fn().mockImplementation(async () => rows.shift() ?? []);
-  const tx: IdentityTransaction = { dialect: 'POSTGRESQL', isolation: 'READ_COMMITTED', query };
+  const tx: IdentityTransaction = {
+    dialect: 'POSTGRESQL',
+    isolation: 'READ_COMMITTED',
+    query: async <Row>(sql: string, bindings: readonly string[]) => {
+      const response = protocolFixture(sql, bindings, null);
+      if (response !== undefined) return response as Row[];
+      return query(sql, bindings) as Promise<Row[]>;
+    },
+  };
   return { tx, query };
 }
 describe('bounded HUMAN storage v1', () => {

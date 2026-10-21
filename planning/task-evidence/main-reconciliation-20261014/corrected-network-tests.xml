@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="47" failures="0" errors="0" time="2.849380209">
+    <testsuite name="tests/wallet-auth-db.test.ts" timestamp="2026-10-14T01:39:41.284Z" hostname="0xd.local" tests="25" failures="0" errors="0" skipped="0" time="1.2801295">
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; creates wallet-only user, consumes challenge once, and rejects stale challenge" time="0.087927833">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; refuses linking wallet already owned by another X identity" time="0.008384417">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; issues a Sign-In With Solana formatted challenge" time="0.004695292">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; binds a challenge to the signer state it was issued for" time="0.049197625">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not let a link signature perform a wallet rotation" time="0.037521875">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; refuses to sign a suspended owner in and creates no session" time="0.050402084">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; rotates the session and records how it was issued" time="0.051653917">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; keeps an X session an X session when the same user links a wallet" time="0.029488375">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not renew expired X authority through a wallet signature" time="0.05529075">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not borrow or delete another account&apos;s live X session" time="0.03154075">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires authenticated account context before preserving X authority" time="0.052915917">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; normalizes unknown session authority to wallet authority" time="0.0329">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently revoked X session before carrying its authority forward" time="0.054322083">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;revoked&quot;,&quot;waiter&quot;:176,&quot;blocker&quot;:175}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently expired X session before carrying its authority forward" time="0.045501958">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;expired&quot;,&quot;waiter&quot;:175,&quot;blocker&quot;:176}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently downgraded X session before carrying its authority forward" time="0.0496855">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;downgraded&quot;,&quot;waiter&quot;:177,&quot;blocker&quot;:175}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires an X session for administrator access" time="0.009712459">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; moves a wallet from an empty wallet-only account onto the signed-in X account" time="0.081919792">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; keeps the wallet account when the X account is the empty one" time="0.081485583">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity" time="0.042374167">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when the wallet owner joined a Raid" time="0.042551833">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; replaces the address and records the previous one" time="0.051289708">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; keeps an existing enrollment on the wallet snapshotted when it was made" time="0.052251708">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses while a withdrawal or live deposit is open" time="0.094273584">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses an address owned by another account and a second change within 7 days" time="0.106904958">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; requires a connected X account" time="0.039165625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-additional-db.test.ts" timestamp="2026-10-14T01:39:41.286Z" hostname="0xd.local" tests="7" failures="0" errors="0" skipped="0" time="0.466102417">
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; is off by default for challenge issue and verification and writes nothing" time="0.055816667">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed" time="0.048914375">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies an account with no connected X at issue and verify; the challenge stays unconsumed" time="0.028765291">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; requires the caller&apos;s own live session" time="0.091841792">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; rejects replay, another account&apos;s challenge, a wrong-purpose challenge and a bad signature" time="0.060386583">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link" time="0.120857542">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies a suspended account and rolls the whole attempt back" time="0.026779333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-linked-signin-db.test.ts" timestamp="2026-10-14T01:39:41.286Z" hostname="0xd.local" tests="15" failures="0" errors="0" skipped="0" time="1.103148292">
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; fresh linked signature yields same account; participant, primary and history stay byte-identical" time="0.163030125">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; same-account reauthentication with a linked wallet preserves a valid X session" time="0.071846833">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects REVOKED linked credential without challenge/session residue" time="0.061845958">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects WRONG_NETWORK linked credential without challenge/session residue" time="0.084585041">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects SUSPENDED linked credential without challenge/session residue" time="0.063111625">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; cannot fold a linked credential into a foreign signed-in account" time="0.046697792">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet" time="0.05870375">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet" time="0.061175333">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; replay of a consumed linked sign-in challenge creates no second session" time="0.062670875">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; a expired X session cannot widen anonymous linked-wallet sign-in" time="0.057823917">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; a foreign X session cannot widen anonymous linked-wallet sign-in" time="0.055970667">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects wrong-signature before issuing linked session" time="0.0432525">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects expired-proof before issuing linked session" time="0.042846375">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)" time="0.089820666">
+            <system-out>
+{&quot;linkedSigninRace&quot;:true,&quot;waiter&quot;:180,&quot;blocker&quot;:178,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot; FROM \&quot;WalletLink\&quot; WHERE \&quot;id\&quot; = $1::uuid FOR SHARE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)" time="0.055014458">
+            <system-out>
+{&quot;linkedSigninRace&quot;:true,&quot;waiter&quot;:179,&quot;blocker&quot;:180,&quot;blockedStatement&quot;:&quot;UPDATE \&quot;public\&quot;.\&quot;WalletLink\&quot; SET \&quot;status\&quot; = $1, \&quot;revokedAt\&quot; = $2 WHERE \&quot;public\&quot;.\&quot;WalletLink\&quot;.\&quot;accountId\&quot; = $3&quot;}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>

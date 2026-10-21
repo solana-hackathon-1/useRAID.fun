@@ -1,3 +1,10 @@
+import {
+  acquireAccountRoots,
+  acquireIdentityChildren,
+  sealIdentityLocks,
+  requireIdentityLocks,
+  IdentityLockError,
+} from '../identity-locks';
 import { ParticipantSchema } from '../contracts/entities';
 import { InternalId } from '../contracts/ids';
 import {
@@ -90,12 +97,24 @@ export async function ensureHumanParticipant(
   validId(input?.requestId);
   if (input.accountId !== input.actorAccountId) throw new IdentityStorageError('WRONG_ACTOR');
   validPort(tx);
-  const accounts = await query(tx, 'SELECT "id" FROM "User" WHERE "id" = $1 FOR KEY SHARE', [
-    input.accountId,
-  ]);
-  if (!accounts.length) throw new IdentityStorageError('ACCOUNT_NOT_FOUND');
-  if (accounts.length !== 1 || (accounts[0] as { id?: unknown })?.id !== input.accountId)
-    throw new IdentityStorageError('STORAGE_CONTRACT');
+  let locks = input.locks;
+  try {
+    if (!locks) {
+      await acquireAccountRoots(tx, [{ id: input.accountId, mode: 'KEY SHARE' }]);
+      await acquireIdentityChildren(tx, () => 'SHARE', {}, ['Participant']);
+      locks = await sealIdentityLocks(tx);
+    }
+    await requireIdentityLocks(tx, locks, {
+      accounts: [{ id: input.accountId, mode: 'KEY SHARE' }],
+      children: ['Participant'],
+    });
+  } catch (error) {
+    if (error instanceof IdentityLockError)
+      throw new IdentityStorageError(
+        error.code === 'PLAN_CHANGED' ? 'ACCOUNT_NOT_FOUND' : 'STORAGE_CONTRACT',
+      );
+    throw error;
+  }
   const inserted = await query(
     tx,
     `INSERT INTO "Participant" ("accountId", "provisionActorAccountId", "provisionRequestId")

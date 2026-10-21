@@ -6,6 +6,7 @@ import nacl from 'tweetnacl';
 const host = vi.hoisted(() => {
   const tx = {
     walletChallenge: { create: vi.fn(), findUnique: vi.fn(), updateMany: vi.fn() },
+    walletLink: { findUnique: vi.fn() },
     walletIdentity: { findUnique: vi.fn(), create: vi.fn() },
     user: { findUniqueOrThrow: vi.fn() },
     xAccount: { findUnique: vi.fn() },
@@ -21,6 +22,11 @@ vi.mock('../src/lib/command-receipts-adapter', () => ({
     _db: unknown,
     run: (port: unknown, tx: typeof host.tx) => unknown,
   ) => run({}, host.tx),
+}));
+vi.mock('../src/lib/identity-protocol', () => ({
+  prepareIdentity: async () => ({}),
+  identityWriter: () => host.tx,
+  identityClock: async () => new Date(),
 }));
 vi.mock('../src/identity-link', async (original) => ({
   ...(await original<typeof import('../src/identity-link')>()),
@@ -50,6 +56,8 @@ beforeEach(() => {
   vi.stubEnv('NODE_ENV', 'test');
   vi.stubEnv('USDC_NETWORK', 'mainnet');
   host.lookup.mockResolvedValue(null);
+  host.tx.walletLink.findUnique.mockImplementation(() => host.lookup());
+  Object.assign(host.tx.walletChallenge, { findUniqueOrThrow: host.tx.walletChallenge.findUnique });
   host.tx.walletChallenge.updateMany.mockResolvedValue({ count: 1 });
   host.tx.walletIdentity.findUnique.mockResolvedValue({ userId: 'owner' });
   host.tx.user.findUniqueOrThrow.mockResolvedValue({ id: 'owner', suspended: false });

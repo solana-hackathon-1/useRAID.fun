@@ -1,6 +1,6 @@
+import { discardSession } from '@/lib/identity-leaves';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { db } from '@/lib/db';
 import { hash, checkOrigin } from '@/lib/auth';
 import { failure } from '@/lib/http';
 import { sessionCookie } from '@/lib/studio-mode';
@@ -24,7 +24,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
       return NextResponse.json({ error: 'Not found' }, { status: 404 });
     const jar = await cookies(),
       token = jar.get(sessionCookie())?.value;
-    if (token) await db.session.deleteMany({ where: { tokenHash: hash(token) } });
+    if (token) await discardSession(hash(token));
     jar.delete(sessionCookie());
     return NextResponse.json({ ok: true });
   } catch (error) {

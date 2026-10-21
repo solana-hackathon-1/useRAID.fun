@@ -1,0 +1,556 @@
+{
+  "postgres": "PostgreSQL 16.15 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+  "scenarios": {
+    "S1_keyshare": {
+      "label": "S1 sign-in root FOR KEY SHARE vs suspension",
+      "results": {
+        "signin": {
+          "status": "ok",
+          "pid": 279,
+          "notes": {
+            "suspendedObserved": false
+          }
+        },
+        "suspension": {
+          "status": "ok",
+          "pid": 281,
+          "notes": {}
+        }
+      },
+      "waitTrace": [],
+      "final": {
+        "suspended": true,
+        "sessionsLeftForSuspendedAccount": 1
+      }
+    },
+    "S1_share": {
+      "label": "S1 sign-in root FOR SHARE vs suspension",
+      "results": {
+        "signin": {
+          "status": "ok",
+          "pid": 279,
+          "notes": {
+            "suspendedObserved": false
+          }
+        },
+        "suspension": {
+          "status": "ok",
+          "pid": 281,
+          "notes": {}
+        }
+      },
+      "waitTrace": [
+        {
+          "waiter": 281,
+          "blockedBy": [
+            279
+          ],
+          "wait": "Lock/transactionid",
+          "query": "UPDATE \"User\" SET suspended = true WHERE id='cmv531adl0001oio9m3j72qev'"
+        }
+      ],
+      "final": {
+        "suspended": true,
+        "sessionsLeftForSuspendedAccount": 0
+      }
+    },
+    "X1": {
+      "rootless/writerFirst": {
+        "label": "X1 writer=rootless order=writerFirst",
+        "results": {
+          "writer": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {}
+          },
+          "merge": {
+            "status": "ERROR",
+            "pid": 279,
+            "notes": {},
+            "error": {
+              "name": "PrismaClientUnknownRequestError",
+              "meta": null,
+              "sqlstate": "40P01",
+              "message": "\nInvalid `prisma.session.deleteMany()` invocation:\n\n\nError occurred during query execution:\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"40P01\", message: \"deadlock detected\", severity: \"ERROR\", detail: Some(\"Process 279 waits for ShareLock on transaction 1089; blocked by process 281.\\nProcess 281 waits for ShareLock on transaction 1090; blocked by process 279.\"), column: None, hint: Some(\"See server log for query details.\") }), transient: false })"
+            }
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "DELETE FROM \"public\".\"Session\" WHERE \"public\".\"Session\".\"userId\" = $1"
+          },
+          {
+            "waiter": 281,
+            "blockedBy": [
+              279
+            ],
+            "wait": "Lock/transactionid",
+            "query": "INSERT INTO \"public\".\"Session\" (\"tokenHash\",\"userId\",\"expiresAt\",\"via\") VALUES ($1,$2,$3,$4) RETURNING \"public\".\"Session\".\"tokenHash\", \"publ"
+          }
+        ]
+      },
+      "rootless/mergeFirst": {
+        "label": "X1 writer=rootless order=mergeFirst",
+        "results": {
+          "writer": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {}
+          },
+          "merge": {
+            "status": "ERROR",
+            "pid": 279,
+            "notes": {},
+            "error": {
+              "name": "PrismaClientUnknownRequestError",
+              "meta": null,
+              "sqlstate": "40P01",
+              "message": "\nInvalid `prisma.session.deleteMany()` invocation:\n\n\nError occurred during query execution:\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"40P01\", message: \"deadlock detected\", severity: \"ERROR\", detail: Some(\"Process 279 waits for ShareLock on transaction 1094; blocked by process 281.\\nProcess 281 waits for ShareLock on transaction 1093; blocked by process 279.\"), column: None, hint: Some(\"See server log for query details.\") }), transient: false })"
+            }
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "DELETE FROM \"public\".\"Session\" WHERE \"public\".\"Session\".\"userId\" = $1"
+          },
+          {
+            "waiter": 281,
+            "blockedBy": [
+              279
+            ],
+            "wait": "Lock/transactionid",
+            "query": "INSERT INTO \"public\".\"Session\" (\"tokenHash\",\"userId\",\"expiresAt\",\"via\") VALUES ($1,$2,$3,$4) RETURNING \"public\".\"Session\".\"tokenHash\", \"publ"
+          }
+        ]
+      },
+      "keyshare/writerFirst": {
+        "label": "X1 writer=keyshare order=writerFirst",
+        "results": {
+          "writer": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {
+              "rootRows": 1
+            }
+          },
+          "merge": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {}
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 281,
+            "blockedBy": [
+              279
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531cid0004oio9cxlsuwd8' FOR UPDATE"
+          }
+        ]
+      },
+      "keyshare/mergeFirst": {
+        "label": "X1 writer=keyshare order=mergeFirst",
+        "results": {
+          "writer": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {
+              "rootRows": 0,
+              "planChanged": true
+            }
+          },
+          "merge": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {}
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 281,
+            "blockedBy": [
+              279
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531cpg0005oio9an6cq2fp' FOR KEY SHARE"
+          }
+        ]
+      },
+      "share/writerFirst": {
+        "label": "X1 writer=share order=writerFirst",
+        "results": {
+          "writer": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {
+              "rootRows": 1
+            }
+          },
+          "merge": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {}
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531cuo0006oio9ub2ptckg' FOR UPDATE"
+          }
+        ]
+      },
+      "share/mergeFirst": {
+        "label": "X1 writer=share order=mergeFirst",
+        "results": {
+          "writer": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {
+              "rootRows": 0,
+              "planChanged": true
+            }
+          },
+          "merge": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {}
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531d1h0007oio9l8bky8jr' FOR SHARE"
+          }
+        ]
+      }
+    },
+    "X2": {
+      "unsortedFkInserts/writerFirst": {
+        "label": "X2 writer=unsortedFkInserts order=writerFirst",
+        "results": {
+          "multiUserFkWriter": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {}
+          },
+          "sortedRootsMerge": {
+            "status": "ERROR",
+            "pid": 281,
+            "notes": {},
+            "error": {
+              "name": "PrismaClientKnownRequestError",
+              "prismaCode": "P2010",
+              "meta": {
+                "code": "40P01",
+                "message": "ERROR: deadlock detected\nDETAIL: Process 281 waits for ShareLock on transaction 1111; blocked by process 279.\nProcess 279 waits for ShareLock on transaction 1112; blocked by process 281.\nHINT: See server log for query details."
+              },
+              "sqlstate": "40P01",
+              "message": "\nInvalid `prisma.$queryRawUnsafe()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 281 waits for ShareLock on transaction 1111; blocked by process 279.\nProcess 279 waits for ShareLock on transaction 1112; blocked by process 281.\nHINT: See server log for query details.`"
+            }
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 281,
+            "blockedBy": [
+              279
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531d6n0009oio9b0fce7d2' FOR UPDATE"
+          },
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "INSERT INTO \"public\".\"Session\" (\"tokenHash\",\"userId\",\"expiresAt\",\"via\") VALUES ($1,$2,$3,$4) RETURNING \"public\".\"Session\".\"tokenHash\", \"publ"
+          }
+        ]
+      },
+      "unsortedFkInserts/mergeFirst": {
+        "label": "X2 writer=unsortedFkInserts order=mergeFirst",
+        "results": {
+          "multiUserFkWriter": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {}
+          },
+          "sortedRootsMerge": {
+            "status": "ERROR",
+            "pid": 281,
+            "notes": {},
+            "error": {
+              "name": "PrismaClientKnownRequestError",
+              "prismaCode": "P2010",
+              "meta": {
+                "code": "40P01",
+                "message": "ERROR: deadlock detected\nDETAIL: Process 281 waits for ShareLock on transaction 1116; blocked by process 279.\nProcess 279 waits for ShareLock on transaction 1115; blocked by process 281.\nHINT: See server log for query details."
+              },
+              "sqlstate": "40P01",
+              "message": "\nInvalid `prisma.$queryRawUnsafe()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 281 waits for ShareLock on transaction 1116; blocked by process 279.\nProcess 279 waits for ShareLock on transaction 1115; blocked by process 281.\nHINT: See server log for query details.`"
+            }
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 281,
+            "blockedBy": [
+              279
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531dzs000boio9gerf1eey' FOR UPDATE"
+          },
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "INSERT INTO \"public\".\"Session\" (\"tokenHash\",\"userId\",\"expiresAt\",\"via\") VALUES ($1,$2,$3,$4) RETURNING \"public\".\"Session\".\"tokenHash\", \"publ"
+          }
+        ]
+      },
+      "sortedRoots/writerFirst": {
+        "label": "X2 writer=sortedRoots order=writerFirst",
+        "results": {
+          "multiUserFkWriter": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {}
+          },
+          "sortedRootsMerge": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {}
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531euz000coio9749ame51' FOR UPDATE"
+          }
+        ]
+      },
+      "sortedRoots/mergeFirst": {
+        "label": "X2 writer=sortedRoots order=mergeFirst",
+        "results": {
+          "multiUserFkWriter": {
+            "status": "ok",
+            "pid": 279,
+            "notes": {}
+          },
+          "sortedRootsMerge": {
+            "status": "ok",
+            "pid": 281,
+            "notes": {}
+          }
+        },
+        "waitTrace": [
+          {
+            "waiter": 279,
+            "blockedBy": [
+              281
+            ],
+            "wait": "Lock/transactionid",
+            "query": "SELECT id FROM \"User\" WHERE id='cmv531f2t000eoio9xpzk904n' FOR KEY SHARE"
+          }
+        ]
+      }
+    },
+    "S4_noKeyUpdate": {
+      "label": "S4 merge root FOR NO KEY UPDATE vs unlocked BalanceEntry insert",
+      "results": {
+        "financeWriter(no balance advisory lock)": {
+          "status": "ERROR",
+          "pid": 279,
+          "notes": {},
+          "error": {
+            "name": "PrismaClientUnknownRequestError",
+            "meta": null,
+            "sqlstate": null,
+            "message": "Error in connector: Error querying the database: ERROR: Test funds exist only on the sandbox network"
+          }
+        },
+        "merge": {
+          "status": "ok",
+          "pid": 281,
+          "notes": {
+            "balanceEntriesVisibleToEmptinessCheck": 0
+          }
+        }
+      },
+      "waitTrace": [
+        {
+          "waiter": 281,
+          "blockedBy": [
+            279
+          ],
+          "wait": "Lock/transactionid",
+          "query": "DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\""
+        }
+      ],
+      "final": {
+        "dropAccountStillExists": false,
+        "ledgerRows": 0
+      }
+    },
+    "S4_forUpdate": {
+      "label": "S4 merge root FOR UPDATE vs unlocked BalanceEntry insert",
+      "results": {
+        "financeWriter(no balance advisory lock)": {
+          "status": "ERROR",
+          "pid": 281,
+          "notes": {},
+          "error": {
+            "name": "PrismaClientUnknownRequestError",
+            "meta": null,
+            "sqlstate": null,
+            "message": "Error in connector: Error querying the database: ERROR: Test funds exist only on the sandbox network"
+          }
+        },
+        "merge": {
+          "status": "ok",
+          "pid": 279,
+          "notes": {
+            "balanceEntriesVisibleToEmptinessCheck": 0
+          }
+        }
+      },
+      "waitTrace": [
+        {
+          "waiter": 279,
+          "blockedBy": [
+            281
+          ],
+          "wait": "Lock/transactionid",
+          "query": "SELECT id FROM \"User\" WHERE id='cmv531fwa000joio97l5hrlj5' FOR UPDATE"
+        }
+      ],
+      "final": {
+        "dropAccountStillExists": false,
+        "ledgerRows": 0
+      }
+    },
+    "S5a_share_then_upgrade": {
+      "label": "S5a two SHARE holders each upgrading to NO KEY UPDATE",
+      "results": {
+        "t1": {
+          "status": "ERROR",
+          "pid": 279,
+          "notes": {},
+          "error": {
+            "name": "PrismaClientKnownRequestError",
+            "prismaCode": "P2010",
+            "meta": {
+              "code": "40P01",
+              "message": "ERROR: deadlock detected\nDETAIL: Process 279 waits for ShareLock on transaction 1133; blocked by process 281.\nProcess 281 waits for ShareLock on transaction 1132; blocked by process 279.\nHINT: See server log for query details."
+            },
+            "sqlstate": "40P01",
+            "message": "\nInvalid `prisma.$queryRawUnsafe()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 279 waits for ShareLock on transaction 1133; blocked by process 281.\nProcess 281 waits for ShareLock on transaction 1132; blocked by process 279.\nHINT: See server log for query details.`"
+          }
+        },
+        "t2": {
+          "status": "ok",
+          "pid": 281,
+          "notes": {}
+        }
+      },
+      "waitTrace": [
+        {
+          "waiter": 279,
+          "blockedBy": [
+            281
+          ],
+          "wait": "Lock/transactionid",
+          "query": "SELECT id FROM \"User\" WHERE id='cmv531ge5000moio9vloca3m3' FOR NO KEY UPDATE"
+        },
+        {
+          "waiter": 281,
+          "blockedBy": [
+            279
+          ],
+          "wait": "Lock/transactionid",
+          "query": "SELECT id FROM \"User\" WHERE id='cmv531ge5000moio9vloca3m3' FOR NO KEY UPDATE"
+        }
+      ]
+    },
+    "S5b_share_vs_queued_suspension": {
+      "label": "S5b new SHARE request while suspension is queued behind a SHARE holder",
+      "results": {
+        "shareHolder": {
+          "status": "ok",
+          "pid": 281,
+          "notes": {}
+        },
+        "suspension": {
+          "status": "ok",
+          "pid": 279,
+          "notes": {}
+        },
+        "laterSignin": {
+          "status": "ok",
+          "pid": 283,
+          "notes": {
+            "sharedImmediatelyWhileSuspensionWaits": true,
+            "elapsedMs": 9
+          }
+        }
+      },
+      "waitTrace": [
+        {
+          "waiter": 279,
+          "blockedBy": [
+            281
+          ],
+          "wait": "Lock/transactionid",
+          "query": "UPDATE \"User\" SET suspended = true WHERE id='cmv531h6m000noio912pa5q96'"
+        }
+      ]
+    },
+    "S6_key_equality": {
+      "label": "S6 trigger-held key vs application label key",
+      "results": {
+        "triggerInsert": {
+          "status": "ok",
+          "pid": 279,
+          "notes": {}
+        },
+        "appLabelProbe": {
+          "status": "ok",
+          "pid": 281,
+          "notes": {}
+        }
+      },
+      "waitTrace": [],
+      "probe": {
+        "appLabelKeyAcquirable": false,
+        "differentLabelAcquirable": true
+      }
+    }
+  }
+}

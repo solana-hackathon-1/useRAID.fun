@@ -1,0 +1,22 @@
+{
+  "requirements": [
+    "R04",
+    "R13",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I13",
+    "AC02"
+  ],
+  "tests": "tests/auth*.test.ts tests/wallet*.test.ts tests/identity*.test.ts tests/x-oauth*.test.ts tests/lock-observation.test.ts",
+  "database": "new owned PG16/useraid_test loopback62468",
+  "not_run": [
+    "full hosted CI",
+    "production build",
+    "browser/UAT",
+    "independent review"
+  ],
+  "prohibition": "No implementation of newly detected lock protocol gaps; retain failures."
+}

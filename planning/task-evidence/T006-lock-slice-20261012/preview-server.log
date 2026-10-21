@@ -1,0 +1,15 @@
+▲ Next.js 16.3.8 (Turbopack)
+- Local:         http://127.0.0.1:3087
+- Network:       http://127.0.0.1:3087
+- Environments: .env
+✓ Ready in 314ms
+✓ Running next.config.ts took 63ms
+
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /studio-test 200 in 429ms (next.js: 233ms, application-code: 195ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ POST /api/studio/sandbox 200 in 289ms (next.js: 132ms, application-code: 157ms)
+ GET /creator 200 in 60ms (next.js: 17ms, application-code: 44ms)
+ GET /creator 200 in 35ms (next.js: 3ms, application-code: 33ms)
+ GET /creator 200 in 73ms (next.js: 10ms, application-code: 63ms)
+ GET /creator 200 in 189ms (next.js: 19ms, application-code: 170ms)

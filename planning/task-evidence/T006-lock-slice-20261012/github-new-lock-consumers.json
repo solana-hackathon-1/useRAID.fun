@@ -1,0 +1,47 @@
+{
+  "src/raider-onboarding/storage.ts": [
+    {
+      "line": 8,
+      "source": "import { ensureHumanParticipant, IdentityStorageError } from '../identity-storage';"
+    },
+    {
+      "line": 60,
+      "source": "'SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE',"
+    },
+    {
+      "line": 67,
+      "source": "'SELECT \"userId\", \"via\" FROM \"Session\" WHERE \"tokenHash\" = $1 FOR SHARE',"
+    },
+    {
+      "line": 143,
+      "source": "participant = await ensureHumanParticipant("
+    }
+  ],
+  "src/guild-profiles/draft-storage.ts": [
+    {
+      "line": 60,
+      "source": "'SELECT \"suspended\" FROM \"User\" WHERE \"id\"=$1 FOR NO KEY UPDATE',"
+    },
+    {
+      "line": 67,
+      "source": "'SELECT \"userId\",\"via\" FROM \"Session\" WHERE \"tokenHash\"=$1 FOR SHARE',"
+    },
+    {
+      "line": 141,
+      "source": "'SELECT \"revision\",\"slug\" FROM \"GuildDraft\" WHERE \"id\"=$1::uuid AND \"ownerAccountId\"=$2 FOR UPDATE',"
+    }
+  ],
+  "src/guild-profiles/project-proposal-storage.ts": [
+    {
+      "line": 118,
+      "source": "'SELECT \"currentVersionId\"::text,\"revision\" FROM \"GuildDraft\" WHERE \"id\"=$1::uuid AND \"ownerAccountId\"=$2 FOR SHARE',"
+    },
+    {
+      "line": 131,
+      "source": "'SELECT \"revision\" FROM \"GuildProjectProposal\" WHERE \"guildDraftId\"=$1::uuid AND \"ownerAccountId\"=$2 FOR UPDATE',"
+    }
+  ],
+  "src/lib/raider-onboarding-host.ts": [],
+  "src/lib/guild-draft-host.ts": [],
+  "src/lib/project-proposal-host.ts": []
+}

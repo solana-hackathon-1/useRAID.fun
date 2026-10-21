@@ -1,0 +1,37 @@
+{
+  "remote_nonoverlap_paths_verified": 1430,
+  "remote_mismatches": [],
+  "local_nonoverlap_source_mismatches": [],
+  "flags": {
+    ".env": {
+      "WALLET_LINKS_ENABLED": "false",
+      "ACCOUNT_FOLDS_ENABLED": null
+    },
+    ".env.example": {
+      "WALLET_LINKS_ENABLED": "false",
+      "ACCOUNT_FOLDS_ENABLED": "false"
+    },
+    "inherited_process": {
+      "WALLET_LINKS_ENABLED": null,
+      "ACCOUNT_FOLDS_ENABLED": null
+    }
+  },
+  "strict_true_opt_in": true,
+  "origin_validation_before_consumption": true,
+  "incoming_origin_helper_unchanged": true,
+  "additional_link_route_exposed": false,
+  "conflict_markers": [],
+  "duplicate_subsection_numbers": [],
+  "duplicate_primary_decision_ids": [],
+  "blueprint_sha256": "e9b82f347d826720ebd278692ad2c2790b13e5733350596ec609e26a459a9e0c",
+  "fingerprints_match": true,
+  "history_missing_lines": {
+    "original_local": [],
+    "github": []
+  },
+  "frozen_test_source_mismatches": [],
+  "head": "2992a78cc77112569740abf0522d399994c77910",
+  "branch": "main",
+  "actual_index_empty": true,
+  "unmerged_index_entries": ""
+}

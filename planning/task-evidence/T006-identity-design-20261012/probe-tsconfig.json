@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "types": ["node"],
+    "typeRoots": ["../../../node_modules/@types"]
+  },
+  "include": ["./probes/*.test.ts"],
+  "exclude": ["../../../node_modules"]
+}

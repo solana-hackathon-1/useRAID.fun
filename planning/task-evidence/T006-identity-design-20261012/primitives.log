@@ -1,0 +1,17 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts > proposed protocol database primitives > updating unique User.xId upgrades NO KEY UPDATE and waits for KEY SHARE
+{"primitiveWait":{"blocker":112,"waiter":111,"needle":"UPDATE"}}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts > proposed protocol database primitives > ordered root acquisition leaves the higher root available while the lower waits
+{"primitiveWait":{"blocker":112,"waiter":111,"needle":"FOR UPDATE"}}
+
+ ✓ planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts (6 tests) 251ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  13:49:47
+   Duration  423ms (transform 19ms, setup 0ms, import 49ms, tests 251ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-identity-design-20261012/primitives.xml

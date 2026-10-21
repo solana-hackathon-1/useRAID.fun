@@ -1,0 +1,4 @@
+examples/raider-preferences/identity-storage/contracts.ts(6,36): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/raider-preferences/identity-storage/contracts.ts(24,18): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/raider-preferences/identity-storage/index.ts(7,8): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/raider-preferences/identity-storage/index.ts(114,9): error TS18046: 'error' is of type 'unknown'.

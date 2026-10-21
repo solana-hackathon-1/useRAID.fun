@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="205" failures="0" errors="0" time="3.25040275">
+    <testsuite name="tests/account-merge-canonical.test.ts" timestamp="2026-10-12T08:05:43.313Z" hostname="0xd.local" tests="14" failures="0" errors="0" skipped="0" time="0.005910166">
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; absorbs an empty account without copying retired creator metadata" time="0.00252925">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; keeps the existing genuinely empty account result" time="0.0002615">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; a canonical HUMAN mapping makes an otherwise legacy-empty account nonempty" time="0.000177666">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy raid references" time="0.000179125">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy tokenLaunch references" time="0.000148792">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy rewardEnrollment references" time="0.000127125">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy raidEnrollment references" time="0.000145958">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy balanceEntry references" time="0.000146292">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy usdcTransfer references" time="0.000167375">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains nonempty protection for legacy usdcAllocation references" time="0.000163">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;role&quot;:&quot;ADMIN&quot;}" time="0.0001235">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;suspended&quot;:true}" time="0.000094583">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; retains existing role, restriction and missing-account denials: {&quot;missing&quot;:true}" time="0.000095542">
+        </testcase>
+        <testcase classname="tests/account-merge-canonical.test.ts" name="T006 planned canonical references protect legacy absorption decisions &gt; refuses mapped-account absorption before any credential/session/account/event mutation" time="0.000769708">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/docs-links.test.ts" timestamp="2026-10-12T08:05:43.315Z" hostname="0xd.local" tests="67" failures="0" errors="0" skipped="0" time="0.350063583">
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; README.md: relative links and anchors resolve" time="0.0011985">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; README.md: every npm script it names exists" time="0.000118875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/coming-soon-deploy.md: relative links and anchors resolve" time="0.000104916">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/coming-soon-deploy.md: every npm script it names exists" time="0.00007725">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/creator-studio.md: relative links and anchors resolve" time="0.00005875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/creator-studio.md: every npm script it names exists" time="0.000053584">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/fix-branch-report.md: relative links and anchors resolve" time="0.000055917">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/fix-branch-report.md: every npm script it names exists" time="0.000058709">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/operations.md: relative links and anchors resolve" time="0.000085541">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/operations.md: every npm script it names exists" time="0.000090667">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-assignment.md: relative links and anchors resolve" time="0.000062417">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-assignment.md: every npm script it names exists" time="0.000051125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-task-contracts.md: relative links and anchors resolve" time="0.153295417">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-agent-task-contracts.md: every npm script it names exists" time="0.000134375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-asset-registry.md: relative links and anchors resolve" time="0.001254792">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-asset-registry.md: every npm script it names exists" time="0.000039916">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-blueprint-project-map.md: relative links and anchors resolve" time="0.149929625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-blueprint-project-map.md: every npm script it names exists" time="0.00038275">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-ci-plan.md: relative links and anchors resolve" time="0.000060125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-ci-plan.md: every npm script it names exists" time="0.000043833">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-command-receipts.md: relative links and anchors resolve" time="0.001803125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-command-receipts.md: every npm script it names exists" time="0.000042917">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-coverage.md: relative links and anchors resolve" time="0.025691791">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-coverage.md: every npm script it names exists" time="0.000083291">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-timeline.md: relative links and anchors resolve" time="0.002113042">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-delivery-timeline.md: every npm script it names exists" time="0.000048709">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-development-phases.md: relative links and anchors resolve" time="0.000868291">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-development-phases.md: every npm script it names exists" time="0.000042791">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-preflight.md: relative links and anchors resolve" time="0.0022165">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-preflight.md: every npm script it names exists" time="0.00002875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-storage.md: relative links and anchors resolve" time="0.001129">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-identity-storage.md: every npm script it names exists" time="0.000026792">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-module-reuse.md: relative links and anchors resolve" time="0.000565708">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-module-reuse.md: every npm script it names exists" time="0.000031375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-plan-verification.md: relative links and anchors resolve" time="0.000036334">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-plan-verification.md: every npm script it names exists" time="0.000025875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-backlog.md: relative links and anchors resolve" time="0.000060584">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-backlog.md: every npm script it names exists" time="0.000065208">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-guide.md: relative links and anchors resolve" time="0.000335166">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-guide.md: every npm script it names exists" time="0.000031625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-status.md: relative links and anchors resolve" time="0.000036209">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-project-status.md: every npm script it names exists" time="0.000038417">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-shared-contracts.md: relative links and anchors resolve" time="0.000052541">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-shared-contracts.md: every npm script it names exists" time="0.000033834">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-sprint-plan.md: relative links and anchors resolve" time="0.001655167">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-sprint-plan.md: every npm script it names exists" time="0.000040708">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-task-progress.md: relative links and anchors resolve" time="0.000187625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-task-progress.md: every npm script it names exists" time="0.000030334">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-center.md: relative links and anchors resolve" time="0.000039542">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-center.md: every npm script it names exists" time="0.000026792">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-fixtures.md: relative links and anchors resolve" time="0.000048708">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-test-fixtures.md: every npm script it names exists" time="0.000026625">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-uat-plan.md: relative links and anchors resolve" time="0.000038542">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-uat-plan.md: every npm script it names exists" time="0.000029875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-wallet-links.md: relative links and anchors resolve" time="0.003031875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/raid-wallet-links.md: every npm script it names exists" time="0.000042125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/staging-deploy.md: relative links and anchors resolve" time="0.000617875">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/staging-deploy.md: every npm script it names exists" time="0.000026375">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/staging-public-access.md: relative links and anchors resolve" time="0.000043417">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/staging-public-access.md: every npm script it names exists" time="0.000023416">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/standalone-raids.md: relative links and anchors resolve" time="0.00002025">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/standalone-raids.md: every npm script it names exists" time="0.000021167">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/verification.md: relative links and anchors resolve" time="0.000025667">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/verification.md: every npm script it names exists" time="0.000025125">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/x-tracking.md: relative links and anchors resolve" time="0.000069041">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; docs/x-tracking.md: every npm script it names exists" time="0.000026208">
+        </testcase>
+        <testcase classname="tests/docs-links.test.ts" name="documentation &gt; states the release policies" time="0.0002605">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-authority-hook-db.test.ts" timestamp="2026-10-12T08:05:43.318Z" hostname="0xd.local" tests="9" failures="0" errors="0" skipped="0" time="0.272163542">
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; is awaited after the subject and account locks and before any other read" time="0.06183425">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; uses the hook observation instead of stale session and clock input" time="0.032980084">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; denies with the IdentityLinkError the hook throws and writes nothing" time="0.028617084">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; reports any other hook failure as STORAGE_UNAVAILABLE without its text" time="0.0239675">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return null as INVALID_INPUT" time="0.022778083">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return {} as INVALID_INPUT" time="0.020764208">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return {&quot;session&quot;:{&quot;accountId&quot;:&quot;hook-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}} as INVALID_INPUT" time="0.020600375">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return {&quot;session&quot;:&quot;x&quot;,&quot;now&quot;:&quot;2026-10-09T09:00:00.000Z&quot;} as INVALID_INPUT" time="0.021022792">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; still requires a valid session and clock when no hook is supplied" time="0.020789959">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-auth-db.test.ts" timestamp="2026-10-12T08:05:43.318Z" hostname="0xd.local" tests="25" failures="0" errors="0" skipped="0" time="1.086429208">
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; creates wallet-only user, consumes challenge once, and rejects stale challenge" time="0.115144833">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; refuses linking wallet already owned by another X identity" time="0.023715959">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; issues a Sign-In With Solana formatted challenge" time="0.008597917">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; binds a challenge to the signer state it was issued for" time="0.038631709">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not let a link signature perform a wallet rotation" time="0.023715667">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; refuses to sign a suspended owner in and creates no session" time="0.032583834">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; rotates the session and records how it was issued" time="0.038890458">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; keeps an X session an X session when the same user links a wallet" time="0.019462666">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not renew expired X authority through a wallet signature" time="0.040630083">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not borrow or delete another account&apos;s live X session" time="0.023223417">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires authenticated account context before preserving X authority" time="0.033614042">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; normalizes unknown session authority to wallet authority" time="0.021347167">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently revoked X session before carrying its authority forward" time="0.050357208">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;revoked&quot;,&quot;waiter&quot;:119,&quot;blocker&quot;:117}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently expired X session before carrying its authority forward" time="0.024764292">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;expired&quot;,&quot;waiter&quot;:117,&quot;blocker&quot;:119}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently downgraded X session before carrying its authority forward" time="0.020873208">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;downgraded&quot;,&quot;waiter&quot;:119,&quot;blocker&quot;:117}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires an X session for administrator access" time="0.006760583">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; moves a wallet from an empty wallet-only account onto the signed-in X account" time="0.064634667">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; keeps the wallet account when the X account is the empty one" time="0.057072084">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity" time="0.045708292">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when the wallet owner joined a Raid" time="0.04762475">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; replaces the address and records the previous one" time="0.03281625">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; keeps an existing enrollment on the wallet snapshotted when it was made" time="0.036552">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses while a withdrawal or live deposit is open" time="0.070172458">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses an address owned by another account and a second change within 7 days" time="0.094578542">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; requires a connected X account" time="0.035402875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-credentials.test.ts" timestamp="2026-10-12T08:05:43.320Z" hostname="0xd.local" tests="31" failures="0" errors="0" skipped="0" time="0.601333625">
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants" time="0.001106583">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolves only internal account/participant context under subject then account locks, without writes" time="0.002316083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock" time="0.000707833">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;REVOKED&quot;}" time="0.000431875">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;suspended&quot;:true}" time="0.000199875">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:null}" time="0.000187541">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92402&quot;}" time="0.000166625">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;INVALID&quot;}" time="0.000152209">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;malformed&quot;:true}" time="0.000120417">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; revokes once, preserves permanent reservation, and repeats without another UPDATE" time="0.001134541">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;actorAccountId&quot;:&quot;credentials-bob&quot;}" time="0.00017325">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-bob&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000140375">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;REVOKED&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000118958">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00.000Z&quot;}}" time="0.000123458">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;now&quot;:&quot;2026-10-09T09:00:00.100Z&quot;,&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00Z&quot;}}" time="0.000112459">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;requestId&quot;:&quot;&quot;}" time="0.000105083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; protects own primary and returns identical sanitized failure for missing or foreign targets" time="0.000379541">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands reject a non-READ_COMMITTED port before any SQL even when the address is absent" time="0.000173917">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands reject a non-READ_COMMITTED port before any SQL even when the address is absent" time="0.000180875">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; fails closed when the PRIMARY owner observed before the account lock changes while waiting" time="0.000123583">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000283833">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000244625">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolves unmapped legacy primary without provisioning and links preserve canonical context" time="0.102784083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; existing generator uses the shared legacy vocabulary without issuing additional-link purposes" time="0.038967208">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; revoke keeps immutable provenance, rejects primary/foreign targets and leaves address reserved" time="0.055706875">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; restricted owner cannot resolve or revoke and malformed trusted session causes no mutation" time="0.037072625">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held resolve-first locks" time="0.055237917">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:124,&quot;blocker&quot;:122,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held revoke-first locks" time="0.055442834">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:122,&quot;blocker&quot;:124,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held account-lock locks" time="0.046796292">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:124,&quot;blocker&quot;:122,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot;, \&quot;suspended\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR NO KEY UPDATE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; rotation preserves cross-table subject exclusion under default repeatable read while a link commits" time="0.101173958">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:126,&quot;blocker&quot;:124,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; rotation preserves cross-table subject exclusion under default serializable while a link commits" time="0.079654333">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:128,&quot;blocker&quot;:124,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-proof.test.ts" timestamp="2026-10-12T08:05:43.322Z" hostname="0xd.local" tests="19" failures="0" errors="0" skipped="0" time="0.005864">
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; derives every field strictly from the stored message and column" time="0.003679375">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; observes the stored chain independently of current configuration and never defaults issuedAt to now" time="0.000462875">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; marks the observation unverified when the host did not verify the signature" time="0.000086">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; wrong statement is PROOF_INVALID" time="0.000077666">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; address line differs from row address is PROOF_INVALID" time="0.000098959">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; digest is not the hash of the message is PROOF_INVALID" time="0.000074709">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; expiration differs from the column is PROOF_INVALID" time="0.000069209">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; issued after expiry is PROOF_INVALID" time="0.000067958">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; non-ISO issuedAt is PROOF_INVALID" time="0.0000755">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; row for an anonymous sign-in challenge is PROOF_INVALID" time="0.000076458">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; already consumed row is PROOF_INVALID" time="0.000049">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; extra trailing line is PROOF_INVALID" time="0.0000425">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; missing line is PROOF_INVALID" time="0.000038">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; reordered lines is PROOF_INVALID" time="0.000044">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; wrong version is PROOF_INVALID" time="0.000048666">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; uri with path smuggling newline is PROOF_INVALID" time="0.000039042">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; empty host is PROOF_INVALID" time="0.000034292">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; chain id with spaces is PROOF_INVALID" time="0.000043333">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; accepts an expected legacy statement only when the caller names it" time="0.000072584">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-network.test.ts" timestamp="2026-10-12T08:05:43.323Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.057035834">
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; issues and verifies an exact devnet challenge" time="0.01282625">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; issues and verifies an exact mainnet challenge" time="0.006403833">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; rejects a registered credential on a different chain before creating a session" time="0.008679042">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; preserves a pending mainnet challenge across a configuration change to devnet" time="0.006698833">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; rejects altered stored chain text even when signed again, retaining the issued digest" time="0.00247125">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network undefined before issue or consumption" time="0.002559833">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;&quot; before issue or consumption" time="0.00237125">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;testnet&quot; before issue or consumption" time="0.002347916">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;sandbox&quot; before issue or consumption" time="0.00236575">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;MAINNET&quot; before issue or consumption" time="0.002421041">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; retains the nonproduction mainnet default when network is unset" time="0.000109375">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; passes the signed devnet network consistently to additional-link subject/proof/policy" time="0.007058542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-session-authority.test.ts" timestamp="2026-10-12T08:05:43.323Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.001874">
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; preserves only a live own X session under authenticated own context" time="0.000735459">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for absent" time="0.00007175">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for foreign owner" time="0.000048292">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for foreign context" time="0.00005125">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for missing context" time="0.000047">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for wallet provider" time="0.000038083">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for unknown provider" time="0.000038958">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for expired whole second" time="0.000044875">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for expiry equality" time="0.00006075">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for invalid expiry" time="0.000063834">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for invalid clock" time="0.000037583">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth-db.test.ts" timestamp="2026-10-12T08:05:43.324Z" hostname="0xd.local" tests="17" failures="0" errors="0" skipped="0" time="0.869728792">
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; creates identity metadata and updates changed username without changing ownership" time="0.100392333">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; only one callback can claim a state and session binding cannot be changed" time="0.054998">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects expired state" time="0.040055958">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; serializes duplicate account creation" time="0.024455167">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects a different identity for a signed-in user" time="0.037661958">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects an X connection owned by another user" time="0.036691125">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; disconnect preserves sessions, user, and raids and cancels a claimed callback" time="0.058415666">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; disconnect and callback race always ends disconnected" time="0.049747875">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects a session removed during authorization" time="0.043276375">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; suspended accounts cannot sign in and admin ID uses existing role" time="0.044998166">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; demotes a stored ADMIN whose id left the environment allowlist" time="0.058419042">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; demotes through the owner path as well" time="0.058600333">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; signs in as the existing X account and takes over the wallet of an empty wallet-only account" time="0.069590708">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity and changes nothing" time="0.059013167">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; absorbs an empty X account into the signed-in wallet account that has activity" time="0.063444625">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; ignores retired creator approval configuration in test" time="0.033274709">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; ignores retired creator approval configuration in production" time="0.0341995">
+        </testcase>
+    </testsuite>
+</testsuites>

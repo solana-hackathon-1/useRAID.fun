@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-14T01:34:22.835835+00:00",
+  "original": {
+    "utc_start": "2026-10-14T01:30:27.863473+00:00",
+    "root": "/Users/dushyant/Documents/useRAID.fun",
+    "branch": "main",
+    "HEAD": "2992a78cc77112569740abf0522d399994c77910",
+    "origin_main": "148b95fe29dbc0069d1bd9393341fe99f59007f2",
+    "status": "## main...origin/main [behind 54]\n M RAID_AGENT_BLUEPRINT.md\n M docs/ai-handoff/CURRENT.md\n M docs/raid-command-receipts.md\n M docs/raid-identity-storage.md\n M docs/raid-wallet-links.md\n M docs/tasks/T006-identity-lock-protocol-design.md\n M examples/command-receipts/README.md\n M examples/identity-storage/README.md\n M examples/wallet-links/README.md\n M examples/wallet-links/host.ts\n M next-env.d.ts\n M package.json\n M planning/raid-scenarios.json\n M planning/raid-task-contracts.json\n M src/app/api/admin/[action]/route.ts\n M src/app/api/auth/[action]/route.ts\n M src/app/api/launch/[id]/renew/route.ts\n M src/app/api/studio/sandbox/route.ts\n M src/identity-link/contracts.ts\n M src/identity-link/index.ts\n M src/identity-storage/contracts.ts\n M src/identity-storage/index.ts\n M src/lib/account-merge.ts\n M src/lib/campaigns.ts\n M src/lib/command-receipts-adapter.ts\n M src/lib/identity-storage-adapter.ts\n M src/lib/providers/x.ts\n M src/lib/pump-launch.ts\n M src/lib/queue.ts\n M src/lib/rewards.ts\n M src/lib/studio-campaigns.ts\n M src/lib/studio-finance.ts\n M src/lib/studio-sandbox.ts\n M src/lib/studio-targets.ts\n M src/lib/tracking.ts\n M src/lib/usdc.ts\n M src/lib/wallet-auth.ts\n M src/lib/worker-jobs.ts\n M src/lib/x-oauth-routes.ts\n M src/lib/x-oauth.ts\n M tests/identity-link-authority-hook-db.test.ts\n M tests/identity-link-db.test.ts\n M tests/identity-link.test.ts\n M tests/identity-storage-db.test.ts\n M tests/identity-storage.test.ts\n M tests/wallet-auth-db.test.ts\n M tests/wallet-credential-lookup.test.ts\n M tests/wallet-link-authority-db.test.ts\n M tests/wallet-link-credentials.test.ts\n M tests/wallet-link-lock-order-db.test.ts\n M tests/wallet-network.test.ts\n?? .claude/worktrees/\n?? WARP.md\n?? docs/raid-identity-locks.md\n?? docs/tasks/T006-identity-design-20261012.md\n?? docs/tasks/T006-identity-lock-protocol-20261012.md\n?? docs/tasks/T006-lock-slice-20261012.md\n?? examples/command-receipts/identity\n?? examples/command-receipts/identity-link\n?? examples/command-receipts/identity-locks\n?? examples/command-receipts/identity-storage\n?? examples/command-receipts/lib/identity-storage-adapter.ts\n?? examples/identity-storage/identity-locks\n?? examples/wallet-links/identity-locks\n?? planning/identity-writer-fence.json\n?? planning/task-evidence/T006-identity-design-20261012-claude-review/\n?? planning/task-evidence/T006-identity-design-20261012/\n?? planning/task-evidence/T006-lock-slice-20261012/\n?? scripts/check-identity-locks.ts\n?? src/identity-locks/\n?? src/lib/identity-cleanup.ts\n?? src/lib/identity-leaves.ts\n?? src/lib/identity-protocol.ts\n?? tests/helpers/identity-architecture.ts\n?? tests/helpers/lock-port-fixture.ts\n?? tests/identity-lock-architecture.test.ts\n?? tests/identity-locks-db.test.ts\n?? tests/identity-protocol-db.test.ts\n",
+    "backup": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z",
+    "method": "cp -cRp full checkout including .git, untracked, ignored files and nested worktrees; APFS clone"
+  },
+  "target": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+  "upstream_paths_imported": 1439,
+  "overlapping_paths": [
+    "RAID_AGENT_BLUEPRINT.md",
+    "docs/ai-handoff/CURRENT.md",
+    "docs/raid-wallet-links.md",
+    "examples/wallet-links/README.md",
+    "planning/raid-scenarios.json",
+    "planning/raid-task-contracts.json",
+    "src/lib/wallet-auth.ts",
+    "tests/identity-storage-db.test.ts",
+    "tests/wallet-link-credentials.test.ts"
+  ],
+  "current_reference_updates": [
+    "docs/tasks/T006-identity-design-20261012.md",
+    "docs/tasks/T006-identity-lock-protocol-20261012.md"
+  ],
+  "blueprint_sha256": "e9b82f347d826720ebd278692ad2c2790b13e5733350596ec609e26a459a9e0c",
+  "backup_verification": {
+    "counts": {
+      "files": 246044,
+      "symlinks": 501,
+      "directories": 23630,
+      "bytes": 7327896453
+    },
+    "source_mismatches": 0,
+    "expected_git_fetch_metadata_changes": [
+      ".git/FETCH_HEAD: bytes differ",
+      ".git/logs/refs/remotes/origin/main: bytes differ",
+      ".git/refs/remotes/origin/main: bytes differ"
+    ]
+  },
+  "branch_head_index_unchanged": true,
+  "method": "Uncommitted working-tree overlay, no branch update, Git merge, stash or reset."
+}

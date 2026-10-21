@@ -1,3 +1,5 @@
+import { lockResource } from '../identity-locks';
+import { lockAdvisory } from './identity-protocol';
 import { trackingEnabled, trackingSettlementEnabled } from './config';
 import { launchpadsAvailable } from './release';
 import { lockTracking } from './tracking';
@@ -138,7 +140,7 @@ async function recordAndBroadcast(
   }
   const signature = bs58.encode(tx.signature!);
   const row = await db.$transaction(async (t) => {
-    await t.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`finance:${launch.id}`}, 0))`;
+    await lockAdvisory(t, lockResource('finance', launch.id));
     if (await t.financialTx.count({ where: { launchId: launch.id, status: 'SIGNED' } }))
       throw new Error('Another financial transaction is pending');
     const sequence = await t.financialTx.count({ where: { launchId: launch.id, kind, roundId } });
@@ -553,7 +555,7 @@ export async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
         const plannedCost = claimCost + fee * BigInt(payables.length + 1);
         if (gross <= plannedCost) return false;
         await db.$transaction(async (t) => {
-          await t.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`reward:${launch.id}`}, 0))`;
+          await lockAdvisory(t, lockResource('reward', launch.id));
           if (reviewed) {
             await lockTracking(t, raid.id);
             const current = await t.raid.findUniqueOrThrow({

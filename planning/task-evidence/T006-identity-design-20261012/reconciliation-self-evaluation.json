@@ -1,0 +1,82 @@
+{
+  "status": "SELF-EVALUATED / REVISED DESIGN INDEPENDENTLY NOT VERIFIED",
+  "scope": "Owner-requested design reconciliation only",
+  "acceptance_defined_before_drafting": "Eight requested outcomes in user instruction; recorded in design section 1",
+  "start_utc": "2026-10-12T08:49:36.472913+00:00",
+  "end_utc": "2026-10-12T09:00:06.938753+00:00",
+  "elapsed_seconds": 630.466,
+  "branch": "main",
+  "head": "2992a78cc77112569740abf0522d399994c77910",
+  "incoming_git_status": "## main...origin/main\n M RAID_AGENT_BLUEPRINT.md\n M docs/ai-handoff/CURRENT.md\n M docs/raid-wallet-links.md\n M docs/tasks/T006-identity-lock-protocol-design.md\n M next-env.d.ts\n M planning/raid-scenarios.json\n M planning/raid-task-contracts.json\n?? .claude/worktrees/\n?? WARP.md\n?? docs/tasks/T006-identity-design-20261012.md\n?? docs/tasks/T006-identity-lock-protocol-20261012.md\n?? planning/task-evidence/T006-identity-design-20261012-claude-review/\n?? planning/task-evidence/T006-identity-design-20261012/\n",
+  "claude_reviewed_hashes_match": 15,
+  "claude_original_evidence_preserved": true,
+  "decisions": {
+    "R1": "MODIFY",
+    "R2": "ACCEPT",
+    "R3": "ACCEPT",
+    "R4": "MODIFY",
+    "R5": "ACCEPT",
+    "R6": "ACCEPT",
+    "R7": "ACCEPT",
+    "R8": "ACCEPT"
+  },
+  "verification_log": "reconciliation-verification.log",
+  "checks": {
+    "document_format": "PASS",
+    "git_diff_check": "PASS",
+    "local_links": "8 PASS",
+    "incoming_file_preservation": "PASS except authorized CURRENT.md",
+    "index_branch_head": "UNCHANGED",
+    "application_schema_migration_configuration": "UNCHANGED",
+    "completion_validator_T006": "expected exit 1; 27 NOT VERIFIED and missing independent review",
+    "completion_validator_T007": "expected exit 1; 27 NOT VERIFIED and missing independent review"
+  },
+  "findings": [
+    "Uniform FOR UPDATE creates additional FK waits; final per-effect modes required",
+    "KEY SHARE alone cannot stabilize suspended status; propose SHARE for read-only auth",
+    "Existing X reconnect assigns xId: weak classification needs SQL footprint change",
+    "Review X1 JSON truncates full SQLSTATE; next execution needs full backend/error traces",
+    "Cross-plan advisory alias absence remains assumption",
+    "finance/reward keyed helpers and campaign prefix need full composition inventory"
+  ],
+  "reused_evidence": {
+    "origin": "Claude independent PG16.15 report/probe-results and original author evidence, not rerun",
+    "application_source_matches": true,
+    "claim": "Only observed narrow schedules/primitives; no application GREEN or global proof"
+  },
+  "not_run": [
+    "New PostgreSQL probes/database access",
+    "Application implementation/tests/typecheck/build/browser preview (design-only, no application change)",
+    "Finance/campaign real interleavings",
+    "Multi-instance/load/backlog testing",
+    "Migration/rollout implementation and staging recount",
+    "Real Phantom/devnet consent rendering and earlier format/network retest",
+    "Hosted CI/UAT/recovery/G01-G10",
+    "Independent revised-design/implementation criterion review"
+  ],
+  "read_attempt_notes": [
+    "Initial guessed admin/users route and singular campaign path absent; corrected to src/app/api/admin/[action]/route.ts and src/lib/campaigns.ts; source inspection succeeded. No behavior check affected."
+  ],
+  "resources": "No owned server started; author and Claude existing throwaway DBs left untouched; no browser-visible change/preview applicable.",
+  "files_changed_this_turn": [
+    "docs/ai-handoff/CURRENT.md",
+    "planning/task-evidence/T006-identity-design-20261012/design-reconciliation.md",
+    "planning/task-evidence/T006-identity-design-20261012/R1-R8-decisions.md",
+    "planning/task-evidence/T006-identity-design-20261012/reconciliation-verification.log",
+    "planning/task-evidence/T006-identity-design-20261012/reconciliation-self-evaluation.json"
+  ],
+  "final_artifact_sha256_excluding_self": {
+    "docs/ai-handoff/CURRENT.md": "0892bb914f176d1d9e7853950994f981c2230df962ea34fa204737c89732734e",
+    "planning/task-evidence/T006-identity-design-20261012/design-reconciliation.md": "43d84943f3494f0dd4d3b5e25a81b7467bc67fd67579e00abcce9e969130be68",
+    "planning/task-evidence/T006-identity-design-20261012/R1-R8-decisions.md": "8d2e61eb4e56fd6a4f3f079d984a6727f19d152d6c97915a587a9910d31c4679",
+    "planning/task-evidence/T006-identity-design-20261012/reconciliation-verification.log": "23c333fc6b66e9e93f3be358b678a2e89df923726d92a5bf1fca602871d2db44"
+  },
+  "artifact_identity_note": "Final CURRENT/doc/log hashes recorded; evaluation JSON excludes its own recursive digest. Existing reviewed application identity is preserved in Claude source-identity.json and prior source-manifest.json.",
+  "post_evaluation_checks": {
+    "final_checkpoint_document_json_formatting": "PASS",
+    "final_git_diff_check": "PASS",
+    "prior_CURRENT_body_byte_preservation": "PASS",
+    "final_artifact_hashes": "PASS",
+    "exact_new_files": "four; CURRENT.md only existing file changed this turn"
+  }
+}

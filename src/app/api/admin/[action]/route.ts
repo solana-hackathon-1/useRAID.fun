@@ -1,3 +1,5 @@
+import { lockResource } from '@/identity-locks';
+import { lockAdvisory, prepareIdentity, identityWriter } from '@/lib/identity-protocol';
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -26,7 +28,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
       return NextResponse.json({ ok: true });
     }
     await db.$transaction(async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+      await lockAdvisory(tx, lockResource('global', '729103'));
       if (action === 'settings')
         await tx.settings.upsert({
           where: { id: 'global' },
@@ -81,8 +83,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
         if (typeof b.suspended !== 'boolean') throw new HttpError(400, 'Invalid creator status.');
         const target = await tx.user.findUniqueOrThrow({ where: { id: b.id } });
         if (target.id === user.id) throw new HttpError(400, 'You cannot change your own access.');
-        await tx.user.update({ where: { id: b.id }, data: { suspended: b.suspended } });
-        if (b.suspended) await tx.session.deleteMany({ where: { userId: b.id } });
+        const locks = await prepareIdentity(tx, {
+          accounts: [{ id: target.id, mode: 'NO KEY UPDATE' }],
+        });
+        const writes = identityWriter(tx, locks);
+        await writes.user.update({ where: { id: target.id }, data: { suspended: b.suspended } });
+        if (b.suspended) await writes.session.deleteMany({ where: { userId: target.id } });
       } else if (action === 'raid' || action === 'post') {
         if (typeof b.hidden !== 'boolean') throw new HttpError(400, 'Invalid visibility.');
         if (action === 'raid')

@@ -1,0 +1,24 @@
+{
+  "head": "2992a78cc77112569740abf0522d399994c77910",
+  "src_prisma_dirty": "none",
+  "reviewed_sha256": {
+    "docs/tasks/T006-identity-lock-protocol-20261012.md": "76c480beb94bc0da90700489a547dc8230fcdafad3bd1d2f37ac39519945a949",
+    "docs/tasks/T006-identity-design-20261012.md": "e825f13b5ce0376a85e4dca8653a8eb7776a402319b99d75640ab2fe4409655c",
+    "docs/tasks/T006-identity-lock-protocol-design.md": "5d1e2add6695ad3acba97362b6ab5ad4f4dbc0922c252591f6eb5e805e14e404",
+    "planning/task-evidence/T006-identity-design-20261012/REVIEW-HANDOFF.md": "2ed10070d0826bd0fe207f1d70637c9e083b188768ff854fdc1f2765a2c08808",
+    "planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts": "f16731299b8f5c83dc86da451fde9228a430959ff3c3eafe6e354319f7fa1721",
+    "planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts": "c0b5f9491b1c8319a7e99182d6bdf0e0ef0f9f07ccdde8ceef4ff18b68a155a3",
+    "planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts": "c0a71425eb671ae741a9f7e20b6e5b70c12764f2f3c8c4636300aef1dd8df029",
+    "src/lib/account-merge.ts": "54240ecfdc330febb5715dad38f4c1a614feee84f84870483abd6a27a75a7a72",
+    "src/lib/x-oauth.ts": "6f1cae00d4ad99e3211859bea55f1fdf3b11a91ff30ca7017498e82ac154afe4",
+    "src/lib/wallet-auth.ts": "2293bf57d34a6f09cfe36d8b05c890f7bc29a468e355066103550df99dccc67f",
+    "src/lib/worker-jobs.ts": "7a377edb4d14ebf760229e2e40208c01f6fb66a66c5913dd9cc93f5e3cc2f676",
+    "src/lib/usdc.ts": "36f0259fcdcca8e6729059ad7a87ae1317d1c2d0826626ebe99677cc9138e4c4",
+    "src/identity-link/index.ts": "01b4ce5abc18343a188976463ce43183d17ae2b18dba0f7441bd6a37201fe03e",
+    "prisma/schema.prisma": "ff579791f11278e450f8c37d194c4c7963fe10dd3d55d324321a3e182ce2cba0",
+    "prisma/migrations/202610090003_wallet_links/migration.sql": "ebbdec9a71c18e7420280c42948769785325350bd50e48331a103d0858232de8"
+  },
+  "reviewer": "Claude Sonnet 5.5",
+  "utc": "2026-10-12",
+  "disposable_db": "raid-claude-designreview-20261012 postgres:16.15 127.0.0.1:64121 id a3f3b008..."
+}

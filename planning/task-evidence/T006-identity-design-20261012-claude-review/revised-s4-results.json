@@ -1,0 +1,87 @@
+{
+  "postgres": "PostgreSQL 16.15 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+  "scenarios": {
+    "S4_noKeyUpdate": {
+      "label": "S4 merge root FOR NO KEY UPDATE vs unlocked UsdcTransfer insert",
+      "results": {
+        "financeWriter(no balance advisory lock)": {
+          "status": "ok",
+          "pid": 295,
+          "notes": {}
+        },
+        "merge": {
+          "status": "ERROR",
+          "pid": 296,
+          "notes": {
+            "rowsVisibleToEmptinessCheck": 0
+          },
+          "error": {
+            "name": "PrismaClientKnownRequestError",
+            "prismaCode": "P2003",
+            "meta": {
+              "modelName": "User",
+              "constraint": "UsdcTransfer_userId_fkey"
+            },
+            "sqlstate": null,
+            "message": "\nInvalid `prisma.user.delete()` invocation:\n\n\nForeign key constraint violated on the constraint: `UsdcTransfer_userId_fkey`"
+          }
+        }
+      },
+      "waitTrace": [
+        {
+          "waiter": 296,
+          "blockedBy": [
+            295
+          ],
+          "wait": "Lock/transactionid",
+          "query": "DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\""
+        }
+      ],
+      "final": {
+        "dropAccountStillExists": true,
+        "transferRows": 1
+      }
+    },
+    "S4_forUpdate": {
+      "label": "S4 merge root FOR UPDATE vs unlocked UsdcTransfer insert",
+      "results": {
+        "financeWriter(no balance advisory lock)": {
+          "status": "ok",
+          "pid": 296,
+          "notes": {}
+        },
+        "merge": {
+          "status": "ERROR",
+          "pid": 295,
+          "notes": {
+            "rowsVisibleToEmptinessCheck": 1
+          },
+          "error": {
+            "name": "PrismaClientKnownRequestError",
+            "prismaCode": "P2003",
+            "meta": {
+              "modelName": "User",
+              "constraint": "UsdcTransfer_userId_fkey"
+            },
+            "sqlstate": null,
+            "message": "\nInvalid `prisma.user.delete()` invocation:\n\n\nForeign key constraint violated on the constraint: `UsdcTransfer_userId_fkey`"
+          }
+        }
+      },
+      "waitTrace": [
+        {
+          "waiter": 295,
+          "blockedBy": [
+            296
+          ],
+          "wait": "Lock/transactionid",
+          "query": "SELECT id FROM \"User\" WHERE id='cmv53lea00003oicu40cuz6vh' FOR UPDATE"
+        }
+      ],
+      "final": {
+        "dropAccountStillExists": true,
+        "transferRows": 1
+      }
+    }
+  }
+}

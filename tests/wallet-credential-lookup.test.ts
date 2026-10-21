@@ -1,3 +1,4 @@
+import { protocolFixture } from './helpers/lock-port-fixture';
 import { describe, expect, it, vi } from 'vitest';
 import {
   IdentityLinkError,
@@ -17,12 +18,19 @@ function host(
     malformed?: boolean;
   } = {},
 ) {
-  const query = vi.fn(async (sql: string) => {
+  const query = vi.fn(async (sql: string, bindings: readonly string[]) => {
     if (options.unavailable) throw Error('private driver proof/token/owner');
+    const response = protocolFixture(
+      sql,
+      bindings,
+      { id: options.owner ?? 'synthetic-owner', suspended: options.suspended ?? false },
+      null,
+    );
+    if (response !== undefined) return response;
     if (sql.includes('pg_advisory_xact_lock')) return [{ locked: 1 }];
     if (sql.includes('FROM "User"'))
       return [{ id: options.owner ?? 'synthetic-owner', suspended: options.suspended ?? false }];
-    if (sql.includes('FOR SHARE'))
+    if (sql.includes('networkIdentity') && sql.includes('FROM "WalletLink"'))
       return [
         {
           accountId: options.finalOwner ?? options.owner ?? 'synthetic-owner',
@@ -70,9 +78,13 @@ describe('replaceable linked-credential lookup', () => {
     const h = host();
     await lookupWalletLink(h.port, address);
     const sql = h.query.mock.calls.map(([sql]) => sql);
-    expect(sql[0]).toContain('pg_advisory_xact_lock');
-    expect(sql[2]).toContain('FOR NO KEY UPDATE');
-    expect(sql[3]).toContain('FOR SHARE');
+    expect(sql[0]).toContain('FROM "WalletLink"'); // unlocked ownership hint
+    const advisory = sql.findIndex((s) => s.includes('pg_advisory_xact_lock'));
+    const root = sql.findIndex((s) => s.includes('FOR SHARE'));
+    expect(advisory).toBeGreaterThan(0);
+    expect(root).toBeGreaterThan(advisory);
+    expect(sql.filter((s) => /FROM "User".*FOR /.test(s))).toHaveLength(1);
+    expect(sql.at(-1)).toContain('networkIdentity');
   });
   it.each(['', 'not-a-wallet'])('rejects malformed address %s before SQL', async (value) => {
     const h = host();

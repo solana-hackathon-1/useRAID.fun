@@ -1,0 +1,49 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ✓ tests/practice-portal-db.test.ts (14 tests) 3121ms
+     ✓ paginates more than50 actual current families without overlap or accidental truncation  902ms
+     ✓ rechecks actual own session after waiting for the original submission serialization lock  909ms
+ ✓ tests/skill-taxonomy-db.test.ts (42 tests) 3363ms
+     ✓ rolls back session expiry while waiting on the catalog lock  465ms
+     ✓ rolls back session expiry while waiting on the advisory lock  519ms
+ ✓ tests/practice-trial-attempt-db.test.ts (51 tests) 5769ms
+     ✓ observes actual session expiry while blocked on family history  577ms
+     ✓ normalizes a current session denial from the saved definition reader to its owned typed error  604ms
+ ✓ tests/project-proposal-db.test.ts (22 tests) 4670ms
+     ✓ uses DB time after a real User lock wait and rolls back expired writes  704ms
+     ✓ uses DB time after a real Session lock wait and rolls back expired writes  768ms
+     ✓ uses DB time after a real GuildDraft lock wait and rolls back expired writes  768ms
+     ✓ uses DB time after a real GuildProjectProposal lock wait and rolls back expired writes  767ms
+ ✓ tests/wallet-auth-isolation-db.test.ts (2 tests) 2289ms
+     ✓ preserves permitted wallet and X account folds under database default repeatable read  1170ms
+     ✓ preserves permitted wallet and X account folds under database default serializable  1118ms
+ ✓ tests/own-skill-assessment-db.test.ts (18 tests) 15250ms
+     ✓ observes only actual own current verification and feeds current facts into existing eligibility predicates  594ms
+     ✓ reads current REQUIRE_REASSESSMENT rather than the old VERIFIED snapshot  705ms
+     ✓ reads current REVOKE rather than the old VERIFIED snapshot  706ms
+     ✓ returns no assessment for another actual own participant instead of exposing someone else rank  459ms
+     ✓ rejects caller identity/source selectors {"participantId":"foreign"}  426ms
+     ✓ rejects caller identity/source selectors {"assessmentReference":{"recordId":"old","revision":1}}  424ms
+     ✓ rejects caller identity/source selectors {"skillId":"<script>"}  433ms
+     ✓ rejects caller identity/source selectors {"taxonomyId":" bad "}  428ms
+     ✓ denies current own read scope and revoked/wrong-owner session before fields  430ms
+     ✓ does not turn a real self-reported A/S claim into an actual assessment  449ms
+     ✓ uses the actual database reassessment deadline without rewriting the committed VERIFIED history  2523ms
+     ✓ retains documented assessment after policy withdrawal rather than silently revoking it  2445ms
+     ✓ rejects a different real catalog namespace even when it reuses the skill ID/domain  577ms
+     ✓ requires an actual canonical human and unrestricted account before assessment metadata  432ms
+     ✓ audits before bounded assessment fields, never selects private answers/case notes, and returns no fields after final scope loss  442ms
+     ✓ sanitizes a throwing scoped read policy before selecting fields  414ms
+     ✓ rechecks actual own session expiry after a real rank-lock wait before source fields  2357ms
+     ✓ loads the newly committed state after an actual concurrent decision holds the rank mutex  1004ms
+ ✓ tests/practice-trial-submission-db.test.ts (64 tests) 8075ms
+     ✓ observes actual session expiry while waiting on the submission mutex  571ms
+     ✓ normalizes current owner-reader denials to its owned error while retaining authentication code  763ms
+
+ Test Files  7 passed (7)
+      Tests  213 passed (213)
+   Start at  06:46:01
+   Duration  43.94s (transform 178ms, setup 0ms, import 583ms, tests 42.54s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/main-sync-blockers-20261016/vitest-rerun3.xml

@@ -1,0 +1,277 @@
+## main...origin/main [behind 67]
+ M .env.example
+ M .github/workflows/checks.yml
+ M .github/workflows/staging-image.yml
+ M AGENTS.md
+ M CLAUDE.md
+ M RAID_AGENT_BLUEPRINT.md
+ M docs/ai-handoff/CURRENT.md
+ M docs/ai-handoff/MEMORY.md
+ M docs/creator-studio.md
+ M docs/raid-ci-plan.md
+ M docs/raid-command-receipts.md
+ M docs/raid-identity-storage.md
+ M docs/raid-module-reuse.md
+ M docs/raid-shared-contracts.md
+ M docs/raid-wallet-links.md
+ M docs/tasks/T005-local-ci.md
+ M docs/tasks/T006-identity-lock-protocol-design.md
+ M examples/command-receipts/README.md
+ M examples/identity-storage/README.md
+ M examples/wallet-links/README.md
+ M examples/wallet-links/host.ts
+ M next-env.d.ts
+ M package.json
+ M planning/raid-ci-matrix.json
+ M planning/raid-scenarios.json
+ M planning/raid-task-contracts.json
+ M planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json
+ M planning/task-evidence/public-staging-20261011/vm-after-public.json
+ M prisma/schema.prisma
+ M scripts/local-ci.sh
+ M src/app/api/admin/[action]/route.ts
+ M src/app/api/auth/[action]/route.ts
+ M src/app/api/launch/[id]/renew/route.ts
+ M src/app/api/studio/sandbox/route.ts
+ M src/app/creator/account/page.tsx
+ M src/app/globals.css
+ M src/contracts/protocol.ts
+ M src/identity-link/contracts.ts
+ M src/identity-link/index.ts
+ M src/identity-storage/contracts.ts
+ M src/identity-storage/index.ts
+ M src/lib/account-merge.ts
+ M src/lib/campaigns.ts
+ M src/lib/command-receipts-adapter.ts
+ M src/lib/identity-storage-adapter.ts
+ M src/lib/providers/x.ts
+ M src/lib/pump-launch.ts
+ M src/lib/queue.ts
+ M src/lib/rewards.ts
+ M src/lib/studio-campaigns.ts
+ M src/lib/studio-finance.ts
+ M src/lib/studio-sandbox.ts
+ M src/lib/studio-targets.ts
+ M src/lib/tracking.ts
+ M src/lib/usdc.ts
+ M src/lib/wallet-auth.ts
+ M src/lib/wallet-challenge-contract.ts
+ M src/lib/worker-jobs.ts
+ M src/lib/x-oauth-routes.ts
+ M src/lib/x-oauth.ts
+ M tests/browser-live/pages.spec.ts
+ M tests/identity-link-authority-hook-db.test.ts
+ M tests/identity-link-boundary.test.ts
+ M tests/identity-link-db.test.ts
+ M tests/identity-link.test.ts
+ M tests/identity-storage-db.test.ts
+ M tests/identity-storage.test.ts
+ M tests/studio-db.test.ts
+ M tests/test_raid_ci.py
+ M tests/test_raid_staging_public.py
+ M tests/wallet-auth-db.test.ts
+ M tests/wallet-credential-lookup.test.ts
+ M tests/wallet-link-authority-db.test.ts
+ M tests/wallet-link-credentials.test.ts
+ M tests/wallet-link-lock-order-db.test.ts
+ M tests/wallet-network.test.ts
+ M tests/x-oauth-first-link-race-db.test.ts
+?? .claude/worktrees/
+?? .github/pull_request_template.md
+?? WARP.md
+?? docs/raid-guild-draft-form.md
+?? docs/raid-guild-draft-http.md
+?? docs/raid-guild-draft-list.md
+?? docs/raid-guild-drafts.md
+?? docs/raid-guild-profiles.md
+?? docs/raid-holder-observation.md
+?? docs/raid-identity-locks.md
+?? docs/raid-project-control.md
+?? docs/raid-project-proposal-form.md
+?? docs/raid-project-proposal-http.md
+?? docs/raid-project-proposals.md
+?? docs/raid-proposal-control.md
+?? docs/raid-raider-onboarding.md
+?? docs/raid-raider-preferences.md
+?? docs/raid-skill-claim-storage.md
+?? docs/raid-skill-claims.md
+?? docs/raid-skill-http.md
+?? docs/raid-skill-taxonomy-storage.md
+?? docs/tasks/2026-10-12-staging-continuation.md
+?? docs/tasks/2026-10-12-wallet-origin-header.md
+?? docs/tasks/2026-10-13-T008-contract.md
+?? docs/tasks/2026-10-13-T008-preferences.md
+?? docs/tasks/2026-10-13-T009-ci-portability.md
+?? docs/tasks/2026-10-13-T009-contract.md
+?? docs/tasks/2026-10-13-T009-draft-form.md
+?? docs/tasks/2026-10-13-T009-draft-http.md
+?? docs/tasks/2026-10-13-T009-draft-list.md
+?? docs/tasks/2026-10-13-T009-draft-storage.md
+?? docs/tasks/2026-10-13-T010-checks-repair.md
+?? docs/tasks/2026-10-13-T010-control-attestation.md
+?? docs/tasks/2026-10-13-T010-project-proposals.md
+?? docs/tasks/2026-10-13-T010-proposal-control.md
+?? docs/tasks/2026-10-13-T010-proposal-form.md
+?? docs/tasks/2026-10-13-T010-proposal-http.md
+?? docs/tasks/2026-10-13-T011-holder-observation.md
+?? docs/tasks/2026-10-13-T012-skill-claims.md
+?? docs/tasks/2026-10-14-T012-claim-storage.md
+?? docs/tasks/2026-10-14-T012-skill-http.md
+?? docs/tasks/2026-10-14-T012-taxonomy-storage.md
+?? docs/tasks/PR189-auth-review.md
+?? docs/tasks/T006-identity-design-20261012.md
+?? docs/tasks/T006-identity-lock-protocol-20261012.md
+?? docs/tasks/T006-lock-slice-20261012.md
+?? docs/tasks/T008-private-preferences-next.md
+?? examples/command-receipts/identity
+?? examples/command-receipts/identity-link
+?? examples/command-receipts/identity-locks
+?? examples/command-receipts/identity-storage
+?? examples/command-receipts/lib/identity-storage-adapter.ts
+?? examples/guild-drafts/
+?? examples/guild-profiles/
+?? examples/holder-observation/
+?? examples/identity-storage/identity-locks
+?? examples/project-control/
+?? examples/project-proposals/
+?? examples/raider-onboarding/
+?? examples/raider-preferences/
+?? examples/skill-claim-storage/
+?? examples/skill-claims/
+?? examples/skill-taxonomy/
+?? examples/wallet-links/identity-locks
+?? planning/identity-writer-fence.json
+?? planning/task-evidence/PR189-review/
+?? planning/task-evidence/T005-checks-repair-verification.json
+?? planning/task-evidence/T006-identity-design-20261012-claude-review/
+?? planning/task-evidence/T006-identity-design-20261012/
+?? planning/task-evidence/T006-lock-slice-20261012/
+?? planning/task-evidence/T007-PR189-verification.json
+?? planning/task-evidence/T007-origin-binding/
+?? planning/task-evidence/T007-origin-header-verification.json
+?? planning/task-evidence/T008-contract-verification.json
+?? planning/task-evidence/T008-contract/
+?? planning/task-evidence/T008-preferences-verification.json
+?? planning/task-evidence/T008-preferences/
+?? planning/task-evidence/T009-ci-portability-verification.json
+?? planning/task-evidence/T009-ci-portability/
+?? planning/task-evidence/T009-contract-verification.json
+?? planning/task-evidence/T009-contract/
+?? planning/task-evidence/T009-drafts-verification.json
+?? planning/task-evidence/T009-drafts/
+?? planning/task-evidence/T009-form-verification.json
+?? planning/task-evidence/T009-form/
+?? planning/task-evidence/T009-http-verification.json
+?? planning/task-evidence/T009-http/
+?? planning/task-evidence/T009-list-verification.json
+?? planning/task-evidence/T009-list/
+?? planning/task-evidence/T010-checks-repair/
+?? planning/task-evidence/T010-control-verification.json
+?? planning/task-evidence/T010-control/
+?? planning/task-evidence/T010-proposal-control-verification.json
+?? planning/task-evidence/T010-proposal-control/
+?? planning/task-evidence/T010-proposal-form-verification.json
+?? planning/task-evidence/T010-proposal-form/
+?? planning/task-evidence/T010-proposal-http-verification.json
+?? planning/task-evidence/T010-proposal-http/
+?? planning/task-evidence/T010-proposals-verification.json
+?? planning/task-evidence/T010-proposals/
+?? planning/task-evidence/T011-holder-observation-verification.json
+?? planning/task-evidence/T011-holder-observation/
+?? planning/task-evidence/T012-claim-storage-verification.json
+?? planning/task-evidence/T012-claim-storage/
+?? planning/task-evidence/T012-skill-claims-verification.json
+?? planning/task-evidence/T012-skill-claims/
+?? planning/task-evidence/T012-skill-http-verification.json
+?? planning/task-evidence/T012-skill-http/
+?? planning/task-evidence/T012-taxonomy-storage-verification.json
+?? planning/task-evidence/T012-taxonomy-storage/
+?? planning/task-evidence/T045-origin-header-verification.json
+?? planning/task-evidence/auth-reconciliation-20261011/self-evaluation.json.original.gz
+?? planning/task-evidence/main-reconciliation-20261014/
+?? planning/task-evidence/public-staging-20261011/vm-after-public.json.original.gz
+?? planning/task-evidence/staging-continuation-20261012/
+?? playwright.guild-drafts.config.ts
+?? playwright.onboarding.config.ts
+?? playwright.project-proposals.config.ts
+?? prisma/migrations/202610130001_raider_preferences/
+?? prisma/migrations/202610130002_guild_drafts/
+?? prisma/migrations/202610130003_guild_project_proposals/
+?? prisma/migrations/202610140001_skill_taxonomy/
+?? prisma/migrations/202610140002_skill_claims/
+?? scripts/check-identity-locks.ts
+?? src/app/api/v1/
+?? src/app/creator/guild-drafts/
+?? src/app/raider/
+?? src/components/guild-draft-form.tsx
+?? src/components/guild-draft-page.tsx
+?? src/components/project-proposal-form.tsx
+?? src/components/raider-orientation-form.tsx
+?? src/guild-profiles/
+?? src/http-contracts/
+?? src/identity-locks/
+?? src/lib/guild-draft-host.ts
+?? src/lib/guild-draft-http.ts
+?? src/lib/identity-cleanup.ts
+?? src/lib/identity-leaves.ts
+?? src/lib/identity-protocol.ts
+?? src/lib/project-proposal-host.ts
+?? src/lib/project-proposal-http.ts
+?? src/lib/raider-onboarding-host.ts
+?? src/lib/skill-claims-host.ts
+?? src/lib/skill-claims-http.ts
+?? src/raider-onboarding/
+?? src/skills/
+?? tests/browser-guild-drafts/
+?? tests/browser-onboarding/
+?? tests/browser-project-proposals/
+?? tests/guild-draft-boundary.test.ts
+?? tests/guild-draft-db.test.ts
+?? tests/guild-draft-discovery.test.ts
+?? tests/guild-draft-form-boundary.test.ts
+?? tests/guild-draft-host.test.ts
+?? tests/guild-draft-http-boundary.test.ts
+?? tests/guild-draft-http-preview.ts
+?? tests/guild-draft-list-boundary.test.ts
+?? tests/guild-draft-list-db.test.ts
+?? tests/guild-draft-routes.test.ts
+?? tests/guild-profiles-boundary.test.ts
+?? tests/guild-profiles.test.ts
+?? tests/helpers/identity-architecture.ts
+?? tests/helpers/lock-observation.ts
+?? tests/helpers/lock-port-fixture.ts
+?? tests/holder-observation-boundary.test.ts
+?? tests/holder-observation.test.ts
+?? tests/identity-lock-architecture.test.ts
+?? tests/identity-locks-db.test.ts
+?? tests/identity-protocol-db.test.ts
+?? tests/lock-observation.test.ts
+?? tests/production-test-boundary-host.test.ts
+?? tests/production-test-boundary.test.ts
+?? tests/project-control-attestation.test.ts
+?? tests/project-control-boundary.test.ts
+?? tests/project-proposal-db.test.ts
+?? tests/project-proposal-discovery.test.ts
+?? tests/project-proposal-host.test.ts
+?? tests/project-proposal-http-preview.ts
+?? tests/project-proposal-http.test.ts
+?? tests/proposal-control-boundary.test.ts
+?? tests/proposal-control.test.ts
+?? tests/raider-onboarding-boundary.test.ts
+?? tests/raider-onboarding-db.test.ts
+?? tests/raider-onboarding-discovery.test.ts
+?? tests/raider-onboarding-event.test.ts
+?? tests/raider-onboarding-host.test.ts
+?? tests/raider-onboarding-routes.test.ts
+?? tests/raider-onboarding.test.ts
+?? tests/raider-preferences-boundary.test.ts
+?? tests/skill-claim-storage-boundary.test.ts
+?? tests/skill-claim-storage-db.test.ts
+?? tests/skill-claims-boundary.test.ts
+?? tests/skill-claims-host.test.ts
+?? tests/skill-claims-http-preview.ts
+?? tests/skill-claims-http.test.ts
+?? tests/skill-claims.test.ts
+?? tests/skill-taxonomy-boundary.test.ts
+?? tests/skill-taxonomy-db.test.ts
+?? tests/wallet-origin-db.test.ts

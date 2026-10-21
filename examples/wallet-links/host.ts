@@ -18,6 +18,10 @@ import {
   deriveWalletLinkProof,
 } from './lib/wallet-link-proof';
 
+// This example's minimal schema has no X/OAuth/session modules. Declare the installed tables.
+function hostPort(tx: Prisma.TransactionClient): IdentityTransaction {
+  return { ...createPrismaIdentityTransaction(tx), identityLayout: { xKeyColumn: null, children: ['Participant', 'WalletIdentity', 'WalletLink'] } };
+}
 // This host has its own dependencies, schema, clock, policy and caller authority. Never load RAID config/db.
 const url = new URL(process.env.DATABASE_URL ?? 'http://missing');
 assert(['localhost', '127.0.0.1', '[::1]'].includes(url.hostname));
@@ -73,7 +77,7 @@ function request(accountId: string, wallet: string, requestId: string, overrides
   };
 }
 const link = (input: ReturnType<typeof request>) =>
-  db.$transaction((tx) => linkVerifiedWallet(createPrismaIdentityTransaction(tx), input), options);
+  db.$transaction((tx) => linkVerifiedWallet(hostPort(tx), input), options);
 
 const alice = `synthetic-host-${randomUUID()}`;
 const bob = `synthetic-host-${randomUUID()}`;
@@ -118,7 +122,7 @@ try {
     'WRONG_ACTOR',
   );
   const listed = await db.$transaction(
-    (tx) => listWalletLinks(createPrismaIdentityTransaction(tx), alice),
+    (tx) => listWalletLinks(hostPort(tx), alice),
     options,
   );
   assert.deepEqual(listed.map((row) => row.address).sort(), [second, third].sort());
@@ -129,7 +133,7 @@ try {
   const resolverInput = { subject, walletNetworks: policy.walletNetworks };
   await db.$transaction(async (tx) => {
     const context = await resolveWalletCredential(
-      createPrismaIdentityTransaction(tx),
+      hostPort(tx),
       resolverInput,
     );
     assert.equal(context.source, 'LINK');
@@ -151,14 +155,14 @@ try {
     now: now.toISOString(),
   };
   const revoked = await db.$transaction(
-    (tx) => revokeWalletCredential(createPrismaIdentityTransaction(tx), revokeInput),
+    (tx) => revokeWalletCredential(hostPort(tx), revokeInput),
     options,
   );
   assert.equal(revoked.outcome, 'REVOKED');
   assert.equal(
     (
       await db.$transaction(
-        (tx) => revokeWalletCredential(createPrismaIdentityTransaction(tx), revokeInput),
+        (tx) => revokeWalletCredential(hostPort(tx), revokeInput),
         options,
       )
     ).outcome,
@@ -167,7 +171,7 @@ try {
   assert.equal(
     await code(
       db.$transaction(
-        (tx) => resolveWalletCredential(createPrismaIdentityTransaction(tx), resolverInput),
+        (tx) => resolveWalletCredential(hostPort(tx), resolverInput),
         options,
       ),
     ),
@@ -199,7 +203,7 @@ try {
   };
   await assert.rejects(listWalletLinks(unavailable, alice), { message: 'STORAGE_UNAVAILABLE' });
   const credential = await db.$transaction(
-    (tx) => lookupWalletLink(createPrismaIdentityTransaction(tx), third),
+    (tx) => lookupWalletLink(hostPort(tx), third),
     options,
   );
   assert.equal(credential?.accountId, alice);
@@ -209,23 +213,17 @@ try {
     third,
   );
   const revokedReservation = await db.$transaction(
-    (tx) => lookupWalletLink(createPrismaIdentityTransaction(tx), third),
+    (tx) => lookupWalletLink(hostPort(tx), third),
     options,
   );
   assert.equal(revokedReservation?.status, 'REVOKED');
   assert.deepEqual(await payout(), payoutBefore);
-  const lookupAlternate: IdentityTransaction = {
-    ...alternate,
-    query: async <Row>(sql: string) =>
-      (sql.includes('pg_advisory_xact_lock')
-        ? [{ locked: 1 }]
-        : sql.includes('FROM "User"')
-          ? [{ id: alice, suspended: false }]
-          : sql.includes('FOR SHARE')
-            ? [{ accountId: alice, networkIdentity: chainId, status: 'ACTIVE' }]
-            : [{ accountId: alice }]) as Row[],
-  };
-  assert.deepEqual(await lookupWalletLink(lookupAlternate, second), credential);
+  const alternateCredential = await db.$transaction(async (tx) => {
+    const inner = hostPort(tx);
+    const alternatePort: IdentityTransaction = { ...inner, query: <Row>(sql: string, bindings: readonly string[]) => inner.query<Row>(sql, bindings) };
+    return lookupWalletLink(alternatePort, third);
+  }, options);
+  assert.deepEqual(alternateCredential, revokedReservation);
   console.log(
     JSON.stringify({
       version: 'v1',

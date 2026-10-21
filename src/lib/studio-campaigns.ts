@@ -1,3 +1,5 @@
+import { lockResource } from '../identity-locks';
+import { lockAdvisory } from './identity-protocol';
 import { randomBytes } from 'node:crypto';
 import { Prisma, type User } from '@prisma/client';
 import { z } from 'zod';
@@ -224,7 +226,7 @@ export async function launchStudioRaid(
     throw new HttpError(409, 'Validate all target posts before launch.');
   return db.$transaction(
     async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+      await lockAdvisory(tx, lockResource('global', '729103'));
       await lockTracking(tx, id);
       await lockBalance(tx, user.id);
       const raid = await tx.raid.findUniqueOrThrow({

@@ -1,0 +1,29 @@
+[
+  {
+    "name": "prisma-generate",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/prisma/build/index.js",
+      "generate"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:36:50.555363+00:00",
+    "utc_end": "2026-10-14T01:36:51.394654+00:00",
+    "elapsed_seconds": 0.839291,
+    "exit_code": 0
+  },
+  {
+    "name": "migrations",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/prisma/build/index.js",
+      "migrate",
+      "deploy"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:36:51.395239+00:00",
+    "utc_end": "2026-10-14T01:36:52.036938+00:00",
+    "elapsed_seconds": 0.641699,
+    "exit_code": 0
+  }
+]

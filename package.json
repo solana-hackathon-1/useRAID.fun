@@ -26,7 +26,8 @@
     "launch:rotate-keys": "tsx scripts/rotate-launch-keys.ts",
     "tracking:preview": "tsx scripts/tracking-preview.ts",
     "studio:preview": "tsx scripts/studio-preview.ts",
-    "lint": "eslint .",
+    "lint": "eslint . && tsx scripts/check-identity-locks.ts",
+    "identity:check": "tsx scripts/check-identity-locks.ts",
     "audit:check": "tsx scripts/audit-check.ts"
   },
   "dependencies": {

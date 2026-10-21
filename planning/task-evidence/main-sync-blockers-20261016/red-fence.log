@@ -1,0 +1,81 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/identity-lock-architecture.test.ts (3 tests | 2 failed) 4211ms
+   × every identity writer enters the shared protocol boundary 3207ms
+   × allows only reviewed, hash-pinned domain-seed advisory locks outside the shared builder 479ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-lock-architecture.test.ts > every identity writer enters the shared protocol boundary
+AssertionError: expected [ …(25) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "User FK inventory changed: classify new writers/locks before updating the fence",
++   "src/skills/taxonomy-storage.ts:153: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/taxonomy-storage.ts:166: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-storage.ts:120: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-storage.ts:132: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-storage.ts:157: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-storage.ts:182: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-attempt-storage.ts:210: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-attempt-storage.ts:233: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-attempt-storage.ts:243: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-attempt-storage.ts:277: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/own-assessment-storage.ts:102: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-submission-storage.ts:277: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-submission-storage.ts:314: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-portal-storage.ts:65: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-portal-storage.ts:123: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-review-assignment-storage.ts:432: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-review-assignment-storage.ts:454: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-review-assignment-storage.ts:520: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-review-policy-storage.ts:256: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-review-policy-storage.ts:430: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-review-policy-storage.ts:445: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-ownership-storage.ts:264: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-assessment-storage.ts:318: advisory acquisition bypasses the shared key/class builder",
++   "src/skills/practice-trial-assessment-storage.ts:321: advisory acquisition bypasses the shared key/class builder",
++ ]
+
+ ❯ tests/identity-lock-architecture.test.ts:8:45
+      6|   const root = process.cwd();
+      7|   const files = globSync('src/**/*.ts').map((file) => path.join(root, …
+      8|   expect(identityArchitecture(root, files)).toEqual([]);
+       |                                             ^
+      9| });
+     10|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/identity-lock-architecture.test.ts > allows only reviewed, hash-pinned domain-seed advisory locks outside the shared builder
+AssertionError: registered, hash matches: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "src/identity-fence-advisory-probe.ts:2: advisory acquisition bypasses the shared key/class builder",
++ ]
+
+ ❯ tests/identity-lock-architecture.test.ts:66:7
+     64|       advisory(identityArchitecture(root, [file], registry(body('12012…
+     65|       'registered, hash matches',
+     66|     ).toEqual([]);
+       |       ^
+     67|     expect(
+     68|       advisory(identityArchitecture(root, [file], registry(body('12013…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  21:09:13
+   Duration  4.48s (transform 40ms, setup 0ms, import 165ms, tests 4.21s, environment 0ms)
+

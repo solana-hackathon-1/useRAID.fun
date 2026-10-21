@@ -1,0 +1,164 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: claimed later attempt and callback-internal fold must not invert ordered attempts
+{"reviewWait":{"blocker":144,"waiter":{"pid":143,"query":"SELECT \"stateHash\" FROM \"OAuthAttempt\" WHERE \"userId\" = $1 ORDER BY \"stateHash\" FOR UPDATE"}}}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: claimed later attempt and callback-internal fold must not invert ordered attempts
+{"attemptWaiters":[{"pid":143,"query":"SELECT \"stateHash\" FROM \"OAuthAttempt\" WHERE \"userId\" = $1 ORDER BY \"stateHash\" FOR UPDATE","blockers":[144]},{"pid":146,"query":"SELECT \"stateHash\" FROM \"OAuthAttempt\" WHERE \"userId\" = $1 ORDER BY \"stateHash\" FOR UPDATE","blockers":[143]}]}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: claimed later attempt and callback-internal fold must not invert ordered attempts
+{"callbackOwnFold":{"results":[{"ok":true},{"ok":false,"message":"\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\nHINT: See server log for query details.`","code":"P2010","meta":{"code":"40P01","message":"ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\nHINT: See server log for query details."}}]}}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: two real callbacks claiming different attempts must not deadlock in their folds
+{"reviewWait":{"blocker":144,"waiter":{"pid":143,"query":"DELETE FROM \"public\".\"OAuthAttempt\" WHERE (\"public\".\"OAuthAttempt\".\"stateHash\" = $1 AND \"public\".\"OAuthAttempt\".\"consumedAt\" IS NOT NULL AND \"public\".\"OAuthAttempt\".\"expiresAt\" > $2)"}}}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: two real callbacks claiming different attempts must not deadlock in their folds
+{"attemptWaiters":[{"pid":143,"query":"DELETE FROM \"public\".\"OAuthAttempt\" WHERE (\"public\".\"OAuthAttempt\".\"stateHash\" = $1 AND \"public\".\"OAuthAttempt\".\"consumedAt\" IS NOT NULL AND \"public\".\"OAuthAttempt\".\"expiresAt\" > $2)","blockers":[144]},{"pid":146,"query":"SELECT \"stateHash\" FROM \"OAuthAttempt\" WHERE \"userId\" = $1 ORDER BY \"stateHash\" FOR UPDATE","blockers":[143]}]}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: two real callbacks claiming different attempts must not deadlock in their folds
+{"twoCallbackFolds":{"results":[{"ok":false,"message":"\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\nHINT: See server log for query details.`","code":"P2010","meta":{"code":"40P01","message":"ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\nHINT: See server log for query details."}},{"ok":true}]}}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: expired-attempt sweep cannot deadlock with ordered merge attempt locks
+{"reviewWait":{"blocker":144,"waiter":{"pid":143,"query":"DELETE FROM \"public\".\"OAuthAttempt\" WHERE \"public\".\"OAuthAttempt\".\"expiresAt\" <= $1"}}}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: expired-attempt sweep cannot deadlock with ordered merge attempt locks
+{"attemptWaiters":[{"pid":143,"query":"DELETE FROM \"public\".\"OAuthAttempt\" WHERE \"public\".\"OAuthAttempt\".\"expiresAt\" <= $1","blockers":[144]},{"pid":146,"query":"SELECT \"stateHash\" FROM \"OAuthAttempt\" WHERE \"userId\" = $1 ORDER BY \"stateHash\" FOR UPDATE","blockers":[143]}]}
+
+stdout | planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: expired-attempt sweep cannot deadlock with ordered merge attempt locks
+{"expiredSweepVsMerge":{"results":[{"ok":true},{"ok":false,"message":"\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\nHINT: See server log for query details.`","code":"P2010","meta":{"code":"40P01","message":"ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\nHINT: See server log for query details."}}]}}
+
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts (3 tests | 3 failed) 3459ms
+     × REQUIRED: claimed later attempt and callback-internal fold must not invert ordered attempts 1216ms
+     × REQUIRED: two real callbacks claiming different attempts must not deadlock in their folds 1137ms
+     × REQUIRED: expired-attempt sweep cannot deadlock with ordered merge attempt locks 1104ms
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts (1 test | 1 failed) 129ms
+     × shows the stable destination account and connected X handle in the actual signed bytes 128ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: claimed later attempt and callback-internal fold must not invert ordered attempts
+AssertionError: expected '[{"ok":true},{"ok":false,"message":"\…' not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+"[{\"ok\":true},{\"ok\":false,\"message\":\"\\nInvalid `prisma.$queryRaw()` invocation:\\n\\n\\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\\nHINT: See server log for query details.`\",\"code\":\"P2010\",\"meta\":{\"code\":\"40P01\",\"message\":\"ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\\nHINT: See server log for query details.\"}}]"
+
+ ❯ noDeadlock planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:112:39
+    110| }
+    111| const noDeadlock = (results: unknown) =>
+    112|   expect(JSON.stringify(results)).not.toMatch(/deadlock|40P01/i);
+       |                                       ^
+    113| describe('current-source author characterization; linking off, folds e…
+    114|   beforeEach(async () => {
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:166:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: two real callbacks claiming different attempts must not deadlock in their folds
+AssertionError: expected '[{"ok":false,"message":"\nInvalid `pr…' not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+"[{\"ok\":false,\"message\":\"\\nInvalid `prisma.$queryRaw()` invocation:\\n\\n\\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\\nHINT: See server log for query details.`\",\"code\":\"P2010\",\"meta\":{\"code\":\"40P01\",\"message\":\"ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\\nHINT: See server log for query details.\"}},{\"ok\":true}]"
+
+ ❯ noDeadlock planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:112:39
+    110| }
+    111| const noDeadlock = (results: unknown) =>
+    112|   expect(JSON.stringify(results)).not.toMatch(/deadlock|40P01/i);
+       |                                       ^
+    113| describe('current-source author characterization; linking off, folds e…
+    114|   beforeEach(async () => {
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:202:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts > current-source author characterization; linking off, folds enabled only in synthetic probes > REQUIRED: expired-attempt sweep cannot deadlock with ordered merge attempt locks
+AssertionError: expected '[{"ok":true},{"ok":false,"message":"\…' not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+"[{\"ok\":true},{\"ok\":false,\"message\":\"\\nInvalid `prisma.$queryRaw()` invocation:\\n\\n\\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\\nHINT: See server log for query details.`\",\"code\":\"P2010\",\"meta\":{\"code\":\"40P01\",\"message\":\"ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\\nHINT: See server log for query details.\"}}]"
+
+ ❯ noDeadlock planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:112:39
+    110| }
+    111| const noDeadlock = (results: unknown) =>
+    112|   expect(JSON.stringify(results)).not.toMatch(/deadlock|40P01/i);
+       |                                       ^
+    113| describe('current-source author characterization; linking off, folds e…
+    114|   beforeEach(async () => {
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:244:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts > accepted visible destination binding, DEC-2026-10-12-04 > shows the stable destination account and connected X handle in the actual signed bytes
+AssertionError: expected 'localhost:3000 wants you to sign in w…' to contain 'cmv4yz0z40000oif7pv6rluq1'
+
+- Expected
++ Received
+
+- cmv4yz0z40000oif7pv6rluq1
++ localhost:3000 wants you to sign in with your Solana account:
++ 4hmgynH4r7FqjnEcF87eJ9xT636RBx7C5Tp5iaPpytZ7
++
++ Add this wallet for sign-in to your useRAID.fun account. Your payout wallet does not change.
++
++ URI: http://localhost:3000
++ Version: 1
++ Chain ID: devnet
++ Nonce: 8d8c28a8cf61e119da56bdba8c5e42e38d08761e960521c9
++ Issued At: 2026-10-12T08:07:48.438Z
++ Expiration Time: 2026-10-12T08:12:48.438Z
+
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts:45:36
+     43|     expect(stored.message).toBe(challenge.message);
+     44|     // These checks constrain visible consent, without prescribing the…
+     45|     expect.soft(challenge.message).toContain(user.id);
+       |                                    ^
+     46|     expect.soft(challenge.message).toContain(`@${user.handle}`);
+     47|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts > accepted visible destination binding, DEC-2026-10-12-04 > shows the stable destination account and connected X handle in the actual signed bytes
+AssertionError: expected 'localhost:3000 wants you to sign in w…' to contain '@synthetic_destination'
+
+- Expected
++ Received
+
+- @synthetic_destination
++ localhost:3000 wants you to sign in with your Solana account:
++ 4hmgynH4r7FqjnEcF87eJ9xT636RBx7C5Tp5iaPpytZ7
++
++ Add this wallet for sign-in to your useRAID.fun account. Your payout wallet does not change.
++
++ URI: http://localhost:3000
++ Version: 1
++ Chain ID: devnet
++ Nonce: 8d8c28a8cf61e119da56bdba8c5e42e38d08761e960521c9
++ Issued At: 2026-10-12T08:07:48.438Z
++ Expiration Time: 2026-10-12T08:12:48.438Z
+
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts:46:36
+     44|     // These checks constrain visible consent, without prescribing the…
+     45|     expect.soft(challenge.message).toContain(user.id);
+     46|     expect.soft(challenge.message).toContain(`@${user.handle}`);
+       |                                    ^
+     47|   });
+     48| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed (4)
+   Start at  13:52:44
+   Duration  4.23s (transform 106ms, setup 0ms, import 419ms, tests 3.59s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-identity-design-20261012/current-contracts.xml

@@ -1,0 +1,21 @@
+[
+  {
+    "name": "corrected-network-tests",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "tests/wallet-auth-db.test.ts",
+      "tests/wallet-linked-signin-db.test.ts",
+      "tests/wallet-link-additional-db.test.ts",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=/Users/dushyant/Documents/useRAID.fun/planning/task-evidence/main-reconciliation-20261014/corrected-network-tests.xml"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:39:37.048454+00:00",
+    "utc_end": "2026-10-14T01:39:41.295601+00:00",
+    "elapsed_seconds": 4.247147,
+    "exit_code": 0
+  }
+]

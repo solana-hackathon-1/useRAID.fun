@@ -127,3 +127,7 @@ RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL='<synthetic test UR
 ```
 
 Database tests truncate the target; point them only at an explicitly disposable database. Migration check: `npx prisma migrate deploy` (second run reports no pending migrations) and `npx prisma migrate diff --from-url "$DATABASE_URL" --to-schema-datamodel prisma/schema.prisma --exit-code` (exit 0).
+
+## Lock protocol candidate, 13 October 2026
+
+The bounded [shared protocol](raid-identity-locks.md) adds optional `ProvisionHumanInput.locks`. Standalone provisioning takes one KEY SHARE root and Participant coverage; prelocked provisioning validates the same live transaction's opaque capability and does not acquire or upgrade another root. Batch/multi-command callers plan the full account set before the first call. The shared root query needs only User.id, preserving the minimal host schema. New identity-locks dependencies are included in the copied example. Current evidence is SELF-EVALUATED; independent implementation acceptance remains pending.

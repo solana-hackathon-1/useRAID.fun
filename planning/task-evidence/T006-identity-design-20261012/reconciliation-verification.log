@@ -1,0 +1,83 @@
+$ node node_modules/prettier/bin/prettier.cjs --check /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-identity-design-20261012/design-reconciliation.md /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-identity-design-20261012/R1-R8-decisions.md
+exit=0
+Checking formatting...
+All matched files use Prettier code style!
+
+
+$ git diff --check
+exit=0
+
+
+$ python3 scripts/verify-raid-completion.py T006 /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-identity-design-20261012/T006-nonacceptance.json
+exit=1
+Missing report field: reviewer
+Non-code exception requires independent review and acceptance-first evidence
+T006-C01: NOT VERIFIED prevents completion
+T006-C02: NOT VERIFIED prevents completion
+T006-C03: NOT VERIFIED prevents completion
+T006-C04: NOT VERIFIED prevents completion
+T006-C05: NOT VERIFIED prevents completion
+T006-C06: NOT VERIFIED prevents completion
+T006-C07: NOT VERIFIED prevents completion
+T006-C08: NOT VERIFIED prevents completion
+T006-C09: NOT VERIFIED prevents completion
+T006-C10: NOT VERIFIED prevents completion
+T006-C11: NOT VERIFIED prevents completion
+T006-C12: NOT VERIFIED prevents completion
+T006-C13: NOT VERIFIED prevents completion
+T006-C14: NOT VERIFIED prevents completion
+T006-C15: NOT VERIFIED prevents completion
+T006-C16: NOT VERIFIED prevents completion
+T006-C17: NOT VERIFIED prevents completion
+T006-C18: NOT VERIFIED prevents completion
+T006-A01: NOT VERIFIED prevents completion
+T006-A02: NOT VERIFIED prevents completion
+T006-W01: NOT VERIFIED prevents completion
+T006-W02: NOT VERIFIED prevents completion
+T006-W03: NOT VERIFIED prevents completion
+T006-C19: NOT VERIFIED prevents completion
+T006-C20: NOT VERIFIED prevents completion
+T006-C21: NOT VERIFIED prevents completion
+T006-C22: NOT VERIFIED prevents completion
+
+
+$ python3 scripts/verify-raid-completion.py T007 /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-identity-design-20261012/T007-nonacceptance.json
+exit=1
+Missing report field: reviewer
+Non-code exception requires independent review and acceptance-first evidence
+T007-C01: NOT VERIFIED prevents completion
+T007-C02: NOT VERIFIED prevents completion
+T007-C03: NOT VERIFIED prevents completion
+T007-C04: NOT VERIFIED prevents completion
+T007-C05: NOT VERIFIED prevents completion
+T007-C06: NOT VERIFIED prevents completion
+T007-C07: NOT VERIFIED prevents completion
+T007-C08: NOT VERIFIED prevents completion
+T007-C09: NOT VERIFIED prevents completion
+T007-C10: NOT VERIFIED prevents completion
+T007-C11: NOT VERIFIED prevents completion
+T007-C12: NOT VERIFIED prevents completion
+T007-C13: NOT VERIFIED prevents completion
+T007-C14: NOT VERIFIED prevents completion
+T007-C15: NOT VERIFIED prevents completion
+T007-C16: NOT VERIFIED prevents completion
+T007-C17: NOT VERIFIED prevents completion
+T007-C18: NOT VERIFIED prevents completion
+T007-A01: NOT VERIFIED prevents completion
+T007-A02: NOT VERIFIED prevents completion
+T007-W01: NOT VERIFIED prevents completion
+T007-W02: NOT VERIFIED prevents completion
+T007-W03: NOT VERIFIED prevents completion
+T007-C19: NOT VERIFIED prevents completion
+T007-C20: NOT VERIFIED prevents completion
+T007-C21: NOT VERIFIED prevents completion
+T007-C22: NOT VERIFIED prevents completion
+
+
+Completion validation: historical nonacceptance packets retained unchanged; both rejected with missing independent reviewer/non-code review and 27 NOT VERIFIED criteria. These are negative guards, not updated criterion acceptance packets.
+
+PASS: all 15 Claude-reviewed source hashes equal current source; source/prisma Git diff empty; no probe execution or DB contact.
+
+PASS: all incoming tracked and listed untracked file contents preserved except authorized CURRENT checkpoint; branch/HEAD/index unchanged, Claude original four evidence files unchanged.
+
+PASS: 8 local document links resolve; all eight individual decision rows have the intended dispositions. Manual design review covered all eight owner outcomes, provenance, module/host authority, no-upgrade modes, finance assumptions and X1/X2 evidence limitations.

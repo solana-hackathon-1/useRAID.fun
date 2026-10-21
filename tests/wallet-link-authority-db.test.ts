@@ -1,3 +1,4 @@
+import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { Keypair } from '@solana/web3.js';
@@ -323,7 +324,9 @@ integration('B2a authority: current X session, observed under locks', () => {
       link = invoke(a, w, c);
       const [waiter] = await blockedBy(holderPid);
       merge = Promise.resolve(
-        db.$transaction((tx) => absorbAccount(tx, keep.id, a.id), { timeout: 20000 }),
+        runCommandTransaction(db, (_port, tx) => absorbAccount(tx, keep.id, a.id), {
+          transaction: { timeout: 20000 },
+        }),
       ).then(
         () => ({ ok: true as const }),
         (error: Error) => ({ ok: false as const, message: String(error?.message ?? error) }),

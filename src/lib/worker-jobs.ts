@@ -1,3 +1,4 @@
+import { sweepIdentityLeaves } from './identity-cleanup';
 import { readdirSync } from 'node:fs';
 import path from 'node:path';
 import { Prisma, type Job } from '@prisma/client';
@@ -279,9 +280,9 @@ export async function schedule(now = new Date()) {
     }
   });
   await step('cleanup', async () => {
-    await db.session.deleteMany({ where: { expiresAt: { lt: now } } });
-    await db.walletChallenge.deleteMany({ where: { expiresAt: { lt: now } } });
-    await db.oAuthAttempt.deleteMany({ where: { expiresAt: { lt: now } } });
+    await sweepIdentityLeaves('Session', now);
+    await sweepIdentityLeaves('WalletChallenge', now);
+    await sweepIdentityLeaves('OAuthAttempt', now);
     await db.rateLimit.deleteMany({ where: { expiresAt: { lt: now } } });
   });
   await step('retention', async () => {

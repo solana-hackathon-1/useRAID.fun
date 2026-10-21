@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "documents": [
+    "docs/tasks/T006-identity-design-20261012.md",
+    "docs/tasks/T006-identity-lock-protocol-20261012.md",
+    "docs/tasks/T006-identity-lock-protocol-design.md",
+    "docs/raid-wallet-links.md",
+    "planning/task-evidence/T006-identity-design-20261012/REVIEW-HANDOFF.md"
+  ],
+  "broken_links": []
+}

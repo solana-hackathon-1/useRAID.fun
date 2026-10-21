@@ -3,6 +3,7 @@ export type HumanParticipant = Extract<Participant, { kind: 'HUMAN' }>;
 export interface IdentityTransaction {
   readonly dialect: 'POSTGRESQL';
   readonly isolation: 'READ_COMMITTED';
+  readonly identityLayout?: import('../identity-locks').LockTransaction['identityLayout'];
   query<Row>(sql: string, bindings: readonly string[]): Promise<Row[]>;
 }
 export type IdentityStorageCode =
@@ -20,6 +21,7 @@ export class IdentityStorageError extends Error {
   }
 }
 export interface ProvisionHumanInput {
+  locks?: import('../identity-locks').IdentityLockCapability;
   accountId: string;
   actorAccountId: string;
   requestId: string;

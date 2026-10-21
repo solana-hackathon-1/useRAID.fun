@@ -1,3 +1,5 @@
+import { lockResource } from '../identity-locks';
+import { lockAdvisory } from './identity-protocol';
 import { newTrackingRules, trackingSettlementEnabled } from './config';
 import { assertLaunchpadsAvailable, launchpadsAvailable } from './release';
 import { createHash } from 'node:crypto';
@@ -126,7 +128,7 @@ export async function prepareLaunch(userId: string, input: unknown) {
   });
   if (uri.length > 200) throw new HttpError(503, 'Metadata URI too long.');
   const launch = await db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+    await lockAdvisory(tx, lockResource('global', '729103'));
     const current = await tx.settings.findUnique({ where: { id: 'global' } });
     if (
       !current?.collectionEnabled ||
@@ -181,7 +183,7 @@ export async function buildLaunchTransaction(id: string, userId: string) {
   await assertLauncherAccess(userId);
   if (!launch.reservationExpiresAt || launch.reservationExpiresAt <= new Date()) {
     await db.$transaction(async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+      await lockAdvisory(tx, lockResource('global', '729103'));
       const current = await tx.tokenLaunch.findUniqueOrThrow({ where: { id } });
       if (current.reservationExpiresAt && current.reservationExpiresAt > new Date()) return;
       const settings = await tx.settings.findUnique({ where: { id: 'global' } });
@@ -484,7 +486,7 @@ export async function reconcileLaunch(id: string, recovered = false): Promise<Pu
   )
     throw new Error('On-chain creator fee or pair differs from review.');
   return db.$transaction(async (txDb) => {
-    await txDb.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+    await lockAdvisory(txDb, lockResource('global', '729103'));
     const current = await txDb.tokenLaunch.findUniqueOrThrow({ where: { id } });
     if (current.status === 'LIVE') return publicLaunch(current);
     const now = new Date();

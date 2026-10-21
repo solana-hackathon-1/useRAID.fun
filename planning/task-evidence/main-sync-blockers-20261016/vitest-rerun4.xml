@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="106" failures="0" errors="0" time="9.388005668">
+    <testsuite name="tests/identity-protocol-db.test.ts" timestamp="2026-10-17T01:24:45.635Z" hostname="0xd.local" tests="10" failures="0" errors="0" skipped="0" time="1.328143416">
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, writerFirst" time="0.151926709">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:780,&quot;blockers&quot;:[779],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, mergeFirst" time="0.038389417">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:779,&quot;blockers&quot;:[780],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; SHARE serializes account restriction with actual sign-in issuance" time="0.039681708">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:780,&quot;blockers&quot;:[779],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst" time="0.074998709">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:779,&quot;blockers&quot;:[780],&quot;table&quot;:&quot;advisory&quot;}]}
+
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:781,&quot;blockers&quot;:[779],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst" time="0.051206292">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:779,&quot;blockers&quot;:[781],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; finance holds SHARE for the creator status predicate while preserving the exact settlement" time="0.050691375">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:780,&quot;blockers&quot;:[779],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; finance rechecks creator restriction after acquiring its final root, before any settlement insert" time="0.034876417">
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; denies a primary sign-in whose claimed challenge expires while waiting for its final root" time="0.698871875">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:779,&quot;blockers&quot;:[780],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2 obviously nonempty account is rejected before any strong root acquisition" time="0.082033458">
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A3 real User-delete 23503 becomes terminal account-not-empty and rolls back the merge" time="0.102926792">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/raider-onboarding-db.test.ts" timestamp="2026-10-17T01:24:45.637Z" hostname="0xd.local" tests="24" failures="0" errors="0" skipped="0" time="1.414169834">
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; has additive private projection/version tables and restrictive references" time="0.049435875">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; creates a private recorded version for its own wallet session without granting skill or capacity" time="0.050703791">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; reuses an existing HUMAN, leaves payout and prior history unchanged and hides foreign preferences" time="0.040742833">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays the immutable original response after later updates and rejects changed bodies" time="0.047090958">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; replays its original version after host catalog retirement while new unsupported interests fail closed" time="0.037803708">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; blocks new writes but preserves original replay when the host disables creation" time="0.037505958">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; serializes duplicate receipts and same-revision competing writes without partial effects" time="0.057452041">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rolls back a failed transaction and retries the whole original command identity" time="0.071258459">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted actorAccountId and foreign authority without any mutation" time="0.021950625">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted accountId and foreign authority without any mutation" time="0.020205125">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects substituted sessionHash and foreign authority without any mutation" time="0.021569417">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority rank" time="0.0186235">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority accountId" time="0.020254375">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority sessionHash" time="0.022542083">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority verified" time="0.025655083">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects injected preference authority reservesCapacity" time="0.025202416">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects suspended and expired authority including reads and receipt replay" time="0.075563125">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks expire committed during an observed account lock wait" time="0.065306417">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:769,&quot;waiter&quot;:768,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks revoke committed during an observed account lock wait" time="0.0425665">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:769,&quot;waiter&quot;:768,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rechecks suspend committed during an observed account lock wait" time="0.039905833">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:769,&quot;waiter&quot;:768,&quot;query&quot;:&quot;FOR NO KEY UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; checks the database clock after the real Session lock wait rather than transaction start" time="0.261704875">
+            <system-out>
+{&quot;orientationLock&quot;:{&quot;blocker&quot;:769,&quot;waiter&quot;:768,&quot;query&quot;:&quot;FOR SHARE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; rejects unaudited versions, foreign participant provenance and injected stored privilege fields at commit" time="0.171686417">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; accepts valid uppercase HTTP(S) portfolio schemes consistently with the published input contract" time="0.076004833">
+        </testcase>
+        <testcase classname="tests/raider-onboarding-db.test.ts" name="T008 protected private orientation storage &gt; guards immutable versions, provenance, revision pointers and unaudited direct changes" time="0.107778292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/tracking.test.ts" timestamp="2026-10-17T01:24:45.638Z" hostname="0xd.local" tests="17" failures="0" errors="0" skipped="0" time="0.490001083">
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; checks enrollment, immutable author, and inclusive start/exclusive end" time="0.001032792">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; allows originals/quotes and excludes replies/reposts" time="0.000156625">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; requires only the own-text mention under rule 3 and preserves old hashtag rules" time="0.000147459">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; assigns automatic mentions only with one eligible enrollment at creation" time="0.000101625">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; does not invent zero metrics from partial or malformed observations" time="0.000108417">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; scores best ten across the whole Raid with deterministic ties and one rounding" time="0.0057855">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; keeps incomplete, flagged, excluded, hidden, and unverified records out of scoring" time="0.000066417">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; flags near copies only at the versioned threshold and minimum length" time="0.000526375">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; scores v3 zero-engagement posts at 0 and keeps v2 unchanged" time="0.000429291">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; detects short near-duplicates only for v3 and only from six tokens" time="0.000175833">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; flags only the later copy under v3 and both under v2" time="0.000315917">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; classifies lookup errors per post" time="0.000114167">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; finds the same duplicate peers as the quadratic reference (v2)" time="0.260150167">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="tracking v2 rules &gt; finds the same duplicate peers as the quadratic reference (v3)" time="0.21923725">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="raid-specific search query &gt; filters rule 3+ mentions to the enrolled authors, sorted by id" time="0.000112167">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="raid-specific search query &gt; keeps the tag query for rule 2 and legacy raids" time="0.000080084">
+        </testcase>
+        <testcase classname="tests/tracking.test.ts" name="raid-specific search query &gt; falls back to the unfiltered query when the author list exceeds the limit" time="0.000451042">
+            <system-err>
+X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/usdc-ops-db.test.ts" timestamp="2026-10-17T01:24:45.639Z" hostname="0xd.local" tests="9" failures="0" errors="0" skipped="0" time="0.277301916">
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; releases a hidden raid pool once and blocks settlement afterwards" time="0.06956625">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; refuses release once settled, and settlement cannot follow a release key" time="0.023548958">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; releases a funded SOL raid with exactly one refund row" time="0.021471792">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; credits an expired deposit only through the audited admin override" time="0.011940375">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; answers a replayed signature with 409 instead of a unique-index failure" time="0.006871167">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; refuses to reject a withdrawal already paid on-chain" time="0.0134635">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; holds withdrawals for 24 hours after a wallet change" time="0.00932525">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; reconciles ledger liabilities and pending rewards against custody" time="0.015257834">
+        </testcase>
+        <testcase classname="tests/usdc-ops-db.test.ts" name="USDC operations &gt; keeps creator-supplied token metadata per raid until the market provider verifies it" time="0.033269042">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-additional-db.test.ts" timestamp="2026-10-17T01:24:45.640Z" hostname="0xd.local" tests="7" failures="0" errors="0" skipped="0" time="0.465761084">
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; is off by default for challenge issue and verification and writes nothing" time="0.049723708">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed" time="0.043124375">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies an account with no connected X at issue and verify; the challenge stays unconsumed" time="0.026743417">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; requires the caller&apos;s own live session" time="0.083133625">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; rejects replay, another account&apos;s challenge, a wrong-purpose challenge and a bad signature" time="0.058119041">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link" time="0.117597125">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies a suspended account and rolls the whole attempt back" time="0.027289083">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-authority-db.test.ts" timestamp="2026-10-17T01:24:45.640Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="2.998453334">
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;wallet&quot; even though the account has an X row" time="0.12704675">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;admin&quot; even though the account has an X row" time="0.046878792">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;&quot; even though the account has an X row" time="0.046860084">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;X&quot; even though the account has an X row" time="0.043987208">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (revoked) committed during a real lock wait" time="0.064127542">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:774,&quot;waiters&quot;:[773]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (expired) committed during a real lock wait" time="0.047250542">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:774,&quot;waiters&quot;:[773]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (X disconnected) committed during a real lock wait" time="0.046551334">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:774,&quot;waiters&quot;:[773]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a session that expires naturally while the command waits for the lock" time="1.85663225">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:774,&quot;waiters&quot;:[773]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; either links or leaves no trace when revocation races the command, with no deadlock" time="0.44064975">
+            <system-out>
+{&quot;authorityRaceOutcomes&quot;:[&quot;denied:401&quot;,&quot;denied:401&quot;,&quot;denied:401&quot;,&quot;denied:403&quot;,&quot;linked&quot;,&quot;denied:403&quot;,&quot;linked&quot;,&quot;denied:403&quot;,&quot;linked&quot;,&quot;denied:403&quot;,&quot;linked&quot;,&quot;denied:403&quot;]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; makes a revoke or X disconnect that arrives after the decision wait for the link to commit" time="0.081573958">
+            <system-out>
+{&quot;authorityLateWriters&quot;:{&quot;command&quot;:773,&quot;writers&quot;:[775,777]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; makes an X disconnect alone, arriving after the decision, wait for the link to commit" time="0.063497667">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; does not deadlock with the legacy account merge while the command holds its locks (N1)" time="0.130325375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-signin-db.test.ts" timestamp="2026-10-17T01:24:45.641Z" hostname="0xd.local" tests="8" failures="0" errors="0" skipped="0" time="0.663169792">
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; signs in as the linking account with a wallet session when the switch is on" time="0.114041125">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; keeps an existing linked credential usable when new linking is switched off" time="0.055331792">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; never signs in through a revoked link, with the switch on or off" time="0.074138">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; gives revoked and wrong-network reservations the same released denial without changing state" time="0.085728875">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; serializes two fresh signed challenges into one account with two independent wallet sessions" time="0.092915625">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; denies a suspended owner with no session" time="0.055871708">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; allows same-account reauthentication while denying foreign legacy links and payout rotation" time="0.078168458">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; keeps ordinary primary-wallet sign-in and unknown-wallet sign-up unchanged" time="0.047054292">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-origin-db.test.ts" timestamp="2026-10-17T01:24:45.641Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.220653667">
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects an otherwise valid sign-in signature issued for the previous domain without mutation" time="0.101529708">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a link signed for another application port and preserves the existing session" time="0.021846">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a rotation signed for another URI scheme and preserves payout ownership and audit" time="0.034496458">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; allows a current-origin challenge when only the configured URL path changes and rejects replay" time="0.061388667">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/worker-db.test.ts" timestamp="2026-10-17T01:24:45.642Z" hostname="0xd.local" tests="15" failures="0" errors="0" skipped="0" time="1.530351542">
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; moves due SCHEDULED raids to ACTIVE" time="0.09850225">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; ends ACTIVE v2 raids past endsAt and resets their finalization cursors" time="0.046536542">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; reconciles recorded work while launchpads are unavailable and nothing else" time="0.052173625">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; ignores a prepared launch that has been idle for a day" time="0.040615042">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; polls busy launches every minute and idle ones hourly once launchpads are on" time="0.052699375">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; ranks finance work below collection and keeps the launch id as the serialising key" time="0.030202334">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; launch jobs &gt; does not write a collection error onto a raid when a finance job fails" time="0.523968083">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; finishes an unknown job kind without throwing" time="0.084139834">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; records a failing job and keeps going" time="0.066134708">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; assertSchemaCurrent passes on the migrated database and rejects a newer migration" time="0.0428355">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; step() logs and swallows errors" time="0.037906333">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; does not enqueue collect jobs while collection is paused" time="0.141519666">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; keeps settling other raids when one raid throws" time="0.09343775">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; does not re-finalize APPROVED raids and only retries payable allocations" time="0.124696166">
+        </testcase>
+        <testcase classname="tests/worker-db.test.ts" name="worker jobs module &gt; queue scheduling &gt; expires dead-lettered jobs after thirty days" time="0.090916">
+        </testcase>
+    </testsuite>
+</testsuites>

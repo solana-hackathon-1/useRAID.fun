@@ -1,0 +1,51 @@
+planning/task-evidence/T006-identity-design-20261012/migrate.log:77: trailing whitespace.
++      
+planning/task-evidence/T006-lock-slice-20261012/architecture-red.log:70: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/candidate-recheck.log:45: trailing whitespace.
++PrismaClientValidationError: 
+planning/task-evidence/T006-lock-slice-20261012/candidate-recheck.log:107: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/compatibility-green.log:9: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/db-first.log:255: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/db-second.log:55: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/expiry-green.log:9: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/expiry-red.log:38: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/fence-tests.log:9: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/finance-status-red-confirmed.log:53: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/finance-status-red.log:53: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:7: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:19: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:30: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:32: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:50: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:53: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:55: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:69: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:72: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:74: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:80: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/github-source.patch:4308: trailing whitespace.
++ 
+planning/task-evidence/T006-lock-slice-20261012/migrate.log:77: trailing whitespace.
++      
+planning/task-evidence/T006-lock-slice-20261012/preview-migrate.log:87: trailing whitespace.
++      
+planning/task-evidence/T006-lock-slice-20261012/red-harness-first.log:87: trailing whitespace.
++PrismaClientKnownRequestError: 
+planning/task-evidence/T006-lock-slice-20261012/red-harness-first.log:131: trailing whitespace.
++PrismaClientKnownRequestError: 
+planning/task-evidence/T006-lock-slice-20261012/red-harness-first.xml:69: trailing whitespace.
++PrismaClientKnownRequestError: 
+planning/task-evidence/T006-lock-slice-20261012/unit-first.log:542: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/unit-second.log:147: new blank line at EOF.
+planning/task-evidence/T006-lock-slice-20261012/unit-third.log:9: new blank line at EOF.

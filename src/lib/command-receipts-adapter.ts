@@ -1,4 +1,8 @@
+import { IdentityLinkError } from '../identity-link/contracts';
+import { IdentityStorageError } from '../identity-storage/contracts';
 import { Prisma, type PrismaClient } from '@prisma/client';
+import { IdentityLockError, endIdentityLocks } from '../identity-locks';
+import { createPrismaIdentityTransaction } from './identity-storage-adapter';
 import {
   CommandReceiptError,
   retryWholeTransaction,
@@ -8,6 +12,13 @@ import {
 
 /** Maps driver and Prisma failures to the module's sanitized codes; deadlock and serialization retry. */
 export function classifyCommandReceiptFailure(error: unknown): CommandReceiptError {
+  if (
+    (error instanceof IdentityLinkError || error instanceof IdentityStorageError) &&
+    error.code === 'RETRY_TRANSACTION'
+  )
+    return new CommandReceiptError('RETRY_TRANSACTION');
+  if (error instanceof IdentityLockError && error.code === 'PLAN_CHANGED')
+    return new CommandReceiptError('RETRY_TRANSACTION');
   if (error instanceof CommandReceiptError) return error;
   const source = error as { code?: unknown; meta?: { code?: unknown } } | null;
   const state = source?.code === 'P2010' ? source.meta?.code : source?.code;
@@ -44,6 +55,7 @@ export function createPrismaCommandTransaction(
 }
 export interface RunCommandTransactionOptions {
   maxAttempts?: number;
+  maxElapsedMs?: number;
   transaction?: { maxWait?: number; timeout?: number };
 }
 /**
@@ -57,13 +69,39 @@ export async function runCommandTransaction<T>(
   work: (port: CommandReceiptTransaction, tx: Prisma.TransactionClient) => Promise<T>,
   options: RunCommandTransactionOptions = {},
 ): Promise<T> {
+  const deadline = Date.now() + (options.maxElapsedMs ?? 15000);
   try {
     return await retryWholeTransaction(
-      () =>
-        db.$transaction((tx) => work(createPrismaCommandTransaction(tx), tx), {
-          isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
-          ...options.transaction,
-        }),
+      async (attemptNumber) => {
+        if (attemptNumber > 1)
+          await new Promise((resolve) =>
+            setTimeout(
+              resolve,
+              Math.min(
+                50,
+                Math.max(0, deadline - Date.now()),
+                10 * attemptNumber + Math.floor(Math.random() * 10),
+              ),
+            ),
+          );
+        const remaining = deadline - Date.now();
+        if (remaining <= 1) throw new CommandReceiptError('RETRY_TRANSACTION');
+        const maxWait = Math.min(options.transaction?.maxWait ?? 2000, Math.floor(remaining / 2));
+        return db.$transaction(
+          async (tx) => {
+            try {
+              return await work(createPrismaCommandTransaction(tx), tx);
+            } finally {
+              endIdentityLocks(createPrismaIdentityTransaction(tx));
+            }
+          },
+          {
+            isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
+            maxWait,
+            timeout: Math.min(options.transaction?.timeout ?? 5000, remaining - maxWait),
+          },
+        );
+      },
       {
         maxAttempts: options.maxAttempts,
         isRetryable: (error) => classifyCommandReceiptFailure(error).code === 'RETRY_TRANSACTION',

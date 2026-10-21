@@ -1,3 +1,5 @@
+import { lockResource } from '@/identity-locks';
+import { lockAdvisory } from '@/lib/identity-protocol';
 import { newTrackingRules } from '@/lib/config';
 import { assertLaunchpadsAvailable } from '@/lib/release';
 import { randomBytes } from 'node:crypto';
@@ -14,7 +16,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     const user = await requireUser();
     const id = (await params).id;
     const raid = await db.$transaction(async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+      await lockAdvisory(tx, lockResource('global', '729103'));
       const launch = await tx.tokenLaunch.findUnique({ where: { id } });
       if (!launch || launch.userId !== user.id || launch.status !== 'LIVE' || user.suspended)
         throw new HttpError(403, 'Token owner access required.');

@@ -1,7 +1,11 @@
 import { cookies } from 'next/headers';
 import { checkOrigin, cookieOptions, hash, random, requireUser, rateLimit } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { requireStudioSandbox, sandboxUser, sandboxContribution } from '@/lib/studio-sandbox';
+import {
+  requireStudioSandbox,
+  sandboxUser,
+  sandboxContribution,
+  createSandboxSession,
+} from '@/lib/studio-sandbox';
 import { failure } from '@/lib/http';
 import { sessionCookie } from '@/lib/studio-mode';
 export async function POST(request: Request) {
@@ -14,13 +18,7 @@ export async function POST(request: Request) {
           typeof body.fixtureId === 'string' ? body.fixtureId : undefined,
         ),
         token = random();
-      await db.session.create({
-        data: {
-          userId: user.id,
-          tokenHash: hash(token),
-          expiresAt: new Date(Date.now() + 24 * 3600000),
-        },
-      });
+      await createSandboxSession(user.id, hash(token));
       (await cookies()).set(sessionCookie(), token, cookieOptions);
     } else {
       const user = await requireUser();

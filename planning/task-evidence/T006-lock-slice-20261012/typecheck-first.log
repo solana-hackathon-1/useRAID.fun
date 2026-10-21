@@ -1,0 +1,18 @@
+.next/types/validator.ts(251,39): error TS2307: Cannot find module '../../src/app/api/creator/route.js' or its corresponding type declarations.
+examples/command-receipts/lib/command-receipts-adapter.ts(2,53): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/command-receipts/lib/command-receipts-adapter.ts(3,49): error TS2307: Cannot find module './identity-storage-adapter' or its corresponding type declarations.
+examples/command-receipts/lib/command-receipts-adapter.ts(13,45): error TS18046: 'error' is of type 'unknown'.
+examples/identity-storage/identity-storage/contracts.ts(23,18): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/identity-storage/identity-storage/index.ts(1,122): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/identity-storage/identity-storage/index.ts(103,76): error TS18046: 'error' is of type 'unknown'.
+examples/identity-storage/lib/identity-storage-adapter.ts(3,35): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/wallet-links/identity-link/contracts.ts(36,18): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/wallet-links/identity-link/contracts.ts(87,18): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/wallet-links/identity-link/index.ts(1,158): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/wallet-links/identity-link/index.ts(124,72): error TS18046: 'error' is of type 'unknown'.
+examples/wallet-links/identity-storage/contracts.ts(23,18): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/wallet-links/identity-storage/index.ts(1,122): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+examples/wallet-links/identity-storage/index.ts(103,76): error TS18046: 'error' is of type 'unknown'.
+examples/wallet-links/lib/identity-storage-adapter.ts(3,35): error TS2307: Cannot find module '../identity-locks' or its corresponding type declarations.
+tests/identity-protocol-db.test.ts(112,42): error TS2339: Property 'error' does not exist on type '{ ok: boolean; } | { ok: boolean; error: unknown; }'.
+  Property 'error' does not exist on type '{ ok: boolean; }'.

@@ -160,6 +160,8 @@ Migration `202610090003_wallet_links` is additive (no backfill; unlinked account
 
 ## Run the standalone consuming host
 
+Current B2c policy: DEC-2026-10-12-05 requires server-persisted wallet-credential attribution and invalidation of only that credential's sessions on revoke. The existing Session table has no attribution, so this host behavior is **NOT IMPLEMENTED**. Earlier all-session options are historical proposals, not the chosen policy. DEC-2026-10-12-06 requires the additional-link signed message to show the destination account ID and connected X handle; this is also **NOT IMPLEMENTED**. Existing unattributed-session rollout and suspended-account revoke remain unresolved; see [the current protocol revision](tasks/T006-identity-lock-protocol-20261012.md). Linking stays disabled pending reviewed protocol, migration, host command, audit, races and rollout evidence.
+
 The example has its own `package.json`, minimal `User`/`WalletIdentity`/`Participant`/`WalletLink` schema and four migrations (two host-owned tables, plus symlinks to the exact canonical participant-mapping and wallet-link SQL). It never loads RAID configuration or `src/lib/db`. Copy to a fresh directory, dereferencing the symlinks, install, migrate against an explicit disposable database and run:
 
 ```sh
@@ -242,3 +244,7 @@ Owner chose released main sign-in behavior (DEC-2026-10-11-03). Existing `lookup
 WIP `resolveWalletCredential`, `revokeWalletCredential`, `observeAuthority`, linked-proof helpers, consuming example and gated/unwired `linkAdditionalWallet` stay present. Earlier B2 flag-off/signin409 and anonymous-only statements/test results above are historical and superseded for sign-in by this owner decision. New link creation still requires connected-X, current own X session, fresh proof and the default-off switch; no route/UI/X callback or revoke composition is enabled. T006/B2/T007/O11/lock-protocol/independent-review gates remain open for the new combined source.
 
 Latest released sign-in documentation: [T006 linked-wallet delivery](tasks/T006-linked-wallet-signin.md).
+
+## Lock protocol candidate, 13 October 2026
+
+The bounded [shared protocol](raid-identity-locks.md) supersedes the legacy writer-order/retry prescriptions above. Standalone aggregate calls plan old/new subjects and installed X/children before final roots; composed calls supply optional transaction-bound `locks`, validate coverage and skip acquisition. Read-only resolution uses SHARE; aggregate mutations use NO KEY UPDATE. A changed observed subject/account set returns RETRY_TRANSACTION for a fresh bounded host transaction. Authority hooks observe prelocked children using a post-wait clock. Minimal independent hosts must explicitly declare their installed identity layout; the RAID adapter always uses the full schema. Linking remains disabled/unwired. Attribution/selective invalidation, destination Resources and actual Phantom consent/network verification remain required future gates; this protocol change does not supply them. Independent implementation review is pending.

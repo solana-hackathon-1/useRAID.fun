@@ -1,0 +1,9 @@
+{
+  "target": "a2085ff90f08bfe25cc4438ee2a86e625285a9df",
+  "patch_sha256": "dc64e370c0ae9a68cf6c48ff806adb9a92cc3c72518975b7df9e3c49db1459a9",
+  "diff_check_exit_code": 2,
+  "excluded_unrelated": "WARP.md, nested .claude worktrees, .env files, caches, node_modules, this task evidence",
+  "existing_local_identity_evidence": "included, unchanged; distinguish pre-existing work from reconciliation-only patch",
+  "actual_index_untouched": true,
+  "final_checkpoint_included": true
+}

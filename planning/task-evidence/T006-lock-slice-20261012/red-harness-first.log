@@ -1,0 +1,164 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+{"waitTrace":[{"pid":83,"blockers":[81],"table":"Session"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+{"waitTrace":[{"pid":81,"blockers":[83],"table":"Session"},{"pid":83,"blockers":[81],"table":"Session"}]}
+
+ ❯ tests/identity-protocol-db.test.ts (6 tests | 5 failed) 22998ms
+     × X1 actual wallet session replacement vs strong root, writerFirst 1180ms
+     ✓ X1 actual wallet session replacement vs strong root, mergeFirst  1105ms
+     × SHARE serializes account restriction with actual sign-in issuance 43ms
+     × A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst 20030ms
+     × A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst 53ms
+     × A2 obviously nonempty account is rejected before any strong root acquisition 583ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+AssertionError: expected [ …(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   PrismaClientUnknownRequestError {
++     "message": "
++ Invalid `tx.session.deleteMany()` invocation in
++ /Users/dushyant/Documents/useRAID.fun/tests/identity-protocol-db.test.ts:95:24
++
++   92 await tx.$queryRaw`SELECT id FROM \"User\" WHERE id=${user.id} FOR UPDATE`;
++   93 rooted.open();
++   94 if (order === 'mergeFirst') await releaseMerge.promise;
++ → 95 await tx.session.deleteMany(
++ Error occurred during query execution:
++ ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"40P01\", message: \"deadlock detected\", severity: \"ERROR\", detail: Some(\"Process 83 waits for ShareLock on transaction 844; blocked by process 81.\\nProcess 81 waits for ShareLock on transaction 845; blocked by process 83.\"), column: None, hint: Some(\"See server log for query details.\") }), transient: false })",
++     "clientVersion": "6.19.3",
++     "name": "PrismaClientUnknownRequestError",
++   },
++ ]
+
+ ❯ tests/identity-protocol-db.test.ts:106:22
+    104|       releaseWriter.open();
+    105|       const [writer, merged] = await Promise.all([w, m!]);
+    106|       expect(errors).toEqual([]);
+       |                      ^
+    107|       expect(merged.ok).toBe(true);
+    108|       if (order === 'writerFirst') expect(writer.ok).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/identity-protocol-db.test.ts:130:30
+    128|     try {
+    129|       await Promise.race([waitForWait(), suspension]);
+    130|       expect(suspensionDone).toBe(false);
+       |                              ^
+    131|     } finally { release.open(); await Promise.all([sign, suspension]);…
+    132|     expect(await db.session.count({ where: { userId: user.id } })).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+Error: Test timed out in 20000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/identity-protocol-db.test.ts:135:41
+    133|   }, 15000);
+    134|
+    135|   it.each(['writerFirst', 'mergeFirst'])('A2/X2 real allocateUsdcRaid …
+       |                                         ^
+    136|     const creator = await db.user.create({ data: { id: 'm-owner', hand…
+    137|     await db.user.createMany({ data: [{ id: 'a-member', handle: 'lo' }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+PrismaClientKnownRequestError: 
+Invalid `prisma.$executeRawUnsafe()` invocation:
+
+
+Raw query failed. Code: `42710`. Message: `ERROR: trigger "zz_protocol_finance_pause" for relation "UsdcAllocation" already exists`
+ ❯ ei.handleRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:228:12
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/src/runtime/RequestHandler.ts:174:11
+ ❯ ei.request node_modules/@prisma/client/src/runtime/RequestHandler.ts:143:11
+ ❯ a node_modules/@prisma/client/src/runtime/getPrismaClient.ts:833:23
+ ❯ tests/identity-protocol-db.test.ts:146:5
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2 obviously nonempty account is rejected before any strong root acquisition
+AssertionError: expected null to match object { ok: false, error: { status: 409 } }
+
+- Expected:
+{
+  "error": {
+    "status": 409,
+  },
+  "ok": false,
+}
+
++ Received:
+null
+
+ ❯ tests/identity-protocol-db.test.ts:182:20
+    180|     try {
+    181|       const fast = await Promise.race([merge, new Promise<null>((r) =>…
+    182|       expect(fast).toMatchObject({ ok: false, error: { status: 409 } }…
+       |                    ^
+    183|     } finally { release.open(); await Promise.allSettled([held, merge]…
+    184|   }, 10000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+PrismaClientKnownRequestError: 
+Invalid `prisma.$queryRaw()` invocation:
+
+
+Raw query failed. Code: `N/A`. Message: `Failed to deserialize column of type 'void'. If you're using $queryRaw and this column is explicitly marked as `Unsupported` in your Prisma schema, try casting this column to any supported Prisma type such as `String`.`
+ ❯ ei.handleRequestError node_modules/@prisma/client/runtime/library.js:121:7268
+ ❯ ei.handleAndLogRequestError node_modules/@prisma/client/runtime/library.js:121:6593
+ ❯ ei.request node_modules/@prisma/client/runtime/library.js:121:6300
+ ❯ a node_modules/@prisma/client/runtime/library.js:130:9551
+ ❯ tests/identity-protocol-db.test.ts:148:54
+    146|     await db.$executeRawUnsafe(`CREATE TRIGGER zz_protocol_finance_pau…
+    147|     const blocked = gate(), release = gate(), loHeld = gate(), mergeCo…
+    148|     const hold = locker.$transaction(async (tx) => { await tx.$queryRa…
+       |                                                      ^
+    149|     await blocked.promise;
+    150|     const roots = () => observer.$transaction(async (tx) => {
+ ❯ Proxy._transactionWithCallback node_modules/@prisma/client/runtime/library.js:130:8120
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 'P2010', meta: { code: 'N/A', message: 'Failed to deserialize column of type \'void\'. If you\'re using $queryRaw and this column is explicitly marked as `Unsupported` in your Prisma schema, try casting this column to any supported Prisma type such as `String`.' }, clientVersion: '6.19.3', batchRequestIdx: undefined }
+This error originated in "tests/identity-protocol-db.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+     Errors  1 error
+   Start at  17:18:53
+   Duration  23.69s (transform 200ms, setup 0ms, import 565ms, tests 23.00s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-lock-slice-20261012/red.xml

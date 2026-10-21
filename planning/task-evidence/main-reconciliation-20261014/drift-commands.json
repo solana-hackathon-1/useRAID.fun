@@ -1,0 +1,43 @@
+[
+  {
+    "name": "create-shadow",
+    "command": [
+      "docker",
+      "exec",
+      "raid-reconciliation-20261014",
+      "psql",
+      "-U",
+      "useraid",
+      "-d",
+      "postgres",
+      "-c",
+      "CREATE DATABASE useraid_shadow"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:39:37.048441+00:00",
+    "utc_end": "2026-10-14T01:39:37.217520+00:00",
+    "elapsed_seconds": 0.169079,
+    "exit_code": 0
+  },
+  {
+    "name": "schema-drift",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/prisma/build/index.js",
+      "migrate",
+      "diff",
+      "--from-migrations",
+      "prisma/migrations",
+      "--to-schema-datamodel",
+      "prisma/schema.prisma",
+      "--shadow-database-url",
+      "postgresql://useraid:useraid@127.0.0.1:62468/useraid_shadow",
+      "--exit-code"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:39:37.218415+00:00",
+    "utc_end": "2026-10-14T01:39:38.024702+00:00",
+    "elapsed_seconds": 0.806287,
+    "exit_code": 0
+  }
+]

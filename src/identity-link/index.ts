@@ -1,3 +1,12 @@
+import {
+  acquireAdvisories,
+  lockResource,
+  prepareModuleIdentity,
+  requireIdentityLocks,
+  replanIdentity,
+  IdentityLockError,
+  type IdentityLockCapability,
+} from '../identity-locks';
 import { z } from 'zod';
 import { AccountId, InternalId, SolanaAddress, UtcTimestamp } from '../contracts';
 import {
@@ -27,20 +36,50 @@ import {
 } from './contracts';
 export * from './contracts';
 
-// Documented lock order (module contract, WR12). Every writer that can touch a wallet subject or
-// its account must follow it, or take a prefix of it:
-//   1. transaction-scoped advisory lock "wallet-subject:<address>" (the DB triggers take the same key)
-//   2. "User" row FOR NO KEY UPDATE for the account being linked
-//   3. Participant mapping (read, or insert only for the first link)
-//   4. WalletLink insert
-// A host writer that also takes an X advisory lock ("x-auth:<xId>") or locks OAuthAttempt rows
-// must do so BEFORE step 2 (see docs/raid-wallet-links.md, identity lock order). No two-account
-// locks are taken here, so the only cycle risk is against legacy writers. PostgreSQL reports a
-// cycle as 40P01; this module maps it to RETRY_TRANSACTION and the bundled host does NOT retry
-// automatically (it returns 503 or redirects), so ordering, not retry, is what prevents cycles.
-const SUBJECT_LOCK =
-  'SELECT 1 AS "locked" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS "lock"';
-const USER_LOCK = 'SELECT "id", "suspended" FROM "User" WHERE "id" = $1 FOR NO KEY UPDATE';
+// Shared phase-checked protocol; callers may pass only a transaction-bound opaque capability.
+const USER_READ = 'SELECT "id", "suspended" FROM "User" WHERE "id" = $1';
+async function prepare(
+  tx: IdentityTransaction,
+  accountId: string,
+  address: string,
+  locks?: IdentityLockCapability,
+  write = true,
+) {
+  if (
+    tx.identityLayout &&
+    !['Participant', 'WalletIdentity', 'WalletLink'].every((table) =>
+      tx.identityLayout!.children.some((child) => child === table),
+    )
+  )
+    fail('STORAGE_CONTRACT');
+  const mode = write ? 'NO KEY UPDATE' : 'SHARE';
+  let held = locks;
+  try {
+    held ||= await prepareModuleIdentity(tx, accountId, mode, [address]);
+  } catch (error) {
+    if (
+      error instanceof IdentityLockError &&
+      error.code === 'PLAN_CHANGED' &&
+      !(await query(tx, USER_READ, [accountId])).length
+    )
+      fail('ACCOUNT_NOT_FOUND');
+    throw error;
+  }
+  await requireIdentityLocks(tx, held, {
+    accounts: [{ id: accountId, mode }],
+    subjects: [address],
+    children: tx.identityLayout?.children || [
+      'OAuthAttempt',
+      'XAccount',
+      'Session',
+      'WalletIdentity',
+      'Participant',
+      'WalletLink',
+    ],
+    childMode: write ? 'UPDATE' : 'SHARE',
+  });
+  return held;
+}
 const PRIMARY_SQL = 'SELECT "address" FROM "WalletIdentity" WHERE "userId" = $1';
 const OWNER_SQL = `SELECT 'PRIMARY' AS "source", "userId" AS "accountId", NULL::text AS "id", NULL::text AS "status", NULL::text AS "networkIdentity" FROM "WalletIdentity" WHERE "address" = $1
 UNION ALL
@@ -126,6 +165,10 @@ function single<T extends z.ZodType>(schema: T, rows: unknown[]): z.infer<T> | n
 }
 function translate(error: unknown): IdentityLinkError {
   if (error instanceof IdentityLinkError) return error;
+  if (error instanceof IdentityLockError)
+    return new IdentityLinkError(
+      error.code === 'PLAN_CHANGED' ? 'RETRY_TRANSACTION' : 'STORAGE_CONTRACT',
+    );
   if (error instanceof IdentityStorageError)
     return new IdentityLinkError(
       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.code,
@@ -197,10 +240,10 @@ export async function linkVerifiedWallet(
   const accountId = input.accountId;
   const subject = { kind: 'WALLET', networkIdentity: network.data, address: address.data } as const;
   try {
-    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
+    const locks = await prepare(tx, accountId, subject.address, input.locks);
     const user = single(
       z.strictObject({ id: z.string(), suspended: z.boolean() }),
-      await query(tx, USER_LOCK, [accountId]),
+      await query(tx, USER_READ, [accountId]),
     );
     if (!user) return fail('ACCOUNT_NOT_FOUND');
     if (user.id !== accountId) return fail('STORAGE_CONTRACT');
@@ -265,6 +308,7 @@ export async function linkVerifiedWallet(
         accountId,
         actorAccountId: input.actorAccountId,
         requestId: input.requestId,
+        locks,
       }));
     const inserted = single(
       z.strictObject({ id: z.string() }),
@@ -356,7 +400,7 @@ async function credentialOwner(tx: IdentityTransaction, address: string) {
 async function lockedAccount(tx: IdentityTransaction, accountId: string) {
   const user = single(
     z.strictObject({ id: AccountId, suspended: z.boolean() }),
-    await query(tx, USER_LOCK, [accountId]),
+    await query(tx, USER_READ, [accountId]),
   );
   if (!user) return fail('ACCOUNT_NOT_FOUND');
   if (user.id !== accountId) return fail('STORAGE_CONTRACT');
@@ -406,9 +450,14 @@ export async function resolveWalletCredential(
   const subject = credentialSubject(input);
   validPort(tx);
   try {
-    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
     const observed = await credentialOwner(tx, subject.address);
-    if (!observed) return { source: 'ABSENT' };
+    if (!observed) {
+      if (input.locks) await requireIdentityLocks(tx, input.locks, { subjects: [subject.address] });
+      else await acquireAdvisories(tx, [lockResource('wallet-subject', subject.address)]);
+      if (await credentialOwner(tx, subject.address)) replanIdentity();
+      return { source: 'ABSENT' };
+    }
+    await prepare(tx, observed.accountId, subject.address, input.locks, false);
     await lockedAccount(tx, observed.accountId);
     // Legacy merge can reassign a PRIMARY userId without taking the subject lock. Never return
     // an account chosen from an observation that changed while acquiring its account lock.
@@ -449,7 +498,7 @@ export async function revokeWalletCredential(
     return fail('AUTHENTICATION_REQUIRED');
   validPort(tx);
   try {
-    await query(tx, SUBJECT_LOCK, [`wallet-subject:${subject.address}`]);
+    await prepare(tx, input.accountId, subject.address, input.locks);
     await lockedAccount(tx, input.accountId);
     const owner = await credentialOwner(tx, subject.address);
     if (!owner || owner.accountId !== input.accountId) return fail('IDENTITY_CONFLICT');
@@ -497,20 +546,30 @@ RETURNING "id"::text, to_char("revokedAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24
 export async function lookupWalletLink(
   tx: IdentityTransaction,
   address: string,
+  locks?: IdentityLockCapability,
 ): Promise<import('./contracts').WalletCredentialReservation | null> {
   if (!SolanaAddress.safeParse(address).success) return fail('INVALID_INPUT');
   validPort(tx);
   try {
-    await query(tx, SUBJECT_LOCK, [`wallet-subject:${address}`]);
     const owner = single(
       z.strictObject({ accountId: AccountId }),
       await query(tx, 'SELECT "accountId" FROM "WalletLink" WHERE "address" = $1', [address]),
     );
-    if (!owner) return null;
+    if (!owner) {
+      if (locks) await requireIdentityLocks(tx, locks, { subjects: [address] });
+      else await acquireAdvisories(tx, [lockResource('wallet-subject', address)]);
+      if (
+        (await query(tx, 'SELECT "accountId" FROM "WalletLink" WHERE "address" = $1', [address]))
+          .length
+      )
+        replanIdentity();
+      return null;
+    }
+    await prepare(tx, owner.accountId, address, locks, false);
     // Account-before-link row order matches linkVerifiedWallet and the future revoke command.
     const user = single(
       z.strictObject({ id: AccountId, suspended: z.boolean() }),
-      await query(tx, USER_LOCK, [owner.accountId]),
+      await query(tx, USER_READ, [owner.accountId]),
     );
     if (!user || user.id !== owner.accountId) return fail('STORAGE_CONTRACT');
     const link = single(
@@ -521,7 +580,7 @@ export async function lookupWalletLink(
       }),
       await query(
         tx,
-        'SELECT "accountId", "networkIdentity", "status" FROM "WalletLink" WHERE "address" = $1 FOR SHARE',
+        'SELECT "accountId", "networkIdentity", "status" FROM "WalletLink" WHERE "address" = $1',
         [address],
       ),
     );

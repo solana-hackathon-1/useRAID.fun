@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="213" failures="0" errors="0" time="42.537814708">
+    <testsuite name="tests/own-skill-assessment-db.test.ts" timestamp="2026-10-17T01:01:45.749Z" hostname="0xd.local" tests="18" failures="0" errors="0" skipped="0" time="15.250006042">
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; observes only actual own current verification and feeds current facts into existing eligibility predicates" time="0.593893583">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; reads current REQUIRE_REASSESSMENT rather than the old VERIFIED snapshot" time="0.705029333">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; reads current REVOKE rather than the old VERIFIED snapshot" time="0.705891833">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; returns no assessment for another actual own participant instead of exposing someone else rank" time="0.458509792">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; rejects caller identity/source selectors {&quot;participantId&quot;:&quot;foreign&quot;}" time="0.42567025">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; rejects caller identity/source selectors {&quot;assessmentReference&quot;:{&quot;recordId&quot;:&quot;old&quot;,&quot;revision&quot;:1}}" time="0.423953375">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; rejects caller identity/source selectors {&quot;skillId&quot;:&quot;&lt;script&gt;&quot;}" time="0.432809791">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; rejects caller identity/source selectors {&quot;taxonomyId&quot;:&quot; bad &quot;}" time="0.428414333">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; denies current own read scope and revoked/wrong-owner session before fields" time="0.429796083">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; does not turn a real self-reported A/S claim into an actual assessment" time="0.449056">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; uses the actual database reassessment deadline without rewriting the committed VERIFIED history" time="2.523438458">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; retains documented assessment after policy withdrawal rather than silently revoking it" time="2.444885583">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; rejects a different real catalog namespace even when it reuses the skill ID/domain" time="0.576920125">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; requires an actual canonical human and unrestricted account before assessment metadata" time="0.431632">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; audits before bounded assessment fields, never selects private answers/case notes, and returns no fields after final scope loss" time="0.44154">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; sanitizes a throwing scoped read policy before selecting fields" time="0.414290417">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; rechecks actual own session expiry after a real rank-lock wait before source fields" time="2.357394583">
+        </testcase>
+        <testcase classname="tests/own-skill-assessment-db.test.ts" name="T013D7 actual owned current assessment summary &gt; loads the newly committed state after an actual concurrent decision holds the rank mutex" time="1.0040525">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/practice-portal-db.test.ts" timestamp="2026-10-17T01:01:45.750Z" hostname="0xd.local" tests="14" failures="0" errors="0" skipped="0" time="3.121302417">
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; lists only current active trusted-catalog definitions without publisher or private answer fields" time="0.154688042">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; filters current retirement and uses original accepted definition for owned progress" time="0.12788375">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; returns exact private saved submission/current progress without rewriting original consent" time="0.115032959">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; hides foreign and absent starts identically before selecting private answer columns" time="0.110900667">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; requires own canonical current session for both discovery and private read" time="0.077497833">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; does not substitute retired taxonomy skills or a foreign catalog" time="0.09827075">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; rechecks scope after source reads and fails closed on policy exceptions" time="0.075469959">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; uses exclusive lexical pagination and rejects forged participant selectors" time="0.0833055">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; rejects wrong actual new-start namespace under locked source while preserving original replay" time="0.140112458">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; does not accept throwing or closing new-start host policy after source waits" time="0.105581667">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; checks current submission host scope and rolls back a closing gate; original replay survives" time="0.121619125">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; paginates more than50 actual current families without overlap or accidental truncation" time="0.901602417">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; never selects submission identifiers or private columns before authorizing a foreign own start" time="0.097683875">
+        </testcase>
+        <testcase classname="tests/practice-portal-db.test.ts" name="T013D8 actual own practice discovery/progress &gt; rechecks actual own session after waiting for the original submission serialization lock" time="0.909431833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/practice-trial-attempt-db.test.ts" timestamp="2026-10-17T01:01:45.751Z" hostname="0xd.local" tests="51" failures="0" errors="0" skipped="0" time="5.768769916">
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; persists an immutable current canonical start with exact original definition/rubric/tool consent and no rank/grant/capacity/money" time="0.164010791">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; requires an actual existing HUMAN without autoprovision" time="0.064231958">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects forged participantId before any effect" time="0.052740708">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects forged attemptHistory before any effect" time="0.052087875">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects forged attemptNumber before any effect" time="0.054091">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects forged startedAt before any effect" time="0.052823958">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects forged persisted before any effect" time="0.052628708">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects forged assessedRank before any effect" time="0.0621565">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; supports current own X and wallet sessions without admin or token purchase" time="0.105802167">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; keeps foreign and missing private starts undisclosed" time="0.078402833">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects a expired session with total rollback" time="0.059127208">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects a revoked session with total rollback" time="0.070860416">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects a foreign session with total rollback" time="0.071172542">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects a unsupported session with total rollback" time="0.072642958">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; denies suspension on new commands, replay and private reads" time="0.105181333">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; retains the exact original receipt and private history after retirement and writes disabled" time="0.118220125">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; disables only new intent and rejects changed idempotent bodies after current authorization" time="0.079845083">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; requires the actual current definition and current active skill" time="0.091415375">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects accommodations until real scoped approved records exist, without consuming attempts" time="0.047944375">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; counts every family start across revisions and enforces the current published maximum" time="0.117774541">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; uses family-wide last actual start for current published cooldown without rewriting history" time="0.152237083">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; serializes concurrent duplicate intent into one original start" time="0.084430208">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; enforces a one-attempt definition across concurrent linked own sessions" time="0.126308584">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; keeps family histories separate for different canonical participants" time="0.102878208">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects unknown definitions and malformed private read identifiers" time="0.065874625">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; observes actual session expiry while blocked on family history" time="0.576846667">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; has a valid privileged SQL control with matching immutable identity, versions, receipt and private audit" time="0.184898708">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL sequence gap with total rollback" time="0.143274333">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL zero attempt with total rollback" time="0.118241666">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL foreign account mapping with total rollback" time="0.132881916">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL foreign participant with total rollback" time="0.133216792">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL foreign definition with total rollback" time="0.120523125">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL future time with total rollback" time="0.085782875">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL backdated time with total rollback" time="0.083119">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL wrong command with total rollback" time="0.08404375">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL wrong receipt actor with total rollback" time="0.080554792">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL wrong request with total rollback" time="0.074816417">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL wrong aggregate with total rollback" time="0.076916416">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL public outbox with total rollback" time="0.086484291">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL extra payload with total rollback" time="0.076418583">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL missing audit with total rollback" time="0.071569917">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL bypass of actual published family limit and cooldown" time="0.138517875">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects privileged SQL stale, retired and inactive references" time="0.133461666">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; keeps saved start history immutable: UPDATE &quot;PracticeTrialStart&quot; SET &quot;attemptNumber&quot;=2 WHERE &quot;id&quot;=$1::uuid" time="0.098107333">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; keeps saved start history immutable: UPDATE &quot;PracticeTrialStart&quot; SET &quot;id&quot;=&quot;id&quot; WHERE &quot;id&quot;=$1::uuid" time="0.097001">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; keeps saved start history immutable: DELETE FROM &quot;PracticeTrialStart&quot; WHERE &quot;id&quot;=$1::uuid" time="0.100463708">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; observes actual suspend committed before User/session locks" time="0.0819585">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; observes actual revoke committed before User/session locks" time="0.083130792">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; starts against a refreshed active catalog while retaining the original approved definition" time="0.120237709">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; rejects restricted privileged SQL with complete receipt and start rollback" time="0.070676875">
+        </testcase>
+        <testcase classname="tests/practice-trial-attempt-db.test.ts" name="T013C2 durable canonical private practice starts &gt; normalizes a current session denial from the saved definition reader to its owned typed error" time="0.603656542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/practice-trial-submission-db.test.ts" timestamp="2026-10-17T01:01:45.756Z" hostname="0xd.local" tests="64" failures="0" errors="0" skipped="0" time="8.075410708">
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; saves exact original consent and text whitespace as immutable private unconfirmed submission, never assessment" time="0.160367834">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; reuses actual locked immutable own canonical participant without autoprovision" time="0.081208041">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects caller-forged participantId without consuming anything" time="0.071723875">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects caller-forged ownership without consuming anything" time="0.071452917">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects caller-forged assessedRank without consuming anything" time="0.070246042">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects caller-forged submittedAt without consuming anything" time="0.069815208">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects caller-forged reference without consuming anything" time="0.067599083">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects caller-forged evidenceReferences without consuming anything" time="0.069703875">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects caller-forged persisted without consuming anything" time="0.081879417">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; binds expectedDefinitionReference to the actual immutable accepted start" time="0.09001475">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; binds expectedRubricReference to the actual immutable accepted start" time="0.091772708">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; keeps foreign and unknown starts unavailable and private submission IDs undisclosed" time="0.134406625">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects a expired current session with complete rollback" time="0.077246666">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects a revoked current session with complete rollback" time="0.081268">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects a foreign current session with complete rollback" time="0.085486833">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects a unsupported current session with complete rollback" time="0.086346125">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; denies current suspension on new intent, original replay and private reads" time="0.128439125">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; finishes an accepted start after definition and catalog retirement without rewriting original consent" time="0.137936">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; preserves original receipt after retirement/disablement and denies only new intent" time="0.140037625">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; distinguishes exact code whitespace in original intent and reauthorizes changed-key conflicts" time="0.101695625">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; serializes duplicate intent into one exact original private submission" time="0.122459167">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; allows only one final submission per saved start under concurrent different keys" time="0.137943875">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; keeps submissions for separately authorized family attempts independent" time="0.148709583">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; never puts private answers, explanations or assistance declarations in audit/outbox/receipts" time="0.109879125">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects unsupported or empty-visible answer text &quot;\u0000&quot; before any effect" time="0.083212042">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects unsupported or empty-visible answer text &quot;\ud800&quot; before any effect" time="0.071142667">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects unsupported or empty-visible answer text &quot;   \r\n&quot; before any effect" time="0.091063709">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; preserves valid supplementary Unicode at the exact UTF16 bound and rejects overflow" time="0.16439225">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; observes actual session expiry while waiting on the submission mutex" time="0.570836375">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; normalizes current owner-reader denials to its owned error while retaining authentication code" time="0.762617666">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; has a valid privileged SQL control preserving exact response bytes and canonical original start" time="0.26671675">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL wrong immutable revision with complete rollback" time="0.279005625">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL empty answer with complete rollback" time="0.183796">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL invisible answer with complete rollback" time="0.146534583">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL ASCII answer overflow with complete rollback" time="0.151922792">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL Unicode answer overflow with complete rollback" time="0.128418333">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL Unicode explanation overflow with complete rollback" time="0.090664083">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL Unicode disclosure overflow with complete rollback" time="0.104465625">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL null tools with complete rollback" time="0.104076167">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL object tools with complete rollback" time="0.10872075">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL non-string tool with complete rollback" time="0.086037458">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL duplicate tools with complete rollback" time="0.082435417">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL noncanonical tool label with complete rollback" time="0.090484625">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL Unicode tool overflow with complete rollback" time="0.09376775">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL foreign start with complete rollback" time="0.095148667">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL foreign participant with complete rollback" time="0.090742417">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL foreign account with complete rollback" time="0.085143584">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL future time with complete rollback" time="0.093505541">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL backdated time with complete rollback" time="0.086761709">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL wrong command with complete rollback" time="0.077874083">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL wrong receipt actor with complete rollback" time="0.095302458">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL wrong request with complete rollback" time="0.0871485">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL wrong aggregate with complete rollback" time="0.098868542">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL public outbox with complete rollback" time="0.096328791">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL private audit payload with complete rollback" time="0.08719575">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL missing audit with complete rollback" time="0.09087375">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; rejects privileged SQL late failure with complete rollback" time="0.083588">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; retains immutable exact private history: UPDATE &quot;PracticeTrialSubmission&quot; SET &quot;answer&quot;=&apos;changed&apos; WHERE &quot;id&quot;=$1::uuid" time="0.123756125">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; retains immutable exact private history: UPDATE &quot;PracticeTrialSubmission&quot; SET &quot;id&quot;=&quot;id&quot; WHERE &quot;id&quot;=$1::uuid" time="0.12160475">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; retains immutable exact private history: DELETE FROM &quot;PracticeTrialSubmission&quot; WHERE &quot;id&quot;=$1::uuid" time="0.122544">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; keeps a declared tool deviation unconfirmed without rewriting the approved policy or issuing rank" time="0.127437458">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; does not treat an admin role as private access to another canonical participant" time="0.115416583">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; keeps SQL-shaped answer text literal and leaves other entities intact" time="0.095609916">
+        </testcase>
+        <testcase classname="tests/practice-trial-submission-db.test.ts" name="T013C3 durable private practice submissions &gt; denies revoked-session original replay and private reads without erasing history" time="0.118057666">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/project-proposal-db.test.ts" timestamp="2026-10-17T01:01:45.761Z" hostname="0xd.local" tests="22" failures="0" errors="0" skipped="0" time="4.670019708">
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; persists an owner-attributed pending exact-asset proposal without recognizing a Guild or granting authority" time="0.120902042">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; reads null only for an authenticated own draft that has no proposal" time="0.036982042">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; returns original immutable proposal after edits and preserves old candidate/evidence history" time="0.082926625">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; rejects changed-body key reuse and stale proposal revision with no partial effects" time="0.060403">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; checks expected current draft revision while original proposal receipts remain replayable" time="0.082025125">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; denies unknown/foreign draft reads and writes identically without leaking another proposal" time="0.0558985">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; requires current cookie session on read, write and receipt replay" time="0.059185959">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; denies restricted/wrong actors and never uses global role or holder status" time="0.03877275">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; allows reads/original receipt replay with new writes disabled" time="0.081243958">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; normalizes reference URLs and rejects credentials/duplicates/non-HTTPS/authority injection" time="0.075063708">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; allows competing pending claims for the same exact token without falsely recognizing either project" time="0.091075875">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; serializes same-revision proposals to one winner and one exact revision conflict" time="0.064337666">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; uses DB time after a real User lock wait and rolls back expired writes" time="0.70354325">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; uses DB time after a real Session lock wait and rolls back expired writes" time="0.767599917">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; uses DB time after a real GuildDraft lock wait and rolls back expired writes" time="0.768382209">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; uses DB time after a real GuildProjectProposal lock wait and rolls back expired writes" time="0.766526708">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; denies suspension committed while waiting on the own account row" time="0.152822667">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; authenticates before disclosing changed-body receipt conflicts" time="0.125420375">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; retries an entire aborted proposal transaction under the same command identity exactly once" time="0.179662625">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; guards immutable versions, sequential projection and owner/draft identity in direct SQL" time="0.134531459">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; requires structural candidate/reference contracts and exact owned draft snapshot in SQL" time="0.131570125">
+        </testcase>
+        <testcase classname="tests/project-proposal-db.test.ts" name="T010B private pending existing-project proposal storage &gt; requires exact finalized owner receipt and private audit before committing a proposal version" time="0.083970791">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/skill-taxonomy-db.test.ts" timestamp="2026-10-17T01:01:45.762Z" hostname="0xd.local" tests="42" failures="0" errors="0" skipped="0" time="3.363078792">
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; publishes an actual actor-attributed immutable catalog and private audit without any outbox" time="0.095661416">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; reads absent catalogs as null and lets a current ordinary account read saved catalog data" time="0.046668583">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; retains original receipts and historical snapshots after rename/retirement and writes disabled" time="0.054473625">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects publication and replay when current role authority is removed" time="0.036679417">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects publication and replay when current xId authority is removed" time="0.04409025">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects publication and replay when current allowlist authority is removed" time="0.03788925">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects publication and replay when current suspended authority is removed" time="0.036624417">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; denies foreign sessions on publish, replay and read" time="0.060080417">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; denies expired sessions on publish, replay and read" time="0.053801541">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; denies revoked sessions on publish, replay and read" time="0.045975084">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; denies invalid-via sessions on publish, replay and read" time="0.04800925">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; denies role-only/ordinary/holder-like actors, and exposes digest conflicts only to current authorized publishers" time="0.054989917">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects loss or reassignment of stable id history without prepared effects" time="0.048733708">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects loss or reassignment of stable domain history without prepared effects" time="0.051028667">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects loss or reassignment of stable alias history without prepared effects" time="0.058338917">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rejects stale revisions/new disabled writes and rejects client publication/admin fields" time="0.068871792">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; serializes two different admins at revision 0 with exactly one winner" time="0.053997084">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; serializes two different admins at revision 1 with exactly one winner" time="0.077854667">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; concurrent same-identity retries publish one immutable result" time="0.049705917">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; requires current X session authority for catalog administration, while wallet sessions can still read" time="0.058546042">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rolls back session expiry while waiting on the catalog lock" time="0.464865167">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rolls back session expiry while waiting on the advisory lock" time="0.519425375">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; rechecks scoped policy after an actual advisory lock wait" time="0.083944292">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; observes current authority changed before acquiring the user lock" time="0.066417875">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; observes current authority changed before acquiring the session lock" time="0.056843375">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; proves the direct SQL probe can commit a valid next version with its required receipt and private audit" time="0.098137417">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct id violation and rolls back its receipt/audit" time="0.110076958">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct domain violation and rolls back its receipt/audit" time="0.079123375">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct alias violation and rolls back its receipt/audit" time="0.077335959">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct duplicate violation and rolls back its receipt/audit" time="0.068286959">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct shape violation and rolls back its receipt/audit" time="0.065349417">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct revision violation and rolls back its receipt/audit" time="0.066239084">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct projection violation and rolls back its receipt/audit" time="0.058546125">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct kind violation and rolls back its receipt/audit" time="0.06051275">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct actor violation and rolls back its receipt/audit" time="0.057902458">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct payload violation and rolls back its receipt/audit" time="0.04480625">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database rejects a direct outbox violation and rolls back its receipt/audit" time="0.050385958">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database protects retained history: UPDATE &quot;SkillTaxonomyVersion&quot; SET &quot;skills&quot;=&apos;[]&apos;::jsonb" time="0.04838725">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database protects retained history: DELETE FROM &quot;SkillTaxonomyVersion&quot;" time="0.0503855">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database protects retained history: UPDATE &quot;SkillTaxonomy&quot; SET &quot;id&quot;=&apos;changed&apos;" time="0.04664625">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database protects retained history: UPDATE &quot;SkillTaxonomy&quot; SET &quot;revision&quot;=3" time="0.043984542">
+        </testcase>
+        <testcase classname="tests/skill-taxonomy-db.test.ts" name="T012B1 durable authorized taxonomy &gt; database protects retained history: DELETE FROM &quot;SkillTaxonomy&quot;" time="0.0554905">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-auth-isolation-db.test.ts" timestamp="2026-10-17T01:01:45.766Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="2.289227125">
+        <testcase classname="tests/wallet-auth-isolation-db.test.ts" name="legacy auth hosts own required READ COMMITTED instead of database defaults &gt; preserves permitted wallet and X account folds under database default repeatable read" time="1.169824833">
+        </testcase>
+        <testcase classname="tests/wallet-auth-isolation-db.test.ts" name="legacy auth hosts own required READ COMMITTED instead of database defaults &gt; preserves permitted wallet and X account folds under database default serializable" time="1.118016125">
+        </testcase>
+    </testsuite>
+</testsuites>

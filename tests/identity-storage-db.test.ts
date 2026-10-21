@@ -181,10 +181,8 @@ integration('T006 actual additive database fences', () => {
   });
   it('new guard preserves both mapped accounts and all credential effects', async () => {
     await authFixture();
-    await db.$transaction(async (tx) => {
-      await provision(tx, 'keep');
-      await provision(tx, 'drop');
-    }, options);
+    await db.$transaction((tx) => provision(tx, 'keep'), options);
+    await db.$transaction((tx) => provision(tx, 'drop'), options);
     const before = await authSnapshot();
     expect(await db.$transaction((tx) => isEmptyAccount(tx, 'drop'), options)).toBe(false);
     await expect(

@@ -1,0 +1,903 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ✓ tests/own-skill-assessment-db.test.ts (18 tests) 12957ms
+     ✓ observes only actual own current verification and feeds current facts into existing eligibility predicates  640ms
+     ✓ reads current REQUIRE_REASSESSMENT rather than the old VERIFIED snapshot  711ms
+     ✓ reads current REVOKE rather than the old VERIFIED snapshot  696ms
+     ✓ returns no assessment for another actual own participant instead of exposing someone else rank  467ms
+     ✓ rejects caller identity/source selectors {"participantId":"foreign"}  424ms
+     ✓ rejects caller identity/source selectors {"assessmentReference":{"recordId":"old","revision":1}}  420ms
+     ✓ rejects caller identity/source selectors {"skillId":"<script>"}  422ms
+     ✓ rejects caller identity/source selectors {"taxonomyId":" bad "}  417ms
+     ✓ denies current own read scope and revoked/wrong-owner session before fields  425ms
+     ✓ does not turn a real self-reported A/S claim into an actual assessment  440ms
+     ✓ uses the actual database reassessment deadline without rewriting the committed VERIFIED history  2470ms
+     ✓ retains documented assessment after policy withdrawal rather than silently revoking it  516ms
+     ✓ rejects a different real catalog namespace even when it reuses the skill ID/domain  437ms
+     ✓ requires an actual canonical human and unrestricted account before assessment metadata  428ms
+     ✓ audits before bounded assessment fields, never selects private answers/case notes, and returns no fields after final scope loss  432ms
+     ✓ sanitizes a throwing scoped read policy before selecting fields  410ms
+     ✓ rechecks actual own session expiry after a real rank-lock wait before source fields  2359ms
+     ✓ loads the newly committed state after an actual concurrent decision holds the rank mutex  840ms
+ ✓ tests/practice-trial-submission-db.test.ts (64 tests) 6617ms
+     ✓ observes actual session expiry while waiting on the submission mutex  564ms
+     ✓ normalizes current owner-reader denials to its owned error while retaining authentication code  693ms
+ ❯ tests/skill-taxonomy-db.test.ts (42 tests | 1 failed) 37792ms
+     ✓ publishes an actual actor-attributed immutable catalog and private audit without any outbox 79ms
+     ✓ reads absent catalogs as null and lets a current ordinary account read saved catalog data 44ms
+     ✓ retains original receipts and historical snapshots after rename/retirement and writes disabled 53ms
+     ✓ rejects publication and replay when current role authority is removed 37ms
+     ✓ rejects publication and replay when current xId authority is removed 35ms
+     ✓ rejects publication and replay when current allowlist authority is removed 34ms
+     ✓ rejects publication and replay when current suspended authority is removed 33ms
+     ✓ denies foreign sessions on publish, replay and read 45ms
+     ✓ denies expired sessions on publish, replay and read 42ms
+     ✓ denies revoked sessions on publish, replay and read 42ms
+     ✓ denies invalid-via sessions on publish, replay and read 33ms
+     ✓ denies role-only/ordinary/holder-like actors, and exposes digest conflicts only to current authorized publishers 38ms
+     ✓ rejects loss or reassignment of stable id history without prepared effects 36ms
+     ✓ rejects loss or reassignment of stable domain history without prepared effects 41ms
+     ✓ rejects loss or reassignment of stable alias history without prepared effects 37ms
+     ✓ rejects stale revisions/new disabled writes and rejects client publication/admin fields 45ms
+     ✓ serializes two different admins at revision 0 with exactly one winner 40ms
+     ✓ serializes two different admins at revision 1 with exactly one winner 48ms
+     ✓ concurrent same-identity retries publish one immutable result 34ms
+     ✓ requires current X session authority for catalog administration, while wallet sessions can still read 43ms
+     × rolls back session expiry while waiting on the catalog lock 35529ms
+     ✓ rolls back session expiry while waiting on the advisory lock  488ms
+     ✓ rechecks scoped policy after an actual advisory lock wait 74ms
+     ✓ observes current authority changed before acquiring the user lock 46ms
+     ✓ observes current authority changed before acquiring the session lock 41ms
+     ✓ proves the direct SQL probe can commit a valid next version with its required receipt and private audit 70ms
+     ✓ database rejects a direct id violation and rolls back its receipt/audit 54ms
+     ✓ database rejects a direct domain violation and rolls back its receipt/audit 46ms
+     ✓ database rejects a direct alias violation and rolls back its receipt/audit 45ms
+     ✓ database rejects a direct duplicate violation and rolls back its receipt/audit 43ms
+     ✓ database rejects a direct shape violation and rolls back its receipt/audit 46ms
+     ✓ database rejects a direct revision violation and rolls back its receipt/audit 44ms
+     ✓ database rejects a direct projection violation and rolls back its receipt/audit 45ms
+     ✓ database rejects a direct kind violation and rolls back its receipt/audit 43ms
+     ✓ database rejects a direct actor violation and rolls back its receipt/audit 41ms
+     ✓ database rejects a direct payload violation and rolls back its receipt/audit 44ms
+     ✓ database rejects a direct outbox violation and rolls back its receipt/audit 43ms
+     ✓ database protects retained history: UPDATE "SkillTaxonomyVersion" SET "skills"='[]'::jsonb 45ms
+     ✓ database protects retained history: DELETE FROM "SkillTaxonomyVersion" 43ms
+     ✓ database protects retained history: UPDATE "SkillTaxonomy" SET "id"='changed' 39ms
+     ✓ database protects retained history: UPDATE "SkillTaxonomy" SET "revision"=3 41ms
+     ✓ database protects retained history: DELETE FROM "SkillTaxonomy" 37ms
+ ❯ tests/practice-trial-attempt-db.test.ts (51 tests | 2 failed) 4942ms
+     ✓ persists an immutable current canonical start with exact original definition/rubric/tool consent and no rank/grant/capacity/money 165ms
+     ✓ requires an actual existing HUMAN without autoprovision 67ms
+     ✓ rejects forged participantId before any effect 53ms
+     ✓ rejects forged attemptHistory before any effect 50ms
+     ✓ rejects forged attemptNumber before any effect 51ms
+     ✓ rejects forged startedAt before any effect 52ms
+     ✓ rejects forged persisted before any effect 55ms
+     ✓ rejects forged assessedRank before any effect 51ms
+     ✓ supports current own X and wallet sessions without admin or token purchase 92ms
+     ✓ keeps foreign and missing private starts undisclosed 74ms
+     ✓ rejects a expired session with total rollback 52ms
+     ✓ rejects a revoked session with total rollback 59ms
+     ✓ rejects a foreign session with total rollback 55ms
+     ✓ rejects a unsupported session with total rollback 52ms
+     ✓ denies suspension on new commands, replay and private reads 79ms
+     ✓ retains the exact original receipt and private history after retirement and writes disabled 113ms
+     ✓ disables only new intent and rejects changed idempotent bodies after current authorization 85ms
+     ✓ requires the actual current definition and current active skill 99ms
+     ✓ rejects accommodations until real scoped approved records exist, without consuming attempts 51ms
+     ✓ counts every family start across revisions and enforces the current published maximum 111ms
+     ✓ uses family-wide last actual start for current published cooldown without rewriting history 124ms
+     ✓ serializes concurrent duplicate intent into one original start 77ms
+     ✓ enforces a one-attempt definition across concurrent linked own sessions 102ms
+     ✓ keeps family histories separate for different canonical participants 88ms
+     ✓ rejects unknown definitions and malformed private read identifiers 51ms
+     × observes actual session expiry while blocked on family history 601ms
+     ✓ has a valid privileged SQL control with matching immutable identity, versions, receipt and private audit 125ms
+     ✓ rejects privileged SQL sequence gap with total rollback 100ms
+     ✓ rejects privileged SQL zero attempt with total rollback 97ms
+     ✓ rejects privileged SQL foreign account mapping with total rollback 88ms
+     ✓ rejects privileged SQL foreign participant with total rollback 64ms
+     ✓ rejects privileged SQL foreign definition with total rollback 55ms
+     ✓ rejects privileged SQL future time with total rollback 68ms
+     ✓ rejects privileged SQL backdated time with total rollback 54ms
+     ✓ rejects privileged SQL wrong command with total rollback 61ms
+     ✓ rejects privileged SQL wrong receipt actor with total rollback 61ms
+     ✓ rejects privileged SQL wrong request with total rollback 58ms
+     ✓ rejects privileged SQL wrong aggregate with total rollback 58ms
+     ✓ rejects privileged SQL public outbox with total rollback 58ms
+     ✓ rejects privileged SQL extra payload with total rollback 53ms
+     ✓ rejects privileged SQL missing audit with total rollback 55ms
+     ✓ rejects privileged SQL bypass of actual published family limit and cooldown 111ms
+     ✓ rejects privileged SQL stale, retired and inactive references 113ms
+     ✓ keeps saved start history immutable: UPDATE "PracticeTrialStart" SET "attemptNumber"=2 WHERE "id"=$1::uuid 76ms
+     ✓ keeps saved start history immutable: UPDATE "PracticeTrialStart" SET "id"="id" WHERE "id"=$1::uuid 74ms
+     ✓ keeps saved start history immutable: DELETE FROM "PracticeTrialStart" WHERE "id"=$1::uuid 70ms
+     ✓ observes actual suspend committed before User/session locks 59ms
+     ✓ observes actual revoke committed before User/session locks 64ms
+     ✓ starts against a refreshed active catalog while retaining the original approved definition 98ms
+     ✓ rejects restricted privileged SQL with complete receipt and start rollback 51ms
+     × normalizes a current session denial from the saved definition reader to its owned typed error 655ms
+ ❯ tests/project-proposal-db.test.ts (22 tests | 5 failed) 4408ms
+     ✓ persists an owner-attributed pending exact-asset proposal without recognizing a Guild or granting authority 116ms
+     ✓ reads null only for an authenticated own draft that has no proposal 35ms
+     ✓ returns original immutable proposal after edits and preserves old candidate/evidence history 71ms
+     ✓ rejects changed-body key reuse and stale proposal revision with no partial effects 58ms
+     ✓ checks expected current draft revision while original proposal receipts remain replayable 76ms
+     ✓ denies unknown/foreign draft reads and writes identically without leaking another proposal 52ms
+     × requires current cookie session on read, write and receipt replay 53ms
+     ✓ denies restricted/wrong actors and never uses global role or holder status 30ms
+     ✓ allows reads/original receipt replay with new writes disabled 57ms
+     ✓ normalizes reference URLs and rejects credentials/duplicates/non-HTTPS/authority injection 45ms
+     ✓ allows competing pending claims for the same exact token without falsely recognizing either project 62ms
+     ✓ serializes same-revision proposals to one winner and one exact revision conflict 53ms
+     × uses DB time after a real User lock wait and rolls back expired writes 745ms
+     × uses DB time after a real Session lock wait and rolls back expired writes 778ms
+     × uses DB time after a real GuildDraft lock wait and rolls back expired writes 790ms
+     × uses DB time after a real GuildProjectProposal lock wait and rolls back expired writes 772ms
+     ✓ denies suspension committed while waiting on the own account row 135ms
+     ✓ authenticates before disclosing changed-body receipt conflicts 103ms
+     ✓ retries an entire aborted proposal transaction under the same command identity exactly once 129ms
+     ✓ guards immutable versions, sequential projection and owner/draft identity in direct SQL 89ms
+     ✓ requires structural candidate/reference contracts and exact owned draft snapshot in SQL 93ms
+     ✓ requires exact finalized owner receipt and private audit before committing a proposal version 62ms
+ ❯ tests/practice-portal-db.test.ts (14 tests | 2 failed) 588105ms
+     ✓ lists only current active trusted-catalog definitions without publisher or private answer fields 157ms
+     ✓ filters current retirement and uses original accepted definition for owned progress 109ms
+     ✓ returns exact private saved submission/current progress without rewriting original consent 105ms
+     ✓ hides foreign and absent starts identically before selecting private answer columns 101ms
+     ✓ requires own canonical current session for both discovery and private read 66ms
+     ✓ does not substitute retired taxonomy skills or a foreign catalog 84ms
+     ✓ rechecks scope after source reads and fails closed on policy exceptions 70ms
+     ✓ uses exclusive lexical pagination and rejects forged participant selectors 72ms
+     ✓ rejects wrong actual new-start namespace under locked source while preserving original replay 92ms
+     ✓ does not accept throwing or closing new-start host policy after source waits 82ms
+     ✓ checks current submission host scope and rolls back a closing gate; original replay survives 100ms
+     × paginates more than50 actual current families without overlap or accidental truncation 585935ms
+     ✓ never selects submission identifiers or private columns before authorizing a foreign own start 178ms
+     × rechecks actual own session after waiting for the original submission serialization lock 952ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > signs in as the existing X account and takes over the wallet of an empty wallet-only account
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:177:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ ❯ tests/wallet-auth-isolation-db.test.ts (2 tests | 1 failed) 2257ms
+     × preserves permitted wallet and X account folds under database default repeatable read 1126ms
+     ✓ preserves permitted wallet and X account folds under database default serializable  1129ms
+ ✓ tests/worker-db.test.ts (15 tests) 1314ms
+       ✓ does not write a collection error onto a raid when a finance job fails  499ms
+ ✓ tests/wallet-link-signin-db.test.ts (8 tests) 654ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/production-test-boundary.test.ts > keeps production-visible TypeScript imports independent of the excluded test fixture tree
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "scripts/check-identity-locks.ts -> tests/helpers/identity-architecture",
++ ]
+
+ ❯ tests/production-test-boundary.test.ts:28:19
+     26|     }
+     27|   }
+     28|   expect(invalid).toEqual([]);
+       |                   ^
+     29| });
+     30|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ ❯ tests/production-test-boundary-host.test.ts (1 test | 1 failed) 349ms
+   × checks the actual production imports with no external search command on PATH 348ms
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 482ms
+ ✓ tests/x-oauth-db.test.ts (17 tests) 1228ms
+ ✓ tests/x-oauth-first-link-race-db.test.ts (5 tests) 854ms
+ ❯ tests/production-test-boundary.test.ts (1 test | 1 failed) 31ms
+   × keeps production-visible TypeScript imports independent of the excluded test fixture tree 31ms
+ ❯ tests/creator-legacy-cleanup.test.ts (5 tests | 5 failed) 31ms
+     × X sign-in writes identity/role, not approval (admin=false) 4ms
+     × X sign-in writes identity/role, not approval (admin=true) 0ms
+     × demotes an existing administrator without rewriting retired fields 0ms
+     × sandbox login ignores retired fixture prefixes: new-creator 23ms
+     × sandbox login ignores retired fixture prefixes: unapproved-old-fixture 2ms
+ ❯ tests/env-example.test.ts (5 tests | 1 failed) 15ms
+     × documents every variable the application reads 14ms
+     ✓ documents the money, budget and key variables 1ms
+     ✓ has Settlement and inert Deferred-launchpad sections 0ms
+     ✓ ships tracking v2 on and settlement off 0ms
+     ✓ is on unless explicitly set to false 0ms
+ ❯ tests/account-merge-canonical.test.ts (14 tests | 1 failed) 8ms
+     × absorbs an empty account without copying retired creator metadata 4ms
+     ✓ keeps the existing genuinely empty account result 1ms
+     ✓ a canonical HUMAN mapping makes an otherwise legacy-empty account nonempty 0ms
+     ✓ retains nonempty protection for legacy raid references 0ms
+     ✓ retains nonempty protection for legacy tokenLaunch references 0ms
+     ✓ retains nonempty protection for legacy rewardEnrollment references 0ms
+     ✓ retains nonempty protection for legacy raidEnrollment references 0ms
+     ✓ retains nonempty protection for legacy balanceEntry references 0ms
+     ✓ retains nonempty protection for legacy usdcTransfer references 0ms
+     ✓ retains nonempty protection for legacy usdcAllocation references 0ms
+     ✓ retains existing role, restriction and missing-account denials: {"role":"ADMIN"} 0ms
+     ✓ retains existing role, restriction and missing-account denials: {"suspended":true} 0ms
+     ✓ retains existing role, restriction and missing-account denials: {"missing":true} 0ms
+     ✓ refuses mapped-account absorption before any credential/session/account/event mutation 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 20 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/account-merge-canonical.test.ts > T006 planned canonical references protect legacy absorption decisions > absorbs an empty account without copying retired creator metadata
+TypeError: tx.user.findMany is not a function
+ ❯ observe src/lib/identity-protocol.ts:47:15
+     45|   const observe = async () => {
+     46|     const [users, wallets, links] = await Promise.all([
+     47|       tx.user.findMany({ where: { id: { in: ids } }, select: { id: tru…
+       |               ^
+     48|       tx.walletIdentity.findMany({
+     49|         where: { userId: { in: ids } },
+ ❯ prepareIdentity src/lib/identity-protocol.ts:59:26
+ ❯ absorbAccount src/lib/account-merge.ts:43:12
+ ❯ tests/account-merge-canonical.test.ts:86:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/20]⎯
+
+ FAIL  tests/creator-legacy-cleanup.test.ts > retired creator metadata is not authentication authority > X sign-in writes identity/role, not approval (admin=false)
+ FAIL  tests/creator-legacy-cleanup.test.ts > retired creator metadata is not authentication authority > X sign-in writes identity/role, not approval (admin=true)
+ FAIL  tests/creator-legacy-cleanup.test.ts > retired creator metadata is not authentication authority > demotes an existing administrator without rewriting retired fields
+TypeError: tx.user.findMany is not a function
+ ❯ observe src/lib/identity-protocol.ts:47:15
+     45|   const observe = async () => {
+     46|     const [users, wallets, links] = await Promise.all([
+     47|       tx.user.findMany({ where: { id: { in: ids } }, select: { id: tru…
+       |               ^
+     48|       tx.walletIdentity.findMany({
+     49|         where: { userId: { in: ids } },
+ ❯ prepareIdentity src/lib/identity-protocol.ts:59:26
+ ❯ src/lib/x-oauth.ts:224:27
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/20]⎯
+
+ FAIL  tests/creator-legacy-cleanup.test.ts > retired creator metadata is not authentication authority > sandbox login ignores retired fixture prefixes: new-creator
+ FAIL  tests/creator-legacy-cleanup.test.ts > retired creator metadata is not authentication authority > sandbox login ignores retired fixture prefixes: unapproved-old-fixture
+TypeError: tx.user.findMany is not a function
+ ❯ observe src/lib/identity-protocol.ts:47:15
+     45|   const observe = async () => {
+     46|     const [users, wallets, links] = await Promise.all([
+     47|       tx.user.findMany({ where: { id: { in: ids } }, select: { id: tru…
+       |               ^
+     48|       tx.walletIdentity.findMany({
+     49|         where: { userId: { in: ids } },
+ ❯ prepareIdentity src/lib/identity-protocol.ts:59:26
+ ❯ src/lib/studio-sandbox.ts:118:25
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/20]⎯
+
+ FAIL  tests/env-example.test.ts > .env.example > documents every variable the application reads
+AssertionError: expected [ …(10) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "PRACTICE_ASSESSMENT_CATALOG_ID",
++   "SKILL_ASSESSMENT_READS_ENABLED",
++   "PRACTICE_ASSESSMENT_DECISIONS_ENABLED",
++   "PRACTICE_TRIAL_CATALOG_ID",
++   "PRACTICE_PORTAL_READS_ENABLED",
++   "PRACTICE_REVIEW_ASSIGNMENTS_ENABLED",
++   "PRACTICE_REVIEW_POLICY_PUBLICATION_ENABLED",
++   "PRACTICE_REVIEW_READS_ENABLED",
++   "PRACTICE_TRIAL_ASSESSMENTS_ENABLED",
++   "PRACTICE_TRIAL_OWNERSHIP_ENABLED",
++ ]
+
+ ❯ tests/env-example.test.ts:34:21
+     32|     }
+     33|     const missing = [...used].filter((name) => !documented.has(name) &…
+     34|     expect(missing).toEqual([]);
+       |                     ^
+     35|   });
+     36|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/20]⎯
+
+ FAIL  tests/practice-portal-db.test.ts > T013D8 actual own practice discovery/progress > paginates more than50 actual current families without overlap or accidental truncation
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/practice-portal-db.test.ts:343:3
+    341|     ).toEqual({ ...saved, status: 'REPLAYED' });
+    342|   });
+    343|   it('paginates more than50 actual current families without overlap or…
+       |   ^
+    344|     for (let i = 0; i < 51; i++)
+    345|       await runCommandTransaction(db, (tx) =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/20]⎯
+
+ FAIL  tests/practice-portal-db.test.ts > T013D8 actual own practice discovery/progress > rechecks actual own session after waiting for the original submission serialization lock
+AssertionError: expected null to match object { code: 'AUTHENTICATION_REQUIRED' }
+
+- Expected:
+{
+  "code": "AUTHENTICATION_REQUIRED",
+}
+
++ Received:
+null
+
+ ❯ tests/practice-portal-db.test.ts:433:28
+    431|       await lock;
+    432|       const result = await reading;
+    433|       expect(result.error).toMatchObject({ code: 'AUTHENTICATION_REQUI…
+       |                            ^
+    434|       expect(result.value).toBeNull();
+    435|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/20]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > observes actual session expiry while blocked on family history
+AssertionError: promise resolved "{ status: 'EXECUTED', start: { …(15) } }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "start": {
++     "accommodationReference": null,
++     "attemptNumber": 1,
++     "consumesCapacity": false,
++     "createsFinancialObligation": false,
++     "createsPermissionGrant": false,
++     "definition": {
++       "accommodationPolicy": "Request an approved scoped accommodation.",
++       "brief": "Build and explain a synthetic accessible interface.",
++       "cooldownSeconds": 0,
++       "evaluatorMethod": "MANUAL",
++       "expectedMinutes": 60,
++       "inputs": [
++         {
++           "content": "Invented records only.",
++           "label": "Fixture",
++           "material": "SYNTHETIC",
++         },
++       ],
++       "maximumAttempts": 3,
++       "passConditions": "The authorized reviewer applies every required criterion.",
++       "publishedAt": "2026-10-16T16:30:44.783Z",
++       "purpose": "UNPAID_PLATFORM_PRACTICE",
++       "reference": {
++         "recordId": "synthetic-start-trial",
++         "revision": 1,
++       },
++       "rubric": {
++         "criteria": [
++           {
++             "description": "Working behavior and edge cases",
++             "id": "behavior",
++             "required": true,
++           },
++           {
++             "description": "Explain and modify the solution",
++             "id": "ownership",
++             "required": true,
++           },
++         ],
++         "reference": {
++           "recordId": "synthetic-start-rubric",
++           "revision": 1,
++         },
++       },
++       "skillDomain": "web",
++       "skillId": "frontend",
++       "state": "PUBLISHED",
++       "targetRank": "A",
++       "title": "Synthetic interface exercise",
++       "tools": {
++         "aiAssistance": "ALLOWED",
++         "disclosure": "Explain and modify your work; disclose assistance.",
++         "permitted": [
++           "editor",
++           "browser",
++         ],
++       },
++       "variantId": "synthetic-variant-two",
++       "version": "v1",
++     },
++     "id": "2a0175bb-9f35-4f74-95eb-dc117deaeb86",
++     "isAuthorizationToken": false,
++     "participantId": "ced4b9a1-c538-4319-b8ef-d991c76b5cab",
++     "persisted": true,
++     "startedAt": "2026-10-16T16:30:45.289Z",
++     "state": "STARTED",
++     "taxonomyReference": {
++       "recordId": "synthetic-start-catalog",
++       "revision": 1,
++     },
++     "verifiesSkill": false,
++     "version": "v1",
++   },
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-attempt-db.test.ts:358:29
+    356|         data: { expiresAt: new Date(Date.now() + 400) },
+    357|       });
+    358|       work = expect(start()).rejects.toMatchObject({ code: 'AUTHENTICA…
+       |                             ^
+    359|       // Observe immediately; awaiting the original below still assert…
+    360|       void work.catch(() => {});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/20]⎯
+
+ FAIL  tests/practice-trial-attempt-db.test.ts > T013C2 durable canonical private practice starts > normalizes a current session denial from the saved definition reader to its owned typed error
+AssertionError: promise resolved "{ status: 'EXECUTED', start: { …(15) } }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "start": {
++     "accommodationReference": null,
++     "attemptNumber": 1,
++     "consumesCapacity": false,
++     "createsFinancialObligation": false,
++     "createsPermissionGrant": false,
++     "definition": {
++       "accommodationPolicy": "Request an approved scoped accommodation.",
++       "brief": "Build and explain a synthetic accessible interface.",
++       "cooldownSeconds": 0,
++       "evaluatorMethod": "MANUAL",
++       "expectedMinutes": 60,
++       "inputs": [
++         {
++           "content": "Invented records only.",
++           "label": "Fixture",
++           "material": "SYNTHETIC",
++         },
++       ],
++       "maximumAttempts": 3,
++       "passConditions": "The authorized reviewer applies every required criterion.",
++       "publishedAt": "2026-10-16T16:30:47.160Z",
++       "purpose": "UNPAID_PLATFORM_PRACTICE",
++       "reference": {
++         "recordId": "synthetic-start-trial",
++         "revision": 1,
++       },
++       "rubric": {
++         "criteria": [
++           {
++             "description": "Working behavior and edge cases",
++             "id": "behavior",
++             "required": true,
++           },
++           {
++             "description": "Explain and modify the solution",
++             "id": "ownership",
++             "required": true,
++           },
++         ],
++         "reference": {
++           "recordId": "synthetic-start-rubric",
++           "revision": 1,
++         },
++       },
++       "skillDomain": "web",
++       "skillId": "frontend",
++       "state": "PUBLISHED",
++       "targetRank": "A",
++       "title": "Synthetic interface exercise",
++       "tools": {
++         "aiAssistance": "ALLOWED",
++         "disclosure": "Explain and modify your work; disclose assistance.",
++         "permitted": [
++           "editor",
++           "browser",
++         ],
++       },
++       "variantId": "synthetic-variant-two",
++       "version": "v1",
++     },
++     "id": "c7264e7b-5c62-409f-b30b-127a5ec9d60c",
++     "isAuthorizationToken": false,
++     "participantId": "9f53e058-5cc6-49e4-bf47-b536afba408a",
++     "persisted": true,
++     "startedAt": "2026-10-16T16:30:47.730Z",
++     "state": "STARTED",
++     "taxonomyReference": {
++       "recordId": "synthetic-start-catalog",
++       "revision": 1,
++     },
++     "verifiesSkill": false,
++     "version": "v1",
++   },
++   "status": "EXECUTED",
+  }
+
+ ❯ tests/practice-trial-attempt-db.test.ts:626:23
+    624|       ),
+    625|     );
+    626|     await expect(work).rejects.toBeInstanceOf(PracticeTrialAttemptStor…
+       |                       ^
+    627|     await expect(work).rejects.toMatchObject({ code: 'AUTHENTICATION_R…
+    628|     expect(observedDefinitionRead).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/20]⎯
+
+ FAIL  tests/production-test-boundary-host.test.ts > checks the actual production imports with no external search command on PATH
+Error: Command failed: /opt/homebrew/Cellar/node/26.0.0/bin/node node_modules/vitest/vitest.mjs run tests/production-test-boundary.test.ts --reporter=dot
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/production-test-boundary.test.ts > keeps production-visible TypeScript imports independent of the excluded test fixture tree
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "scripts/check-identity-locks.ts -> tests/helpers/identity-architecture",
++ ]
+
+ ❯ tests/production-test-boundary.test.ts:28:19
+     26|     }
+     27|   }
+     28|   expect(invalid).toEqual([]);
+       |                   ^
+     29| });
+     30|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ ❯ tests/production-test-boundary-host.test.ts:4:18
+      2| import { expect, it } from 'vitest';
+      3| it('checks the actual production imports with no external search comma…
+      4|   const output = execFileSync(
+       |                  ^
+      5|     process.execPath,
+      6|     [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/20]⎯
+
+ FAIL  tests/production-test-boundary.test.ts > keeps production-visible TypeScript imports independent of the excluded test fixture tree
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "scripts/check-identity-locks.ts -> tests/helpers/identity-architecture",
++ ]
+
+ ❯ tests/production-test-boundary.test.ts:28:19
+     26|     }
+     27|   }
+     28|   expect(invalid).toEqual([]);
+       |                   ^
+     29| });
+     30|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/20]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > requires current cookie session on read, write and receipt replay
+AssertionError: promise resolved "{ version: 'v1', …(15) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "activatesToken": false,
++   "candidateToken": {
++     "chain": "SOLANA",
++     "kind": "TOKEN",
++     "mint": "29d2S7vB453rNYFdR5Ycwt7y9haRT5fwVwL9zTmBhfV2",
++     "networkIdentity": "synthetic-genesis",
++     "tokenProgram": "2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj",
++   },
++   "createsPermissionGrant": false,
++   "draftRevision": 1,
++   "founderControlVerified": false,
++   "guildDraftId": "4def9cd1-2179-4cc8-8cfc-8c6891e1efc2",
++   "id": "a5236296-0301-4d8b-8f39-188cf153d4ac",
++   "persisted": true,
++   "projectType": "EXISTING_PROJECT",
++   "publicEvidenceRefs": [
++     "https://public.example/project",
++   ],
++   "publicProfileApproved": false,
++   "recognizesGuild": false,
++   "recordedAt": "2026-10-16T16:30:48.417Z",
++   "revision": 1,
++   "state": "PENDING_VERIFICATION",
++   "version": "v1",
+  }
+
+ ❯ tests/project-proposal-db.test.ts:369:38
+    367|       data: { expiresAt: new Date(Date.now() - 1) },
+    368|     });
+    369|     await expect(read(a, d.draft.id)).rejects.toMatchObject({ code: 'U…
+       |                                      ^
+    370|     await expect(save(a, input)).rejects.toMatchObject({ code: 'UNAUTH…
+    371|     await expect(save(a, body(d.draft.id, 1), 'expired-new')).rejects.…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/20]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > uses DB time after a real User lock wait and rolls back expired writes
+AssertionError: expected { value: { status: 'EXECUTED', …(1) } } to match object { error: { code: 'UNAUTHENTICATED' } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
+-     "code": "UNAUTHENTICATED",
++   "value": {
++     "proposal": {
++       "activatesToken": false,
++       "candidateToken": {
++         "chain": "SOLANA",
++         "kind": "TOKEN",
++         "mint": "29d2S7vB453rNYFdR5Ycwt7y9haRT5fwVwL9zTmBhfV2",
++         "networkIdentity": "synthetic-genesis",
++         "tokenProgram": "2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj",
++       },
++       "createsPermissionGrant": false,
++       "draftRevision": 1,
++       "founderControlVerified": false,
++       "guildDraftId": "af9ff986-9663-4fbd-8b50-c49dbf532caf",
++       "id": "6d20495d-bf6c-4aa9-b5f5-7e6baf1751c3",
++       "persisted": true,
++       "projectType": "EXISTING_PROJECT",
++       "publicEvidenceRefs": [
++         "https://public.example/project",
++       ],
++       "publicProfileApproved": false,
++       "recognizesGuild": false,
++       "recordedAt": "2026-10-16T16:30:49.386Z",
++       "revision": 2,
++       "state": "PENDING_VERIFICATION",
++       "version": "v1",
++     },
++     "status": "EXECUTED",
+    },
+  }
+
+ ❯ tests/project-proposal-db.test.ts:481:29
+    479|         await lock.held;
+    480|       }
+    481|       expect(await pending).toMatchObject({ error: { code: 'UNAUTHENTI…
+       |                             ^
+    482|       expect(await counts()).toEqual(before);
+    483|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/20]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > uses DB time after a real Session lock wait and rolls back expired writes
+AssertionError: expected { value: { status: 'EXECUTED', …(1) } } to match object { error: { code: 'UNAUTHENTICATED' } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
+-     "code": "UNAUTHENTICATED",
++   "value": {
++     "proposal": {
++       "activatesToken": false,
++       "candidateToken": {
++         "chain": "SOLANA",
++         "kind": "TOKEN",
++         "mint": "29d2S7vB453rNYFdR5Ycwt7y9haRT5fwVwL9zTmBhfV2",
++         "networkIdentity": "synthetic-genesis",
++         "tokenProgram": "2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj",
++       },
++       "createsPermissionGrant": false,
++       "draftRevision": 1,
++       "founderControlVerified": false,
++       "guildDraftId": "246ae54b-917e-40f1-a53f-6ae24c204aa5",
++       "id": "24ce7860-2e96-4c11-9325-3735a3c67913",
++       "persisted": true,
++       "projectType": "EXISTING_PROJECT",
++       "publicEvidenceRefs": [
++         "https://public.example/project",
++       ],
++       "publicProfileApproved": false,
++       "recognizesGuild": false,
++       "recordedAt": "2026-10-16T16:30:50.168Z",
++       "revision": 2,
++       "state": "PENDING_VERIFICATION",
++       "version": "v1",
++     },
++     "status": "EXECUTED",
+    },
+  }
+
+ ❯ tests/project-proposal-db.test.ts:481:29
+    479|         await lock.held;
+    480|       }
+    481|       expect(await pending).toMatchObject({ error: { code: 'UNAUTHENTI…
+       |                             ^
+    482|       expect(await counts()).toEqual(before);
+    483|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/20]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > uses DB time after a real GuildDraft lock wait and rolls back expired writes
+AssertionError: expected { value: { status: 'EXECUTED', …(1) } } to match object { error: { code: 'UNAUTHENTICATED' } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
+-     "code": "UNAUTHENTICATED",
++   "value": {
++     "proposal": {
++       "activatesToken": false,
++       "candidateToken": {
++         "chain": "SOLANA",
++         "kind": "TOKEN",
++         "mint": "29d2S7vB453rNYFdR5Ycwt7y9haRT5fwVwL9zTmBhfV2",
++         "networkIdentity": "synthetic-genesis",
++         "tokenProgram": "2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj",
++       },
++       "createsPermissionGrant": false,
++       "draftRevision": 1,
++       "founderControlVerified": false,
++       "guildDraftId": "9683751a-8305-414f-aa0e-c966e569ff8e",
++       "id": "0752d08e-4136-4e6b-8a33-7ec8cf9d508d",
++       "persisted": true,
++       "projectType": "EXISTING_PROJECT",
++       "publicEvidenceRefs": [
++         "https://public.example/project",
++       ],
++       "publicProfileApproved": false,
++       "recognizesGuild": false,
++       "recordedAt": "2026-10-16T16:30:50.960Z",
++       "revision": 2,
++       "state": "PENDING_VERIFICATION",
++       "version": "v1",
++     },
++     "status": "EXECUTED",
+    },
+  }
+
+ ❯ tests/project-proposal-db.test.ts:481:29
+    479|         await lock.held;
+    480|       }
+    481|       expect(await pending).toMatchObject({ error: { code: 'UNAUTHENTI…
+       |                             ^
+    482|       expect(await counts()).toEqual(before);
+    483|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/20]⎯
+
+ FAIL  tests/project-proposal-db.test.ts > T010B private pending existing-project proposal storage > uses DB time after a real GuildProjectProposal lock wait and rolls back expired writes
+AssertionError: expected { value: { status: 'EXECUTED', …(1) } } to match object { error: { code: 'UNAUTHENTICATED' } }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
+-     "code": "UNAUTHENTICATED",
++   "value": {
++     "proposal": {
++       "activatesToken": false,
++       "candidateToken": {
++         "chain": "SOLANA",
++         "kind": "TOKEN",
++         "mint": "29d2S7vB453rNYFdR5Ycwt7y9haRT5fwVwL9zTmBhfV2",
++         "networkIdentity": "synthetic-genesis",
++         "tokenProgram": "2DYKaRPBeNM5WdW8rNsYEktjPrnd89Mm4Lzp3qonSzoj",
++       },
++       "createsPermissionGrant": false,
++       "draftRevision": 1,
++       "founderControlVerified": false,
++       "guildDraftId": "55d0e400-6798-45e4-91ad-3d2022027787",
++       "id": "1a26c1cf-e045-4a96-9d27-00ad875d7d82",
++       "persisted": true,
++       "projectType": "EXISTING_PROJECT",
++       "publicEvidenceRefs": [
++         "https://public.example/project",
++       ],
++       "publicProfileApproved": false,
++       "recognizesGuild": false,
++       "recordedAt": "2026-10-16T16:30:51.725Z",
++       "revision": 2,
++       "state": "PENDING_VERIFICATION",
++       "version": "v1",
++     },
++     "status": "EXECUTED",
+    },
+  }
+
+ ❯ tests/project-proposal-db.test.ts:481:29
+    479|         await lock.held;
+    480|       }
+    481|       expect(await pending).toMatchObject({ error: { code: 'UNAUTHENTI…
+       |                             ^
+    482|       expect(await counts()).toEqual(before);
+    483|     },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/20]⎯
+
+ FAIL  tests/skill-taxonomy-db.test.ts > T012B1 durable authorized taxonomy > rolls back session expiry while waiting on the catalog lock
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/skill-taxonomy-db.test.ts:304:44
+    302|     throw Error('No actual database lock wait observed');
+    303|   }
+    304|   it.each(['catalog', 'advisory'] as const)(
+       |                                            ^
+    305|     'rolls back session expiry while waiting on the %s lock',
+    306|     async (kind) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/20]⎯
+
+ FAIL  tests/wallet-auth-isolation-db.test.ts > legacy auth hosts own required READ COMMITTED instead of database defaults > preserves permitted wallet and X account folds under database default repeatable read
+Error: Command failed: /opt/homebrew/Cellar/node/26.0.0/bin/node node_modules/vitest/vitest.mjs run tests/wallet-auth-db.test.ts tests/x-oauth-db.test.ts --testNamePattern moves a wallet from an empty wallet-only account|signs in as the existing X account and takes over the wallet --reporter=default --reporter=junit --outputFile=/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-auth-isolation-mRiMHs/auth-folds.xml
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/x-oauth-db.test.ts > X connection PostgreSQL invariants > merging an activity-free duplicate account > signs in as the existing X account and takes over the wallet of an empty wallet-only account
+Error: state
+ ❯ claimAttempt src/lib/x-oauth.ts:177:34
+    175|   // Keep the claimed row until completion so disconnect can cancel an…
+    176|   const claimed = await claimOAuthAttempt(hash(state), sessionHash, ne…
+    177|   if (claimed.count !== 1) throw new OAuthError('state');
+       |                                  ^
+    178|   const attempt = await db.oAuthAttempt.findUnique({ where: { stateHas…
+    179|   if (!attempt) throw new OAuthError('state');
+ ❯ connect tests/x-oauth-db.test.ts:27:21
+ ❯ tests/x-oauth-db.test.ts:177:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ ❯ tests/wallet-auth-isolation-db.test.ts:40:24
+     38|         ).toBe(isolation);
+     39|         const report = join(directory, 'auth-folds.xml');
+     40|         const output = execFileSync(
+       |                        ^
+     41|           process.execPath,
+     42|           [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/20]⎯
+
+
+ Test Files  10 failed | 7 passed (17)
+      Tests  20 failed | 271 passed (291)
+   Start at  22:15:19
+   Duration  665.48s (transform 370ms, setup 0ms, import 1.62s, tests 662.04s, environment 1ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/main-sync-blockers-20261016/vitest-rerun2.xml

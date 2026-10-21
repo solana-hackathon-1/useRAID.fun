@@ -1,0 +1,557 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ✓ tests/identity-lock-architecture.test.ts (1 test) 2647ms
+   ✓ every identity writer enters the shared protocol boundary  2647ms
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+{"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":260,"blocker":258,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+{"walletLinkRace":"link-then-legacy-insert","waiter":258,"blocker":260,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+{"walletLinkRace":"legacy-insert-then-link","waiter":260,"blocker":258,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at its common primary subject; one participant
+{"walletLinkRace":"link-vs-link-same-account","waiter":258,"blocker":260,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+{"walletLinkRace":"link-vs-rotate-link-first","waiter":260,"blocker":258,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > rotate holding the subject vs link of that address: link waits, then reports a conflict
+{"walletLinkRace":"link-vs-rotate-rotate-first","waiter":258,"blocker":260,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+{"walletLinkRace":"link-vs-merge-as-drop","waiter":260,"blocker":258,"blockedStatement":"UPDATE \"public\".\"WalletIdentity\" SET \"userId\" = $1 WHERE \"public\".\"WalletIdentity\".\"userId\" = $2"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+{"walletLinkRace":"link-vs-merge-delete-first","waiter":258,"blocker":260,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+{"walletLinkRace":"link-vs-merge-as-keep","waiter":260,"blocker":258,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+
+stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+{"walletLinkRace":"link-vs-user-row-update","waiter":258,"blocker":260,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+ ❯ tests/identity-link-db.test.ts (37 tests | 1 failed) 1708ms
+     ✓ catalog contains the reviewed constraints, indexes and enabled triggers (D14) 60ms
+       ✓ a pre-provisioned participant is byte-identical after linking W2 and W3; money and payout rows unchanged (WR09) 77ms
+       ✓ lazy creation: the first link creates one mapping with link provenance; later links reuse it 52ms
+       ✓ unchanged legacy link path still answers 409 for a second wallet until sign-in resolution ships (baseline) 93ms
+       ✓ raw SQL cannot reassign a revoked address to a second account (LR01, D13) 40ms
+       ✓ raw SQL cannot link an existing primary address to alice (LR02) 27ms
+       ✓ raw SQL cannot link an existing primary address to bob (LR02) 25ms
+       ✓ two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge 76ms
+       ✓ link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user 55ms
+       ✓ legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict 44ms
+       ✓ old binary raw INSERT of a linked or revoked address fails with the exclusivity constraint (D4) 33ms
+       ✓ legacy sign-in with a linked or revoked address fails closed with no new account or session (rollout characterization) 47ms
+       ✓ legacy link of a linked address by an account without a primary is rejected by the trigger 30ms
+       ✓ trigger conflict and unique-index conflict both classify as sanitized UNIQUE_CONFLICT; the message never reaches logs 44ms
+       × link vs link on one account with different addresses serializes at its common primary subject; one participant 53ms
+       ✓ link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary 49ms
+       ✓ rotate holding the subject vs link of that address: link waits, then reports a conflict 47ms
+       ✓ legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back 58ms
+       ✓ legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan 40ms
+       ✓ legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit 54ms
+       ✓ a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle 47ms
+       ✓ the same proof twice is one row; a proof reused for another address is a conflict that adds nothing 69ms
+       ✓ own primary is an idempotent no-op that never creates a participant 26ms
+       ✓ requires an existing primary wallet and creates nothing otherwise (WR05) 23ms
+       ✓ state machine: no delete, only ACTIVE to REVOKED, revoked address stays reserved for everyone 52ms
+       ✓ check constraints and the composite participant foreign key reject inconsistent rows 29ms
+       ✓ legacy User delete and merge of a linked account roll back entirely 56ms
+       ✓ a linked wallet-only account is rejected by the real wallet sign-in fold path and the merge helper (WR06 behavior) 51ms
+       ✓ a suspended account is restricted: no mapping, no link, challenge not consumed 29ms
+       ✓ a suspended account re-linking its own wallet is restricted, not ALREADY_LINKED (WR08) 43ms
+       ✓ injected serialization failure at participant ensure retries the whole callback with the same identity 44ms
+       ✓ injected serialization failure at link insert retries the whole callback with the same identity 45ms
+       ✓ the adapter rejects SERIALIZABLE before touching link tables (D13) 17ms
+       ✓ the adapter rejects REPEATABLE READ before touching link tables (D13) 17ms
+       ✓ per-account caps hold at the database: active cap, then total ceiling including revoked rows 87ms
+       ✓ rotation to a fresh address works with links present; rotation onto an own link is refused by the fence 32ms
+       ✓ ensureHumanParticipant provenance is untouched by a no-op link replay 26ms
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > denies a link whose X session expires while it waits for the Session row lock
+{"lockOrderWait":{"blocker":263,"waiter":262,"needle":"FROM \"Session\""}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > denies a link whose X session expires while it waits for the XAccount row lock
+{"lockOrderWait":{"blocker":263,"waiter":262,"needle":"FROM \"XAccount\""}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > does not deadlock a merge against an X reconnect of the same account
+{"lockOrderWait":{"blocker":263,"waiter":262,"needle":"OAuthAttempt"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > does not deadlock a merge against an X reconnect of the same account
+{"lockOrderWait":{"blocker":262,"waiter":266,"needle":"pg_advisory_xact_lock"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus merge > serializes without a deadlock and fails the merge closed after the connection wins
+{"lockOrderWait":{"blocker":263,"waiter":266,"needle":"OAuthAttempt"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+{"lockOrderWait":{"blocker":263,"waiter":262,"needle":"OAuthAttempt"}}
+
+stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > lets unrelated merges and a first X connection proceed without waiting on each other
+{"lockOrderWait":{"blocker":263,"waiter":266,"needle":"OAuthAttempt"}}
+
+ ❯ tests/wallet-link-lock-order-db.test.ts (7 tests | 3 failed) 21457ms
+     ✓ denies a link whose X session expires while it waits for the Session row lock  2861ms
+     ✓ denies a link whose X session expires while it waits for the XAccount row lock  2835ms
+     ✓ does not deadlock a merge against an X reconnect of the same account 288ms
+     × refuses a merge when the dropped account connected X while the merge waited for its row 5080ms
+       × serializes without a deadlock and fails the merge closed after the connection wins 5140ms
+       × serializes without a deadlock and fails the merge closed after the connection wins 5054ms
+     ✓ lets unrelated merges and a first X connection proceed without waiting on each other 197ms
+ ✓ tests/tracking-db.test.ts (48 tests) 3327ms
+Environment variables loaded from .env
+Environment variables loaded from .env
+ ✓ tests/identity-link-migration.test.ts (4 tests) 3154ms
+     ✓ applies twice, matches the Prisma schema with no drift, and records one row per migration  3148ms
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":289,"waiters":[288]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":289,"waiters":[288]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":289,"waiters":[288]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":289,"waiters":[288]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:401","linked","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > makes a revoke or X disconnect that arrives after the decision wait for the link to commit
+{"authorityLateWriters":{"command":288,"writers":[290,292]}}
+
+ ❯ tests/wallet-link-authority-db.test.ts (12 tests | 1 failed) 3073ms
+     ✓ denies a live own session whose authority is "wallet" even though the account has an X row 121ms
+     ✓ denies a live own session whose authority is "admin" even though the account has an X row 42ms
+     ✓ denies a live own session whose authority is "" even though the account has an X row 39ms
+     ✓ denies a live own session whose authority is "X" even though the account has an X row 35ms
+     ✓ denies an authority change (revoked) committed during a real lock wait 61ms
+     ✓ denies an authority change (expired) committed during a real lock wait 40ms
+     ✓ denies an authority change (X disconnected) committed during a real lock wait 38ms
+     ✓ denies a session that expires naturally while the command waits for the lock  1908ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  502ms
+     ✓ makes a revoke or X disconnect that arrives after the decision wait for the link to commit 98ms
+     ✓ makes an X disconnect alone, arriving after the decision, wait for the link to commit 80ms
+     × does not deadlock with the legacy account merge while the command holds its locks (N1) 106ms
+ ✓ tests/wallet-auth-isolation-db.test.ts (2 tests) 2241ms
+     ✓ preserves permitted wallet and X account folds under database default repeatable read  1174ms
+     ✓ preserves permitted wallet and X account folds under database default serializable  1066ms
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > blocks the second identical command on the first backend, then replays it
+{"receiptRace":true,"waiter":303,"blocker":304,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > lets the waiting command execute when the first one rolls back
+{"receiptRace":true,"waiter":304,"blocker":303,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > reports a conflict, not a replay, when the waiting command has another payload
+{"receiptRace":true,"waiter":303,"blocker":304,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > inbound provider deliveries (AC32 foundation) > blocks the duplicate on the first backend while the first handler is open
+{"receiptRace":true,"waiter":303,"blocker":302,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+
+ ✓ tests/command-receipts-db.test.ts (28 tests) 1828ms
+       ✓ survives a genuine PostgreSQL deadlock between two different commands  1104ms
+ ✓ tests/worker-db.test.ts (15 tests) 595ms
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+{"sessionRace":"revoked","waiter":313,"blocker":312}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+{"sessionRace":"expired","waiter":314,"blocker":313}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+{"sessionRace":"downgraded","waiter":313,"blocker":314}
+
+ ✓ tests/wallet-auth-db.test.ts (25 tests) 1210ms
+ ✓ tests/x-oauth-db.test.ts (17 tests) 1120ms
+stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)
+{"linkedSigninRace":true,"waiter":318,"blocker":317,"blockedStatement":"SELECT \"id\" FROM \"WalletLink\" WHERE \"id\" = $1::uuid FOR SHARE"}
+
+stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)
+{"linkedSigninRace":true,"waiter":319,"blocker":318,"blockedStatement":"UPDATE \"public\".\"WalletLink\" SET \"status\" = $1, \"revokedAt\" = $2 WHERE \"public\".\"WalletLink\".\"accountId\" = $3"}
+
+ ✓ tests/wallet-linked-signin-db.test.ts (15 tests) 954ms
+/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:129
+  if (error instanceof IdentityLockError) return new IdentityLinkError(error.code === 'PLAN_CHANGED' ? 'RETRY_TRANSACTION' : 'STORAGE_CONTRACT');
+                                                 ^
+
+IdentityLinkError: STORAGE_CONTRACT
+    at translate (/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:129:50)
+    at lookupWalletLink (/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:544:11)
+    at async <anonymous> (/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/host.ts:228:20) {
+  code: 'STORAGE_CONTRACT'
+}
+
+Node.js v26.0.0
+ ❯ tests/identity-link-boundary.test.ts (6 tests | 1 failed) 813ms
+   ✓ public link module owns SQL and contracts without an app singleton, framework or SDK 2ms
+   ✓ B2a wires only the default-off command: no route, UI, X-callback or revoke use (WR13) 28ms
+   ✓ copied challenge helper resolves its declared host dependencies and production network policy 256ms
+   × minimal external host links a second wallet using explicit dependencies 523ms
+   ✓ module documentation declares the R16 reuse contract and runnable consumer steps 1ms
+   ✓ new test files are registered in the CI matrix and the evidence records WR01-WR14 2ms
+ ✓ tests/rewards-finance.test.ts (34 tests) 601ms
+ ✓ tests/x-oauth-first-link-race-db.test.ts (5 tests) 797ms
+stderr | tests/tracking.test.ts > raid-specific search query > falls back to the unfiltered query when the author list exceeds the limit
+X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+ ✓ tests/tracking.test.ts (17 tests) 516ms
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > provision wins against old binary at final DELETE; entire auth transaction rolls back
+{"storageRace":true,"waiter":332,"blocker":330,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\".\"User\".\"role\", \"public\".\"User\".\"approved\", \"public\".\"User\".\"suspended\", \"public\".\"User\".\"affiliation\", \"public\".\"User\".\"createdAt\""}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > delete wins: provision blocks on User key lock then denies missing account without orphan
+{"storageRace":true,"waiter":330,"blocker":332,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+
+stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > independent create/create race returns one committed identity and first provenance
+{"storageRace":true,"waiter":332,"blocker":330,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+
+ ✓ tests/identity-storage-db.test.ts (12 tests) 556ms
+ ✓ tests/studio-db.test.ts (14 tests) 463ms
+ ✓ tests/wallet-link-signin-db.test.ts (8 tests) 655ms
+ ✓ tests/command-receipts-boundary.test.ts (4 tests) 398ms
+   ✓ minimal external host runs the documented flow using explicit dependencies  394ms
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+{"waitTrace":[{"pid":355,"blockers":[353],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+{"waitTrace":[{"pid":353,"blockers":[355],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+{"waitTrace":[{"pid":355,"blockers":[353],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":353,"blockers":[355],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":354,"blockers":[353],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+{"waitTrace":[{"pid":353,"blockers":[354],"table":"User"}]}
+
+ ✓ tests/identity-protocol-db.test.ts (7 tests) 411ms
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 475ms
+ ✓ tests/identity-storage-boundary.test.ts (3 tests) 370ms
+   ✓ minimal external host resolves a real mapping using explicit dependencies  367ms
+ ✓ tests/identity-locks-db.test.ts (5 tests) 445ms
+ ✓ tests/identity-preflight-boundary.test.ts (1 test) 264ms
+ ❯ tests/identity-link-authority-hook-db.test.ts (9 tests | 1 failed) 248ms
+     × is awaited after the subject and account locks and before any other read 65ms
+     ✓ uses the hook observation instead of stale session and clock input 29ms
+     ✓ denies with the IdentityLinkError the hook throws and writes nothing 26ms
+     ✓ reports any other hook failure as STORAGE_UNAVAILABLE without its text 24ms
+     ✓ rejects a malformed hook return null as INVALID_INPUT 21ms
+     ✓ rejects a malformed hook return {} as INVALID_INPUT 20ms
+     ✓ rejects a malformed hook return {"session":{"accountId":"hook-alice","state":"ACTIVE","expiresAt":"2026-10-16T09:00:00.000Z"}} as INVALID_INPUT 20ms
+     ✓ rejects a malformed hook return {"session":"x","now":"2026-10-09T09:00:00.000Z"} as INVALID_INPUT 20ms
+     ✓ still requires a valid session and clock when no hook is supplied 11ms
+ ✓ tests/usdc-ops-db.test.ts (9 tests) 233ms
+ ✓ tests/pump-launch.test.ts (2 tests) 63ms
+ ❯ tests/wallet-network.test.ts (12 tests | 6 failed) 42ms
+     × issues and verifies an exact devnet challenge 10ms
+     × issues and verifies an exact mainnet challenge 3ms
+     × rejects a registered credential on a different chain before creating a session 6ms
+     × preserves a pending mainnet challenge across a configuration change to devnet 2ms
+     × rejects altered stored chain text even when signed again, retaining the issued digest 2ms
+     ✓ fails closed for production network undefined before issue or consumption 3ms
+     ✓ fails closed for production network "" before issue or consumption 2ms
+     ✓ fails closed for production network "testnet" before issue or consumption 2ms
+     ✓ fails closed for production network "sandbox" before issue or consumption 2ms
+     ✓ fails closed for production network "MAINNET" before issue or consumption 2ms
+     ✓ retains the nonproduction mainnet default when network is unset 0ms
+     × passes the signed devnet network consistently to additional-link subject/proof/policy 7ms
+ ✓ tests/x-oauth.test.ts (12 tests) 33ms
+ ✓ tests/identity-link.test.ts (31 tests) 22ms
+ ✓ tests/studio.test.ts (14 tests) 15ms
+ ✓ tests/identity-preflight.test.ts (48 tests) 12ms
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held resolve-first locks
+{"credentialRace":true,"waiter":368,"blocker":366,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held revoke-first locks
+{"credentialRace":true,"waiter":366,"blocker":368,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default repeatable read while a link commits
+{"credentialRace":true,"waiter":370,"blocker":366,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default serializable while a link commits
+{"credentialRace":true,"waiter":372,"blocker":366,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+
+ ❯ tests/wallet-link-credentials.test.ts (31 tests | 1 failed) 1738ms
+     ✓ publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants 1ms
+     ✓ resolves only internal account/participant context under subject then account locks, without writes 3ms
+     ✓ leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock 1ms
+     ✓ resolver rejects invalid durable ownership {"status":"REVOKED"} 0ms
+     ✓ resolver rejects invalid durable ownership {"suspended":true} 0ms
+     ✓ resolver rejects invalid durable ownership {"participant":null} 0ms
+     ✓ resolver rejects invalid durable ownership {"participant":"d4bbeef1-55a8-4d8e-8d03-f3b012f92402"} 0ms
+     ✓ resolver rejects invalid durable ownership {"status":"INVALID"} 0ms
+     ✓ resolver rejects invalid durable ownership {"malformed":true} 0ms
+     ✓ revokes once, preserves permanent reservation, and repeats without another UPDATE 1ms
+     ✓ rejects untrusted caller input before SQL {"actorAccountId":"credentials-bob"} 0ms
+     ✓ rejects untrusted caller input before SQL {"session":{"accountId":"credentials-bob","state":"ACTIVE","expiresAt":"2026-10-16T09:00:00.000Z"}} 0ms
+     ✓ rejects untrusted caller input before SQL {"session":{"accountId":"credentials-alice","state":"REVOKED","expiresAt":"2026-10-16T09:00:00.000Z"}} 0ms
+     ✓ rejects untrusted caller input before SQL {"session":{"accountId":"credentials-alice","state":"ACTIVE","expiresAt":"2026-10-09T09:00:00.000Z"}} 0ms
+     ✓ rejects untrusted caller input before SQL {"now":"2026-10-09T09:00:00.100Z","session":{"accountId":"credentials-alice","state":"ACTIVE","expiresAt":"2026-10-09T09:00:00Z"}} 0ms
+     ✓ rejects untrusted caller input before SQL {"requestId":""} 0ms
+     ✓ protects own primary and returns identical sanitized failure for missing or foreign targets 0ms
+     ✓ both commands reject a non-READ_COMMITTED port before any SQL even when the address is absent 0ms
+     ✓ both commands reject a non-READ_COMMITTED port before any SQL even when the address is absent 0ms
+     ✓ fails closed when the PRIMARY owner observed before the account lock changes while waiting 0ms
+     ✓ both commands fail closed on wrong isolation, network and opaque storage failure 0ms
+     ✓ both commands fail closed on wrong isolation, network and opaque storage failure 0ms
+     ✓ resolves unmapped legacy primary without provisioning and links preserve canonical context 112ms
+     ✓ existing generator uses the shared legacy vocabulary without issuing additional-link purposes 27ms
+     ✓ revoke keeps immutable provenance, rejects primary/foreign targets and leaves address reserved 81ms
+     ✓ restricted owner cannot resolve or revoke and malformed trusted session causes no mutation 43ms
+     ✓ resolver and revoke serialize with actual held resolve-first locks 75ms
+     ✓ resolver and revoke serialize with actual held revoke-first locks 59ms
+     × resolver and revoke serialize with actual held account-lock locks 47ms
+     ✓ rotation preserves cross-table subject exclusion under default repeatable read while a link commits  1154ms
+     ✓ rotation preserves cross-table subject exclusion under default serializable while a link commits 117ms
+ ✓ tests/usdc-receipt.test.ts (6 tests) 11ms
+ ✓ tests/wallet-routes.test.ts (11 tests) 12ms
+ ✓ tests/command-receipts.test.ts (46 tests) 9ms
+ ✓ tests/x-oauth-routes.test.ts (12 tests) 10ms
+ ✓ tests/usdc-chain.test.ts (3 tests) 8ms
+ ✓ tests/rewards.test.ts (3 tests) 8ms
+ ✓ tests/wallet-credential-lookup.test.ts (12 tests) 8ms
+ ✓ tests/identity-storage.test.ts (33 tests) 7ms
+ ✓ tests/wallet-link-proof.test.ts (19 tests) 6ms
+ ✓ tests/studio-preview-route.test.ts (3 tests) 4ms
+ ✓ tests/wallet-auth-transaction.test.ts (4 tests) 3ms
+ ✓ tests/studio-menu.test.ts (3 tests) 2ms
+ ✓ tests/wallet-picker.test.ts (3 tests) 2ms
+ ✓ tests/wallet-session-authority.test.ts (11 tests) 2ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link-authority-hook-db.test.ts > identity-link observeAuthority hook contract (real PostgreSQL) > is awaited after the subject and account locks and before any other read
+AssertionError: expected [ 'other', 'other', 'other' ] to deeply equal [ Array(3) ]
+
+- Expected
++ Received
+
+  [
+-   "subject-lock",
+-   "account-lock",
+-   "HOOK",
++   "other",
++   "other",
++   "other",
+  ]
+
+ ❯ tests/identity-link-authority-hook-db.test.ts:78:30
+     76|       });
+     77|     }, options);
+     78|     expect(seen.slice(0, 3)).toEqual(['subject-lock', 'account-lock', …
+       |                              ^
+     79|     expect(seen.indexOf('participant')).toBeGreaterThan(seen.indexOf('…
+     80|     expect(await links()).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  tests/identity-link-boundary.test.ts > minimal external host links a second wallet using explicit dependencies
+Error: Command failed: /opt/homebrew/Cellar/node/26.0.0/bin/node /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/node_modules/tsx/dist/cli.mjs host.ts
+/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:129
+  if (error instanceof IdentityLockError) return new IdentityLinkError(error.code === 'PLAN_CHANGED' ? 'RETRY_TRANSACTION' : 'STORAGE_CONTRACT');
+                                                 ^
+
+IdentityLinkError: STORAGE_CONTRACT
+    at translate (/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:129:50)
+    at lookupWalletLink (/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:544:11)
+    at async <anonymous> (/private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/host.ts:228:20) {
+  code: 'STORAGE_CONTRACT'
+}
+
+Node.js v26.0.0
+
+ ❯ translate ../../../../private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:129:50
+ ❯ lookupWalletLink ../../../../private/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t006-wallet-links-consumer-Ui9K50/identity-link/index.ts:544:11
+ ❯ tests/identity-link-boundary.test.ts:109:22
+    107|       // Explicit existing fixture runtime; independent installation i…
+    108|       await symlink(join(process.cwd(), 'node_modules'), join(director…
+    109|       const output = execFileSync(
+       |                      ^
+    110|         process.execPath,
+    111|         [join(directory, 'node_modules/tsx/dist/cli.mjs'), 'host.ts'],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at its common primary subject; one participant
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/identity-link-db.test.ts:580:20
+    578|       const a = await first.done;
+    579|       const b = await second.outcome;
+    580|       expect(b.ok).toBe(true);
+       |                    ^
+    581|       expect(b.value!.participantId).toBe(a.participantId);
+    582|       expect(await db.$queryRawUnsafe('SELECT 1 FROM "Participant"')).…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > does not deadlock with the legacy account merge while the command holds its locks (N1)
+AssertionError: expected 'PLAN_CHANGED' to contain 'Only an activity-free account can be …'
+
+Expected: "Only an activity-free account can be merged"
+Received: "PLAN_CHANGED"
+
+ ❯ tests/wallet-link-authority-db.test.ts:338:30
+    336|       const merged = (await merge) as { ok: boolean; message?: string …
+    337|       expect(merged.ok).toBe(false);
+    338|       expect(merged.message).toContain('Only an activity-free account …
+       |                              ^
+    339|       expect(merged.message).not.toMatch(/deadlock/i);
+    340|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held account-lock locks
+AssertionError: expected 'SELECT 1 AS "locked" FROM (SELECT pg_…' to match /FROM "User".*FOR NO KEY UPDATE/s
+
+- Expected:
+/FROM "User".*FOR NO KEY UPDATE/s
+
++ Received:
+"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""
+
+ ❯ observedBlock tests/wallet-link-credentials.test.ts:395:31
+    393|       );
+    394|       if (rows[0]?.blockers.includes(blocker)) {
+    395|         expect(rows[0].query).toMatch(statement);
+       |                               ^
+    396|         console.info(
+    397|           JSON.stringify({
+ ❯ tests/wallet-link-credentials.test.ts:453:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > refuses a merge when the dropped account connected X while the merge waited for its row
+Error: No backend observed waiting on: FOR NO KEY UPDATE
+ ❯ blocked tests/wallet-link-lock-order-db.test.ts:96:9
+     94|     await new Promise((r) => setTimeout(r, 10));
+     95|   }
+     96|   throw new Error(`No backend observed waiting on: ${needle}`);
+       |         ^
+     97| }
+     98|
+ ❯ tests/wallet-link-lock-order-db.test.ts:280:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus merge > serializes without a deadlock and fails the merge closed after the connection wins
+ FAIL  tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+Error: Expected 2 OAuthAttempt waiters, saw 1
+ ❯ attemptWaiters tests/wallet-link-lock-order-db.test.ts:117:9
+    115|     await new Promise((r) => setTimeout(r, 10));
+    116|   }
+    117|   throw new Error(`Expected ${count} OAuthAttempt waiters, saw ${seen}…
+       |         ^
+    118| }
+    119| // A wallet-only account (xId null) with a primary wallet, a live wall…
+ ❯ tests/wallet-link-lock-order-db.test.ts:334:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  tests/wallet-network.test.ts > configured SIWS network and stored challenge compatibility (T007 partial) > issues and verifies an exact devnet challenge
+ FAIL  tests/wallet-network.test.ts > configured SIWS network and stored challenge compatibility (T007 partial) > issues and verifies an exact mainnet challenge
+Error: Wallet sign-in unavailable. Please try again.
+ ❯ walletTransaction src/lib/wallet-auth.ts:53:11
+     51|     }
+     52|     if (error instanceof HttpError) throw error;
+     53|     throw new HttpError(503, 'Wallet sign-in unavailable. Please try a…
+       |           ^
+     54|   }
+     55| }
+ ❯ Module.verifyWalletChallenge src/lib/wallet-auth.ts:166:3
+ ❯ tests/wallet-network.test.ts:65:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  tests/wallet-network.test.ts > configured SIWS network and stored challenge compatibility (T007 partial) > rejects a registered credential on a different chain before creating a session
+AssertionError: expected Error: Wallet sign-in unavailable. Please… { status: … } to match object { status: 401 }
+
+- Expected
++ Received
+
+- {
+-   "status": 401,
++ HttpError {
++   "status": 503,
+  }
+
+ ❯ tests/wallet-network.test.ts:78:6
+     76|     await expect(
+     77|       verifyWalletChallenge(challenge.digest, sign(challenge.message),…
+     78|     ).rejects.toMatchObject({ status: 401 });
+       |      ^
+     79|     expect(host.tx.session.create).not.toHaveBeenCalled();
+     80|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  tests/wallet-network.test.ts > configured SIWS network and stored challenge compatibility (T007 partial) > preserves a pending mainnet challenge across a configuration change to devnet
+Error: Wallet sign-in unavailable. Please try again.
+ ❯ walletTransaction src/lib/wallet-auth.ts:53:11
+     51|     }
+     52|     if (error instanceof HttpError) throw error;
+     53|     throw new HttpError(503, 'Wallet sign-in unavailable. Please try a…
+       |           ^
+     54|   }
+     55| }
+ ❯ Module.verifyWalletChallenge src/lib/wallet-auth.ts:166:3
+ ❯ tests/wallet-network.test.ts:90:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  tests/wallet-network.test.ts > configured SIWS network and stored challenge compatibility (T007 partial) > rejects altered stored chain text even when signed again, retaining the issued digest
+AssertionError: expected Error: Wallet sign-in unavailable. Please… { status: … } to match object { status: 401 }
+
+- Expected
++ Received
+
+- {
+-   "status": 401,
++ HttpError {
++   "status": 503,
+  }
+
+ ❯ tests/wallet-network.test.ts:100:6
+     98|     await expect(
+     99|       verifyWalletChallenge(challenge.digest, sign(message), address),
+    100|     ).rejects.toMatchObject({ status: 401 });
+       |      ^
+    101|     expect(host.tx.walletChallenge.updateMany).not.toHaveBeenCalled();
+    102|     expect(host.tx.session.create).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  tests/wallet-network.test.ts > configured SIWS network and stored challenge compatibility (T007 partial) > passes the signed devnet network consistently to additional-link subject/proof/policy
+TypeError: tx.user.findMany is not a function
+ ❯ observe src/lib/identity-protocol.ts:15:15
+     13|   const observe = async () => {
+     14|     const [users, wallets, links] = await Promise.all([
+     15|       tx.user.findMany({ where: { id: { in: ids } }, select: { id: tru…
+       |               ^
+     16|       tx.walletIdentity.findMany({ where: { userId: { in: ids } }, sel…
+     17|       tx.walletLink.findMany({ where: { accountId: { in: ids } }, sele…
+ ❯ prepareIdentity src/lib/identity-protocol.ts:21:26
+ ❯ db.$transaction.isolationLevel src/lib/wallet-auth.ts:359:29
+ ❯ Module.linkAdditionalWallet src/lib/wallet-auth.ts:348:20
+ ❯ tests/wallet-network.test.ts:131:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+
+ Test Files  7 failed | 41 passed (48)
+      Tests  14 failed | 657 passed (671)
+   Start at  17:53:47
+   Duration  62.52s (transform 516ms, setup 0ms, import 5.14s, tests 52.58s, environment 2ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-lock-slice-20261012/affected-first.xml

@@ -278,7 +278,7 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
             WHERE ${blocker}::integer = ANY(pg_blocking_pids(pid))
           `;
           const row = blocked.find((entry) =>
-            /DELETE FROM "(?:public"\.)?"?Session"?/s.test(entry.query),
+            /(?:DELETE FROM|SELECT .* FROM) "(?:public"\.)?"?Session"?/s.test(entry.query),
           );
           if (row) {
             expect(row.pid).not.toBe(blocker);
@@ -288,7 +288,10 @@ integration('wallet sign-in hardening, rotation and account merge', () => {
           }
           await new Promise((done) => setTimeout(done, 10));
         }
-        expect(observed, 'actual Session DELETE blocked by an independent transaction').toBe(true);
+        expect(
+          observed,
+          'Session pre-lock or replacement blocked by an independent transaction',
+        ).toBe(true);
         release();
         await held;
         const token = await signingIn;

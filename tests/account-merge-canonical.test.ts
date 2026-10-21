@@ -4,6 +4,8 @@
 import type { Prisma } from '@prisma/client';
 import { describe, expect, it, vi } from 'vitest';
 import { absorbAccount, isEmptyAccount } from '../src/lib/account-merge';
+import { db } from '../src/lib/db';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 
 const legacyCategories = [
   'raid',
@@ -81,13 +83,6 @@ function observedTransaction(
 }
 
 describe('T006 planned canonical references protect legacy absorption decisions', () => {
-  it('absorbs an empty account without copying retired creator metadata', async () => {
-    const { transaction, mutations } = observedTransaction();
-    await absorbAccount(transaction, 'keeper', 'protected');
-    expect(mutations.accountUpdate).not.toHaveBeenCalled();
-    expect(mutations.accountDelete).toHaveBeenCalledWith({ where: { id: 'protected' } });
-    expect(mutations.mergeEvent).toHaveBeenCalledOnce();
-  });
   it('keeps the existing genuinely empty account result', async () => {
     const { transaction } = observedTransaction();
     expect(await isEmptyAccount(transaction, 'protected')).toBe(true);
@@ -116,5 +111,29 @@ describe('T006 planned canonical references protect legacy absorption decisions'
       'Only an activity-free account can be merged.',
     );
     for (const mutation of Object.values(mutations)) expect(mutation).not.toHaveBeenCalled();
+  });
+});
+
+// Real-database form of the absorption check: the lock protocol now plans roots, so a hand-built
+// Prisma fake cannot observe it. Retired creator fields are not copied onto the keeper.
+const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
+integration('T006 absorption against PostgreSQL', () => {
+  it('absorbs an empty account without copying retired creator metadata', async () => {
+    assertTestDatabase();
+    await truncateAll(db);
+    await db.user.create({
+      data: { id: 'keeper', handle: 'keeper', approved: false, affiliation: '' },
+    });
+    await db.user.create({
+      data: { id: 'protected', handle: 'protected', approved: true, affiliation: 'retired' },
+    });
+    await db.$transaction((tx) => absorbAccount(tx, 'keeper', 'protected'));
+    expect(await db.user.findUnique({ where: { id: 'protected' } })).toBeNull();
+    expect(await db.user.findUniqueOrThrow({ where: { id: 'keeper' } })).toMatchObject({
+      approved: false,
+      affiliation: '',
+    });
+    expect(await db.moderationEvent.count()).toBe(1);
+    await db.$disconnect();
   });
 });

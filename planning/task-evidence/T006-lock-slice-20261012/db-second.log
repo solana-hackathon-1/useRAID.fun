@@ -1,0 +1,55 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/identity-link-db.test.ts (37 tests | 2 failed) 1563ms
+       × link vs link on one account with different addresses serializes at the User row lock; one participant 43ms
+       × legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back 49ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at the User row lock; one participant
+AssertionError: expected 'SELECT 1 AS "locked" FROM (SELECT pg_…' to match /FOR NO KEY UPDATE/
+
+- Expected:
+/FOR NO KEY UPDATE/
+
++ Received:
+"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""
+
+ ❯ observeBlock tests/identity-link-db.test.ts:116:30
+    114|     );
+    115|     if (found[0]?.blockers.includes(blocker)) {
+    116|       expect(found[0].query).toMatch(statement);
+       |                              ^
+    117|       // Evidence comes from the PostgreSQL lock graph, never from ela…
+    118|       console.info(
+ ❯ tests/identity-link-db.test.ts:569:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+AssertionError: expected 'UPDATE "public"."WalletIdentity" SET …' to match /DELETE FROM .*"User"/
+
+- Expected:
+/DELETE FROM .*"User"/
+
++ Received:
+"UPDATE \"public\".\"WalletIdentity\" SET \"userId\" = $1 WHERE \"public\".\"WalletIdentity\".\"userId\" = $2"
+
+ ❯ observeBlock tests/identity-link-db.test.ts:116:30
+    114|     );
+    115|     if (found[0]?.blockers.includes(blocker)) {
+    116|       expect(found[0].query).toMatch(statement);
+       |                              ^
+    117|       // Evidence comes from the PostgreSQL lock graph, never from ela…
+    118|       console.info(
+ ❯ tests/identity-link-db.test.ts:645:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  2 failed | 84 passed (86)
+   Start at  17:51:43
+   Duration  5.67s (transform 190ms, setup 0ms, import 934ms, tests 4.22s, environment 0ms)
+

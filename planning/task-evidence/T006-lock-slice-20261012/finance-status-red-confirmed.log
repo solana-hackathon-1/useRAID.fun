@@ -1,0 +1,53 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/identity-protocol-db.test.ts (10 tests | 2 failed | 8 skipped) 127ms
+     × finance holds SHARE for the creator status predicate while preserving the exact settlement 92ms
+     × finance rechecks creator restriction after acquiring its final root, before any settlement insert 34ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > finance holds SHARE for the creator status predicate while preserving the exact settlement
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/identity-protocol-db.test.ts:414:94
+    412|     let done = false;
+    413|     const suspend = locker.user.update({ where: { id: creator.id }, da…
+    414|     try { await Promise.race([waitForWait('UPDATE "public"."User"'), s…
+       |                                                                                              ^
+    415|     finally { release.open(); await Promise.all([finance, suspend]); }
+    416|     expect(await db.usdcAllocation.count()).toBe(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > finance rechecks creator restriction after acquiring its final root, before any settlement insert
+AssertionError: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ tests/identity-protocol-db.test.ts:427:45
+    425|     });
+    426|     await allocateUsdcRaid(raid.id); expect(changed).toBe(true);
+    427|     expect(await db.usdcAllocation.count()).toBe(0); expect(await db.u…
+       |                                             ^
+    428|     expect(await db.balanceEntry.findUnique({ where: { key: 'raid-sett…
+    429|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 8 skipped (10)
+   Start at  04:11:17
+   Duration  610ms (transform 146ms, setup 0ms, import 369ms, tests 127ms, environment 0ms)
+

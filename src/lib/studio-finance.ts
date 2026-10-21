@@ -7,6 +7,7 @@ import { lockBalance, usdcLimits, studioSandbox, USDC_MINTS } from './usdc';
 import { trackingSettlementEnabled } from './config';
 import { trackingBlockers, type ResultPayload } from './tracking-review';
 import { splitImpressionFunding } from './raid-allocation';
+import { lockAccountReferences } from './identity-protocol';
 
 export async function allocateUsdcRaid(raidId: string) {
   if (!trackingSettlementEnabled() && !studioSandbox()) return;
@@ -76,6 +77,23 @@ export async function allocateUsdcRaid(raidId: string) {
         ...new Set([raid.creatorId, ...allocations.filter((a) => a.credit).map((a) => a.userId)]),
       ].sort())
         await lockBalance(tx, userId);
+      // A2: every allocation/transfer FK, including non-credit users, takes the complete
+      // sorted account set before any bulk insert. Allocation/payout order and values stay intact.
+      await lockAccountReferences(
+        tx,
+        [raid.creatorId, ...allocations.map((a) => a.userId)],
+        [raid.creatorId],
+      );
+      // Creator restriction is an existing eligibility predicate, rechecked under its SHARE root.
+      if (
+        (
+          await tx.user.findUniqueOrThrow({
+            where: { id: raid.creatorId },
+            select: { suspended: true },
+          })
+        ).suspended
+      )
+        return;
       const paidAt = new Date();
       await tx.usdcAllocation.createMany({
         data: allocations.map((a) => ({

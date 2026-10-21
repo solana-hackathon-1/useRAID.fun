@@ -1,0 +1,23 @@
+== tsc
+tsc exit=0
+== fence
+PASS: identity AST fence; reviewed exceptions and User FK inventory
+fence exit=0
+== eslint
+✖ 363 problems (0 errors, 363 warnings)
+
+== planning
+Ran 55 tests in 17.912s
+
+OK
+== drift
+No difference detected.
+
+drift exit=0
+== prettier
+Checking formatting...
+[error] Explicitly specified pattern "examples/command-receipts/lib/identity-storage-adapter.ts" is a symbolic link.
+[warn] examples/wallet-links/host.ts
+[warn] WARP.md
+[warn] docs/raid-identity-locks.md
+[warn] Code style issues found in 3 files. Run Prettier with --write to fix.

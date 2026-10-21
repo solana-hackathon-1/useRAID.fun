@@ -167,3 +167,7 @@ RUN_DB_TESTS=true NODE_ENV=test DEMO_MODE=false DATABASE_URL='<synthetic test UR
 ```
 
 Database tests truncate the target; point them only at an explicitly disposable database named `useraid_test`. Migration check: `npx prisma migrate deploy` (second run reports no pending migrations) and `npx prisma migrate diff --from-url "$DATABASE_URL" --to-schema-datamodel prisma/schema.prisma --exit-code` (exit 0).
+
+## Identity protocol host-adapter dependencies
+
+The bounded T006/T007 candidate extends the Prisma host transaction adapter with shared lock-state lifetime, typed identity retry classification, a 15-second default deadline and bounded jitter. The pure receipt module's API/tables remain unchanged. A copied host must include identity-locks, identity-storage and identity-link error contracts plus the cached identity-storage adapter; example symlinks supply these dependencies. The work callback must contain repeatable local database work, with provider exchange and stable operation IDs outside retries. See [the shared protocol](raid-identity-locks.md). Unknown-commit reconciliation and independent combined-slice acceptance remain open.

@@ -1,0 +1,43 @@
+[
+  {
+    "name": "planning-contracts",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-p",
+      "test_raid_*.py"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:36:50.555363+00:00",
+    "utc_end": "2026-10-14T01:37:07.575883+00:00",
+    "elapsed_seconds": 17.02052,
+    "exit_code": 1
+  },
+  {
+    "name": "reconciliation-format",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/prettier/bin/prettier.cjs",
+      "--check",
+      "RAID_AGENT_BLUEPRINT.md",
+      "docs/raid-wallet-links.md",
+      "examples/wallet-links/README.md",
+      "planning/raid-scenarios.json",
+      "planning/raid-task-contracts.json",
+      "src/lib/wallet-auth.ts",
+      "tests/identity-storage-db.test.ts",
+      "tests/wallet-link-credentials.test.ts",
+      "docs/tasks/T006-identity-design-20261012.md",
+      "docs/tasks/T006-identity-lock-protocol-20261012.md"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:37:07.576696+00:00",
+    "utc_end": "2026-10-14T01:37:08.520611+00:00",
+    "elapsed_seconds": 0.943915,
+    "exit_code": 0
+  }
+]

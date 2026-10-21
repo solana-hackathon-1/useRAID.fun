@@ -1,3 +1,5 @@
+import { lockResource } from '../../identity-locks';
+import { lockAdvisory } from '../identity-protocol';
 import { db } from '../db';
 import { config } from '../config';
 import type { XPost } from '../domain';
@@ -15,7 +17,7 @@ export async function reserveUsage(units: number, raidId?: string, identity = fa
   if (!identity && (!config.liveApproved || !process.env.X_BEARER_TOKEN))
     throw new ProviderError('Live collection has not passed the feasibility gate.', 300, true);
   return db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(729102)`;
+    await lockAdvisory(tx, lockResource('global', '729102'));
     const settings = await tx.settings.upsert({ where: { id: 'global' }, create: {}, update: {} });
     if (!identity && !settings.collectionEnabled)
       throw new ProviderError('Collection is paused.', 300, true);
@@ -61,7 +63,7 @@ export function settleReservation(id: string, units: number, reason: string) {
 }
 async function xRead(path: string, params: URLSearchParams, units: number, raidId?: string) {
   await db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`x-endpoint:${path}`}, 0))`;
+    await lockAdvisory(tx, lockResource('x-endpoint', path));
     const state = await tx.xEndpointState.findUnique({ where: { key: path } });
     if (state?.blockedUntil && state.blockedUntil > new Date())
       throw new ProviderError(
@@ -118,7 +120,7 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     ...(response.ok ? { lastSuccessAt: new Date() } : {}),
   };
   await db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`x-endpoint:${path}`}, 0))`;
+    await lockAdvisory(tx, lockResource('x-endpoint', path));
     const current = await tx.xEndpointState.findUnique({ where: { key: path } });
     // Concurrent responses must not replenish quota or undo another request's 429.
     if (

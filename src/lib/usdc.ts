@@ -1,3 +1,5 @@
+import { lockResource } from '../identity-locks';
+import { lockAdvisory } from './identity-protocol';
 import {
   Connection,
   PublicKey,
@@ -66,7 +68,7 @@ export function usdcLimits() {
   };
 }
 export async function lockBalance(tx: Prisma.TransactionClient, userId: string) {
-  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`balance:${userId}`}, 0))`;
+  await lockAdvisory(tx, lockResource('balance', userId));
 }
 export async function balance(
   userId: string,

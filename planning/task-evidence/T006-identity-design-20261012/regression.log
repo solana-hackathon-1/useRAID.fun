@@ -1,0 +1,43 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+{"sessionRace":"revoked","waiter":119,"blocker":117}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+{"sessionRace":"expired","waiter":117,"blocker":119}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+{"sessionRace":"downgraded","waiter":119,"blocker":117}
+
+ ✓ tests/wallet-auth-db.test.ts (25 tests) 1086ms
+ ✓ tests/x-oauth-db.test.ts (17 tests) 870ms
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held resolve-first locks
+{"credentialRace":true,"waiter":124,"blocker":122,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held revoke-first locks
+{"credentialRace":true,"waiter":122,"blocker":124,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held account-lock locks
+{"credentialRace":true,"waiter":124,"blocker":122,"blockedStatement":"SELECT \"id\", \"suspended\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default repeatable read while a link commits
+{"credentialRace":true,"waiter":126,"blocker":124,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default serializable while a link commits
+{"credentialRace":true,"waiter":128,"blocker":124,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock(hashtextextended($1, 0))) AS \"lock\""}
+
+ ✓ tests/wallet-link-credentials.test.ts (31 tests) 601ms
+ ✓ tests/docs-links.test.ts (67 tests) 350ms
+ ✓ tests/identity-link-authority-hook-db.test.ts (9 tests) 272ms
+ ✓ tests/wallet-network.test.ts (12 tests) 57ms
+ ✓ tests/wallet-link-proof.test.ts (19 tests) 6ms
+ ✓ tests/account-merge-canonical.test.ts (14 tests) 6ms
+ ✓ tests/wallet-session-authority.test.ts (11 tests) 2ms
+
+ Test Files  9 passed (9)
+      Tests  205 passed (205)
+   Start at  13:50:38
+   Duration  5.15s (transform 176ms, setup 0ms, import 964ms, tests 3.25s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-identity-design-20261012/regression.xml

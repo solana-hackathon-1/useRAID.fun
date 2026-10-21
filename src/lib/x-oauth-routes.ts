@@ -1,6 +1,6 @@
+import { discardAttempt } from './identity-leaves';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { db } from './db';
 import { sessionCookie, studioSandbox } from './studio-mode';
 import {
   hash,
@@ -112,8 +112,7 @@ export async function callbackX(request: Request) {
     if (error instanceof OAuthError && error.code === 'session')
       response.cookies.set(sessionCookie(), '', { ...cookieOptions, maxAge: 0 });
   } finally {
-    if (claimed)
-      await db.oAuthAttempt.deleteMany({ where: { stateHash: hash(state!) } }).catch(() => {});
+    if (claimed) await discardAttempt(hash(state!)).catch(() => {});
   }
   // Another tab may still be mid-authorization, so only the state used here is dropped.
   const remaining = removeState(stateCookie, state || '');

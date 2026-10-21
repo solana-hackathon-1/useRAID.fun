@@ -1,0 +1,542 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/wallet-link-credentials.test.ts (31 tests | 10 failed | 9 skipped) 12ms
+     × resolves only internal account/participant context under subject then account locks, without writes 4ms
+     × leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock 0ms
+     × resolver rejects invalid durable ownership {"status":"REVOKED"} 2ms
+     × resolver rejects invalid durable ownership {"suspended":true} 0ms
+     × resolver rejects invalid durable ownership {"participant":null} 0ms
+     × resolver rejects invalid durable ownership {"participant":"d4bbeef1-55a8-4d8e-8d03-f3b012f92402"} 0ms
+     × resolver rejects invalid durable ownership {"status":"INVALID"} 0ms
+     × revokes once, preserves permanent reservation, and repeats without another UPDATE 1ms
+     × protects own primary and returns identical sanitized failure for missing or foreign targets 0ms
+     × fails closed when the PRIMARY owner observed before the account lock changes while waiting 0ms
+ ❯ tests/identity-link.test.ts (31 tests | 25 failed) 20ms
+     × links a new address in the documented lock order and returns the existing participant 6ms
+     × creates the participant mapping only inside a fresh link 0ms
+     × missing account rejects without participant or link writes 4ms
+     × revoked session maps to its typed code and writes nothing 1ms
+     × expired session maps to its typed code and writes nothing 0ms
+     × session of another account maps to its typed code and writes nothing 0ms
+     × suspended account maps to its typed code and writes nothing 0ms
+     × proof for another account maps to its typed code and writes nothing 0ms
+     × wrong domain maps to its typed code and writes nothing 0ms
+     × wrong uri maps to its typed code and writes nothing 0ms
+     × consumed proof maps to its typed code and writes nothing 0ms
+     × expired proof maps to its typed code and writes nothing 0ms
+     × unverified proof maps to its typed code and writes nothing 0ms
+     × proof for another wallet maps to its typed code and writes nothing 0ms
+     × sign-in intent proof maps to its typed code and writes nothing 0ms
+     × unsupported network maps to its typed code and writes nothing 0ms
+     × foreign primary or link (active or revoked) is one conflict; own revoked is a distinct code 2ms
+     × own active link or own primary is an idempotent no-op that creates nothing 0ms
+     × suspended account re-linking its own wallet is not ALREADY_LINKED 0ms
+     × revoked session account re-linking its own wallet is not ALREADY_LINKED 0ms
+     × bad proof account re-linking its own wallet is not ALREADY_LINKED 0ms
+     × requires an existing primary wallet and creates no participant otherwise (WR05) 0ms
+     × enforces the active and total caps at their boundaries 0ms
+     × empty RETURNING after ON CONFLICT: same account/address/proof is idempotent, anything else a conflict 0ms
+     × a deterministic alternate port yields identical outcomes and errors (adapter substitution) 0ms
+ ❯ tests/identity-storage.test.ts (33 tests | 2 failed) 8ms
+     × provisions against an existing account, binds values and returns the shared DTO 3ms
+     × reads the winner separately after a conflicting insert without rewriting provenance 0ms
+ ❯ tests/wallet-credential-lookup.test.ts (12 tests | 5 failed) 7ms
+     × returns an honest ACTIVE reservation without granting authentication 4ms
+     × returns an honest REVOKED reservation without granting authentication 0ms
+     × retains restriction so the proof/session host can refuse a suspended account 0ms
+     × returns null for an unreserved address (legacy primary/new-wallet host path) 0ms
+     × takes subject/account/link locks in contract order 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 42 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > links a new address in the documented lock order and returns the existing participant
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ linkVerifiedWallet src/identity-link/index.ts:302:11
+ ❯ tests/identity-link.test.ts:110:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > creates the participant mapping only inside a fresh link
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ linkVerifiedWallet src/identity-link/index.ts:302:11
+ ❯ tests/identity-link.test.ts:150:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > missing account rejects without participant or link writes
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'ACCOUNT_NOT_FOUND' // Object.is equality
+
+Expected: "ACCOUNT_NOT_FOUND"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:201:57
+    199|   it('missing account rejects without participant or link writes', asy…
+    200|     const { tx, tags } = fakePort({ user: null });
+    201|     expect(await code(linkVerifiedWallet(tx, input()))).toBe('ACCOUNT_…
+       |                                                         ^
+    202|     expect(tags()).toEqual(['lock', 'user']);
+    203|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > revoked session maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > expired session maps to its typed code and writes nothing
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'AUTHENTICATION_REQUIRED' // Object.is equality
+
+Expected: "AUTHENTICATION_REQUIRED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:288:81
+    286|     async (_name, world, overrides, expected) => {
+    287|       const { tx, tags } = fakePort(world);
+    288|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    289|       expect(tags()).not.toContain('link-insert');
+    290|       expect(tags()).not.toContain('participant-insert');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > session of another account maps to its typed code and writes nothing
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'FORBIDDEN' // Object.is equality
+
+Expected: "FORBIDDEN"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:288:81
+    286|     async (_name, world, overrides, expected) => {
+    287|       const { tx, tags } = fakePort(world);
+    288|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    289|       expect(tags()).not.toContain('link-insert');
+    290|       expect(tags()).not.toContain('participant-insert');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > suspended account maps to its typed code and writes nothing
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'ACCOUNT_RESTRICTED' // Object.is equality
+
+Expected: "ACCOUNT_RESTRICTED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:288:81
+    286|     async (_name, world, overrides, expected) => {
+    287|       const { tx, tags } = fakePort(world);
+    288|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    289|       expect(tags()).not.toContain('link-insert');
+    290|       expect(tags()).not.toContain('participant-insert');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > proof for another account maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > wrong domain maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > wrong uri maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > consumed proof maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > expired proof maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > unverified proof maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > proof for another wallet maps to its typed code and writes nothing
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > sign-in intent proof maps to its typed code and writes nothing
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'PROOF_INVALID' // Object.is equality
+
+Expected: "PROOF_INVALID"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:288:81
+    286|     async (_name, world, overrides, expected) => {
+    287|       const { tx, tags } = fakePort(world);
+    288|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    289|       expect(tags()).not.toContain('link-insert');
+    290|       expect(tags()).not.toContain('participant-insert');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > unsupported network maps to its typed code and writes nothing
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'UNSUPPORTED_IDENTITY' // Object.is equality
+
+Expected: "UNSUPPORTED_IDENTITY"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:288:81
+    286|     async (_name, world, overrides, expected) => {
+    287|       const { tx, tags } = fakePort(world);
+    288|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    289|       expect(tags()).not.toContain('link-insert');
+    290|       expect(tags()).not.toContain('participant-insert');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > foreign primary or link (active or revoked) is one conflict; own revoked is a distinct code
+AssertionError: expected [ 'STORAGE_UNAVAILABLE', …(1) ] to deeply equal [ 'IDENTITY_CONFLICT', …(1) ]
+
+- Expected
++ Received
+
+  [
+-   "IDENTITY_CONFLICT",
+-   "IDENTITY_CONFLICT",
++   "STORAGE_UNAVAILABLE",
++   "STORAGE_UNAVAILABLE",
+  ]
+
+ ❯ tests/identity-link.test.ts:309:25
+    307|     }
+    308|     expect(new Set(outcomes.map((o) => JSON.stringify(o))).size).toBe(…
+    309|     expect(outcomes[0]).toEqual(['IDENTITY_CONFLICT', 'IDENTITY_CONFLI…
+       |                         ^
+    310|     const own = fakePort({
+    311|       owner: { source: 'LINK', accountId: ACCOUNT, status: 'REVOKED', …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > own active link or own primary is an idempotent no-op that creates nothing
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ linkVerifiedWallet src/identity-link/index.ts:302:11
+ ❯ tests/identity-link.test.ts:325:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > suspended account re-linking its own wallet is not ALREADY_LINKED
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'ACCOUNT_RESTRICTED' // Object.is equality
+
+Expected: "ACCOUNT_RESTRICTED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:370:81
+    368|         owner: { source: 'LINK', accountId: ACCOUNT, status: 'ACTIVE',…
+    369|       });
+    370|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    371|     },
+    372|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > revoked session account re-linking its own wallet is not ALREADY_LINKED
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'AUTHENTICATION_REQUIRED' // Object.is equality
+
+Expected: "AUTHENTICATION_REQUIRED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:370:81
+    368|         owner: { source: 'LINK', accountId: ACCOUNT, status: 'ACTIVE',…
+    369|       });
+    370|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    371|     },
+    372|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > bad proof account re-linking its own wallet is not ALREADY_LINKED
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'PROOF_INVALID' // Object.is equality
+
+Expected: "PROOF_INVALID"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:370:81
+    368|         owner: { source: 'LINK', accountId: ACCOUNT, status: 'ACTIVE',…
+    369|       });
+    370|       expect(await code(linkVerifiedWallet(tx, input(NEW_ADDRESS, over…
+       |                                                                                 ^
+    371|     },
+    372|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > requires an existing primary wallet and creates no participant otherwise (WR05)
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'PRIMARY_WALLET_REQUIRED' // Object.is equality
+
+Expected: "PRIMARY_WALLET_REQUIRED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:376:57
+    374|   it('requires an existing primary wallet and creates no participant o…
+    375|     const { tx, tags } = fakePort({ primary: null, participant: false …
+    376|     expect(await code(linkVerifiedWallet(tx, input()))).toBe('PRIMARY_…
+       |                                                         ^
+    377|     expect(tags()).not.toContain('participant-insert');
+    378|     expect(tags()).not.toContain('link-insert');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > enforces the active and total caps at their boundaries
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'LINK_LIMIT_REACHED' // Object.is equality
+
+Expected: "LINK_LIMIT_REACHED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/identity-link.test.ts:387:94
+    385|         counts: { active: String(active), total: String(total), revoke…
+    386|       });
+    387|     expect(await code(linkVerifiedWallet(at(FIXTURE_LIMITS.maxActiveLi…
+       |                                                                                              ^
+    388|       'LINK_LIMIT_REACHED',
+    389|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > empty RETURNING after ON CONFLICT: same account/address/proof is idempotent, anything else a conflict
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ linkVerifiedWallet src/identity-link/index.ts:302:11
+ ❯ tests/identity-link.test.ts:418:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/42]⎯
+
+ FAIL  tests/identity-link.test.ts > wallet link command v1 (fake port) > a deterministic alternate port yields identical outcomes and errors (adapter substitution)
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ linkVerifiedWallet src/identity-link/index.ts:302:11
+ ❯ tests/identity-link.test.ts:538:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/42]⎯
+
+ FAIL  tests/identity-storage.test.ts > bounded HUMAN storage v1 > provisions against an existing account, binds values and returns the shared DTO
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ ensureHumanParticipant src/identity-storage/index.ts:103:51
+    101|     await requireIdentityLocks(tx, locks, { accounts: [{ id: input.acc…
+    102|   } catch (error) {
+    103|     if (error instanceof IdentityLockError) throw new IdentityStorageE…
+       |                                                   ^
+    104|     throw error;
+    105|   }
+ ❯ tests/identity-storage.test.ts:24:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/42]⎯
+
+ FAIL  tests/identity-storage.test.ts > bounded HUMAN storage v1 > reads the winner separately after a conflicting insert without rewriting provenance
+IdentityStorageError: STORAGE_CONTRACT
+ ❯ ensureHumanParticipant src/identity-storage/index.ts:103:51
+    101|     await requireIdentityLocks(tx, locks, { accounts: [{ id: input.acc…
+    102|   } catch (error) {
+    103|     if (error instanceof IdentityLockError) throw new IdentityStorageE…
+       |                                                   ^
+    104|     throw error;
+    105|   }
+ ❯ tests/identity-storage.test.ts:33:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/42]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns an honest ACTIVE reservation without granting authentication
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns an honest REVOKED reservation without granting authentication
+IdentityLinkError: STORAGE_CONTRACT
+ ❯ translate src/identity-link/index.ts:129:50
+    127| function translate(error: unknown): IdentityLinkError {
+    128|   if (error instanceof IdentityLinkError) return error;
+    129|   if (error instanceof IdentityLockError) return new IdentityLinkError…
+       |                                                  ^
+    130|   if (error instanceof IdentityStorageError)
+    131|     return new IdentityLinkError(
+ ❯ lookupWalletLink src/identity-link/index.ts:544:11
+ ❯ tests/wallet-credential-lookup.test.ts:51:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/42]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > retains restriction so the proof/session host can refuse a suspended account
+IdentityLinkError: STORAGE_CONTRACT
+ ❯ translate src/identity-link/index.ts:129:50
+    127| function translate(error: unknown): IdentityLinkError {
+    128|   if (error instanceof IdentityLinkError) return error;
+    129|   if (error instanceof IdentityLockError) return new IdentityLinkError…
+       |                                                  ^
+    130|   if (error instanceof IdentityStorageError)
+    131|     return new IdentityLinkError(
+ ❯ lookupWalletLink src/identity-link/index.ts:544:11
+ ❯ tests/wallet-credential-lookup.test.ts:60:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/42]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > returns null for an unreserved address (legacy primary/new-wallet host path)
+IdentityLinkError: STORAGE_CONTRACT
+ ❯ translate src/identity-link/index.ts:129:50
+    127| function translate(error: unknown): IdentityLinkError {
+    128|   if (error instanceof IdentityLinkError) return error;
+    129|   if (error instanceof IdentityLockError) return new IdentityLinkError…
+       |                                                  ^
+    130|   if (error instanceof IdentityStorageError)
+    131|     return new IdentityLinkError(
+ ❯ lookupWalletLink src/identity-link/index.ts:544:11
+ ❯ tests/wallet-credential-lookup.test.ts:66:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/42]⎯
+
+ FAIL  tests/wallet-credential-lookup.test.ts > replaceable linked-credential lookup > takes subject/account/link locks in contract order
+IdentityLinkError: STORAGE_CONTRACT
+ ❯ translate src/identity-link/index.ts:129:50
+    127| function translate(error: unknown): IdentityLinkError {
+    128|   if (error instanceof IdentityLinkError) return error;
+    129|   if (error instanceof IdentityLockError) return new IdentityLinkError…
+       |                                                  ^
+    130|   if (error instanceof IdentityStorageError)
+    131|     return new IdentityLinkError(
+ ❯ lookupWalletLink src/identity-link/index.ts:544:11
+ ❯ tests/wallet-credential-lookup.test.ts:71:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > resolves only internal account/participant context under subject then account locks, without writes
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ resolveWalletCredential src/identity-link/index.ts:434:11
+ ❯ tests/wallet-link-credentials.test.ts:125:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ resolveWalletCredential src/identity-link/index.ts:434:11
+ ❯ tests/wallet-link-credentials.test.ts:140:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > resolver rejects invalid durable ownership {"status":"REVOKED"}
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'IDENTITY_REVOKED' // Object.is equality
+
+Expected: "IDENTITY_REVOKED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/wallet-link-credentials.test.ts:159:81
+    157|     [{ malformed: true }, 'STORAGE_CONTRACT'],
+    158|   ])('resolver rejects invalid durable ownership %j', async (world, co…
+    159|     expect(await failureCode(resolveWalletCredential(fake(world).tx, i…
+       |                                                                                 ^
+    160|   });
+    161|   it('revokes once, preserves permanent reservation, and repeats witho…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > resolver rejects invalid durable ownership {"suspended":true}
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'ACCOUNT_RESTRICTED' // Object.is equality
+
+Expected: "ACCOUNT_RESTRICTED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/wallet-link-credentials.test.ts:159:81
+    157|     [{ malformed: true }, 'STORAGE_CONTRACT'],
+    158|   ])('resolver rejects invalid durable ownership %j', async (world, co…
+    159|     expect(await failureCode(resolveWalletCredential(fake(world).tx, i…
+       |                                                                                 ^
+    160|   });
+    161|   it('revokes once, preserves permanent reservation, and repeats witho…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > resolver rejects invalid durable ownership {"participant":null}
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > resolver rejects invalid durable ownership {"participant":"d4bbeef1-55a8-4d8e-8d03-f3b012f92402"}
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > resolver rejects invalid durable ownership {"status":"INVALID"}
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'STORAGE_CONTRACT' // Object.is equality
+
+Expected: "STORAGE_CONTRACT"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/wallet-link-credentials.test.ts:159:81
+    157|     [{ malformed: true }, 'STORAGE_CONTRACT'],
+    158|   ])('resolver rejects invalid durable ownership %j', async (world, co…
+    159|     expect(await failureCode(resolveWalletCredential(fake(world).tx, i…
+       |                                                                                 ^
+    160|   });
+    161|   it('revokes once, preserves permanent reservation, and repeats witho…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > revokes once, preserves permanent reservation, and repeats without another UPDATE
+IdentityLinkError: STORAGE_UNAVAILABLE
+ ❯ translate src/identity-link/index.ts:134:10
+    132|       error.code === 'UNIQUE_CONFLICT' ? 'IDENTITY_CONFLICT' : error.c…
+    133|     );
+    134|   return new IdentityLinkError('STORAGE_UNAVAILABLE');
+       |          ^
+    135| }
+    136| const BLOCKED: Partial<Record<IdentityPreflightReason, IdentityLinkCod…
+ ❯ revokeWalletCredential src/identity-link/index.ts:495:11
+ ❯ tests/wallet-link-credentials.test.ts:163:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > protects own primary and returns identical sanitized failure for missing or foreign targets
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'PRIMARY_WALLET_PROTECTED' // Object.is equality
+
+Expected: "PRIMARY_WALLET_PROTECTED"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/wallet-link-credentials.test.ts:202:7
+    200|         revokeWalletCredential(fake({ source: 'PRIMARY' }).tx, revokeI…
+    201|       ),
+    202|     ).toBe('PRIMARY_WALLET_PROTECTED');
+       |       ^
+    203|     const codes = await Promise.all(
+    204|       [fake({ source: 'ABSENT' }), fake({ accountId: B })].map(({ tx }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/42]⎯
+
+ FAIL  tests/wallet-link-credentials.test.ts > B1 credential contracts using alternate injected ports > fails closed when the PRIMARY owner observed before the account lock changes while waiting
+AssertionError: expected 'STORAGE_UNAVAILABLE' to be 'IDENTITY_CONFLICT' // Object.is equality
+
+Expected: "IDENTITY_CONFLICT"
+Received: "STORAGE_UNAVAILABLE"
+
+ ❯ tests/wallet-link-credentials.test.ts:223:76
+    221|   it('fails closed when the PRIMARY owner observed before the account …
+    222|     const { tx } = fake({ source: 'PRIMARY', accountId: A, ownerAfterL…
+    223|     expect(await failureCode(resolveWalletCredential(tx, input(PRIMARY…
+       |                                                                            ^
+    224|       'IDENTITY_CONFLICT',
+    225|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/42]⎯
+
+
+ Test Files  4 failed | 2 passed (6)
+      Tests  42 failed | 72 passed | 9 skipped (123)
+   Start at  17:45:28
+   Duration  1.40s (transform 158ms, setup 0ms, import 681ms, tests 102ms, environment 0ms)
+

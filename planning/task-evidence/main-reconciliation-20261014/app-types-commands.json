@@ -1,0 +1,19 @@
+[
+  {
+    "name": "application-types",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false",
+      "--project",
+      "reconciliation-app-tsconfig.json"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:41:44.475215+00:00",
+    "utc_end": "2026-10-14T01:41:49.962447+00:00",
+    "elapsed_seconds": 5.487232,
+    "exit_code": 0
+  }
+]

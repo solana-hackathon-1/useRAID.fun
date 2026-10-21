@@ -1,3 +1,4 @@
+import { retryWholeTransaction } from '../src/command-receipts';
 import { beforeAll, beforeEach, afterAll, describe, it, expect, vi } from 'vitest';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { Keypair } from '@solana/web3.js';
@@ -93,15 +94,21 @@ function holder<T>(work: (tx: Prisma.TransactionClient) => Promise<T>) {
 /** A competing transaction; resolves to its outcome instead of throwing. */
 function contender<T>(work: (tx: Prisma.TransactionClient) => Promise<T>) {
   const waiter = deferred<number>();
-  const outcome = db
-    .$transaction(async (tx) => {
-      waiter.resolve(await pid(tx));
-      return work(tx);
-    }, options)
-    .then(
-      (value) => ({ ok: true as const, value, error: null }),
-      (error: unknown) => ({ ok: false as const, value: null, error }),
-    );
+  const outcome = retryWholeTransaction(
+    () =>
+      db.$transaction(async (tx) => {
+        waiter.resolve(await pid(tx));
+        return work(tx);
+      }, options),
+    {
+      maxAttempts: 3,
+      isRetryable: (error) =>
+        error instanceof IdentityLinkError && error.code === 'RETRY_TRANSACTION',
+    },
+  ).then(
+    (value) => ({ ok: true as const, value, error: null }),
+    (error: unknown) => ({ ok: false as const, value: null, error }),
+  );
   return { pid: waiter.promise, outcome };
 }
 async function observeBlock(name: string, waiter: number, blocker: number, statement: RegExp) {
@@ -560,7 +567,7 @@ integration('T006 wallet links on real PostgreSQL', () => {
   });
 
   describe('documented lock order against every writer (WR12)', () => {
-    it('link vs link on one account with different addresses serializes at the User row lock; one participant', async () => {
+    it('link vs link on one account with different addresses serializes at its common primary subject; one participant', async () => {
       await account('alice', W1);
       const first = holder((tx) => link(tx, 'alice', W2, { requestId: 'a' }));
       const blocker = await first.pid;
@@ -570,7 +577,7 @@ integration('T006 wallet links on real PostgreSQL', () => {
           'link-vs-link-same-account',
           await second.pid,
           blocker,
-          /FOR NO KEY UPDATE/,
+          /pg_advisory_xact_lock/,
         );
       } finally {
         first.release();
@@ -646,7 +653,7 @@ integration('T006 wallet links on real PostgreSQL', () => {
           'link-vs-merge-as-drop',
           await merge.pid,
           blocker,
-          /DELETE FROM .*"User"/,
+          /UPDATE .*"WalletIdentity"/,
         );
       } finally {
         first.release();

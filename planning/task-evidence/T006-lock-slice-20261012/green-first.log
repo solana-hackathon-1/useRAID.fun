@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+{"waitTrace":[{"pid":135,"blockers":[134],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+{"waitTrace":[{"pid":134,"blockers":[135],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+{"waitTrace":[{"pid":135,"blockers":[134],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":134,"blockers":[135],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":136,"blockers":[134],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+{"waitTrace":[{"pid":134,"blockers":[136],"table":"User"}]}
+
+ ✓ tests/identity-protocol-db.test.ts (7 tests) 529ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  17:32:54
+   Duration  1.12s (transform 155ms, setup 0ms, import 469ms, tests 529ms, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-lock-slice-20261012/green-first.xml

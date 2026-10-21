@@ -33,6 +33,7 @@ export interface WalletLinkLimits {
   maxTotalLinks: number;
 }
 export interface LinkWalletInput {
+  locks?: import('../identity-locks').IdentityLockCapability;
   accountId: string;
   /** Verified caller, supplied by the trusted host. Must equal `accountId`. */
   actorAccountId: string;
@@ -83,6 +84,7 @@ export type PublicWalletLink = Readonly<{
 }>;
 
 export interface ResolveWalletCredentialInput {
+  locks?: import('../identity-locks').IdentityLockCapability;
   subject: { networkIdentity: string; address: string };
   /** Host-approved network policy, not an HTTP body field. */
   walletNetworks: readonly string[];

@@ -271,6 +271,26 @@ Decision-register reconciliation: repeated identical 02.9/02.10 blocks were cons
 
 ---
 
+### 02.16 Accepted credential-specific session revocation — 12 October 2026
+
+DEC-2026-10-12-05: while resuming T006/T007, the owner selected **“Add wallet attribution and sign out only that wallet’s sessions.”** A successful additional-wallet revocation must invalidate sessions authenticated through that exact credential, preserving unrelated primary-wallet and X sessions. The host must persist server-derived credential attribution when it creates a wallet-authenticated session; client-supplied attribution is not authority. A replacement session must retain its actual authentication provenance so reauthentication cannot launder a revoked credential into an unattributed session. Existing sessions have no credential attribution: inspect and explicitly resolve their rollout treatment before enabling linking/revocation, rather than guessing provenance or claiming complete invalidation. No blanket all-session invalidation is authorized as the permanent revocation policy.
+
+This resolves revocation scope only. Authentication required to revoke, suspended-account revocation, legacy unattributed-session handling and reviewed recovery/retention remain separate contracts or OPEN decisions; visible signed destination binding is governed separately by DEC-2026-10-12-06 below. Preserve canonical participants, payout destinations, claims and history. Implementation requires an additive reviewed migration, atomic ACTIVE→REVOKED plus matching-session invalidation and audit, real sign-in/revoke race tests, and independent review. Default-off linking/fold gates remain off. Related R04/R13/R15/R16/D13/I05/I07/I10/I11/I13, AC01/AC02 partial, AC40/AC73–AC75.
+
+---
+
+### 02.17 Accepted visible destination-account binding — 12 October 2026
+
+DEC-2026-10-12-06: the owner selected **“Yes, show the destination account in the signed message.”** The additional-wallet linking message must visibly identify the destination's stable account ID and connected X handle for the signer to review. Derive those values server-side from the authenticated self-account; verify the exact signed destination against the stored challenge and command account before reserving the wallet. A signature for account A must never add the credential to account B, even when both have valid X-authority sessions. Preserve the signed snapshot rather than silently rewriting it after a profile/configuration change; any incompatible authority change must fail closed. Signature consent still proves wallet control, not unique humanity or authorization to redirect payouts.
+
+This resolves the visible destination-binding choice for T006 B2a/T007. The specific canonical SIWS serialization, treatment of pending target-less additional-link challenges, handle-change compatibility and consuming-host proof contract require test-first implementation and independent review. Existing sign-in/primary-link/rotation intents and sessions are not authorized to be rewritten by this decision. Recovery/O11, selective-revoke rollout and full release gates remain separate. No route or linking enablement is authorized. Related R04/R13/R15/R16/I05/I06/I10/I13, AC01/AC02 partial, AC40/AC73–AC75.
+
+---
+
+Decision-ID reconciliation, 14 October 2026: local wallet-attribution DEC-2026-10-12-03 is now DEC-2026-10-12-05 (section02.16); local visible-destination DEC-2026-10-12-04 is now DEC-2026-10-12-06 (section02.17). Released staging-continuation DEC-2026-10-12-03 retains its identifier (section02.15). These are identifier changes only: every owner decision is retained. Historical handoff/review evidence retains its original identifiers and hashes. The owner's current reconciliation task prohibits Git publication, further identity implementation and gate enablement until independent acceptance, overriding broader continuation authority for this task.
+
+---
+
 ## 03. Vocabulary
 
 | Term                   | Exact meaning                                                                                                                                                                                                                            |

@@ -1,0 +1,28 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+{"sessionRace":"revoked","waiter":176,"blocker":175}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+{"sessionRace":"expired","waiter":175,"blocker":176}
+
+stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+{"sessionRace":"downgraded","waiter":177,"blocker":175}
+
+ ✓ tests/wallet-auth-db.test.ts (25 tests) 1280ms
+stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)
+{"linkedSigninRace":true,"waiter":180,"blocker":178,"blockedStatement":"SELECT \"id\" FROM \"WalletLink\" WHERE \"id\" = $1::uuid FOR SHARE"}
+
+stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)
+{"linkedSigninRace":true,"waiter":179,"blocker":180,"blockedStatement":"UPDATE \"public\".\"WalletLink\" SET \"status\" = $1, \"revokedAt\" = $2 WHERE \"public\".\"WalletLink\".\"accountId\" = $3"}
+
+ ✓ tests/wallet-linked-signin-db.test.ts (15 tests) 1103ms
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 466ms
+
+ Test Files  3 passed (3)
+      Tests  47 passed (47)
+   Start at  07:24:37
+   Duration  3.86s (transform 146ms, setup 0ms, import 693ms, tests 2.85s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/main-reconciliation-20261014/corrected-network-tests.xml

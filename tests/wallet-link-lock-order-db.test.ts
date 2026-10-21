@@ -96,26 +96,6 @@ async function blocked(pid: number, needle: string) {
   throw new Error(`No backend observed waiting on: ${needle}`);
 }
 
-// CR-B2-05: waits until `count` backends are blocked on a lock inside a statement on OAuthAttempt
-// (the callback's DELETE, and the merge's DELETE or its ordered FOR UPDATE).
-async function attemptWaiters(count: number) {
-  const stop = Date.now() + 5000;
-  let seen = 0;
-  while (Date.now() < stop) {
-    const [row] = await observer.$queryRawUnsafe<{ n: number }[]>(
-      `SELECT count(*)::int AS n FROM pg_stat_activity
-       WHERE datname = current_database() AND cardinality(pg_blocking_pids(pid)) > 0
-         AND query ILIKE '%OAuthAttempt%'`,
-    );
-    seen = row.n;
-    if (seen >= count) {
-      console.info(JSON.stringify({ lockOrderWait: { attemptWaiters: seen } }));
-      return;
-    }
-    await new Promise((r) => setTimeout(r, 10));
-  }
-  throw new Error(`Expected ${count} OAuthAttempt waiters, saw ${seen}`);
-}
 // A wallet-only account (xId null) with a primary wallet, a live wallet session and a claimed
 // OAuth attempt: the account that is about to make its FIRST X connection.
 async function walletOnly() {
@@ -277,7 +257,7 @@ integration('T006 B2a lock waits keep authority and lock order sound', () => {
       merge = outcome(
         db.$transaction((tx) => absorbAccount(tx, keep.id, drop.id), { timeout: 20000 }),
       );
-      await blocked(holder.pid, 'FOR NO KEY UPDATE');
+      await blocked(holder.pid, 'FOR UPDATE');
       holder.release();
       await holder.held;
       expect(await merge).toMatchObject({ ok: false });
@@ -319,7 +299,7 @@ integration('T006 B2a lock waits keep authority and lock order sound', () => {
       let other: ReturnType<typeof outcome> | undefined;
       try {
         connection = outcome(completeConnection(drop.attempt, drop.profile));
-        await blocked(holder.pid, 'OAuthAttempt');
+        const callback = await blocked(holder.pid, 'OAuthAttempt');
         other = outcome(
           challenge
             ? verifyWalletChallenge(
@@ -331,7 +311,7 @@ integration('T006 B2a lock waits keep authority and lock order sound', () => {
               )
             : db.$transaction((tx) => absorbAccount(tx, keep.id, drop.id), { timeout: 20000 }),
         );
-        await attemptWaiters(2);
+        await blocked(callback.pid, 'pg_advisory_xact_lock');
         holder.release();
         await holder.held;
         const results = await Promise.all([connection, other]);
@@ -340,9 +320,7 @@ integration('T006 B2a lock waits keep authority and lock order sound', () => {
         expect(results[0]).toMatchObject({ ok: true });
         expect(results[1]).toMatchObject({
           ok: false,
-          message: challenge
-            ? 'Wallet sign-in unavailable. Please try again.'
-            : expect.stringContaining('Account identity changed'),
+          message: challenge ? 'Wallet belongs to another account.' : 'PLAN_CHANGED',
         });
         expect(await db.user.findUniqueOrThrow({ where: { id: drop.id } })).toMatchObject({
           xId: drop.profile.id,

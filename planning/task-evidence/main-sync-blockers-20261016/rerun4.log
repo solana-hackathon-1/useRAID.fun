@@ -1,0 +1,80 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks expire committed during an observed account lock wait
+{"orientationLock":{"blocker":769,"waiter":768,"query":"FOR NO KEY UPDATE"}}
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks revoke committed during an observed account lock wait
+{"orientationLock":{"blocker":769,"waiter":768,"query":"FOR NO KEY UPDATE"}}
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks suspend committed during an observed account lock wait
+{"orientationLock":{"blocker":769,"waiter":768,"query":"FOR NO KEY UPDATE"}}
+
+stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > checks the database clock after the real Session lock wait rather than transaction start
+{"orientationLock":{"blocker":769,"waiter":768,"query":"FOR SHARE"}}
+
+ ✓ tests/raider-onboarding-db.test.ts (24 tests) 1414ms
+stderr | tests/tracking.test.ts > raid-specific search query > falls back to the unfiltered query when the author list exceeds the limit
+X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+
+ ✓ tests/tracking.test.ts (17 tests) 490ms
+ ✓ tests/wallet-origin-db.test.ts (4 tests) 221ms
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+{"authorityRace":{"blocker":774,"waiters":[773]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+{"authorityRace":{"blocker":774,"waiters":[773]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+{"authorityRace":{"blocker":774,"waiters":[773]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+{"authorityRace":{"blocker":774,"waiters":[773]}}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+{"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:403","linked","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+
+stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > makes a revoke or X disconnect that arrives after the decision wait for the link to commit
+{"authorityLateWriters":{"command":773,"writers":[775,777]}}
+
+ ✓ tests/wallet-link-authority-db.test.ts (12 tests) 2998ms
+     ✓ denies a session that expires naturally while the command waits for the lock  1857ms
+     ✓ either links or leaves no trace when revocation races the command, with no deadlock  441ms
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+{"waitTrace":[{"pid":780,"blockers":[779],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+{"waitTrace":[{"pid":779,"blockers":[780],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+{"waitTrace":[{"pid":780,"blockers":[779],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":779,"blockers":[780],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":781,"blockers":[779],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+{"waitTrace":[{"pid":779,"blockers":[781],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > finance holds SHARE for the creator status predicate while preserving the exact settlement
+{"waitTrace":[{"pid":780,"blockers":[779],"table":"User"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > denies a primary sign-in whose claimed challenge expires while waiting for its final root
+{"waitTrace":[{"pid":779,"blockers":[780],"table":"User"}]}
+
+ ✓ tests/identity-protocol-db.test.ts (10 tests) 1328ms
+     ✓ denies a primary sign-in whose claimed challenge expires while waiting for its final root  699ms
+ ✓ tests/worker-db.test.ts (15 tests) 1530ms
+       ✓ does not write a collection error onto a raid when a finance job fails  524ms
+ ✓ tests/wallet-link-signin-db.test.ts (8 tests) 663ms
+ ✓ tests/wallet-link-additional-db.test.ts (7 tests) 466ms
+ ✓ tests/usdc-ops-db.test.ts (9 tests) 277ms
+
+ Test Files  9 passed (9)
+      Tests  106 passed (106)
+   Start at  07:09:33
+   Duration  11.98s (transform 258ms, setup 0ms, import 1.57s, tests 9.39s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/main-sync-blockers-20261016/vitest-rerun4.xml

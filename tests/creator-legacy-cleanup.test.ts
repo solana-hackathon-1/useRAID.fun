@@ -1,93 +1,83 @@
-import type { OAuthAttempt } from '@prisma/client';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-
-const host = vi.hoisted(() => {
-  const user = { id: 'creator', xId: '123', handle: 'creator', role: 'CREATOR', suspended: false };
-  const tx = {
-    user: {
-      findUnique: vi.fn(),
-      upsert: vi.fn().mockResolvedValue(user),
-      updateMany: vi.fn().mockResolvedValue({ count: 1 }),
-      findUniqueOrThrow: vi.fn().mockResolvedValue(user),
-    },
-    oAuthAttempt: { deleteMany: vi.fn().mockResolvedValue({ count: 1 }) },
-    xAccount: { findUnique: vi.fn().mockResolvedValue(null), upsert: vi.fn() },
-    session: { findUnique: vi.fn(), deleteMany: vi.fn(), create: vi.fn() },
-    walletIdentity: { upsert: vi.fn() },
-    settings: { upsert: vi.fn() },
-    balanceEntry: { findFirst: vi.fn().mockResolvedValue({ id: 'existing-test-credit' }) },
-  };
-  return { tx, user };
-});
-vi.mock('../src/lib/db', () => ({
-  db: { ...host.tx, $transaction: async (run: (tx: typeof host.tx) => unknown) => run(host.tx) },
-}));
-vi.mock('../src/lib/account-merge', () => ({
-  lockIdentity: vi.fn(),
-  isEmptyAccount: vi.fn(),
-  absorbAccount: vi.fn(),
-}));
-vi.mock('../src/lib/usdc', () => ({ studioSandbox: () => true, lockBalance: vi.fn() }));
-import { completeConnection } from '../src/lib/x-oauth';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { db } from '../src/lib/db';
+import { config } from '../src/lib/config';
+import { startAttempt, claimAttempt, completeConnection } from '../src/lib/x-oauth';
 import { sandboxUser } from '../src/lib/studio-sandbox';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 
-beforeEach(() => {
-  vi.clearAllMocks();
-  host.tx.user.findUnique.mockResolvedValue(null);
-  vi.stubEnv('ADMIN_X_IDS', '');
-  vi.stubEnv('X_ADMIN_USER_ID', '');
-  // Old installations may still supply this retired setting; it must have no effect.
-  vi.stubEnv('LOCAL_AUTO_APPROVE_CREATORS', 'true');
-});
-afterEach(() => vi.unstubAllEnvs());
+// The real sandbox gate requires the separate Studio database; this suite uses the dedicated test one.
+vi.mock('../src/lib/studio-mode', () => ({ studioSandbox: () => true }));
 
-describe('retired creator metadata is not authentication authority', () => {
+// Real-database form: the retired creator fields (approved, affiliation) are never authentication
+// authority and sign-in must not rewrite them. Lock planning is exercised by the identity protocol.
+const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
+integration('retired creator metadata is not authentication authority', () => {
+  const profile = { id: '123', username: 'creator', name: 'Creator' };
+  beforeAll(() => {
+    assertTestDatabase();
+    config.demo = false;
+    config.appUrl = 'http://localhost:3000';
+  });
+  beforeEach(async () => {
+    await truncateAll(db);
+    vi.stubEnv('X_CLIENT_ID', 'fixture-client');
+    vi.stubEnv('X_CLIENT_SECRET', 'fixture-secret');
+    vi.stubEnv('ADMIN_X_IDS', '');
+    vi.stubEnv('X_ADMIN_USER_ID', '');
+    // Old installations may still supply this retired setting; it must have no effect.
+    vi.stubEnv('LOCAL_AUTO_APPROVE_CREATORS', 'true');
+  });
+  afterEach(() => vi.unstubAllEnvs());
+  afterAll(() => db.$disconnect());
+  async function signIn() {
+    const { state } = await startAttempt(null);
+    return completeConnection(await claimAttempt(state, null), profile);
+  }
+
   it.each([false, true])(
     'X sign-in writes identity/role, not approval (admin=%s)',
     async (admin) => {
-      if (admin) vi.stubEnv('ADMIN_X_IDS', '123');
-      await completeConnection(
-        { stateHash: 'claimed-state', userId: null, sessionHash: null } as OAuthAttempt,
-        { id: '123', username: 'creator', name: 'Creator' },
-      );
-      const data = host.tx.user.upsert.mock.calls[0][0];
-      expect(data.create).toEqual({
-        xId: '123',
+      if (admin) vi.stubEnv('ADMIN_X_IDS', profile.id);
+      await signIn();
+      const user = await db.user.findUniqueOrThrow({ where: { xId: profile.id } });
+      expect(user).toMatchObject({
         handle: 'creator',
         role: admin ? 'ADMIN' : 'CREATOR',
+        approved: false,
+        affiliation: '',
       });
-      expect(data.update).toEqual(
-        admin ? { handle: 'creator', role: 'ADMIN' } : { handle: 'creator' },
-      );
-      expect(host.tx.session.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({ userId: 'creator', via: 'x' }),
-      });
+      expect(await db.session.count({ where: { userId: user.id, via: 'x' } })).toBe(1);
     },
   );
   it('demotes an existing administrator without rewriting retired fields', async () => {
-    host.tx.user.findUnique.mockResolvedValue({ ...host.user, role: 'ADMIN', approved: true });
-    await completeConnection(
-      { stateHash: 'claimed-state', userId: null, sessionHash: null } as OAuthAttempt,
-      { id: '123', username: 'creator', name: 'Creator' },
-    );
-    expect(host.tx.user.upsert.mock.calls[0][0].update).toEqual({
-      handle: 'creator',
+    await db.user.create({
+      data: {
+        xId: profile.id,
+        handle: 'creator',
+        role: 'ADMIN',
+        approved: true,
+        affiliation: 'retired',
+      },
+    });
+    await signIn();
+    expect(await db.user.findUniqueOrThrow({ where: { xId: profile.id } })).toMatchObject({
       role: 'CREATOR',
+      approved: true,
+      affiliation: 'retired',
     });
   });
   it.each(['new-creator', 'unapproved-old-fixture'])(
     'sandbox login ignores retired fixture prefixes: %s',
     async (id) => {
-      await sandboxUser(id);
-      const data = host.tx.user.upsert.mock.calls[0][0];
-      expect(data.create).toEqual({
+      const user = await sandboxUser(id);
+      expect(user).toMatchObject({
         xId: `studio-test-${id}`,
         handle: 'test_creator',
         role: 'ADMIN',
+        approved: false,
       });
-      expect(data.update).toEqual({});
-      expect(host.tx.walletIdentity.upsert).toHaveBeenCalledOnce();
-      expect(host.tx.xAccount.upsert).toHaveBeenCalledOnce();
+      expect(await db.walletIdentity.count({ where: { userId: user.id } })).toBe(1);
+      expect(await db.xAccount.count({ where: { userId: user.id } })).toBe(1);
     },
   );
 });

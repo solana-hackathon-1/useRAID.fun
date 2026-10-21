@@ -1,5 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import { IdentityStorageError, type IdentityTransaction } from '../identity-storage';
+import { IdentityLockError } from '../identity-locks';
+const ports = new WeakMap<Prisma.TransactionClient, IdentityTransaction>();
 export function classifyIdentityStorageFailure(error: unknown): IdentityStorageError {
   if (error instanceof IdentityStorageError) return error;
   const source = error as { code?: unknown; meta?: { code?: unknown } } | null;
@@ -13,9 +15,11 @@ export function classifyIdentityStorageFailure(error: unknown): IdentityStorageE
   return new IdentityStorageError('STORAGE_UNAVAILABLE');
 }
 export function createPrismaIdentityTransaction(tx: Prisma.TransactionClient): IdentityTransaction {
+  const existing = ports.get(tx);
+  if (existing) return existing;
   // Host must pass a real interactive transaction. Check its actual isolation once.
   let checked: Promise<void> | undefined;
-  return {
+  const port: IdentityTransaction = {
     dialect: 'POSTGRESQL',
     isolation: 'READ_COMMITTED',
     async query<Row>(sql: string, bindings: readonly string[]): Promise<Row[]> {
@@ -30,8 +34,11 @@ export function createPrismaIdentityTransaction(tx: Prisma.TransactionClient): I
         await checked;
         return await tx.$queryRawUnsafe<Row[]>(sql, ...bindings);
       } catch (error) {
+        if (error instanceof IdentityLockError) throw error;
         throw classifyIdentityStorageFailure(error);
       }
     },
   };
+  ports.set(tx, port);
+  return port;
 }

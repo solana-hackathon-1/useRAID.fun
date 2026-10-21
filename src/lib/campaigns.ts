@@ -1,3 +1,5 @@
+import { lockResource } from '../identity-locks';
+import { lockAdvisory } from './identity-protocol';
 import { newTrackingRules, trackingSettlementEnabled } from './config';
 import { randomBytes } from 'node:crypto';
 import type { User } from '@prisma/client';
@@ -58,7 +60,7 @@ export async function createRaid(user: User, input: unknown) {
 }
 export async function changeRaid(user: User, id: string, action: string) {
   return db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+    await lockAdvisory(tx, lockResource('global', '729103'));
     await lockTracking(tx, id);
     const raid = await tx.raid.findUnique({ where: { id } });
     if (!raid) throw new HttpError(404, 'Raid not found.');

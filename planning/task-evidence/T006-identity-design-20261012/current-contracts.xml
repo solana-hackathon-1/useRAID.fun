@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="4" failures="4" errors="0" time="3.587326833">
+    <testsuite name="planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts" timestamp="2026-10-12T08:07:48.465Z" hostname="0xd.local" tests="3" failures="3" errors="0" skipped="0" time="3.458576583">
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts" name="current-source author characterization; linking off, folds enabled only in synthetic probes &gt; REQUIRED: claimed later attempt and callback-internal fold must not invert ordered attempts" time="1.21567125">
+            <system-out>
+{&quot;reviewWait&quot;:{&quot;blocker&quot;:144,&quot;waiter&quot;:{&quot;pid&quot;:143,&quot;query&quot;:&quot;SELECT \&quot;stateHash\&quot; FROM \&quot;OAuthAttempt\&quot; WHERE \&quot;userId\&quot; = $1 ORDER BY \&quot;stateHash\&quot; FOR UPDATE&quot;}}}
+
+{&quot;attemptWaiters&quot;:[{&quot;pid&quot;:143,&quot;query&quot;:&quot;SELECT \&quot;stateHash\&quot; FROM \&quot;OAuthAttempt\&quot; WHERE \&quot;userId\&quot; = $1 ORDER BY \&quot;stateHash\&quot; FOR UPDATE&quot;,&quot;blockers&quot;:[144]},{&quot;pid&quot;:146,&quot;query&quot;:&quot;SELECT \&quot;stateHash\&quot; FROM \&quot;OAuthAttempt\&quot; WHERE \&quot;userId\&quot; = $1 ORDER BY \&quot;stateHash\&quot; FOR UPDATE&quot;,&quot;blockers&quot;:[143]}]}
+
+{&quot;callbackOwnFold&quot;:{&quot;results&quot;:[{&quot;ok&quot;:true},{&quot;ok&quot;:false,&quot;message&quot;:&quot;\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\nHINT: See server log for query details.`&quot;,&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40P01&quot;,&quot;message&quot;:&quot;ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\nHINT: See server log for query details.&quot;}}]}}
+
+            </system-out>
+            <failure message="expected &apos;[{&quot;ok&quot;:true},{&quot;ok&quot;:false,&quot;message&quot;:&quot;\…&apos; not to match /deadlock|40P01/i" type="AssertionError">
+AssertionError: expected &apos;[{&quot;ok&quot;:true},{&quot;ok&quot;:false,&quot;message&quot;:&quot;\…&apos; not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+&quot;[{\&quot;ok\&quot;:true},{\&quot;ok\&quot;:false,\&quot;message\&quot;:\&quot;\\nInvalid `prisma.$queryRaw()` invocation:\\n\\n\\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\\nHINT: See server log for query details.`\&quot;,\&quot;code\&quot;:\&quot;P2010\&quot;,\&quot;meta\&quot;:{\&quot;code\&quot;:\&quot;40P01\&quot;,\&quot;message\&quot;:\&quot;ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1525; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1524; blocked by process 146.\\nHINT: See server log for query details.\&quot;}}]&quot;
+
+ ❯ noDeadlock planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:112:39
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:166:7
+            </failure>
+        </testcase>
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts" name="current-source author characterization; linking off, folds enabled only in synthetic probes &gt; REQUIRED: two real callbacks claiming different attempts must not deadlock in their folds" time="1.136588708">
+            <system-out>
+{&quot;reviewWait&quot;:{&quot;blocker&quot;:144,&quot;waiter&quot;:{&quot;pid&quot;:143,&quot;query&quot;:&quot;DELETE FROM \&quot;public\&quot;.\&quot;OAuthAttempt\&quot; WHERE (\&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;stateHash\&quot; = $1 AND \&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;consumedAt\&quot; IS NOT NULL AND \&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;expiresAt\&quot; &gt; $2)&quot;}}}
+
+{&quot;attemptWaiters&quot;:[{&quot;pid&quot;:143,&quot;query&quot;:&quot;DELETE FROM \&quot;public\&quot;.\&quot;OAuthAttempt\&quot; WHERE (\&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;stateHash\&quot; = $1 AND \&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;consumedAt\&quot; IS NOT NULL AND \&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;expiresAt\&quot; &gt; $2)&quot;,&quot;blockers&quot;:[144]},{&quot;pid&quot;:146,&quot;query&quot;:&quot;SELECT \&quot;stateHash\&quot; FROM \&quot;OAuthAttempt\&quot; WHERE \&quot;userId\&quot; = $1 ORDER BY \&quot;stateHash\&quot; FOR UPDATE&quot;,&quot;blockers&quot;:[143]}]}
+
+{&quot;twoCallbackFolds&quot;:{&quot;results&quot;:[{&quot;ok&quot;:false,&quot;message&quot;:&quot;\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\nHINT: See server log for query details.`&quot;,&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40P01&quot;,&quot;message&quot;:&quot;ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\nHINT: See server log for query details.&quot;}},{&quot;ok&quot;:true}]}}
+
+            </system-out>
+            <failure message="expected &apos;[{&quot;ok&quot;:false,&quot;message&quot;:&quot;\nInvalid `pr…&apos; not to match /deadlock|40P01/i" type="AssertionError">
+AssertionError: expected &apos;[{&quot;ok&quot;:false,&quot;message&quot;:&quot;\nInvalid `pr…&apos; not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+&quot;[{\&quot;ok\&quot;:false,\&quot;message\&quot;:\&quot;\\nInvalid `prisma.$queryRaw()` invocation:\\n\\n\\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\\nHINT: See server log for query details.`\&quot;,\&quot;code\&quot;:\&quot;P2010\&quot;,\&quot;meta\&quot;:{\&quot;code\&quot;:\&quot;40P01\&quot;,\&quot;message\&quot;:\&quot;ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1547; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1548; blocked by process 146.\\nHINT: See server log for query details.\&quot;}},{\&quot;ok\&quot;:true}]&quot;
+
+ ❯ noDeadlock planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:112:39
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:202:7
+            </failure>
+        </testcase>
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts" name="current-source author characterization; linking off, folds enabled only in synthetic probes &gt; REQUIRED: expired-attempt sweep cannot deadlock with ordered merge attempt locks" time="1.104498959">
+            <system-out>
+{&quot;reviewWait&quot;:{&quot;blocker&quot;:144,&quot;waiter&quot;:{&quot;pid&quot;:143,&quot;query&quot;:&quot;DELETE FROM \&quot;public\&quot;.\&quot;OAuthAttempt\&quot; WHERE \&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;expiresAt\&quot; &lt;= $1&quot;}}}
+
+{&quot;attemptWaiters&quot;:[{&quot;pid&quot;:143,&quot;query&quot;:&quot;DELETE FROM \&quot;public\&quot;.\&quot;OAuthAttempt\&quot; WHERE \&quot;public\&quot;.\&quot;OAuthAttempt\&quot;.\&quot;expiresAt\&quot; &lt;= $1&quot;,&quot;blockers&quot;:[144]},{&quot;pid&quot;:146,&quot;query&quot;:&quot;SELECT \&quot;stateHash\&quot; FROM \&quot;OAuthAttempt\&quot; WHERE \&quot;userId\&quot; = $1 ORDER BY \&quot;stateHash\&quot; FOR UPDATE&quot;,&quot;blockers&quot;:[143]}]}
+
+{&quot;expiredSweepVsMerge&quot;:{&quot;results&quot;:[{&quot;ok&quot;:true},{&quot;ok&quot;:false,&quot;message&quot;:&quot;\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\nHINT: See server log for query details.`&quot;,&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40P01&quot;,&quot;message&quot;:&quot;ERROR: deadlock detected\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\nHINT: See server log for query details.&quot;}}]}}
+
+            </system-out>
+            <failure message="expected &apos;[{&quot;ok&quot;:true},{&quot;ok&quot;:false,&quot;message&quot;:&quot;\…&apos; not to match /deadlock|40P01/i" type="AssertionError">
+AssertionError: expected &apos;[{&quot;ok&quot;:true},{&quot;ok&quot;:false,&quot;message&quot;:&quot;\…&apos; not to match /deadlock|40P01/i
+
+- Expected:
+/deadlock|40P01/i
+
++ Received:
+&quot;[{\&quot;ok\&quot;:true},{\&quot;ok\&quot;:false,\&quot;message\&quot;:\&quot;\\nInvalid `prisma.$queryRaw()` invocation:\\n\\n\\nRaw query failed. Code: `40P01`. Message: `ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\\nHINT: See server log for query details.`\&quot;,\&quot;code\&quot;:\&quot;P2010\&quot;,\&quot;meta\&quot;:{\&quot;code\&quot;:\&quot;40P01\&quot;,\&quot;message\&quot;:\&quot;ERROR: deadlock detected\\nDETAIL: Process 146 waits for ShareLock on transaction 1565; blocked by process 143.\\nProcess 143 waits for ShareLock on transaction 1566; blocked by process 146.\\nHINT: See server log for query details.\&quot;}}]&quot;
+
+ ❯ noDeadlock planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:112:39
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts:244:7
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts" timestamp="2026-10-12T08:07:48.467Z" hostname="0xd.local" tests="1" failures="1" errors="0" skipped="0" time="0.12875025">
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts" name="accepted visible destination binding, DEC-2026-10-12-04 &gt; shows the stable destination account and connected X handle in the actual signed bytes" time="0.127555625">
+            <failure message="expected &apos;localhost:3000 wants you to sign in w…&apos; to contain &apos;cmv4yz0z40000oif7pv6rluq1&apos;" type="AssertionError">
+AssertionError: expected &apos;localhost:3000 wants you to sign in w…&apos; to contain &apos;cmv4yz0z40000oif7pv6rluq1&apos;
+
+- Expected
++ Received
+
+- cmv4yz0z40000oif7pv6rluq1
++ localhost:3000 wants you to sign in with your Solana account:
++ 4hmgynH4r7FqjnEcF87eJ9xT636RBx7C5Tp5iaPpytZ7
++
++ Add this wallet for sign-in to your useRAID.fun account. Your payout wallet does not change.
++
++ URI: http://localhost:3000
++ Version: 1
++ Chain ID: devnet
++ Nonce: 8d8c28a8cf61e119da56bdba8c5e42e38d08761e960521c9
++ Issued At: 2026-10-12T08:07:48.438Z
++ Expiration Time: 2026-10-12T08:12:48.438Z
+
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts:45:36
+            </failure>
+            <failure message="expected &apos;localhost:3000 wants you to sign in w…&apos; to contain &apos;@synthetic_destination&apos;" type="AssertionError">
+AssertionError: expected &apos;localhost:3000 wants you to sign in w…&apos; to contain &apos;@synthetic_destination&apos;
+
+- Expected
++ Received
+
+- @synthetic_destination
++ localhost:3000 wants you to sign in with your Solana account:
++ 4hmgynH4r7FqjnEcF87eJ9xT636RBx7C5Tp5iaPpytZ7
++
++ Add this wallet for sign-in to your useRAID.fun account. Your payout wallet does not change.
++
++ URI: http://localhost:3000
++ Version: 1
++ Chain ID: devnet
++ Nonce: 8d8c28a8cf61e119da56bdba8c5e42e38d08761e960521c9
++ Issued At: 2026-10-12T08:07:48.438Z
++ Expiration Time: 2026-10-12T08:12:48.438Z
+
+ ❯ planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts:46:36
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

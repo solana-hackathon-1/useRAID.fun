@@ -1,0 +1,307 @@
+{
+  "suite_results": [
+    {
+      "name": "tests/auth-routes.test.ts",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/auth.test.ts",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-link-authority-hook-db.test.ts",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-link-boundary.test.ts",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-link-db.test.ts",
+      "tests": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-link-migration.test.ts",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-link.test.ts",
+      "tests": 31,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-lock-architecture.test.ts",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-locks-db.test.ts",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-preflight-boundary.test.ts",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-preflight.test.ts",
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-protocol-db.test.ts",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-storage-boundary.test.ts",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-storage-db.test.ts",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/identity-storage.test.ts",
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/lock-observation.test.ts",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-auth-db.test.ts",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "corrected-network-tests.xml"
+    },
+    {
+      "name": "tests/wallet-auth-isolation-db.test.ts",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-auth-transaction.test.ts",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-credential-lookup.test.ts",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-link-additional-db.test.ts",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "corrected-network-tests.xml"
+    },
+    {
+      "name": "tests/wallet-link-authority-db.test.ts",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-link-credentials.test.ts",
+      "tests": 31,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-link-lock-order-db.test.ts",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-link-proof.test.ts",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-link-signin-db.test.ts",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-linked-signin-db.test.ts",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "corrected-network-tests.xml"
+    },
+    {
+      "name": "tests/wallet-network.test.ts",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-origin-db.test.ts",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-picker.test.ts",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-routes.test.ts",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/wallet-session-authority.test.ts",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/x-oauth-db.test.ts",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/x-oauth-first-link-race-db.test.ts",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/x-oauth-routes.test.ts",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    },
+    {
+      "name": "tests/x-oauth.test.ts",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    }
+  ],
+  "tests": 442,
+  "failures": 1,
+  "skipped": 0,
+  "corrected_fixture_network": "mainnet, matching existing test fixtures; no source or test assertions changed",
+  "remaining_failures": [
+    {
+      "name": "tests/identity-lock-architecture.test.ts",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "source_report": "focused-tests.xml"
+    }
+  ],
+  "passed": 441
+}

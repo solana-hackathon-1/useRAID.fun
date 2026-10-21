@@ -1,0 +1,24 @@
+{
+  "remote_nonoverlap_paths_verified": 1430,
+  "remote_mismatches": [],
+  "local_nonoverlap_source_mismatches": [],
+  "flags": {
+    ".env": {
+      "WALLET_LINKS_ENABLED": "false",
+      "ACCOUNT_FOLDS_ENABLED": null
+    },
+    ".env.example": {
+      "WALLET_LINKS_ENABLED": "false",
+      "ACCOUNT_FOLDS_ENABLED": "false"
+    },
+    "inherited_process": {
+      "WALLET_LINKS_ENABLED": null,
+      "ACCOUNT_FOLDS_ENABLED": null
+    }
+  },
+  "strict_true_opt_in": true,
+  "origin_validation_before_consumption": true,
+  "incoming_origin_helper_unchanged": true,
+  "additional_link_route_exposed": false,
+  "conflict_markers": []
+}

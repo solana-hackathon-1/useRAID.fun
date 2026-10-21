@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="5" errors="0" time="4.139511666">
+    <testsuite name="tests/identity-protocol-db.test.ts" timestamp="2026-10-12T11:35:05.507Z" hostname="0xd.local" tests="7" failures="5" errors="0" skipped="0" time="4.139511666">
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, writerFirst" time="1.195202375">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:90,&quot;blockers&quot;:[88],&quot;table&quot;:&quot;Session&quot;}]}
+
+            </system-out>
+            <failure message="expected false to be true // Object.is equality" type="AssertionError">
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/identity-protocol-db.test.ts:108:54
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, mergeFirst" time="1.065605208">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:88,&quot;blockers&quot;:[90],&quot;table&quot;:&quot;Session&quot;},{&quot;pid&quot;:90,&quot;blockers&quot;:[88],&quot;table&quot;:&quot;Session&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; SHARE serializes account restriction with actual sign-in issuance" time="0.068980833">
+            <failure message="expected true to be false // Object.is equality" type="AssertionError">
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/identity-protocol-db.test.ts:130:30
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst" time="0.099616917">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:88,&quot;blockers&quot;:[90],&quot;table&quot;:&quot;advisory&quot;}]}
+
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:88,&quot;blockers&quot;:[90],&quot;table&quot;:&quot;advisory&quot;}]}
+
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:88,&quot;blockers&quot;:[90],&quot;table&quot;:&quot;advisory&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst" time="1.055922083">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:88,&quot;blockers&quot;:[90],&quot;table&quot;:&quot;advisory&quot;}]}
+
+            </system-out>
+            <failure message="expected false to be true // Object.is equality" type="AssertionError">
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/identity-protocol-db.test.ts:165:42
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2 obviously nonempty account is rejected before any strong root acquisition" time="0.595133917">
+            <failure message="expected null to match object { ok: false, error: { status: 409 } }" type="AssertionError">
+AssertionError: expected null to match object { ok: false, error: { status: 409 } }
+
+- Expected:
+{
+  &quot;error&quot;: {
+    &quot;status&quot;: 409,
+  },
+  &quot;ok&quot;: false,
+}
+
++ Received:
+null
+
+ ❯ tests/identity-protocol-db.test.ts:182:20
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A3 real User-delete 23503 becomes terminal account-not-empty and rolls back the merge" time="0.056865417">
+            <failure message="expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409, …(1) }
+(6 matching properties omitted from actual)" type="AssertionError">
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409, …(1) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   &quot;message&quot;: &quot;Only an activity-free account can be merged.&quot;,
+-   &quot;status&quot;: 409,
++ PrismaClientKnownRequestError {
++   &quot;message&quot;: &quot;
++ Invalid `tx.user.delete()` invocation in
++ /Users/dushyant/Documents/useRAID.fun/src/lib/account-merge.ts:81:17
++
++   78 }
++   79 await tx.oAuthAttempt.deleteMany({ where: { userId: dropId } });
++   80 await tx.session.deleteMany({ where: { userId: dropId } });
++ → 81 await tx.user.delete(
++ Foreign key constraint violated on the constraint: `protocol_external_activity_userId_fkey`&quot;,
++   &quot;code&quot;: &quot;P2003&quot;,
++   &quot;meta&quot;: {
++     &quot;constraint&quot;: &quot;protocol_external_activity_userId_fkey&quot;,
++     &quot;modelName&quot;: &quot;User&quot;,
++   },
++   &quot;clientVersion&quot;: &quot;6.19.3&quot;,
++   &quot;name&quot;: &quot;PrismaClientKnownRequestError&quot;,
+  }
+
+ ❯ tests/identity-protocol-db.test.ts:192:79
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

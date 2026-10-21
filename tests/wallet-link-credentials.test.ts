@@ -1,3 +1,4 @@
+import { protocolFixture, fixtureAdvisoryKey } from './helpers/lock-port-fixture';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { Keypair } from '@solana/web3.js';
@@ -89,10 +90,17 @@ function fake(
     dialect: 'POSTGRESQL',
     isolation: 'READ_COMMITTED',
     async query<Row>(sql: string, bindings: readonly string[]) {
+      const response = protocolFixture(
+        sql,
+        bindings,
+        { id: world.accountId ?? A, suspended: world.suspended ?? false },
+        PRIMARY,
+      );
+      if (response !== undefined) return response as Row[];
       calls.push({ sql, bindings });
       let result: unknown[];
       if (sql.includes('pg_advisory_xact_lock')) result = [{ locked: 1 }];
-      else if (sql.includes('FOR NO KEY UPDATE'))
+      else if (sql.includes('FROM "User"'))
         result = [{ id: bindings[0], suspended: world.suspended ?? false }];
       else if (sql.includes('UNION ALL'))
         result = world.malformed ? [...owner(), ...owner()] : owner();
@@ -131,9 +139,15 @@ describe('B1 credential contracts using alternate injected ports', () => {
       networkIdentity: 'mainnet',
       address: EXTRA,
     });
-    expect(calls[0].sql).toContain('pg_advisory_xact_lock');
-    expect(calls[0].bindings).toEqual([`wallet-subject:${EXTRA}`]);
-    expect(calls.find((c) => c.sql.includes('FOR NO KEY UPDATE'))?.bindings).toEqual([A]);
+    expect(calls[0].sql).toContain('UNION ALL'); // unlocked ownership hint
+    const keys = calls.filter((call) => call.sql.includes('pg_advisory_xact_lock'));
+    expect(keys.map((call) => call.bindings)).toEqual(
+      [PRIMARY, EXTRA].sort().map((address) => [fixtureAdvisoryKey(`wallet-subject:${address}`)]),
+    );
+    expect(calls.findIndex((call) => call.sql.includes('FOR SHARE'))).toBeGreaterThan(
+      calls.findIndex((call) => call.sql.includes('pg_advisory_xact_lock')),
+    );
+    expect(calls.find((c) => c.sql.includes('FROM "User"'))?.bindings).toEqual([A]);
     expect(calls.some((c) => /INSERT|UPDATE "WalletLink"|DELETE/.test(c.sql))).toBe(false);
   });
   it('leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock', async () => {
@@ -172,7 +186,10 @@ describe('B1 credential contracts using alternate injected ports', () => {
       revokedAt: FIXTURE_NOW,
     });
     expect(
-      await revokeWalletCredential(tx, revokeInput(EXTRA, { now: '2026-10-10T09:00:00.000Z' })),
+      await revokeWalletCredential(
+        { ...tx },
+        revokeInput(EXTRA, { now: '2026-10-10T09:00:00.000Z' }),
+      ),
     ).toEqual({ ...first, outcome: 'ALREADY_REVOKED' });
     expect(calls.filter((c) => c.sql.includes('UPDATE "WalletLink"'))).toHaveLength(1);
     expect(calls.some((c) => /DELETE|INSERT/.test(c.sql))).toBe(false);
@@ -446,11 +463,7 @@ integration('B1 credentials on real PostgreSQL', () => {
         );
       await started.promise;
       try {
-        await observedBlock(
-          waiter,
-          blocker,
-          order === 'account-lock' ? /FROM "User".*FOR NO KEY UPDATE/s : /pg_advisory_xact_lock/,
-        );
+        await observedBlock(waiter, blocker, /pg_advisory_xact_lock/);
       } finally {
         release.resolve();
       }

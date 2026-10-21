@@ -1,0 +1,1275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="442" failures="9" errors="0" time="30.706076417">
+    <testsuite name="tests/auth-routes.test.ts" timestamp="2026-10-14T01:38:04.039Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.004461667">
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; rejects a wrong origin with 403" time="0.002523958">
+        </testcase>
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; returns 404 for an unknown action" time="0.0002735">
+        </testcase>
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; logs out" time="0.000549458">
+        </testcase>
+        <testcase classname="tests/auth-routes.test.ts" name="POST /api/auth/[action] &gt; reports database failures as 503 instead of 403" time="0.000425291">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/auth.test.ts" timestamp="2026-10-14T01:38:04.040Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.021980959">
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; has no client identity unless a trusted header is configured" time="0.016842458">
+        </testcase>
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; reads a single-value trusted header" time="0.000709959">
+        </testcase>
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; uses the last hop of a forwarding list, not the client-forgeable first entry" time="0.002421375">
+        </testcase>
+        <testcase classname="tests/auth.test.ts" name="client IP derivation &gt; rejects missing or malformed values" time="0.001400041">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-authority-hook-db.test.ts" timestamp="2026-10-14T01:38:04.040Z" hostname="0xd.local" tests="9" failures="0" errors="0" skipped="0" time="0.268891875">
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; is awaited after the subject and account locks and before any other read" time="0.065916167">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; uses the hook observation instead of stale session and clock input" time="0.03223275">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; denies with the IdentityLinkError the hook throws and writes nothing" time="0.030651166">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; reports any other hook failure as STORAGE_UNAVAILABLE without its text" time="0.023432875">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return null as INVALID_INPUT" time="0.022349541">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return {} as INVALID_INPUT" time="0.02118375">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return {&quot;session&quot;:{&quot;accountId&quot;:&quot;hook-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}} as INVALID_INPUT" time="0.022392875">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; rejects a malformed hook return {&quot;session&quot;:&quot;x&quot;,&quot;now&quot;:&quot;2026-10-09T09:00:00.000Z&quot;} as INVALID_INPUT" time="0.02205025">
+        </testcase>
+        <testcase classname="tests/identity-link-authority-hook-db.test.ts" name="identity-link observeAuthority hook contract (real PostgreSQL) &gt; still requires a valid session and clock when no hook is supplied" time="0.013670166">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-boundary.test.ts" timestamp="2026-10-14T01:38:04.041Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.779357167">
+        <testcase classname="tests/identity-link-boundary.test.ts" name="public link module owns SQL and contracts without an app singleton, framework or SDK" time="0.002004791">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="B2a wires only the default-off command: no route, UI, X-callback or revoke use (WR13)" time="0.023874542">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="copied challenge helper resolves its declared host dependencies and production network policy" time="0.228850167">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="minimal external host links a second wallet using explicit dependencies" time="0.520516125">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="module documentation declares the R16 reuse contract and runnable consumer steps" time="0.001503417">
+        </testcase>
+        <testcase classname="tests/identity-link-boundary.test.ts" name="new test files are registered in the CI matrix and the evidence records WR01-WR14" time="0.001900875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-db.test.ts" timestamp="2026-10-14T01:38:04.041Z" hostname="0xd.local" tests="37" failures="0" errors="0" skipped="0" time="1.650264958">
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; catalog contains the reviewed constraints, indexes and enabled triggers (D14)" time="0.070924333">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; a pre-provisioned participant is byte-identical after linking W2 and W3; money and payout rows unchanged (WR09)" time="0.074339416">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; lazy creation: the first link creates one mapping with link provenance; later links reuse it" time="0.041352625">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; AC01 identity half (D1) and legacy baseline &gt; unchanged legacy link path still answers 409 for a second wallet until sign-in resolution ships (baseline)" time="0.085208334">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot reassign a revoked address to a second account (LR01, D13)" time="0.040307167">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot link an existing primary address to alice (LR02)" time="0.027423833">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; raw SQL cannot link an existing primary address to bob (LR02)" time="0.031045417">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge" time="0.06680025">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-link-two-accounts-one-address&quot;,&quot;waiter&quot;:118,&quot;blocker&quot;:116,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user" time="0.059934458">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-then-legacy-insert&quot;,&quot;waiter&quot;:116,&quot;blocker&quot;:118,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;public\&quot;.\&quot;WalletIdentity\&quot; (\&quot;address\&quot;,\&quot;userId\&quot;,\&quot;verifiedAt\&quot;) VALUES ($1,$2,$3) RETURNING \&quot;public\&quot;.\&quot;WalletIdentity\&quot;.\&quot;address\&quot;, \&quot;public\&quot;.\&quot;WalletIdentit&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict" time="0.043581292">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;legacy-insert-then-link&quot;,&quot;waiter&quot;:118,&quot;blocker&quot;:116,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; old binary raw INSERT of a linked or revoked address fails with the exclusivity constraint (D4)" time="0.030850459">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy sign-in with a linked or revoked address fails closed with no new account or session (rollout characterization)" time="0.0469565">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; address exclusivity and old-binary behavior (D3, D4) &gt; legacy link of a linked address by an account without a primary is rejected by the trigger" time="0.030887333">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; SQLSTATE classification through real Prisma wrappers (WR01) &gt; trigger conflict and unique-index conflict both classify as sanitized UNIQUE_CONFLICT; the message never reaches logs" time="0.035170666">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; link vs link on one account with different addresses serializes at its common primary subject; one participant" time="0.059837917">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-link-same-account&quot;,&quot;waiter&quot;:116,&quot;blocker&quot;:118,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary" time="0.044132375">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-rotate-link-first&quot;,&quot;waiter&quot;:118,&quot;blocker&quot;:116,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;public\&quot;.\&quot;WalletIdentity\&quot; (\&quot;address\&quot;,\&quot;userId\&quot;,\&quot;verifiedAt\&quot;,\&quot;previousAddress\&quot;,\&quot;rotatedAt\&quot;) VALUES ($1,$2,$3,$4,$5) RETURNING \&quot;public\&quot;.\&quot;WalletIdentity&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; rotate holding the subject vs link of that address: link waits, then reports a conflict" time="0.04525475">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-rotate-rotate-first&quot;,&quot;waiter&quot;:116,&quot;blocker&quot;:118,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back" time="0.051807916">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-merge-as-drop&quot;,&quot;waiter&quot;:118,&quot;blocker&quot;:116,&quot;blockedStatement&quot;:&quot;UPDATE \&quot;public\&quot;.\&quot;WalletIdentity\&quot; SET \&quot;userId\&quot; = $1 WHERE \&quot;public\&quot;.\&quot;WalletIdentity\&quot;.\&quot;userId\&quot; = $2&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan" time="0.044889166">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-merge-delete-first&quot;,&quot;waiter&quot;:116,&quot;blocker&quot;:118,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR NO KEY UPDATE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit" time="0.054675042">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-merge-as-keep&quot;,&quot;waiter&quot;:118,&quot;blocker&quot;:116,&quot;blockedStatement&quot;:&quot;UPDATE \&quot;public\&quot;.\&quot;User\&quot; SET \&quot;approved\&quot; = $1, \&quot;affiliation\&quot; = $2 WHERE (\&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot; = $3 AND 1=1) RETURNING \&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;xId\&quot;, &quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; documented lock order against every writer (WR12) &gt; a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle" time="0.04508875">
+            <system-out>
+{&quot;walletLinkRace&quot;:&quot;link-vs-user-row-update&quot;,&quot;waiter&quot;:116,&quot;blocker&quot;:118,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR NO KEY UPDATE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; the same proof twice is one row; a proof reused for another address is a conflict that adds nothing" time="0.061330458">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; own primary is an idempotent no-op that never creates a participant" time="0.025170333">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; requires an existing primary wallet and creates nothing otherwise (WR05)" time="0.023803625">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; state machine: no delete, only ACTIVE to REVOKED, revoked address stays reserved for everyone" time="0.056691542">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; check constraints and the composite participant foreign key reject inconsistent rows" time="0.027686416">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; legacy User delete and merge of a linked account roll back entirely" time="0.048123125">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; replay, state machine and constraints (D7, D8, D9) &gt; a linked wallet-only account is rejected by the real wallet sign-in fold path and the merge helper (WR06 behavior)" time="0.043911667">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; a suspended account is restricted: no mapping, no link, challenge not consumed" time="0.028904792">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; a suspended account re-linking its own wallet is restricted, not ALREADY_LINKED (WR08)" time="0.039853125">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; injected serialization failure at participant ensure retries the whole callback with the same identity" time="0.04401675">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; injected serialization failure at link insert retries the whole callback with the same identity" time="0.037914084">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; the adapter rejects SERIALIZABLE before touching link tables (D13)" time="0.015527209">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; the adapter rejects REPEATABLE READ before touching link tables (D13)" time="0.015503208">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; restriction, retry and isolation (D10, D12, D13) &gt; per-account caps hold at the database: active cap, then total ceiling including revoked rows" time="0.073280125">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; payout wallet is unchanged by links and rotation still works (D11) &gt; rotation to a fresh address works with links present; rotation onto an own link is refused by the fence" time="0.034056292">
+        </testcase>
+        <testcase classname="tests/identity-link-db.test.ts" name="T006 wallet links on real PostgreSQL &gt; contract guards &gt; ensureHumanParticipant provenance is untouched by a no-op link replay" time="0.029170791">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link-migration.test.ts" timestamp="2026-10-14T01:38:04.044Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="3.40821725">
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration source &gt; keeps every earlier applied migration byte-for-byte" time="0.003726333">
+        </testcase>
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration source &gt; executes exactly the reviewed proposal statements (header and comments may differ)" time="0.000572334">
+        </testcase>
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration source &gt; declares the composite participant relation with the SQL constraint name (WR02)" time="0.000106625">
+        </testcase>
+        <testcase classname="tests/identity-link-migration.test.ts" name="wallet-link migration on a scratch database (D14) &gt; applies twice, matches the Prisma schema with no drift, and records one row per migration" time="3.402750709">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-link.test.ts" timestamp="2026-10-14T01:38:04.044Z" hostname="0xd.local" tests="31" failures="0" errors="0" skipped="0" time="0.022853125">
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; links a new address in the documented lock order and returns the existing participant" time="0.006231125">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; creates the participant mapping only inside a fresh link" time="0.000645833">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies a foreign actor and malformed inputs before any SQL" time="0.001535583">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies isolation SERIALIZABLE / dialect POSTGRESQL before SQL" time="0.000143375">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies isolation REPEATABLE_READ / dialect POSTGRESQL before SQL" time="0.000127166">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; denies isolation READ_COMMITTED / dialect SQLITE before SQL" time="0.000114917">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; missing account rejects without participant or link writes" time="0.000226916">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; revoked session maps to its typed code and writes nothing" time="0.00096825">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; expired session maps to its typed code and writes nothing" time="0.000345625">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; session of another account maps to its typed code and writes nothing" time="0.000319708">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; suspended account maps to its typed code and writes nothing" time="0.000289625">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; proof for another account maps to its typed code and writes nothing" time="0.000256042">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; wrong domain maps to its typed code and writes nothing" time="0.000301">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; wrong uri maps to its typed code and writes nothing" time="0.000323417">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; consumed proof maps to its typed code and writes nothing" time="0.000316084">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; expired proof maps to its typed code and writes nothing" time="0.000242333">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; unverified proof maps to its typed code and writes nothing" time="0.000224833">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; proof for another wallet maps to its typed code and writes nothing" time="0.000214875">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; sign-in intent proof maps to its typed code and writes nothing" time="0.000211583">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; unsupported network maps to its typed code and writes nothing" time="0.000238292">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; foreign primary or link (active or revoked) is one conflict; own revoked is a distinct code" time="0.001521875">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; own active link or own primary is an idempotent no-op that creates nothing" time="0.000734125">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; suspended account re-linking its own wallet is not ALREADY_LINKED" time="0.000221875">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; revoked session account re-linking its own wallet is not ALREADY_LINKED" time="0.000221292">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; bad proof account re-linking its own wallet is not ALREADY_LINKED" time="0.000213708">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; requires an existing primary wallet and creates no participant otherwise (WR05)" time="0.000255292">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; enforces the active and total caps at their boundaries" time="0.000735583">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; empty RETURNING after ON CONFLICT: same account/address/proof is idempotent, anything else a conflict" time="0.001073917">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; classifies storage failures by code only, never by message or constraint name (WR01)" time="0.002425917">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; public link DTO omits internal identifiers; listing returns only own links" time="0.000496084">
+        </testcase>
+        <testcase classname="tests/identity-link.test.ts" name="wallet link command v1 (fake port) &gt; a deterministic alternate port yields identical outcomes and errors (adapter substitution)" time="0.000946625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-lock-architecture.test.ts" timestamp="2026-10-14T01:38:04.045Z" hostname="0xd.local" tests="2" failures="1" errors="0" skipped="0" time="3.710280334">
+        <testcase classname="tests/identity-lock-architecture.test.ts" name="every identity writer enters the shared protocol boundary" time="3.212927708">
+            <failure message="expected [ …(3) ] to deeply equal []" type="AssertionError">
+AssertionError: expected [ …(3) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   &quot;User FK inventory changed: classify new writers/locks before updating the fence&quot;,
++   &quot;src/skills/taxonomy-storage.ts:142: advisory acquisition bypasses the shared key/class builder&quot;,
++   &quot;src/skills/taxonomy-storage.ts:155: advisory acquisition bypasses the shared key/class builder&quot;,
++ ]
+
+ ❯ tests/identity-lock-architecture.test.ts:8:45
+            </failure>
+        </testcase>
+        <testcase classname="tests/identity-lock-architecture.test.ts" name="rejects direct, aliased, destructured, nested, raw, and type-erased bypasses" time="0.496654166">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-locks-db.test.ts" timestamp="2026-10-14T01:38:04.046Z" hostname="0xd.local" tests="7" failures="0" errors="0" skipped="0" time="0.4655535">
+        <testcase classname="tests/identity-locks-db.test.ts" name="shared lock protocol on PostgreSQL, independent ports and cleanup &gt; shared advisory builder equals BOTH exclusivity triggers, preserving all registry key bytes" time="0.045563167">
+        </testcase>
+        <testcase classname="tests/identity-locks-db.test.ts" name="shared lock protocol on PostgreSQL, independent ports and cleanup &gt; preplans sorted roots once and rejects late roots, upgrades, lower keys, forged/foreign/expired capabilities" time="0.027131666">
+        </testcase>
+        <testcase classname="tests/identity-locks-db.test.ts" name="shared lock protocol on PostgreSQL, independent ports and cleanup &gt; already-locked modules reuse the same transaction/root/subjects without upgrades and preserve provenance" time="0.038871667">
+        </testcase>
+        <testcase classname="tests/identity-locks-db.test.ts" name="shared lock protocol on PostgreSQL, independent ports and cleanup &gt; replans whole rolled-back transactions at most three times with stable operation ID; terminal FK errors propagate" time="0.156354584">
+        </testcase>
+        <testcase classname="tests/identity-locks-db.test.ts" name="shared lock protocol on PostgreSQL, independent ports and cleanup &gt; A3 retries neither terminal delete-FK denial nor an unrelated delete error, and preserves the latter object" time="0.097133583">
+        </testcase>
+        <testcase classname="tests/identity-locks-db.test.ts" name="shared lock protocol on PostgreSQL, independent ports and cleanup &gt; cleanup leaf catalog has no incoming FKs or delete-side user triggers introducing later locks" time="0.019805292">
+        </testcase>
+        <testcase classname="tests/identity-locks-db.test.ts" name="shared lock protocol on PostgreSQL, independent ports and cleanup &gt; sweeps at most 1000 leaves, skips a held row, and retains strict expiry boundaries until the next sweep" time="0.06521775">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-preflight-boundary.test.ts" timestamp="2026-10-14T01:38:04.046Z" hostname="0xd.local" tests="1" failures="0" errors="0" skipped="0" time="0.249089">
+        <testcase classname="tests/identity-preflight-boundary.test.ts" name="consumes only the public identity interface outside the RAID app with explicit dependencies" time="0.248517833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-preflight.test.ts" timestamp="2026-10-14T01:38:04.046Z" hostname="0xd.local" tests="48" failures="0" errors="0" skipped="0" time="0.012547834">
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; retains the busy participant without changing history, terms, claims or payout authority" time="0.004339083">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies missing session without partial effects" time="0.000255">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies revoked session without partial effects" time="0.000182625">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies expired session at boundary without partial effects" time="0.000154709">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies another session account without partial effects" time="0.000156416">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies another actor without partial effects" time="0.000148959">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies restricted account without partial effects" time="0.000124375">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies stale revision without partial effects" time="0.000129458">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies unknown ownership without partial effects" time="0.000205708">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies unverified proof without partial effects" time="0.0001955">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies revoked proof without partial effects" time="0.0001195">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies consumed proof without partial effects" time="0.000105208">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong proof account without partial effects" time="0.00008875">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies signin intent without partial effects" time="0.000103541">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies rotate intent without partial effects" time="0.000077375">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies expired proof at boundary without partial effects" time="0.000094916">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies future-issued proof without partial effects" time="0.000083167">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong domain without partial effects" time="0.000089">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong URI without partial effects" time="0.00009175">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies wrong proof subject without partial effects" time="0.000079292">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; denies unsupported network without partial effects" time="0.00007275">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; rejects an ownership collision, even if the other account is considered empty" time="0.000211166">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; does not use an unclaimed observation for a different subject" time="0.000073375">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; treats an existing own verified link as a proposal, not proof-consumption success" time="0.000110833">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; does not reactivate a revoked credential without its recovery policy" time="0.000101833">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; uses the immutable provider subject independently of a supplier instance" time="0.000357125">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; rejects client-supplied privilege, payout and private payload fields" time="0.000322416">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; fails closed for malformed clock, missing policy or corrupt participant input" time="0.000273">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 verified-link preflight (trusted synthetic observations only) &gt; keys exact network/provider subjects without ambiguous concatenation or case folding" time="0.000705541">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; rejects two busy participants without hiding either assignment" time="0.000469917">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains TERMS even when legacy activity would be empty" time="0.00016975">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains CONSENT even when legacy activity would be empty" time="0.000058459">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains WORK_HISTORY even when legacy activity would be empty" time="0.000053708">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains SKILL_EVIDENCE even when legacy activity would be empty" time="0.000788917">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains CLAIM even when legacy activity would be empty" time="0.000090959">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains LEDGER even when legacy activity would be empty" time="0.000061584">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains CASE even when legacy activity would be empty" time="0.000055584">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains ROLE even when legacy activity would be empty" time="0.000061416">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains AUDIT even when legacy activity would be empty" time="0.000092042">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains RECEIPT even when legacy activity would be empty" time="0.000071">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains OUTBOX even when legacy activity would be empty" time="0.000050834">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains MEDIA even when legacy activity would be empty" time="0.000045417">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains OTHER even when legacy activity would be empty" time="0.000047083">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; retains a sole active commitment even when inventory incorrectly claims zero references" time="0.000050209">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; blocks unknown, wrong account/participant and stale inventories" time="0.000112333">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; rejects unrecognized right types instead of treating them as no rights" time="0.000082084">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; does not approve merge or deletion from an empty inventory" time="0.000213875">
+        </testcase>
+        <testcase classname="tests/identity-preflight.test.ts" name="T006 destructive-identity preflight (never authorizes execution) &gt; rejects self-merge, alias participant and malformed removal commands" time="0.000090375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-protocol-db.test.ts" timestamp="2026-10-14T01:38:04.049Z" hostname="0xd.local" tests="10" failures="0" errors="0" skipped="0" time="1.284036292">
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, writerFirst" time="0.158071792">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:125,&quot;blockers&quot;:[124],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, mergeFirst" time="0.028005125">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:124,&quot;blockers&quot;:[125],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; SHARE serializes account restriction with actual sign-in issuance" time="0.043098708">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:125,&quot;blockers&quot;:[124],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst" time="0.067772916">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:124,&quot;blockers&quot;:[125],&quot;table&quot;:&quot;advisory&quot;}]}
+
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:127,&quot;blockers&quot;:[124],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst" time="0.04358975">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:124,&quot;blockers&quot;:[127],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; finance holds SHARE for the creator status predicate while preserving the exact settlement" time="0.034956292">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:125,&quot;blockers&quot;:[124],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; finance rechecks creator restriction after acquiring its final root, before any settlement insert" time="0.036310208">
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; denies a primary sign-in whose claimed challenge expires while waiting for its final root" time="0.701305375">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:124,&quot;blockers&quot;:[125],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2 obviously nonempty account is rejected before any strong root acquisition" time="0.077228459">
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A3 real User-delete 23503 becomes terminal account-not-empty and rolls back the merge" time="0.09176">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-storage-boundary.test.ts" timestamp="2026-10-14T01:38:04.049Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.376612125">
+        <testcase classname="tests/identity-storage-boundary.test.ts" name="public storage owns SQL/contracts without an app singleton, framework or SDK" time="0.001667916">
+        </testcase>
+        <testcase classname="tests/identity-storage-boundary.test.ts" name="minimal external host resolves a real mapping using explicit dependencies" time="0.373465083">
+        </testcase>
+        <testcase classname="tests/identity-storage-boundary.test.ts" name="module documentation declares the R16 reuse contract and runnable consumer steps" time="0.000921416">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-storage-db.test.ts" timestamp="2026-10-14T01:38:04.050Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.682113166">
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; contains an enabled mapping mutation fence and validated restrictive User FK" time="0.036159375">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; stable sequential retry keeps original ID/provenance and restricted reads" time="0.018850375">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; rejects deletion/key/provenance mutation while allowing profile and no-op updates" time="0.031421208">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; new guard preserves both mapped accounts and all credential effects" time="0.03843175">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; allows genuine unmapped empty absorption into a mapped keeper; reverse denies" time="0.060638833">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; verified wallet flow preserves mapped keeper and denies two mapped accounts without consuming proof" time="0.143875042">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; retains exact synthetic financial/history rows and original monetary fences" time="0.034019166">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; provision wins against old binary at final DELETE; entire auth transaction rolls back" time="0.0766075">
+            <system-out>
+{&quot;storageRace&quot;:true,&quot;waiter&quot;:154,&quot;blocker&quot;:152,&quot;blockedStatement&quot;:&quot;DELETE FROM \&quot;public\&quot;.\&quot;User\&quot; WHERE (\&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot; = $1 AND 1=1) RETURNING \&quot;public\&quot;.\&quot;User\&quot;.\&quot;id\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;xId\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;handle\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;role\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;approved\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;suspended\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;affiliation\&quot;, \&quot;public\&quot;.\&quot;User\&quot;.\&quot;createdAt\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; delete wins: provision blocks on User key lock then denies missing account without orphan" time="0.102991125">
+            <system-out>
+{&quot;storageRace&quot;:true,&quot;waiter&quot;:152,&quot;blocker&quot;:154,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot; FROM \&quot;User\&quot; WHERE \&quot;id\&quot; = $1 FOR KEY SHARE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; independent create/create race returns one committed identity and first provenance" time="0.024222541">
+            <system-out>
+{&quot;storageRace&quot;:true,&quot;waiter&quot;:154,&quot;blocker&quot;:152,&quot;blockedStatement&quot;:&quot;INSERT INTO \&quot;Participant\&quot; (\&quot;accountId\&quot;, \&quot;provisionActorAccountId\&quot;, \&quot;provisionRequestId\&quot;)\n    VALUES ($1, $2, $3) ON CONFLICT (\&quot;accountId\&quot;) DO NOTHING RETURNING \&quot;id\&quot;::text, \&quot;kind\&quot;, \&quot;accountId\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; classifies actual PostgreSQL/Prisma 40001 and retries the whole callback" time="0.047075416">
+        </testcase>
+        <testcase classname="tests/identity-storage-db.test.ts" name="T006 actual additive database fences &gt; classifies actual PostgreSQL/Prisma 40P01 and retries the whole callback" time="0.048268542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/identity-storage.test.ts" timestamp="2026-10-14T01:38:04.050Z" hostname="0xd.local" tests="33" failures="0" errors="0" skipped="0" time="0.006996583">
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; provisions against an existing account, binds values and returns the shared DTO" time="0.00245825">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; reads the winner separately after a conflicting insert without rewriting provenance" time="0.000279791">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL: " time="0.000800125">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL:  space" time="0.000233959">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" time="0.000309041">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies malformed identifiers before SQL: alice&apos;; DELETE" time="0.000205625">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies wrong-account actor before SQL" time="0.00009425">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies incompatible isolation SERIALIZABLE before SQL" time="0.000086333">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies incompatible isolation REPEATABLE_READ before SQL" time="0.000080541">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies incompatible isolation UNKNOWN before SQL" time="0.000090917">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies a non-PostgreSQL host capability" time="0.000094209">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; missing account rejects without an insert" time="0.000114417">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92401&quot;,&quot;kind&quot;:&quot;AI_AGENT&quot;,&quot;accountId&quot;:&quot;alice&quot;}" time="0.000222458">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92401&quot;,&quot;kind&quot;:&quot;HUMAN&quot;,&quot;accountId&quot;:&quot;other&quot;}" time="0.000069167">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;&quot;,&quot;kind&quot;:&quot;HUMAN&quot;,&quot;accountId&quot;:&quot;alice&quot;}" time="0.000071875">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies an invalid/cross-account DTO: {&quot;id&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92401&quot;,&quot;kind&quot;:&quot;HUMAN&quot;,&quot;accountId&quot;:&quot;alice&quot;,&quot;secret&quot;:&quot;private&quot;}" time="0.0000675">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; denies duplicate rows and a missing conflict winner" time="0.000127666">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; resolves existing/restricted account mapping without granting permissions" time="0.000142042">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; fails closed for malformed reference observation: []" time="0.000054209">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; fails closed for malformed reference observation: [{&quot;present&quot;:1}]" time="0.000039417">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; fails closed for malformed reference observation: [{&quot;present&quot;:true},{&quot;present&quot;:false}]" time="0.000047042">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; validates read/reference inputs before querying" time="0.000082833">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="bounded HUMAN storage v1 &gt; sanitizes arbitrary alternate-driver exceptions" time="0.000072833">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;40001&quot;}" time="0.000054541">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;40P01&quot;}" time="0.000030792">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40001&quot;,&quot;message&quot;:&quot;private&quot;}}" time="0.00002775">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;40P01&quot;}}" time="0.000028">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; requires entire transaction retry for {&quot;code&quot;:&quot;P2034&quot;}" time="0.000024791">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; unknown/constraint failures remain sanitized visible failures: {&quot;code&quot;:&quot;23503&quot;}" time="0.00003075">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; unknown/constraint failures remain sanitized visible failures: {}" time="0.000023333">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; unknown/constraint failures remain sanitized visible failures: {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;42P01&quot;}}" time="0.000032375">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; adapter checks actual isolation rather than trusting a caller declaration" time="0.000115375">
+        </testcase>
+        <testcase classname="tests/identity-storage.test.ts" name="Prisma host failure boundary &gt; adapter never retries a failed statement" time="0.000081791">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/lock-observation.test.ts" timestamp="2026-10-14T01:38:04.052Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="0.001514166">
+        <testcase classname="tests/lock-observation.test.ts" name="waits for the required statement after a blocking PID becomes visible during activity refresh" time="0.000909375">
+        </testcase>
+        <testcase classname="tests/lock-observation.test.ts" name="does not accept the right statement without the actual expected blocking relationship" time="0.000122208">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-auth-db.test.ts" timestamp="2026-10-14T01:38:04.052Z" hostname="0xd.local" tests="25" failures="1" errors="0" skipped="0" time="1.210844708">
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; creates wallet-only user, consumes challenge once, and rejects stale challenge" time="0.085859041">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet ownership PostgreSQL invariants &gt; refuses linking wallet already owned by another X identity" time="0.008153584">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; issues a Sign-In With Solana formatted challenge" time="0.00685375">
+            <failure message="expected &apos;localhost:3000 wants you to sign in w…&apos; to match /\n\nURI: http:\/\/localhost:3000\nVe…/\" type="AssertionError">
+AssertionError: expected &apos;localhost:3000 wants you to sign in w…&apos; to match /\n\nURI: http:\/\/localhost:3000\nVe…/\
+
+- Expected:
+/\n\nURI: http:\/\/localhost:3000\nVersion: 1\nChain ID: mainnet\nNonce: [\w-]+\nIssued At: \d{4}-[^\n]+Z\nExpiration Time: \d{4}-[^\n]+Z$/
+
++ Received:
+&quot;localhost:3000 wants you to sign in with your Solana account:
+B7MVBAD3WmyFEz11Vowa5wyhpFTMVufmPBptHFdGkkSj
+
+Sign in to useRAID.fun.
+
+URI: http://localhost:3000
+Version: 1
+Chain ID: devnet
+Nonce: 6fd277f1666b1dbccbe7da341ebee104e319e26b014e2816
+Issued At: 2026-10-14T01:37:48.655Z
+Expiration Time: 2026-10-14T01:42:48.655Z&quot;
+
+ ❯ tests/wallet-auth-db.test.ts:125:21
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; binds a challenge to the signer state it was issued for" time="0.047494584">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not let a link signature perform a wallet rotation" time="0.032959834">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; refuses to sign a suspended owner in and creates no session" time="0.0481565">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; rotates the session and records how it was issued" time="0.048277167">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; keeps an X session an X session when the same user links a wallet" time="0.030093458">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not renew expired X authority through a wallet signature" time="0.05502375">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; does not borrow or delete another account&apos;s live X session" time="0.028120792">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires authenticated account context before preserving X authority" time="0.04761325">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; normalizes unknown session authority to wallet authority" time="0.026864542">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently revoked X session before carrying its authority forward" time="0.05001125">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;revoked&quot;,&quot;waiter&quot;:123,&quot;blocker&quot;:121}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently expired X session before carrying its authority forward" time="0.041669541">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;expired&quot;,&quot;waiter&quot;:121,&quot;blocker&quot;:123}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; observes a concurrently downgraded X session before carrying its authority forward" time="0.040910167">
+            <system-out>
+{&quot;sessionRace&quot;:&quot;downgraded&quot;,&quot;waiter&quot;:123,&quot;blocker&quot;:121}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; requires an X session for administrator access" time="0.00737375">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; moves a wallet from an empty wallet-only account onto the signed-in X account" time="0.075714125">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; keeps the wallet account when the X account is the empty one" time="0.08134075">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity" time="0.041308291">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; merging an activity-free duplicate account &gt; refuses when the wallet owner joined a Raid" time="0.041409625">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; replaces the address and records the previous one" time="0.050305">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; keeps an existing enrollment on the wallet snapshotted when it was made" time="0.052095625">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses while a withdrawal or live deposit is open" time="0.091758583">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; refuses an address owned by another account and a second change within 7 days" time="0.107321333">
+        </testcase>
+        <testcase classname="tests/wallet-auth-db.test.ts" name="wallet sign-in hardening, rotation and account merge &gt; wallet rotation &gt; requires a connected X account" time="0.037844625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-auth-isolation-db.test.ts" timestamp="2026-10-14T01:38:04.053Z" hostname="0xd.local" tests="2" failures="0" errors="0" skipped="0" time="2.230691416">
+        <testcase classname="tests/wallet-auth-isolation-db.test.ts" name="legacy auth hosts own required READ COMMITTED instead of database defaults &gt; preserves permitted wallet and X account folds under database default repeatable read" time="1.127717333">
+        </testcase>
+        <testcase classname="tests/wallet-auth-isolation-db.test.ts" name="legacy auth hosts own required READ COMMITTED instead of database defaults &gt; preserves permitted wallet and X account folds under database default serializable" time="1.101657584">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-auth-transaction.test.ts" timestamp="2026-10-14T01:38:04.054Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.003559">
+        <testcase classname="tests/wallet-auth-transaction.test.ts" name="translates unique conflicts without driver text {&quot;code&quot;:&quot;P2002&quot;,&quot;message&quot;:&quot;private address/owner&quot;}" time="0.002277083">
+        </testcase>
+        <testcase classname="tests/wallet-auth-transaction.test.ts" name="translates unique conflicts without driver text {&quot;code&quot;:&quot;P2010&quot;,&quot;meta&quot;:{&quot;code&quot;:&quot;23505&quot;,&quot;message&quot;:&quot;private address/owner&quot;}}" time="0.000225667">
+        </testcase>
+        <testcase classname="tests/wallet-auth-transaction.test.ts" name="unknown driver failure is sanitized before the shared HTTP/logger boundary" time="0.000213833">
+        </testcase>
+        <testcase classname="tests/wallet-auth-transaction.test.ts" name="preserves the host’s intentional permission rejection" time="0.00024125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-credential-lookup.test.ts" timestamp="2026-10-14T01:38:04.054Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.007498958">
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; returns an honest ACTIVE reservation without granting authentication" time="0.003057083">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; returns an honest REVOKED reservation without granting authentication" time="0.000473167">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; retains restriction so the proof/session host can refuse a suspended account" time="0.00053575">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; returns null for an unreserved address (legacy primary/new-wallet host path)" time="0.000206625">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; takes subject/account/link locks in contract order" time="0.000707916">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; rejects malformed address  before SQL" time="0.000479625">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; rejects malformed address not-a-wallet before SQL" time="0.00012725">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; refuses a host without the declared isolation contract" time="0.000160417">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; fails closed for malformed or changed ownership {&quot;malformed&quot;:true}" time="0.000203083">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; fails closed for malformed or changed ownership {&quot;status&quot;:&quot;UNKNOWN&quot;}" time="0.000359292">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; fails closed for malformed or changed ownership {&quot;finalOwner&quot;:&quot;foreign-owner&quot;}" time="0.000313333">
+        </testcase>
+        <testcase classname="tests/wallet-credential-lookup.test.ts" name="replaceable linked-credential lookup &gt; sanitizes unknown driver exceptions" time="0.000194667">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-additional-db.test.ts" timestamp="2026-10-14T01:38:04.054Z" hostname="0xd.local" tests="7" failures="1" errors="0" skipped="0" time="0.450404958">
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; is off by default for challenge issue and verification and writes nothing" time="0.051527125">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; links a fresh wallet for a connected-X account: same participant, primary unchanged, challenge consumed" time="0.050014208">
+            <failure message="expected { …(4) } to deeply equal { …(4) }" type="AssertionError">
+AssertionError: expected { …(4) } to deeply equal { …(4) }
+
+- Expected
++ Received
+
+  {
+    &quot;address&quot;: &quot;12E578yvM7gxia6CydTqkJ5BrEA7oMqUWkNcWk8A3RQG&quot;,
+    &quot;alreadyLinked&quot;: false,
+-   &quot;networkIdentity&quot;: &quot;mainnet&quot;,
++   &quot;networkIdentity&quot;: &quot;devnet&quot;,
+    &quot;status&quot;: &quot;ACTIVE&quot;,
+  }
+
+ ❯ tests/wallet-link-additional-db.test.ts:134:22
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies an account with no connected X at issue and verify; the challenge stays unconsumed" time="0.027204625">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; requires the caller&apos;s own live session" time="0.081481458">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; rejects replay, another account&apos;s challenge, a wrong-purpose challenge and a bad signature" time="0.059246583">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; returns one sanitized conflict for a foreign primary, a foreign link and an own revoked link" time="0.119097791">
+        </testcase>
+        <testcase classname="tests/wallet-link-additional-db.test.ts" name="B2a additional wallet link command (default-off, connected X) &gt; enabled &gt; denies a suspended account and rolls the whole attempt back" time="0.027652291">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-authority-db.test.ts" timestamp="2026-10-14T01:38:04.055Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="3.14567925">
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;wallet&quot; even though the account has an X row" time="0.133498083">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;admin&quot; even though the account has an X row" time="0.055500292">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;&quot; even though the account has an X row" time="0.044633916">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a live own session whose authority is &quot;X&quot; even though the account has an X row" time="0.0455505">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (revoked) committed during a real lock wait" time="0.069696125">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:102,&quot;waiters&quot;:[101]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (expired) committed during a real lock wait" time="0.047464583">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:102,&quot;waiters&quot;:[101]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies an authority change (X disconnected) committed during a real lock wait" time="0.049122">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:102,&quot;waiters&quot;:[101]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; denies a session that expires naturally while the command waits for the lock" time="1.898627958">
+            <system-out>
+{&quot;authorityRace&quot;:{&quot;blocker&quot;:102,&quot;waiters&quot;:[101]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; either links or leaves no trace when revocation races the command, with no deadlock" time="0.493720792">
+            <system-out>
+{&quot;authorityRaceOutcomes&quot;:[&quot;denied:401&quot;,&quot;denied:401&quot;,&quot;denied:401&quot;,&quot;denied:401&quot;,&quot;linked&quot;,&quot;denied:403&quot;,&quot;linked&quot;,&quot;denied:403&quot;,&quot;linked&quot;,&quot;denied:403&quot;,&quot;linked&quot;,&quot;denied:403&quot;]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; makes a revoke or X disconnect that arrives after the decision wait for the link to commit" time="0.109589584">
+            <system-out>
+{&quot;authorityLateWriters&quot;:{&quot;command&quot;:101,&quot;writers&quot;:[103,105]}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; makes an X disconnect alone, arriving after the decision, wait for the link to commit" time="0.070382833">
+        </testcase>
+        <testcase classname="tests/wallet-link-authority-db.test.ts" name="B2a authority: current X session, observed under locks &gt; does not deadlock with the legacy account merge while the command holds its locks (N1)" time="0.125776542">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-credentials.test.ts" timestamp="2026-10-14T01:38:04.056Z" hostname="0xd.local" tests="31" failures="0" errors="0" skipped="0" time="0.700586541">
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; publishes one vocabulary with unchanged legacy purpose bytes and compatible proof constants" time="0.001024083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolves only internal account/participant context under subject then account locks, without writes" time="0.002921542">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; leaves legitimate unmapped primary accounts unmapped; absent subject has no account lock" time="0.000724125">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;REVOKED&quot;}" time="0.000467333">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;suspended&quot;:true}" time="0.0002605">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:null}" time="0.00025825">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;participant&quot;:&quot;d4bbeef1-55a8-4d8e-8d03-f3b012f92402&quot;}" time="0.000212583">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;status&quot;:&quot;INVALID&quot;}" time="0.000184458">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; resolver rejects invalid durable ownership {&quot;malformed&quot;:true}" time="0.00012">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; revokes once, preserves permanent reservation, and repeats without another UPDATE" time="0.001192375">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;actorAccountId&quot;:&quot;credentials-bob&quot;}" time="0.0001545">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-bob&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000139875">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;REVOKED&quot;,&quot;expiresAt&quot;:&quot;2026-10-16T09:00:00.000Z&quot;}}" time="0.000117542">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00.000Z&quot;}}" time="0.0001215">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;now&quot;:&quot;2026-10-09T09:00:00.100Z&quot;,&quot;session&quot;:{&quot;accountId&quot;:&quot;credentials-alice&quot;,&quot;state&quot;:&quot;ACTIVE&quot;,&quot;expiresAt&quot;:&quot;2026-10-09T09:00:00Z&quot;}}" time="0.000115709">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; rejects untrusted caller input before SQL {&quot;requestId&quot;:&quot;&quot;}" time="0.000103292">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; protects own primary and returns identical sanitized failure for missing or foreign targets" time="0.000472333">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands reject a non-READ_COMMITTED port before any SQL even when the address is absent" time="0.000175917">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands reject a non-READ_COMMITTED port before any SQL even when the address is absent" time="0.000182083">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; fails closed when the PRIMARY owner observed before the account lock changes while waiting" time="0.000149584">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000282292">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credential contracts using alternate injected ports &gt; both commands fail closed on wrong isolation, network and opaque storage failure" time="0.000237416">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolves unmapped legacy primary without provisioning and links preserve canonical context" time="0.101478292">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; existing generator uses the shared legacy vocabulary without issuing additional-link purposes" time="0.032796333">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; revoke keeps immutable provenance, rejects primary/foreign targets and leaves address reserved" time="0.081232125">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; restricted owner cannot resolve or revoke and malformed trusted session causes no mutation" time="0.043458542">
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held resolve-first locks" time="0.06869">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:145,&quot;blocker&quot;:143,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held revoke-first locks" time="0.090788209">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:143,&quot;blocker&quot;:145,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; resolver and revoke serialize with actual held account-lock locks" time="0.057785417">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:145,&quot;blocker&quot;:143,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; rotation preserves cross-table subject exclusion under default repeatable read while a link commits" time="0.111934041">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:147,&quot;blocker&quot;:145,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-credentials.test.ts" name="B1 credentials on real PostgreSQL &gt; rotation preserves cross-table subject exclusion under default serializable while a link commits" time="0.088684791">
+            <system-out>
+{&quot;credentialRace&quot;:true,&quot;waiter&quot;:149,&quot;blocker&quot;:145,&quot;blockedStatement&quot;:&quot;SELECT 1 AS \&quot;locked\&quot; FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \&quot;lock\&quot;&quot;}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-lock-order-db.test.ts" timestamp="2026-10-14T01:38:04.058Z" hostname="0xd.local" tests="7" failures="0" errors="0" skipped="0" time="6.122874584">
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the Session row lock" time="2.816497084">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:89,&quot;waiter&quot;:88,&quot;needle&quot;:&quot;FROM \&quot;Session\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; denies a link whose X session expires while it waits for the XAccount row lock" time="2.800719791">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:89,&quot;waiter&quot;:88,&quot;needle&quot;:&quot;FROM \&quot;XAccount\&quot;&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; does not deadlock a merge against an X reconnect of the same account" time="0.129862709">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:89,&quot;waiter&quot;:88,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:88,&quot;waiter&quot;:91,&quot;needle&quot;:&quot;pg_advisory_xact_lock&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; refuses a merge when the dropped account connected X while the merge waited for its row" time="0.054575917">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:89,&quot;waiter&quot;:91,&quot;needle&quot;:&quot;FOR UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; first X connection versus merge &gt; serializes without a deadlock and fails the merge closed after the connection wins" time="0.086040667">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:89,&quot;waiter&quot;:91,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:91,&quot;waiter&quot;:88,&quot;needle&quot;:&quot;pg_advisory_xact_lock&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; first X connection versus wallet fold &gt; serializes without a deadlock and fails the merge closed after the connection wins" time="0.1241235">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:89,&quot;waiter&quot;:88,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:88,&quot;waiter&quot;:91,&quot;needle&quot;:&quot;pg_advisory_xact_lock&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-link-lock-order-db.test.ts" name="T006 B2a lock waits keep authority and lock order sound &gt; lets unrelated merges and a first X connection proceed without waiting on each other" time="0.109066875">
+            <system-out>
+{&quot;lockOrderWait&quot;:{&quot;blocker&quot;:89,&quot;waiter&quot;:91,&quot;needle&quot;:&quot;OAuthAttempt&quot;}}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-proof.test.ts" timestamp="2026-10-14T01:38:04.058Z" hostname="0xd.local" tests="19" failures="0" errors="0" skipped="0" time="0.005877583">
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; derives every field strictly from the stored message and column" time="0.003700083">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; observes the stored chain independently of current configuration and never defaults issuedAt to now" time="0.0004405">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; marks the observation unverified when the host did not verify the signature" time="0.000085292">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; wrong statement is PROOF_INVALID" time="0.000077416">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; address line differs from row address is PROOF_INVALID" time="0.000099">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; digest is not the hash of the message is PROOF_INVALID" time="0.000076958">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; expiration differs from the column is PROOF_INVALID" time="0.000068875">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; issued after expiry is PROOF_INVALID" time="0.000068334">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; non-ISO issuedAt is PROOF_INVALID" time="0.000077625">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; row for an anonymous sign-in challenge is PROOF_INVALID" time="0.000074584">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; already consumed row is PROOF_INVALID" time="0.00004925">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; extra trailing line is PROOF_INVALID" time="0.000043125">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; missing line is PROOF_INVALID" time="0.000038042">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; reordered lines is PROOF_INVALID" time="0.000043584">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; wrong version is PROOF_INVALID" time="0.000048">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; uri with path smuggling newline is PROOF_INVALID" time="0.000039333">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; empty host is PROOF_INVALID" time="0.000033667">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; chain id with spaces is PROOF_INVALID" time="0.000042541">
+        </testcase>
+        <testcase classname="tests/wallet-link-proof.test.ts" name="wallet-link proof adapter (WR11) &gt; accepts an expected legacy statement only when the caller names it" time="0.000076833">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-link-signin-db.test.ts" timestamp="2026-10-14T01:38:04.059Z" hostname="0xd.local" tests="8" failures="0" errors="0" skipped="0" time="0.645401834">
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; signs in as the linking account with a wallet session when the switch is on" time="0.123818458">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; keeps an existing linked credential usable when new linking is switched off" time="0.051652959">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; never signs in through a revoked link, with the switch on or off" time="0.077436292">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; gives revoked and wrong-network reservations the same released denial without changing state" time="0.089919084">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; serializes two fresh signed challenges into one account with two independent wallet sessions" time="0.091036709">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; denies a suspended owner with no session" time="0.061107875">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; allows same-account reauthentication while denying foreign legacy links and payout rotation" time="0.077055">
+        </testcase>
+        <testcase classname="tests/wallet-link-signin-db.test.ts" name="B2b existing-credential sign-in (released behavior; new linking remains gated) &gt; keeps ordinary primary-wallet sign-in and unknown-wallet sign-up unchanged" time="0.043641167">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-linked-signin-db.test.ts" timestamp="2026-10-14T01:38:04.059Z" hostname="0xd.local" tests="15" failures="6" errors="0" skipped="0" time="0.948129">
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; fresh linked signature yields same account; participant, primary and history stay byte-identical" time="0.145569958">
+            <failure message="Wallet sign-in unavailable." type="Error">
+Error: Wallet sign-in unavailable.
+ ❯ src/lib/wallet-auth.ts:243:15
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+ ❯ Proxy._transactionWithCallback ../../useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ walletTransaction src/lib/wallet-auth.ts:40:5
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:168:3
+ ❯ tests/wallet-linked-signin-db.test.ts:114:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { status: 401 }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; same-account reauthentication with a linked wallet preserves a valid X session" time="0.058074">
+            <failure message="Wallet sign-in unavailable." type="Error">
+Error: Wallet sign-in unavailable.
+ ❯ src/lib/wallet-auth.ts:243:15
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+ ❯ Proxy._transactionWithCallback ../../useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ walletTransaction src/lib/wallet-auth.ts:40:5
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:168:3
+ ❯ tests/wallet-linked-signin-db.test.ts:131:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { status: 401 }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects REVOKED linked credential without challenge/session residue" time="0.065526083">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects WRONG_NETWORK linked credential without challenge/session residue" time="0.082737875">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects SUSPENDED linked credential without challenge/session residue" time="0.056236875">
+            <failure message="expected Error: Wallet sign-in unavailable. { status: … } to match object { status: 403 }" type="AssertionError">
+AssertionError: expected Error: Wallet sign-in unavailable. { status: … } to match object { status: 403 }
+
+- Expected
++ Received
+
+- {
+-   &quot;status&quot;: 403,
++ HttpError {
++   &quot;status&quot;: 401,
+  }
+
+ ❯ tests/wallet-linked-signin-db.test.ts:180:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; cannot fold a linked credential into a foreign signed-in account" time="0.0401335">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rotation onto an ACTIVE link is a sanitized conflict and preserves the payout wallet" time="0.054179166">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rotation onto an REVOKED link is a sanitized conflict and preserves the payout wallet" time="0.057619791">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; replay of a consumed linked sign-in challenge creates no second session" time="0.05417725">
+            <failure message="Wallet sign-in unavailable." type="Error">
+Error: Wallet sign-in unavailable.
+ ❯ src/lib/wallet-auth.ts:243:15
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+ ❯ Proxy._transactionWithCallback ../../useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ walletTransaction src/lib/wallet-auth.ts:40:5
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:168:3
+ ❯ tests/wallet-linked-signin-db.test.ts:230:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { status: 401 }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; a expired X session cannot widen anonymous linked-wallet sign-in" time="0.05240525">
+            <failure message="Wallet sign-in unavailable." type="Error">
+Error: Wallet sign-in unavailable.
+ ❯ src/lib/wallet-auth.ts:243:15
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+ ❯ Proxy._transactionWithCallback ../../useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ walletTransaction src/lib/wallet-auth.ts:40:5
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:168:3
+ ❯ tests/wallet-linked-signin-db.test.ts:251:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { status: 401 }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; a foreign X session cannot widen anonymous linked-wallet sign-in" time="0.053731042">
+            <failure message="Wallet sign-in unavailable." type="Error">
+Error: Wallet sign-in unavailable.
+ ❯ src/lib/wallet-auth.ts:243:15
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:22
+ ❯ Proxy._transactionWithCallback ../../useRAID.fun/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:17
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ walletTransaction src/lib/wallet-auth.ts:40:5
+ ❯ verifyWalletChallenge src/lib/wallet-auth.ts:168:3
+ ❯ tests/wallet-linked-signin-db.test.ts:251:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { status: 401 }
+            </failure>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects wrong-signature before issuing linked session" time="0.043682417">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; rejects expired-proof before issuing linked session" time="0.041201084">
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)" time="0.078888625">
+            <system-out>
+{&quot;linkedSigninRace&quot;:true,&quot;waiter&quot;:131,&quot;blocker&quot;:130,&quot;blockedStatement&quot;:&quot;SELECT \&quot;id\&quot; FROM \&quot;WalletLink\&quot; WHERE \&quot;id\&quot; = $1::uuid FOR SHARE&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/wallet-linked-signin-db.test.ts" name="linked-wallet sign-in host (T006 PR-B1) &gt; credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)" time="0.047072083">
+            <system-out>
+{&quot;linkedSigninRace&quot;:true,&quot;waiter&quot;:132,&quot;blocker&quot;:131,&quot;blockedStatement&quot;:&quot;UPDATE \&quot;public\&quot;.\&quot;WalletLink\&quot; SET \&quot;status\&quot; = $1, \&quot;revokedAt\&quot; = $2 WHERE \&quot;public\&quot;.\&quot;WalletLink\&quot;.\&quot;accountId\&quot; = $3&quot;}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-network.test.ts" timestamp="2026-10-14T01:38:04.063Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.060927334">
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; issues and verifies an exact devnet challenge" time="0.013014083">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; issues and verifies an exact mainnet challenge" time="0.00664175">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; rejects a registered credential on a different chain before creating a session" time="0.008035416">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; preserves a pending mainnet challenge across a configuration change to devnet" time="0.00700175">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; rejects altered stored chain text even when signed again, retaining the issued digest" time="0.002658458">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network undefined before issue or consumption" time="0.002768541">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;&quot; before issue or consumption" time="0.002586291">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;testnet&quot; before issue or consumption" time="0.002474791">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;sandbox&quot; before issue or consumption" time="0.002579917">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; fails closed for production network &quot;MAINNET&quot; before issue or consumption" time="0.005228208">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; retains the nonproduction mainnet default when network is unset" time="0.000191416">
+        </testcase>
+        <testcase classname="tests/wallet-network.test.ts" name="configured SIWS network and stored challenge compatibility (T007 partial) &gt; passes the signed devnet network consistently to additional-link subject/proof/policy" time="0.006975916">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-origin-db.test.ts" timestamp="2026-10-14T01:38:04.065Z" hostname="0xd.local" tests="4" failures="0" errors="0" skipped="0" time="0.196539917">
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects an otherwise valid sign-in signature issued for the previous domain without mutation" time="0.083394125">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a link signed for another application port and preserves the existing session" time="0.021584583">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; rejects a rotation signed for another URI scheme and preserves payout ownership and audit" time="0.030037292">
+        </testcase>
+        <testcase classname="tests/wallet-origin-db.test.ts" name="stored wallet challenge application origin (T007 AC02) &gt; allows a current-origin challenge when only the configured URL path changes and rejects replay" time="0.059972667">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-picker.test.ts" timestamp="2026-10-14T01:38:04.065Z" hostname="0xd.local" tests="3" failures="0" errors="0" skipped="0" time="0.0017035">
+        <testcase classname="tests/wallet-picker.test.ts" name="wallet picker &gt; lists Solana wallets that can connect and sign messages" time="0.000907625">
+        </testcase>
+        <testcase classname="tests/wallet-picker.test.ts" name="wallet picker &gt; never offers MetaMask, whatever its casing" time="0.000085375">
+        </testcase>
+        <testcase classname="tests/wallet-picker.test.ts" name="wallet picker &gt; drops wallets without Solana mainnet, connect or signMessage support" time="0.000081584">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-routes.test.ts" timestamp="2026-10-14T01:38:04.066Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.012206208">
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body null with 400" time="0.003903625">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body undefined with 400" time="0.0003935">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects body &quot;x&quot; with 400" time="0.000355917">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge rejects malformed JSON and a missing address with 400" time="0.001378791">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; challenge passes a valid address through" time="0.000757458">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects null with 400" time="0.000345083">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects {} with 400" time="0.000447541">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify rejects {&quot;digest&quot;:&quot;short&quot;,&quot;address&quot;:&quot;a&quot;,&quot;signature&quot;:&quot;s&quot;} with 400" time="0.000417">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; verify accepts a well-formed body" time="0.001677417">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; binds the challenge to the signed-in user and requires one to rotate" time="0.000719125">
+        </testcase>
+        <testcase classname="tests/wallet-routes.test.ts" name="wallet routes input handling &gt; rotates the wallet of the signed-in user without issuing a session" time="0.001112708">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/wallet-session-authority.test.ts" timestamp="2026-10-14T01:38:04.066Z" hostname="0xd.local" tests="11" failures="0" errors="0" skipped="0" time="0.001822792">
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; preserves only a live own X session under authenticated own context" time="0.000722">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for absent" time="0.000070666">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for foreign owner" time="0.000049666">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for foreign context" time="0.000051875">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for missing context" time="0.000045542">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for wallet provider" time="0.000038083">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for unknown provider" time="0.000036417">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for expired whole second" time="0.000043375">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for expiry equality" time="0.000052334">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for invalid expiry" time="0.000061208">
+        </testcase>
+        <testcase classname="tests/wallet-session-authority.test.ts" name="wallet session authority v1 &gt; defaults to wallet authority for invalid clock" time="0.000036959">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth-db.test.ts" timestamp="2026-10-14T01:38:04.067Z" hostname="0xd.local" tests="17" failures="0" errors="0" skipped="0" time="1.14496675">
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; creates identity metadata and updates changed username without changing ownership" time="0.104382">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; only one callback can claim a state and session binding cannot be changed" time="0.063018333">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects expired state" time="0.02789175">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; serializes duplicate account creation" time="0.086040417">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects a different identity for a signed-in user" time="0.051661833">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects an X connection owned by another user" time="0.034093791">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; disconnect preserves sessions, user, and raids and cancels a claimed callback" time="0.097986625">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; disconnect and callback race always ends disconnected" time="0.06562025">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; rejects a session removed during authorization" time="0.058875459">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; suspended accounts cannot sign in and admin ID uses existing role" time="0.051982083">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; demotes a stored ADMIN whose id left the environment allowlist" time="0.060260375">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; demotes through the owner path as well" time="0.062863916">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; signs in as the existing X account and takes over the wallet of an empty wallet-only account" time="0.100631125">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; refuses when both accounts have activity and changes nothing" time="0.066944458">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; merging an activity-free duplicate account &gt; absorbs an empty X account into the signed-in wallet account that has activity" time="0.103108125">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; ignores retired creator approval configuration in test" time="0.053491708">
+        </testcase>
+        <testcase classname="tests/x-oauth-db.test.ts" name="X connection PostgreSQL invariants &gt; ignores retired creator approval configuration in production" time="0.05388125">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth-first-link-race-db.test.ts" timestamp="2026-10-14T01:38:04.067Z" hostname="0xd.local" tests="5" failures="0" errors="0" skipped="0" time="0.826547416">
+        <testcase classname="tests/x-oauth-first-link-race-db.test.ts" name="first X identity binding under concurrent callbacks (PostgreSQL) &gt; a stale second callback cannot replace the identity bound by an earlier non-admin callback" time="0.175559417">
+        </testcase>
+        <testcase classname="tests/x-oauth-first-link-race-db.test.ts" name="first X identity binding under concurrent callbacks (PostgreSQL) &gt; a stale second callback cannot replace the identity bound by an earlier admin callback" time="0.152105959">
+        </testcase>
+        <testcase classname="tests/x-oauth-first-link-race-db.test.ts" name="first X identity binding under concurrent callbacks (PostgreSQL) &gt; callbacks released together bind exactly one identity" time="0.131459458">
+        </testcase>
+        <testcase classname="tests/x-oauth-first-link-race-db.test.ts" name="first X identity binding under concurrent callbacks (PostgreSQL) &gt; overlapping row updates: the callback blocked on the winner&apos;s row is re-evaluated and refused" time="0.182914292">
+        </testcase>
+        <testcase classname="tests/x-oauth-first-link-race-db.test.ts" name="first X identity binding under concurrent callbacks (PostgreSQL) &gt; two sessions confirming the same X identity both succeed and keep one binding" time="0.179658875">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth-routes.test.ts" timestamp="2026-10-14T01:38:04.068Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.010464292">
+        <testcase classname="tests/x-oauth-routes.test.ts" name="limits sign-in starts per session when a session cookie exists, otherwise per client" time="0.004603666">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="starts with HttpOnly and SameSite cookies" time="0.000676375">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="callback success sets only an opaque session and clears state" time="0.000706667">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="invalid state never reaches exchange" time="0.000229">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="expired or replayed attempt never reaches exchange" time="0.000246292">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="cancellation validates and consumes state, then skips exchange" time="0.000195417">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="provider failures do not create sessions or expose details" time="0.000201333">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="disconnect requires origin and session, then unlinks without signing out" time="0.00105825">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="keeps several states so concurrent authorizations both complete" time="0.000370125">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="ignores router prefetches without any side effect" time="0.000241542">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="returns to an allowlisted destination only" time="0.001093041">
+        </testcase>
+        <testcase classname="tests/x-oauth-routes.test.ts" name="clears the session cookie only when the session is really gone" time="0.000253042">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/x-oauth.test.ts" timestamp="2026-10-14T01:38:04.068Z" hostname="0xd.local" tests="12" failures="0" errors="0" skipped="0" time="0.034580375">
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; uses the exact callback, read scopes, and S256 challenge without secrets" time="0.002163042">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; rejects missing, unequal, and malformed state" time="0.000271292">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; accepts any of several concurrent states and ignores malformed segments" time="0.00033875">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; requires confidential credentials, a valid origin, and production HTTPS" time="0.000580625">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; exchanges on the server and returns only validated identity" time="0.019295042">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes token failure" time="0.000504958">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes profile failure" time="0.000348125">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes malformed failure" time="0.000599584">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; sanitizes transport failure" time="0.000224708">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; releases the sign-in reservation when users/me returns no billable response" time="0.001109125">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="X OAuth protocol &gt; keeps the sign-in reservation after a timeout but releases it after other transport errors" time="0.000714666">
+        </testcase>
+        <testcase classname="tests/x-oauth.test.ts" name="sets Secure cookies in production even if the configured URL is invalid HTTP" time="0.007696542">
+        </testcase>
+    </testsuite>
+</testsuites>

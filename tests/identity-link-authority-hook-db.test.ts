@@ -75,8 +75,9 @@ integration('identity-link observeAuthority hook contract (real PostgreSQL)', ()
         },
       });
     }, options);
-    expect(seen.slice(0, 3)).toEqual(['subject-lock', 'account-lock', 'HOOK']);
-    expect(seen.indexOf('participant')).toBeGreaterThan(seen.indexOf('HOOK'));
+    expect(seen.indexOf('subject-lock')).toBeLessThan(seen.indexOf('account-lock'));
+    expect(seen.indexOf('account-lock')).toBeLessThan(seen.indexOf('HOOK'));
+    expect(seen.lastIndexOf('participant')).toBeGreaterThan(seen.indexOf('HOOK')); // domain read after hook; pre-lock enumeration precedes it
     expect(await links()).toBe(1);
   });
 

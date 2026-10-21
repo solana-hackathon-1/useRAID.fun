@@ -1,0 +1,159 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+{"waitTrace":[{"pid":90,"blockers":[88],"table":"Session"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+{"waitTrace":[{"pid":88,"blockers":[90],"table":"Session"},{"pid":90,"blockers":[88],"table":"Session"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":88,"blockers":[90],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":88,"blockers":[90],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+{"waitTrace":[{"pid":88,"blockers":[90],"table":"advisory"}]}
+
+stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+{"waitTrace":[{"pid":88,"blockers":[90],"table":"advisory"}]}
+
+ ❯ tests/identity-protocol-db.test.ts (7 tests | 5 failed) 4140ms
+     × X1 actual wallet session replacement vs strong root, writerFirst 1195ms
+     ✓ X1 actual wallet session replacement vs strong root, mergeFirst  1066ms
+     × SHARE serializes account restriction with actual sign-in issuance 69ms
+     ✓ A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst 100ms
+     × A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst 1056ms
+     × A2 obviously nonempty account is rejected before any strong root acquisition 595ms
+     × A3 real User-delete 23503 becomes terminal account-not-empty and rolls back the merge 57ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/identity-protocol-db.test.ts:108:54
+    106|       expect(errors).toEqual([]);
+    107|       expect(merged.ok).toBe(true);
+    108|       if (order === 'writerFirst') expect(writer.ok).toBe(true);
+       |                                                      ^
+    109|       else if (!writer.ok) expect(writer.error).toMatchObject({ status…
+    110|       expect(await db.session.count({ where: { userId: user.id } })).t…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/identity-protocol-db.test.ts:130:30
+    128|     try {
+    129|       await Promise.race([waitForWait(), suspension]);
+    130|       expect(suspensionDone).toBe(false);
+       |                              ^
+    131|     } finally { release.open(); await Promise.all([sign, suspension]);…
+    132|     expect(await db.session.count({ where: { userId: user.id } })).toB…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/identity-protocol-db.test.ts:165:42
+    163|       release.open(); await hold;
+    164|       const results = await Promise.all([finance, merge!]);
+    165|       expect(results.every((r) => r.ok)).toBe(true);
+       |                                          ^
+    166|       expect(await db.usdcAllocation.count({ where: { raidId: raid.id …
+    167|       expect(await db.usdcTransfer.count({ where: { kind: 'REWARD' } }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2 obviously nonempty account is rejected before any strong root acquisition
+AssertionError: expected null to match object { ok: false, error: { status: 409 } }
+
+- Expected:
+{
+  "error": {
+    "status": 409,
+  },
+  "ok": false,
+}
+
++ Received:
+null
+
+ ❯ tests/identity-protocol-db.test.ts:182:20
+    180|     try {
+    181|       const fast = await Promise.race([merge, new Promise<null>((r) =>…
+    182|       expect(fast).toMatchObject({ ok: false, error: { status: 409 } }…
+       |                    ^
+    183|     } finally { release.open(); await Promise.allSettled([held, merge]…
+    184|   }, 10000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A3 real User-delete 23503 becomes terminal account-not-empty and rolls back the merge
+AssertionError: expected PrismaClientKnownRequestError{ …(7) } to match object { status: 409, …(1) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "message": "Only an activity-free account can be merged.",
+-   "status": 409,
++ PrismaClientKnownRequestError {
++   "message": "
++ Invalid `tx.user.delete()` invocation in
++ /Users/dushyant/Documents/useRAID.fun/src/lib/account-merge.ts:81:17
++
++   78 }
++   79 await tx.oAuthAttempt.deleteMany({ where: { userId: dropId } });
++   80 await tx.session.deleteMany({ where: { userId: dropId } });
++ → 81 await tx.user.delete(
++ Foreign key constraint violated on the constraint: `protocol_external_activity_userId_fkey`",
++   "code": "P2003",
++   "meta": {
++     "constraint": "protocol_external_activity_userId_fkey",
++     "modelName": "User",
++   },
++   "clientVersion": "6.19.3",
++   "name": "PrismaClientKnownRequestError",
+  }
+
+ ❯ tests/identity-protocol-db.test.ts:192:79
+    190|     await db.$executeRawUnsafe('CREATE TABLE IF NOT EXISTS protocol_ex…
+    191|     await db.$executeRaw`INSERT INTO protocol_external_activity ("user…
+    192|     await expect(db.$transaction((tx) => absorbAccount(tx, keep.id, dr…
+       |                                                                               ^
+    193|     expect(await db.user.count({ where: { id: { in: [keep.id, drop.id]…
+    194|     expect(await db.moderationEvent.count({ where: { action: 'account:…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 2 passed (7)
+   Start at  17:20:00
+   Duration  4.67s (transform 133ms, setup 0ms, import 413ms, tests 4.14s, environment 0ms)
+
+JUNIT report written to /Users/dushyant/Documents/useRAID.fun/planning/task-evidence/T006-lock-slice-20261012/red.xml

@@ -1,4 +1,8 @@
+import { lookupWalletLink } from '../identity-link';
 import { Prisma } from '@prisma/client';
+import { randomUUID } from 'node:crypto';
+import { prepareIdentity, identityWriter, identityClock } from './identity-protocol';
+import { replanIdentity } from '../identity-locks';
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
 import { PublicKey } from '@solana/web3.js';
@@ -9,7 +13,6 @@ import { absorbAccount, isEmptyAccount } from './account-merge';
 import { lockBalance } from './usdc';
 import {
   IdentityLinkError,
-  lookupWalletLink,
   linkVerifiedWallet,
   publicWalletLink,
   type IdentityLinkCode,
@@ -28,7 +31,7 @@ import {
   WALLET_CHALLENGE_STATEMENTS,
   walletChallengeMatchesOrigin,
 } from './wallet-challenge-contract';
-import { walletSessionAuthority, type WalletSessionObservation } from './wallet-session-authority';
+import { walletSessionAuthority } from './wallet-session-authority';
 
 // Retry only whole transactions, preserving the same challenge and pre-generated session token.
 // Never expose trigger/driver detail (including a reserved wallet address) to HTTP or logs.
@@ -161,7 +164,37 @@ export async function verifyWalletChallenge(
   walletAddress(address);
   const bytes = decodeSignature(signature);
   const sessionToken = random();
+  const newUserId = randomUUID();
   await walletTransaction(async (tx) => {
+    // Unlocked observations choose the complete effect/root set, never authorization.
+    const [known, reserved, ownWallet] = await Promise.all([
+      tx.walletIdentity.findUnique({ where: { address } }),
+      tx.walletLink.findUnique({ where: { address } }),
+      currentUserId ? tx.walletIdentity.findUnique({ where: { userId: currentUserId } }) : null,
+    ]);
+    let userId = currentUserId || reserved?.accountId || known?.userId || newUserId;
+    let fold: { keep: string; drop: string } | undefined;
+    if (reserved && currentUserId && reserved.accountId !== currentUserId)
+      throw new HttpError(409, 'Wallet belongs to another account.');
+    if (!reserved && currentUserId && known && known.userId !== currentUserId) {
+      const owner = await tx.user.findUniqueOrThrow({ where: { id: known.userId } });
+      if (ownWallet || owner.xId) throw new HttpError(409, 'Wallet belongs to another account.');
+      if (!accountFoldsEnabled())
+        throw new HttpError(
+          409,
+          'This wallet already belongs to another useRAID account. Sign in with that wallet instead.',
+        );
+      if (await isEmptyAccount(tx, owner.id)) fold = { keep: currentUserId, drop: owner.id };
+      else if (await isEmptyAccount(tx, currentUserId))
+        fold = { keep: owner.id, drop: currentUserId };
+      else
+        throw new HttpError(
+          409,
+          'This wallet already has its own useRAID account with activity. Sign in with the wallet instead.',
+        );
+      userId = fold.keep;
+    }
+    if (fold) for (const id of [fold.keep, fold.drop].sort()) await lockBalance(tx, id);
     const attempt = await consumeChallenge(
       tx,
       digest,
@@ -170,76 +203,68 @@ export async function verifyWalletChallenge(
       currentUserId,
       currentUserId ? 'link' : 'signin',
     );
-    const linked = await lookupWalletLink(createPrismaIdentityTransaction(tx), address);
-    if (linked) {
-      // A linked credential cannot enter the legacy two-account fold path, including when revoked.
-      if (currentUserId && linked.accountId !== currentUserId)
-        throw new HttpError(409, 'Wallet belongs to another account.');
+    const createsAccount = !currentUserId && !reserved && !known;
+    const addsPrimary = !!currentUserId && !reserved && !known;
+    const locks = await prepareIdentity(tx, {
+      accounts: fold
+        ? [
+            { id: fold.keep, mode: 'UPDATE' },
+            { id: fold.drop, mode: 'UPDATE' },
+          ]
+        : [
+            {
+              id: userId,
+              mode: createsAccount ? 'UPDATE' : addsPrimary ? 'NO KEY UPDATE' : 'SHARE',
+              create: createsAccount,
+            },
+          ],
+      subjects: [address],
+    });
+    const writes = identityWriter(tx, locks);
+    const [livePrimary, liveReservation] = await Promise.all([
+      tx.walletIdentity.findUnique({ where: { address } }),
+      tx.walletLink.findUnique({ where: { address } }),
+    ]);
+    if (livePrimary?.userId !== known?.userId || liveReservation?.accountId !== reserved?.accountId)
+      replanIdentity();
+    await lookupWalletLink(createPrismaIdentityTransaction(tx), address, locks);
+    const now = await identityClock(tx);
+    if (attempt.expiresAt <= now)
+      throw new HttpError(401, 'Wallet challenge expired or signature invalid.');
+    // A linked reservation never falls into primary creation/folding, irrespective of gate.
+    if (liveReservation) {
       if (
-        linked.status !== 'ACTIVE' ||
-        linked.networkIdentity !== challengeChainId(attempt.message)
+        liveReservation.status !== 'ACTIVE' ||
+        liveReservation.networkIdentity !==
+          challengeChainId(
+            (await tx.walletChallenge.findUniqueOrThrow({ where: { digest } })).message,
+          )
       )
         throw new HttpError(401, 'Wallet sign-in unavailable.');
-      if (linked.accountSuspended) throw new HttpError(403, 'This account is suspended.');
     }
-    const known = await tx.walletIdentity.findUnique({ where: { address } });
-    let userId = currentUserId || linked?.accountId || known?.userId;
-    if (currentUserId && known && known.userId !== currentUserId) {
-      // A wallet-only account with no activity can be folded into the signed-in X account, or the reverse.
-      const [currentWallet, owner] = await Promise.all([
-        tx.walletIdentity.findUnique({ where: { userId: currentUserId } }),
-        tx.user.findUniqueOrThrow({ where: { id: known.userId } }),
-      ]);
-      if (currentWallet || owner.xId)
-        throw new HttpError(409, 'Wallet belongs to another account.');
-      // Folding is gated off for launch (see accountFoldsEnabled): refuse and change nothing.
-      if (!accountFoldsEnabled())
-        throw new HttpError(
-          409,
-          'This wallet already belongs to another useRAID account. Sign in with that wallet instead.',
-        );
-      if (await isEmptyAccount(tx, owner.id)) {
-        await absorbAccount(tx, currentUserId, owner.id);
-        userId = currentUserId;
-      } else if (await isEmptyAccount(tx, currentUserId)) {
-        await absorbAccount(tx, owner.id, currentUserId);
-        userId = owner.id;
-      } else
-        throw new HttpError(
-          409,
-          'This wallet already has its own useRAID account with activity. Sign in with the wallet instead.',
-        );
-    } else if (currentUserId && !known && !linked) {
-      const currentWallet = await tx.walletIdentity.findUnique({
-        where: { userId: currentUserId },
+    if (fold) await absorbAccount(tx, fold.keep, fold.drop, locks);
+    else if (addsPrimary) {
+      if (await tx.walletIdentity.findUnique({ where: { userId } }))
+        throw new HttpError(409, 'Account already has a wallet.');
+      await writes.walletIdentity.create({ data: { address, userId } });
+    } else if (createsAccount) {
+      await writes.user.create({
+        data: { id: userId, handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
       });
-      if (currentWallet) throw new HttpError(409, 'Account already has a wallet.');
-      await tx.walletIdentity.create({ data: { address, userId: currentUserId } });
-    } else if (!userId) {
-      const user = await tx.user.create({
-        data: { handle: `${address.slice(0, 4)}…${address.slice(-4)}` },
-      });
-      userId = user.id;
-      await tx.walletIdentity.create({ data: { address, userId } });
+      await writes.walletIdentity.create({ data: { address, userId } });
     }
-    const owner = await tx.user.findUniqueOrThrow({ where: { id: userId! } });
+    const owner = await tx.user.findUniqueOrThrow({ where: { id: userId } });
     if (owner.suspended) throw new HttpError(403, 'This account is suspended.');
-    // Signing in again must not widen what the old session could do, nor narrow an X session.
-    // Atomically claim only this account's prior session so concurrent logout/expiry or
-    // another account's token cannot transfer authority into the replacement session.
-    const previous = currentSessionHash
-      ? await tx.$queryRaw<WalletSessionObservation[]>`
-          DELETE FROM "Session"
-          WHERE "tokenHash" = ${currentSessionHash} AND "userId" = ${userId!}
-          RETURNING "userId", "via", "expiresAt"
-        `
-      : [];
-    const now = new Date();
-    await tx.session.create({
+    const observed = currentSessionHash
+      ? await tx.session.findUnique({ where: { tokenHash: currentSessionHash } })
+      : null;
+    const previous = observed?.userId === userId ? observed : undefined;
+    if (previous) await writes.session.delete({ where: { tokenHash: previous.tokenHash } });
+    await writes.session.create({
       data: {
         tokenHash: hash(sessionToken),
-        userId: userId!,
-        via: walletSessionAuthority(previous[0], currentUserId, userId!, now),
+        userId,
+        via: walletSessionAuthority(previous, currentUserId, userId, now),
         expiresAt: new Date(now.getTime() + 7 * 86400000),
       },
     });
@@ -258,7 +283,12 @@ export async function rotateWallet(
   const bytes = decodeSignature(signature);
   await walletTransaction(async (tx) => {
     await lockBalance(tx, userId);
-    await consumeChallenge(tx, digest, address, bytes, userId, 'rotate');
+    const attempt = await consumeChallenge(tx, digest, address, bytes, userId, 'rotate');
+    const locks = await prepareIdentity(tx, {
+      accounts: [{ id: userId, mode: 'NO KEY UPDATE' }],
+      subjects: [address],
+    });
+    const writes = identityWriter(tx, locks);
     const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
     if (user.suspended) throw new HttpError(403, 'This account is suspended.');
     if (!(await tx.xAccount.findUnique({ where: { userId } })))
@@ -267,11 +297,13 @@ export async function rotateWallet(
     if (!current) throw new HttpError(409, 'Connect a wallet first.');
     if (current.address === address) throw new HttpError(409, 'This is already your wallet.');
     if (
-      (await lookupWalletLink(createPrismaIdentityTransaction(tx), address)) ||
+      (await tx.walletLink.findUnique({ where: { address } })) ||
       (await tx.walletIdentity.findUnique({ where: { address } }))
     )
       throw new HttpError(409, 'Wallet belongs to another account.');
-    const now = new Date();
+    const now = await identityClock(tx);
+    if (attempt.expiresAt <= now)
+      throw new HttpError(401, 'Wallet challenge expired or signature invalid.');
     const open = await tx.usdcTransfer.count({
       where: {
         userId,
@@ -284,8 +316,8 @@ export async function rotateWallet(
     if (open) throw new HttpError(409, 'Finish pending deposits and withdrawals first.');
     if (current.rotatedAt && +now - +current.rotatedAt < ROTATION_COOLDOWN_MS)
       throw new HttpError(429, 'You can change your wallet once every 7 days.');
-    await tx.walletIdentity.delete({ where: { userId } });
-    await tx.walletIdentity.create({
+    await writes.walletIdentity.delete({ where: { userId } });
+    await writes.walletIdentity.create({
       data: { address, userId, previousAddress: current.address, rotatedAt: now },
     });
     await tx.moderationEvent.create({
@@ -315,7 +347,7 @@ const LINK_HTTP: Partial<Record<IdentityLinkCode, [number, string]>> = {
 };
 // Linearization boundary for linking (owner clarification 2026-10-10): the CURRENT session must be
 // the caller's own, live by the database clock, and carry X authority (via === 'x'), on an account
-// whose X connection still exists. Read after the subject/account locks and row-locked FOR SHARE
+// whose X connection still exists. Read after the subject/account locks and prelocked in the final child modes
 // until commit, so a revoke, expiry or X disconnect that committed while this command waited is
 // seen, and one arriving later waits for this commit (an already-decided link is not undone).
 // The clock is read in its own statement AFTER both row locks are granted: a clock evaluated in
@@ -326,18 +358,15 @@ async function observeLinkAuthority(
   userId: string,
   sessionHash: string | undefined,
 ) {
-  const [session] = sessionHash
-    ? await tx.$queryRaw<{ userId: string; via: string; expiresAt: Date }[]>`
-        SELECT "userId", "via", "expiresAt"
-        FROM "Session" WHERE "tokenHash" = ${sessionHash} FOR SHARE`
-    : [];
+  const x = await tx.xAccount.findUnique({ where: { userId } });
+  const session = sessionHash
+    ? await tx.session.findUnique({ where: { tokenHash: sessionHash } })
+    : null;
   if (!session || session.userId !== userId) throw new IdentityLinkError('AUTHENTICATION_REQUIRED');
-  const x = await tx.$queryRaw<{ one: number }[]>`
-    SELECT 1 AS "one" FROM "XAccount" WHERE "userId" = ${userId} FOR SHARE`;
-  const [{ now }] = await tx.$queryRaw<{ now: Date }[]>`SELECT clock_timestamp() AS "now"`;
+  const now = await identityClock(tx);
   if (session.expiresAt <= now) throw new IdentityLinkError('AUTHENTICATION_REQUIRED');
   if (session.via !== 'x') throw new IdentityLinkError('FORBIDDEN');
-  if (x.length !== 1) throw new IdentityLinkError('FORBIDDEN');
+  if (!x) throw new IdentityLinkError('FORBIDDEN');
   return {
     session: {
       accountId: session.userId,
@@ -368,36 +397,31 @@ export async function linkAdditionalWallet(
   const bytes = decodeSignature(signature);
   const url = new URL(config.appUrl);
   try {
-    const linked = await db.$transaction(
-      async (tx) => {
-        const attempt = await consumeChallenge(
-          tx,
-          digest,
-          address,
-          bytes,
-          userId,
-          'link-additional',
-        );
-        const chainId = challengeChainId(attempt.message);
-        return linkVerifiedWallet(createPrismaIdentityTransaction(tx), {
-          accountId: userId,
-          actorAccountId: userId,
-          requestId,
-          subject: { networkIdentity: chainId, address },
-          proof: deriveWalletLinkProof(attempt, { signatureVerified: true }),
-          // Authority is observed by the module under the subject and account locks (below).
-          observeAuthority: () => observeLinkAuthority(tx, userId, currentSessionHash),
-          policy: {
-            domain: url.host,
-            uri: url.origin,
-            walletNetworks: [chainId],
-            providers: [],
-          },
-          limits: LINK_LIMITS,
-        });
-      },
-      { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
-    );
+    const linked = await runCommandTransaction(db, async (_port, tx) => {
+      const attempt = await consumeChallenge(tx, digest, address, bytes, userId, 'link-additional');
+      const chainId = challengeChainId(attempt.message);
+      const locks = await prepareIdentity(tx, {
+        accounts: [{ id: userId, mode: 'NO KEY UPDATE' }],
+        subjects: [address],
+      });
+      return linkVerifiedWallet(createPrismaIdentityTransaction(tx), {
+        locks,
+        accountId: userId,
+        actorAccountId: userId,
+        requestId,
+        subject: { networkIdentity: chainId, address },
+        proof: deriveWalletLinkProof(attempt, { signatureVerified: true }),
+        // Authority is observed by the module under the subject and account locks (below).
+        observeAuthority: () => observeLinkAuthority(tx, userId, currentSessionHash),
+        policy: {
+          domain: url.host,
+          uri: url.origin,
+          walletNetworks: [chainId],
+          providers: [],
+        },
+        limits: LINK_LIMITS,
+      });
+    });
     return publicWalletLink(linked);
   } catch (error) {
     throw linkFailure(error) ?? error;

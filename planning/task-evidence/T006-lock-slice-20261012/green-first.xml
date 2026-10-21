@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="0.529229625">
+    <testsuite name="tests/identity-protocol-db.test.ts" timestamp="2026-10-12T11:47:55.146Z" hostname="0xd.local" tests="7" failures="0" errors="0" skipped="0" time="0.529229625">
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, writerFirst" time="0.220442375">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:135,&quot;blockers&quot;:[134],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; X1 actual wallet session replacement vs strong root, mergeFirst" time="0.040542625">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:134,&quot;blockers&quot;:[135],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; SHARE serializes account restriction with actual sign-in issuance" time="0.041135583">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:135,&quot;blockers&quot;:[134],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst" time="0.086523833">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:134,&quot;blockers&quot;:[135],&quot;table&quot;:&quot;advisory&quot;}]}
+
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:136,&quot;blockers&quot;:[134],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst" time="0.053174625">
+            <system-out>
+{&quot;waitTrace&quot;:[{&quot;pid&quot;:134,&quot;blockers&quot;:[136],&quot;table&quot;:&quot;User&quot;}]}
+
+            </system-out>
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A2 obviously nonempty account is rejected before any strong root acquisition" time="0.030899625">
+        </testcase>
+        <testcase classname="tests/identity-protocol-db.test.ts" name="approved identity protocol: real PostgreSQL/application schedules &gt; A3 real User-delete 23503 becomes terminal account-not-empty and rolls back the merge" time="0.054297666">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="6" failures="0" errors="0" time="0.251376625">
+    <testsuite name="planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts" timestamp="2026-10-12T08:04:47.833Z" hostname="0xd.local" tests="6" failures="0" errors="0" skipped="0" time="0.251376625">
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts" name="proposed protocol database primitives &gt; updating unique User.xId upgrades NO KEY UPDATE and waits for KEY SHARE" time="0.114947875">
+            <system-out>
+{&quot;primitiveWait&quot;:{&quot;blocker&quot;:112,&quot;waiter&quot;:111,&quot;needle&quot;:&quot;UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts" name="proposed protocol database primitives &gt; non-key User.suspended update succeeds while KEY SHARE is held" time="0.033085958">
+        </testcase>
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts" name="proposed protocol database primitives &gt; materialized attempt sweep deletes only unlocked expired rows and progresses next run" time="0.031495541">
+        </testcase>
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts" name="proposed protocol database primitives &gt; Session sweep also skips the locked row" time="0.011197375">
+        </testcase>
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts" name="proposed protocol database primitives &gt; WalletChallenge sweep also skips the locked row" time="0.021626667">
+        </testcase>
+        <testcase classname="planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts" name="proposed protocol database primitives &gt; ordered root acquisition leaves the higher root available while the lower waits" time="0.037610167">
+            <system-out>
+{&quot;primitiveWait&quot;:{&quot;blocker&quot;:112,&quot;waiter&quot;:111,&quot;needle&quot;:&quot;FOR UPDATE&quot;}}
+
+            </system-out>
+        </testcase>
+    </testsuite>
+</testsuites>

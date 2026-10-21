@@ -1,3 +1,6 @@
+import { tryAdvisory, lockResource } from '../identity-locks';
+import { createPrismaIdentityTransaction } from './identity-storage-adapter';
+import { lockAdvisory } from './identity-protocol';
 import { createHash, randomUUID } from 'node:crypto';
 import type { Prisma } from '@prisma/client';
 import { db } from './db';
@@ -13,7 +16,7 @@ import {
 import { matchedTarget } from './studio-attribution';
 
 export async function lockTracking(tx: Prisma.TransactionClient, raidId: string) {
-  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`tracking:${raidId}`}, 0))`;
+  await lockAdvisory(tx, lockResource('tracking', raidId));
 }
 export function assertTrackingEnabled() {
   if (!trackingEnabled()) throw new HttpError(503, 'X tracking is paused.');
@@ -238,7 +241,7 @@ export async function ingestTracking(
         ).map((p) => p.id),
       );
       const movedFrom = new Set<string>();
-      for (const p of [...posts].sort((a, b) => a.id.localeCompare(b.id))) {
+      for (const p of [...posts].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))) {
         if (!p.id || !p.author_id || !Number.isFinite(Date.parse(p.created_at)))
           throw new Error('X returned incomplete post identity.');
         if (
@@ -265,7 +268,7 @@ export async function ingestTracking(
           continue;
         }
         // Global post lock prevents concurrent cross-Raid imports from acquiring the same ID.
-        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`post:${p.id}`}, 0))`;
+        await lockAdvisory(tx, lockResource('post', p.id));
         const old = await tx.post.findUnique({ where: { id: p.id } });
         let movedFromRaidId: string | null = null;
         if (old && old.raidId !== raidId) {
@@ -273,10 +276,12 @@ export async function ingestTracking(
             submission && rehomable(old, submission.enrollment.xId)
               ? await tx.raid.findUnique({ where: { id: old.raidId } })
               : null;
-          const [{ locked }] = source
-            ? await tx.$queryRaw<{ locked: boolean }[]>`
-                SELECT pg_try_advisory_xact_lock(hashtextextended(${`tracking:${old.raidId}`}, 0)) AS locked`
-            : [{ locked: false }];
+          const locked = source
+            ? await tryAdvisory(
+                createPrismaIdentityTransaction(tx),
+                lockResource('tracking', old.raidId),
+              )
+            : false;
           if (source && !locked)
             throw new Error('Post is being processed by another Raid; retrying.');
           if (

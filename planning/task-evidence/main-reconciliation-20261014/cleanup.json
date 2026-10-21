@@ -1,0 +1,15 @@
+{
+  "utc_recorded": "2026-10-14T01:42:53.329237+00:00",
+  "commands": [
+    "docker stop raid-reconciliation-20261014",
+    "docker inspect --format {{.State.Status}} raid-reconciliation-20261014",
+    "docker ps --format {{.Names}}",
+    "lsof -nP -iTCP:3087 -sTCP:LISTEN"
+  ],
+  "exit_code": 0,
+  "owned_container_status": "exited",
+  "existing_preview": "PID78070 still listening on127.0.0.1:3087",
+  "unrelated_containers": "all12 original containers remain running",
+  "volumes_images_removed": false,
+  "temporary_pg_fixtures": "disposable tmpfs lost on stop; independent review requires fresh owned DB"
+}

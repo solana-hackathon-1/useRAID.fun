@@ -1,0 +1,43 @@
+[
+  {
+    "name": "lint",
+    "command": [
+      "npm",
+      "run",
+      "lint"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:37:25.824400+00:00",
+    "utc_end": "2026-10-14T01:37:35.535833+00:00",
+    "elapsed_seconds": 9.711433,
+    "exit_code": 1
+  },
+  {
+    "name": "typegen",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/next/dist/bin/next",
+      "typegen"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:37:35.536577+00:00",
+    "utc_end": "2026-10-14T01:37:35.832234+00:00",
+    "elapsed_seconds": 0.295657,
+    "exit_code": 0
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "cwd": "/Users/dushyant/Documents/useRAID-reconciliation-backup-20261014T013027Z/verification-source",
+    "utc_start": "2026-10-14T01:37:35.832597+00:00",
+    "utc_end": "2026-10-14T01:37:42.566519+00:00",
+    "elapsed_seconds": 6.733922,
+    "exit_code": 2
+  }
+]

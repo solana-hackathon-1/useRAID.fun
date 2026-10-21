@@ -1,0 +1,150 @@
+{
+  "classification": "SELF-EVALUATED; independent design/implementation acceptance NOT VERIFIED",
+  "start_utc": "2026-10-12T07:54:28.564315+00:00",
+  "end_utc": "2026-10-12T08:11:38.642309+00:00",
+  "elapsed_seconds": 1030.078,
+  "application_head": "2992a78cc77112569740abf0522d399994c77910",
+  "source_manifest_sha256": "ec170e33094b4e58b4cb41404a9a22714fd5394d089e277e2bfc4b48262a8d63",
+  "source_files": 453,
+  "production_source_changes": [],
+  "changed_tracked_files": [
+    "RAID_AGENT_BLUEPRINT.md",
+    "docs/ai-handoff/CURRENT.md",
+    "docs/raid-wallet-links.md",
+    "docs/tasks/T006-identity-lock-protocol-design.md",
+    "planning/raid-scenarios.json",
+    "planning/raid-task-contracts.json"
+  ],
+  "canonical_symlink_aliases_following_changed_document": [
+    ".claude/RAID_AGENT_BLUEPRINT.md",
+    ".codex/RAID_AGENT_BLUEPRINT.md",
+    "examples/raid-fixtures/raid-scenarios.json"
+  ],
+  "preserved_prior_changes": [
+    "next-env.d.ts",
+    "WARP.md",
+    ".claude/worktrees/",
+    "PID90243/listener3000 and all earlier databases"
+  ],
+  "review_snapshot": "/tmp/raid-identity-design-20261012/candidate",
+  "requirements": [
+    "R04",
+    "R13",
+    "R15",
+    "R16",
+    "D01",
+    "D13",
+    "I05",
+    "I06",
+    "I07",
+    "I10",
+    "I11",
+    "I13",
+    "AC01 partial",
+    "AC02 partial",
+    "AC40",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "owner_decisions": [
+    "DEC-2026-10-12-03 credential-specific session invalidation",
+    "DEC-2026-10-12-04 visible destination account ID and X handle"
+  ],
+  "findings_and_amendments": "LP01-LP08 in docs/tasks/T006-identity-lock-protocol-20261012.md; proposed only, no application fix",
+  "tests": [
+    {
+      "command": "npx vitest run --config planning/task-evidence/T006-identity-design-20261012/vitest.config.mjs planning/task-evidence/T006-identity-design-20261012/probes/current-attempt-graph.test.ts planning/task-evidence/T006-identity-design-20261012/probes/destination-binding.test.ts --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-identity-design-20261012/current-contracts.xml",
+      "exit": 1,
+      "observed": "4 tests executed, 4 failed, zero skips; three PostgreSQL deadlocks and missing visible account/handle; two soft assertion records in the one destination case",
+      "evidence": "current-contracts.log/current-contracts.xml"
+    },
+    {
+      "command": "npx vitest run --config planning/task-evidence/T006-identity-design-20261012/vitest.config.mjs planning/task-evidence/T006-identity-design-20261012/probes/database-primitives.test.ts --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-identity-design-20261012/primitives.xml",
+      "exit": 0,
+      "observed": "6 passed, zero skipped; SQL primitives only",
+      "evidence": "primitives.log/primitives.xml"
+    },
+    {
+      "command": "npx vitest run tests/wallet-network.test.ts tests/wallet-link-proof.test.ts tests/wallet-session-authority.test.ts tests/wallet-auth-db.test.ts tests/x-oauth-db.test.ts tests/wallet-link-credentials.test.ts tests/identity-link-authority-hook-db.test.ts tests/account-merge-canonical.test.ts tests/docs-links.test.ts --reporter=default --reporter=junit --outputFile=planning/task-evidence/T006-identity-design-20261012/regression.xml",
+      "exit": 0,
+      "observed": "9 files, 205 passed, zero skipped",
+      "evidence": "regression.log/regression.xml"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_*.py'",
+      "exit": 0,
+      "observed": "48 tests passed, 9.943s",
+      "evidence": "planning.log"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_raid_requirements.py'",
+      "exit": 0,
+      "observed": "5 final fingerprint/inventory requirements passed",
+      "evidence": "final-requirements.log"
+    },
+    {
+      "command": "npx tsc --noEmit -p planning/task-evidence/T006-identity-design-20261012/probe-tsconfig.json",
+      "exit": 0,
+      "observed": "Scoped probes and imported source typecheck; root generated Next validators excluded by scoped configuration",
+      "evidence": "probe-types.log"
+    },
+    {
+      "command": "npx eslint planning/task-evidence/T006-identity-design-20261012/probes/*.ts",
+      "exit": 0,
+      "observed": "zero errors/warnings",
+      "evidence": "probe-lint.log"
+    },
+    {
+      "command": "npx prisma migrate deploy",
+      "exit": 0,
+      "observed": "All22 existing migrations applied to new disposable target, no migration edits",
+      "evidence": "migrate.log"
+    },
+    {
+      "command": "python3 scripts/verify-raid-completion.py <T006|T007> planning/task-evidence/T006-identity-design-20261012/<T006|T007>-nonacceptance.json",
+      "exit": 1,
+      "observed": "Each rejects missing independent review/non-code review and all27 full-task criteria",
+      "evidence": "T006-validator.log/T007-validator.log"
+    }
+  ],
+  "environment": {
+    "node": "v26.0.0",
+    "vitest": "4.1.11",
+    "postgres": "16.15",
+    "container": "raid-identity-design-20261012",
+    "container_id": "8a48b142ca38d016c2ad34e527ec7473d64deee6ac4ace2984ce94fe946f6b75",
+    "started_utc": "2026-10-12T07:54:55.207753377Z",
+    "binding": "127.0.0.1:64083",
+    "database": "useraid_test",
+    "disposable": "tmpfs; all fixtures synthetic; no provider calls",
+    "test_env_names": ["DATABASE_URL", "NODE_ENV=test", "DEMO_MODE=false", "RUN_DB_TESTS=true"],
+    "dependency_runtime": "existing root node_modules/generated client with unchanged schema; independent reviewer must install/generate their own; local vendor/braces dependency source included in frozen copy"
+  },
+  "prior_attempts": [
+    "External config absolute package import failed; corrected standalone config import/export; not semantic RED.",
+    "Initial selected historical probe run: 3 failed/9 filter exclusions; later narrowed to exact retained cases.",
+    "Initial primitive broad filter:6passed/12filter exclusions; final file-only6passed/zero skipped.",
+    "Initial isolated typecheck omitted Node typeRoots; corrected declared roots; not app code defect.",
+    "Initial probe lint zero errors/3 inherited warnings; type annotations/unused binding cleanup yields clean.",
+    "Initial preservation assertion counted canonical scenario symlink as example implementation; verified target link and fingerprint-only diff, final regular production files unchanged."
+  ],
+  "not_run": [
+    "Application GREEN/REFACTOR implementation",
+    "Full aggregate/hosted CI",
+    "Root generated-output typecheck",
+    "Production build/Docker runtime",
+    "Browser suites/development preview (no browser-visible change)",
+    "Real Phantom/devnet/X/chain",
+    "Independent review/UAT/business/release",
+    "Attribution migration/drift/rollout, capacity/recovery/G10"
+  ],
+  "next_steps": [
+    "Claude independent design verdict",
+    "One coherent test-first protocol implementation and fresh independent code review",
+    "Signed destination serialization plus additive attributed-session/selective revoke host; resolve unattributed rollout and suspended revoke; gates stay off"
+  ],
+  "owned_resource_stop": "docker stop raid-identity-design-20261012",
+  "git_publication": "none; no branch/commit/push/merge",
+  "completion": "All27 T006 and all27 T007 full criteria NOT VERIFIED"
+}

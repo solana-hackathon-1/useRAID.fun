@@ -1,3 +1,4 @@
+import { protocolFixture, fixtureAdvisoryKey } from './helpers/lock-port-fixture';
 import { describe, expect, it } from 'vitest';
 import {
   IdentityLinkError,
@@ -37,7 +38,7 @@ type World = {
 };
 const TAGS: [string, RegExp][] = [
   ['lock', /pg_advisory_xact_lock/],
-  ['user', /FROM "User".*FOR NO KEY UPDATE/s],
+  ['user', /FROM "User"/s],
   ['participant-find', /FROM "Participant" WHERE "accountId"/],
   ['participant-share', /FROM "User" WHERE "id" = \$1 FOR KEY SHARE/],
   ['participant-insert', /INSERT INTO "Participant"/],
@@ -58,6 +59,13 @@ function fakePort(world: World = {}, overrides: Partial<IdentityTransaction> = {
     dialect: 'POSTGRESQL',
     isolation: 'READ_COMMITTED',
     async query<Row>(sql: string, bindings: readonly string[]): Promise<Row[]> {
+      const response = protocolFixture(
+        sql,
+        bindings,
+        world.user === null ? null : (world.user ?? { id: ACCOUNT, suspended: false }),
+        world.primary === null ? null : (world.primary ?? PRIMARY),
+      );
+      if (response !== undefined) return response as Row[];
       const tag = tagOf(sql);
       calls.push({ sql, bindings, tag });
       const human = [{ id: PARTICIPANT, kind: 'HUMAN', accountId: ACCOUNT }];
@@ -120,14 +128,20 @@ describe('wallet link command v1 (fake port)', () => {
     // WR12: subject advisory lock, then User row lock, then reads, then participant ensure, then insert.
     expect(tags()).toEqual([
       'lock',
+      'lock',
+      'user',
       'user',
       'participant-find',
-      'primary',
       'ownership',
       'counts',
       'link-insert',
     ]);
-    expect(calls[0].bindings).toEqual([`wallet-subject:${NEW_ADDRESS}`]);
+    expect(calls.slice(0, 2).map((call) => call.bindings)).toEqual(
+      [PRIMARY, NEW_ADDRESS]
+        .sort()
+        .map((address) => [fixtureAdvisoryKey(`wallet-subject:${address}`)]),
+    );
+    expect(calls.filter((call) => /FROM "User".*FOR /.test(call.sql))).toHaveLength(1);
     // Every dynamic value is bound; none is interpolated into SQL text.
     expect(calls.every(({ sql }) => !sql.includes(NEW_ADDRESS) && !sql.includes(ACCOUNT))).toBe(
       true,
@@ -150,7 +164,7 @@ describe('wallet link command v1 (fake port)', () => {
     const result = await linkVerifiedWallet(tx, input());
     expect(result.participantId).toBe(PARTICIPANT);
     expect(calls.map(({ tag }) => tag).slice(-3)).toEqual([
-      'participant-share',
+      'counts',
       'participant-insert',
       'link-insert',
     ]);
@@ -199,7 +213,7 @@ describe('wallet link command v1 (fake port)', () => {
   it('missing account rejects without participant or link writes', async () => {
     const { tx, tags } = fakePort({ user: null });
     expect(await code(linkVerifiedWallet(tx, input()))).toBe('ACCOUNT_NOT_FOUND');
-    expect(tags()).toEqual(['lock', 'user']);
+    expect(tags()).toEqual(['lock', 'lock', 'user', 'user']);
   });
 
   const blockedCases: [string, World, Record<string, unknown>, string][] = [

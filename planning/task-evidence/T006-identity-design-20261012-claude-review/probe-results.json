@@ -1,0 +1,27 @@
+{
+  "X1_root_less_session_writer_vs_merge": {
+    "baseline_NO_KEY_UPDATE": {
+      "signin": "ok",
+      "merge": "ok"
+    },
+    "amended_FOR_UPDATE": {
+      "signin": "ok",
+      "merge": "ERR  Error occurred during query execution: | ConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"40P01\", message: \"dead"
+    }
+  },
+  "X2_multi_user_FK_writer_vs_sorted_roots": {
+    "FOR_NO_KEY_UPDATE": {
+      "multiUserFkWriter": "ok",
+      "sortedRoots": "ok"
+    },
+    "FOR_UPDATE": {
+      "multiUserFkWriter": "ok",
+      "sortedRoots": "ERR 40P01 Process 102 waits for ShareLock on transaction 981; blocked by process 103. | HINT: See server log for query details.`"
+    }
+  },
+  "X3_xId_update_under_NO_KEY_UPDATE_with_KEY_SHARE_holder": {
+    "nonKeyUpdate": "ok",
+    "xIdUpdate": "ERR 55P03 Invalid `prisma.$executeRawUnsafe()` invocation: | Raw query failed. Code: `55P03`. Message: `ERROR: canceling statement due to lock timeout`"
+  },
+  "X4_merge_style_wallet_move_advisory_locks_held": 0
+}

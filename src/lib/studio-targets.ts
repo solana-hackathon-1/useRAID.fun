@@ -1,3 +1,5 @@
+import { lockResource } from '../identity-locks';
+import { lockAdvisory } from './identity-protocol';
 import { db } from './db';
 import { lookupPosts } from './providers/x';
 import { postId } from './domain';
@@ -54,7 +56,7 @@ export async function addStudioTarget(raidId: string, userId: string, url: strin
   const preview = (await targetPreviews([id], raidId))[0];
   if (!preview) throw new HttpError(400, 'Target post is unavailable. Choose another public post.');
   return db.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(729103)`;
+    await lockAdvisory(tx, lockResource('global', '729103'));
     const current = await tx.raid.findUniqueOrThrow({
       where: { id: raidId },
       include: { creator: true },

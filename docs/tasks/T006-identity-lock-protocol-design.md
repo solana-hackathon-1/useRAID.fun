@@ -1,5 +1,7 @@
 # T006 identity lock protocol — design proposal for independent challenge
 
+**Historical proposal retained. Current-source amendment:** [12 October revision and Claude challenge](T006-identity-lock-protocol-20261012.md). The original independent challenge has no final verdict. Its candidate-3 inventory and §8 do not describe current main after DEC-2026-10-11-03; use the revision for the next review. Neither document is implementation acceptance.
+
 Status: **PROPOSED, not implemented.** Author: Claude Opus 5.5, 2026-10-11. **SELF-EVALUATED.** No production code, test, schema or configuration was changed for this document. Wallet linking stays disabled. B2c and B3 are not started. Nothing is committed. Codex is asked to challenge this design **before** any implementation; candidate 4 will be built only from an accepted (or amended) version.
 
 Why a design first: candidates 2 and 3 each fixed the interleaving the previous review reproduced, and each review found the next cycle in the same graph (CR-B2-02 → CR-B2-05 → CR-B2-06/07). The cause is structural: identity writers acquire locks on overlapping resources in orders chosen locally, and multi-row statements acquire rows in unspecified order. This document replaces per-interleaving patches with one protocol that every writer follows, so the absence of cycles follows from the rules rather than from tested schedules.
