@@ -1,0 +1,226 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-management-view.test.ts (15 tests | 13 failed) 30ms
+   × dispatches current admin GET on server without self-network and validates exact binding 22ms
+   × loads blank authenticated manager/config state 1ms
+   × rejects invalid/unknown search before any protected lookup { submissionId: [ 'a', 'b' ] } 0ms
+   × rejects invalid/unknown search before any protected lookup { after: '11111111-1111-4111-8111-111111111111' } 0ms
+   × rejects invalid/unknown search before any protected lookup { actor: 'foreign' } 0ms
+   × rejects invalid/unknown search before any protected lookup { submissionId: 'bad' } 0ms
+   × maps HTTP401 with no private error-body render 0ms
+   × maps HTTP403 with no private error-body render 0ms
+   × maps HTTP429 with no private error-body render 0ms
+   × maps HTTP422 with no private error-body render 0ms
+   × renders accessible lookup, immutable issue history/current observation and explicit reasoned issue/revoke forms 4ms
+   × escapes untrusted metadata/reason text and performs no SSR command/network call 0ms
+   × renders honest writeoff and empty lookup states without a guessed default duration 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > dispatches current admin GET on server without self-network and validates exact binding
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'READY', context: { …(4) } }
+
+- Expected
++ Received
+
+  {
+-   "context": {
+-     "page": {
+-       "accessId": "33333333-3333-4333-8333-333333333333",
+-       "actorAccountId": "manager-account",
+-       "after": null,
+-       "entries": [
+-         {
+-           "assignment": {
+-             "evaluatorAccountId": "evaluator-account",
+-             "expiresAt": "2030-01-01T00:00:00.000Z",
+-             "id": "22222222-2222-4222-8222-222222222222",
+-             "isAuthorizationToken": false,
+-             "issuedAt": "2026-10-23T11:00:00.000Z",
+-             "issuedByAccountId": "manager-account",
+-             "purpose": "OWNERSHIP_REVIEW",
+-             "reason": "Original synthetic assignment.",
+-             "state": "ISSUED",
+-             "submissionId": "11111111-1111-4111-8111-111111111111",
+-             "version": "v1",
+-           },
+-           "currentState": "ACTIVE",
+-           "revocation": null,
+-         },
+-       ],
+-       "isAuthorizationToken": false,
+-       "nextCursor": null,
+-       "observedAt": "2026-10-23T12:00:00.000Z",
+-       "private": true,
+-       "submissionId": "11111111-1111-4111-8111-111111111111",
+-       "version": "v1",
+-     },
+-     "unavailableReason": null,
+-     "version": "v1",
+-     "writesAvailable": true,
+-   },
+-   "status": "READY",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-assignment-management-view.test.ts:7:240
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > loads blank authenticated manager/config state
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'READY', context: { …(4) } }
+
+- Expected
++ Received
+
+  {
+-   "context": {
+-     "page": {
+-       "accessId": "33333333-3333-4333-8333-333333333333",
+-       "actorAccountId": "manager-account",
+-       "after": null,
+-       "entries": [],
+-       "isAuthorizationToken": false,
+-       "nextCursor": null,
+-       "observedAt": "2026-10-23T12:00:00.000Z",
+-       "private": true,
+-       "submissionId": null,
+-       "version": "v1",
+-     },
+-     "unavailableReason": null,
+-     "version": "v1",
+-     "writesAvailable": true,
+-   },
+-   "status": "READY",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-assignment-management-view.test.ts:8:262
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > rejects invalid/unknown search before any protected lookup { submissionId: [ 'a', 'b' ] }
+ FAIL  tests/practice-assignment-management-view.test.ts > rejects invalid/unknown search before any protected lookup { after: '11111111-1111-4111-8111-111111111111' }
+ FAIL  tests/practice-assignment-management-view.test.ts > rejects invalid/unknown search before any protected lookup { actor: 'foreign' }
+ FAIL  tests/practice-assignment-management-view.test.ts > rejects invalid/unknown search before any protected lookup { submissionId: 'bad' }
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'NOT_FOUND' }
+
+- Expected
++ Received
+
+  {
+-   "status": "NOT_FOUND",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-assignment-management-view.test.ts:9:263
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > maps HTTP401 with no private error-body render
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'SIGN_IN' }
+
+- Expected
++ Received
+
+  {
+-   "status": "SIGN_IN",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-assignment-management-view.test.ts:10:326
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > maps HTTP403 with no private error-body render
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'DENIED' }
+
+- Expected
++ Received
+
+  {
+-   "status": "DENIED",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-assignment-management-view.test.ts:10:326
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > maps HTTP429 with no private error-body render
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'RATE_LIMITED' }
+
+- Expected
++ Received
+
+  {
+-   "status": "RATE_LIMITED",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-assignment-management-view.test.ts:10:326
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > maps HTTP422 with no private error-body render
+AssertionError: expected { status: 'UNAVAILABLE' } to deeply equal { status: 'NOT_FOUND' }
+
+- Expected
++ Received
+
+  {
+-   "status": "NOT_FOUND",
++   "status": "UNAVAILABLE",
+  }
+
+ ❯ tests/practice-assignment-management-view.test.ts:10:326
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > renders accessible lookup, immutable issue history/current observation and explicit reasoned issue/revoke forms
+AssertionError: expected '<p>Unavailable</p>' to contain 'Find submission ID'
+
+Expected: "Find submission ID"
+Received: "<p>Unavailable</p>"
+
+ ❯ tests/practice-assignment-management-view.test.ts:12:535
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > escapes untrusted metadata/reason text and performs no SSR command/network call
+AssertionError: expected '<p>Unavailable</p>' to contain '&lt;script&gt;inert-private-note&lt;/…'
+
+Expected: "&lt;script&gt;inert-private-note&lt;/script&gt;"
+Received: "<p>Unavailable</p>"
+
+ ❯ tests/practice-assignment-management-view.test.ts:13:409
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/13]⎯
+
+ FAIL  tests/practice-assignment-management-view.test.ts > renders honest writeoff and empty lookup states without a guessed default duration
+AssertionError: expected '<p>Unavailable</p>' to contain 'New appointment changes are disabled'
+
+Expected: "New appointment changes are disabled"
+Received: "<p>Unavailable</p>"
+
+ ❯ tests/practice-assignment-management-view.test.ts:14:289
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/13]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  13 failed | 2 passed (15)
+   Start at  10:27:50
+   Duration  185ms (transform 21ms, setup 0ms, import 43ms, tests 30ms, environment 0ms)
+

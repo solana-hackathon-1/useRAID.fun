@@ -1,0 +1,5 @@
+
+> raid-practice-review-assignment-example@1.0.0 typecheck
+> tsc --noEmit
+
+PASS: independently installed consumer accepts current missing-target recovery contract.

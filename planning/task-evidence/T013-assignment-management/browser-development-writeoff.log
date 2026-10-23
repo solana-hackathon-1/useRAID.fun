@@ -1,0 +1,13 @@
+OWNED development BROWSER: http://127.0.0.1:49619 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assignment-management-build-4bapvuhv pid 15192
+
+Running 2 tests using 1 worker
+
+(node:15301) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/browser-practice-assignment-management/writeoff.spec.ts:8:1 › writeoff host retains current private inspection and disables both new appointment actions (4.4s)
+(node:15438) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 [mobile] › tests/browser-practice-assignment-management/writeoff.spec.ts:8:1 › writeoff host retains current private inspection and disables both new appointment actions (1.8s)
+
+  2 passed (7.8s)
+OWNED SERVER CLOSED: True

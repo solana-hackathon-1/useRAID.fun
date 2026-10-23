@@ -7,8 +7,6 @@ import { SkillTaxonomyActorSchema, type SkillTaxonomyActor } from './taxonomy-st
 import {
   IssuePracticeReviewAssignmentInputSchema,
   RevokePracticeReviewAssignmentInputSchema,
-  PracticeReviewAssignmentRecordSchema,
-  PracticeReviewRevocationRecordSchema,
   PracticeReviewAssignmentError,
   type PracticeReviewAssignmentCommand,
 } from './practice-review-assignment-storage';
@@ -33,22 +31,14 @@ export const practiceReviewAssignmentPrivateHeaders = Object.freeze({
   'Cache-Control': 'private, no-store',
   Vary: 'Cookie',
 });
-const Common = {
-  version: z.literal('v1'),
-  status: z.enum(['EXECUTED', 'REPLAYED']),
-  writesAvailable: z.boolean(),
-  unavailableReason: z.literal('DISABLED').nullable(),
-};
-const available = (v: { writesAvailable: boolean; unavailableReason: string | null }) =>
-  v.writesAvailable === (v.unavailableReason === null);
-export const PracticeReviewAssignmentIssueResultSchema = z
-  .strictObject({ ...Common, assignment: PracticeReviewAssignmentRecordSchema })
-  .refine(available)
-  .readonly();
-export const PracticeReviewAssignmentRevokeResultSchema = z
-  .strictObject({ ...Common, revocation: PracticeReviewRevocationRecordSchema })
-  .refine(available)
-  .readonly();
+export {
+  PracticeReviewAssignmentIssueResultSchema,
+  PracticeReviewAssignmentRevokeResultSchema,
+} from './practice-review-assignment-contracts';
+import {
+  PracticeReviewAssignmentIssueResultSchema,
+  PracticeReviewAssignmentRevokeResultSchema,
+} from './practice-review-assignment-contracts';
 const Params = z.strictObject({ assignmentId: z.uuid() });
 const MAXIMUM_BODY_BYTES = 16384;
 function fail(code: PracticeReviewAssignmentError['code']): never {

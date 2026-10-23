@@ -1,0 +1,14 @@
+{
+  "mode": "development",
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assignment-management-preview-0y8ybqnw",
+  "syntheticOnly": true,
+  "runnerPid": 15857,
+  "serverPid": 15861,
+  "url": "http://127.0.0.1:49687/admin/practice/review-assignments?submissionId=4ba64646-7953-4c21-9f35-b0b754f7dfc1",
+  "openUrl": "http://127.0.0.1:49698/open",
+  "serverPort": 49687,
+  "helperPort": 49698,
+  "databaseContainer": "raid-t013-assignment-management-preview-20261023",
+  "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+  "result": "RUNNING"
+}

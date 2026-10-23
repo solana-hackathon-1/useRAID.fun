@@ -1,0 +1,24 @@
+{
+  "oldPreviewSupervisor": 15734,
+  "command": "kill 15734",
+  "oldDatabaseRunning": false,
+  "49687Closed": true,
+  "49698Closed": true,
+  "testDatabaseRunning": false,
+  "retainedPreview": {
+    "mode": "development",
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-management-review-fixes-q__2f51m",
+    "syntheticOnly": true,
+    "runnerPid": 23640,
+    "serverPid": 23643,
+    "url": "http://127.0.0.1:50274/admin/practice/review-assignments?submissionId=e9e5b7a3-48bc-4c1a-bafa-bb878cd35725",
+    "openUrl": "http://127.0.0.1:50281/open",
+    "serverPort": 50274,
+    "helperPort": 50281,
+    "databaseContainer": "raid-t013-management-review-fixes-preview-20261023",
+    "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+    "result": "RUNNING"
+  },
+  "retainedSupervisor": 23589,
+  "stopRetained": "kill 23589"
+}

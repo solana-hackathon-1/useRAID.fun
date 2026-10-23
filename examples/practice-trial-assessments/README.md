@@ -16,3 +16,5 @@ DATABASE_URL=postgresql://postgres:synthetic-only@127.0.0.1:5432/useraid_practic
 ```
 
 Credentials/port are synthetic examples; supply only an owned fixture. Install this package independently. Replace pg or current scoped policies only while preserving source, stable namespace, identity, audit, transaction, clock and failure contracts. V1 verifies one-case MANUAL E–A only; S repeated independent evidence and automated-result sources are unavailable and fail closed, without choosing OPEN numeric calibration. Real policy/staffing/retention, reassessment/fraud/eligibility/APIUI and independent/UAT/business/release acceptance remain separate. See [module contracts](../../docs/raid-practice-trial-assessments.md) for API/events/errors/migration/recovery and [task evidence](../../planning/task-evidence/T013-trial-assessments/) for actual results.
+
+Assignment storage retains its public exports while declaring the canonical pure `practice-review-assignment-contracts.ts` and `practice-review-assignment-management-contracts.ts` links. Dereference these links with the other source when copying this host; no additional package or implicit Root dependency is introduced.

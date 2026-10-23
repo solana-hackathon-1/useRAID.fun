@@ -1,5 +1,9 @@
 import { z } from 'zod';
-import { InternalId, UtcTimestamp } from '../contracts/ids';
+import { InternalId } from '../contracts/ids';
+import {
+  PracticeAssignmentManagementInputSchema,
+  PracticeAssignmentManagementPageSchema,
+} from './practice-review-assignment-management-contracts';
 import {
   executeIdempotentCommand,
   CommandReceiptError,
@@ -14,33 +18,16 @@ import {
   type SkillTaxonomyActor,
 } from './taxonomy-storage';
 import { PracticeTrialDefinitionSchema } from './practice-trial-contracts';
-const Timestamp = UtcTimestamp.refine(
-  (s) => !s.match(/\.(\d+)Z$/)?.[1] || s.match(/\.(\d+)Z$/)![1].length <= 3,
-);
-const Reason = z
-  .string()
-  .trim()
-  .min(1)
-  .max(2000)
-  .refine(
-    (s) =>
-      s.length <= 2000 &&
-      !/\u0000|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(s),
-  );
-export const PracticeReviewPurposeSchema = z.enum(['OWNERSHIP_REVIEW', 'ASSESSMENT_REVIEW']);
-export const IssuePracticeReviewAssignmentInputSchema = z
-  .strictObject({
-    version: z.literal('v1'),
-    submissionId: z.uuid(),
-    evaluatorAccountId: InternalId,
-    purpose: PracticeReviewPurposeSchema,
-    expiresAt: Timestamp,
-    reason: Reason,
-  })
-  .readonly();
-export const RevokePracticeReviewAssignmentInputSchema = z
-  .strictObject({ version: z.literal('v1'), assignmentId: z.uuid(), reason: Reason })
-  .readonly();
+export * from './practice-review-assignment-contracts';
+import {
+  IssuePracticeReviewAssignmentInputSchema,
+  RevokePracticeReviewAssignmentInputSchema,
+  PracticeReviewAssignmentRecordSchema,
+  PracticeReviewRevocationRecordSchema,
+  PracticeReviewPurposeSchema,
+  type PracticeReviewAssignmentRecord,
+  type PracticeReviewRevocationRecord,
+} from './practice-review-assignment-contracts';
 const UseInput = z
   .strictObject({
     assignmentId: z.uuid(),
@@ -48,35 +35,6 @@ const UseInput = z
     purpose: PracticeReviewPurposeSchema,
   })
   .readonly();
-export const PracticeReviewAssignmentRecordSchema = z
-  .strictObject({
-    version: z.literal('v1'),
-    id: z.uuid(),
-    submissionId: z.uuid(),
-    evaluatorAccountId: InternalId,
-    purpose: PracticeReviewPurposeSchema,
-    expiresAt: Timestamp,
-    issuedAt: Timestamp,
-    issuedByAccountId: InternalId,
-    reason: Reason,
-    state: z.literal('ISSUED'),
-    isAuthorizationToken: z.literal(false),
-  })
-  .readonly();
-export const PracticeReviewRevocationRecordSchema = z
-  .strictObject({
-    version: z.literal('v1'),
-    id: z.uuid(),
-    assignmentId: z.uuid(),
-    revokedAt: Timestamp,
-    revokedByAccountId: InternalId,
-    reason: Reason,
-    state: z.literal('REVOKED'),
-    isAuthorizationToken: z.literal(false),
-  })
-  .readonly();
-export type PracticeReviewAssignmentRecord = z.output<typeof PracticeReviewAssignmentRecordSchema>;
-export type PracticeReviewRevocationRecord = z.output<typeof PracticeReviewRevocationRecordSchema>;
 export interface PracticeReviewAssignmentScope {
   readonly expiresAt: string;
   readonly issuerAccountId: string;
@@ -553,4 +511,159 @@ export async function lockPracticeReviewAssignment(
     [g.id],
   );
   return current.length === 1 && current[0].valid === true ? g : null;
+}
+
+export interface PracticeAssignmentManagementReadOptions {
+  readonly canInspect: (scope: Readonly<{ accountId: string; xId: string }>) => boolean;
+  readonly canManage: PracticeReviewAssignmentOptions['canManage'];
+}
+/** Current X-admin metadata read. Holds only the caller User/Session and ordered appointment mutexes. */
+export async function readPracticeAssignmentManagement(
+  tx: CommandReceiptTransaction,
+  actorValue: SkillTaxonomyActor,
+  inputValue: unknown,
+  options: PracticeAssignmentManagementReadOptions,
+): Promise<{
+  managerXId: string;
+  page: import('./practice-review-assignment-management-contracts').PracticeAssignmentManagementPage;
+}> {
+  const actor = actorValid(actorValue),
+    parsed = PracticeAssignmentManagementInputSchema.safeParse(inputValue);
+  if (!parsed.success) fail('INVALID_INPUT');
+  if (typeof options?.canInspect !== 'function' || typeof options.canManage !== 'function')
+    fail('STORAGE_CONTRACT');
+  const input = parsed.data;
+  let managerXId = '';
+  const inspect = () =>
+    authorize(tx, actor, (scope) => {
+      if (!allowed(options.canInspect, scope)) return false;
+      managerXId = scope.xId;
+      return true;
+    });
+  await inspect();
+  const identities = await query<{ id: string }>(tx, 'SELECT gen_random_uuid()::text AS id', []);
+  if (identities.length !== 1 || !z.uuid().safeParse(identities[0].id).success)
+    fail('STORAGE_CONTRACT');
+  const accessId = identities[0].id;
+  const auditPayload: Record<string, string> = input.submissionId
+    ? { submissionId: input.submissionId }
+    : {};
+  await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'ListPracticeReviewAssignmentsManagement',
+      idempotencyKey: accessId,
+      requestId: accessId,
+      request: input,
+    },
+    async () => ({
+      resultRef: actor.accountId,
+      events: [
+        {
+          type: 'skill.practice_review_assignment_management_access.v1',
+          aggregateId: actor.accountId,
+          aggregateVersion: 1,
+          payload: auditPayload,
+          publish: false,
+        },
+      ],
+    }),
+  );
+  await inspect();
+  const Candidate = z.strictObject({
+    id: z.uuid(),
+    evaluatorAccountId: InternalId,
+    purpose: PracticeReviewPurposeSchema,
+    expiresAt: z.date(),
+  });
+  const candidates =
+    input.submissionId === null
+      ? []
+      : await query<z.infer<typeof Candidate>>(
+          tx,
+          'SELECT "id"::text,"evaluatorAccountId","purpose","expiresAt" FROM "PracticeTrialReviewAssignment" WHERE "submissionId"=$1::uuid AND ($2::uuid IS NULL OR "id">$2::uuid) ORDER BY "id" LIMIT 21',
+          [input.submissionId, input.after],
+        );
+  if (
+    candidates.length > 21 ||
+    !candidates.every(
+      (c, i) =>
+        Candidate.safeParse(c).success &&
+        (i === 0 || candidates[i - 1].id < c.id) &&
+        (input.after === null || c.id > input.after),
+    )
+  )
+    fail('STORAGE_CONTRACT');
+  const records: {
+    assignment: PracticeReviewAssignmentRecord;
+    revocation: PracticeReviewRevocationRecord | null;
+    scope: PracticeReviewAssignmentUseScope;
+  }[] = [];
+  for (const c of candidates) {
+    await query(tx, 'SELECT pg_advisory_xact_lock(hashtextextended($1,12017))::text', [c.id]);
+    const scope = await scopeFor(
+      tx,
+      input.submissionId!,
+      c.evaluatorAccountId,
+      c.purpose,
+      actor.accountId,
+      c.expiresAt.toISOString(),
+    );
+    if (scope.subjectAccountId === scope.evaluatorAccountId) fail('STORAGE_CONTRACT');
+    if (!allowed(options.canManage, { ...scope, xId: managerXId })) fail('FORBIDDEN');
+    const assignment = await loadAssignment(tx, c.id);
+    if (
+      !assignment ||
+      assignment.submissionId !== input.submissionId ||
+      assignment.evaluatorAccountId !== c.evaluatorAccountId ||
+      assignment.purpose !== c.purpose ||
+      assignment.expiresAt !== c.expiresAt.toISOString()
+    )
+      fail('STORAGE_CONTRACT');
+    const revoked = await query<{ id: string }>(
+      tx,
+      'SELECT "id" FROM "PracticeTrialReviewRevocation" WHERE "assignmentId"=$1::uuid',
+      [c.id],
+    );
+    if (revoked.length > 1) fail('STORAGE_CONTRACT');
+    const revocation = revoked.length ? await loadRevocation(tx, revoked[0].id) : null;
+    records.push({ assignment, revocation, scope });
+  }
+  await inspect();
+  const clock = await query<{ observedAt: Date; valid: boolean }>(
+    tx,
+    `SELECT clock_timestamp() AS "observedAt","expiresAt">(clock_timestamp() AT TIME ZONE 'UTC') AS valid FROM "Session" WHERE "tokenHash"=$1 AND "userId"=$2`,
+    [actor.sessionHash, actor.accountId],
+  );
+  if (clock.length !== 1 || clock[0].valid !== true) fail('AUTHENTICATION_REQUIRED');
+  if (!z.date().safeParse(clock[0].observedAt).success) fail('STORAGE_CONTRACT');
+  if (
+    !allowed(options.canInspect, { accountId: actor.accountId, xId: managerXId }) ||
+    records.some((r) => !allowed(options.canManage, { ...r.scope, xId: managerXId }))
+  )
+    fail('FORBIDDEN');
+  const observedAt = clock[0].observedAt;
+  const page = PracticeAssignmentManagementPageSchema.safeParse({
+    version: 'v1',
+    private: true,
+    isAuthorizationToken: false,
+    accessId,
+    actorAccountId: actor.accountId,
+    observedAt: observedAt.toISOString(),
+    submissionId: input.submissionId,
+    after: input.after,
+    entries: records.slice(0, 20).map(({ assignment, revocation }) => ({
+      assignment,
+      revocation,
+      currentState: revocation
+        ? 'REVOKED'
+        : new Date(assignment.expiresAt) > observedAt
+          ? 'ACTIVE'
+          : 'EXPIRED',
+    })),
+    nextCursor: records.length > 20 ? records[19].assignment.id : null,
+  });
+  if (!page.success) fail('STORAGE_CONTRACT');
+  return { managerXId, page: page.data };
 }

@@ -1,0 +1,76 @@
+{
+  "name": "useraid",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:lan": "next dev --hostname 0.0.0.0",
+    "build": "prisma generate && next build",
+    "start": "next start --hostname 0.0.0.0",
+    "worker": "tsx src/worker.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:integration": "vitest run tests/integration.test.ts",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:dev": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "test:browser": "playwright test",
+    "test:browser:live": "playwright test --config=playwright.live.config.ts",
+    "test:browser:studio": "playwright test --config=playwright.studio.config.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:live": "tsx tests/live-flow.ts",
+    "tracking:audit": "tsx scripts/tracking-audit.ts",
+    "media:backfill": "tsx scripts/backfill-media.ts",
+    "launch:rotate-keys": "tsx scripts/rotate-launch-keys.ts",
+    "tracking:preview": "tsx scripts/tracking-preview.ts",
+    "studio:preview": "tsx scripts/studio-preview.ts",
+    "lint": "eslint . && tsx scripts/check-identity-locks.ts",
+    "identity:check": "tsx scripts/check-identity-locks.ts",
+    "audit:check": "tsx scripts/audit-check.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "@pump-fun/pump-sdk": "^2.0.0",
+    "@solana/spl-token": "^0.4.15",
+    "@solana/wallet-standard-features": "^1.5.0",
+    "@solana/web3.js": "^1.99.0",
+    "@wallet-standard/app": "^1.1.1",
+    "@wallet-standard/base": "^1.1.1",
+    "@wallet-standard/features": "^1.1.1",
+    "bs58": "^6.0.0",
+    "dotenv": "^17.2.0",
+    "lucide-react": "^0.468.0",
+    "next": "~16.3.8",
+    "prisma": "^6.19.0",
+    "react": "~19.3.0",
+    "react-dom": "~19.3.0",
+    "tsx": "^4.20.0",
+    "tweetnacl": "^1.0.3",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "braces": "file:vendor/braces",
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.8",
+    "prettier": "^3.9.9",
+    "typescript": "^5.9.0",
+    "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "braces": "$braces",
+    "@solana/web3.js": {
+      "jayson": "5.0.0"
+    },
+    "deepmerge-ts": "^8.0.0"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

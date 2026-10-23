@@ -1,0 +1,1 @@
+Final helper asserted git diff --check would return1 for preserved prior-log whitespace. Actual git exit2. Owned diff returned0 with empty diagnostics. Existing whole-tree diagnostics retained; corrected helper to validate actual diagnostics, without deleting/altering prior log.

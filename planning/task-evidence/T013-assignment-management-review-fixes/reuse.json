@@ -1,0 +1,51 @@
+{
+  "proof": {
+    "src/skills/practice-review-assignment-storage.ts": {
+      "sha256": "99a27908e0a18d8689b921230bd98d7df8f2e74fa2a931c3387fa48c679e8f5b",
+      "unchangedSinceBaseline": true
+    },
+    "planning/identity-writer-fence.json": {
+      "sha256": "87c521b77504b85ba8d9cfad8171769f6a20ae19656e3e88aef81d05aca9e52c",
+      "unchangedSinceBaseline": true
+    },
+    "package.json": {
+      "sha256": "e22649fb67d895a0fe3f0443a4b6f95a410894797f31b958d7e8bfd478e0d48b",
+      "identicalToHEAD": true
+    },
+    "package-lock.json": {
+      "sha256": "de163672b05fa80196cad5c7cb1ee3c392876c659264b082fb25bf0444597812",
+      "identicalToHEAD": true
+    },
+    "audit-allowlist.json": {
+      "sha256": "6311124a1c8e1f47aba2a7e838890a16f17e71957b2fe1068f68d40803692df7",
+      "identicalToHEAD": true
+    },
+    "scripts/audit-check.ts": {
+      "sha256": "9429ab8c34b53ee59b6ee3c14a8d987ddd53ec914de73cf74761d622f517a6fe",
+      "identicalToHEAD": true
+    },
+    "scripts/check-identity-locks.ts": {
+      "sha256": "6809a61c6e10735c0ed051949601ba56232e71c4db5318e3bfc3ab419729b5e9",
+      "changedThisReview": false
+    },
+    "tests/identity-lock-architecture.test.ts": {
+      "sha256": "714433bb74bfeee77f449c3aee4b7a1a02b2cf85513ff8271365225e2857356c",
+      "changedThisReview": false
+    }
+  },
+  "reused": "Prior management reader SQL checks, original identity fence PASS and 3 architecture checks; unchanged relevant reader/registry and dependencies. No independent approval supplied. Existing audit FAIL retained, not rerun.",
+  "notCurrentClaims": "Prior full production/browser/build reports are historical for their source. No current production-build/full-suite/hosted/UAT claim.",
+  "priorCompilerManifestComparison": {
+    "manifest": "planning/task-evidence/T013-assignment-management/compiler-source-proof.json",
+    "unchangedFiles": 1297,
+    "changedFiles": [
+      "src/skills/practice-assignment-manager-client.ts",
+      "src/app/api/v1/admin/practice/review-assignments/route.ts",
+      "tests/practice-assignment-manager-client.test.ts",
+      "tests/practice-assignment-management-db.test.ts",
+      "tests/browser-practice-assignment-management/assignment-management.spec.ts",
+      "examples/practice-review-assignments/skills/practice-assignment-manager-client.ts"
+    ],
+    "interpretation": "All storage reader/authorization/SQL/concurrency dependencies remain exact. Reader/fence evidence reused. Prior production/browser/build evidence is historical for its source; current checks explicitly recorded. No independent approval."
+  }
+}

@@ -1,0 +1,240 @@
+{
+  "task_id": "T013",
+  "scope": "Private administrator explicit-submission appointment lookup/history and accessible finite issue/reasoned revoke screen over original protected APIs; new current metadata read and GETHEAD, stable one-pending operation controller, canonical pure retained-export contracts and all7consumerdependency pairs.",
+  "status": "SELF-EVALUATED functional VERIFIED_IN_TEST; dependency-security FAIL; full T013 and Claude review NOT VERIFIED",
+  "implementer": "Codex /root",
+  "reviewer": "CLAUDE INDEPENDENT REVIEW PENDING",
+  "handoff": "docs/tasks/2026-10-23-T013-assignment-management.md; docs/ai-handoff/CURRENT.md; planning/task-evidence/T013-assignment-management/review.json",
+  "migration_rollback": "No schema; disable new writes/remove additiveUI/GETHEAD while preserving immutable appointments/revocations/private audits/receipts and original command replay. Keep root security gate failed until remediation.",
+  "dependency_evidence": "96newlocal/308affected/155docs/20browser/currenttypes/build/owninstalledPGHTTPReact PASS; fresh unchangedRootdependency audit FAIL8unallowlistedleafadvisories. No publication approval.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "NOT APPROVED: freshdependency-securityFAIL plus missing independent/hosted/UAT/operating/release; flags defaultoff in product, only isolatedsyntheticpreview enablesownwrites.",
+  "baseline_sha": "1877b2a7b39e1a28fb50aacb711513182893941c",
+  "source_identity": "Uncommitted context/form plus preserved prior UI/HTTP/identity work; compiler-source-proof.json1278exactfiles, independentconsumer55exactfiles, preview-source-proof.json separate devcache. No commit/push/merge/branch change.",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded author functional evidence only:96newlocal/308affected+155docs/20browser/ownPGHTTPReact/types/build/static PASS; Root dependency audit FAIL. Claude independent/fullcriterion/UAT/hosted/operating/release NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/review.json; docs/tasks/2026-10-23-T013-assignment-management.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "ownedPG-run vitest management-db; vitest management-http/client/view",
+      "sha": "0d20d5f0ff8d45159d19902508ba6b53533f1ae9",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/storage-red.log;http-red.log;client-red.log;view-red.log",
+      "expected_failure": "Missing current scoped administrator management read, strict GET/HEAD, stablependingcontroller and forms before implementation.",
+      "observed_failure": "14actualPGfail;21HTTPfail7controls;26controllerfail1control;13viewfail2controls.",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "ownedPG selected read/assignment regressions; newunit/controller/view/Root tests",
+      "sha": "0d20d5f0ff8d45159d19902508ba6b53533f1ae9",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/storage-green.log;http-green.log;client-green.log;view-client-http-green.log;root-final.log",
+      "observed": "14readPASS+3laterregressions,28HTTP27controller15view9Root=96newlocalPASS.",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "currentaffected/refactor tests; independentconsumer; currentbrowserdevprod+writeoff; types/build/static/planning/sourceproof",
+      "sha": "0d20d5f0ff8d45159d19902508ba6b53533f1ae9",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/affected.log;refactor-final.log;verification-final-driver.log;review.json",
+      "observed": "308affected/298currentrefactorincl155docs with165exactruntime-equivalentchecksreused;20currentbrowser/ownPGHTTPReact/types/build/static/planningPASS. Separate fresh security gateFAIL remains explicit, not markedgreen.",
+      "result": "PASS"
+    }
+  },
+  "ci": {
+    "planning-contracts": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "static": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "dependency-security": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "test": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "docker": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "browser": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    },
+    "ci-gate": {
+      "result": "NOT VERIFIED",
+      "reason": "No hosted exact-candidate run; uncommitted slice. Local checks are not hosted CI."
+    }
+  },
+  "local_gate_failures": {
+    "dependency-security": {
+      "result": "FAIL",
+      "command": "npm run audit:check",
+      "observed": "8unallowlistedleafadvisories, unchangedRootpackage/lock/auditpolicy",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/security-final.log; audit-findings.json"
+    }
+  }
+}

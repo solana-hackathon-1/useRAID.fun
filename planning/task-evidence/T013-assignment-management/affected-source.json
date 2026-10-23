@@ -1,0 +1,5 @@
+{
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assignment-management-build-3w41q16s",
+  "evidence": "affected.log;308PASS17files41.27s",
+  "changesAfter": "Unused canonical record-schema imports removed from HTTP module; fourth browser case now checks live visible DOM, preserving initial unauthenticated full-HTML absence checks. Other runtime source/test/schema/dependency bytes exact or verified below."
+}

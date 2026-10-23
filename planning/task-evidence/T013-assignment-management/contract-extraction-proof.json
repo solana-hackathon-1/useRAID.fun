@@ -1,0 +1,159 @@
+{
+  "baseline": "0d20d5f",
+  "at": "2026-10-23T05:03:29.905Z",
+  "checks": [
+    {
+      "name": "Timestamp",
+      "sha256": "cbba78d78769d727ca5c71d825e285a2683aaefdd696c447134c8fbeac0cc5cd"
+    },
+    {
+      "name": "Reason",
+      "sha256": "f13988f56763a97798999a18c20a79e4289d456854d44132ed12647ec253152c"
+    },
+    {
+      "name": "PracticeReviewPurposeSchema",
+      "sha256": "a8458cecb700340d5f6fc147e9e71f4ba791cd3656c057b24e045905d25a9157"
+    },
+    {
+      "name": "IssuePracticeReviewAssignmentInputSchema",
+      "sha256": "61e318a08200020d8a1245b1fe256d0d98bbd17212f0ea6f4a7e53f5f4b7bcc6"
+    },
+    {
+      "name": "RevokePracticeReviewAssignmentInputSchema",
+      "sha256": "e00cf3d3873d35209da03e99ec82da1775c4b9e4606a5a2a15f7fe16919564cc"
+    },
+    {
+      "name": "PracticeReviewAssignmentRecordSchema",
+      "sha256": "15a87775d6bcfb496749b4104391b8ac83686e02a0b405b904da2a2ab2ce8d96"
+    },
+    {
+      "name": "PracticeReviewRevocationRecordSchema",
+      "sha256": "25920e34373f8bf23c1ed96feb21e7feba5252da7e6f39050e47c293c4891229"
+    },
+    {
+      "name": "PracticeReviewAssignmentRecord",
+      "sha256": "10cdba1adbe7f197b5a6fce2a7fe92c4a1e6736015a3569d75edacaf4369cc24"
+    },
+    {
+      "name": "PracticeReviewRevocationRecord",
+      "sha256": "ccae6fd734c4c49de028c272d718e5bd02583566e2ce5367ae4764464f30d849"
+    },
+    {
+      "name": "Common",
+      "sha256": "8c3f812e29a29ec1917348e792a5780479dc8c880c19f3218b75c82a9043e2ac"
+    },
+    {
+      "name": "available",
+      "sha256": "0f64095f0d6870fe13368ecd98fd7cf213c803c5f7828197c669404c651c7f25"
+    },
+    {
+      "name": "PracticeReviewAssignmentIssueResultSchema",
+      "sha256": "2a33376356261523d50f2a4f2f87805ab6d6224120e2ff4a52475045b4d59fcc"
+    },
+    {
+      "name": "PracticeReviewAssignmentRevokeResultSchema",
+      "sha256": "fb2e71b362db67259c13e64e33a802cc56f915d496b619f5eccf8ad2f5e8491d"
+    },
+    {
+      "name": "UseInput",
+      "sha256": "096202ded80b42c3836a5b7cd713bd5d73a521fffaa48674be68704c2b34511f"
+    },
+    {
+      "name": "PracticeReviewAssignmentError",
+      "sha256": "776c2420db59f58e2353f8b1081a19c1bb9405f85bfbd0363890bb830e242a61"
+    },
+    {
+      "name": "actorValid",
+      "sha256": "5c7d99d5d3060de768ca6370f4a6ab5d035cd000fe2c50a9b3db842dfc21fa56"
+    },
+    {
+      "name": "query",
+      "sha256": "36c7661cd1ab5b34b08349dee6a1cf2f45b205b75d0b4dc75e381cb083db3287"
+    },
+    {
+      "name": "authorize",
+      "sha256": "8a57c737d1c13ab3de7acfab44a86bc3903c9cb25a12163b2162e11fd6c4fa21"
+    },
+    {
+      "name": "preflightManagement",
+      "sha256": "eb25af7b8a988c8153a9c60c1a7ff31fa3514468c4460c51add6e5ac976dc595"
+    },
+    {
+      "name": "allowed",
+      "sha256": "30b29eeb9cccab2c61ad53f64bf0325adbcb638dc1b927a8d12f99b4ce892ea7"
+    },
+    {
+      "name": "scopeFor",
+      "sha256": "d5ee103f302ea4c0a0dbaae5101a4cdf813c383f77705b80ef2dab4cde059723"
+    },
+    {
+      "name": "manage",
+      "sha256": "b38bbce5fe703491e847e07d4a216237f26791689d1baf3b91f9493dfe17fc43"
+    },
+    {
+      "name": "lockUsers",
+      "sha256": "69a97e2356318bcf74e7ad6233d71fd80cfc79b21e132ba9a2055c692ed2b2a8"
+    },
+    {
+      "name": "loadAssignment",
+      "sha256": "68c4f6b7ba01fb081d047457465ec61e1d0e09e031b64d2e285708c0ca767c9a"
+    },
+    {
+      "name": "loadRevocation",
+      "sha256": "660886c8814766b4c422b929dd6c7aec9ff49919f62c6862b042b59f23fa6201"
+    },
+    {
+      "name": "optionsValid",
+      "sha256": "8f0ca7509cd7962aec5551d789a87d7983f7de3787c25e797dc592a38317ea1e"
+    },
+    {
+      "name": "managementFor",
+      "sha256": "e693cf28fa74b6feb8aca3c8663010e7c0ddf2e0b2fc727e5515619e3c4c1fed"
+    },
+    {
+      "name": "issuePracticeReviewAssignment",
+      "sha256": "8f02343b75422dd7f4e6164085e621f0efc7bcd48a1d31596caf29e545cadc04"
+    },
+    {
+      "name": "revokePracticeReviewAssignment",
+      "sha256": "a0ad96d58dd4e29616426a0f18b13b079b86990472c4ddb77535b56ce784c5d1"
+    },
+    {
+      "name": "lockPracticeReviewAssignment",
+      "sha256": "8493703d9d3191436bb962e58885097785b24d03f83b128264827a1fade9c2d5"
+    },
+    {
+      "name": "PracticeReviewAssignmentHttpError",
+      "sha256": "dbd3c4cacde1396e6a01f8cdb2fda54a8d315e33f10f6aa632ecf2006211b2c1"
+    },
+    {
+      "name": "PracticeReviewAssignmentHttpHost",
+      "sha256": "942c619bd142f46b920fe30c03539e3e4766731eac593e2f20f7a1eca96b971f"
+    },
+    {
+      "name": "practiceReviewAssignmentPrivateHeaders",
+      "sha256": "92e401a1ac78ea9cc81063fd1ab756f4c5961509ebc65e35f86a22efa1edfbf1"
+    },
+    {
+      "name": "Params",
+      "sha256": "471d9d5453af9f380f3d8a7f73d85150c54a9521f5aef311bfd18511bfcc50a0"
+    },
+    {
+      "name": "MAXIMUM_BODY_BYTES",
+      "sha256": "e99bc2a1c56183443588effdb99291b207da5cef7395bc925207a8b52942de3f"
+    },
+    {
+      "name": "fail",
+      "sha256": "62b3e8ca51f812077aac869be6e41dc3feff694ed31d96324452a56dd094f14d"
+    },
+    {
+      "name": "failure",
+      "sha256": "b4883e7dd2dee4537a0924eddecc7927904a7a636036f195c3e5b5e777940047"
+    },
+    {
+      "name": "createPracticeReviewAssignmentHandlers",
+      "sha256": "0db0ea8406a18b1febab206731e5778bcd8b966e38342c6a04215066c8e50a56"
+    }
+  ],
+  "conclusion": "Canonical existing schemas, write/read-use functions and original POST factory are AST-identical. Imports/exports/dependency links changed; new management read/API/UI are additive."
+}

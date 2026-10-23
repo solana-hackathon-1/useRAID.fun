@@ -147,6 +147,10 @@ jobs:
         run: npx playwright test --config=playwright.practice-review.config.ts
       - name: Evaluator assignment inbox desktop and mobile suite
         run: npx playwright test --config=playwright.practice-review-inbox.config.ts
+      - name: Administrator appointment management desktop and mobile suite
+        run: npx playwright test --config=playwright.assignment-management.config.ts
+      - name: Administrator appointment management writeoff suite
+        run: ASSIGNMENT_MANAGEMENT_TEST_WRITES=false npx playwright test --config=playwright.assignment-management.config.ts
       - name: Ownership finding desktop and mobile suite
         run: npx playwright test --config=playwright.practice-ownership.config.ts
       - name: Assessment review and decision browser checks
@@ -169,6 +173,10 @@ jobs:
         run: PRACTICE_REVIEW_SERVER_MODE=production npx playwright test --config=playwright.practice-review.config.ts
       - name: Production evaluator assignment inbox suite
         run: PRACTICE_REVIEW_INBOX_SERVER_MODE=production npx playwright test --config=playwright.practice-review-inbox.config.ts
+      - name: Production administrator appointment management suite
+        run: ASSIGNMENT_MANAGEMENT_SERVER_MODE=production npx playwright test --config=playwright.assignment-management.config.ts
+      - name: Production administrator appointment management writeoff suite
+        run: ASSIGNMENT_MANAGEMENT_TEST_WRITES=false ASSIGNMENT_MANAGEMENT_SERVER_MODE=production npx playwright test --config=playwright.assignment-management.config.ts
       - name: Production ownership finding suite
         run: PRACTICE_OWNERSHIP_SERVER_MODE=production npx playwright test --config=playwright.practice-ownership.config.ts
       - name: Production assessment review and decision browser checks

@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-23T05:41:50.075504+00:00",
+  "sha256": {
+    "src/skills/practice-assignment-manager-client.ts": "563af1d3a9ce460352e0a1e8461c3b2077841659fa8b951fbefed87215dacd66",
+    "src/app/api/v1/admin/practice/review-assignments/route.ts": "1c68378a4788e7399b0bab61d4114d0d06c3960e544aaff0c68af4a91cb4ea3f",
+    "tests/practice-assignment-manager-client.test.ts": "f2b8339f7878938b216241e99c1812d45821fa8df2f59259ab704febb0971f32",
+    "tests/practice-assignment-management-db.test.ts": "eb2aac1450a2e2bd1c719ecc4a3494a65dc5e659d5171a7f8a5830f9e896eda7",
+    "tests/browser-practice-assignment-management/assignment-management.spec.ts": "5ec73676e706aea0bd307585531f50c7eb575f81b961a81cd14c7414add6cc8a",
+    "docs/raid-practice-assignment-management.md": "68fad3d9f48d96a2a16bb60039a54c512b587469631adbc97ef0ba4529eb7d71",
+    "docs/tasks/2026-10-23-T013-assignment-management-review-fixes.md": "f3842e5a08ce826db3369a0afe3da8692fd41bafca759e36268000af5ab36694",
+    "docs/ai-handoff/CURRENT.md": "6dd87875f2796e97ccab7c12eb75c0e1e66b1f5074cf13fe15557bacb5f002a5"
+  },
+  "trackedOwnedDiff": "PASS excluding only preserved preexisting inbox preview log",
+  "wholeTreeDiff": "FAIL exit2 solely preserved inbox preview log trailing whitespace; no cleanup",
+  "staging": "EMPTY",
+  "markdownFileLinks": "PASS",
+  "branch": "claude/t013-practice-trial-ui"
+}

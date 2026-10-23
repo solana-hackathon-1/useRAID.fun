@@ -1,0 +1,33 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-assignment-root-http.test.ts (12 tests | 1 failed) 31ms
+   × exposes POST only, dynamic Node, and forwards params as a promise 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-assignment-root-http.test.ts > exposes POST only, dynamic Node, and forwards params as a promise
+AssertionError: expected { dynamic: 'force-dynamic', …(4), …(1) } to not have property "GET"
+
+- Expected:
+undefined
+
++ Received:
+[Function get]
+
+ ❯ tests/practice-review-assignment-root-http.test.ts:147:23
+    145|   for (const mod of routeModules)
+    146|     for (const verb of ['GET', 'HEAD', 'PUT', 'PATCH', 'DELETE'])
+    147|       expect(mod).not.toHaveProperty(verb);
+       |                       ^
+    148|   const request = new Request('http://raid.test/', { method: 'POST' });
+    149|   ports.issue.mockResolvedValue(new Response('i'));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 47 passed (48)
+   Start at  10:30:16
+   Duration  1.14s (transform 164ms, setup 0ms, import 447ms, tests 130ms, environment 0ms)
+

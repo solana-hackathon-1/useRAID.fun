@@ -1,0 +1,1 @@
+../../../src/components/practice-assignment-manager.tsx

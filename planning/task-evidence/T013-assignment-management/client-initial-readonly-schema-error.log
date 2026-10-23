@@ -1,0 +1,204 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-manager-client.test.ts (27 tests | 21 failed) 13ms
+   × builds only canonical issue input from editable fields, saves own-bound receipt, then requires refresh 5ms
+   × normalizes pasted UUID case and expiry to exact canonical server result format 0ms
+   × rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '  Synthetic finite review.  ', issuedByAccountId: 'attacker' } 0ms
+   × rejects hidden authority/target/invalid fields { submissionId: '55555555-5555-4555-8555-555555555555', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '  Synthetic finite review.  ' } 0ms
+   × rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '' } 0ms
+   × rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: 'bad', reason: '  Synthetic finite review.  ' } 0ms
+   × rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '  Synthetic finite review.  ', version: 'v1' } 0ms
+   × keeps exactISSUE kind/body/key after unknown response and locks all other actions/lookup until same-request replay 0ms
+   × locks duplicate clicks and reads while issue is in flight 1ms
+   × keeps malformed/misbound committed success uncertain null 0ms
+   × keeps malformed/misbound committed success uncertain {} 0ms
+   × keeps malformed/misbound committed success uncertain { version: 'v1', status: 'EXECUTED', writesAvailable: true, unavailableReason: null, assignment: { version: 'v1', id: '22222222-2222-4222-8222-222222222222', submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'OWNERSHIP_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', issuedAt: '2026-10-23T11:00:00.000Z', issuedByAccountId: 'foreign', reason: 'Original synthetic assignment.', state: 'ISSUED', isAuthorizationToken: false } } 0ms
+   × keeps malformed/misbound committed success uncertain { version: 'v1', status: 'EXECUTED', writesAvailable: true, unavailableReason: null, assignment: { version: 'v1', id: '22222222-2222-4222-8222-222222222222', submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', issuedAt: '2026-10-23T11:00:00.000Z', issuedByAccountId: 'manager-account', reason: 'different', state: 'ISSUED', isAuthorizationToken: false } } 0ms
+   × clears private context for known HTTP401 even malformed error body 0ms
+   × clears private context for known HTTP403 even malformed error body 0ms
+   × clears private context for known HTTP404 even malformed error body 0ms
+   × retains colliding intent locked instead of silently creating a new key 0ms
+   × allows correcting a known invalid command HTTP413 0ms
+   × allows correcting a known invalid command HTTP415 0ms
+   × allows correcting a known invalid command HTTP422 0ms
+   × does not send invalid request identity or leak key-generator diagnostics 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 21 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > builds only canonical issue input from editable fields, saves own-bound receipt, then requires refresh
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:52:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > normalizes pasted UUID case and expiry to exact canonical server result format
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:71:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '  Synthetic finite review.  ', issuedByAccountId: 'attacker' }
+ FAIL  tests/practice-assignment-manager-client.test.ts > rejects hidden authority/target/invalid fields { submissionId: '55555555-5555-4555-8555-555555555555', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '  Synthetic finite review.  ' }
+ FAIL  tests/practice-assignment-manager-client.test.ts > rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '' }
+ FAIL  tests/practice-assignment-manager-client.test.ts > rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: 'bad', reason: '  Synthetic finite review.  ' }
+ FAIL  tests/practice-assignment-manager-client.test.ts > rejects hidden authority/target/invalid fields { submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', reason: '  Synthetic finite review.  ', version: 'v1' }
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:86:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps exactISSUE kind/body/key after unknown response and locks all other actions/lookup until same-request replay
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:121:35
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > locks duplicate clicks and reads while issue is in flight
+AssertionError: expected 'EDITING' to be 'BUSY' // Object.is equality
+
+Expected: "BUSY"
+Received: "EDITING"
+
+ ❯ tests/practice-assignment-manager-client.test.ts:142:30
+    140|   const c = createPracticeAssignmentManager(context, transport, key);
+    141|   const pending = c.issue(fields);
+    142|   expect(c.snapshot().phase).toBe('BUSY');
+       |                              ^
+    143|   await c.issue(fields);
+    144|   await c.revoke(id, 'reason');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps malformed/misbound committed success uncertain null
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps malformed/misbound committed success uncertain {}
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps malformed/misbound committed success uncertain { version: 'v1', status: 'EXECUTED', writesAvailable: true, unavailableReason: null, assignment: { version: 'v1', id: '22222222-2222-4222-8222-222222222222', submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'OWNERSHIP_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', issuedAt: '2026-10-23T11:00:00.000Z', issuedByAccountId: 'foreign', reason: 'Original synthetic assignment.', state: 'ISSUED', isAuthorizationToken: false } }
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps malformed/misbound committed success uncertain { version: 'v1', status: 'EXECUTED', writesAvailable: true, unavailableReason: null, assignment: { version: 'v1', id: '22222222-2222-4222-8222-222222222222', submissionId: '11111111-1111-4111-8111-111111111111', evaluatorAccountId: 'evaluator-account', purpose: 'ASSESSMENT_REVIEW', expiresAt: '2030-01-01T00:00:00.000Z', issuedAt: '2026-10-23T11:00:00.000Z', issuedByAccountId: 'manager-account', reason: 'different', state: 'ISSUED', isAuthorizationToken: false } }
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:167:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > clears private context for known HTTP401 even malformed error body
+ FAIL  tests/practice-assignment-manager-client.test.ts > clears private context for known HTTP403 even malformed error body
+ FAIL  tests/practice-assignment-manager-client.test.ts > clears private context for known HTTP404 even malformed error body
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:176:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > retains colliding intent locked instead of silently creating a new key
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:185:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > allows correcting a known invalid command HTTP413
+ FAIL  tests/practice-assignment-manager-client.test.ts > allows correcting a known invalid command HTTP415
+ FAIL  tests/practice-assignment-manager-client.test.ts > allows correcting a known invalid command HTTP422
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:205:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/21]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > does not send invalid request identity or leak key-generator diagnostics
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:236:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/21]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+TypeError: IssuePracticeReviewAssignmentInputSchema.omit is not a function
+ ❯ Object.issue src/skills/practice-assignment-manager-client.ts:214:65
+    212|     async issue(fields: unknown) {
+    213|       if (state.phase !== 'EDITING' || !state.context?.writesAvailable…
+    214|       const editable = IssuePracticeReviewAssignmentInputSchema.omit({…
+       |                                                                 ^
+    215|         .strict()
+    216|         .safeParse(fields);
+ ❯ tests/practice-assignment-manager-client.test.ts:141:21
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+ ❯ runWithCancel node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10
+ ❯ node_modules/@vitest/runner/dist/chunk-artifact.js:2305:20
+ ❯ runWithTimeout node_modules/@vitest/runner/dist/chunk-artifact.js:2272:10
+
+This error originated in "tests/practice-assignment-manager-client.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  21 failed | 6 passed (27)
+     Errors  1 error
+   Start at  10:26:16
+   Duration  209ms (transform 29ms, setup 0ms, import 75ms, tests 13ms, environment 0ms)
+

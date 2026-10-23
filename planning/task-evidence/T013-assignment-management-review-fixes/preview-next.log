@@ -1,0 +1,16 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:50274
+- Network:       http://127.0.0.1:50274
+✓ Ready in 265ms
+✓ Running next.config.ts took 16ms
+
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /methodology 200 in 896ms (next.js: 702ms, application-code: 194ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /admin/practice/review-assignments?submissionId=e9e5b7a3-48bc-4c1a-bafa-bb878cd35725 200 in 977ms (next.js: 684ms, application-code: 293ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=e9e5b7a3-48bc-4c1a-bafa-bb878cd35725 200 in 754ms (next.js: 698ms, application-code: 56ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /admin/practice/review-assignments?submissionId=e9e5b7a3-48bc-4c1a-bafa-bb878cd35725 200 in 251ms (next.js: 23ms, application-code: 228ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=e9e5b7a3-48bc-4c1a-bafa-bb878cd35725 200 in 28ms (next.js: 0.9ms, application-code: 27ms)
+ GET /admin/practice/review-assignments?submissionId=e9e5b7a3-48bc-4c1a-bafa-bb878cd35725 200 in 135ms (next.js: 4ms, application-code: 131ms)
+ GET /admin/practice/review-assignments?submissionId=e9e5b7a3-48bc-4c1a-bafa-bb878cd35725 200 in 189ms (next.js: 5ms, application-code: 184ms)

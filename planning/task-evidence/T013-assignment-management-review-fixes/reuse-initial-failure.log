@@ -1,0 +1,9 @@
+Initial source-comparison assertion expected 5 changed paths and failed: 6 changed paths, including the documented consuming-example symlink to the changed client. No product/test assertion changed. Corrected the comparison to include that canonical symlink.
+[
+  "src/skills/practice-assignment-manager-client.ts",
+  "src/app/api/v1/admin/practice/review-assignments/route.ts",
+  "tests/practice-assignment-manager-client.test.ts",
+  "tests/practice-assignment-management-db.test.ts",
+  "tests/browser-practice-assignment-management/assignment-management.spec.ts",
+  "examples/practice-review-assignments/skills/practice-assignment-manager-client.ts"
+]

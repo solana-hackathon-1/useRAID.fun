@@ -1,0 +1,14 @@
+{
+  "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assignment-management-build-3w41q16s",
+  "affectedLog": "affected.log",
+  "observed": "308PASS17files41.27s including actualPG",
+  "changesAfter": [
+    "src/skills/practice-review-assignment-http.ts",
+    "tests/browser-practice-assignment-management/assignment-management.spec.ts",
+    "tests/helpers/practice-assignment-management-preview-seed.ts",
+    "examples/practice-review-assignments/skills/practice-review-assignment-http.ts"
+  ],
+  "reason": "Only two unused record-schema imports removed (identical TS-emitted JavaScript proven in import-cleanup-equivalence.log), its canonical example alias, fourth browser assertion corrected to live visible DOM, preview-only seed added. Current final HTTP/UI/Root143+docs155=298 checks replace those current boundaries; other165 exact checks reused.",
+  "contractProof": "contract-extraction-proof.json38AST-identical prior contracts/functions",
+  "newChecks": "17realPG +79unitRoot =96;3SQL adverse cases added as regression after14 genuine failing-first cases; no fabricated RootRED."
+}

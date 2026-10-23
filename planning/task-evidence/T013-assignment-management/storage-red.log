@@ -1,0 +1,362 @@
+01f1a3c5c666aa28231287565f92443b37e054d2c21268fc4ab4307e11a56abf
+OWNED DATABASE: raid-t013-assignment-management-20261023 loopback port 55035
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "useraid_test", schema "public" at "127.0.0.1:55035"
+
+35 migrations found in prisma/migrations
+
+Applying migration `202609270001_init`
+Applying migration `202609280001_x_connection`
+Applying migration `202609280002_pump_launch`
+Applying migration `202609290001_x_tracking`
+Applying migration `202609290002_standalone_raids`
+Applying migration `202609300001_creator_studio`
+Applying migration `202610020001_studio_fk_alignment`
+Applying migration `202610020002_job_dead_letter`
+Applying migration `202610020003_x_budget_controls`
+Applying migration `202610020004_raid_money_policies`
+Applying migration `202610020005_token_metadata_source`
+Applying migration `202610020006_auth_hardening`
+Applying migration `202610020007_media_assets`
+Applying migration `202610020008_wallet_rotation`
+Applying migration `202610020009_launch_finance_hardening`
+Applying migration `202610020010_hot_path_indexes`
+Applying migration `202610020011_ledger_integrity`
+Applying migration `202610020012_state_checks`
+Applying migration `202610080001_participant_mapping`
+Applying migration `202610090001_command_receipts`
+Applying migration `202610090002_asset_registry`
+Applying migration `202610090003_wallet_links`
+Applying migration `202610130001_raider_preferences`
+Applying migration `202610130002_guild_drafts`
+Applying migration `202610130003_guild_project_proposals`
+Applying migration `202610140001_skill_taxonomy`
+Applying migration `202610140002_skill_claims`
+Applying migration `202610150001_practice_trial_definitions`
+Applying migration `202610150002_practice_trial_starts`
+Applying migration `202610150003_practice_trial_submissions`
+Applying migration `202610150004_practice_review_assignments`
+Applying migration `202610150005_practice_review_policies`
+Applying migration `202610160001_practice_trial_ownership`
+Applying migration `202610160002_practice_trial_assessments`
+Applying migration `202610160003_assessment_decisions`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202609270001_init/
+    └─ migration.sql
+  └─ 202609280001_x_connection/
+    └─ migration.sql
+  └─ 202609280002_pump_launch/
+    └─ migration.sql
+  └─ 202609290001_x_tracking/
+    └─ migration.sql
+  └─ 202609290002_standalone_raids/
+    └─ migration.sql
+  └─ 202609300001_creator_studio/
+    └─ migration.sql
+  └─ 202610020001_studio_fk_alignment/
+    └─ migration.sql
+  └─ 202610020002_job_dead_letter/
+    └─ migration.sql
+  └─ 202610020003_x_budget_controls/
+    └─ migration.sql
+  └─ 202610020004_raid_money_policies/
+    └─ migration.sql
+  └─ 202610020005_token_metadata_source/
+    └─ migration.sql
+  └─ 202610020006_auth_hardening/
+    └─ migration.sql
+  └─ 202610020007_media_assets/
+    └─ migration.sql
+  └─ 202610020008_wallet_rotation/
+    └─ migration.sql
+  └─ 202610020009_launch_finance_hardening/
+    └─ migration.sql
+  └─ 202610020010_hot_path_indexes/
+    └─ migration.sql
+  └─ 202610020011_ledger_integrity/
+    └─ migration.sql
+  └─ 202610020012_state_checks/
+    └─ migration.sql
+  └─ 202610080001_participant_mapping/
+    └─ migration.sql
+  └─ 202610090001_command_receipts/
+    └─ migration.sql
+  └─ 202610090002_asset_registry/
+    └─ migration.sql
+  └─ 202610090003_wallet_links/
+    └─ migration.sql
+  └─ 202610130001_raider_preferences/
+    └─ migration.sql
+  └─ 202610130002_guild_drafts/
+    └─ migration.sql
+  └─ 202610130003_guild_project_proposals/
+    └─ migration.sql
+  └─ 202610140001_skill_taxonomy/
+    └─ migration.sql
+  └─ 202610140002_skill_claims/
+    └─ migration.sql
+  └─ 202610150001_practice_trial_definitions/
+    └─ migration.sql
+  └─ 202610150002_practice_trial_starts/
+    └─ migration.sql
+  └─ 202610150003_practice_trial_submissions/
+    └─ migration.sql
+  └─ 202610150004_practice_review_assignments/
+    └─ migration.sql
+  └─ 202610150005_practice_review_policies/
+    └─ migration.sql
+  └─ 202610160001_practice_trial_ownership/
+    └─ migration.sql
+  └─ 202610160002_practice_trial_assessments/
+    └─ migration.sql
+  └─ 202610160003_assessment_decisions/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-management-db.test.ts (14 tests | 14 failed) 3102ms
+     × returns actual immutable appointment/current state and audited private metadata without case answers 233ms
+     × authenticates/authorizes even blank screen or missing submission before exposing target metadata 158ms
+     × rejects currentwallet without metadata access audit 173ms
+     × rejects currentnon-admin without metadata access audit 195ms
+     × rejects currentrestricted without metadata access audit 186ms
+     × rejects currentallowlist without metadata access audit 164ms
+     × requires actual scoped per-record policy and rolls audit back on denied page, without cursor leakage 154ms
+     × shows actual saved revocation while original assignment remains historical ISSUED 215ms
+     × observes expiry after a wait under held locks, without claiming current active state 379ms
+     × rejects session expiry during metadata waits and rolls audit back 183ms
+     × paginates exact submission20+1 and current policy sees actual saved evaluator/subject/expiry 610ms
+     × rejects forged/invalid target before reads { version: 'v1', submissionId: null, after: '57b16085-8aa7-4897-be05-98bbeefe97f8' } 153ms
+     × rejects forged/invalid target before reads { version: 'v1', submissionId: 'bad', after: null } 149ms
+     × rejects forged/invalid target before reads { version: 'v1', submissionId: null, after: null, admin: true } 148ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > returns actual immutable appointment/current state and audited private metadata without case answers
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeAssignmentManagement src/skills/practice-review-assignment-storage.ts:510:8
+    508|  _tx:CommandReceiptTransaction,_actor:SkillTaxonomyActor,_input:unknow…
+    509| ):Promise<{managerXId:string;page:import('./practice-review-assignment…
+    510|  throw new Error('NOT_IMPLEMENTED');
+       |        ^
+    511| }
+    512|
+ ❯ tests/practice-assignment-management-db.test.ts:17:73
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:28
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ tests/practice-assignment-management-db.test.ts:17:38
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > authenticates/authorizes even blank screen or missing submission before exposing target metadata
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeAssignmentManagement src/skills/practice-review-assignment-storage.ts:510:8
+    508|  _tx:CommandReceiptTransaction,_actor:SkillTaxonomyActor,_input:unknow…
+    509| ):Promise<{managerXId:string;page:import('./practice-review-assignment…
+    510|  throw new Error('NOT_IMPLEMENTED');
+       |        ^
+    511| }
+    512|
+ ❯ tests/practice-assignment-management-db.test.ts:13:92
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:28
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ tests/practice-assignment-management-db.test.ts:25:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects currentwallet without metadata access audit
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects currentnon-admin without metadata access audit
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'FORBIDDEN' }
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-assignment-management-db.test.ts:34:41
+     32|   if(kind==='restricted')await db.user.update({where:{id:admin.account…
+     33|   const opts=options();if(kind==='allowlist')opts.canInspect=()=>false;
+     34|   await expect(read(input(),admin,opts)).rejects.toMatchObject({code:k…
+       |                                         ^
+     35|   expect(await db.auditEvent.count({where:{actorId:admin.accountId,eve…
+     36|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects currentrestricted without metadata access audit
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'ACCOUNT_RESTRICTED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "ACCOUNT_RESTRICTED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-assignment-management-db.test.ts:34:41
+     32|   if(kind==='restricted')await db.user.update({where:{id:admin.account…
+     33|   const opts=options();if(kind==='allowlist')opts.canInspect=()=>false;
+     34|   await expect(read(input(),admin,opts)).rejects.toMatchObject({code:k…
+       |                                         ^
+     35|   expect(await db.auditEvent.count({where:{actorId:admin.accountId,eve…
+     36|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects currentallowlist without metadata access audit
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'FORBIDDEN' }
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-assignment-management-db.test.ts:34:41
+     32|   if(kind==='restricted')await db.user.update({where:{id:admin.account…
+     33|   const opts=options();if(kind==='allowlist')opts.canInspect=()=>false;
+     34|   await expect(read(input(),admin,opts)).rejects.toMatchObject({code:k…
+       |                                         ^
+     35|   expect(await db.auditEvent.count({where:{actorId:admin.accountId,eve…
+     36|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > requires actual scoped per-record policy and rolls audit back on denied page, without cursor leakage
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'FORBIDDEN' }
+
+- Expected
++ Received
+
+- {
+-   "code": "FORBIDDEN",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-assignment-management-db.test.ts:38:71
+     36|  });
+     37|  it('requires actual scoped per-record policy and rolls audit back on …
+     38|   await expect(read(input(),admin,{...options(),canManage:()=>false}))…
+       |                                                                       ^
+     39|   expect(await db.auditEvent.count({where:{actorId:admin.accountId,eve…
+     40|  });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > shows actual saved revocation while original assignment remains historical ISSUED
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeAssignmentManagement src/skills/practice-review-assignment-storage.ts:510:8
+    508|  _tx:CommandReceiptTransaction,_actor:SkillTaxonomyActor,_input:unknow…
+    509| ):Promise<{managerXId:string;page:import('./practice-review-assignment…
+    510|  throw new Error('NOT_IMPLEMENTED');
+       |        ^
+    511| }
+    512|
+ ❯ tests/practice-assignment-management-db.test.ts:13:92
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:28
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ tests/practice-assignment-management-db.test.ts:42:32
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > observes expiry after a wait under held locks, without claiming current active state
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeAssignmentManagement src/skills/practice-review-assignment-storage.ts:510:8
+    508|  _tx:CommandReceiptTransaction,_actor:SkillTaxonomyActor,_input:unknow…
+    509| ):Promise<{managerXId:string;page:import('./practice-review-assignment…
+    510|  throw new Error('NOT_IMPLEMENTED');
+       |        ^
+    511| }
+    512|
+ ❯ tests/practice-assignment-management-db.test.ts:46:51
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:28
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ tests/practice-assignment-management-db.test.ts:46:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects session expiry during metadata waits and rolls audit back
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'AUTHENTICATION_REQUIRED' }
+
+- Expected
++ Received
+
+- {
+-   "code": "AUTHENTICATION_REQUIRED",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-assignment-management-db.test.ts:51:329
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > paginates exact submission20+1 and current policy sees actual saved evaluator/subject/expiry
+Error: NOT_IMPLEMENTED
+ ❯ readPracticeAssignmentManagement src/skills/practice-review-assignment-storage.ts:510:8
+    508|  _tx:CommandReceiptTransaction,_actor:SkillTaxonomyActor,_input:unknow…
+    509| ):Promise<{managerXId:string;page:import('./practice-review-assignment…
+    510|  throw new Error('NOT_IMPLEMENTED');
+       |        ^
+    511| }
+    512|
+ ❯ tests/practice-assignment-management-db.test.ts:13:92
+ ❯ db.$transaction.isolationLevel src/lib/command-receipts-adapter.ts:93:28
+ ❯ callback node_modules/@prisma/client/src/runtime/getPrismaClient.ts:722:23
+ ❯ retryWholeTransaction src/command-receipts/index.ts:304:14
+ ❯ runCommandTransaction src/lib/command-receipts-adapter.ts:74:12
+ ❯ tests/practice-assignment-management-db.test.ts:56:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects forged/invalid target before reads { version: 'v1', submissionId: null, after: '57b16085-8aa7-4897-be05-98bbeefe97f8' }
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects forged/invalid target before reads { version: 'v1', submissionId: 'bad', after: null }
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > rejects forged/invalid target before reads { version: 'v1', submissionId: null, after: null, admin: true }
+AssertionError: expected Error: NOT_IMPLEMENTED to match object { code: 'INVALID_INPUT' }
+
+- Expected
++ Received
+
+- {
+-   "code": "INVALID_INPUT",
++ Error {
++   "message": "NOT_IMPLEMENTED",
+  }
+
+ ❯ tests/practice-assignment-management-db.test.ts:62:27
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  14 failed (14)
+   Start at  10:21:19
+   Duration  3.44s (transform 107ms, setup 0ms, import 224ms, tests 3.10s, environment 0ms)
+
+OWNED CLEANUP: 0 raid-t013-assignment-management-20261023 

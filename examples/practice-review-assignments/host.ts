@@ -1,5 +1,12 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { PracticeAssignmentManager } from './components/practice-assignment-manager';
+import { createPracticeAssignmentManager } from './skills/practice-assignment-manager-client';
+import { createPracticeAssignmentManagementHandlers } from './skills/practice-assignment-management-http';
+import { createPracticeAssignmentManagementLoader } from './skills/practice-assignment-management-page';
 import {
   issuePracticeReviewAssignment,
+  readPracticeAssignmentManagement,
   revokePracticeReviewAssignment,
   lockPracticeReviewAssignment,
   type PracticeReviewAssignmentScope,
@@ -517,6 +524,129 @@ try {
     )?.ownership,
     'UNCONFIRMED',
   );
+  // Independently installed current admin metadata/HTTP/React/controller composition.
+  let managementWrites = true;
+  const inspect = ({ xId: currentXId }: { xId: string }) => allowed.has(currentXId);
+  const alternateInspect = ({ xId: currentXId }: { xId: string }) =>
+    Array.from(allowed).includes(currentXId);
+  const managementInput = {
+    version: 'v1',
+    submissionId: appointmentInput.submissionId,
+    after: null,
+  };
+  const observe = (input: unknown) =>
+    transaction((tx) =>
+      readPracticeAssignmentManagement(tx, actor, input, {
+        canInspect: inspect,
+        canManage: httpPolicy,
+      }),
+    );
+  const observed = await observe(managementInput);
+  const alternateObserved = await transaction((tx) =>
+    readPracticeAssignmentManagement(tx, actor, managementInput, {
+      canInspect: alternateInspect,
+      canManage: httpPolicy,
+    }),
+  );
+  assert.deepEqual(alternateObserved.page.entries, observed.page.entries);
+  assert.ok(observed.page.entries.every((e) => e.currentState === 'REVOKED'));
+  assert.equal(JSON.stringify(observed.page).includes(submissionInput.answer), false);
+  const metadata = createPracticeAssignmentManagementHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => actor,
+    rateLimit: () => {},
+    read: async (_actor, input) => ({
+      version: 'v1',
+      writesAvailable: managementWrites,
+      unavailableReason: managementWrites ? null : 'DISABLED',
+      result: await observe(input),
+    }),
+  });
+  const load = createPracticeAssignmentManagementLoader(metadata.GET);
+  const loaded = await load({ submissionId: appointmentInput.submissionId });
+  assert.equal(loaded.status, 'READY');
+  if (loaded.status !== 'READY') throw Error('Synthetic current management failed');
+  const html = renderToStaticMarkup(
+    createElement(PracticeAssignmentManager, { context: loaded.context }),
+  );
+  assert.ok(html.includes('Appointment reason'));
+  assert.ok(html.includes('REVOKED'));
+  assert.equal(html.includes(submissionInput.answer), false);
+  const controller = createPracticeAssignmentManager(
+    loaded.context,
+    {
+      read: async (input) => {
+        const url =
+          'http://synthetic.invalid/?' +
+          new URLSearchParams({
+            submissionId: input.submissionId!,
+            ...(input.after ? { after: input.after } : {}),
+          });
+        const response = await metadata.GET(new Request(url));
+        return { status: response.status, body: await response.json() };
+      },
+      write: async (kind, input, key) => {
+        const command = {
+          actor,
+          input,
+          idempotencyKey: key,
+          requestId: 'synthetic-manager-controller',
+        };
+        const options = { allowNewWrites: managementWrites, canManage: httpPolicy };
+        const result =
+          kind === 'ISSUE'
+            ? await transaction((tx) => issuePracticeReviewAssignment(tx, command, options))
+            : await transaction((tx) => revokePracticeReviewAssignment(tx, command, options));
+        if (managementWrites) {
+          managementWrites = false;
+          throw Error('Synthetic lost committed response');
+        }
+        return {
+          status: 200,
+          body: {
+            version: 'v1',
+            ...result,
+            writesAvailable: managementWrites,
+            unavailableReason: managementWrites ? null : 'DISABLED',
+          },
+        };
+      },
+    },
+    randomUUID,
+  );
+  await controller.issue({ ...httpIssueBody, version: undefined }); // Extra/noneditable version cannot create a command.
+  assert.equal(controller.snapshot().phase, 'EDITING');
+  const managerFields = {
+    submissionId: appointmentInput.submissionId,
+    evaluatorAccountId: evaluator.accountId,
+    purpose: 'ASSESSMENT_REVIEW',
+    expiresAt: new Date(Date.now() + 60000).toISOString(),
+    reason: 'Synthetic manager original retry.',
+  };
+  await controller.issue(managerFields);
+  assert.equal(controller.snapshot().phase, 'UNCERTAIN');
+  await controller.retry();
+  assert.equal(controller.snapshot().phase, 'SAVED');
+  await controller.load(managementInput);
+  assert.equal(controller.snapshot().phase, 'READ_ONLY');
+  const head = await metadata.HEAD(
+    new Request('http://synthetic.invalid/?submissionId=' + appointmentInput.submissionId, {
+      method: 'HEAD',
+    }),
+  );
+  assert.equal(head.status, 200);
+  assert.equal(await head.text(), '');
+  await assert.rejects(
+    () =>
+      transaction((tx) =>
+        readPracticeAssignmentManagement(tx, evaluator, managementInput, {
+          canInspect: () => true,
+          canManage: httpPolicy,
+        }),
+      ),
+    /FORBIDDEN/,
+  );
   allowed.clear();
   await assert.rejects(() => save(input, key, false), /FORBIDDEN/);
   assert.deepEqual((await begin(false)).start, started.start);
@@ -543,6 +673,7 @@ try {
       actualEvaluatorSessionAndScopedPolicy: true,
       immutableRevocationAndOriginalReceipt: true,
       strictAdministratorHttpIssueReplayRevoke: true,
+      actualCurrentManagementHttpReactStableControllerAndWriteoffReplay: true,
       privateAnswersNotReadByAssignmentPort: true,
       immutablePrivateSubmission: true,
       exactCodeWhitespace: true,

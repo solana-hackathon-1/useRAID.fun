@@ -1,0 +1,18 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:50239
+- Network:       http://127.0.0.1:50239
+✓ Ready in 292ms
+✓ Running next.config.ts took 19ms
+
+✓ Generated AGENTS.md and CLAUDE.md for AI agents. Set `agentRules: false` in next.config to disable.
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /methodology 200 in 760ms (next.js: 531ms, application-code: 229ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /admin/practice/review-assignments?submissionId=aedc0145-2007-43fe-9b58-73916d561365 200 in 826ms (next.js: 553ms, application-code: 273ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=aedc0145-2007-43fe-9b58-73916d561365 200 in 263ms (next.js: 208ms, application-code: 55ms)
+ POST /api/v1/admin/practice/review-assignments 200 in 63ms (next.js: 2ms, application-code: 61ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /admin/practice/review-assignments?submissionId=1918ea60-133b-4e41-8dcf-698e14ab4f95 200 in 243ms (next.js: 27ms, application-code: 216ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=1918ea60-133b-4e41-8dcf-698e14ab4f95 200 in 41ms (next.js: 1.0ms, application-code: 40ms)
+ POST /api/v1/admin/practice/review-assignments 200 in 71ms (next.js: 1.9ms, application-code: 69ms)
+[?25h

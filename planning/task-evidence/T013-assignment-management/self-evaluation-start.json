@@ -1,0 +1,26 @@
+{
+  "label": "SELF-EVALUATED; Claude independent review pending",
+  "startUtc": "2026-10-23T04:54:31.144534+00:00",
+  "head": "0d20d5f",
+  "requirements": [
+    "R04",
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I11",
+    "I13",
+    "D07",
+    "D08",
+    "D13",
+    "AC04-07",
+    "AC42-43",
+    "AC69-70",
+    "AC73-75"
+  ],
+  "scope": "Admin explicit-submission appointment management with current X-admin scoped reads, safe pending issue/revoke and retained original commands"
+}

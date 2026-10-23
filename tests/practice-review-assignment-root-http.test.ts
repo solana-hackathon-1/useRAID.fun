@@ -29,6 +29,7 @@ vi.mock('../src/lib/studio-mode', () => ({ sessionCookie: () => 'test-session' }
 vi.mock('../src/lib/practice-review-assignments-host', () => ({
   issuePracticeReviewAssignmentFromHost: ports.issueHost,
   revokePracticeReviewAssignmentFromHost: ports.revokeHost,
+  readPracticeAssignmentManagementFromHost: vi.fn(),
 }));
 vi.mock('../src/skills/practice-review-assignment-http', async (original) => {
   const actual = await original<typeof import('../src/skills/practice-review-assignment-http')>();
@@ -132,7 +133,7 @@ it('delegates to the existing committed host commands unchanged', async () => {
   expect(ports.issueHost).toHaveBeenCalledExactlyOnceWith(command);
   expect(ports.revokeHost).toHaveBeenCalledExactlyOnceWith(command);
 });
-it('exposes POST only, dynamic Node, and forwards params as a promise', async () => {
+it('preserves POST and revoke POST-only while collection gains protected GET/HEAD', async () => {
   expect(issueDynamic).toBe('force-dynamic');
   expect(issueRuntime).toBe('nodejs');
   expect(revokeDynamic).toBe('force-dynamic');
@@ -140,10 +141,13 @@ it('exposes POST only, dynamic Node, and forwards params as a promise', async ()
   const routeModules = [
     await import('../src/app/api/v1/admin/practice/review-assignments/route'),
     await import('../src/app/api/v1/admin/practice/review-assignments/[assignmentId]/revocations/route'),
-  ];
+  ] as const;
   for (const mod of routeModules)
-    for (const verb of ['GET', 'HEAD', 'PUT', 'PATCH', 'DELETE'])
-      expect(mod).not.toHaveProperty(verb);
+    for (const verb of ['PUT', 'PATCH', 'DELETE']) expect(mod).not.toHaveProperty(verb);
+  expect(routeModules[0].GET).toBeTypeOf('function');
+  expect(routeModules[0].HEAD).toBeTypeOf('function');
+  expect(routeModules[1]).not.toHaveProperty('GET');
+  expect(routeModules[1]).not.toHaveProperty('HEAD');
   const request = new Request('http://raid.test/', { method: 'POST' });
   ports.issue.mockResolvedValue(new Response('i'));
   ports.revoke.mockResolvedValue(new Response('r'));

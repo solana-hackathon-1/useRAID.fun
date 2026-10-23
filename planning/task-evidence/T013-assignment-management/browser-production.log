@@ -1,0 +1,19 @@
+OWNED production BROWSER: http://127.0.0.1:49551 source /var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assignment-management-build-4bapvuhv pid 14899
+
+Running 8 tests using 1 worker
+
+(node:14929) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [desktop] › tests/browser-practice-assignment-management/assignment-management.spec.ts:18:1 › current X admin issues and revokes actual finite appointments with safe private metadata and responsive keyboard UI (2.9s)
+  ✓  2 [desktop] › tests/browser-practice-assignment-management/assignment-management.spec.ts:85:1 › unknown issue and revoke outcomes keep exact action/body/key and recover original receipts after later revocation (4.0s)
+  ✓  3 [desktop] › tests/browser-practice-assignment-management/assignment-management.spec.ts:148:1 › visitor, wallet-only evaluator and current nonallowlisted administrator never receive management metadata (432ms)
+  ✓  4 [desktop] › tests/browser-practice-assignment-management/assignment-management.spec.ts:171:1 › known post-save authentication denial clears private context and lookup shows honest missing/empty state (1.4s)
+(node:15138) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  5 [mobile] › tests/browser-practice-assignment-management/assignment-management.spec.ts:18:1 › current X admin issues and revokes actual finite appointments with safe private metadata and responsive keyboard UI (2.9s)
+  ✓  6 [mobile] › tests/browser-practice-assignment-management/assignment-management.spec.ts:85:1 › unknown issue and revoke outcomes keep exact action/body/key and recover original receipts after later revocation (4.1s)
+  ✓  7 [mobile] › tests/browser-practice-assignment-management/assignment-management.spec.ts:148:1 › visitor, wallet-only evaluator and current nonallowlisted administrator never receive management metadata (373ms)
+  ✓  8 [mobile] › tests/browser-practice-assignment-management/assignment-management.spec.ts:171:1 › known post-save authentication denial clears private context and lookup shows honest missing/empty state (1.4s)
+
+  8 passed (19.0s)
+OWNED SERVER CLOSED: True

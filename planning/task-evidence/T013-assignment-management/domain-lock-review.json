@@ -1,0 +1,16 @@
+{
+  "label": "SELF-EVALUATED domain lock classification; Claude independent review pending",
+  "function": "src/skills/practice-review-assignment-storage.ts#readPracticeAssignmentManagement",
+  "astSha256": "796656176b6ef403e1ccf34aa6fc10822ea675b061876750024b44241cd21077",
+  "seed": 12017,
+  "authority": "docs/raid-identity-locks.md section Fence registry for non-identity domain advisory locks",
+  "checks": [
+    "Existing appointment-use/revocation mutex namespace; no new identity key/class",
+    "Only caller User/Session held; no later multi-user roots acquired",
+    "Candidate appointment UUIDs ascending; one mutex per assignment",
+    "Actual second-admin revocation race/expiry/session/audit tests PASS in affected.log",
+    "No scanner rule or seed range relaxed; exact new function AST hash pinned"
+  ],
+  "originalFailure": "identity-red.log",
+  "independentReview": "NOT VERIFIED; Claude must review the new registry entry and reader"
+}

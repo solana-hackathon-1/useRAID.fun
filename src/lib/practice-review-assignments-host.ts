@@ -1,6 +1,8 @@
 import {
   issuePracticeReviewAssignment,
   revokePracticeReviewAssignment,
+  readPracticeAssignmentManagement,
+  PracticeReviewAssignmentError,
   type PracticeReviewAssignmentCommand,
 } from '../skills/practice-review-assignment-storage';
 import { adminXIds } from './admins';
@@ -31,4 +33,20 @@ export async function revokePracticeReviewAssignmentFromHost(
     }),
   );
   return { version: 'v1' as const, ...result, ...practiceReviewAssignmentWriteConfiguration() };
+}
+
+/** Reads remain available to actual authorized managers when new appointment writes are off. */
+export async function readPracticeAssignmentManagementFromHost(
+  actor: import('../skills/taxonomy-storage-contracts').SkillTaxonomyActor,
+  input: unknown,
+) {
+  const result = await runCommandTransaction(db, (tx) =>
+    readPracticeAssignmentManagement(tx, actor, input, {
+      canInspect: ({ xId }) => adminXIds().includes(xId),
+      canManage: ({ xId }) => adminXIds().includes(xId),
+    }),
+  );
+  if (!adminXIds().includes(result.managerXId))
+    throw new PracticeReviewAssignmentError('FORBIDDEN');
+  return { version: 'v1' as const, ...practiceReviewAssignmentWriteConfiguration(), result };
 }

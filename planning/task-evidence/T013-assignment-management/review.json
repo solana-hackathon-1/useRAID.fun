@@ -1,0 +1,172 @@
+{
+  "label": "SELF-EVALUATED; functional bounded implementation VERIFIED_IN_TEST; dependency-security FAIL; NOT APPROVED FOR PUBLICATION/RELEASE; Claude independent review pending",
+  "implementer": "Codex /root sole writer; no delegation",
+  "startUtc": "2026-10-23T04:54:31.144534+00:00",
+  "endUtc": "2026-10-23T05:14:15.967005+00:00",
+  "elapsedSeconds": 1184.822471,
+  "branch": "claude/t013-practice-trial-ui",
+  "baselineSha": "0d20d5f0ff8d45159d19902508ba6b53533f1ae9",
+  "sourceIdentity": {
+    "status": "Uncommitted code/doc/test changes for Claude review; parent0d20d5f/ahead2 unchanged; no Git commit/push/merge/branch change",
+    "productFiles": 394,
+    "compilerFiles": 1303,
+    "previewFiles": 1297,
+    "consumerFiles": 45,
+    "staticGateFiles": [
+      "planning/identity-writer-fence.json"
+    ]
+  },
+  "requirementsChecked": [
+    "R04",
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I11",
+    "I13",
+    "D07",
+    "D08",
+    "D13",
+    "AC04-07",
+    "AC42-43",
+    "AC69-70",
+    "AC73-75"
+  ],
+  "outcome": "Private administrator explicit-submission appointment lookup/history and accessible finite issue/reasoned revoke screen over original protected APIs; new current metadata read and GETHEAD, stable one-pending operation controller, canonical pure retained-export contracts and all7consumerdependency pairs.",
+  "effects": "No schema, real appointments, production flag, calibration/conflict/staffing/retention policy, rank/reputation/capacity/money/provider change. Only existing issue/revoke domain mutations when explicitly invoked under actual authority, plus private metadata-read receipt/audit. Synthetic fixtures enable management writes only in their isolated task-owned server/database.",
+  "verification": {
+    "tdd": "14actualPGreadbehaviorRED\u219214PASS, then3adverseSQLregressionPASS;HTTP21behaviorRED+7controls\u219228PASS;controller26behaviorRED+1control\u219227PASS;pageview13behaviorRED+2controls\u219215PASS.79newunitRoot +17actualPG =96newlocal. Root9 authored after featureRED; no fabricated RootRED.",
+    "affected": "308PASS17files41.27s including actualPG; current final143HTTP/UI/Root+155docs=298PASS and165exact unaffected checks reused, proven affected-reuse.json/import-cleanup-equivalence.log.463unique affected+docs. No fullparent3432rerun or currentfullsuite claim.",
+    "database": "Current X-admin session/role/restrictions/allowlist/scopedpolicy, blank/missinglookup, canonical metadata/no answers, originalrevocation/expiryafterwait/sessionexpiry,20+1paging, anotheradminrevoke serialization, policyclosure and auditfailure-beforemetadata all exercised in actual guarded transactions.",
+    "consumer": "Ownnpmci--ignore-scripts30packages31audited0vuln; current strict types/minimalPGHTTPReact PASS45exactfiles. Alternate inspectionpolicy, actual original history/GETHEAD/SSR/currentevaluator denial, committed issue lostresponse thenwriteoff and same-key original replay/read-only refresh. All7storage consumers declare bothpure dependency links; rootstrictcompiler covers their current source.",
+    "browser": "Final8developmentPASS26.5s+8productionPASS19.0s+2developmentwriteoffPASS7.8s+2productionwriteoffPASS3.1s =20unique current desktop/mobile checks, no skips/retries. ActualRootcookie/Xadmin/allowlist/sharedquota/origin/SQL, issuefiniteUTC/revoke/history/privateGETHEAD/noindex/privateprodHTML, escaping/keyboard/mobile/nooverflow, both lost200action recoveries identical action/body/key after laterrevocation, visitor/wallet/nonallowlist denial, livevisiblecontextclears onemptylookup/accessloss, and writesoffretains inspection with bothactionsdisabled. All testserverportsclosed.",
+    "compiler": "Currenttypegen/strictTS/productionWebpackPASS;394exactproduct/schema/dependency/configfiles,1303currentcompiler/source/test/example/schema/configfiles. Only previewseed added after finalbuild; finalstrictTS includesit. No dependency upgrade or allowlist change.",
+    "static": "Ownedeslint0errors0warnings after removing2unusedimports; previewseedlint0; identityASTfencePASS;55planningPASS15.855s; ownedformat/diff checks; actualRootsecurityauditFAIL recorded below. Newtests registeredglobal/E04 anddev/prod/writeoff workflow. Initial identity AST gate failed on new raw reserved-domain mutex (identity-red.log); self-evaluated fullbodyreview plus exact new function hash under existing domain registry process, scanner/range unchanged. Current identity-final.log PASS,3existing architecture checksPASS7.65s. Claude must review the registry entry; no independent approval inferred. Owned diff --check PASS excluding the exact preexisting growing inbox preview-next.log; whole-tree diff fails only its runtime trailing whitespace, preserved rather than cleaned. See diff-whole-tree.log/diff-owned-final.log.",
+    "security": "FAIL: fresh npm run audit:check lists8 unallowlisted leaf advisories in unchanged root dependency tree:2@vitest/mocker moderate;3Next (2critical/1high);3toml high. Raw npm audit metadata also lists inherited transitive packages and preexisting allowlisted findings. Evidence security-final.log/audit-findings.json; packages/lock/auditpolicy unchanged fromHEAD. Own example install audits0 but cannot satisfy Root gate. No findings allowlisted/suppressed and no forced SDK downgrade.",
+    "skips": "No currentfull3432suite, hostedNode22/Dockerimage/liveprovider/load/independentcriterion/UAT/business/staffedoperating/release/parkedidentity evidence. LocalNode26 recorded; targetNode>=22.12/PG16 declared. Missing/failed acceptance remains unverified."
+  },
+  "findingsAndFixes": [
+    "Retained old public schema/record/result exports and proved38canonical contracts/functions AST-identical toHEAD; all7consumers get explicitpure dependency pairs. Existing original POST factory remains AST-identical.",
+    "Metadata reader uses current own manager User/Session and orderedappointment mutexes only; no reversed sortedmultiuser lock order. Real second-admin revoke waits then nextread showsREVOKED; finalDBclock handles expiry whilewaiting.",
+    "Initial readonly Zod schema .omit misuse produced21controllerfailures/1unhandled test error; corrected editable-field validation through the canonicalreadonlyschema, all27PASS without assertion reduction.",
+    "Strict compiler caught typed empty auditpayload inference, union-return consumer helper, missing syntheticUser handle, and tuple type of additive route tests. Corrected types/fixture; canonical runtime command contracts unchanged.",
+    "Existing Root mock lacked newreadexport, then old POST-onlycollectionassertion failed as expected. Added explicit mockport and changed onlycollectionGETHEADcontract while preserving POST forwarding and revocationPOST-only/PUTPATCHDELETEdenial.",
+    "Firstactualbrowser6pass2fail incorrectly required erasing previously authorized serialized RSC from page.content after clientlookup. Corrected to exact live matching-node absence and mainvisibletext absence, preserving strict unauthorizedinitialHTML and futureAPI401/403 checks. Specification guarantees currentvisiblecontextclear/futuredenial, not recall of material already delivered; no productsecurityassertion was waived. Original failedlogs/context/screenshots retained.",
+    "Visualreview confirmed labeled controls above inputs,44pxtouch styling, no invented expiry and no horizontaloverflow. Two unused schemaimports removed; identical TS-emitted HTTPJavaScript proven, final productbuilt/browserchecked afterward.",
+    "Fresh dependency audit is a real outstanding gatefailure. npm fixAvailable points Next to16.4.2 beyond current~16.3 lane; Vitest4.1.12 and toml5.0.1 are available, but transitive fixes require separate compatibility work (npm even suggests breakingPump/SPL downgrades). Kept dependency/allowlist policy unchanged; record explicit remediation before publication.",
+    "Preview resource metadata initially retained old20261021containerlabeldate from copied runner; corrected to actual20261023 resource before verification. Actual task resource was always isolated/correct.",
+    "Final audit of logs caught the initial identity AST fence failure despite later chained commands succeeding. Registered the full self-evaluated new reader AST under documented existing nonidentity domain exception12017; no assertion/scanner/range relaxation, no identity protocol change. Identity gate and3architecture checks nowPASS; original failure retained and independent Claude review explicitly pending. Final per-gate logs inspected, securityFAIL remains visible."
+  ],
+  "preview": {
+    "resource": {
+      "mode": "development",
+      "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assignment-management-preview-0y8ybqnw",
+      "syntheticOnly": true,
+      "runnerPid": 15857,
+      "serverPid": 15861,
+      "url": "http://127.0.0.1:49687/admin/practice/review-assignments?submissionId=4ba64646-7953-4c21-9f35-b0b754f7dfc1",
+      "openUrl": "http://127.0.0.1:49698/open",
+      "serverPort": 49687,
+      "helperPort": 49698,
+      "databaseContainer": "raid-t013-assignment-management-preview-20261023",
+      "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+      "result": "RUNNING"
+    },
+    "checks": [
+      {
+        "name": "desktop",
+        "status": 200,
+        "authorizedCurrentMetadata": true,
+        "issueFormEnabled": true,
+        "noDefaultExpiry": true,
+        "protectedApi": true,
+        "noCaseAnswers": true,
+        "noOverflow": true,
+        "labelsAboveControls": true,
+        "pageErrors": []
+      },
+      {
+        "name": "mobile",
+        "status": 200,
+        "authorizedCurrentMetadata": true,
+        "issueFormEnabled": true,
+        "noDefaultExpiry": true,
+        "protectedApi": true,
+        "noCaseAnswers": true,
+        "noOverflow": true,
+        "labelsAboveControls": true,
+        "pageErrors": []
+      }
+    ],
+    "supervisorPid": 15734,
+    "stopOnlyOwnedResource": "kill 15734",
+    "openInCodex": "queued",
+    "limitation": "Synthetic development fixture, not productionenablement/UAT/operatingapproval. Root dependency audit failed; preview is loopback with synthetic records only."
+  },
+  "cleanup": {
+    "testDatabase": {
+      "name": "/raid-t013-assignment-management-20261023",
+      "running": false,
+      "automaticStops": "storage-red.log/storage-green.log/verification-driver.log/verification-final-driver.log all cleanup0"
+    },
+    "servers": [
+      {
+        "evidence": "planning/task-evidence/T013-assignment-management/browser-development-resources.json",
+        "url": "http://127.0.0.1:49471",
+        "pid": 13851,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-assignment-management/browser-development-resources.json.initial",
+        "url": "http://127.0.0.1:49358",
+        "pid": 12453,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-assignment-management/browser-production-writeoff-resources.json",
+        "url": "http://127.0.0.1:49656",
+        "pid": 15462,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-assignment-management/browser-production-resources.json",
+        "url": "http://127.0.0.1:49551",
+        "pid": 14899,
+        "closed": true,
+        "recordedStopped": true
+      },
+      {
+        "evidence": "planning/task-evidence/T013-assignment-management/browser-development-writeoff-resources.json",
+        "url": "http://127.0.0.1:49619",
+        "pid": 15192,
+        "closed": true,
+        "recordedStopped": true
+      }
+    ],
+    "retainedPreview": {
+      "supervisorPid": 15734,
+      "innerPid": 15857,
+      "nextPid": 15861,
+      "container": "raid-t013-assignment-management-preview-20261023",
+      "openUrl": "http://127.0.0.1:49698/open",
+      "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-assignment-management-preview-0y8ybqnw",
+      "mode": "development",
+      "stopOnlyOwnedResource": "kill 15734"
+    },
+    "priorResources": "Preserved old inbox47150,assessment33604,ownership16680,older99844 and their listeners/PG/worktrees. Growing prior preview-next.log is not this implementation. No unrelated services/images/volumes/evidence removed."
+  },
+  "remaining": [
+    "Claude independent review of uncommitted current branch candidate; no author sign-off substituted",
+    "Separate dependency-remediation change and fresh audit/appropriate regression before publication: Next minor lane/test tool/TOML transitive compatibility, no blanketallowlist or forced financialSDK downgrade",
+    "Hosted exactcandidateNode22CI, representativeUAT, staffedoperating/release evidence and fullT01327criteria remain NOT VERIFIED",
+    "Parked identity protocol independent review remains separate; no identity implementation performed"
+  ],
+  "finalMetadataAtUtc": "2026-10-23T05:16:40.585693+00:00"
+}

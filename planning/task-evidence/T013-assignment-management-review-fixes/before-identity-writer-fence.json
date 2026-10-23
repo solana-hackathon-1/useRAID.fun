@@ -1,0 +1,73 @@
+{
+  "protectedModels": [
+    "User",
+    "Session",
+    "XAccount",
+    "WalletIdentity",
+    "OAuthAttempt",
+    "WalletLink",
+    "Participant"
+  ],
+  "schemaRelations": [
+    "BalanceEntry:user User @relation(fields: [userId], references: [id])",
+    "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
+    "MediaAsset:uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)",
+    "Participant:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "PracticeAssessmentDecision:evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeAssessmentDecision_evaluator_fkey\")",
+    "PracticeAssessmentReviewVersion:evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeAssessmentReviewVersion_evaluator_fkey\")",
+    "PracticeReviewPolicyVersion:publisher User @relation(fields:[publishedByAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeReviewPolicyVersion_actor_fkey\")",
+    "PracticeTrialOwnershipVersion:evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeTrialOwnershipVersion_evaluator_fkey\")",
+    "PracticeTrialReviewAssignment:evaluator User @relation(\"PracticeReviewEvaluator\",fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeTrialReviewAssignment_evaluator_fkey\")",
+    "PracticeTrialReviewAssignment:issuer User @relation(\"PracticeReviewIssuer\",fields:[issuedByAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeTrialReviewAssignment_issuer_fkey\")",
+    "PracticeTrialReviewRevocation:actor User @relation(\"PracticeReviewRevoker\",fields:[revokedByAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeTrialReviewRevocation_actor_fkey\")",
+    "PracticeTrialVersion:publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"PracticeTrialVersion_actor_fkey\")",
+    "Raid:creator User @relation(fields: [creatorId], references: [id])",
+    "RaidEnrollment:user User @relation(fields: [userId], references: [id])",
+    "RaiderPreferenceVersion:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"RaiderPreferenceVersion_account_fkey\")",
+    "RaiderPreferences:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"RaiderPreferences_account_fkey\")",
+    "RewardEnrollment:user User @relation(fields: [userId], references: [id])",
+    "Session:user User @relation(fields: [userId], references: [id], onDelete: Cascade)",
+    "SkillAssessmentVersion:evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"SkillAssessmentVersion_evaluator_fkey\")",
+    "SkillTaxonomyVersion:publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"SkillTaxonomyVersion_actor_fkey\")",
+    "TokenLaunch:user User @relation(fields: [userId], references: [id])",
+    "UsdcAllocation:user User @relation(fields: [userId], references: [id])",
+    "UsdcTransfer:user User @relation(fields: [userId], references: [id])",
+    "WalletIdentity:user User @relation(fields: [userId], references: [id], onDelete: Cascade)",
+    "WalletLink:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"WalletLink_accountId_fkey\")",
+    "XAccount:user User @relation(fields: [userId], references: [id], onDelete: Cascade)"
+  ],
+  "userKeys": ["id String @id @default(cuid())", "xId String? @unique"],
+  "trustedFunctions": {
+    "src/lib/identity-leaves.ts#discardSession": "9e86399911409fa1c2e5630d9fe25b5cb671a754421310a66fe29b1ac0b1e1b6",
+    "src/lib/identity-leaves.ts#discardAttempt": "f21ec20472adafbe35856dc7bd58d97c70879693e6159f4884de5f045331fcae",
+    "src/lib/identity-leaves.ts#claimOAuthAttempt": "081f42f3884fd3caa734dbe8dfbd5a6fae9f1f978faf1c9eb3812df61499adcd"
+  },
+  "trustedRawFunctions": {
+    "src/identity-link/index.ts#linkVerifiedWallet": "d2bf267c0c04ba739f825b2898451645fdd59c4aeb859af00bbd2acffc755339",
+    "src/identity-link/index.ts#revokeWalletCredential": "9e2e68d0bab359dc0241c7a21cb52ce39371e07c7b7c697ce9d43fd3b535c501",
+    "src/identity-storage/index.ts#ensureHumanParticipant": "50643d7ca39d0e18e6063b59433a6d6396c559c04e512f9542cab0a0e1aa3382",
+    "src/lib/identity-storage-adapter.ts#createPrismaIdentityTransaction": "3f6b0ae6accd364b3e0d04a19793d6851edf75a5a45429fabffb3bfec4c6e3fd",
+    "src/lib/command-receipts-adapter.ts#createPrismaCommandTransaction": "c5be3ad2be20a90ea985483cbea387f9c16048a4d864a02cf15e57d972115122",
+    "src/lib/identity-cleanup.ts#sweepIdentityLeaves": "aeae026ed6329597b70db0be4af345591fcabd26e0c1442561c7cd20b85c2828"
+  },
+  "multiUserFunctions": {
+    "src/lib/studio-finance.ts#allocateUsdcRaid": "426c3eaafe60b504269c9a2cf582a50d0932dcd9ff4cdef0650cdd93fd9fa506"
+  },
+  "trustedAdvisoryFunctions": {
+    "src/skills/own-assessment-storage.ts#readOwnSkillAssessment": "dace059185a96d87de29a33bf2ee581e721916ac0d0cb7dbce2137b87f0d4fed",
+    "src/skills/practice-portal-storage.ts#listOwnPracticeTrials": "f094001697cc17ea36ecab73ccf681d79a7de48d9e054e561630576b88ce94d7",
+    "src/skills/practice-portal-storage.ts#readOwnPracticeTrialProgress": "b82ec9899ca8cdcd724385804ed96ad61518e194e64d64a15cb8de9474c6a373",
+    "src/skills/practice-review-assignment-storage.ts#lockPracticeReviewAssignment": "8493703d9d3191436bb962e58885097785b24d03f83b128264827a1fade9c2d5",
+    "src/skills/practice-review-assignment-storage.ts#revokePracticeReviewAssignment": "a0ad96d58dd4e29616426a0f18b13b079b86990472c4ddb77535b56ce784c5d1",
+    "src/skills/practice-review-policy-storage.ts#lockScope": "29880f989d345c30b1755b23ad8ecec99a940e8b8b694b5d6600ed2e70f98877",
+    "src/skills/practice-review-policy-storage.ts#publishPracticeReviewPolicy": "37a23f4b5e14351cf3b155d569a22e3bfb7deb0a82b381f0747f818d1ea03af4",
+    "src/skills/practice-trial-assessment-storage.ts#lockCase": "b8cecfdf64486136531dd2363eace90c16f692276e1f92d3acceb0f87472f427",
+    "src/skills/practice-trial-assessment-storage.ts#lockSkill": "1c0297c9e3048f9e57b9a17f0f45f373d13fccb37723fb63d3a2ed9e8255d64c",
+    "src/skills/practice-trial-attempt-storage.ts#startPracticeTrial": "5e9ae7ab322a02512d63d18a04b6675dc842d87dbff94374d332a2ee7147f846",
+    "src/skills/practice-trial-ownership-storage.ts#lockCase": "793ff6a7e0f70286719f2ed3f325366cd922968e08108121bc3fa8ef3aa2b84d",
+    "src/skills/practice-trial-storage.ts#publishPracticeTrialDefinition": "3e2b014ab3dec14c007425db479a41a5ea6e624000e68a9a157efed1e648052f",
+    "src/skills/practice-trial-submission-storage.ts#submitPracticeTrial": "0808033d486a1b9f644ed7d1cafa9b459ecad3b286555849b993d33ca4027c42",
+    "src/skills/taxonomy-storage.ts#publishSkillTaxonomy": "3fe845e4d7e8b3dd9c3b983b6b16b7d3ab5633ba02c2dbb840c1dc1ff477c703",
+    "src/skills/practice-review-assignment-storage.ts#readPracticeAssignmentManagement": "796656176b6ef403e1ccf34aa6fc10822ea675b061876750024b44241cd21077"
+  }
+}

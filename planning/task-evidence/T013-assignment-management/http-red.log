@@ -1,0 +1,230 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-management-http.test.ts (28 tests | 21 failed) 36ms
+   × returns strict current own admin/config without forwarding internal X identity 29ms
+   × accepts bound exact submission and optional canonical ordering cursor 0ms
+   × rejects malformed or authority input before hostread ?after=fd775f89-8d09-483f-a621-9018604722a9 1ms
+   × rejects malformed or authority input before hostread ?submissionId=bad 0ms
+   × rejects malformed or authority input before hostread ?submissionId=0c91497c-c951-4e4f-89da-f1a416c4a86f&submissionId=7fc35127-0893-453e-90e0-7edd9fc67fb7 0ms
+   × rejects malformed or authority input before hostread ?actorAccountId=foreign 0ms
+   × rejects malformed or authority input before hostread ?limit=1000 0ms
+   × rejects malformed or authority input before hostread ?submissionId= 0ms
+   × authenticates before malformed lookup HTTP401 0ms
+   × authenticates before malformed lookup HTTP403 0ms
+   × authenticates before malformed lookup HTTP429 0ms
+   × enforces existing current-account quota before metadata storage 0ms
+   × retains current inspection while new writes are disabled 0ms
+   × keepsGET success and denial private, HEAD empty 0ms
+   × keepsHEAD success and denial private, HEAD empty 0ms
+   × sanitizes storageAUTHENTICATION_REQUIRED 0ms
+   × sanitizes storageACCOUNT_RESTRICTED 0ms
+   × sanitizes storageFORBIDDEN 0ms
+   × sanitizes storageINVALID_INPUT 0ms
+   × does not permit mutations through the read dispatcher 0ms
+   × rejects incomplete versioned read host 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 21 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > returns strict current own admin/config without forwarding internal X identity
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:12:200
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > accepts bound exact submission and optional canonical ordering cursor
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:13:357
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > rejects malformed or authority input before hostread ?after=fd775f89-8d09-483f-a621-9018604722a9
+ FAIL  tests/practice-assignment-management-http.test.ts > rejects malformed or authority input before hostread ?submissionId=bad
+ FAIL  tests/practice-assignment-management-http.test.ts > rejects malformed or authority input before hostread ?submissionId=0c91497c-c951-4e4f-89da-f1a416c4a86f&submissionId=7fc35127-0893-453e-90e0-7edd9fc67fb7
+ FAIL  tests/practice-assignment-management-http.test.ts > rejects malformed or authority input before hostread ?actorAccountId=foreign
+ FAIL  tests/practice-assignment-management-http.test.ts > rejects malformed or authority input before hostread ?limit=1000
+ FAIL  tests/practice-assignment-management-http.test.ts > rejects malformed or authority input before hostread ?submissionId=
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:14:333
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > authenticates before malformed lookup HTTP401
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:15:274
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > authenticates before malformed lookup HTTP403
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:15:274
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > authenticates before malformed lookup HTTP429
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:15:274
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > enforces existing current-account quota before metadata storage
+AssertionError: expected 503 to be 429 // Object.is equality
+
+- Expected
++ Received
+
+- 429
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:16:240
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > retains current inspection while new writes are disabled
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:18:298
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > keepsGET success and denial private, HEAD empty
+ FAIL  tests/practice-assignment-management-http.test.ts > keepsHEAD success and denial private, HEAD empty
+AssertionError: expected 503 to be 200 // Object.is equality
+
+- Expected
++ Received
+
+- 200
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:19:235
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > sanitizes storageAUTHENTICATION_REQUIRED
+AssertionError: expected 503 to be 401 // Object.is equality
+
+- Expected
++ Received
+
+- 401
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:20:343
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > sanitizes storageACCOUNT_RESTRICTED
+ FAIL  tests/practice-assignment-management-http.test.ts > sanitizes storageFORBIDDEN
+AssertionError: expected 503 to be 403 // Object.is equality
+
+- Expected
++ Received
+
+- 403
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:20:343
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > sanitizes storageINVALID_INPUT
+AssertionError: expected 503 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:20:343
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > does not permit mutations through the read dispatcher
+AssertionError: expected 503 to be 405 // Object.is equality
+
+- Expected
++ Received
+
+- 405
++ 503
+
+ ❯ tests/practice-assignment-management-http.test.ts:21:162
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/21]⎯
+
+ FAIL  tests/practice-assignment-management-http.test.ts > rejects incomplete versioned read host
+AssertionError: expected [Function] to throw an error
+ ❯ tests/practice-assignment-management-http.test.ts:22:182
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/21]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  21 failed | 7 passed (28)
+   Start at  10:23:09
+   Duration  292ms (transform 70ms, setup 0ms, import 134ms, tests 36ms, environment 0ms)
+

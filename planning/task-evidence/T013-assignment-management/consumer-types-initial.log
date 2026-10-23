@@ -1,0 +1,18 @@
+
+> raid-practice-review-assignment-example@1.0.0 typecheck
+> tsc --noEmit
+
+host.ts(591,11): error TS2322: Type 'Promise<{ status: "EXECUTED" | "REPLAYED"; assignment: Readonly<{ version: "v1"; id: string; submissionId: string; evaluatorAccountId: string; purpose: "OWNERSHIP_REVIEW" | "ASSESSMENT_REVIEW"; ... 5 more ...; isAuthorizationToken: false; }>; }> | Promise<...>' is not assignable to type 'Promise<{ status: "EXECUTED" | "REPLAYED"; assignment: Readonly<{ version: "v1"; id: string; submissionId: string; evaluatorAccountId: string; purpose: "OWNERSHIP_REVIEW" | "ASSESSMENT_REVIEW"; expiresAt: string; ... 4 more ...; isAuthorizationToken: false; }>; }>'.
+  Type 'Promise<{ status: "EXECUTED" | "REPLAYED"; revocation: Readonly<{ version: "v1"; id: string; assignmentId: string; revokedAt: string; revokedByAccountId: string; reason: string; state: "REVOKED"; isAuthorizationToken: false; }>; }>' is not assignable to type 'Promise<{ status: "EXECUTED" | "REPLAYED"; assignment: Readonly<{ version: "v1"; id: string; submissionId: string; evaluatorAccountId: string; purpose: "OWNERSHIP_REVIEW" | "ASSESSMENT_REVIEW"; expiresAt: string; ... 4 more ...; isAuthorizationToken: false; }>; }>'.
+    Property 'assignment' is missing in type '{ status: "EXECUTED" | "REPLAYED"; revocation: Readonly<{ version: "v1"; id: string; assignmentId: string; revokedAt: string; revokedByAccountId: string; reason: string; state: "REVOKED"; isAuthorizationToken: false; }>; }' but required in type '{ status: "EXECUTED" | "REPLAYED"; assignment: Readonly<{ version: "v1"; id: string; submissionId: string; evaluatorAccountId: string; purpose: "OWNERSHIP_REVIEW" | "ASSESSMENT_REVIEW"; expiresAt: string; ... 4 more ...; isAuthorizationToken: false; }>; }'.
+host.ts(611,13): error TS2698: Spread types may only be created from object types.
+skills/practice-review-assignment-storage.ts(557,17): error TS2322: Type 'Promise<{ resultRef: string; events: { type: string; aggregateId: string; aggregateVersion: number; payload: { submissionId: string; } | { submissionId?: undefined; }; publish: false; }[]; }>' is not assignable to type 'Promise<CommandOutcome>'.
+  Type '{ resultRef: string; events: { type: string; aggregateId: string; aggregateVersion: number; payload: { submissionId: string; } | { submissionId?: undefined; }; publish: false; }[]; }' is not assignable to type 'CommandOutcome'.
+    Types of property 'events' are incompatible.
+      Type '{ type: string; aggregateId: string; aggregateVersion: number; payload: { submissionId: string; } | { submissionId?: undefined; }; publish: false; }[]' is not assignable to type 'readonly DomainEventInput[]'.
+        Type '{ type: string; aggregateId: string; aggregateVersion: number; payload: { submissionId: string; } | { submissionId?: undefined; }; publish: false; }' is not assignable to type 'DomainEventInput'.
+          Types of property 'payload' are incompatible.
+            Type '{ submissionId: string; } | { submissionId?: undefined; }' is not assignable to type 'Readonly<Record<string, string>> | undefined'.
+              Type '{ submissionId?: undefined; }' is not assignable to type 'Readonly<Record<string, string>>'.
+                Property 'submissionId' is incompatible with index signature.
+                  Type 'undefined' is not assignable to type 'string'.

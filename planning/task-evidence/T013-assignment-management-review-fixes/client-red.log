@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-manager-client.test.ts (29 tests | 2 failed) 15ms
+   × keeps context and clears pending after a missing ISSUE target, requiring refresh before another command 3ms
+   × keeps context and clears pending after a missing REVOKE target, requiring refresh before another command 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps context and clears pending after a missing ISSUE target, requiring refresh before another command
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps context and clears pending after a missing REVOKE target, requiring refresh before another command
+AssertionError: expected { Object (phase, context, ...) } to match object { phase: 'STALE', outcome: null }
+(2 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "outcome": null,
+-   "phase": "STALE",
++   "phase": "DENIED",
+  }
+
+ ❯ tests/practice-assignment-manager-client.test.ts:190:26
+    188|     if (kind === 'REVOKE') await c.revoke(id, 'Synthetic reason.');
+    189|     else await c.issue(fields);
+    190|     expect(c.snapshot()).toMatchObject({ phase: 'STALE', outcome: null…
+       |                          ^
+    191|     expect(c.snapshot().context).toBe(observed);
+    192|     expect(c.snapshot().message).toMatch(/refresh current appointments…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 27 passed (29)
+   Start at  11:17:34
+   Duration  210ms (transform 29ms, setup 0ms, import 85ms, tests 15ms, environment 0ms)
+

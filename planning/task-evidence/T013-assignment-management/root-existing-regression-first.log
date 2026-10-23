@@ -1,0 +1,36 @@
+
+ RUN  v4.1.11 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-review-assignment-root-http.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-review-assignment-root-http.test.ts [ tests/practice-review-assignment-root-http.test.ts ]
+Error: [vitest] No "readPracticeAssignmentManagementFromHost" export is defined on the "../src/lib/practice-review-assignments-host" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock(import("../src/lib/practice-review-assignments-host"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ ❯ src/lib/practice-assignment-management.ts:9:9
+      7|   actor: practiceReviewAssignmentHttpHost.actor,
+      8|   rateLimit: practiceReviewAssignmentHttpHost.rateLimit,
+      9|   read: readPracticeAssignmentManagementFromHost,
+       |         ^
+     10| });
+     11|
+ ❯ src/app/api/v1/admin/practice/review-assignments/route.ts:5:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  10:29:23
+   Duration  326ms (transform 100ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+

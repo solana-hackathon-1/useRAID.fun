@@ -1,0 +1,12 @@
+
+> useraid@0.1.0 audit:check
+> tsx scripts/audit-check.ts
+
+moderate @vitest/mocker GHSA-qxg6-89mg-rqv8: not allowlisted
+moderate @vitest/mocker GHSA-xp26-3454-mjgp: not allowlisted
+critical next GHSA-2464-fhr4-w9xw: not allowlisted
+high next GHSA-p3m5-59mp-jv5r: not allowlisted
+critical next GHSA-673q-mjm6-r5xr: not allowlisted
+high toml GHSA-4qx8-w7c3-pj3p: not allowlisted
+high toml GHSA-9j65-hcg3-gc64: not allowlisted
+high toml GHSA-9qmh-m7c6-f92p: not allowlisted

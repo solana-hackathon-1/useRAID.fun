@@ -1,0 +1,14 @@
+import ts from 'typescript';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const path='src/skills/practice-review-assignment-storage.ts',code=readFileSync(path,'utf8'),source=ts.createSourceFile(path,code,ts.ScriptTarget.Latest,true),fn=source.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text==='readPracticeAssignmentManagement');
+assert.ok(fn);
+const text=ts.createPrinter({removeComments:true}).printNode(ts.EmitHint.Unspecified,fn,source);
+const calls=text.match(/pg_advisory_xact_lock\([^\n]+/g)||[];
+assert.equal(calls.length,1);assert.ok(calls[0].includes('hashtextextended($1,12017)'));
+const hash=createHash('sha256').update(text).digest('hex');
+const manifestPath='planning/identity-writer-fence.json',manifest=JSON.parse(readFileSync(manifestPath,'utf8'));manifest.trustedAdvisoryFunctions[path+'#readPracticeAssignmentManagement']=hash;
+writeFileSync(manifestPath,JSON.stringify(manifest,null,2)+'\n');
+writeFileSync(new URL('domain-lock-review.json',import.meta.url),JSON.stringify({label:'SELF-EVALUATED domain lock classification; Claude independent review pending',function:path+'#readPracticeAssignmentManagement',astSha256:hash,seed:12017,authority:'docs/raid-identity-locks.md section Fence registry for non-identity domain advisory locks',checks:['Existing appointment-use/revocation mutex namespace; no new identity key/class','Only caller User/Session held; no later multi-user roots acquired','Candidate appointment UUIDs ascending; one mutex per assignment','Actual second-admin revocation race/expiry/session/audit tests PASS in affected.log','No scanner rule or seed range relaxed; exact new function AST hash pinned'],originalFailure:'identity-red.log',independentReview:'NOT VERIFIED; Claude must review the new registry entry and reader'},null,2)+'\n');
+console.log('Registered self-evaluated reserved-domain appointment reader AST:',hash);

@@ -178,6 +178,9 @@ export default async function AdminPage({
         <Link className="inline-link" href="/admin/skills">
           Manage skill catalog
         </Link>
+        <a className="inline-link" href="/admin/practice/review-assignments">
+          Manage review appointments
+        </a>
       </div>
       <XDiagnostics userId={user.id} />
       <TrackingOperations />
