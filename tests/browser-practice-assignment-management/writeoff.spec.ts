@@ -3,7 +3,7 @@ import {
   seedPracticeAssignmentManagementFixture,
   db,
 } from '../helpers/practice-assignment-management-browser-fixture';
-const baseURL = process.env.ASSIGNMENT_MANAGEMENT_BROWSER_URL!;
+const baseURL = process.env.ASSIGNMENT_MANAGEMENT_BROWSER_URL || 'http://127.0.0.1:3036';
 test.afterAll(() => db.$disconnect());
 test('writeoff host retains current private inspection and disables both new appointment actions', async ({
   page,

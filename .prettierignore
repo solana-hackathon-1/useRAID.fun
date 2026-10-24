@@ -12,3 +12,5 @@ next-env.d.ts
 .claude/worktrees
 planning/task-evidence/T006-wallet-links-b1-resume/prior-review
 planning/task-evidence/T006-wallet-links-b1-review/
+# Recorded task evidence is byte-exact historical output (hashes and reports reference it).
+planning/task-evidence

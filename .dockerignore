@@ -17,3 +17,6 @@ compose*.yaml
 
 # Owner-supplied staging pull credential
 token
+
+# Evidence probes import test-only helpers excluded above; not part of the image
+planning/task-evidence
