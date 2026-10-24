@@ -202,11 +202,52 @@ test('persistent write failure offers explicit discard and recheck without savin
   await expect(page.getByRole('button', { name: 'Retry same request' })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Discard request and recheck' })).toHaveCount(0);
   await expect(page.getByText(f.assignment.reason, { exact: true })).toBeVisible();
+  await expect(page.getByText(/discarded request has an unknown outcome/)).toBeVisible();
+  await expect(page.getByLabel('Appointment reason', { exact: true })).toHaveValue('');
   expect(
     await db.practiceTrialReviewAssignment.count({
       where: { reason: 'Synthetic persistent failure.' },
     }),
   ).toBe(0);
+});
+test('discard after a lost applied write shows the saved appointment and a new command uses a new key', async ({
+  page,
+}) => {
+  const f = await seedPracticeAssignmentManagementFixture();
+  await page.context().addCookies([{ name: 'raid_session', value: f.managerCookie, url: baseURL }]);
+  await page.goto(f.path);
+  const keys: (string | undefined)[] = [];
+  await page.route(endpoint, async (route) => {
+    if (route.request().method() !== 'POST') return route.continue();
+    keys.push(route.request().headers()['idempotency-key']);
+    if (keys.length === 1) {
+      expect((await route.fetch()).status()).toBe(200);
+      return route.abort('failed');
+    }
+    if (keys.length === 2) return route.abort('failed');
+    return route.continue();
+  });
+  await fillIssue(page, f.evaluatorId, 'Synthetic applied then lost.');
+  await page.getByRole('button', { name: 'Issue appointment', exact: true }).click();
+  await expect(page.getByText(/Save status is uncertain/)).toBeVisible();
+  await page.getByRole('button', { name: 'Retry same request' }).click();
+  await expect(page.getByText(/Save status is uncertain/)).toBeVisible();
+  await page.getByRole('button', { name: 'Discard request and recheck' }).click();
+  await expect(page.getByText(/discarded request has an unknown outcome/)).toBeVisible();
+  await expect(page.getByText('Synthetic applied then lost.', { exact: true })).toBeVisible();
+  expect(
+    await db.practiceTrialReviewAssignment.count({
+      where: { reason: 'Synthetic applied then lost.' },
+    }),
+  ).toBe(1);
+  await expect(page.getByLabel('Appointment reason', { exact: true })).toHaveValue('');
+  await fillIssue(page, f.evaluatorId, 'Synthetic deliberate second command.');
+  await page.getByRole('button', { name: 'Issue appointment', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Saved historical receipt', exact: true }),
+  ).toBeVisible();
+  expect(keys).toHaveLength(3);
+  expect(keys[2]).not.toBe(keys[0]);
 });
 test('visitor, wallet-only evaluator and current nonallowlisted administrator never receive management metadata', async ({
   page,

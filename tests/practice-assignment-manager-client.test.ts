@@ -251,6 +251,7 @@ it.each([
       after: null,
     });
     expect(c.snapshot()).toMatchObject({ phase: 'EDITING', outcome: null });
+    expect(c.snapshot().message).toMatch(/discarded.*unknown.*compare/i);
     await c.issue(fields);
     expect(write).toHaveBeenCalledTimes(2);
     expect(write.mock.calls[1][2]).toBe('second-key');

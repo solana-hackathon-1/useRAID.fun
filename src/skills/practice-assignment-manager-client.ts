@@ -287,6 +287,21 @@ export function createPracticeAssignmentManager(
       if (state.phase !== 'UNCERTAIN' && state.phase !== 'BLOCKED') return;
       pending = null;
       await api.refresh();
+      // The discarded write may still have been applied (or may still be in flight); keep that visible after the reload.
+      const loaded = api.snapshot();
+      const phase =
+        loaded.phase === 'UNCERTAIN' || loaded.phase === 'BLOCKED'
+          ? loaded.context?.writesAvailable
+            ? 'EDITING'
+            : 'READ_ONLY'
+          : loaded.phase;
+      if (phase === 'EDITING' || phase === 'READ_ONLY')
+        change({
+          ...loaded,
+          phase,
+          message:
+            'The discarded request has an unknown outcome and may still apply. Compare the current appointments below before sending another command.',
+        });
     },
     /** Reload the submission currently displayed, never editable lookup text. */
     refresh() {

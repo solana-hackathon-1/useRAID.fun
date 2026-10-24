@@ -114,7 +114,12 @@ export function PracticeAssignmentManager({
         <button
           className="button secondary"
           onClick={() => {
+            // Re-entering the command is deliberate: a discarded write must not be re-sent by one click.
             setRevokeId('');
+            setEvaluator('');
+            setExpiry('');
+            setReason('');
+            setRevokeReason('');
             void manager.discard();
           }}
         >
