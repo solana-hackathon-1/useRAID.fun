@@ -1,0 +1,54 @@
+
+ RUN  v4.1.12 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-manager-client.test.ts (36 tests | 4 failed) 15ms
+   × discards a UNCERTAIN pending command only on explicit request, reloads the shown submission and uses a new key afterwards 2ms
+   × discards a BLOCKED pending command only on explicit request, reloads the shown submission and uses a new key afterwards 0ms
+   × ignores discard unless a command is UNCERTAIN or BLOCKED, and never discards a busy or saved command 0ms
+   × clears private context when the reload after a discard is denied 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > discards a UNCERTAIN pending command only on explicit request, reloads the shown submission and uses a new key afterwards
+ FAIL  tests/practice-assignment-manager-client.test.ts > discards a BLOCKED pending command only on explicit request, reloads the shown submission and uses a new key afterwards
+TypeError: c.discard is not a function
+ ❯ tests/practice-assignment-manager-client.test.ts:247:13
+    245|     else await c.revoke(id, 'Synthetic reason.');
+    246|     expect(c.snapshot().phase).toBe(phase);
+    247|     await c.discard();
+       |             ^
+    248|     expect(read).toHaveBeenCalledExactlyOnceWith({
+    249|       version: 'v1',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > ignores discard unless a command is UNCERTAIN or BLOCKED, and never discards a busy or saved command
+TypeError: c.discard is not a function
+ ❯ tests/practice-assignment-manager-client.test.ts:261:11
+    259| it('ignores discard unless a command is UNCERTAIN or BLOCKED, and neve…
+    260|   const c = createPracticeAssignmentManager(context, transport, key);
+    261|   await c.discard();
+       |           ^
+    262|   expect(read).not.toHaveBeenCalled();
+    263|   await c.issue(fields);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > clears private context when the reload after a discard is denied
+TypeError: c.discard is not a function
+ ❯ tests/practice-assignment-manager-client.test.ts:274:11
+    272|   const c = createPracticeAssignmentManager(context, transport, key);
+    273|   await c.issue(fields);
+    274|   await c.discard();
+       |           ^
+    275|   expect(c.snapshot()).toMatchObject({ phase: 'DENIED', context: null …
+    276| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 32 passed (36)
+   Start at  16:28:43
+   Duration  211ms (transform 35ms, setup 0ms, import 80ms, tests 15ms, environment 0ms)
+

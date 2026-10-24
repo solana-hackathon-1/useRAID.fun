@@ -110,6 +110,17 @@ export function PracticeAssignmentManager({
           Retry same request
         </button>
       )}
+      {(state.phase === 'UNCERTAIN' || state.phase === 'BLOCKED') && (
+        <button
+          className="button secondary"
+          onClick={() => {
+            setRevokeId('');
+            void manager.discard();
+          }}
+        >
+          Discard request and recheck
+        </button>
+      )}
       {state.outcome && (
         <section className="orientation-card" aria-label="Saved historical receipt">
           <h2>Saved historical receipt</h2>

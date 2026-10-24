@@ -160,7 +160,7 @@ export function createPracticeAssignmentManager(
           ...state,
           phase: 'BLOCKED',
           message:
-            'This request key belongs to another command. Recover the original request before continuing.',
+            'This request key belongs to another command. Discard the request and recheck current appointments before continuing.',
         });
         return;
       }
@@ -193,7 +193,7 @@ export function createPracticeAssignmentManager(
       ...state,
       phase: 'UNCERTAIN',
       message:
-        'Save status is uncertain. Keep this page open and retry the same request before another action.',
+        'Save status is uncertain. Keep this page open and retry the same request before another action. If retrying keeps failing, discard the request and recheck current appointments: the earlier save may or may not have applied.',
     });
   }
   const begin = async (command: Omit<Pending, 'key'>) => {
@@ -281,6 +281,12 @@ export function createPracticeAssignmentManager(
     },
     async retry() {
       if (state.phase === 'UNCERTAIN') await send();
+    },
+    /** Explicitly abandon an unresolved command (its outcome stays unknown), then reload current appointments. */
+    async discard() {
+      if (state.phase !== 'UNCERTAIN' && state.phase !== 'BLOCKED') return;
+      pending = null;
+      await api.refresh();
     },
     /** Reload the submission currently displayed, never editable lookup text. */
     refresh() {

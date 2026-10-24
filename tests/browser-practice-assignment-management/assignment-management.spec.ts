@@ -177,6 +177,37 @@ test('unknown issue and revoke outcomes keep exact action/body/key and recover o
     await db.practiceTrialReviewRevocation.count({ where: { assignmentId: f.assignment.id } }),
   ).toBe(1);
 });
+test('persistent write failure offers explicit discard and recheck without saving, then permits a new command', async ({
+  page,
+}) => {
+  const f = await seedPracticeAssignmentManagementFixture();
+  await page.context().addCookies([{ name: 'raid_session', value: f.managerCookie, url: baseURL }]);
+  await page.goto(f.path);
+  await expect(page.getByText(f.assignment.reason, { exact: true })).toBeVisible();
+  const keys: (string | undefined)[] = [];
+  await page.route(endpoint, (route) => {
+    if (route.request().method() !== 'POST') return route.continue();
+    keys.push(route.request().headers()['idempotency-key']);
+    return route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
+  });
+  await fillIssue(page, f.evaluatorId, 'Synthetic persistent failure.');
+  await page.getByRole('button', { name: 'Issue appointment', exact: true }).click();
+  await expect(page.getByText(/Save status is uncertain/)).toBeVisible();
+  await page.getByRole('button', { name: 'Retry same request' }).click();
+  await expect(page.getByText(/Save status is uncertain/)).toBeVisible();
+  expect(keys).toHaveLength(2);
+  expect(keys[1]).toBe(keys[0]);
+  await page.getByRole('button', { name: 'Discard request and recheck' }).click();
+  await expect(page.getByRole('button', { name: 'Issue appointment', exact: true })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Retry same request' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Discard request and recheck' })).toHaveCount(0);
+  await expect(page.getByText(f.assignment.reason, { exact: true })).toBeVisible();
+  expect(
+    await db.practiceTrialReviewAssignment.count({
+      where: { reason: 'Synthetic persistent failure.' },
+    }),
+  ).toBe(0);
+});
 test('visitor, wallet-only evaluator and current nonallowlisted administrator never receive management metadata', async ({
   page,
 }) => {

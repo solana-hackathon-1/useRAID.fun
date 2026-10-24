@@ -224,6 +224,56 @@ it('retains colliding intent locked instead of silently creating a new key', asy
   expect(read).not.toHaveBeenCalled();
   expect(write).toHaveBeenCalledOnce();
 });
+it.each([
+  ['UNCERTAIN', () => write.mockRejectedValueOnce(new Error('private secret')), 'ISSUE'],
+  [
+    'BLOCKED',
+    () =>
+      write.mockResolvedValueOnce({
+        status: 409,
+        body: { error: { code: 'IDEMPOTENCY_KEY_REUSED' } },
+      }),
+    'REVOKE',
+  ],
+] as const)(
+  'discards a %s pending command only on explicit request, reloads the shown submission and uses a new key afterwards',
+  async (phase, arrange, kind) => {
+    arrange();
+    key.mockReturnValueOnce('stable-key').mockReturnValueOnce('second-key');
+    const c = createPracticeAssignmentManager(context, transport, key);
+    if (kind === 'ISSUE') await c.issue(fields);
+    else await c.revoke(id, 'Synthetic reason.');
+    expect(c.snapshot().phase).toBe(phase);
+    await c.discard();
+    expect(read).toHaveBeenCalledExactlyOnceWith({
+      version: 'v1',
+      submissionId: context.page.submissionId,
+      after: null,
+    });
+    expect(c.snapshot()).toMatchObject({ phase: 'EDITING', outcome: null });
+    await c.issue(fields);
+    expect(write).toHaveBeenCalledTimes(2);
+    expect(write.mock.calls[1][2]).toBe('second-key');
+  },
+);
+it('ignores discard unless a command is UNCERTAIN or BLOCKED, and never discards a busy or saved command', async () => {
+  const c = createPracticeAssignmentManager(context, transport, key);
+  await c.discard();
+  expect(read).not.toHaveBeenCalled();
+  await c.issue(fields);
+  expect(c.snapshot().phase).toBe('SAVED');
+  await c.discard();
+  expect(read).not.toHaveBeenCalled();
+  expect(c.snapshot().phase).toBe('SAVED');
+});
+it('clears private context when the reload after a discard is denied', async () => {
+  write.mockRejectedValueOnce(new Error('x'));
+  read.mockResolvedValue({ status: 403, body: null });
+  const c = createPracticeAssignmentManager(context, transport, key);
+  await c.issue(fields);
+  await c.discard();
+  expect(c.snapshot()).toMatchObject({ phase: 'DENIED', context: null });
+});
 it('requires refresh after already-revoked conflict', async () => {
   write.mockResolvedValue({ status: 409, body: { error: { code: 'REVISION_CHANGED' } } });
   const c = createPracticeAssignmentManager(context, transport, key);
