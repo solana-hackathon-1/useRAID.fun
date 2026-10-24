@@ -1,0 +1,46 @@
+
+ RUN  v4.1.12 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-manager-client.test.ts (32 tests | 2 failed) 17ms
+   × refresh reloads the currently displayed submission from STALE, independent of any lookup text 2ms
+   × keeps the unauthenticated wording for a write 401 and uses neutral business-denial wording for a write 403, both still clearing private context 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > refresh reloads the currently displayed submission from STALE, independent of any lookup text
+TypeError: c.refresh is not a function
+ ❯ tests/practice-assignment-manager-client.test.ts:281:11
+    279|   await c.revoke(id, 'Synthetic reason.');
+    280|   expect(c.snapshot().phase).toBe('STALE');
+    281|   await c.refresh();
+       |           ^
+    282|   expect(read).toHaveBeenCalledExactlyOnceWith({
+    283|     version: 'v1',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > keeps the unauthenticated wording for a write 401 and uses neutral business-denial wording for a write 403, both still clearing private context
+AssertionError: expected 'Management access is unavailable. Sig…' to match /current account or the selected appo…/i
+
+- Expected:
+/current account or the selected appointee/i
+
++ Received:
+"Management access is unavailable. Sign in with an authorized administrator account and recheck."
+
+ ❯ tests/practice-assignment-manager-client.test.ts:303:37
+    301|   await denied.issue(fields);
+    302|   expect(denied.snapshot()).toMatchObject({ phase: 'DENIED', context: …
+    303|   expect(denied.snapshot().message).toMatch(/current account or the se…
+       |                                     ^
+    304|   expect(denied.snapshot().message).not.toMatch(/sign in with an autho…
+    305|   await denied.retry();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 30 passed (32)
+   Start at  13:07:25
+   Duration  252ms (transform 39ms, setup 0ms, import 96ms, tests 17ms, environment 0ms)
+

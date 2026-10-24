@@ -1,0 +1,54 @@
+[
+  {
+    "container": "raid-t013-review-fixes-test-20261024",
+    "owner": "claude-t013-builder",
+    "image": "postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "run": "green-f5",
+    "createdAt": "2026-10-24T07:24:09.608561+00:00",
+    "loopbackPort": "55047",
+    "removedAt": "2026-10-24T07:24:19.686604+00:00",
+    "removeExit": 0,
+    "removeOut": "raid-t013-review-fixes-test-20261024",
+    "stillPresent": false,
+    "testExit": 0
+  },
+  {
+    "container": "raid-t013-review-fixes-test-20261024",
+    "owner": "claude-t013-builder",
+    "image": "postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "run": "red-f5-mutation-no-reader-mutex",
+    "createdAt": "2026-10-24T07:24:25.685198+00:00",
+    "loopbackPort": "55048",
+    "removedAt": "2026-10-24T07:24:39.235652+00:00",
+    "removeExit": 0,
+    "removeOut": "raid-t013-review-fixes-test-20261024",
+    "stillPresent": false,
+    "testExit": 1
+  },
+  {
+    "container": "raid-t013-review-fixes-test-20261024",
+    "owner": "claude-t013-builder",
+    "image": "postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "run": "red-f5-mutation-no-reader-mutex",
+    "createdAt": "2026-10-24T07:24:52.427927+00:00",
+    "loopbackPort": "55049",
+    "removedAt": "2026-10-24T07:25:15.882443+00:00",
+    "removeExit": 0,
+    "removeOut": "raid-t013-review-fixes-test-20261024",
+    "stillPresent": false,
+    "testExit": 1
+  },
+  {
+    "container": "raid-t013-review-fixes-test-20261024",
+    "owner": "claude-t013-builder",
+    "image": "postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+    "run": "green-f5",
+    "createdAt": "2026-10-24T07:25:16.055584+00:00",
+    "loopbackPort": "55050",
+    "removedAt": "2026-10-24T07:25:26.032136+00:00",
+    "removeExit": 0,
+    "removeOut": "raid-t013-review-fixes-test-20261024",
+    "stillPresent": false,
+    "testExit": 0
+  }
+]

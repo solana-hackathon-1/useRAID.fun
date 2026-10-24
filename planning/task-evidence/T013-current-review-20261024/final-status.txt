@@ -1,0 +1,9 @@
+## claude/t013-practice-trial-ui...origin/claude/t013-practice-trial-ui
+ M docs/ai-handoff/CURRENT.md
+ M docs/raid-practice-assignment-management.md
+ M planning/task-evidence/T013-assignment-management-review-fixes/preview-next.log
+ M planning/task-evidence/T013-review-inbox/preview-next.log
+?? .claude/worktrees/
+?? WARP.md
+?? docs/tasks/2026-10-24-T013-current-review.md
+?? planning/task-evidence/T013-current-review-20261024/

@@ -23,3 +23,7 @@ DEC-2026-10-12-03 authorizes sequential bounded implementation and Git publicati
 ## Verified task-runner interruption cleanup — 15 October 2026
 
 A finally block alone did not handle SIGTERM in a temporary Python verification runner: actual parent exit-15 left its owned PostgreSQL running. T013D2 retained that RED/source, manually recovered only the verified owned fixture, then added SIGINT/SIGTERM handlers, separate owned child sessions/process-group termination and verified-label shutdown in finally. Actual SIGTERM GREEN parent143/Runningfalse/automaticstop0; normal49/current consuming host also stop0. Use [the verified runner](../../planning/task-evidence/T013-review-reads/db-run.py) and [lifecycle evidence](../../planning/task-evidence/T013-review-reads/review.json) as the next task-harness starting point, renaming its exact task label/container/paths. Preserve unrelated resources and original failure evidence; SIGTERM verification is not a claim that SIGKILL can be trapped. This implements existing DEC-2026-10-11-04/§24.8, not a new owner policy.
+
+## Owner preference — 24 October 2026
+
+Keep `CURRENT.md` very small: current state, active resources, open findings and ordered next steps only. Replace superseded entries instead of appending; delete old handoff text that is no longer needed (history stays in git; evidence files under `planning/task-evidence/` are not handoffs and stay). Back up uncommitted content before pruning.

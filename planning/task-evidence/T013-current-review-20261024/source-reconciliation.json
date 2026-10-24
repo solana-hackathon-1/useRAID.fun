@@ -1,0 +1,62 @@
+{
+  "src/skills/practice-assignment-manager-client.ts": {
+    "current": "7c1c6c39b8080b4057dd5cce5af3b2be7406108146da7977af04a11f855affd2",
+    "recorded": "563af1d3a9ce460352e0a1e8461c3b2077841659fa8b951fbefed87215dacd66",
+    "matches": false
+  },
+  "src/app/api/v1/admin/practice/review-assignments/route.ts": {
+    "current": "1c68378a4788e7399b0bab61d4114d0d06c3960e544aaff0c68af4a91cb4ea3f",
+    "recorded": "1c68378a4788e7399b0bab61d4114d0d06c3960e544aaff0c68af4a91cb4ea3f",
+    "matches": true
+  },
+  "tests/practice-assignment-manager-client.test.ts": {
+    "current": "13027f0a61047aa5dff1118f30952a6cc1e19688ae7e9cbe0259802a796c65ef",
+    "recorded": "f2b8339f7878938b216241e99c1812d45821fa8df2f59259ab704febb0971f32",
+    "matches": false
+  },
+  "tests/practice-assignment-management-db.test.ts": {
+    "current": "eb2aac1450a2e2bd1c719ecc4a3494a65dc5e659d5171a7f8a5830f9e896eda7",
+    "recorded": "eb2aac1450a2e2bd1c719ecc4a3494a65dc5e659d5171a7f8a5830f9e896eda7",
+    "matches": true
+  },
+  "tests/browser-practice-assignment-management/assignment-management.spec.ts": {
+    "current": "5ec73676e706aea0bd307585531f50c7eb575f81b961a81cd14c7414add6cc8a",
+    "recorded": "5ec73676e706aea0bd307585531f50c7eb575f81b961a81cd14c7414add6cc8a",
+    "matches": true
+  },
+  "docs/raid-practice-assignment-management.md": {
+    "current": "229afab9f0adb33910c92159aab9d8cf940f17974a46d2f6983725a1ac71a845",
+    "recorded": "68fad3d9f48d96a2a16bb60039a54c512b587469631adbc97ef0ba4529eb7d71",
+    "matches": false
+  },
+  "docs/tasks/2026-10-23-T013-assignment-management-review-fixes.md": {
+    "current": "f3842e5a08ce826db3369a0afe3da8692fd41bafca759e36268000af5ab36694",
+    "recorded": "f3842e5a08ce826db3369a0afe3da8692fd41bafca759e36268000af5ab36694",
+    "matches": true
+  },
+  "docs/ai-handoff/CURRENT.md": {
+    "current": "9e78c7c43d65389949d4469101cdce91751b3035d5575f91b6fd6ef5076551ae",
+    "recorded": "6dd87875f2796e97ccab7c12eb75c0e1e66b1f5074cf13fe15557bacb5f002a5",
+    "matches": false
+  },
+  "src/skills/practice-review-assignment-storage.ts": {
+    "current": "99a27908e0a18d8689b921230bd98d7df8f2e74fa2a931c3387fa48c679e8f5b",
+    "sameAsParent0d20d5f": false,
+    "priorRecordedCandidateHash": "99a27908e0a18d8689b921230bd98d7df8f2e74fa2a931c3387fa48c679e8f5b",
+    "matchesPriorRecordedCandidate": true
+  },
+  "planning/identity-writer-fence.json": {
+    "current": "87c521b77504b85ba8d9cfad8171769f6a20ae19656e3e88aef81d05aca9e52c",
+    "sameAsParent0d20d5f": false,
+    "priorRecordedCandidateHash": "87c521b77504b85ba8d9cfad8171769f6a20ae19656e3e88aef81d05aca9e52c",
+    "matchesPriorRecordedCandidate": true
+  },
+  "audit-allowlist.json": {
+    "current": "6311124a1c8e1f47aba2a7e838890a16f17e71957b2fe1068f68d40803692df7",
+    "sameAsParent0d20d5f": true
+  },
+  "scripts/audit-check.ts": {
+    "current": "9429ab8c34b53ee59b6ee3c14a8d987ddd53ec914de73cf74761d622f517a6fe",
+    "sameAsParent0d20d5f": true
+  }
+}

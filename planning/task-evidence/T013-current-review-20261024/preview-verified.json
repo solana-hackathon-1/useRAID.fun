@@ -1,0 +1,45 @@
+{
+  "resource": {
+    "mode": "development",
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-current-review-preview-w71cu18h",
+    "syntheticOnly": true,
+    "runnerPid": 64425,
+    "serverPid": 64431,
+    "url": "http://127.0.0.1:56431/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0",
+    "openUrl": "http://127.0.0.1:56445/open",
+    "serverPort": 56431,
+    "helperPort": 56445,
+    "databaseContainer": "raid-t013-current-review-preview-20261024",
+    "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+    "result": "RUNNING"
+  },
+  "checks": [
+    {
+      "name": "desktop",
+      "status": 200,
+      "authorizedCurrentMetadata": true,
+      "issueFormEnabled": true,
+      "noDefaultExpiry": true,
+      "protectedApi": true,
+      "noCaseAnswers": true,
+      "noOverflow": true,
+      "labelsAboveControls": true,
+      "pageErrors": []
+    },
+    {
+      "name": "mobile",
+      "status": 200,
+      "authorizedCurrentMetadata": true,
+      "issueFormEnabled": true,
+      "noDefaultExpiry": true,
+      "protectedApi": true,
+      "noCaseAnswers": true,
+      "noOverflow": true,
+      "labelsAboveControls": true,
+      "pageErrors": []
+    }
+  ],
+  "verifiedAt": "2026-10-24T06:38:15.871Z",
+  "mode": "development",
+  "synthetic": true
+}

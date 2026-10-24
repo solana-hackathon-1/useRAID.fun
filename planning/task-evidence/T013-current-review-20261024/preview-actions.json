@@ -1,0 +1,24 @@
+{
+  "sourceSha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+  "checks": [
+    {
+      "name": "desktop",
+      "actualIssueAndRevoke": true,
+      "keyboardIssue": true,
+      "explicitFiniteUtcExpiry": true,
+      "originalReceiptPreserved": true,
+      "refreshedRevocationObserved": true,
+      "syntheticAssignmentId": "0c028956-156f-4442-a963-442be3cbb2df"
+    },
+    {
+      "name": "mobile",
+      "actualIssueAndRevoke": true,
+      "keyboardIssue": true,
+      "explicitFiniteUtcExpiry": true,
+      "originalReceiptPreserved": true,
+      "refreshedRevocationObserved": true,
+      "syntheticAssignmentId": "44453e45-9424-473d-bbd9-8f3640272452"
+    }
+  ],
+  "verifiedAt": "2026-10-24T06:39:19.393Z"
+}

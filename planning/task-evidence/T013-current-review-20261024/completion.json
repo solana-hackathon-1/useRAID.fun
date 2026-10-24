@@ -1,0 +1,255 @@
+{
+  "task_id": "T013",
+  "scope": "Current-source reconciliation/review preparation for committed assignment manager/review corrections and dependency remediation; no new product implementation.",
+  "status": "SELF-EVALUATED; exact-source hosted CI SUCCESS; full T013 and independent review NOT VERIFIED",
+  "implementer": "Codex builder",
+  "reviewer": "Independent reviewer pending; do not treat SELF-EVALUATED as acceptance",
+  "handoff": "docs/tasks/2026-10-24-T013-current-review.md; docs/ai-handoff/CURRENT.md",
+  "migration_rollback": "No schema; disable new writes/remove additive UI/GETHEAD preserving immutable appointments/revocations/private audits/receipts and command replay.",
+  "dependency_evidence": "Hosted Checks40066274389: all7jobs SUCCESS,228files/3533tests,24managementbrowserchecks; existing6high findings allowlisted/unexpired; original consumer/TDD provenance retained.",
+  "open_decisions": "O09/O11 calibration/retention/operating authority, notice/appeal, independent/UAT/business/release remain unverified.",
+  "release_gate_disposition": "Full T013 NOT APPROVED; independent/UAT/operating/release missing; prior new-advisory blocker cleared by exact-source hosted gate.",
+  "baseline_sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+  "source_identity": "Exact product HEAD 4cf779181588d0f808c5b294ddd6c0e5952b6b6a; current session documentation/evidence only; source manifest and preview archive retained",
+  "criteria": {
+    "T013-C01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C01",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C02",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C03",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C04": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C04",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C05": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C05",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C06": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C06",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C07": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C07",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C08": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C08",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C09": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C09",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C10": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C10",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C11": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C11",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C12": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C12",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C13": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C13",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C14": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C14",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C15": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C15",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C16": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C16",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C17": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C17",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C18": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C18",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-A01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A01",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-A02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-A02",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-W01": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W01",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-W02": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W02",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-W03": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-W03",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C19": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C19",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C20": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C20",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C21": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C21",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    },
+    "T013-C22": {
+      "result": "NOT VERIFIED",
+      "canonical_reference": "RAID_AGENT_BLUEPRINT.md; T013-C22",
+      "observed": "Bounded current automated evidence available; full numbered T013 domain/independent acceptance remains NOT VERIFIED.",
+      "evidence_url": "planning/task-evidence/T013-current-review-20261024/review.json; docs/tasks/2026-10-24-T013-current-review.md"
+    }
+  },
+  "tdd": {
+    "red": {
+      "command": "vitest run tests/practice-assignment-manager-client.test.ts",
+      "sha": "0d20d5f0ff8d45159d19902508ba6b53533f1ae9",
+      "evidence_url": "planning/task-evidence/T013-assignment-management-review-fixes/client-red.log",
+      "expected_failure": "Write404 should be STALE with retained context; current code DENIED and clears context.",
+      "observed_failure": "2 genuine missing-target write failures (DENIED instead of STALE), 27 controls PASS",
+      "result": "FAIL"
+    },
+    "green": {
+      "command": "vitest selected client/HTTP/Root route files",
+      "sha": "0d20d5f0ff8d45159d19902508ba6b53533f1ae9",
+      "evidence_url": "planning/task-evidence/T013-assignment-management-review-fixes/green.log;head-audit.log;browser.log",
+      "observed": "72 PASS; actual-PG HEAD1 PASS; 2 desktop/mobile affected flow PASS",
+      "result": "PASS"
+    },
+    "refactor": {
+      "command": "tsc isolated source; eslint changed files; independent consumer; development preview",
+      "sha": "0d20d5f0ff8d45159d19902508ba6b53533f1ae9",
+      "evidence_url": "planning/task-evidence/T013-assignment-management-review-fixes/types.log;lint.log;consumer.log;preview-verified.json",
+      "observed": "PASS; no additional refactor needed beyond sharing existing revision-change path; ROOT SECURITY FAIL retained",
+      "result": "PASS"
+    }
+  },
+  "ci": {
+    "static": {
+      "result": "SUCCESS",
+      "sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/40066274389/job/120790098282",
+      "observed": "success; rawlogs retained in current-review evidence"
+    },
+    "docker": {
+      "result": "SUCCESS",
+      "sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/40066274389/job/120790098395",
+      "observed": "success; rawlogs retained in current-review evidence"
+    },
+    "browser": {
+      "result": "SUCCESS",
+      "sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/40066274389/job/120790098405",
+      "observed": "success; rawlogs retained in current-review evidence"
+    },
+    "planning-contracts": {
+      "result": "SUCCESS",
+      "sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/40066274389/job/120790098422",
+      "observed": "success; rawlogs retained in current-review evidence"
+    },
+    "dependency-security": {
+      "result": "SUCCESS",
+      "sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/40066274389/job/120790098439",
+      "observed": "success; rawlogs retained in current-review evidence"
+    },
+    "test": {
+      "result": "SUCCESS",
+      "sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/40066274389/job/120790098472",
+      "observed": "success; rawlogs retained in current-review evidence"
+    },
+    "ci-gate": {
+      "result": "SUCCESS",
+      "sha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+      "evidence_url": "https://github.com/solana-hackathon-1/useRAID.fun/actions/runs/40066274389/job/120794425660",
+      "observed": "success; rawlogs retained in current-review evidence"
+    }
+  },
+  "historical_gate_failures": {
+    "dependency-security": {
+      "result": "FAIL",
+      "command": "npm run audit:check",
+      "observed": "8unallowlistedleafadvisories, unchangedRootpackage/lock/auditpolicy",
+      "evidence_url": "planning/task-evidence/T013-assignment-management/security-final.log; audit-findings.json"
+    }
+  },
+  "tdd_provenance": "Prior review-fix RED/GREEN/REFACTOR records below remain unchanged at their actual source. This session only reconciles docs/evidence; no new RED or fresh independent consumer install is claimed."
+}

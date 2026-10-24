@@ -1,0 +1,21 @@
+publish	Initialize containers	2026-10-24T06:03:01.6456321Z Digest: sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+publish	Install and check source	2026-10-24T06:03:37.0431255Z 6 high severity vulnerabilities
+publish	Install and check source	2026-10-24T06:04:58.3950313Z PASS: identity AST fence; reviewed exceptions and User FK inventory
+publish	Verify database and application contracts	2026-10-24T06:13:56.9534919Z stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > provision wins against old binary at final DELETE; entire auth transaction rolls back
+publish	Verify database and application contracts	2026-10-24T06:13:57.2019613Z stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > delete wins: provision blocks on User key lock then denies missing account without orphan
+publish	Verify database and application contracts	2026-10-24T06:13:57.2411146Z stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > independent create/create race returns one committed identity and first provenance
+publish	Verify database and application contracts	2026-10-24T06:16:51.1241205Z  Test Files  228 passed (228)
+publish	Verify database and application contracts	2026-10-24T06:16:51.1276484Z       Tests  3533 passed (3533)
+publish	Verify database and application contracts	2026-10-24T06:16:51.1281144Z    Duration  709.70s (transform 3.61s, setup 0ms, import 31.80s, tests 653.30s, environment 18ms)
+publish	Raider orientation desktop and mobile suite	2026-10-24T06:17:51.7740432Z   8 passed (36.0s)
+publish	Guild draft desktop and mobile suite	2026-10-24T06:19:06.2145402Z   10 passed (1.2m)
+publish	Project proposal desktop and mobile suite	2026-10-24T06:20:02.4472182Z   10 passed (55.5s)
+publish	Private skill claims desktop and mobile suite	2026-10-24T06:21:26.8603475Z   20 passed (1.4m)
+publish	Administrative taxonomy API suite	2026-10-24T06:21:38.7839448Z   14 passed (11.1s)
+publish	Administrative catalog editor and maintenance suites	2026-10-24T06:22:44.1855499Z   20 passed (1.1m)
+publish	Administrative catalog editor and maintenance suites	2026-10-24T06:22:55.1812452Z   2 passed (10.3s)
+publish	Build production image without deployment secrets	2026-10-24T06:23:18.5613858Z #13 16.58 6 high severity vulnerabilities
+publish	Build production image without deployment secrets	2026-10-24T06:23:59.9092561Z #16 1.572 6 high severity vulnerabilities
+publish	Publish checked revision to private GHCR	2026-10-24T06:24:44.7100492Z sha-34c784e5f8773f0836135b927b1408e3d96c955f: digest: sha256:bfffaaf8e764d293cb4cca4bb74b24863ee6a94cbcbdef89651147b7d9902f67 size: 3260
+publish	Publish checked revision to private GHCR	2026-10-24T06:24:45.9613644Z staging: digest: sha256:bfffaaf8e764d293cb4cca4bb74b24863ee6a94cbcbdef89651147b7d9902f67 size: 3260
+publish	Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020	2026-10-24T06:24:46.5132270Z (node:22188) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.

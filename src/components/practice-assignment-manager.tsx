@@ -206,7 +206,14 @@ export function PracticeAssignmentManager({
             More appointments
           </button>
         )}
-        <button className="button secondary" disabled={!ready || locked} onClick={() => refresh()}>
+        <button
+          className="button secondary"
+          disabled={!ready || locked}
+          onClick={() => {
+            setRevokeId('');
+            void manager.refresh();
+          }}
+        >
           Refresh current appointments
         </button>
       </section>

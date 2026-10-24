@@ -140,13 +140,17 @@ export function createPracticeAssignmentManager(
         return;
       }
       if ([401, 403].includes(response.status)) {
+        // Both causes fail closed. A 403 envelope cannot tell a lost session from a business denial
+        // (e.g. self-review or out-of-scope appointee): the code is FORBIDDEN for both, so say neither.
         pending = null;
         change({
           phase: 'DENIED',
           context: null,
           outcome: null,
           message:
-            'Management access is unavailable. Sign in with an authorized administrator account and recheck.',
+            response.status === 403
+              ? 'This action was not permitted for the current account or the selected appointee. Private details were cleared; recheck management access and try again.'
+              : 'Management access is unavailable. Sign in with an authorized administrator account and recheck.',
         });
         return;
       }
@@ -203,7 +207,7 @@ export function createPracticeAssignmentManager(
     pending = Object.freeze({ ...command, key: identity }) as Pending;
     await send();
   };
-  return {
+  const api = {
     snapshot: () => state,
     subscribe(fn: () => void) {
       listeners.add(fn);
@@ -278,6 +282,14 @@ export function createPracticeAssignmentManager(
     async retry() {
       if (state.phase === 'UNCERTAIN') await send();
     },
+    /** Reload the submission currently displayed, never editable lookup text. */
+    refresh() {
+      return api.load({
+        version: 'v1',
+        submissionId: state.context?.page.submissionId ?? null,
+        after: null,
+      });
+    },
     async load(value: unknown) {
       if (pending || state.phase === 'LOADING') return;
       const input = PracticeAssignmentManagementInputSchema.safeParse(value);
@@ -332,4 +344,5 @@ export function createPracticeAssignmentManager(
       });
     },
   };
+  return api;
 }

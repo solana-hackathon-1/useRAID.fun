@@ -333,6 +333,193 @@ integration('current protected assignment management reads', () => {
     await revoking;
     expect((await read()).page.entries[0].currentState).toBe('REVOKED');
   });
+  describe('ascending existing-appointment mutexes (seed 12017) with several appointments', () => {
+    const MUTEX = 'pg_advisory_xact_lock';
+    type Wrapped = Parameters<typeof readPracticeAssignmentManagement>[0];
+    const within = <T>(work: Promise<T>, label: string, ms = 10000) =>
+      new Promise<T>((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error('Timed out (deadlock?): ' + label)), ms);
+        work.then(
+          (v) => (clearTimeout(timer), resolve(v)),
+          (e) => (clearTimeout(timer), reject(e)),
+        );
+      });
+    // Bounded polling of PostgreSQL's own lock tables; no fixed-duration sleep.
+    async function until<T>(probe: () => Promise<T | null | false>, label: string): Promise<T> {
+      const deadline = Date.now() + 10000;
+      for (;;) {
+        const value = await probe();
+        if (value) return value;
+        if (Date.now() > deadline) throw new Error('Timed out waiting for ' + label);
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+    }
+    const mutexState = (pid: number, appointmentId: string) =>
+      db.$queryRawUnsafe<{ granted: boolean }[]>(
+        `SELECT granted FROM pg_locks WHERE locktype='advisory' AND pid=$1 AND (classid::bigint<<32)|objid::bigint = hashtextextended($2,12017)`,
+        pid,
+        appointmentId,
+      );
+    const holdsMutex = async (pid: number, appointmentId: string) =>
+      (await mutexState(pid, appointmentId)).some((r) => r.granted === true);
+    const waitsOnMutex = async (pid: number, appointmentId: string) =>
+      (await mutexState(pid, appointmentId)).some((r) => r.granted === false);
+    async function twoAppointments() {
+      const issued = await runCommandTransaction(db, (tx) =>
+        issuePracticeReviewAssignment(
+          tx,
+          {
+            actor: admin,
+            input: {
+              version: 'v1',
+              submissionId: f.assignment.submissionId,
+              evaluatorAccountId: f.evaluatorId,
+              purpose: 'ASSESSMENT_REVIEW',
+              expiresAt: new Date(Date.now() + 60000).toISOString(),
+              reason: 'synthetic second appointment for mutex ordering',
+            },
+            idempotencyKey: randomUUID(),
+            requestId: 'synthetic-mutex-second-appointment',
+          },
+          { allowNewWrites: true, canManage: () => true },
+        ),
+      );
+      const [first, second] = [f.assignment.id, issued.assignment.id].sort();
+      expect(first < second).toBe(true);
+      return { first, second };
+    }
+    async function secondManager() {
+      const user = await db.user.create({
+        data: { handle: 'synthetic-mutex-manager', role: 'ADMIN', xId: randomUUID() },
+      });
+      const actor = { accountId: user.id, sessionHash: 'e'.repeat(64) };
+      await db.session.create({
+        data: {
+          tokenHash: actor.sessionHash,
+          userId: user.id,
+          via: 'x',
+          expiresAt: new Date(Date.now() + 60000),
+        },
+      });
+      return actor;
+    }
+    const revokeAs = (
+      actor: { accountId: string; sessionHash: string },
+      assignmentId: string,
+      wrap?: (tx: Wrapped) => Wrapped,
+    ) =>
+      runCommandTransaction(db, (tx) =>
+        revokePracticeReviewAssignment(
+          wrap ? wrap(tx) : tx,
+          {
+            actor,
+            input: { version: 'v1', assignmentId, reason: 'Synthetic mutex-order revocation.' },
+            idempotencyKey: randomUUID(),
+            requestId: 'synthetic-mutex-order',
+          },
+          { allowNewWrites: true, canManage: () => true },
+        ),
+      );
+    const states = (page: { entries: { assignment: { id: string }; currentState: string }[] }) =>
+      Object.fromEntries(page.entries.map((e) => [e.assignment.id, e.currentState]));
+
+    it('does not block or deadlock revoking the second appointment while a reader holds only the first mutex; the reader then observes it revoked', async () => {
+      const { first, second } = await twoAppointments();
+      const other = await secondManager();
+      let release!: () => void, held!: () => void, pidReady!: (pid: number) => void;
+      const pause = new Promise<void>((resolve) => (release = resolve)),
+        reached = new Promise<void>((resolve) => (held = resolve)),
+        readerPid = new Promise<number>((resolve) => (pidReady = resolve));
+      const reading = runCommandTransaction(db, async (tx) => {
+        const [row] = await tx.query<{ pid: number }>('SELECT pg_backend_pid() AS pid', []);
+        pidReady(row.pid);
+        return readPracticeAssignmentManagement(
+          {
+            ...tx,
+            async query<Row>(q: string, b: readonly (string | null)[]) {
+              const rows = await tx.query<Row>(q, b);
+              if (q.includes(MUTEX) && b[0] === first) {
+                held();
+                await pause;
+              }
+              return rows;
+            },
+          },
+          admin,
+          input(),
+          options(),
+        );
+      });
+      try {
+        await within(reached, 'reader to take the first appointment mutex');
+        const pid = await readerPid;
+        expect(await holdsMutex(pid, first)).toBe(true);
+        expect(await mutexState(pid, second)).toHaveLength(0);
+        // The reader has not locked the second appointment, so revoking it is not delayed.
+        await within(revokeAs(other, second), 'second-appointment revoke behind the reader');
+      } finally {
+        release();
+        // Drain the reader without throwing so an assertion failure above is not masked and no transaction is orphaned.
+        await Promise.allSettled([reading]);
+      }
+      const outcome = await within(reading, 'reader after release');
+      // Contract: reads are READ_COMMITTED per statement, not a page snapshot. The reader took the
+      // second mutex only after that revocation committed, so it observes the committed REVOKED.
+      expect(states(outcome.page)).toEqual({ [first]: 'ACTIVE', [second]: 'REVOKED' });
+      expect((await read()).page.entries.map((e) => e.assignment.id)).toEqual([first, second]);
+    }, 40000);
+
+    it('makes the reader wait on the second mutex held by an in-flight revocation (holding the first), without deadlock, then observes it revoked', async () => {
+      const { first, second } = await twoAppointments();
+      const other = await secondManager();
+      let release!: () => void, held!: () => void, revokerPidReady!: (pid: number) => void;
+      const pause = new Promise<void>((resolve) => (release = resolve)),
+        reached = new Promise<void>((resolve) => (held = resolve)),
+        revokerPid = new Promise<number>((resolve) => (revokerPidReady = resolve));
+      const revoking = revokeAs(other, second, (tx) => ({
+        ...tx,
+        async query<Row>(q: string, b: readonly (string | null)[]) {
+          if (q.includes('SELECT pg_backend_pid()')) return tx.query<Row>(q, b);
+          const rows = await tx.query<Row>(q, b);
+          if (q.includes(MUTEX) && b[0] === second) {
+            const [row] = await tx.query<{ pid: number }>('SELECT pg_backend_pid() AS pid', []);
+            revokerPidReady(row.pid);
+            held();
+            await pause;
+          }
+          return rows;
+        },
+      }));
+      let readerPid: number | undefined;
+      let reading: ReturnType<typeof read> | undefined;
+      try {
+        await within(reached, 'revoker to take the second appointment mutex');
+        const holder = await revokerPid;
+        reading = runCommandTransaction(db, async (tx) => {
+          const [row] = await tx.query<{ pid: number }>('SELECT pg_backend_pid() AS pid', []);
+          readerPid = row.pid;
+          return readPracticeAssignmentManagement(tx, admin, input(), options());
+        });
+        const pid = await until(async () => readerPid ?? null, 'reader backend');
+        // Ascending order: reader owns the lower mutex, then waits for the higher one held by the revoker.
+        await until(() => waitsOnMutex(pid, second), 'reader to wait on the second mutex');
+        expect(await holdsMutex(pid, first)).toBe(true);
+        const [blocked] = await db.$queryRawUnsafe<{ blockers: number[] }[]>(
+          'SELECT pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid=$1',
+          pid,
+        );
+        expect(blocked.blockers).toContain(holder);
+      } finally {
+        release();
+        // Drain both transactions without throwing so the original failure surfaces and nothing stays open.
+        await Promise.allSettled([revoking, reading]);
+      }
+      const committed = await within(revoking, 'revoker completion');
+      expect(committed.status).toBe('EXECUTED');
+      const outcome = await within(reading!, 'reader after the revocation committed');
+      expect(states(outcome.page)).toEqual({ [first]: 'ACTIVE', [second]: 'REVOKED' });
+    }, 40000);
+  });
   it('rolls back and returns no metadata when current inspection policy closes during query waits', async () => {
     let enabled = true;
     const opts = { ...options(), canInspect: () => enabled };

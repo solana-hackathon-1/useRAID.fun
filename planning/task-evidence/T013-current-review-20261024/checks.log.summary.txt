@@ -1,0 +1,1074 @@
+static	Run actions/setup-node@v4	2026-10-24T05:26:53.1927983Z (node:2278) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+static	Run npm ci	2026-10-24T05:27:16.3991993Z 6 high severity vulnerabilities
+static	Run npm run lint	2026-10-24T05:28:38.1308153Z PASS: identity AST fence; reviewed exceptions and User FK inventory
+docker	Run docker build -t useraid:ci .	2026-10-24T05:27:20.2089589Z #13 19.23 6 high severity vulnerabilities
+docker	Run docker build -t useraid:ci .	2026-10-24T05:28:00.3047756Z #16 1.897 6 high severity vulnerabilities
+browser	Initialize containers	2026-10-24T05:26:57.6726847Z Digest: sha256:9e2cf6287f25c3151f4c9421ccce2b17f3e60061c111a29165e0d2cdd9ff0a97
+browser	Run actions/setup-node@v4	2026-10-24T05:27:06.9528117Z (node:2714) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+browser	Run npm ci	2026-10-24T05:27:30.2738098Z 6 high severity vulnerabilities
+browser	Demo browser suite	2026-10-24T05:28:45.1033048Z   1 skipped
+browser	Demo browser suite	2026-10-24T05:28:45.1033539Z   49 passed (50.9s)
+browser	Studio desktop and mobile suite	2026-10-24T05:30:58.6026631Z   52 passed (2.0m)
+browser	Raider orientation desktop and mobile suite	2026-10-24T05:31:40.6826143Z   8 passed (40.7s)
+browser	Guild draft desktop and mobile suite	2026-10-24T05:33:06.0307813Z   10 passed (1.4m)
+browser	Project proposal desktop and mobile suite	2026-10-24T05:34:10.3806056Z   10 passed (1.1m)
+browser	Private skill claims desktop and mobile suite	2026-10-24T05:35:50.7059731Z   20 passed (1.7m)
+browser	Private current assessment desktop and mobile suite	2026-10-24T05:36:33.7737906Z   10 passed (42.1s)
+browser	Practice trial portal desktop and mobile suite	2026-10-24T05:37:17.2465170Z   8 passed (42.5s)
+browser	Evaluator case evidence desktop and mobile suite	2026-10-24T05:37:59.1855233Z   8 passed (41.0s)
+browser	Evaluator assignment inbox desktop and mobile suite	2026-10-24T05:38:45.8148739Z   8 passed (45.7s)
+browser	Administrator appointment management desktop and mobile suite	2026-10-24T05:39:34.8315987Z   10 passed (48.1s)
+browser	Administrator appointment management writeoff suite	2026-10-24T05:39:49.3538380Z   2 passed (13.6s)
+browser	Ownership finding desktop and mobile suite	2026-10-24T05:40:46.1334722Z   8 passed (55.7s)
+browser	Assessment review and decision browser checks	2026-10-24T05:42:51.7133307Z   10 passed (2.1m)
+browser	Administrative taxonomy API suite	2026-10-24T05:43:05.0412755Z   14 passed (12.4s)
+browser	Administrative catalog editor and maintenance suites	2026-10-24T05:44:21.6924810Z   20 passed (1.3m)
+browser	Administrative catalog editor and maintenance suites	2026-10-24T05:44:35.1015861Z   2 passed (12.6s)
+browser	Production private assessment cache and current-state suite	2026-10-24T05:45:32.4274685Z   2 passed (9.7s)
+browser	Production practice trial portal suite	2026-10-24T05:45:49.7451774Z   8 passed (16.5s)
+browser	Production evaluator case evidence suite	2026-10-24T05:46:06.1031526Z   8 passed (15.5s)
+browser	Production evaluator assignment inbox suite	2026-10-24T05:46:22.7114906Z   8 passed (15.8s)
+browser	Production administrator appointment management suite	2026-10-24T05:46:52.5048876Z   10 passed (29.0s)
+browser	Production administrator appointment management writeoff suite	2026-10-24T05:46:58.2395381Z   2 passed (4.9s)
+browser	Production ownership finding suite	2026-10-24T05:47:20.2689237Z   8 passed (21.2s)
+browser	Production assessment review and decision browser checks	2026-10-24T05:48:15.6570348Z   10 passed (54.6s)
+browser	Live browser suite	2026-10-24T05:49:04.4254543Z   6 skipped
+browser	Live browser suite	2026-10-24T05:49:04.4254977Z   42 passed (42.8s)
+dependency-security	Run actions/setup-node@v4	2026-10-24T05:26:52.5670748Z (node:2243) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+dependency-security	Run npm ci	2026-10-24T05:27:17.9931009Z 6 high severity vulnerabilities
+test	Initialize containers	2026-10-24T05:26:57.9309205Z Digest: sha256:9e2cf6287f25c3151f4c9421ccce2b17f3e60061c111a29165e0d2cdd9ff0a97
+test	Run actions/setup-node@v4	2026-10-24T05:27:06.7056433Z (node:2716) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+test	Run npm ci	2026-10-24T05:27:31.9470664Z 6 high severity vulnerabilities
+test	All unit and real-database tests	2026-10-24T05:27:37.8395299Z npm test -- --reporter=default --reporter=junit --outputFile=test-results/vitest.xml
+test	All unit and real-database tests	2026-10-24T05:27:37.8465945Z shell: /usr/bin/bash -e {0}
+test	All unit and real-database tests	2026-10-24T05:27:37.8466302Z env:
+test	All unit and real-database tests	2026-10-24T05:27:37.8467389Z   DATABASE_URL: ***localhost:5432/useraid_test
+test	All unit and real-database tests	2026-10-24T05:27:37.8467807Z   RUN_DB_TESTS: true
+test	All unit and real-database tests	2026-10-24T05:27:37.8468083Z   DEMO_MODE: false
+test	All unit and real-database tests	2026-10-24T05:27:37.8468631Z ##[endgroup]
+test	All unit and real-database tests	2026-10-24T05:27:37.9705936Z 
+test	All unit and real-database tests	2026-10-24T05:27:37.9706609Z > useraid@0.1.0 test
+test	All unit and real-database tests	2026-10-24T05:27:37.9707443Z > vitest run --reporter=default --reporter=junit --outputFile=test-results/vitest.xml
+test	All unit and real-database tests	2026-10-24T05:27:37.9708008Z 
+test	All unit and real-database tests	2026-10-24T05:27:38.3197786Z 
+test	All unit and real-database tests	2026-10-24T05:27:38.3201644Z  RUN  v4.1.12 /home/runner/work/useRAID.fun/useRAID.fun
+test	All unit and real-database tests	2026-10-24T05:27:38.3202244Z 
+test	All unit and real-database tests	2026-10-24T05:29:22.1105288Z  ✓ tests/practice-trial-assessment-db.test.ts (111 tests) 103012ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1107821Z      ✓ commits actual manual VERIFIED rank from original case/criteria/current ownership/approved policy rather than a claimant declaration or proposal  984ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1110082Z      ✓ has no assessment/review from confirmed ownership alone  675ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1111694Z      ✓ records reasoned MORE_EVIDENCE without creating a skill assessment  964ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1113263Z      ✓ records reasoned NOT_DEMONSTRATED without creating a skill assessment  928ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1114960Z      ✓ does not silently revoke or downgrade an existing VERIFIED assessment when a later review needs more evidence  1302ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1116245Z      ✓ appends actual verification history without inflating the sample size of repeated review of the same evidence  1257ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1118000Z      ✓ recovers the original historical result after correction/writeoff/policy withdrawal under current case read authority  1240ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1121838Z      ✓ rejects changed same-key body using the shared receipt contract  874ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1123209Z      ✓ CAS protects both review and participant-skill source under simultaneous decisions  1077ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1124134Z      ✓ rejects stale or foreign expectedSubmissionReference  707ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1124966Z      ✓ rejects stale or foreign expectedDefinitionReference  665ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1125731Z      ✓ rejects stale or foreign expectedRubricReference  648ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1126555Z      ✓ rejects stale or foreign expectedPolicyReference  630ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1128022Z      ✓ rejects stale or foreign expectedOwnershipReference  742ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1129820Z      ✓ rejects stale or foreign expectedReviewReference  914ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1131343Z      ✓ rejects stale or foreign expectedAssessmentReference  781ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1133116Z      ✓ requires a current confirmed ownership source even when every criterion is MET  987ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1134982Z      ✓ requires every original required criterion MET and exact criterion coverage  905ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1136212Z      ✓ cannot substitute ownership appointment, admin role or claimant for current assessment appointment  610ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1137612Z      ✓ denies lost own evaluator session for new decisions and original retries  912ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1138858Z      ✓ denies revoked current assignment for new writes/read/replay  940ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1139942Z      ✓ denies withdrawn actual policy rather than treating a client label as approval  666ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1141173Z      ✓ preserves off-state without creating a new review/rank or successful command receipt  620ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1141983Z      ✓ fails closed on current canRead denial  622ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1142686Z      ✓ fails closed on current canUsePolicy denial  633ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1143346Z      ✓ fails closed on current canReview denial  777ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1144120Z      ✓ rejects caller-invented committed facts { assessedRank: 'S' }  612ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1144987Z      ✓ rejects caller-invented committed facts { sampleSize: 1000 }  621ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1145950Z      ✓ rejects caller-invented committed facts { assessmentPolicyVersion: 'client-approved' }  625ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1147228Z      ✓ rejects caller-invented committed facts { approved: true }  609ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1148477Z      ✓ rejects caller-invented committed facts { evidenceReferences: [ { recordId: 'guessed', revision: 1 } ] }  615ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1149759Z      ✓ rejects malformed private reason before any persistence   598ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1157470Z      ✓ rejects malformed private reason before any persistence 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀  605ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1164485Z      ✓ rejects malformed private reason before any persistence x   604ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1165375Z      ✓ rejects malformed private reason before any persistence x�  593ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1166252Z      ✓ returns private history only to the exact actual current assessment reviewer  923ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1167200Z      ✓ cannot turn one actual case into repeated strong independent S-rank evidence  1130ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1168158Z      ✓ cannot fabricate actual automated evaluation from a manual criterion declaration  1128ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1169741Z      ✓ cannot verify admitted original tool-rule violation unlisted-tool despite confirmed ownership and MET criteria  1128ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1171048Z      ✓ cannot verify admitted original tool-rule violation prohibited-ai despite confirmed ownership and MET criteria  1126ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1172248Z      ✓ does not silently replace higher current VERIFIED capacity just because a lower new trial was passed  1414ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1173779Z      ✓ audits private review and rank fields before selection and fails closed if access audit persistence fails  991ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1175266Z      ✓ rolls back a new assessment if current canRead closes during private result selection  831ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1176307Z      ✓ rolls back a new assessment if current canUsePolicy closes during private result selection  853ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1177363Z      ✓ rolls back a new assessment if current canReview closes during private result selection  891ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1178888Z      ✓ fences distinct canRead after the final grant query following actual policy authorization  876ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1180278Z      ✓ fences distinct canUsePolicy after the final grant query following actual policy authorization  877ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1181307Z      ✓ drops historical private fields if current read scope closes during selection  944ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1182361Z      ✓ keeps review/assessment audit identifier-only without private criterion reasons or public outbox  921ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1183403Z      ✓ sanitizes throwing decision policies and rolls back all attempted rank/review state  746ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1184434Z      ✓ passes actual immutable catalog/case/ownership/policy facts to the scoped decision policy  876ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1185656Z      ✓ serializes actual distinct evaluators on distinct cases/definition-policy locks into one canonical participant-skill result  1341ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1186941Z      ✓ rechecks actual assignment expiry after participant-skill lock wait before decision policy or persisted outcome  3372ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1188144Z      ✓ raw SQL valid control commits exact actual review and rank sources with finalized private audit/projection  1028ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1189733Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { decision: 'AUTO_VERIFY' }  974ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1191033Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { criteria: null }  975ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1192071Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { criteria: [] }  959ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1193360Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { criteria: [ { criterionId: 'unknown', result: 'MET', reason: 'Synthetic' } ] }  987ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1195153Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { criteria: [ { criterionId: 'behavior', result: 'UNCERTAIN', reason: 'Synthetic' }, { criterionId: 'ownership', result: 'UNCERTAIN', reason: 'Synthetic' } ] }  962ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1211199Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { criteria: [ { criterionId: 'behavior', result: 'MET', reason: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' }, { criterionId: 'ownership', result: 'MET', reason: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' } ] }  963ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1222367Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { criteria: [ { criterionId: 'behavior', result: 'MET', reason: 'Synthetic', extra: 'private' }, { criterionId: 'ownership', result: 'MET', reason: 'Synthetic', extra: 'private' } ] }  979ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1223965Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reason: ' ' }  945ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1225029Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reason: ' untrimmed ' }  973ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1233315Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reason: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' }  976ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1239235Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { confidence: ' ' }  953ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1240349Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reviewRevision: 1 }  943ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1241423Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reviewRevision: 3 }  1002ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1242496Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankRevision: 3 }  978ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1243680Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { assignmentId: '00000000-0000-4000-8000-000000000000' }  984ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1244960Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { policyId: '00000000-0000-4000-8000-000000000000' }  945ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1246223Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { ownershipId: '00000000-0000-4000-8000-000000000000' }  949ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1247459Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reviewedAt: '2000-01-01T00:00:00Z' }  987ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1248884Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reviewedAt: '2100-01-01T00:00:00Z' }  996ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1250235Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankState: 'REVOKED' }  995ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1251262Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rank: 'S' }  989ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1252249Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rank: 'B' }  958ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1253255Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankSample: 2 }  970ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1254584Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankConfidence: 'Substituted confidence.' }  955ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1255873Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankPolicy: '00000000-0000-4000-8000-000000000000' }  968ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1257149Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankReview: '00000000-0000-4000-8000-000000000000' }  971ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1258682Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankSubmission: '00000000-0000-4000-8000-000000000000' }  966ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1259951Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankIssuedAt: '2000-01-01T00:00:00Z' }  957ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1261176Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankReassessmentAt: '2100-01-01T00:00:00Z' }  985ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1262305Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { wrongActor: true }  950ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1263398Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { kind: 'WrongKind' }  957ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1264482Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { wrongCaseReceipt: true }  941ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1265580Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { wrongPolicyReceipt: true }  940ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1266714Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { wrongOwnershipReceipt: true }  978ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1267833Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { noCasePointer: true }  942ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1269378Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { noRankPointer: true }  952ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1270456Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { noAudit: true }  962ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1271528Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { wrongReviewPayload: true }  960ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1272629Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { wrongRankPayload: true }  986ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1273711Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { reviewOutbox: true }  973ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1274763Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { rankOutbox: true }  978ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1275814Z      ✓ raw SQL rejects invalid shape/source/history/clock/private provenance { wrongResult: true }  942ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1276876Z      ✓ SQL preserves immutable PracticeAssessmentReviewVersion even for no-op updates and deletion  910ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1277909Z      ✓ SQL preserves immutable SkillAssessmentVersion even for no-op updates and deletion  919ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1279121Z      ✓ cannot delete or rewind either canonical review or participant-skill pointer  1189ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1280346Z      ✓ raw SQL requires exact policy private-access audit version, not an identifier-only forged trace  965ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1281441Z      ✓ raw SQL requires exact ownership private-access audit version, not an identifier-only forged trace  960ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1282646Z      ✓ accepts the actual dynamic ownership access revision after a new confirmed finding rather than hardcoding revision one  1036ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1283918Z      ✓ accepts a later actual approved policy revision while its access audit still targets immutable submission revision one  925ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1285131Z      ✓ rejects structurally inconsistent missing current assessment pointers in the reusable private view contract  870ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1286320Z      ✓ rejects structurally inconsistent foreign current assessment pointers in the reusable private view contract  850ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1287486Z      ✓ rejects structurally inconsistent past current assessment pointers in the reusable private view contract  852ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1289230Z      ✓ observes current case and participant-skill references for a newly assigned case without guessing an existing assessment or reading another case private fields  1537ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1290694Z      ✓ observes empty review/rank refs before the first review while retaining actual confirmed ownership and no rank authority  595ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1291936Z      ✓ does not return context metadata to admin/claimant/wrong-purpose appointments or when current read scope denies  607ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1293190Z      ✓ audits initial context access before global current assessment metadata and fails closed without a forged empty current ref  621ms
+test	All unit and real-database tests	2026-10-24T05:29:22.1294229Z      ✓ drops context if current scope closes during its metadata query  612ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9783303Z  ✓ tests/tracking-db.test.ts (48 tests) 12763ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9789775Z      ✓ blocks incomplete collection, versions corrections, freezes ordinary refresh and rejects snapshot mutation  301ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9792635Z      ✓ accepts missing eligible posts during review, then restarts review  395ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9794877Z      ✓ completes paginated discovery and final observations before publishing a snapshot  380ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9797053Z        ✓ dead-letters an unresolvable submission as LOOKUP_FAILED and stops blocking finalization  412ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9799494Z        ✓ does not dead-letter submissions while X is failing with 5xx or unreachable  633ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9801590Z        ✓ keeps refreshing a post already owned by this Raid when the author overlaps another Raid  302ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9803912Z        ✓ holds a Raid whose search window expired until an admin accepts coverage  300ms
+test	All unit and real-database tests	2026-10-24T05:29:35.9806080Z        ✓ keeps measuring qualified posts after an early end, then settles on the original end  333ms
+test	All unit and real-database tests	2026-10-24T05:29:38.3894656Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > two accounts linking one wallet: exactly one link; the loser leaves no mapping or consumed challenge
+test	All unit and real-database tests	2026-10-24T05:29:38.3899924Z {"walletLinkRace":"link-vs-link-two-accounts-one-address","waiter":335,"blocker":333,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:29:38.3901315Z 
+test	All unit and real-database tests	2026-10-24T05:29:38.6284840Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > link then legacy sign-in at the same address: the legacy insert waits, then fails closed leaving no orphan user
+test	All unit and real-database tests	2026-10-24T05:29:38.6288926Z {"walletLinkRace":"link-then-legacy-insert","waiter":333,"blocker":335,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\") VALUES ($1,$2,$3) RETURNING \"public\".\"WalletIdentity\".\"address\", \"public\".\"WalletIdentit"}
+test	All unit and real-database tests	2026-10-24T05:29:38.6290689Z 
+test	All unit and real-database tests	2026-10-24T05:29:38.8300498Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > address exclusivity and old-binary behavior (D3, D4) > legacy sign-in creation then link at the same address: the link waits at the subject lock and reports a conflict
+test	All unit and real-database tests	2026-10-24T05:29:38.8304813Z {"walletLinkRace":"legacy-insert-then-link","waiter":335,"blocker":333,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:29:38.8306062Z 
+test	All unit and real-database tests	2026-10-24T05:29:39.8932556Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link vs link on one account with different addresses serializes at its common primary subject; one participant
+test	All unit and real-database tests	2026-10-24T05:29:39.8935721Z {"walletLinkRace":"link-vs-link-same-account","waiter":333,"blocker":335,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:29:39.8936916Z 
+test	All unit and real-database tests	2026-10-24T05:29:40.1414790Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > link holding the subject vs rotate onto that address: rotate waits, then rolls back wholly and keeps the old primary
+test	All unit and real-database tests	2026-10-24T05:29:40.1420012Z {"walletLinkRace":"link-vs-rotate-link-first","waiter":335,"blocker":333,"blockedStatement":"INSERT INTO \"public\".\"WalletIdentity\" (\"address\",\"userId\",\"verifiedAt\",\"previousAddress\",\"rotatedAt\") VALUES ($1,$2,$3,$4,$5) RETURNING \"public\".\"WalletIdentity"}
+test	All unit and real-database tests	2026-10-24T05:29:40.1422283Z 
+test	All unit and real-database tests	2026-10-24T05:29:40.3373510Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > rotate holding the subject vs link of that address: link waits, then reports a conflict
+test	All unit and real-database tests	2026-10-24T05:29:40.3377601Z {"walletLinkRace":"link-vs-rotate-rotate-first","waiter":333,"blocker":335,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:29:40.3378842Z 
+test	All unit and real-database tests	2026-10-24T05:29:40.5573852Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as DROP: link first makes the final User delete fail and the whole merge roll back
+test	All unit and real-database tests	2026-10-24T05:29:40.5577094Z {"walletLinkRace":"link-vs-merge-as-drop","waiter":335,"blocker":333,"blockedStatement":"UPDATE \"public\".\"WalletIdentity\" SET \"userId\" = $1 WHERE \"public\".\"WalletIdentity\".\"userId\" = $2"}
+test	All unit and real-database tests	2026-10-24T05:29:40.5578470Z 
+test	All unit and real-database tests	2026-10-24T05:29:40.7746365Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge deleting the linking account first: the link waits, then reports a missing account and leaves no orphan
+test	All unit and real-database tests	2026-10-24T05:29:40.7750411Z {"walletLinkRace":"link-vs-merge-delete-first","waiter":333,"blocker":335,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+test	All unit and real-database tests	2026-10-24T05:29:40.7751207Z 
+test	All unit and real-database tests	2026-10-24T05:29:40.9817482Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > legacy merge with the linking account as KEEP (User UPDATE) serializes with the link; both commit
+test	All unit and real-database tests	2026-10-24T05:29:40.9821803Z {"walletLinkRace":"link-vs-merge-as-keep","waiter":335,"blocker":333,"blockedStatement":"UPDATE \"public\".\"User\" SET \"approved\" = $1, \"affiliation\" = $2 WHERE (\"public\".\"User\".\"id\" = $3 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", "}
+test	All unit and real-database tests	2026-10-24T05:29:40.9823052Z 
+test	All unit and real-database tests	2026-10-24T05:29:41.1777021Z stdout | tests/identity-link-db.test.ts > T006 wallet links on real PostgreSQL > documented lock order against every writer (WR12) > a concurrent User row update (X sign-in shape) holding the row delays the link without a cycle
+test	All unit and real-database tests	2026-10-24T05:29:41.1780078Z {"walletLinkRace":"link-vs-user-row-update","waiter":333,"blocker":335,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR NO KEY UPDATE"}
+test	All unit and real-database tests	2026-10-24T05:29:41.1781333Z 
+test	All unit and real-database tests	2026-10-24T05:29:44.5918713Z  ✓ tests/identity-link-db.test.ts (37 tests) 7959ms
+test	All unit and real-database tests	2026-10-24T05:29:44.5920630Z        ✓ unchanged legacy link path still answers 409 for a second wallet until sign-in resolution ships (baseline)  367ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9391172Z  ✓ tests/practice-assessment-decision-db.test.ts (89 tests) 106003ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9395332Z      ✓ commits capability recheck with actual source history, preserving original rank/evidence/issuer and declaring it no longer current verified  1577ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9399849Z      ✓ commits separate reasoned fraud revocation without account/reputation/capacity/money changes or rewriting original declaration  1318ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9403645Z      ✓ retries original result after writes off, policy withdrawal and later correction; changed input conflicts  1672ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9405778Z      ✓ fails closed for WRONG_PURPOSE without a state change  861ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9407270Z      ✓ fails closed for FOREIGN_ACTOR without a state change  879ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9409067Z      ✓ fails closed for REVOKED without a state change  895ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9410647Z      ✓ fails closed for READ_POLICY without a state change  853ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9412640Z      ✓ fails closed for DECISION_POLICY without a state change  1111ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9414597Z      ✓ fails closed for WRITE_OFF without a state change  867ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9416577Z      ✓ fails closed for SESSION_REVOKED without a state change  845ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9418754Z      ✓ fails closed for SUSPENDED without a state change  860ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9420722Z      ✓ fails closed for POLICY_WITHDRAWN without a state change  887ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9422267Z      ✓ fails closed for POLICY_STALE without a state change  875ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9423647Z      ✓ fails closed for ASSESSMENT_STALE without a state change  995ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9425555Z      ✓ fails closed for REVIEW_STALE without a state change  986ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9427191Z      ✓ fails closed for OWNERSHIP_STALE without a state change  957ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9429659Z      ✓ rejects invalid decision input before effect {"reason":""}  854ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9439329Z      ✓ rejects invalid decision input before effect {"reason":"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"}  878ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9451258Z      ✓ rejects invalid decision input before effect {"reason":"bad\u0000value"}  874ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9454268Z      ✓ rejects invalid decision input before effect {"action":"REQUIRE_REASSESSMENT","reasonCategory":"FRAUDULENT_ASSESSMENT_EVIDENCE"}  851ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9457428Z      ✓ rejects invalid decision input before effect {"action":"REVOKE","reasonCategory":"CAPABILITY_RECHECK"}  842ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9459407Z      ✓ rejects invalid decision input before effect {"dueAt":null}  848ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9461357Z      ✓ rejects invalid decision input before effect {"dueAt":"2020-01-01T00:00:00.000Z"}  1050ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9463185Z      ✓ rejects invalid decision input before effect {"findings":[]}  840ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9465094Z      ✓ rejects invalid decision input before effect {"findings":[{"kind":"NETWORK_SIGNAL","detail":"Shared IP"}]}  842ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9466855Z      ✓ rejects invalid decision input before effect {"rank":"S"}  873ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9468561Z      ✓ rejects invalid decision input before effect {"sampleSize":200}  862ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9470142Z      ✓ real concurrent decisions from one exact revision produce one effect  1376ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9471317Z      ✓ requires a current actual same-case grant for historical state, with private audit before snapshot selection  951ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9472605Z      ✓ requires supported state transitions and ordinary new verification for restoration  2309ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9474940Z      ✓ uses actual later approved policy, nonverification review and ownership finding revisions without rewriting original lineage  1745ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9476179Z      ✓ old-case authority cannot change or read a newer different-case current assessment  1658ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9477352Z      ✓ audits private current-state access before snapshot columns and returns no snapshot if scope closes during selection  906ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9478818Z      ✓ rolls back if final READ authority closes during private result selection  1235ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9479933Z      ✓ rolls back if final POLICY authority closes during private result selection  1261ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9480876Z      ✓ rolls back if final DECISION authority closes during private result selection  1263ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9481888Z      ✓ sanitizes throwing scoped policies without persisting a decision or private exception  1151ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9482881Z      ✓ database guard independently validates raw provenance/control VALID  1252ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9483825Z      ✓ database guard independently validates raw provenance/control REASON_EMPTY  1212ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9484782Z      ✓ database guard independently validates raw provenance/control REASON_UTF16  1179ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9485961Z      ✓ database guard independently validates raw provenance/control FINDINGS_NULL_KIND  1211ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9486936Z      ✓ database guard independently validates raw provenance/control FINDINGS_EXTRA  1158ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9487893Z      ✓ database guard independently validates raw provenance/control FINDINGS_SIGNAL  1176ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9489208Z      ✓ database guard independently validates raw provenance/control WRONG_CATEGORY  1195ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9490188Z      ✓ database guard independently validates raw provenance/control PAST_DUE  1172ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9491136Z      ✓ database guard independently validates raw provenance/control MISSING_DUE  1182ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9492062Z      ✓ database guard independently validates raw provenance/control FAMILY  1166ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9492941Z      ✓ database guard independently validates raw provenance/control PRIOR  1171ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9493818Z      ✓ database guard independently validates raw provenance/control RESULT  1190ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9494725Z      ✓ database guard independently validates raw provenance/control REVIEW  1169ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9495632Z      ✓ database guard independently validates raw provenance/control OWNERSHIP  1190ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9496548Z      ✓ database guard independently validates raw provenance/control ASSIGNMENT  1179ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9497443Z      ✓ database guard independently validates raw provenance/control POLICY  1165ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9498955Z      ✓ database guard independently validates raw provenance/control ACTOR  1181ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9499982Z      ✓ database guard independently validates raw provenance/control CASE_ACCESS  1273ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9501931Z      ✓ database guard independently validates raw provenance/control POLICY_ACCESS  1333ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9503380Z      ✓ database guard independently validates raw provenance/control REVIEW_ACCESS  1289ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9504379Z      ✓ database guard independently validates raw provenance/control OWNERSHIP_ACCESS  1280ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9505349Z      ✓ database guard independently validates raw provenance/control PRIOR_ACCESS  1296ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9506467Z      ✓ database guard independently validates raw provenance/control COMMAND_RECEIPT  1306ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9507461Z      ✓ database guard independently validates raw provenance/control REQUEST  1284ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9508634Z      ✓ database guard independently validates raw provenance/control VERSION_STATE  1163ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9509629Z      ✓ database guard independently validates raw provenance/control VERSION_RANK  1198ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9510589Z      ✓ database guard independently validates raw provenance/control VERSION_SAMPLE  1187ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9511561Z      ✓ database guard independently validates raw provenance/control VERSION_CONFIDENCE  1160ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9512527Z      ✓ database guard independently validates raw provenance/control VERSION_REVIEW  1184ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9513699Z      ✓ database guard independently validates raw provenance/control VERSION_SUBMISSION  1183ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9514757Z      ✓ database guard independently validates raw provenance/control VERSION_POLICY  1180ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9516423Z      ✓ database guard independently validates raw provenance/control VERSION_ACTOR  1168ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9517544Z      ✓ database guard independently validates raw provenance/control VERSION_TIME  1166ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9518789Z      ✓ database guard independently validates raw provenance/control VERSION_DECISION  1162ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9519771Z      ✓ database guard independently validates raw provenance/control NO_POINTER  1207ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9520739Z      ✓ database guard independently validates raw provenance/control CASE_ACCESS_REVISION  1284ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9521763Z      ✓ database guard independently validates raw provenance/control POLICY_ACCESS_REVISION  1270ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9522771Z      ✓ database guard independently validates raw provenance/control REVIEW_ACCESS_REVISION  1282ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9523796Z      ✓ database guard independently validates raw provenance/control OWNERSHIP_ACCESS_REVISION  1321ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9524816Z      ✓ database guard independently validates raw provenance/control PRIOR_ACCESS_REVISION  1267ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9525828Z      ✓ database guard independently validates raw provenance/control CASE_EVENT_VERSION  1264ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9526811Z      ✓ database guard independently validates raw provenance/control STATE_EVENT_VERSION  1243ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9527794Z      ✓ database guard independently validates raw provenance/control CASE_EVENT_PAYLOAD  1268ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9528997Z      ✓ database guard independently validates raw provenance/control STATE_EVENT_PAYLOAD  1269ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9530149Z      ✓ database guard independently validates raw provenance/control CASE_OUTBOX  1238ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9531081Z      ✓ database guard independently validates raw provenance/control STATE_OUTBOX  1301ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9532093Z      ✓ immutable cases and committed versions reject update/delete; current pointers cannot rewind  1289ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9533251Z      ✓ rechecks actual assignment expiry after participant-skill lock wait before decision policy or persisted outcome  3654ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9534340Z      ✓ rejects inconsistent reusable decision-view provenance UNSUPPORTED_FINDINGS  1243ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9535272Z      ✓ rejects inconsistent reusable decision-view provenance FOREIGN_DEFINITION  1254ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9536195Z      ✓ rejects inconsistent reusable decision-view provenance FOREIGN_EVIDENCE  1240ms
+test	All unit and real-database tests	2026-10-24T05:31:30.9537100Z      ✓ rejects inconsistent reusable decision-view provenance REVOKED_PRIOR  1227ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9056507Z  ✓ tests/practice-trial-ownership-db.test.ts (77 tests) 39634ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9069742Z      ✓ commits actual attributed canonical finding with private access provenance and no rank/grant/money or original declaration mutation  777ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9088667Z      ✓ has no current finding before a decision rather than confirming a claimant declaration  396ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9090640Z      ✓ appends correction preserving original private history and explicit current pointer  948ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9092594Z      ✓ records more evidence as UNCONFIRMED without automatic rank or culpability  616ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9094560Z      ✓ replays original unknown-success result after correction/writeoff/policywithdrawal under current read permission  894ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9096371Z      ✓ rejects changed body on the same idempotency key  591ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9097943Z      ✓ requires exact CAS and serializes two competing independent decisions  686ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9100509Z      ✓ denies changed original or current expectedSubmissionReference  452ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9102489Z      ✓ denies changed original or current expectedDefinitionReference  407ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9104325Z      ✓ denies changed original or current expectedRubricReference  399ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9106116Z      ✓ denies changed original or current expectedPolicyReference  373ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9107895Z      ✓ requires actual current policy, rejects withdrawn and stale approved history  419ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9110019Z      ✓ denies writeoff without leaving a business outcome or command receipt  351ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9112621Z      ✓ fails closed when current canRead denies  357ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9114000Z      ✓ fails closed when current canUsePolicy denies  386ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9115424Z      ✓ fails closed when current canReview denies  435ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9116995Z      ✓ requires exact assigned evaluator rather than admin role or claimant  356ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9120823Z      ✓ denies lost own session and suspended current evaluator  348ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9122202Z      ✓ denies assignment revocation for new writes/history/replay  604ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9123513Z      ✓ denies expired or wrong-purpose assignment  367ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9125622Z      ✓ only exposes historical reason under actual current exact case assignment; assessment reviewers may inspect ownership without gaining ownership write authority  652ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9127897Z      ✓ rejects malformed or over-UTF16 private reason before queries  345ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9130036Z      ✓ rejects malformed or over-UTF16 private reason before queries  353ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9131627Z      ✓ rejects malformed or over-UTF16 private reason before queries  345ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9133270Z      ✓ rejects malformed or over-UTF16 private reason before queries  349ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9134202Z      ✓ rejects malformed or over-UTF16 private reason before queries  336ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9135145Z      ✓ preserves literal SQL/HTML shaped reviewer observations without executing them  766ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9136259Z      ✓ audits private ownership history before reason/observations and fails closed without leaking driver text  644ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9137538Z      ✓ drops private history if scoped access changes during private selection  619ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9138962Z      ✓ keeps private ownership audit identifier-only without outbox or original submission bytes  613ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9140133Z      ✓ passes actual current case and canonical policy scope to the decision policy before committing  563ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9141236Z      ✓ sanitizes thrown decision policy and rolls back attempted private access with business outcome  446ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9142370Z      ✓ raw SQL valid control commits only actual current case/policy with private access and finalized receipt/audit  468ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9143472Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { reason: ' ' }  402ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9144587Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { reason: ' untrimmed ' }  402ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9152027Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { reason: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' }  386ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9157747Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { observations: [] }  394ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9159238Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { observations: [ { kind: 'OTHER', detail: ' x ' } ] }  400ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9160572Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { observations: [ { kind: 'OTHER', detail: 'x', extra: 'y' } ] }  404ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9161746Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { revision: +0 }  398ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9162783Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { revision: 2 }  390ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9163885Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { decision: 'AUTO_CONFIRMED' }  395ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9165305Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { assignmentId: '00000000-0000-4000-8000-000000000000' }  392ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9166614Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { definitionId: '00000000-0000-4000-8000-000000000000' }  396ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9167901Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { policyId: '00000000-0000-4000-8000-000000000000' }  407ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9169482Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { evaluatorId: 'foreign' }  421ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9170665Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { reviewedAt: '2000-01-01T00:00:00Z' }  403ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9171859Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { reviewedAt: '2100-01-01T00:00:00Z' }  398ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9172969Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { kind: 'WrongKind' }  396ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9174025Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { wrongActor: true }  394ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9175061Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { noAudit: true }  384ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9176289Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { outbox: true }  398ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9177345Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { wrongPayload: true }  397ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9178938Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { wrongResult: true }  405ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9180741Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { noPointer: true }  412ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9182300Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { wrongCaseReceipt: true }  405ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9183448Z      ✓ raw SQL rejects invalid finding/provenance/clock/private finalization { wrongPolicyReceipt: true }  403ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9184912Z      ✓ preserves immutable ownership history under SQL UPDATE "PracticeTrialOwnershipVersion" SET "reason"='rewritten' WHERE "id"=$1::uuid  605ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9186323Z      ✓ preserves immutable ownership history under SQL UPDATE "PracticeTrialOwnershipVersion" SET "id"="id" WHERE "id"=$1::uuid  591ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9187642Z      ✓ preserves immutable ownership history under SQL DELETE FROM "PracticeTrialOwnershipVersion" WHERE "id"=$1::uuid  620ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9188950Z      ✓ rejects pointer deletion or rewind after a recorded correction  804ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9189733Z      ✓ raw SQL rejects non-enum observation kind null  399ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9190431Z      ✓ raw SQL rejects non-enum observation kind 1  389ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9191112Z      ✓ raw SQL rejects non-enum observation kind {}  383ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9191835Z      ✓ raw SQL rejects non-enum observation kind undefined  411ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9193562Z      ✓ serializes competing distinct actual evaluators without duplicate current ownership or overwriting a winning finding  708ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9195152Z      ✓ rechecks actual assignment after ownership-lock wait before decision policy or finding insertion  3053ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9196373Z      ✓ denies current evaluator authority loss deleted even for an original retry  547ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9197294Z      ✓ denies current evaluator authority loss expired even for an original retry  554ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9198215Z      ✓ denies current evaluator authority loss foreign even for an original retry  548ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9199379Z      ✓ denies current evaluator authority loss restricted even for an original retry  564ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9200366Z      ✓ rejects noncurrent policy UUID on raw insert despite a valid historical APPROVED version  443ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9201418Z      ✓ does not let exposed record/view schemas turn historical input into a current authority token  541ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9202459Z      ✓ rechecks current canReview after private result selection before committing a new finding  571ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9203515Z      ✓ rechecks current canUsePolicy after private result selection before committing a new finding  537ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9204649Z      ✓ fences distinct current canRead when it closes during the final grant query after policy authorization  559ms
+test	All unit and real-database tests	2026-10-24T05:32:10.9206010Z      ✓ fences distinct current canUsePolicy when it closes during the final grant query after policy authorization  552ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2260434Z  ✓ tests/practice-review-policy-db.test.ts (76 tests) 26971ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2263484Z      ✓ observes canonical current approved policy from actual case scope without a guessed client version, while decision lookup still requires exact expectation  580ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2265971Z      ✓ publishes actual immutable scoped policy provenance and current approved source without ownership or rank  424ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2268566Z      ✓ keeps original receipts/history with new writes off and after withdrawal; old approval cannot be selected for a new decision  436ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2270744Z      ✓ requires approved initial version and gates new writes without deleting approved records  432ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2272623Z      ✓ requires CAS/current contiguous history and permits explicit reapproval as the next version  450ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2274504Z      ✓ prevents competing policy families for the same actual definition and purpose  361ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2276318Z      ✓ does not migrate a policy family to another actual definition version or purpose  393ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2278534Z      ✓ resolves canonical policy by actual accepted definition/purpose, never a caller-selected other scope  471ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2280258Z      ✓ preserves original definition/rubric scope after retirement  419ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2281806Z      ✓ handles separately approved assessment purpose only with its own actual assignment  418ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2283400Z      ✓ requires current actual X-admin publication authority: wallet  343ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2285269Z      ✓ requires current actual X-admin publication authority: CREATOR  332ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2286529Z      ✓ requires current actual X-admin publication authority: no-x  320ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2287824Z      ✓ requires current actual X-admin publication authority: suspended  323ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2289700Z      ✓ requires current actual X-admin publication authority: expired  314ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2291123Z      ✓ requires current actual X-admin publication authority: deleted  313ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2293038Z      ✓ requires exact true current scoped publication/use authority false  369ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2294003Z      ✓ requires exact true current scoped publication/use authority undefined  382ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2294914Z      ✓ requires exact true current scoped publication/use authority true  369ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2295893Z      ✓ rechecks management authority on replay and does not treat a saved policy as a bearer token  365ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2296775Z      ✓ denies admin policy guidance before private selection  338ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2297547Z      ✓ denies subject policy guidance before private selection  346ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2298845Z      ✓ denies other-evaluator policy guidance before private selection  345ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2300051Z      ✓ denies wrong-submission policy guidance before private selection  413ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2300920Z      ✓ denies wrong-purpose policy guidance before private selection  349ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2301738Z      ✓ denies revoked policy guidance before private selection  374ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2302516Z      ✓ requires evaluator current own session at use: expired  338ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2303276Z      ✓ requires evaluator current own session at use: deleted  342ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2304077Z      ✓ requires evaluator current own session at use: foreign-session  346ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2305085Z      ✓ requires evaluator current own session at use: suspended  353ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2306642Z      ✓ does not let ordinary authenticated users inspect private administration guidance  341ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2308902Z      ✓ returns current policy-unavailable for missing canonical scope without inventing approval  386ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2310785Z      ✓ stores only opaque private policy references in audit/outbox, never guidance or answer  403ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2312691Z      ✓ rechecks expired assignment after canonical policy wait before authorizing or auditing policy use  2503ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2315644Z      ✓ raw SQL valid control commits actual scoped policy only with finalized matching admin receipt/private audit  356ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2316775Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { guidance: ' ' }  333ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2317802Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { guidance: ' untrimmed ' }  326ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2331627Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { guidance: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' }  328ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2345249Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { revision: +0 }  331ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2347163Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { revision: 2 }  353ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2349009Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { state: 'WITHDRAWN' }  345ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2350756Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { state: 'AUTO_APPROVED' }  336ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2352475Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { purpose: 'ANY' }  340ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2354450Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { definitionId: '00000000-0000-4000-8000-000000000000' }  345ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2356385Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { publishedAt: '2000-01-01T00:00:00.000Z' }  335ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2358204Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { publishedAt: '2100-01-01T00:00:00.000Z' }  347ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2360126Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { kind: 'WrongKind' }  343ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2361684Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { wrongActor: true }  333ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2363279Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { noAudit: true }  334ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2365107Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { publishOutbox: true }  343ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2366703Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { wrongPayload: true }  343ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2368729Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { wrongResult: true }  338ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2370307Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { noFamily: true }  335ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2371913Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { wrongFamilyPurpose: true }  337ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2373529Z      ✓ raw SQL rejects invalid policy shape/scope/receipt/audit { wrongPointer: true }  339ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2375303Z      ✓ raw SQL rejects nonadministrator policy approver regardless of a forged finalization envelope  339ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2377159Z      ✓ raw SQL cannot create a second policy family for the same original definition/purpose  389ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2379670Z      ✓ SQL preserves immutable approval history UPDATE "PracticeReviewPolicyVersion" SET "guidance"='rewritten' WHERE "id"=$1::uuid  361ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2381940Z      ✓ SQL preserves immutable approval history UPDATE "PracticeReviewPolicyVersion" SET "id"="id" WHERE "id"=$1::uuid  382ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2384162Z      ✓ SQL preserves immutable approval history DELETE FROM "PracticeReviewPolicyVersion" WHERE "id"=$1::uuid  353ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2385795Z      ✓ SQL cannot delete canonical policy identity or rewind its current version  382ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2387580Z      ✓ normalizes exact-bound supplementary guidance before UTF16 storage and original receipt digest  363ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2389683Z      ✓ serializes simultaneous canonical scope publication across actual distinct administrators  358ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2391800Z      ✓ serializes simultaneous same-family CAS updates without rewriting the winning snapshot  395ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2393564Z      ✓ records admin private guidance access before selecting it and fails closed if audit persistence fails  368ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2395569Z      ✓ records reviewer private guidance access before selecting it and fails closed if audit persistence fails  403ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2397430Z      ✓ does not return guidance after current scoped use policy changes during its query  378ms
+test	All unit and real-database tests	2026-10-24T05:32:38.2399461Z      ✓ sanitizes thrown publication or current use policy and never returns private error text  373ms
+test	All unit and real-database tests	2026-10-24T05:32:39.7990193Z stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > blocks the second identical command on the first backend, then replays it
+test	All unit and real-database tests	2026-10-24T05:32:39.7995363Z {"receiptRace":true,"waiter":648,"blocker":649,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+test	All unit and real-database tests	2026-10-24T05:32:39.7997362Z 
+test	All unit and real-database tests	2026-10-24T05:32:39.9350597Z stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > lets the waiting command execute when the first one rolls back
+test	All unit and real-database tests	2026-10-24T05:32:39.9355632Z {"receiptRace":true,"waiter":649,"blocker":648,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+test	All unit and real-database tests	2026-10-24T05:32:39.9357853Z 
+test	All unit and real-database tests	2026-10-24T05:32:40.0549716Z stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > competing real transactions > reports a conflict, not a replay, when the waiting command has another payload
+test	All unit and real-database tests	2026-10-24T05:32:40.0554170Z {"receiptRace":true,"waiter":648,"blocker":649,"blockedStatement":"INSERT INTO \"CommandReceipt\" (\"actorId\", \"commandKind\", \"idempotencyKey\", \"requestDigest\", \"requestId\")\n     VALUES ($1, $2, $3, $4, $5)\n     ON CONFLICT (\"actorId\", \"commandKind\", \"idempotencyKey\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+test	All unit and real-database tests	2026-10-24T05:32:40.0556059Z 
+test	All unit and real-database tests	2026-10-24T05:32:41.7263870Z stdout | tests/command-receipts-db.test.ts > command receipts on real PostgreSQL > inbound provider deliveries (AC32 foundation) > blocks the duplicate on the first backend while the first handler is open
+test	All unit and real-database tests	2026-10-24T05:32:41.7266901Z {"receiptRace":true,"waiter":648,"blocker":651,"blockedStatement":"INSERT INTO \"InboxDelivery\" (\"provider\", \"deliveryId\", \"payloadDigest\") VALUES ($1, $2, $3)\n     ON CONFLICT (\"provider\", \"deliveryId\") DO NOTHING RETURNING \"id\"::text AS \"id\""}
+test	All unit and real-database tests	2026-10-24T05:32:41.7268031Z 
+test	All unit and real-database tests	2026-10-24T05:32:42.3504647Z  ✓ tests/command-receipts-db.test.ts (28 tests) 3809ms
+test	All unit and real-database tests	2026-10-24T05:32:42.3507451Z        ✓ commits the business row, receipt, audit and outbox together and replays the original  300ms
+test	All unit and real-database tests	2026-10-24T05:32:42.3510764Z        ✓ survives a genuine PostgreSQL deadlock between two different commands  1057ms
+test	All unit and real-database tests	2026-10-24T05:32:44.3573789Z  ✓ tests/rewards-finance.test.ts (34 tests) 1160ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9258828Z  ✓ tests/practice-review-assignment-db.test.ts (57 tests) 19245ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9283068Z      ✓ authenticates before exposing missing issue/revoke target outcomes  450ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9285759Z      ✓ supplies requested and saved finite expiry to current scoped management and use policies  376ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9288765Z      ✓ issues exact immutable scope and authorizes actual designated evaluator only  383ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9291404Z      ✓ keeps original issue receipt after disabled writes, retirement, expiry and revocation without claiming current access  420ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9293743Z      ✓ revokes immutably with original receipt and no automatic alternate-key duplicate  381ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9295339Z      ✓ accepts separately explicit OWNERSHIP_REVIEW purpose without confirming work  362ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9297515Z      ✓ accepts separately explicit ASSESSMENT_REVIEW purpose without confirming work  366ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9299753Z      ✓ denies direct self review even when policy would grant  305ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9301643Z      ✓ does not let new writes proceed when default host configuration is off  345ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9303704Z      ✓ requires current actual X-admin management authority: CREATOR  313ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9306740Z      ✓ requires current actual X-admin management authority: no-x  312ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9309734Z      ✓ requires current actual X-admin management authority: suspended  303ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9311524Z      ✓ requires current actual X-admin management authority: expired  304ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9313156Z      ✓ requires current actual X-admin management authority: deleted  307ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9314715Z      ✓ requires evaluator current identity at use: suspended  325ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9316196Z      ✓ requires evaluator current identity at use: expired  320ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9317659Z      ✓ requires evaluator current identity at use: deleted  343ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9319436Z      ✓ requires evaluator current identity at use: foreign-session  325ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9321179Z      ✓ requires existing unrestricted evaluator and actual submission at issue  310ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9322783Z      ✓ requires exact true scoped host policy, got false  331ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9324263Z      ✓ requires exact true scoped host policy, got undefined  334ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9325629Z      ✓ requires exact true scoped host policy, got true  333ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9326913Z      ✓ fails closed when scoped policy throws  328ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9328613Z      ✓ never grants an already expired scope and does not extend elapsed authority  900ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9330495Z      ✓ keeps submission bodies out of receipts/audits/outbox and creates only actual scoped records  340ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9332903Z      ✓ SQL preserves immutable issued history UPDATE "PracticeTrialReviewAssignment" SET "reason"='rewritten' WHERE "id"=$1::uuid  341ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9335226Z      ✓ SQL preserves immutable issued history DELETE FROM "PracticeTrialReviewAssignment" WHERE "id"=$1::uuid  324ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9338054Z      ✓ SQL preserves immutable revocation history UPDATE "PracticeTrialReviewRevocation" SET "reason"='rewritten' WHERE "id"=$1::uuid  340ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9340685Z      ✓ SQL preserves immutable revocation history DELETE FROM "PracticeTrialReviewRevocation" WHERE "id"=$1::uuid  344ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9342767Z      ✓ raw SQL valid control commits only with matching finalized receipt and private audit  310ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9344787Z      ✓ raw SQL rejects invalid assignment provenance or shape { purpose: 'ALL' }  307ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9346973Z      ✓ raw SQL rejects invalid assignment provenance or shape { expiresAt: '2000-01-01T00:00:00.000Z' }  309ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9349148Z      ✓ raw SQL rejects invalid assignment provenance or shape { expiresAt: 'infinity' }  301ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9351032Z      ✓ raw SQL rejects invalid assignment provenance or shape { reason: ' ' }  304ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9364748Z      ✓ raw SQL rejects invalid assignment provenance or shape { reason: '😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀' }  311ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9375057Z      ✓ raw SQL rejects invalid assignment provenance or shape { evaluator: 'missing' }  306ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9376859Z      ✓ raw SQL rejects invalid assignment provenance or shape { subject: '00000000-0000-4000-8000-000000000000' }  306ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9379295Z      ✓ raw SQL rejects invalid assignment provenance or shape { issuedAt: '2000-01-01T00:00:00.000Z' }  313ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9381092Z      ✓ raw SQL rejects invalid assignment provenance or shape { issuedAt: '2100-01-01T00:00:00.000Z' }  302ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9382775Z      ✓ raw SQL rejects invalid assignment provenance or shape { kind: 'WrongCommand' }  320ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9384303Z      ✓ raw SQL rejects invalid assignment provenance or shape { noAudit: true }  302ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9385825Z      ✓ raw SQL rejects invalid assignment provenance or shape { wrongActor: true }  309ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9387239Z      ✓ raw SQL rejects direct self review regardless of host flags  300ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9388815Z      ✓ checks actual session expiry after an assignment mutex wait  1439ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9390217Z      ✓ checks actual assignment expiry after an assignment mutex wait  1481ms
+test	All unit and real-database tests	2026-10-24T05:33:03.9391847Z      ✓ observes committed revocation after waiting for actual evaluator user lock  364ms
+test	All unit and real-database tests	2026-10-24T05:33:17.1694340Z  ✓ tests/practice-trial-storage-db.test.ts (51 tests) 12942ms
+test	All unit and real-database tests	2026-10-24T05:33:17.1696411Z      ✓ direct SQL control commits a valid next immutable version with matching private receipt/audit  358ms
+test	All unit and real-database tests	2026-10-24T05:33:17.1698590Z      ✓ enforces current catalog/version/domain/active status and stable trial family  315ms
+test	All unit and real-database tests	2026-10-24T05:33:17.1700571Z      ✓ keeps rubric ID/version immutable across different trials, while new criteria require contiguous versions  303ms
+test	All unit and real-database tests	2026-10-24T05:33:17.1702444Z      ✓ expires the actual session during a rubric wait before publication can commit  604ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3454883Z  ✓ tests/practice-trial-attempt-db.test.ts (51 tests) 14876ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3458229Z      ✓ persists an immutable current canonical start with exact original definition/rubric/tool consent and no rank/grant/capacity/money  400ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3461844Z      ✓ supports current own X and wallet sessions without admin or token purchase  311ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3464126Z      ✓ retains the exact original receipt and private history after retirement and writes disabled  328ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3465959Z      ✓ requires the actual current definition and current active skill  312ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3467982Z      ✓ counts every family start across revisions and enforces the current published maximum  347ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3470893Z      ✓ uses family-wide last actual start for current published cooldown without rewriting history  389ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3472186Z      ✓ enforces a one-attempt definition across concurrent linked own sessions  328ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3473259Z      ✓ keeps family histories separate for different canonical participants  317ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3474295Z      ✓ observes actual session expiry while blocked on family history  786ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3475348Z      ✓ rejects privileged SQL bypass of actual published family limit and cooldown  345ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3476683Z      ✓ rejects privileged SQL stale, retired and inactive references  330ms
+test	All unit and real-database tests	2026-10-24T05:33:32.3477796Z      ✓ normalizes a current session denial from the saved definition reader to its owned typed error  753ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9922948Z  ✓ tests/own-skill-assessment-db.test.ts (18 tests) 22268ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9925325Z      ✓ observes only actual own current verification and feeds current facts into existing eligibility predicates  1167ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9927393Z      ✓ reads current REQUIRE_REASSESSMENT rather than the old VERIFIED snapshot  1458ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9928915Z      ✓ reads current REVOKE rather than the old VERIFIED snapshot  1339ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9930669Z      ✓ returns no assessment for another actual own participant instead of exposing someone else rank  933ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9932531Z      ✓ rejects caller identity/source selectors {"participantId":"foreign"}  907ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9934361Z      ✓ rejects caller identity/source selectors {"assessmentReference":{"recordId":"old","revision":1}}  930ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9936144Z      ✓ rejects caller identity/source selectors {"skillId":"<script>"}  957ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9937654Z      ✓ rejects caller identity/source selectors {"taxonomyId":" bad "}  921ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9939460Z      ✓ denies current own read scope and revoked/wrong-owner session before fields  933ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9941206Z      ✓ does not turn a real self-reported A/S claim into an actual assessment  936ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9943021Z      ✓ uses the actual database reassessment deadline without rewriting the committed VERIFIED history  3041ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9945099Z      ✓ retains documented assessment after policy withdrawal rather than silently revoking it  974ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9947686Z      ✓ rejects a different real catalog namespace even when it reuses the skill ID/domain  921ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9949718Z      ✓ requires an actual canonical human and unrestricted account before assessment metadata  891ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9951920Z      ✓ audits before bounded assessment fields, never selects private answers/case notes, and returns no fields after final scope loss  910ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9953213Z      ✓ sanitizes a throwing scoped read policy before selecting fields  882ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9954445Z      ✓ rechecks actual own session expiry after a real rank-lock wait before source fields  2818ms
+test	All unit and real-database tests	2026-10-24T05:33:54.9955499Z      ✓ loads the newly committed state after an actual concurrent decision holds the rank mutex  1343ms
+test	All unit and real-database tests	2026-10-24T05:33:56.6911320Z  ✓ tests/integration.test.ts (28 tests) 1207ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2351475Z  ✓ tests/practice-trial-submission-db.test.ts (64 tests) 20210ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2355201Z      ✓ saves exact original consent and text whitespace as immutable private unconfirmed submission, never assessment  451ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2357457Z      ✓ reuses actual locked immutable own canonical participant without autoprovision  310ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2359797Z      ✓ rejects caller-forged participantId without consuming anything  301ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2360764Z      ✓ rejects caller-forged submittedAt without consuming anything  301ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2361782Z      ✓ keeps foreign and unknown starts unavailable and private submission IDs undisclosed  368ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2362839Z      ✓ denies current suspension on new intent, original replay and private reads  311ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2363983Z      ✓ finishes an accepted start after definition and catalog retirement without rewriting original consent  349ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2365194Z      ✓ preserves original receipt after retirement/disablement and denies only new intent  363ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2366381Z      ✓ distinguishes exact code whitespace in original intent and reauthorizes changed-key conflicts  318ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2367454Z      ✓ serializes duplicate intent into one exact original private submission  323ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2368801Z      ✓ allows only one final submission per saved start under concurrent different keys  337ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2370211Z      ✓ keeps submissions for separately authorized family attempts independent  368ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2371555Z      ✓ never puts private answers, explanations or assistance declarations in audit/outbox/receipts  303ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2373643Z      ✓ preserves valid supplementary Unicode at the exact UTF16 bound and rejects overflow  393ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2375582Z      ✓ observes actual session expiry while waiting on the submission mutex  834ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2377465Z      ✓ normalizes current owner-reader denials to its owned error while retaining authentication code  796ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2378837Z      ✓ rejects privileged SQL Unicode answer overflow with complete rollback  305ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2380287Z      ✓ rejects privileged SQL Unicode explanation overflow with complete rollback  300ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2381615Z      ✓ retains immutable exact private history: UPDATE "PracticeTrialSubmission" SET "answer"='changed' WHERE "id"=$1::uuid  309ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2382974Z      ✓ retains immutable exact private history: UPDATE "PracticeTrialSubmission" SET "id"="id" WHERE "id"=$1::uuid  313ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2385523Z      ✓ retains immutable exact private history: DELETE FROM "PracticeTrialSubmission" WHERE "id"=$1::uuid  310ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2387032Z      ✓ keeps a declared tool deviation unconfirmed without rewriting the approved policy or issuing rank  311ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2388508Z      ✓ does not treat an admin role as private access to another canonical participant  334ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2389716Z      ✓ keeps SQL-shaped answer text literal and leaves other entities intact  310ms
+test	All unit and real-database tests	2026-10-24T05:34:17.2390663Z      ✓ denies revoked-session original replay and private reads without erasing history  310ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9981903Z  ✓ tests/practice-review-read-db.test.ts (32 tests) 14427ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9985488Z      ✓ returns exact private immutable submission, original full definition/rubric and actual assignment, never confirmation  519ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9989257Z      ✓ preserves original accepted consent and bytes after definition retirement/new writes disabled  412ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9991720Z      ✓ denies missing-assignment before any private-column query  348ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9993313Z      ✓ denies missing-submission before any private-column query  339ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9995009Z      ✓ denies wrong-submission before any private-column query  402ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9996515Z      ✓ denies wrong-purpose before any private-column query  321ms
+test	All unit and real-database tests	2026-10-24T05:34:31.9999756Z      ✓ denies subject before any private-column query  377ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0001077Z      ✓ denies admin before any private-column query  347ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0002470Z      ✓ denies other-evaluator before any private-column query  348ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0003601Z      ✓ denies revoked before any private-column query  372ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0004338Z      ✓ requires exact true current read policy: false  355ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0005073Z      ✓ requires exact true current read policy: undefined  347ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0005775Z      ✓ requires exact true current read policy: true  338ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0006474Z      ✓ requires current evaluator own identity suspended  329ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0007198Z      ✓ requires current evaluator own identity expired  339ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0009234Z      ✓ requires current evaluator own identity deleted  332ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0010586Z      ✓ requires current evaluator own identity foreign-session  337ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0012016Z      ✓ does not return a loaded private body after current read policy changes during the query  353ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0013682Z      ✓ sanitizes thrown scoped policy exceptions and never returns private details  340ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0016131Z      ✓ records a private identifier-only authorized case-access attempt before private columns, without business/outbox changes  356ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0018162Z      ✓ fails closed before selecting private bytes if the required case-access audit cannot persist  353ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0020538Z      ✓ rejects malformed host answer projections after permission without returning body  346ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0022508Z      ✓ rejects malformed host definition projections after permission without returning body  344ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0024629Z      ✓ returns SQL-shaped submitted code literally and never executes it  440ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0026414Z      ✓ allows an explicitly assigned assessment purpose without claiming assessed rank  370ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0028191Z      ✓ sanitizes private driver failures and rejects noncanonical tool projections  356ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0030209Z      ✓ does not return private bytes after actual session expiry during protected query wait  2483ms
+test	All unit and real-database tests	2026-10-24T05:34:32.0032590Z      ✓ does not return private bytes after actual assignment expiry during protected query wait  2515ms
+test	All unit and real-database tests	2026-10-24T05:34:33.9465682Z stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held resolve-first locks
+test	All unit and real-database tests	2026-10-24T05:34:33.9469131Z {"credentialRace":true,"waiter":870,"blocker":868,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:34:33.9470429Z 
+test	All unit and real-database tests	2026-10-24T05:34:34.2065195Z stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held revoke-first locks
+test	All unit and real-database tests	2026-10-24T05:34:34.2069688Z {"credentialRace":true,"waiter":868,"blocker":870,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:34:34.2070620Z 
+test	All unit and real-database tests	2026-10-24T05:34:34.4488650Z stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > resolver and revoke serialize with actual held account-lock locks
+test	All unit and real-database tests	2026-10-24T05:34:34.4492077Z {"credentialRace":true,"waiter":870,"blocker":868,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:34:34.4492959Z 
+test	All unit and real-database tests	2026-10-24T05:34:34.8369190Z stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default repeatable read while a link commits
+test	All unit and real-database tests	2026-10-24T05:34:34.8373172Z {"credentialRace":true,"waiter":872,"blocker":870,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:34:34.8374213Z 
+test	All unit and real-database tests	2026-10-24T05:34:35.2016845Z stdout | tests/wallet-link-credentials.test.ts > B1 credentials on real PostgreSQL > rotation preserves cross-table subject exclusion under default serializable while a link commits
+test	All unit and real-database tests	2026-10-24T05:34:35.2020800Z {"credentialRace":true,"waiter":874,"blocker":870,"blockedStatement":"SELECT 1 AS \"locked\" FROM (SELECT pg_advisory_xact_lock($1::bigint)) AS \"lock\""}
+test	All unit and real-database tests	2026-10-24T05:34:35.2021910Z 
+test	All unit and real-database tests	2026-10-24T05:34:35.4089638Z  ✓ tests/wallet-link-credentials.test.ts (31 tests) 2850ms
+test	All unit and real-database tests	2026-10-24T05:34:35.4091902Z      ✓ resolves unmapped legacy primary without provisioning and links preserve canonical context  338ms
+test	All unit and real-database tests	2026-10-24T05:34:35.4094665Z      ✓ rotation preserves cross-table subject exclusion under default repeatable read while a link commits  394ms
+test	All unit and real-database tests	2026-10-24T05:34:35.4096098Z      ✓ rotation preserves cross-table subject exclusion under default serializable while a link commits  364ms
+test	All unit and real-database tests	2026-10-24T05:34:43.7102535Z  ✓ tests/project-proposal-db.test.ts (22 tests) 7984ms
+test	All unit and real-database tests	2026-10-24T05:34:43.7104808Z      ✓ uses DB time after a real User lock wait and rolls back expired writes  882ms
+test	All unit and real-database tests	2026-10-24T05:34:43.7107744Z      ✓ uses DB time after a real Session lock wait and rolls back expired writes  861ms
+test	All unit and real-database tests	2026-10-24T05:34:43.7110043Z      ✓ uses DB time after a real GuildDraft lock wait and rolls back expired writes  848ms
+test	All unit and real-database tests	2026-10-24T05:34:43.7112162Z      ✓ uses DB time after a real GuildProjectProposal lock wait and rolls back expired writes  854ms
+test	All unit and real-database tests	2026-10-24T05:34:45.3110129Z  ✓ tests/studio-db.test.ts (14 tests) 987ms
+test	All unit and real-database tests	2026-10-24T05:34:57.5658667Z  ✓ tests/skill-claim-storage-db.test.ts (44 tests) 11933ms
+test	All unit and real-database tests	2026-10-24T05:34:57.5661822Z      ✓ stores an actual canonical private claim and normalized references without inventing assessment authority  375ms
+test	All unit and real-database tests	2026-10-24T05:34:57.5680089Z      ✓ replays the original immutable result after a later claim/catalog retirement and writes disabled  323ms
+test	All unit and real-database tests	2026-10-24T05:34:57.5685517Z      ✓ reauthorizes actual session expiry after waiting for catalog  652ms
+test	All unit and real-database tests	2026-10-24T05:34:57.5687337Z      ✓ reauthorizes actual session expiry after waiting for claim  657ms
+test	All unit and real-database tests	2026-10-24T05:34:59.2627368Z stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently revoked X session before carrying its authority forward
+test	All unit and real-database tests	2026-10-24T05:34:59.2629678Z {"sessionRace":"revoked","waiter":934,"blocker":932}
+test	All unit and real-database tests	2026-10-24T05:34:59.2630026Z 
+test	All unit and real-database tests	2026-10-24T05:34:59.3239489Z stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently expired X session before carrying its authority forward
+test	All unit and real-database tests	2026-10-24T05:34:59.3242200Z {"sessionRace":"expired","waiter":932,"blocker":934}
+test	All unit and real-database tests	2026-10-24T05:34:59.3242797Z 
+test	All unit and real-database tests	2026-10-24T05:34:59.3761126Z stdout | tests/wallet-auth-db.test.ts > wallet sign-in hardening, rotation and account merge > observes a concurrently downgraded X session before carrying its authority forward
+test	All unit and real-database tests	2026-10-24T05:34:59.3764058Z {"sessionRace":"downgraded","waiter":934,"blocker":932}
+test	All unit and real-database tests	2026-10-24T05:34:59.3764994Z 
+test	All unit and real-database tests	2026-10-24T05:35:00.2951540Z  ✓ tests/wallet-auth-db.test.ts (25 tests) 2077ms
+test	All unit and real-database tests	2026-10-24T05:35:00.8201515Z  ✓ tests/practice-assessment-http.test.ts (183 tests) 217ms
+test	All unit and real-database tests	2026-10-24T05:35:01.1378451Z  ✓ tests/identity-link.test.ts (31 tests) 79ms
+test	All unit and real-database tests	2026-10-24T05:35:05.2251443Z stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks expire committed during an observed account lock wait
+test	All unit and real-database tests	2026-10-24T05:35:05.2253974Z {"orientationLock":{"blocker":946,"waiter":944,"query":"FOR NO KEY UPDATE"}}
+test	All unit and real-database tests	2026-10-24T05:35:05.2254712Z 
+test	All unit and real-database tests	2026-10-24T05:35:05.4321296Z stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks revoke committed during an observed account lock wait
+test	All unit and real-database tests	2026-10-24T05:35:05.4324645Z {"orientationLock":{"blocker":946,"waiter":944,"query":"FOR NO KEY UPDATE"}}
+test	All unit and real-database tests	2026-10-24T05:35:05.4325621Z 
+test	All unit and real-database tests	2026-10-24T05:35:05.6351552Z stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > rechecks suspend committed during an observed account lock wait
+test	All unit and real-database tests	2026-10-24T05:35:05.6353954Z {"orientationLock":{"blocker":946,"waiter":944,"query":"FOR NO KEY UPDATE"}}
+test	All unit and real-database tests	2026-10-24T05:35:05.8387059Z 
+test	All unit and real-database tests	2026-10-24T05:35:05.8390376Z stdout | tests/raider-onboarding-db.test.ts > T008 protected private orientation storage > checks the database clock after the real Session lock wait rather than transaction start
+test	All unit and real-database tests	2026-10-24T05:35:05.8393146Z {"orientationLock":{"blocker":946,"waiter":944,"query":"FOR SHARE"}}
+test	All unit and real-database tests	2026-10-24T05:35:05.8393697Z 
+test	All unit and real-database tests	2026-10-24T05:35:06.7480758Z  ✓ tests/raider-onboarding-db.test.ts (24 tests) 5274ms
+test	All unit and real-database tests	2026-10-24T05:35:06.7489681Z      ✓ rechecks expire committed during an observed account lock wait  310ms
+test	All unit and real-database tests	2026-10-24T05:35:06.7492042Z      ✓ checks the database clock after the real Session lock wait rather than transaction start  408ms
+test	All unit and real-database tests	2026-10-24T05:35:09.8499216Z stdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks session revocation after a real session lock wait
+test	All unit and real-database tests	2026-10-24T05:35:09.8500533Z {"guildDraftLock":{"blocker":958,"waiter":956,"query":"Session"}}
+test	All unit and real-database tests	2026-10-24T05:35:09.8500887Z 
+test	All unit and real-database tests	2026-10-24T05:35:10.0573954Z stdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks restriction after a real account lock wait
+test	All unit and real-database tests	2026-10-24T05:35:10.0576045Z {"guildDraftLock":{"blocker":958,"waiter":956,"query":"User"}}
+test	All unit and real-database tests	2026-10-24T05:35:10.0576614Z 
+test	All unit and real-database tests	2026-10-24T05:35:10.2865108Z stdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > checks expiry using the database clock after an actual draft row lock wait
+test	All unit and real-database tests	2026-10-24T05:35:10.2867574Z {"guildDraftLock":{"blocker":958,"waiter":956,"query":"GuildDraft"}}
+test	All unit and real-database tests	2026-10-24T05:35:10.2868558Z 
+test	All unit and real-database tests	2026-10-24T05:35:12.2585960Z stdout | tests/guild-draft-db.test.ts > T009B private own Guild draft storage > denies replay after a real current-session lock wait and committed revocation
+test	All unit and real-database tests	2026-10-24T05:35:12.2587893Z {"guildDraftLock":{"blocker":958,"waiter":956,"query":"Session"}}
+test	All unit and real-database tests	2026-10-24T05:35:12.2588913Z 
+test	All unit and real-database tests	2026-10-24T05:35:12.2697645Z  ✓ tests/guild-draft-db.test.ts (21 tests) 5218ms
+test	All unit and real-database tests	2026-10-24T05:35:12.2700526Z      ✓ checks expiry using the database clock after an actual draft row lock wait  1040ms
+test	All unit and real-database tests	2026-10-24T05:35:13.3489733Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, writerFirst
+test	All unit and real-database tests	2026-10-24T05:35:13.3492451Z {"waitTrace":[{"pid":971,"blockers":[969],"table":"User"}]}
+test	All unit and real-database tests	2026-10-24T05:35:13.3493068Z 
+test	All unit and real-database tests	2026-10-24T05:35:13.4137402Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > X1 actual wallet session replacement vs strong root, mergeFirst
+test	All unit and real-database tests	2026-10-24T05:35:13.4139738Z {"waitTrace":[{"pid":969,"blockers":[971],"table":"User"}]}
+test	All unit and real-database tests	2026-10-24T05:35:13.4140068Z 
+test	All unit and real-database tests	2026-10-24T05:35:13.4766083Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > SHARE serializes account restriction with actual sign-in issuance
+test	All unit and real-database tests	2026-10-24T05:35:13.4769418Z {"waitTrace":[{"pid":971,"blockers":[969],"table":"User"}]}
+test	All unit and real-database tests	2026-10-24T05:35:13.4769884Z 
+test	All unit and real-database tests	2026-10-24T05:35:13.7057258Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+test	All unit and real-database tests	2026-10-24T05:35:13.7062778Z {"waitTrace":[{"pid":969,"blockers":[971],"table":"advisory"}]}
+test	All unit and real-database tests	2026-10-24T05:35:13.7063486Z 
+test	All unit and real-database tests	2026-10-24T05:35:13.7169012Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, writerFirst
+test	All unit and real-database tests	2026-10-24T05:35:13.7171820Z {"waitTrace":[{"pid":970,"blockers":[969],"table":"User"}]}
+test	All unit and real-database tests	2026-10-24T05:35:13.7172351Z 
+test	All unit and real-database tests	2026-10-24T05:35:13.9401524Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > A2/X2 real allocateUsdcRaid with non-credit users in reverse order, mergeFirst
+test	All unit and real-database tests	2026-10-24T05:35:13.9403541Z {"waitTrace":[{"pid":969,"blockers":[970],"table":"User"}]}
+test	All unit and real-database tests	2026-10-24T05:35:13.9404399Z 
+test	All unit and real-database tests	2026-10-24T05:35:14.1851030Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > finance holds SHARE for the creator status predicate while preserving the exact settlement
+test	All unit and real-database tests	2026-10-24T05:35:14.1853582Z {"waitTrace":[{"pid":971,"blockers":[969],"table":"User"}]}
+test	All unit and real-database tests	2026-10-24T05:35:14.1854070Z 
+test	All unit and real-database tests	2026-10-24T05:35:14.6427093Z stdout | tests/identity-protocol-db.test.ts > approved identity protocol: real PostgreSQL/application schedules > denies a primary sign-in whose claimed challenge expires while waiting for its final root
+test	All unit and real-database tests	2026-10-24T05:35:14.6429536Z {"waitTrace":[{"pid":969,"blockers":[971],"table":"User"}]}
+test	All unit and real-database tests	2026-10-24T05:35:14.6430032Z 
+test	All unit and real-database tests	2026-10-24T05:35:15.7240694Z  ✓ tests/identity-protocol-db.test.ts (10 tests) 2854ms
+test	All unit and real-database tests	2026-10-24T05:35:15.7242868Z      ✓ X1 actual wallet session replacement vs strong root, writerFirst  495ms
+test	All unit and real-database tests	2026-10-24T05:35:15.7245783Z      ✓ denies a primary sign-in whose claimed challenge expires while waiting for its final root  843ms
+test	All unit and real-database tests	2026-10-24T05:35:26.4633852Z  ✓ tests/skill-taxonomy-db.test.ts (42 tests) 10420ms
+test	All unit and real-database tests	2026-10-24T05:35:26.4637503Z      ✓ rolls back session expiry while waiting on the catalog lock  634ms
+test	All unit and real-database tests	2026-10-24T05:35:26.4639733Z      ✓ rolls back session expiry while waiting on the advisory lock  624ms
+test	All unit and real-database tests	2026-10-24T05:35:26.7702746Z  ✓ tests/skill-assessment-review.test.ts (29 tests) 75ms
+test	All unit and real-database tests	2026-10-24T05:35:29.7463146Z stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > provision wins against old binary at final DELETE; entire auth transaction rolls back
+test	All unit and real-database tests	2026-10-24T05:35:29.7486388Z {"storageRace":true,"waiter":1006,"blocker":1003,"blockedStatement":"DELETE FROM \"public\".\"User\" WHERE (\"public\".\"User\".\"id\" = $1 AND 1=1) RETURNING \"public\".\"User\".\"id\", \"public\".\"User\".\"xId\", \"public\".\"User\".\"handle\", \"public\".\"User\".\"role\", \"public\".\"User\".\"approved\", \"public\".\"User\".\"suspended\", \"public\".\"User\".\"affiliation\", \"public\".\"User\".\"createdAt\""}
+test	All unit and real-database tests	2026-10-24T05:35:29.7491160Z 
+test	All unit and real-database tests	2026-10-24T05:35:30.0323439Z stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > delete wins: provision blocks on User key lock then denies missing account without orphan
+test	All unit and real-database tests	2026-10-24T05:35:30.0327091Z {"storageRace":true,"waiter":1003,"blocker":1006,"blockedStatement":"SELECT \"id\" FROM \"User\" WHERE \"id\" = $1 FOR KEY SHARE"}
+test	All unit and real-database tests	2026-10-24T05:35:30.0327878Z 
+test	All unit and real-database tests	2026-10-24T05:35:30.0660055Z stdout | tests/identity-storage-db.test.ts > T006 actual additive database fences > independent create/create race returns one committed identity and first provenance
+test	All unit and real-database tests	2026-10-24T05:35:30.0665746Z {"storageRace":true,"waiter":1006,"blocker":1003,"blockedStatement":"INSERT INTO \"Participant\" (\"accountId\", \"provisionActorAccountId\", \"provisionRequestId\")\n    VALUES ($1, $2, $3) ON CONFLICT (\"accountId\") DO NOTHING RETURNING \"id\"::text, \"kind\", \"accountId\""}
+test	All unit and real-database tests	2026-10-24T05:35:30.0672829Z 
+test	All unit and real-database tests	2026-10-24T05:35:30.8011225Z  ✓ tests/identity-storage-db.test.ts (12 tests) 3427ms
+test	All unit and real-database tests	2026-10-24T05:35:30.8014491Z      ✓ verified wallet flow preserves mapped keeper and denies two mapped accounts without consuming proof  699ms
+test	All unit and real-database tests	2026-10-24T05:35:30.8039973Z      ✓ provision wins against old binary at final DELETE; entire auth transaction rolls back  334ms
+test	All unit and real-database tests	2026-10-24T05:35:32.3389838Z  ✓ tests/launch-db.test.ts (11 tests) 510ms
+test	All unit and real-database tests	2026-10-24T05:35:33.3605950Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > denies a link whose X session expires while it waits for the Session row lock
+test	All unit and real-database tests	2026-10-24T05:35:33.3608833Z {"lockOrderWait":{"blocker":1018,"waiter":1017,"needle":"FROM \"Session\""}}
+test	All unit and real-database tests	2026-10-24T05:35:33.3609346Z 
+test	All unit and real-database tests	2026-10-24T05:35:36.1321015Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > denies a link whose X session expires while it waits for the XAccount row lock
+test	All unit and real-database tests	2026-10-24T05:35:36.1322761Z {"lockOrderWait":{"blocker":1018,"waiter":1017,"needle":"FROM \"XAccount\""}}
+test	All unit and real-database tests	2026-10-24T05:35:36.1323217Z 
+test	All unit and real-database tests	2026-10-24T05:35:39.0550980Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > does not deadlock a merge against an X reconnect of the same account
+test	All unit and real-database tests	2026-10-24T05:35:39.0552814Z {"lockOrderWait":{"blocker":1018,"waiter":1017,"needle":"OAuthAttempt"}}
+test	All unit and real-database tests	2026-10-24T05:35:39.0553411Z 
+test	All unit and real-database tests	2026-10-24T05:35:39.0887033Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > does not deadlock a merge against an X reconnect of the same account
+test	All unit and real-database tests	2026-10-24T05:35:39.0890718Z {"lockOrderWait":{"blocker":1017,"waiter":1028,"needle":"pg_advisory_xact_lock"}}
+test	All unit and real-database tests	2026-10-24T05:35:39.0892069Z 
+test	All unit and real-database tests	2026-10-24T05:35:39.3980543Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > refuses a merge when the dropped account connected X while the merge waited for its row
+test	All unit and real-database tests	2026-10-24T05:35:39.3982690Z {"lockOrderWait":{"blocker":1018,"waiter":1028,"needle":"FOR UPDATE"}}
+test	All unit and real-database tests	2026-10-24T05:35:39.3983209Z 
+test	All unit and real-database tests	2026-10-24T05:35:39.5848094Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus merge > serializes without a deadlock and fails the merge closed after the connection wins
+test	All unit and real-database tests	2026-10-24T05:35:39.5852037Z {"lockOrderWait":{"blocker":1018,"waiter":1028,"needle":"OAuthAttempt"}}
+test	All unit and real-database tests	2026-10-24T05:35:39.5852796Z 
+test	All unit and real-database tests	2026-10-24T05:35:39.6074055Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus merge > serializes without a deadlock and fails the merge closed after the connection wins
+test	All unit and real-database tests	2026-10-24T05:35:39.6077768Z {"lockOrderWait":{"blocker":1028,"waiter":1017,"needle":"pg_advisory_xact_lock"}}
+test	All unit and real-database tests	2026-10-24T05:35:39.6078916Z 
+test	All unit and real-database tests	2026-10-24T05:35:39.8295957Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+test	All unit and real-database tests	2026-10-24T05:35:39.8299852Z {"lockOrderWait":{"blocker":1018,"waiter":1017,"needle":"OAuthAttempt"}}
+test	All unit and real-database tests	2026-10-24T05:35:39.8300627Z 
+test	All unit and real-database tests	2026-10-24T05:35:39.8673674Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > first X connection versus wallet fold > serializes without a deadlock and fails the merge closed after the connection wins
+test	All unit and real-database tests	2026-10-24T05:35:39.8676570Z {"lockOrderWait":{"blocker":1017,"waiter":1028,"needle":"pg_advisory_xact_lock"}}
+test	All unit and real-database tests	2026-10-24T05:35:39.8677164Z 
+test	All unit and real-database tests	2026-10-24T05:35:40.1243581Z stdout | tests/wallet-link-lock-order-db.test.ts > T006 B2a lock waits keep authority and lock order sound > lets unrelated merges and a first X connection proceed without waiting on each other
+test	All unit and real-database tests	2026-10-24T05:35:40.1245272Z {"lockOrderWait":{"blocker":1018,"waiter":1028,"needle":"OAuthAttempt"}}
+test	All unit and real-database tests	2026-10-24T05:35:40.1245703Z 
+test	All unit and real-database tests	2026-10-24T05:35:40.2282558Z  ✓ tests/wallet-link-lock-order-db.test.ts (7 tests) 7322ms
+test	All unit and real-database tests	2026-10-24T05:35:40.2299631Z      ✓ denies a link whose X session expires while it waits for the Session row lock  3009ms
+test	All unit and real-database tests	2026-10-24T05:35:40.2302630Z      ✓ denies a link whose X session expires while it waits for the XAccount row lock  2943ms
+test	All unit and real-database tests	2026-10-24T05:35:40.2304204Z      ✓ does not deadlock a merge against an X reconnect of the same account  311ms
+test	All unit and real-database tests	2026-10-24T05:35:40.2307642Z      ✓ lets unrelated merges and a first X connection proceed without waiting on each other  302ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2500586Z  ✓ tests/practice-portal-db.test.ts (14 tests) 6717ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2501988Z      ✓ lists only current active trusted-catalog definitions without publisher or private answer fields  397ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2503244Z      ✓ filters current retirement and uses original accepted definition for owned progress  354ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2504505Z      ✓ returns exact private saved submission/current progress without rewriting original consent  352ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2505714Z      ✓ hides foreign and absent starts identically before selecting private answer columns  343ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2506779Z      ✓ does not substitute retired taxonomy skills or a foreign catalog  314ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2508223Z      ✓ uses exclusive lexical pagination and rejects forged participant selectors  302ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2509865Z      ✓ rejects wrong actual new-start namespace under locked source while preserving original replay  341ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2511019Z      ✓ does not accept throwing or closing new-start host policy after source waits  309ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2512188Z      ✓ checks current submission host scope and rolls back a closing gate; original replay survives  339ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2513373Z      ✓ paginates more than50 actual current families without overlap or accidental truncation  1644ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2515023Z      ✓ never selects submission identifiers or private columns before authorizing a foreign own start  300ms
+test	All unit and real-database tests	2026-10-24T05:35:47.2516238Z      ✓ rechecks actual own session after waiting for the original submission serialization lock  1149ms
+test	All unit and real-database tests	2026-10-24T05:35:51.9524642Z  ✓ tests/money-integrity-db.test.ts (23 tests) 4497ms
+test	All unit and real-database tests	2026-10-24T05:35:53.3646080Z  ✓ tests/usdc-ops-db.test.ts (9 tests) 575ms
+test	All unit and real-database tests	2026-10-24T05:35:53.6451532Z  ✓ tests/skill-eligibility.test.ts (49 tests) 58ms
+test	All unit and real-database tests	2026-10-24T05:35:54.0246843Z  ✓ tests/practice-ownership-http.test.ts (91 tests) 120ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1729742Z  ✓ tests/practice-assignment-management-db.test.ts (18 tests) 8814ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1732817Z      ✓ audits HEAD with one committed management receipt and event while returning no body  530ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1735503Z      ✓ returns actual immutable appointment/current state and audited private metadata without case answers  383ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1738207Z      ✓ authenticates/authorizes even blank screen or missing submission before exposing target metadata  369ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1740315Z      ✓ rejects currentwallet without metadata access audit  347ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1742069Z      ✓ rejects currentnon-admin without metadata access audit  346ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1743686Z      ✓ rejects currentrestricted without metadata access audit  354ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1745190Z      ✓ rejects currentallowlist without metadata access audit  338ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1760021Z      ✓ requires actual scoped per-record policy and rolls audit back on denied page, without cursor leakage  352ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1761838Z      ✓ shows actual saved revocation while original assignment remains historical ISSUED  367ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1763668Z      ✓ observes expiry after a wait under held locks, without claiming current active state  1384ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1765132Z      ✓ rejects session expiry during metadata waits and rolls audit back  1068ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1766249Z      ✓ paginates exact submission20+1 and current policy sees actual saved evaluator/subject/expiry  808ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1767465Z      ✓ serializes another administrator revocation behind the exact appointment lock, then next read shows REVOKED  457ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1768926Z      ✓ rolls back and returns no metadata when current inspection policy closes during query waits  373ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1769909Z      ✓ does not select any appointment metadata if access audit cannot commit  337ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1771071Z      ✓ rejects forged/invalid target before reads { version: 'v1', submissionId: null, after: '15325fbe-5e50-4be1-bf49-160859ddefa5' }  337ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1772237Z      ✓ rejects forged/invalid target before reads { version: 'v1', submissionId: 'bad', after: null }  327ms
+test	All unit and real-database tests	2026-10-24T05:36:03.1773345Z      ✓ rejects forged/invalid target before reads { version: 'v1', submissionId: null, after: null, admin: true }  329ms
+test	All unit and real-database tests	2026-10-24T05:36:03.4607797Z  ✓ tests/command-receipts.test.ts (46 tests) 30ms
+test	All unit and real-database tests	2026-10-24T05:36:04.2024723Z  ✓ tests/project-control-attestation.test.ts (72 tests) 479ms
+test	All unit and real-database tests	2026-10-24T05:36:08.4644688Z stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > revocation committed before lookup completes prevents a real fresh sign-in (pg_blocking_pids)
+test	All unit and real-database tests	2026-10-24T05:36:08.4648841Z {"linkedSigninRace":true,"waiter":1091,"blocker":1082,"blockedStatement":"SELECT \"id\" FROM \"WalletLink\" WHERE \"id\" = $1::uuid FOR SHARE"}
+test	All unit and real-database tests	2026-10-24T05:36:08.4649981Z 
+test	All unit and real-database tests	2026-10-24T05:36:08.7089273Z stdout | tests/wallet-linked-signin-db.test.ts > linked-wallet sign-in host (T006 PR-B1) > credential lookup holds its link row until host commit; concurrent raw revoke waits (pg_blocking_pids)
+test	All unit and real-database tests	2026-10-24T05:36:08.7092578Z {"linkedSigninRace":true,"waiter":1092,"blocker":1091,"blockedStatement":"UPDATE \"public\".\"WalletLink\" SET \"status\" = $1, \"revokedAt\" = $2 WHERE \"public\".\"WalletLink\".\"accountId\" = $3"}
+test	All unit and real-database tests	2026-10-24T05:36:08.7093636Z 
+test	All unit and real-database tests	2026-10-24T05:36:08.8996895Z  ✓ tests/wallet-linked-signin-db.test.ts (15 tests) 4177ms
+test	All unit and real-database tests	2026-10-24T05:36:08.8999268Z      ✓ fresh linked signature yields same account; participant, primary and history stay byte-identical  430ms
+test	All unit and real-database tests	2026-10-24T05:36:08.9005634Z      ✓ rejects WRONG_NETWORK linked credential without challenge/session residue  424ms
+test	All unit and real-database tests	2026-10-24T05:36:10.6650134Z stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (revoked) committed during a real lock wait
+test	All unit and real-database tests	2026-10-24T05:36:10.6652504Z {"authorityRace":{"blocker":1094,"waiters":[1093]}}
+test	All unit and real-database tests	2026-10-24T05:36:10.6652936Z 
+test	All unit and real-database tests	2026-10-24T05:36:10.9024542Z stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (expired) committed during a real lock wait
+test	All unit and real-database tests	2026-10-24T05:36:10.9026191Z {"authorityRace":{"blocker":1094,"waiters":[1093]}}
+test	All unit and real-database tests	2026-10-24T05:36:10.9026699Z 
+test	All unit and real-database tests	2026-10-24T05:36:11.1202104Z stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies an authority change (X disconnected) committed during a real lock wait
+test	All unit and real-database tests	2026-10-24T05:36:11.1203978Z {"authorityRace":{"blocker":1094,"waiters":[1093]}}
+test	All unit and real-database tests	2026-10-24T05:36:11.1204539Z 
+test	All unit and real-database tests	2026-10-24T05:36:11.3366594Z stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > denies a session that expires naturally while the command waits for the lock
+test	All unit and real-database tests	2026-10-24T05:36:11.3368649Z {"authorityRace":{"blocker":1094,"waiters":[1093]}}
+test	All unit and real-database tests	2026-10-24T05:36:11.3368968Z 
+test	All unit and real-database tests	2026-10-24T05:36:13.8199154Z stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > either links or leaves no trace when revocation races the command, with no deadlock
+test	All unit and real-database tests	2026-10-24T05:36:13.8201956Z {"authorityRaceOutcomes":["denied:401","denied:401","denied:401","denied:401","linked","denied:403","linked","denied:403","linked","denied:403","linked","denied:403"]}
+test	All unit and real-database tests	2026-10-24T05:36:13.8203132Z 
+test	All unit and real-database tests	2026-10-24T05:36:14.0635392Z stdout | tests/wallet-link-authority-db.test.ts > B2a authority: current X session, observed under locks > makes a revoke or X disconnect that arrives after the decision wait for the link to commit
+test	All unit and real-database tests	2026-10-24T05:36:14.0637091Z {"authorityLateWriters":{"command":1093,"writers":[1095,1104]}}
+test	All unit and real-database tests	2026-10-24T05:36:14.0637423Z 
+test	All unit and real-database tests	2026-10-24T05:36:14.6026915Z  ✓ tests/wallet-link-authority-db.test.ts (12 tests) 5151ms
+test	All unit and real-database tests	2026-10-24T05:36:14.6030693Z      ✓ denies an authority change (revoked) committed during a real lock wait  365ms
+test	All unit and real-database tests	2026-10-24T05:36:14.6037420Z      ✓ denies a session that expires naturally while the command waits for the lock  2015ms
+test	All unit and real-database tests	2026-10-24T05:36:14.6047738Z      ✓ either links or leaves no trace when revocation races the command, with no deadlock  666ms
+test	All unit and real-database tests	2026-10-24T05:36:18.7738098Z  ✓ tests/worker-db.test.ts (15 tests) 3408ms
+test	All unit and real-database tests	2026-10-24T05:36:19.0535507Z  ✓ tests/identity-preflight.test.ts (48 tests) 37ms
+test	All unit and real-database tests	2026-10-24T05:36:19.3305841Z  ✓ tests/practice-trials.test.ts (27 tests) 48ms
+test	All unit and real-database tests	2026-10-24T05:36:19.5962277Z  ✓ tests/shared-contracts.test.ts (31 tests) 39ms
+test	All unit and real-database tests	2026-10-24T05:36:20.4113038Z  ✓ tests/asset-registry-db.test.ts (10 tests) 507ms
+test	All unit and real-database tests	2026-10-24T05:36:20.6751902Z  ✓ tests/holder-observation.test.ts (27 tests) 39ms
+test	All unit and real-database tests	2026-10-24T05:36:21.1977532Z  ✓ tests/asset-registry-amounts.test.ts (40 tests) 296ms
+test	All unit and real-database tests	2026-10-24T05:36:22.8427721Z  ✓ tests/identity-locks-db.test.ts (7 tests) 1347ms
+test	All unit and real-database tests	2026-10-24T05:36:22.8430876Z      ✓ replans whole rolled-back transactions at most three times with stable operation ID; terminal FK errors propagate  307ms
+test	All unit and real-database tests	2026-10-24T05:36:23.1069685Z  ✓ tests/asset-registry-registry.test.ts (22 tests) 31ms
+test	All unit and real-database tests	2026-10-24T05:36:23.4241973Z  ✓ tests/practice-review-assignment-http.test.ts (52 tests) 86ms
+test	All unit and real-database tests	2026-10-24T05:36:24.6116973Z stderr | tests/tracking.test.ts > raid-specific search query > falls back to the unfiltered query when the author list exceeds the limit
+test	All unit and real-database tests	2026-10-24T05:36:24.6119856Z X search author filter exceeds X_SEARCH_QUERY_MAX_CHARS; using the unfiltered mention query.
+test	All unit and real-database tests	2026-10-24T05:36:24.6120588Z 
+test	All unit and real-database tests	2026-10-24T05:36:24.6138987Z  ✓ tests/tracking.test.ts (17 tests) 921ms
+test	All unit and real-database tests	2026-10-24T05:36:24.6140080Z      ✓ finds the same duplicate peers as the quadratic reference (v2)  520ms
+test	All unit and real-database tests	2026-10-24T05:36:24.6140997Z      ✓ finds the same duplicate peers as the quadratic reference (v3)  378ms
+test	All unit and real-database tests	2026-10-24T05:36:25.1315299Z  ✓ tests/proposal-control.test.ts (37 tests) 252ms
+test	All unit and real-database tests	2026-10-24T05:36:26.3746183Z  ✓ tests/wallet-link-additional-db.test.ts (7 tests) 731ms
+test	All unit and real-database tests	2026-10-24T05:36:26.6907182Z  ✓ tests/project-proposal-http.test.ts (34 tests) 81ms
+test	All unit and real-database tests	2026-10-24T05:36:26.9555961Z  ✓ tests/practice-assignment-manager-client.test.ts (29 tests) 34ms
+test	All unit and real-database tests	2026-10-24T05:36:28.5940704Z  ✓ tests/wallet-link-signin-db.test.ts (8 tests) 1111ms
+test	All unit and real-database tests	2026-10-24T05:36:28.9254350Z  ✓ tests/practice-portal-http.test.ts (24 tests) 82ms
+test	All unit and real-database tests	2026-10-24T05:36:33.5886397Z  ✓ tests/x-oauth-db.test.ts (17 tests) 4319ms
+test	All unit and real-database tests	2026-10-24T05:36:33.5888141Z      ✓ creates identity metadata and updates changed username without changing ownership  336ms
+test	All unit and real-database tests	2026-10-24T05:36:33.5890017Z      ✓ disconnect preserves sessions, user, and raids and cancels a claimed callback  304ms
+test	All unit and real-database tests	2026-10-24T05:36:33.5891600Z        ✓ absorbs an empty X account into the signed-in wallet account that has activity  319ms
+test	All unit and real-database tests	2026-10-24T05:36:33.8907733Z  ✓ tests/skill-claims-http.test.ts (33 tests) 75ms
+test	All unit and real-database tests	2026-10-24T05:36:34.1940380Z  ✓ tests/asset-registry-bundle.test.ts (16 tests) 80ms
+test	All unit and real-database tests	2026-10-24T05:36:36.2521871Z  ✓ tests/x-oauth-first-link-race-db.test.ts (5 tests) 1749ms
+test	All unit and real-database tests	2026-10-24T05:36:36.2525153Z      ✓ a stale second callback cannot replace the identity bound by an earlier non-admin callback  491ms
+test	All unit and real-database tests	2026-10-24T05:36:36.2529254Z      ✓ a stale second callback cannot replace the identity bound by an earlier admin callback  316ms
+test	All unit and real-database tests	2026-10-24T05:36:36.2531490Z      ✓ callbacks released together bind exactly one identity  310ms
+test	All unit and real-database tests	2026-10-24T05:36:36.2533639Z      ✓ overlapping row updates: the callback blocked on the winner's row is re-evaluated and refused  316ms
+test	All unit and real-database tests	2026-10-24T05:36:36.2549669Z      ✓ two sessions confirming the same X identity both succeed and keep one binding  306ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9832236Z  ✓ tests/practice-review-inbox-db.test.ts (9 tests) 5424ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9835379Z      ✓ discovers exact own finite metadata, with identifier-only audit before query and no private columns/body audit  484ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9837695Z      ✓ does not expose another evaluator appointments even to current admin, nor with a foreign ordering cursor  392ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9840300Z      ✓ returns no revoked appointment and retains original immutable assignment  378ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9841968Z      ✓ excludes already expired appointments using DB time  516ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9843790Z      ✓ removes assignment expiry that occurs during held post-selection checks  1055ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9845176Z      ✓ rejects session expiry during SQL waits even for no appointments  1050ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9846335Z      ✓ rejects revoked session, restriction and disabled metadata policy without discovery audit  332ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9847643Z      ✓ paginates own mixed-purpose assignments with20+1 lookahead without duplicate/missing rows  767ms
+test	All unit and real-database tests	2026-10-24T05:36:41.9849182Z      ✓ serializes current revocation behind the held evaluator lock, then next observation omits it  445ms
+test	All unit and real-database tests	2026-10-24T05:36:42.3141025Z  ✓ tests/skill-taxonomy-http.test.ts (44 tests) 86ms
+test	All unit and real-database tests	2026-10-24T05:36:42.6784595Z  ✓ tests/practice-trial-portal-ui.test.ts (11 tests) 67ms
+test	All unit and real-database tests	2026-10-24T05:36:43.0615875Z  ✓ tests/x-oauth-routes.test.ts (12 tests) 29ms
+test	All unit and real-database tests	2026-10-24T05:36:43.3606423Z  ✓ tests/practice-ownership-client.test.ts (22 tests) 40ms
+test	All unit and real-database tests	2026-10-24T05:36:43.6487368Z  ✓ tests/practice-trial-portal-client.test.ts (11 tests) 53ms
+test	All unit and real-database tests	2026-10-24T05:36:44.4817404Z  ✓ tests/standalone-db.test.ts (5 tests) 443ms
+test	All unit and real-database tests	2026-10-24T05:36:46.3572760Z  ✓ tests/identity-link-boundary.test.ts (6 tests) 1695ms
+test	All unit and real-database tests	2026-10-24T05:36:46.3575201Z    ✓ copied challenge helper resolves its declared host dependencies and production network policy  368ms
+test	All unit and real-database tests	2026-10-24T05:36:46.3576932Z    ✓ minimal external host links a second wallet using explicit dependencies  1236ms
+test	All unit and real-database tests	2026-10-24T05:36:46.7155979Z  ✓ tests/guild-draft-routes.test.ts (18 tests) 68ms
+test	All unit and real-database tests	2026-10-24T05:36:46.9535142Z  ✓ tests/skill-claims.test.ts (21 tests) 27ms
+test	All unit and real-database tests	2026-10-24T05:36:48.8929751Z  ✓ tests/account-fold-gate-db.test.ts (5 tests) 1338ms
+test	All unit and real-database tests	2026-10-24T05:36:48.8932428Z      ✓ still lets a wallet-only account connect a NEW X identity and an X account link a NEW wallet  303ms
+test	All unit and real-database tests	2026-10-24T05:36:48.8934393Z      ✓ a first X connection racing a wallet-link fold attempt neither deadlocks nor merges  373ms
+test	All unit and real-database tests	2026-10-24T05:36:49.2269332Z  ✓ tests/practice-review-http.test.ts (45 tests) 76ms
+test	All unit and real-database tests	2026-10-24T05:36:49.5530996Z  ✓ tests/practice-assessment-client.test.ts (29 tests) 32ms
+test	All unit and real-database tests	2026-10-24T05:36:49.7866517Z  ✓ tests/guild-profiles.test.ts (33 tests) 23ms
+test	All unit and real-database tests	2026-10-24T05:36:50.0991518Z  ✓ tests/practice-assessment-http-host.test.ts (12 tests) 34ms
+test	All unit and real-database tests	2026-10-24T05:36:50.3361968Z  ✓ tests/identity-storage.test.ts (33 tests) 22ms
+test	All unit and real-database tests	2026-10-24T05:36:50.9944239Z  ✓ tests/practice-trial-storage-unicode.test.ts (13 tests) 380ms
+test	All unit and real-database tests	2026-10-24T05:36:51.2520960Z  ✓ tests/practice-review-inbox-storage.test.ts (18 tests) 28ms
+test	All unit and real-database tests	2026-10-24T05:36:51.6050053Z  ✓ tests/raider-onboarding-routes.test.ts (12 tests) 75ms
+test	All unit and real-database tests	2026-10-24T05:36:51.8656055Z  ✓ tests/asset-registry-production.test.ts (16 tests) 25ms
+test	All unit and real-database tests	2026-10-24T05:36:52.0984116Z  ✓ tests/domain.test.ts (15 tests) 24ms
+test	All unit and real-database tests	2026-10-24T05:36:52.3256598Z  ✓ tests/launch-ipfs.test.ts (11 tests) 21ms
+test	All unit and real-database tests	2026-10-24T05:36:52.6899914Z  ✓ tests/x-oauth.test.ts (12 tests) 70ms
+test	All unit and real-database tests	2026-10-24T05:36:54.3351366Z  ✓ tests/practice-review-assignment-http-db.test.ts (3 tests) 1344ms
+test	All unit and real-database tests	2026-10-24T05:36:54.3353304Z      ✓ issues once, replays the same key, rejects key reuse and records exactly one appointment  531ms
+test	All unit and real-database tests	2026-10-24T05:36:54.3355060Z      ✓ revokes once, then reports a conflict for a new key; unknown assignment is 404  431ms
+test	All unit and real-database tests	2026-10-24T05:36:54.3356911Z      ✓ denies wallet-only and non-admin sessions, self-review, past expiry and disabled writes without any row  377ms
+test	All unit and real-database tests	2026-10-24T05:37:04.6606228Z  ✓ tests/identity-link-migration.test.ts (4 tests) 10156ms
+test	All unit and real-database tests	2026-10-24T05:37:04.6608678Z      ✓ applies twice, matches the Prisma schema with no drift, and records one row per migration  10148ms
+test	All unit and real-database tests	2026-10-24T05:37:05.3442611Z  ✓ tests/wallet-network.test.ts (12 tests) 130ms
+test	All unit and real-database tests	2026-10-24T05:37:05.6339253Z  ✓ tests/practice-review-assignment-root-http.test.ts (12 tests) 36ms
+test	All unit and real-database tests	2026-10-24T05:37:05.9396963Z  ✓ tests/practice-review-inbox-http.test.ts (26 tests) 52ms
+test	All unit and real-database tests	2026-10-24T05:37:06.9831892Z  ✓ tests/public-load-db.test.ts (6 tests) 721ms
+test	All unit and real-database tests	2026-10-24T05:37:07.2666895Z  ✓ tests/raid-fixtures.test.ts (9 tests) 39ms
+test	All unit and real-database tests	2026-10-24T05:37:07.5580544Z  ✓ tests/practice-assignment-management-http.test.ts (28 tests) 56ms
+test	All unit and real-database tests	2026-10-24T05:37:08.0086406Z  ✓ tests/standalone-raids.test.ts (11 tests) 48ms
+test	All unit and real-database tests	2026-10-24T05:37:08.2836176Z  ✓ tests/raid-evidence.test.ts (21 tests) 27ms
+test	All unit and real-database tests	2026-10-24T05:37:08.6055219Z  ✓ tests/practice-assessment-context.test.ts (12 tests) 24ms
+test	All unit and real-database tests	2026-10-24T05:37:09.4100685Z stderr | tests/launch-gate.test.ts > launchpad gate > refuses to resume a paused launch while gated
+test	All unit and real-database tests	2026-10-24T05:37:09.4101876Z STORAGE_UNAVAILABLE
+test	All unit and real-database tests	2026-10-24T05:37:09.4102142Z 
+test	All unit and real-database tests	2026-10-24T05:37:09.4127724Z  ✓ tests/launch-gate.test.ts (10 tests) 23ms
+test	All unit and real-database tests	2026-10-24T05:37:09.9699745Z  ✓ tests/usdc-receipt.test.ts (6 tests) 25ms
+test	All unit and real-database tests	2026-10-24T05:37:10.5534246Z  ✓ tests/asset-registry-boundary.test.ts (6 tests) 432ms
+test	All unit and real-database tests	2026-10-24T05:37:10.5540843Z      ✓ runs the declared minimal host outside the application with explicit dependencies  417ms
+test	All unit and real-database tests	2026-10-24T05:37:11.4242870Z  ✓ tests/media-db.test.ts (6 tests) 300ms
+test	All unit and real-database tests	2026-10-24T05:37:11.9526895Z  ✓ tests/audit-db.test.ts (3 tests) 326ms
+test	All unit and real-database tests	2026-10-24T05:37:12.2046533Z  ✓ tests/practice-assessment-decision-host.test.ts (6 tests) 10ms
+test	All unit and real-database tests	2026-10-24T05:37:12.5000226Z  ✓ tests/practice-ownership-http-host.test.ts (10 tests) 34ms
+test	All unit and real-database tests	2026-10-24T05:37:14.7026695Z  ✓ tests/identity-link-authority-hook-db.test.ts (9 tests) 1924ms
+test	All unit and real-database tests	2026-10-24T05:37:14.9577271Z  ✓ tests/practice-trial-assessment-host.test.ts (6 tests) 10ms
+test	All unit and real-database tests	2026-10-24T05:37:15.1846679Z  ✓ tests/practice-portal-host.test.ts (7 tests) 10ms
+test	All unit and real-database tests	2026-10-24T05:37:15.5776337Z  ✓ tests/account-merge-canonical.test.ts (14 tests) 153ms
+test	All unit and real-database tests	2026-10-24T05:37:15.8575646Z  ✓ tests/practice-ownership-context.test.ts (14 tests) 23ms
+test	All unit and real-database tests	2026-10-24T05:37:16.0931367Z  ✓ tests/skill-claim-storage-boundary.test.ts (5 tests) 19ms
+test	All unit and real-database tests	2026-10-24T05:37:16.3222971Z  ✓ tests/raider-onboarding.test.ts (18 tests) 34ms
+test	All unit and real-database tests	2026-10-24T05:37:17.9274044Z  ✓ tests/admin-db.test.ts (5 tests) 1063ms
+test	All unit and real-database tests	2026-10-24T05:37:18.0922828Z  ✓ tests/practice-review-policy-host.test.ts (5 tests) 9ms
+test	All unit and real-database tests	2026-10-24T05:37:18.3327002Z  ✓ tests/wallet-link-proof.test.ts (19 tests) 15ms
+test	All unit and real-database tests	2026-10-24T05:37:19.6557038Z  ✓ tests/wallet-origin-db.test.ts (4 tests) 819ms
+test	All unit and real-database tests	2026-10-24T05:37:19.6560224Z      ✓ rejects an otherwise valid sign-in signature issued for the previous domain without mutation  341ms
+test	All unit and real-database tests	2026-10-24T05:37:21.1015288Z  ✓ tests/guild-draft-list-db.test.ts (5 tests) 1176ms
+test	All unit and real-database tests	2026-10-24T05:37:21.4324440Z  ✓ tests/practice-assignment-management-view.test.ts (15 tests) 75ms
+test	All unit and real-database tests	2026-10-24T05:37:21.7610106Z  ✓ tests/practice-assessment-page.test.ts (10 tests) 14ms
+test	All unit and real-database tests	2026-10-24T05:37:22.3300531Z  ✓ tests/studio.test.ts (14 tests) 35ms
+test	All unit and real-database tests	2026-10-24T05:37:22.6436068Z  ✓ tests/practice-review-inbox-page.test.ts (18 tests) 60ms
+test	All unit and real-database tests	2026-10-24T05:37:23.8151769Z  ✓ tests/command-receipts-boundary.test.ts (4 tests) 975ms
+test	All unit and real-database tests	2026-10-24T05:37:23.8153496Z    ✓ minimal external host runs the documented flow using explicit dependencies  964ms
+test	All unit and real-database tests	2026-10-24T05:37:24.0555493Z  ✓ tests/wallet-credential-lookup.test.ts (12 tests) 22ms
+test	All unit and real-database tests	2026-10-24T05:37:24.6317217Z  ✓ tests/usdc-chain.test.ts (3 tests) 25ms
+test	All unit and real-database tests	2026-10-24T05:37:24.9059509Z  ✓ tests/practice-review-inbox-host.test.ts (9 tests) 11ms
+test	All unit and real-database tests	2026-10-24T05:37:25.1691478Z  ✓ tests/practice-review-read-boundary.test.ts (14 tests) 24ms
+test	All unit and real-database tests	2026-10-24T05:37:25.4362208Z  ✓ tests/practice-trial-portal-page.test.ts (7 tests) 11ms
+test	All unit and real-database tests	2026-10-24T05:37:25.6969067Z  ✓ tests/own-skill-assessment-http.test.ts (13 tests) 43ms
+test	All unit and real-database tests	2026-10-24T05:37:25.9324312Z  ✓ tests/skill-taxonomy-boundary.test.ts (5 tests) 17ms
+test	All unit and real-database tests	2026-10-24T05:37:26.2145545Z  ✓ tests/practice-review-http-host.test.ts (8 tests) 30ms
+test	All unit and real-database tests	2026-10-24T05:37:27.2029420Z  ✓ tests/skill-taxonomy-host-db.test.ts (4 tests) 696ms
+test	All unit and real-database tests	2026-10-24T05:37:27.3995307Z  ✓ tests/braces-security.test.ts (14 tests) 30ms
+test	All unit and real-database tests	2026-10-24T05:37:27.6438833Z  ✓ tests/practice-review-assignment-boundary.test.ts (4 tests) 17ms
+test	All unit and real-database tests	2026-10-24T05:37:27.8342785Z  ✓ tests/launch-crypto.test.ts (8 tests) 21ms
+test	All unit and real-database tests	2026-10-24T05:37:28.0440254Z  ✓ tests/refresh.test.ts (6 tests) 38ms
+test	All unit and real-database tests	2026-10-24T05:37:28.3448180Z  ✓ tests/practice-ownership-page.test.ts (9 tests) 12ms
+test	All unit and real-database tests	2026-10-24T05:37:29.8330528Z  ✓ tests/skill-taxonomy-editor-db.test.ts (6 tests) 1211ms
+test	All unit and real-database tests	2026-10-24T05:37:30.0473821Z  ✓ tests/project-proposal-host.test.ts (3 tests) 8ms
+test	All unit and real-database tests	2026-10-24T05:37:30.4186996Z  ✓ tests/wallet-routes.test.ts (11 tests) 33ms
+test	All unit and real-database tests	2026-10-24T05:37:30.6751036Z  ✓ tests/practice-trial-ownership-host.test.ts (4 tests) 8ms
+test	All unit and real-database tests	2026-10-24T05:37:48.3250182Z  ✓ tests/identity-lock-architecture.test.ts (3 tests) 17125ms
+test	All unit and real-database tests	2026-10-24T05:37:48.3254055Z    ✓ every identity writer enters the shared protocol boundary  11522ms
+test	All unit and real-database tests	2026-10-24T05:37:48.3255623Z    ✓ rejects direct, aliased, destructured, nested, raw, and type-erased bypasses  1597ms
+test	All unit and real-database tests	2026-10-24T05:37:48.3257548Z    ✓ allows only reviewed, hash-pinned domain-seed advisory locks outside the shared builder  4004ms
+test	All unit and real-database tests	2026-10-24T05:37:48.9840467Z  ✓ tests/shared-contracts-boundary.test.ts (4 tests) 430ms
+test	All unit and real-database tests	2026-10-24T05:37:48.9843114Z      ✓ has no undeclared app/global dependencies and runs the declared host outside the app  417ms
+test	All unit and real-database tests	2026-10-24T05:37:49.2726519Z  ✓ tests/practice-assignment-management-root.test.ts (3 tests) 34ms
+test	All unit and real-database tests	2026-10-24T05:37:50.5105355Z  ✓ tests/identity-storage-boundary.test.ts (3 tests) 1044ms
+test	All unit and real-database tests	2026-10-24T05:37:50.7529156Z    ✓ minimal external host resolves a real mapping using explicit dependencies  1034ms
+test	All unit and real-database tests	2026-10-24T05:37:50.7530785Z  ✓ tests/practice-trial-submission-boundary.test.ts (6 tests) 17ms
+test	All unit and real-database tests	2026-10-24T05:37:51.0801277Z  ✓ tests/report-route.test.ts (4 tests) 16ms
+test	All unit and real-database tests	2026-10-24T05:37:51.2920271Z  ✓ tests/shared-contracts-review.test.ts (3 tests) 16ms
+test	All unit and real-database tests	2026-10-24T05:37:52.8445895Z  ✓ tests/creator-legacy-cleanup.test.ts (5 tests) 1033ms
+test	All unit and real-database tests	2026-10-24T05:37:53.0070997Z  ✓ tests/env-example.test.ts (5 tests) 22ms
+test	All unit and real-database tests	2026-10-24T05:37:53.3255689Z  ✓ tests/practice-review-page.test.ts (20 tests) 44ms
+test	All unit and real-database tests	2026-10-24T05:37:53.5648988Z  ✓ tests/skill-claims-host.test.ts (4 tests) 11ms
+test	All unit and real-database tests	2026-10-24T05:37:53.7776031Z  ✓ tests/own-skill-assessment-host.test.ts (4 tests) 10ms
+test	All unit and real-database tests	2026-10-24T05:37:54.0184886Z  ✓ tests/practice-trial-storage-boundary.test.ts (2 tests) 17ms
+test	All unit and real-database tests	2026-10-24T05:37:59.3119117Z  ✓ tests/wallet-auth-isolation-db.test.ts (2 tests) 5114ms
+test	All unit and real-database tests	2026-10-24T05:37:59.3121182Z      ✓ preserves permitted wallet and X account folds under database default repeatable read  2547ms
+test	All unit and real-database tests	2026-10-24T05:37:59.3122598Z      ✓ preserves permitted wallet and X account folds under database default serializable  2563ms
+test	All unit and real-database tests	2026-10-24T05:37:59.6423360Z  ✓ tests/dependency-compatibility.test.ts (7 tests) 67ms
+test	All unit and real-database tests	2026-10-24T05:38:00.0357750Z  ✓ tests/practice-review-root-page.test.ts (7 tests) 61ms
+test	All unit and real-database tests	2026-10-24T05:38:00.2008636Z  ✓ tests/rewards.test.ts (3 tests) 13ms
+test	All unit and real-database tests	2026-10-24T05:38:00.5524722Z  ✓ tests/practice-ownership-editor.test.ts (5 tests) 40ms
+test	All unit and real-database tests	2026-10-24T05:38:00.7820374Z  ✓ tests/skill-taxonomy-host.test.ts (3 tests) 8ms
+test	All unit and real-database tests	2026-10-24T05:38:01.0230794Z  ✓ tests/practice-trial-attempt-boundary.test.ts (2 tests) 14ms
+test	All unit and real-database tests	2026-10-24T05:38:01.4099683Z  ✓ tests/practice-assessment-editor.test.ts (5 tests) 39ms
+test	All unit and real-database tests	2026-10-24T05:38:01.6088919Z  ✓ tests/guild-draft-host.test.ts (3 tests) 10ms
+test	All unit and real-database tests	2026-10-24T05:38:01.8689159Z  ✓ tests/skill-taxonomy-read-http.test.ts (8 tests) 34ms
+test	All unit and real-database tests	2026-10-24T05:38:02.0370940Z  ✓ tests/practice-trials-host.test.ts (3 tests) 8ms
+test	All unit and real-database tests	2026-10-24T05:38:03.1271863Z  ✓ tests/docs-links.test.ts (155 tests) 937ms
+test	All unit and real-database tests	2026-10-24T05:38:03.1273901Z      ✓ docs/raid-agent-task-contracts.md: relative links and anchors resolve  409ms
+test	All unit and real-database tests	2026-10-24T05:38:03.1275757Z      ✓ docs/raid-blueprint-project-map.md: relative links and anchors resolve  395ms
+test	All unit and real-database tests	2026-10-24T05:38:03.4742708Z  ✓ tests/practice-review-view.test.ts (4 tests) 44ms
+test	All unit and real-database tests	2026-10-24T05:38:03.6302904Z  ✓ tests/practice-review-read-host.test.ts (3 tests) 6ms
+test	All unit and real-database tests	2026-10-24T05:38:03.9208847Z  ✓ tests/raider-onboarding-host.test.ts (6 tests) 15ms
+test	All unit and real-database tests	2026-10-24T05:38:04.0751611Z  ✓ tests/practice-review-assignment-host.test.ts (3 tests) 7ms
+test	All unit and real-database tests	2026-10-24T05:38:04.7689133Z  ✓ tests/pump-launch.test.ts (2 tests) 173ms
+test	All unit and real-database tests	2026-10-24T05:38:05.0812222Z  ✓ tests/http.test.ts (11 tests) 20ms
+test	All unit and real-database tests	2026-10-24T05:38:05.4027164Z  ✓ tests/practice-assignment-management-root-page.test.ts (6 tests) 67ms
+test	All unit and real-database tests	2026-10-24T05:38:05.9540360Z  ✓ tests/skill-eligibility-boundary.test.ts (2 tests) 408ms
+test	All unit and real-database tests	2026-10-24T05:38:05.9542333Z    ✓ runs a copied console host outside the app with explicit test runtime  400ms
+test	All unit and real-database tests	2026-10-24T05:38:06.2886036Z  ✓ tests/submit-route.test.ts (2 tests) 13ms
+test	All unit and real-database tests	2026-10-24T05:38:06.4511288Z  ✓ tests/security-headers.test.ts (5 tests) 16ms
+test	All unit and real-database tests	2026-10-24T05:38:06.7439880Z  ✓ tests/skill-taxonomy-form.test.ts (3 tests) 23ms
+test	All unit and real-database tests	2026-10-24T05:38:06.8977556Z  ✓ tests/db-guard.test.ts (6 tests) 8ms
+test	All unit and real-database tests	2026-10-24T05:38:07.4303353Z  ✓ tests/raider-onboarding-boundary.test.ts (3 tests) 391ms
+test	All unit and real-database tests	2026-10-24T05:38:07.4305890Z    ✓ independent copied orientation host consumes declared interfaces and substitution failures  384ms
+test	All unit and real-database tests	2026-10-24T05:38:08.0060671Z  ✓ tests/studio-preview-route.test.ts (3 tests) 11ms
+test	All unit and real-database tests	2026-10-24T05:38:08.1567185Z  ✓ tests/deploy.test.ts (6 tests) 7ms
+test	All unit and real-database tests	2026-10-24T05:38:08.7365975Z  ✓ tests/identity-preflight-boundary.test.ts (1 test) 435ms
+test	All unit and real-database tests	2026-10-24T05:38:08.7367687Z    ✓ consumes only the public identity interface outside the RAID app with explicit dependencies  433ms
+test	All unit and real-database tests	2026-10-24T05:38:08.8954835Z  ✓ tests/shell-account.test.ts (4 tests) 9ms
+test	All unit and real-database tests	2026-10-24T05:38:09.5923681Z  ✓ tests/skill-claim-form-boundary.test.ts (2 tests) 553ms
+test	All unit and real-database tests	2026-10-24T05:38:09.5932545Z    ✓ renders enabled/disabled independent host without hidden app or dispatch  548ms
+test	All unit and real-database tests	2026-10-24T05:38:09.7484486Z  ✓ tests/admin-lists.test.ts (5 tests) 6ms
+test	All unit and real-database tests	2026-10-24T05:38:10.3480883Z  ✓ tests/raid-fixtures-boundary.test.ts (1 test) 458ms
+test	All unit and real-database tests	2026-10-24T05:38:10.3483251Z    ✓ T004 runs its declared consuming host outside RAID without app configuration or credentials  457ms
+test	All unit and real-database tests	2026-10-24T05:38:10.5135855Z  ✓ tests/practice-trial-submission-host.test.ts (2 tests) 7ms
+test	All unit and real-database tests	2026-10-24T05:38:11.0974795Z  ✓ tests/skill-assessment-review-boundary.test.ts (2 tests) 442ms
+test	All unit and real-database tests	2026-10-24T05:38:11.0976887Z    ✓ runs a copied console host using explicit CI runtime and both approval ports  437ms
+test	All unit and real-database tests	2026-10-24T05:38:11.2548013Z  ✓ tests/practice-trial-attempt-host.test.ts (2 tests) 7ms
+test	All unit and real-database tests	2026-10-24T05:38:11.8117179Z  ✓ tests/practice-trials-boundary.test.ts (2 tests) 416ms
+test	All unit and real-database tests	2026-10-24T05:38:11.8119460Z    ✓ runs a copied console host with explicit CI fixture runtime and alternate approval policies  411ms
+test	All unit and real-database tests	2026-10-24T05:38:11.9544882Z  ✓ tests/discovery-rows.test.ts (4 tests) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:12.2539773Z  ✓ tests/auth-routes.test.ts (4 tests) 12ms
+test	All unit and real-database tests	2026-10-24T05:38:12.5318023Z  ✓ tests/practice-review-inbox-root-page.test.ts (2 tests) 43ms
+test	All unit and real-database tests	2026-10-24T05:38:13.2908087Z  ✓ tests/fake-solana.test.ts (3 tests) 68ms
+test	All unit and real-database tests	2026-10-24T05:38:13.8340549Z  ✓ tests/wallet-auth-transaction.test.ts (4 tests) 8ms
+test	All unit and real-database tests	2026-10-24T05:38:14.0897080Z  ✓ tests/auth.test.ts (4 tests) 38ms
+test	All unit and real-database tests	2026-10-24T05:38:14.3055576Z  ✓ tests/guild-draft-boundary.test.ts (2 tests) 10ms
+test	All unit and real-database tests	2026-10-24T05:38:14.4536263Z  ✓ tests/audit-check.test.ts (3 tests) 6ms
+test	All unit and real-database tests	2026-10-24T05:38:14.6014745Z  ✓ tests/states.test.ts (3 tests) 7ms
+test	All unit and real-database tests	2026-10-24T05:38:14.8215438Z  ✓ tests/raider-skills-practice-link.test.ts (3 tests) 16ms
+test	All unit and real-database tests	2026-10-24T05:38:14.9648200Z  ✓ tests/image-hosts.test.ts (11 tests) 6ms
+test	All unit and real-database tests	2026-10-24T05:38:15.1132503Z  ✓ tests/admins.test.ts (4 tests) 6ms
+test	All unit and real-database tests	2026-10-24T05:38:15.3360760Z  ✓ tests/guild-draft-form-boundary.test.ts (2 tests) 7ms
+test	All unit and real-database tests	2026-10-24T05:38:15.4806393Z  ✓ tests/wallet-session-authority.test.ts (11 tests) 6ms
+test	All unit and real-database tests	2026-10-24T05:38:15.7041163Z  ✓ tests/production-test-boundary.test.ts (1 test) 86ms
+test	All unit and real-database tests	2026-10-24T05:38:16.4101490Z  ✓ tests/practice-trial-portal-host.test.ts (1 test) 564ms
+test	All unit and real-database tests	2026-10-24T05:38:16.4103627Z    ✓ renders in an independent host with explicit dependencies and no dispatch  563ms
+test	All unit and real-database tests	2026-10-24T05:38:18.9800780Z  ✓ tests/project-proposal-discovery.test.ts (1 test) 2430ms
+test	All unit and real-database tests	2026-10-24T05:38:18.9801947Z    ✓ isolates ten desktop/mobile proposal journeys and requires both workflow gates before publication  2429ms
+test	All unit and real-database tests	2026-10-24T05:38:19.1275546Z  ✓ tests/wallet-picker.test.ts (3 tests) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:20.8535772Z  ✓ tests/raider-onboarding-discovery.test.ts (1 test) 1574ms
+test	All unit and real-database tests	2026-10-24T05:38:20.8538546Z    ✓ isolates onboarding from the general live server/cookie and executes it in staging CI  1573ms
+test	All unit and real-database tests	2026-10-24T05:38:21.0813016Z  ✓ tests/methodology-page.test.ts (3 tests) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:22.9141162Z  ✓ tests/guild-draft-discovery.test.ts (1 test) 1700ms
+test	All unit and real-database tests	2026-10-24T05:38:22.9142330Z    ✓ isolates ten owned Guild form/index cases and requires them before staging publication  1698ms
+test	All unit and real-database tests	2026-10-24T05:38:23.0635603Z  ✓ tests/project-control-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:23.2329787Z  ✓ tests/format.test.ts (2 tests) 12ms
+test	All unit and real-database tests	2026-10-24T05:38:23.4444194Z  ✓ tests/practice-trial-assessment-boundary.test.ts (2 tests) 11ms
+test	All unit and real-database tests	2026-10-24T05:38:23.6654230Z  ✓ tests/token-data.test.ts (1 test) 6ms
+test	All unit and real-database tests	2026-10-24T05:38:23.8365324Z  ✓ tests/local-db.test.ts (2 tests) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:24.1660098Z  ✓ tests/creator-access.test.ts (2 tests) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:24.3061819Z  ✓ tests/studio-menu.test.ts (3 tests) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:24.4450480Z  ✓ tests/lock-observation.test.ts (2 tests) 4ms
+test	All unit and real-database tests	2026-10-24T05:38:24.6445126Z  ✓ tests/practice-trial-ownership-boundary.test.ts (1 test) 9ms
+test	All unit and real-database tests	2026-10-24T05:38:24.7846791Z  ✓ tests/proposal-control-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:24.9921074Z  ✓ tests/practice-review-policy-boundary.test.ts (1 test) 9ms
+test	All unit and real-database tests	2026-10-24T05:38:25.1335835Z  ✓ tests/raider-preferences-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:25.3422553Z  ✓ tests/practice-assessment-decision-boundary.test.ts (1 test) 9ms
+test	All unit and real-database tests	2026-10-24T05:38:25.4804745Z  ✓ tests/guild-draft-http-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:25.6240423Z  ✓ tests/holder-observation-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:25.8379460Z  ✓ tests/raider-onboarding-event.test.ts (1 test) 8ms
+test	All unit and real-database tests	2026-10-24T05:38:25.9789369Z  ✓ tests/guild-profiles-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:26.1214601Z  ✓ tests/guild-draft-list-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:26.2588486Z  ✓ tests/skill-claims-boundary.test.ts (1 test) 5ms
+test	All unit and real-database tests	2026-10-24T05:38:26.4500882Z  ✓ tests/siws-nonce.test.ts (2 tests) 52ms
+test	All unit and real-database tests	2026-10-24T05:38:27.2121534Z  ✓ tests/production-test-boundary-host.test.ts (1 test) 622ms
+test	All unit and real-database tests	2026-10-24T05:38:27.2123989Z    ✓ checks the actual production imports with no external search command on PATH  620ms
+test	All unit and real-database tests	2026-10-24T05:38:27.2212956Z 
+test	All unit and real-database tests	2026-10-24T05:38:27.2233165Z  Test Files  228 passed (228)
+test	All unit and real-database tests	2026-10-24T05:38:27.2274273Z       Tests  3533 passed (3533)
+test	All unit and real-database tests	2026-10-24T05:38:27.2274856Z    Start at  05:27:38
+test	All unit and real-database tests	2026-10-24T05:38:27.2275559Z    Duration  648.87s (transform 4.11s, setup 0ms, import 36.69s, tests 583.24s, environment 26ms)
+test	All unit and real-database tests	2026-10-24T05:38:27.2275973Z 
+test	All unit and real-database tests	2026-10-24T05:38:27.9788004Z JUNIT report written to /home/runner/work/useRAID.fun/useRAID.fun/test-results/vitest.xml
+test	Run actions/upload-artifact@v4	2026-10-24T05:38:28.4504113Z (node:9772) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.

@@ -273,3 +273,42 @@ it('does not send invalid request identity or leak key-generator diagnostics', a
   expect(c.snapshot().phase).toBe('EDITING');
   expect(c.snapshot().message).not.toContain('secret');
 });
+it('refresh reloads the currently displayed submission from STALE, independent of any lookup text', async () => {
+  write.mockResolvedValue({ status: 404, body: null });
+  const c = createPracticeAssignmentManager(context, transport, key);
+  await c.revoke(id, 'Synthetic reason.');
+  expect(c.snapshot().phase).toBe('STALE');
+  await c.refresh();
+  expect(read).toHaveBeenCalledExactlyOnceWith({
+    version: 'v1',
+    submissionId: context.page.submissionId,
+    after: null,
+  });
+  expect(c.snapshot()).toMatchObject({ phase: 'EDITING', message: '' });
+});
+it('keeps the unauthenticated wording for a write 401 and uses neutral business-denial wording for a write 403, both still clearing private context', async () => {
+  write.mockResolvedValue({ status: 401, body: { error: { code: 'AUTHENTICATION_REQUIRED' } } });
+  const unauthenticated = createPracticeAssignmentManager(context, transport, key);
+  await unauthenticated.issue(fields);
+  expect(unauthenticated.snapshot()).toMatchObject({
+    phase: 'DENIED',
+    context: null,
+    outcome: null,
+  });
+  expect(unauthenticated.snapshot().message).toMatch(/sign in with an authorized administrator/i);
+  write.mockResolvedValue({ status: 403, body: { error: { code: 'FORBIDDEN' } } });
+  const denied = createPracticeAssignmentManager(context, transport, key);
+  await denied.issue(fields);
+  expect(denied.snapshot()).toMatchObject({ phase: 'DENIED', context: null, outcome: null });
+  expect(denied.snapshot().message).toMatch(/current account or the selected appointee/i);
+  expect(denied.snapshot().message).not.toMatch(/sign in with an authorized administrator/i);
+  await denied.retry();
+  expect(write).toHaveBeenCalledTimes(2);
+});
+it('keeps the access-recheck wording when a fresh read is forbidden', async () => {
+  read.mockResolvedValue({ status: 403, body: { error: { code: 'FORBIDDEN' } } });
+  const c = createPracticeAssignmentManager(context, transport, key);
+  await c.load({ version: 'v1', submissionId: context.page.submissionId, after: null });
+  expect(c.snapshot()).toMatchObject({ phase: 'DENIED', context: null });
+  expect(c.snapshot().message).toMatch(/sign in with an authorized administrator/i);
+});
