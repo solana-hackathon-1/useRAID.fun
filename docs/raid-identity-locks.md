@@ -22,12 +22,12 @@ Version `LOCK_PROTOCOL_VERSION='v1'`; closed `RootMode`; `lockResource`, `adviso
 
 Acquire advisory exclusions first, then the full sorted User set once, then ordered concrete child PKs: OAuthAttempt(stateHash), XAccount(userId), Session(tokenHash), WalletIdentity(address), Participant(id), WalletLink(id). Use JavaScript code-unit sorting, not database collation to determine acquisition. Owned arrays/maps are transaction-local. Snapshot changes require rollback/replanning; never append a User/key after roots, discover a stronger mode later, or upgrade a held lock. New User IDs are chosen before retries and declared absent; uniqueness subjects serialize creation before child FK writes.
 
-| Planned effect/predicate | Final User mode |
-| --- | --- |
-| Delete User, first/change xId, merge key recipient | UPDATE |
-| Non-key User write; account-wide identity aggregate | NO KEY UPDATE |
-| Stable restriction/authority read through sign-in or session issuance | SHARE |
-| Pure existence/FK reference, no non-key authority predicate | KEY SHARE |
+| Planned effect/predicate                                              | Final User mode |
+| --------------------------------------------------------------------- | --------------- |
+| Delete User, first/change xId, merge key recipient                    | UPDATE          |
+| Non-key User write; account-wide identity aggregate                   | NO KEY UPDATE   |
+| Stable restriction/authority read through sign-in or session issuance | SHARE           |
+| Pure existence/FK reference, no non-key authority predicate           | KEY SHARE       |
 
 Wallet sign-in and X start use SHARE where read-only; Session replacement children use UPDATE upfront. Same-X reconnect omits xId assignment and uses NO KEY UPDATE. Fold plans allow both directions and preplan both candidate roots at UPDATE; standalone absorb uses UPDATE for drop and for keep only if it receives xId. Human provisioning alone uses KEY SHARE. Finance plans creator SHARE for the existing restriction predicate, recipients KEY SHARE, all in one sorted root set. The creator restriction is re-read under that root before settlement inserts.
 

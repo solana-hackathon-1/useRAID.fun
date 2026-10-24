@@ -23,9 +23,8 @@ test('owner sees actual current assessment and refreshes after real recheck and 
     expect(response?.headers()['cache-control']).toContain('private');
     expect(response?.headers()['cache-control']).toContain('no-store');
   } else {
-    // Installed Next16.3.8 base-server deliberately uses this development-only policy.
-    expect(response?.headers()['cache-control']).toContain('no-cache');
-    expect(response?.headers()['cache-control']).toContain('must-revalidate');
+    // Installed Next 16.4 base-server forces this development-only policy for documents.
+    expect(response?.headers()['cache-control']).toBe('no-store');
   }
   const panel = page.getByRole('region', { name: 'Assessment', exact: true });
   await expect(panel.getByRole('heading', { name: 'Assessment', exact: true })).toBeVisible();

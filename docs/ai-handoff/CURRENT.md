@@ -1,3 +1,15 @@
+# Claude — CI failure fixes for Checks run 40060226473, uncommitted — 2026-10-24T05:01:13.451599+00:00
+
+Branch `claude/t013-practice-trial-ui`, HEAD `094f674`. No branch change/commit/push/merge/delegation. **SELF-EVALUATED; hosted CI rerun NOT VERIFIED.** Preserved Codex dependency-remediation working-tree changes (package.json/lock: next ~16.4.3, zod ^4.6.6, vitest ^4.1.12, toml 5.0.1 override), inbox preview log, WARP.md, `.claude/worktrees/`.
+
+**Failures → fixes:** (1) docker: `.dockerignore` excludes `tests` but not `planning/task-evidence`, so T006 probes failed `next build` type-check on missing `tests/helpers/db-guard`; added `planning/task-evidence` to `.dockerignore`. (2) static: `format:check` — formatted `docs/raid-identity-locks.md`, `examples/wallet-links/host.ts` (Prettier only); added `planning/task-evidence` to `.prettierignore` (byte-exact recorded evidence, same precedent as existing entries). (3) test: `tests/identity-lock-architecture.test.ts` first test used default 5s timeout for a full `src/**` AST scan; added 30000ms (assertion unchanged). (4) browser: `writeoff.spec.ts` read `ASSIGNMENT_MANAGEMENT_BROWSER_URL!` with no fallback (unset in CI → `addCookies` without url); now same default `http://127.0.0.1:3036` as sibling spec/config. (5) dependency-security: no allowlist added; the existing uncommitted remediation clears it.
+
+**Local results:** `npm run audit:check` PASS; `tsc --noEmit` PASS; lint 0 errors/367 warnings + identity fence PASS; `prettier --check .` only untracked WARP.md; identity-lock-architecture 3 PASS; `docker build .` PASS (Next 16.4.3), local image removed. **Not run locally:** full vitest real-DB suite, Playwright suites (writeoff fix verified by inspection only), hosted Node22. Next-16.4 upgrade regression evidence therefore rests on the next hosted run.
+
+**Next:** owner authorizes commit/push; rerun Checks workflow and inspect each job. Separate: `Staging image` workflow on main fails in ~6s every run (logs unavailable) — uninvestigated.
+
+---
+
 # Codex — Claude review corrections verified; uncommitted — 2026-10-23T05:40:51.911724+00:00
 
 **SELF-EVALUATED; corrected candidate needs independent review.** Branch `claude/t013-practice-trial-ui`, HEAD `0d20d5f0ff8d45159d19902508ba6b53533f1ae9` (ahead2), staging empty. No branch change/commit/push/merge/delegation. Preserved all prior work, inbox preview log (+1863 lines), WARP and `.claude/worktrees/`. Task [review corrections](../tasks/2026-10-23-T013-assignment-management-review-fixes.md); evidence `planning/task-evidence/T013-assignment-management-review-fixes/` (`review.json`, `reuse.json`, `preview-source-proof.json`, logs/screenshots/cleanup). Parent implementation/evidence remains below for its recorded source.

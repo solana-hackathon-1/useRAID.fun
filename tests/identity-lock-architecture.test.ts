@@ -6,7 +6,7 @@ it('every identity writer enters the shared protocol boundary', () => {
   const root = process.cwd();
   const files = globSync('src/**/*.ts').map((file) => path.join(root, file));
   expect(identityArchitecture(root, files)).toEqual([]);
-});
+}, 30000);
 
 it('rejects direct, aliased, destructured, nested, raw, and type-erased bypasses', async () => {
   const { writeFile, unlink } = await import('node:fs/promises');

@@ -20,7 +20,10 @@ import {
 
 // This example's minimal schema has no X/OAuth/session modules. Declare the installed tables.
 function hostPort(tx: Prisma.TransactionClient): IdentityTransaction {
-  return { ...createPrismaIdentityTransaction(tx), identityLayout: { xKeyColumn: null, children: ['Participant', 'WalletIdentity', 'WalletLink'] } };
+  return {
+    ...createPrismaIdentityTransaction(tx),
+    identityLayout: { xKeyColumn: null, children: ['Participant', 'WalletIdentity', 'WalletLink'] },
+  };
 }
 // This host has its own dependencies, schema, clock, policy and caller authority. Never load RAID config/db.
 const url = new URL(process.env.DATABASE_URL ?? 'http://missing');
@@ -121,10 +124,7 @@ try {
     await code(link(request(alice, address(), 'host-alice', { actorAccountId: bob }))),
     'WRONG_ACTOR',
   );
-  const listed = await db.$transaction(
-    (tx) => listWalletLinks(hostPort(tx), alice),
-    options,
-  );
+  const listed = await db.$transaction((tx) => listWalletLinks(hostPort(tx), alice), options);
   assert.deepEqual(listed.map((row) => row.address).sort(), [second, third].sort());
 
   // Internal context is transaction-bound, never authentication or a public session token.
@@ -132,10 +132,7 @@ try {
   const subject = { address: second, networkIdentity: chainId };
   const resolverInput = { subject, walletNetworks: policy.walletNetworks };
   await db.$transaction(async (tx) => {
-    const context = await resolveWalletCredential(
-      hostPort(tx),
-      resolverInput,
-    );
+    const context = await resolveWalletCredential(hostPort(tx), resolverInput);
     assert.equal(context.source, 'LINK');
     if (context.source !== 'LINK') throw Error('Expected internal link context');
     assert.equal(context.accountId, alice);
@@ -160,20 +157,13 @@ try {
   );
   assert.equal(revoked.outcome, 'REVOKED');
   assert.equal(
-    (
-      await db.$transaction(
-        (tx) => revokeWalletCredential(hostPort(tx), revokeInput),
-        options,
-      )
-    ).outcome,
+    (await db.$transaction((tx) => revokeWalletCredential(hostPort(tx), revokeInput), options))
+      .outcome,
     'ALREADY_REVOKED',
   );
   assert.equal(
     await code(
-      db.$transaction(
-        (tx) => resolveWalletCredential(hostPort(tx), resolverInput),
-        options,
-      ),
+      db.$transaction((tx) => resolveWalletCredential(hostPort(tx), resolverInput), options),
     ),
     'IDENTITY_REVOKED',
   );
@@ -202,10 +192,7 @@ try {
     },
   };
   await assert.rejects(listWalletLinks(unavailable, alice), { message: 'STORAGE_UNAVAILABLE' });
-  const credential = await db.$transaction(
-    (tx) => lookupWalletLink(hostPort(tx), third),
-    options,
-  );
+  const credential = await db.$transaction((tx) => lookupWalletLink(hostPort(tx), third), options);
   assert.equal(credential?.accountId, alice);
   assert.equal(credential?.status, 'ACTIVE');
   await db.$executeRawUnsafe(
@@ -220,7 +207,10 @@ try {
   assert.deepEqual(await payout(), payoutBefore);
   const alternateCredential = await db.$transaction(async (tx) => {
     const inner = hostPort(tx);
-    const alternatePort: IdentityTransaction = { ...inner, query: <Row>(sql: string, bindings: readonly string[]) => inner.query<Row>(sql, bindings) };
+    const alternatePort: IdentityTransaction = {
+      ...inner,
+      query: <Row>(sql: string, bindings: readonly string[]) => inner.query<Row>(sql, bindings),
+    };
     return lookupWalletLink(alternatePort, third);
   }, options);
   assert.deepEqual(alternateCredential, revokedReservation);

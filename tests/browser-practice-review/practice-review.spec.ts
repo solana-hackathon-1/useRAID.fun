@@ -30,7 +30,7 @@ test('assigned evaluator reads exact private evidence, original rubric and keybo
     expect(response?.headers()['cache-control']).toContain('no-store');
     expect(response?.headers()['cache-control']).toContain('private');
   } else {
-    expect(response?.headers()['cache-control']).toBe('no-cache, must-revalidate');
+    expect(response?.headers()['cache-control']).toBe('no-store');
   }
   expect(await page.title()).not.toContain(f.definition.title);
   expect(await page.locator('meta[name="robots"]').getAttribute('content')).toContain('noindex');
