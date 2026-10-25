@@ -36,6 +36,6 @@ Files: `src/skills/practice-assignment-manager-client.ts` (new `refresh()`, neut
 
 ## Next
 
-1. Hosted `Checks` is workflow_dispatch only: dispatched on the pushed head (see run id in the final report); owner decides merge after it is green.
+1. Hosted `Checks` is workflow_dispatch only: dispatched on pushed head `e7bba07`: run 40089644046; owner decides merge after it is green.
 2. Optional: re-review of the F2 notice fix; refresh preview 56445 if the owner wants F1/F2 visible (it serves old HEAD source).
 3. Playwright on final code: dev 14+2, prod 14+2 passed (`playwright-f2-notice.log`).
