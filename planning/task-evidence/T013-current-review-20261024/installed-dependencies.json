@@ -1,0 +1,67 @@
+{
+  "version": "0.1.0",
+  "name": "useraid",
+  "dependencies": {
+    "@pump-fun/pump-sdk": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/@pump-fun/pump-sdk/-/pump-sdk-2.0.0.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@coral-xyz/anchor": {
+          "version": "0.31.1",
+          "resolved": "https://registry.npmjs.org/@coral-xyz/anchor/-/anchor-0.31.1.tgz",
+          "overridden": false,
+          "dependencies": {
+            "toml": {
+              "version": "5.0.1",
+              "resolved": "https://registry.npmjs.org/toml/-/toml-5.0.1.tgz",
+              "overridden": true
+            }
+          }
+        }
+      }
+    },
+    "eslint-config-next": {
+      "version": "16.4.3",
+      "resolved": "https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-16.4.3.tgz",
+      "overridden": false,
+      "dependencies": {
+        "eslint-plugin-react-hooks": {
+          "version": "7.1.1",
+          "resolved": "https://registry.npmjs.org/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-7.1.1.tgz",
+          "overridden": false,
+          "dependencies": {
+            "zod-validation-error": {
+              "version": "4.0.2",
+              "resolved": "https://registry.npmjs.org/zod-validation-error/-/zod-validation-error-4.0.2.tgz",
+              "overridden": false,
+              "dependencies": {
+                "zod": {
+                  "version": "4.6.7"
+                }
+              }
+            },
+            "zod": {
+              "version": "4.6.7"
+            }
+          }
+        }
+      }
+    },
+    "next": {
+      "version": "16.4.3",
+      "resolved": "https://registry.npmjs.org/next/-/next-16.4.3.tgz",
+      "overridden": false
+    },
+    "vitest": {
+      "version": "4.1.12",
+      "resolved": "https://registry.npmjs.org/vitest/-/vitest-4.1.12.tgz",
+      "overridden": false
+    },
+    "zod": {
+      "version": "4.6.7",
+      "resolved": "https://registry.npmjs.org/zod/-/zod-4.6.7.tgz",
+      "overridden": false
+    }
+  }
+}

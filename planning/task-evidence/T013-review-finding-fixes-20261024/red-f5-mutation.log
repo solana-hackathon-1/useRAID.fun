@@ -1,0 +1,41 @@
+Environment variables loaded from .env
+
+ RUN  v4.1.12 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-management-db.test.ts (20 tests | 2 failed | 18 skipped) 20738ms
+       × does not block or deadlock revoking the second appointment while a reader holds only the first mutex; the reader then observes it revoked 10240ms
+       × makes the reader wait on the second mutex held by an in-flight revocation (holding the first), without deadlock, then observes it revoked 10484ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > ascending existing-appointment mutexes (seed 12017) with several appointments > does not block or deadlock revoking the second appointment while a reader holds only the first mutex; the reader then observes it revoked
+Error: Timed out (deadlock?): reader to take the first appointment mutex
+ ❯ Timeout._onTimeout tests/practice-assignment-management-db.test.ts:341:47
+    339|     const within = <T>(work: Promise<T>, label: string, ms = 10000) =>
+    340|       new Promise<T>((resolve, reject) => {
+    341|         const timer = setTimeout(() => reject(new Error('Timed out (de…
+       |                                               ^
+    342|         work.then(
+    343|           (v) => (clearTimeout(timer), resolve(v)),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/practice-assignment-management-db.test.ts > current protected assignment management reads > ascending existing-appointment mutexes (seed 12017) with several appointments > makes the reader wait on the second mutex held by an in-flight revocation (holding the first), without deadlock, then observes it revoked
+Error: Timed out waiting for reader to wait on the second mutex
+ ❯ until tests/practice-assignment-management-db.test.ts:353:42
+    351|         const value = await probe();
+    352|         if (value) return value;
+    353|         if (Date.now() > deadline) throw new Error('Timed out waiting …
+       |                                          ^
+    354|         await new Promise((resolve) => setTimeout(resolve, 20));
+    355|       }
+ ❯ tests/practice-assignment-management-db.test.ts:504:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 18 skipped (20)
+   Start at  13:09:54
+   Duration  21.07s (transform 105ms, setup 0ms, import 197ms, tests 20.74s, environment 0ms)
+

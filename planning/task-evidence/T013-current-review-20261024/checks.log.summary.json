@@ -1,0 +1,162 @@
+[
+  {
+    "job": "static",
+    "step": "Run npm run lint",
+    "message": "PASS: identity AST fence; reviewed exceptions and User FK inventory"
+  },
+  {
+    "job": "browser",
+    "step": "Demo browser suite",
+    "message": "1 skipped"
+  },
+  {
+    "job": "browser",
+    "step": "Demo browser suite",
+    "message": "49 passed (50.9s)"
+  },
+  {
+    "job": "browser",
+    "step": "Studio desktop and mobile suite",
+    "message": "52 passed (2.0m)"
+  },
+  {
+    "job": "browser",
+    "step": "Raider orientation desktop and mobile suite",
+    "message": "8 passed (40.7s)"
+  },
+  {
+    "job": "browser",
+    "step": "Guild draft desktop and mobile suite",
+    "message": "10 passed (1.4m)"
+  },
+  {
+    "job": "browser",
+    "step": "Project proposal desktop and mobile suite",
+    "message": "10 passed (1.1m)"
+  },
+  {
+    "job": "browser",
+    "step": "Private skill claims desktop and mobile suite",
+    "message": "20 passed (1.7m)"
+  },
+  {
+    "job": "browser",
+    "step": "Private current assessment desktop and mobile suite",
+    "message": "10 passed (42.1s)"
+  },
+  {
+    "job": "browser",
+    "step": "Practice trial portal desktop and mobile suite",
+    "message": "8 passed (42.5s)"
+  },
+  {
+    "job": "browser",
+    "step": "Evaluator case evidence desktop and mobile suite",
+    "message": "8 passed (41.0s)"
+  },
+  {
+    "job": "browser",
+    "step": "Evaluator assignment inbox desktop and mobile suite",
+    "message": "8 passed (45.7s)"
+  },
+  {
+    "job": "browser",
+    "step": "Administrator appointment management desktop and mobile suite",
+    "message": "10 passed (48.1s)"
+  },
+  {
+    "job": "browser",
+    "step": "Administrator appointment management writeoff suite",
+    "message": "2 passed (13.6s)"
+  },
+  {
+    "job": "browser",
+    "step": "Ownership finding desktop and mobile suite",
+    "message": "8 passed (55.7s)"
+  },
+  {
+    "job": "browser",
+    "step": "Assessment review and decision browser checks",
+    "message": "10 passed (2.1m)"
+  },
+  {
+    "job": "browser",
+    "step": "Administrative taxonomy API suite",
+    "message": "14 passed (12.4s)"
+  },
+  {
+    "job": "browser",
+    "step": "Administrative catalog editor and maintenance suites",
+    "message": "20 passed (1.3m)"
+  },
+  {
+    "job": "browser",
+    "step": "Administrative catalog editor and maintenance suites",
+    "message": "2 passed (12.6s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production private assessment cache and current-state suite",
+    "message": "2 passed (9.7s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production practice trial portal suite",
+    "message": "8 passed (16.5s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production evaluator case evidence suite",
+    "message": "8 passed (15.5s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production evaluator assignment inbox suite",
+    "message": "8 passed (15.8s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production administrator appointment management suite",
+    "message": "10 passed (29.0s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production administrator appointment management writeoff suite",
+    "message": "2 passed (4.9s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production ownership finding suite",
+    "message": "8 passed (21.2s)"
+  },
+  {
+    "job": "browser",
+    "step": "Production assessment review and decision browser checks",
+    "message": "10 passed (54.6s)"
+  },
+  {
+    "job": "browser",
+    "step": "Live browser suite",
+    "message": "6 skipped"
+  },
+  {
+    "job": "browser",
+    "step": "Live browser suite",
+    "message": "42 passed (42.8s)"
+  },
+  {
+    "job": "dependency-security",
+    "step": "Run npm run audit:check",
+    "message": "npm audit: every moderate-or-higher advisory is allowlisted and unexpired."
+  },
+  {
+    "job": "test",
+    "step": "All unit and real-database tests",
+    "message": "Test Files  228 passed (228)"
+  },
+  {
+    "job": "test",
+    "step": "All unit and real-database tests",
+    "message": "Tests  3533 passed (3533)"
+  }
+]

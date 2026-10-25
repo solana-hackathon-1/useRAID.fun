@@ -1,0 +1,10 @@
+Environment variables loaded from .env
+
+ RUN  v4.1.12 /Users/dushyant/Documents/useRAID.fun
+
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  13:10:18
+   Duration  7.54s (transform 105ms, setup 0ms, import 194ms, tests 7.24s, environment 0ms)
+

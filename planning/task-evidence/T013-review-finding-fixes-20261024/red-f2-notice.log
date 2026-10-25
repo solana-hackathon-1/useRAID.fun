@@ -1,0 +1,35 @@
+
+ RUN  v4.1.12 /Users/dushyant/Documents/useRAID.fun
+
+ ❯ tests/practice-assignment-manager-client.test.ts (36 tests | 2 failed) 16ms
+   × discards a UNCERTAIN pending command only on explicit request, reloads the shown submission and uses a new key afterwards 2ms
+   × discards a BLOCKED pending command only on explicit request, reloads the shown submission and uses a new key afterwards 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/practice-assignment-manager-client.test.ts > discards a UNCERTAIN pending command only on explicit request, reloads the shown submission and uses a new key afterwards
+ FAIL  tests/practice-assignment-manager-client.test.ts > discards a BLOCKED pending command only on explicit request, reloads the shown submission and uses a new key afterwards
+AssertionError: expected '' to match /discarded.*unknown.*compare/i
+
+- Expected:
+/discarded.*unknown.*compare/i
+
++ Received:
+""
+
+ ❯ tests/practice-assignment-manager-client.test.ts:254:34
+    252|     });
+    253|     expect(c.snapshot()).toMatchObject({ phase: 'EDITING', outcome: nu…
+    254|     expect(c.snapshot().message).toMatch(/discarded.*unknown.*compare/…
+       |                                  ^
+    255|     await c.issue(fields);
+    256|     expect(write).toHaveBeenCalledTimes(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 34 passed (36)
+   Start at  17:04:44
+   Duration  199ms (transform 30ms, setup 0ms, import 72ms, tests 16ms, environment 0ms)
+

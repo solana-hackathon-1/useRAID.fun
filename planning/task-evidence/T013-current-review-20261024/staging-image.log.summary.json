@@ -1,0 +1,67 @@
+[
+  {
+    "job": "publish",
+    "step": "Install and check source",
+    "message": "PASS: identity AST fence; reviewed exceptions and User FK inventory"
+  },
+  {
+    "job": "publish",
+    "step": "Install and check source",
+    "message": "npm audit: every moderate-or-higher advisory is allowlisted and unexpired."
+  },
+  {
+    "job": "publish",
+    "step": "Verify database and application contracts",
+    "message": "Test Files  228 passed (228)"
+  },
+  {
+    "job": "publish",
+    "step": "Verify database and application contracts",
+    "message": "Tests  3533 passed (3533)"
+  },
+  {
+    "job": "publish",
+    "step": "Raider orientation desktop and mobile suite",
+    "message": "8 passed (36.0s)"
+  },
+  {
+    "job": "publish",
+    "step": "Guild draft desktop and mobile suite",
+    "message": "10 passed (1.2m)"
+  },
+  {
+    "job": "publish",
+    "step": "Project proposal desktop and mobile suite",
+    "message": "10 passed (55.5s)"
+  },
+  {
+    "job": "publish",
+    "step": "Private skill claims desktop and mobile suite",
+    "message": "20 passed (1.4m)"
+  },
+  {
+    "job": "publish",
+    "step": "Administrative taxonomy API suite",
+    "message": "14 passed (11.1s)"
+  },
+  {
+    "job": "publish",
+    "step": "Administrative catalog editor and maintenance suites",
+    "message": "20 passed (1.1m)"
+  },
+  {
+    "job": "publish",
+    "step": "Administrative catalog editor and maintenance suites",
+    "message": "2 passed (10.3s)"
+  },
+  {
+    "job": "publish",
+    "step": "Publish checked revision to private GHCR",
+    "message": "sha-34c784e5f8773f0836135b927b1408e3d96c955f: digest: sha256:bfffaaf8e764d293cb4cca4bb74b24863ee6a94cbcbdef89651147b7d9902f67 size: 3260"
+  },
+  {
+    "job": "publish",
+    "step": "Publish checked revision to private GHCR",
+    "message": "staging: digest: sha256:bfffaaf8e764d293cb4cca4bb74b24863ee6a94cbcbdef89651147b7d9902f67 size: 3260"
+  }
+]

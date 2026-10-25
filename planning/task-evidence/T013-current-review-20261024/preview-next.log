@@ -1,0 +1,36 @@
+▲ Next.js 16.4.3 (webpack)
+- Local:         http://127.0.0.1:56431
+- Network:       http://127.0.0.1:56431
+✓ Ready in 320ms
+✓ Running next.config.ts took 988ms
+
+✓ Generated AGENTS.md for AI agents. Set `agentRules: false` in next.config to disable.
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /methodology 200 in 331ms (next.js: 146ms, application-code: 185ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 395ms (next.js: 93ms, application-code: 302ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 129ms (next.js: 72ms, application-code: 56ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 251ms (next.js: 32ms, application-code: 219ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 38ms (next.js: 0.5ms, application-code: 38ms)
+ GET /admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 106ms (next.js: 0.8ms, application-code: 105ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 32ms (next.js: 0.8ms, application-code: 32ms)
+ POST /api/v1/admin/practice/review-assignments 200 in 54ms (next.js: 0.4ms, application-code: 53ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 30ms (next.js: 0.5ms, application-code: 30ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 61ms (next.js: 0.4ms, application-code: 61ms)
+ POST /api/v1/admin/practice/review-assignments/0c028956-156f-4442-a963-442be3cbb2df/revocations 200 in 537ms (next.js: 431ms, application-code: 106ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 57ms (next.js: 6ms, application-code: 51ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 40ms (next.js: 0.5ms, application-code: 39ms)
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+ GET /admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 347ms (next.js: 50ms, application-code: 297ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 36ms (next.js: 0.3ms, application-code: 35ms)
+ POST /api/v1/admin/practice/review-assignments 200 in 44ms (next.js: 0.4ms, application-code: 44ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 37ms (next.js: 0.4ms, application-code: 37ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 56ms (next.js: 0.3ms, application-code: 56ms)
+ POST /api/v1/admin/practice/review-assignments/44453e45-9424-473d-bbd9-8f3640272452/revocations 200 in 59ms (next.js: 6ms, application-code: 53ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 38ms (next.js: 0.4ms, application-code: 38ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 39ms (next.js: 0.3ms, application-code: 39ms)
+ GET /admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 381ms (next.js: 25ms, application-code: 356ms)
+ GET /api/v1/admin/practice/review-assignments 401 in 7ms (next.js: 0.6ms, application-code: 7ms)
+ GET /api/v1/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 200 in 61ms (next.js: 0.5ms, application-code: 60ms)
+ GET /api/v1/admin/practice/review-assignments?after=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0 422 in 13ms (next.js: 0.7ms, application-code: 12ms)

@@ -110,6 +110,22 @@ export function PracticeAssignmentManager({
           Retry same request
         </button>
       )}
+      {(state.phase === 'UNCERTAIN' || state.phase === 'BLOCKED') && (
+        <button
+          className="button secondary"
+          onClick={() => {
+            // Re-entering the command is deliberate: a discarded write must not be re-sent by one click.
+            setRevokeId('');
+            setEvaluator('');
+            setExpiry('');
+            setReason('');
+            setRevokeReason('');
+            void manager.discard();
+          }}
+        >
+          Discard request and recheck
+        </button>
+      )}
       {state.outcome && (
         <section className="orientation-card" aria-label="Saved historical receipt">
           <h2>Saved historical receipt</h2>
@@ -206,7 +222,14 @@ export function PracticeAssignmentManager({
             More appointments
           </button>
         )}
-        <button className="button secondary" disabled={!ready || locked} onClick={() => refresh()}>
+        <button
+          className="button secondary"
+          disabled={!ready || locked}
+          onClick={() => {
+            setRevokeId('');
+            void manager.refresh();
+          }}
+        >
           Refresh current appointments
         </button>
       </section>

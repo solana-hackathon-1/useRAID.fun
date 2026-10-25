@@ -1,0 +1,113 @@
+{
+  "label": "SELF-EVALUATED; independent review pending",
+  "startedAt": "2026-10-24T06:36:57.120068+00:00",
+  "endedAt": "2026-10-24T06:41:38.681373+00:00",
+  "elapsedSeconds": 281.561305,
+  "sourceSha": "4cf779181588d0f808c5b294ddd6c0e5952b6b6a",
+  "sourceTree": "6418d06714dfba4099a26d390bee90dca2e63417",
+  "branch": "claude/t013-practice-trial-ui",
+  "scope": "Assignment-manager/review-fixes + dependency remediation review preparation",
+  "implementationEdits": [],
+  "documentationEdits": [
+    "docs/ai-handoff/CURRENT.md",
+    "docs/raid-practice-assignment-management.md",
+    "docs/tasks/2026-10-24-T013-current-review.md"
+  ],
+  "evidenceDirectory": "planning/task-evidence/T013-current-review-20261024",
+  "priorChangesPreserved": [
+    "planning/task-evidence/T013-assignment-management-review-fixes/preview-next.log",
+    "planning/task-evidence/T013-review-inbox/preview-next.log",
+    "WARP.md",
+    ".claude/worktrees/"
+  ],
+  "requirements": [
+    "R04",
+    "R06",
+    "R11",
+    "R12",
+    "R15",
+    "R16",
+    "I05",
+    "I06",
+    "I10",
+    "I11",
+    "I13",
+    "AC07",
+    "AC42",
+    "AC69",
+    "AC70",
+    "AC73",
+    "AC74",
+    "AC75"
+  ],
+  "findings": [
+    "No new product defect identified in this self-evaluation.",
+    "Older handoff status stale: product committed; current hosted gate passes.",
+    "Six high npm advisories still reported under existing unexpired exceptions; no zero-vulnerability claim.",
+    "Historical-row fail-closed behavior retained; author-pinned reader fence independently unverified."
+  ],
+  "run": [
+    "git status/diff/staged/log reconciliation",
+    "gh run view40066274389/40068643024 metadata and rawlogs retained",
+    "gh compare currentHEAD...main merge nofiles",
+    "git archive HEAD;1601tracked non-evidence/non-handoff byte comparisons",
+    "npm ls next zod vitest toml --all --json",
+    "node verify-preview.mjs: desktop/mobile PASS; screenshots visually inspected",
+    "node verify-preview-actions.mjs: actual synthetic issue/revoke desktop/mobile PASS"
+  ],
+  "reused": [
+    "Exact HEAD hosted planning/static/security/test/docker/browser/ci-gate SUCCESS;228files/3533tests;24managementbrowserchecks.",
+    "Original genuine TDD and independent-consuming-host evidence retained at recorded historical source; not claimed new under upgraded dependencies."
+  ],
+  "skipped": [
+    "No redundant local fullsuite/build/audit: exact-source hosted checks already pass.",
+    "No new provider/live-load/UAT/release checks; outside bounded scope."
+  ],
+  "hostedBrowserSkips": [
+    "Demo1",
+    "Live6"
+  ],
+  "preview": {
+    "mode": "development",
+    "source": "/var/folders/t3/yv6tnk7s6zv5p31yjw7nh69r0000gn/T/raid-t013-current-review-preview-w71cu18h",
+    "syntheticOnly": true,
+    "runnerPid": 64425,
+    "serverPid": 64431,
+    "url": "http://127.0.0.1:56431/admin/practice/review-assignments?submissionId=ba15f189-0a1e-48e7-b37a-4c5f965ee6b0",
+    "openUrl": "http://127.0.0.1:56445/open",
+    "serverPort": 56431,
+    "helperPort": 56445,
+    "databaseContainer": "raid-t013-current-review-preview-20261024",
+    "purpose": "Owner-retained synthetic preview; no production auth bypass/flags/appointments",
+    "result": "RUNNING"
+  },
+  "previewStopCommand": "kill 64388",
+  "cleanup": "Local browsers closed in finally; sole new DB/server is owner-retained preview. Hosted Stop containers steps SUCCESS. Older resources preserved.",
+  "independentReview": "Independent reviewer started through orchestrator; result pending; builder is sole writer.",
+  "fullCriteria": "27 NOT VERIFIED; validator result recorded separately",
+  "publication": "No branch/commit/push/merge by this session",
+  "validationAfterSelfEvaluation": {
+    "at": "2026-10-24T06:43:03.814388+00:00",
+    "format": "3owned Markdown files PASS",
+    "markdownLinks": "all3owned docs checked;0missing targets",
+    "ownedDiff": "PASS; preserved old runtime logs excluded",
+    "completionValidator": {
+      "command": "python3 scripts/verify-raid-completion.py T013 planning/task-evidence/T013-current-review-20261024/completion.json",
+      "exitCode": 1,
+      "observed": "Exactly27NOTVERIFIED criteria; no missingCI/metadata errors"
+    },
+    "openInCodex": "queued",
+    "finalSource": "1302 tracked product/test/example/dependency paths match exact HEAD archive, including462 symlink targets and resolved bytes",
+    "sourceHelperCorrection": "Initial symlink representation mismatch retained in source-helper-initial-failure.json; helper corrected without product/test changes."
+  },
+  "preexistingOutstandingResource": {
+    "container": "raid-deps-upgrade-test-20261024",
+    "label": {
+      "owner": "claude-agent-deps-upgrade-task"
+    },
+    "created": "2026-10-24T03:48:22.470589347Z",
+    "running": true,
+    "port": "127.0.0.1:55432",
+    "disposition": "Preserved as preexisting other-agent resource; orchestrator notified. Not created by current session."
+  }
+}

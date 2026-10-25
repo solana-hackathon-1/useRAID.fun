@@ -1,0 +1,9 @@
+
+ RUN  v4.1.12 /Users/dushyant/Documents/useRAID.fun
+
+
+ Test Files  1 passed (1)
+      Tests  36 passed (36)
+   Start at  17:05:13
+   Duration  188ms (transform 28ms, setup 0ms, import 69ms, tests 13ms, environment 0ms)
+

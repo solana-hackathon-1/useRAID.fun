@@ -140,13 +140,17 @@ export function createPracticeAssignmentManager(
         return;
       }
       if ([401, 403].includes(response.status)) {
+        // Both causes fail closed. A 403 envelope cannot tell a lost session from a business denial
+        // (e.g. self-review or out-of-scope appointee): the code is FORBIDDEN for both, so say neither.
         pending = null;
         change({
           phase: 'DENIED',
           context: null,
           outcome: null,
           message:
-            'Management access is unavailable. Sign in with an authorized administrator account and recheck.',
+            response.status === 403
+              ? 'This action was not permitted for the current account or the selected appointee. Private details were cleared; recheck management access and try again.'
+              : 'Management access is unavailable. Sign in with an authorized administrator account and recheck.',
         });
         return;
       }
@@ -156,7 +160,7 @@ export function createPracticeAssignmentManager(
           ...state,
           phase: 'BLOCKED',
           message:
-            'This request key belongs to another command. Recover the original request before continuing.',
+            'This request key belongs to another command. Discard the request and recheck current appointments before continuing.',
         });
         return;
       }
@@ -189,7 +193,7 @@ export function createPracticeAssignmentManager(
       ...state,
       phase: 'UNCERTAIN',
       message:
-        'Save status is uncertain. Keep this page open and retry the same request before another action.',
+        'Save status is uncertain. Keep this page open and retry the same request before another action. If retrying keeps failing, discard the request and recheck current appointments: the earlier save may or may not have applied.',
     });
   }
   const begin = async (command: Omit<Pending, 'key'>) => {
@@ -203,7 +207,7 @@ export function createPracticeAssignmentManager(
     pending = Object.freeze({ ...command, key: identity }) as Pending;
     await send();
   };
-  return {
+  const api = {
     snapshot: () => state,
     subscribe(fn: () => void) {
       listeners.add(fn);
@@ -278,6 +282,35 @@ export function createPracticeAssignmentManager(
     async retry() {
       if (state.phase === 'UNCERTAIN') await send();
     },
+    /** Explicitly abandon an unresolved command (its outcome stays unknown), then reload current appointments. */
+    async discard() {
+      if (state.phase !== 'UNCERTAIN' && state.phase !== 'BLOCKED') return;
+      pending = null;
+      await api.refresh();
+      // The discarded write may still have been applied (or may still be in flight); keep that visible after the reload.
+      const loaded = api.snapshot();
+      const phase =
+        loaded.phase === 'UNCERTAIN' || loaded.phase === 'BLOCKED'
+          ? loaded.context?.writesAvailable
+            ? 'EDITING'
+            : 'READ_ONLY'
+          : loaded.phase;
+      if (phase === 'EDITING' || phase === 'READ_ONLY')
+        change({
+          ...loaded,
+          phase,
+          message:
+            'The discarded request has an unknown outcome and may still apply. Compare the current appointments below before sending another command.',
+        });
+    },
+    /** Reload the submission currently displayed, never editable lookup text. */
+    refresh() {
+      return api.load({
+        version: 'v1',
+        submissionId: state.context?.page.submissionId ?? null,
+        after: null,
+      });
+    },
     async load(value: unknown) {
       if (pending || state.phase === 'LOADING') return;
       const input = PracticeAssignmentManagementInputSchema.safeParse(value);
@@ -332,4 +365,5 @@ export function createPracticeAssignmentManager(
       });
     },
   };
+  return api;
 }
