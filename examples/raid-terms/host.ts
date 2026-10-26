@@ -30,6 +30,8 @@ import { commitEngagement } from './work-loop/engagement-storage';
 import type { AcceptanceHost } from './work-loop/engagement-contracts';
 import { submitApplication, issueOffer } from './work-loop/admission-storage';
 import type { AdmissionHost } from './work-loop/admission-contracts';
+import { submitWork, decideReview } from './work-loop/submission-storage';
+import type { SubmissionHost } from './work-loop/submission-contracts';
 import { raidTerms } from './fixture';
 const url = new URL(process.env.DATABASE_URL ?? '');
 assert.equal(url.pathname, '/raid_terms_example');
@@ -96,6 +98,7 @@ try {
     'migrations/terms.sql',
     'migrations/capacity.sql',
     'migrations/admission.sql',
+    'migrations/submissions.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [actor.accountId]);
@@ -380,13 +383,86 @@ try {
     2,
     'Session loss does not close work.',
   );
+  // Binding/access start is another module's job; the host moves the engagement through the guarded transition.
+  const reviewer = { accountId: 'reviewer', sessionHash: 'd'.repeat(64) };
+  await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [reviewer.accountId]);
+  await pool.query(
+    "INSERT INTO \"Session\" VALUES ($1,$2,'wallet',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')",
+    [reviewer.sessionHash, reviewer.accountId],
+  );
+  await pool.query(
+    'UPDATE "Engagement" SET "state"=\'IN_PROGRESS\',"revision"="revision"+1 WHERE "id"=$1::uuid',
+    [selected.engagement.id],
+  );
+  const submissions: SubmissionHost = { allowNewWrites: true };
+  const submission = (n: number) =>
+    candidateCommand({
+      engagementId: selected.engagement.id,
+      expectedSubmissionNumber: n,
+      explanation: 'Synthetic guide written and verified.',
+      artifacts: [
+        { kind: 'COMMIT', ref: 'synthetic://repo/setup.md', immutableVersion: 'b'.repeat(40) },
+      ],
+      dependencies: [],
+      aiUsage: null,
+    });
+  const decision = (
+    submissionId: string,
+    decisionKind: string,
+    result: string,
+    deadline: string | null,
+  ) => ({
+    ...command({
+      submissionId,
+      decision: decisionKind,
+      reason: 'Reviewed against the accepted criterion.',
+      criteria: [{ index: 0, result, evidence: null }],
+      revisionDeadline: deadline,
+    }),
+    actor: reviewer,
+  });
+  const first = await transaction((tx) => submitWork(tx, submission(1), submissions));
+  assert.equal(first.engagementState, 'SUBMITTED');
+  await assert.rejects(
+    transaction((tx) =>
+      decideReview(
+        tx,
+        { ...decision(first.submission.id, 'ACCEPT', 'MET', null), actor: candidate },
+        submissions,
+      ),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
+  );
+  const revision = await transaction((tx) =>
+    decideReview(
+      tx,
+      decision(
+        first.submission.id,
+        'REQUEST_REVISION',
+        'UNMET',
+        new Date(Date.now() + 3600000).toISOString(),
+      ),
+      submissions,
+    ),
+  );
+  assert.equal(revision.engagementState, 'REVISION_REQUESTED');
+  const second = await transaction((tx) => submitWork(tx, submission(2), submissions));
+  const closed = await transaction((tx) =>
+    decideReview(tx, decision(second.submission.id, 'ACCEPT', 'MET', null), submissions),
+  );
+  assert.equal(closed.engagementState, 'ACCEPTED');
+  assert.equal(
+    (await pool.query('SELECT * FROM "ActiveCommitment"')).rowCount,
+    1,
+    'Accepted work releases only its own participant commitment.',
+  );
   await pool.query('DELETE FROM "HostGuildAuthority" WHERE "guildId"=$1', [guild]);
   await assert.rejects(
     transaction((tx) => readRaidTerms(tx, actor, saved.termsVersionId, host)),
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
   console.log(
-    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/receipt recovery/revocation; SIMULATED ONLY.',
+    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/submission/review/receipt recovery/revocation; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();
