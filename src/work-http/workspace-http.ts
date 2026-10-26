@@ -74,6 +74,7 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   APPLICATION_CLOSED: 'REVISION_CHANGED',
   OFFER_EXISTS: 'REVISION_CHANGED',
   PUBLICATION_BLOCKED: 'REVISION_CHANGED',
+  TERMS_FROZEN: 'REVISION_CHANGED',
   ADMISSION_REQUIRED: 'APPROVAL_REQUIRED',
 };
 function invalid(): never {
@@ -104,6 +105,7 @@ function failure(e: unknown, id: string) {
     headers: workPrivateHeaders,
   });
 }
+export { failure as workFailure, invalid as workInvalid, contract as workContract };
 export function createWorkHandlers(host: WorkHttpHost) {
   if (
     host?.version !== 'v1' ||

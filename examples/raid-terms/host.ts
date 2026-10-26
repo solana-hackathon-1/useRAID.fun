@@ -42,7 +42,11 @@ import {
 import type { AmendmentHost } from './work-loop/amendment-contracts';
 import { reissueRaid } from './work-loop/replacement-storage';
 import { raidTerms } from './fixture';
+import { AssetPolicySnapshotSchema, assetKey } from './contracts/assets';
 import { recommend, reviewChoices } from './work-loop/recommendation';
+import { readCreationDrafts } from './work-loop/creation-storage';
+import { buildTerms, defaultWizardForm } from './work-loop/creation-form';
+import { createSimulatedReservations } from './work-loop/simulated-reservation';
 import { exampleInput, exampleRubric } from './recommendation-fixture';
 const url = new URL(process.env.DATABASE_URL ?? '');
 assert.equal(url.pathname, '/raid_terms_example');
@@ -111,6 +115,7 @@ try {
     'migrations/admission.sql',
     'migrations/submissions.sql',
     'migrations/closure.sql',
+    'migrations/simulated-reservations.sql',
     'migrations/amendments.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
@@ -606,6 +611,73 @@ try {
     ),
     (e: unknown) => (e as { code: string }).code === 'DEADLINE_NOT_REACHED',
   );
+  // Wizard path: form -> exact typed terms -> draft saved, and a partly covered reward is never published.
+  const solPolicy = AssetPolicySnapshotSchema.parse(raidTerms().rewards[0].policy);
+  const catalog = [
+    { label: 'Synthetic SOL', policy: solPolicy, funded: true },
+    {
+      label: 'Synthetic token',
+      policy: AssetPolicySnapshotSchema.parse({
+        ...solPolicy,
+        assetId: {
+          chain: 'SOLANA',
+          networkIdentity: 'synthetic-work',
+          kind: 'TOKEN',
+          mint: '11111111111111111111111111111111',
+          tokenProgram: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+        },
+        verifiedDecimals: 6,
+      }),
+      funded: false,
+    },
+  ];
+  const sample = raidTerms();
+  const built = buildTerms(
+    {
+      ...defaultWizardForm(),
+      title: 'Wizard guide',
+      publicSummary: 'A guide.',
+      category: 'documentation',
+      outcome: sample.outcome,
+      deliverables: sample.deliverables.join('\n'),
+      acceptanceCriteria: sample.acceptanceCriteria.join('\n'),
+      skills: [{ skillId: 'writing', minimumRank: 'E', assessmentPolicyVersion: 'starter-v1' }],
+      rewards: [
+        { assetKey: assetKey(catalog[0].policy.assetId), amount: '1.5' },
+        { assetKey: assetKey(catalog[1].policy.assetId), amount: '2.5' },
+      ],
+      reviewerAccountId: 'reviewer',
+    },
+    catalog,
+    new Date(),
+  );
+  assert.ok(built.ok, 'The form builds exact typed terms.');
+  const wizardHost: WorkHost = {
+    ...host,
+    reserveSimulatedFunding: createSimulatedReservations(catalog),
+  };
+  const draftSaved = await transaction((tx) =>
+    saveRaidTerms(
+      tx,
+      command({ listingId: null, expectedRevision: 0, guildId: guild, terms: built.terms }),
+      wizardHost,
+    ),
+  );
+  await assert.rejects(
+    transaction((tx) =>
+      publishRaid(
+        tx,
+        command({ listingId: draftSaved.listingId, termsVersionId: draftSaved.termsVersionId }),
+        wizardHost,
+      ),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'FUNDING_REQUIRED',
+    'One uncovered asset blocks the whole reward.',
+  );
+  const drafts = await transaction((tx) => readCreationDrafts(tx, actor, wizardHost));
+  assert.ok(
+    drafts.some((d) => d.listingId === draftSaved.listingId && d.state === 'DRAFT' && !d.reserved),
+  );
   // Only a terminated attempt can be replaced; a still-pending one is not.
   await assert.rejects(
     transaction((tx) =>
@@ -624,7 +696,7 @@ try {
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
   console.log(
-    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/amendment/submission/review/closure/replacement guard/receipt recovery/revocation; SIMULATED ONLY.',
+    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/amendment/wizard-draft/submission/review/closure/replacement guard/receipt recovery/revocation; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();
