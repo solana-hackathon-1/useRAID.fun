@@ -1,41 +1,18 @@
 # Current checkpoint
 
-Mutable state only. History: `git log -p -- docs/ai-handoff/CURRENT.md` (full prior log at commit `ab64caa`, 714KB). Older entries were pruned on 2026-10-24 on owner request; evidence JSON/logs under `planning/task-evidence/` are unchanged. Keep this file small: replace, do not append.
-
-## State — 2026-10-24T07:45Z, Claude orchestrator
-
-- Task: T013 admin practice-review appointment manager (bounded). Branch `claude/t013-practice-trial-ui`, HEAD `9276b70` (pushed to origin 2026-10-24 on owner request; review-fix commit). F2 work below is uncommitted. No merge.
-- **SELF-EVALUATED; full T013 (27 criteria), UAT, staffed operating policy, parked identity acceptance, release: NOT VERIFIED.**
-- Hosted Checks run 40066274389: 7/7 success at HEAD. Staging image 40068643024 published on main; rollout NOT VERIFIED. Six high npm findings remain under unchanged unexpired allowlist exceptions.
-- Source/self-eval/preview evidence: [review record](../tasks/2026-10-24-T013-current-review.md), `planning/task-evidence/T013-current-review-20261024/`. Prior task records: `docs/tasks/2026-10-23-T013-assignment-management*.md`.
-
-## Independent review — Claude Sonnet high subagent, read-only, 07:14:54→07:20:21Z
-
-**ACCEPT-WITH-NOTES** for the bounded candidate (manager + review fixes + dependency remediation). No BLOCKER/MAJOR. Reviewer ran tsc, eslint (touched), prettier (3 docs), identity-lock fence, `gh run view`, GET-only preview checks. Did NOT run browser flows, the standalone example, or production cache headers.
-
-| #   | Sev   | Where                                                   | Finding                                                                                                                                                                                   | Status                                                                                                                                                                                                                                                                                                                             |
-| --- | ----- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F1  | MINOR | `src/components/practice-assignment-manager.tsx:52,209` | Post write-404 refresh uses editable lookup text, not the shown submission                                                                                                                | FIXED (uncommitted), delta-reviewed                                                                                                                                                                                                                                                                                                |
-| F2  | MINOR | `…-client.ts`                                           | BLOCKED / persistent 5xx had no recovery control except reload                                                                                                                            | FIXED: owner chose Retry+Discard; `manager.discard()` + button. Sonnet reviewer ACCEPT-WITH-NOTES: MAJOR (warning lost, one-click duplicate) FIXED with persistent notice + cleared form (RED `red-f2-notice.log`, GREEN 36/36). Discard still gives up idempotency for that command by owner decision. Notice fix not re-reviewed |
-| F3  | MINOR | `…-client.ts:142`                                       | Business 403 clears context with misleading sign-in wording (still fails closed)                                                                                                          | FIXED (neutral wording on write 403), delta-reviewed                                                                                                                                                                                                                                                                               |
-| F4  | MINOR | `examples/practice-review-assignments`                  | Example not rerun; lock pinned zod 4.6.5 (high advisory)                                                                                                                                  | FIXED: zod 4.6.7 exact; own-copy `npm ci` 0 vulns, typecheck, migrate, start all PASS on Node 26 (`f4-example-final.log`; hosted is Node 22)                                                                                                                                                                                       |
-| F5  | MINOR | `tests/practice-assignment-management-db.test.ts`       | Ascending-mutex claim structural only; no multi-appointment lock-order test; race test uses 60ms sleep                                                                                    | FIXED: 2 new DB tests, no fixed sleeps, delta-reviewed                                                                                                                                                                                                                                                                             |
-| 6–8 | NOTE  | —                                                       | GET/HEAD write receipt+audit and share 30/60 quota with writes; failed audited read rolls back its audit row (documented); ab64caa excludes `planning/task-evidence` from prettier/docker | accepted                                                                                                                                                                                                                                                                                                                           |
-
-Historical fail-closed cases (self-review → 503 `STORAGE_CONTRACT`, out-of-scope → 403 `FORBIDDEN`) confirmed intentional.
-
-## Active resources (do not stop unrelated ones)
-
-- Synthetic DEV preview http://127.0.0.1:56445/open (manager on 56431), PG container `raid-t013-current-review-preview-20261024`. **Stop only: `kill 64388`.**
-- Preserved, not ours: `raid-deps-upgrade-test-20261024` (label `claude-agent-deps-upgrade-task`) and older `raid-*` preview containers; `WARP.md`, `.claude/worktrees/`, modified old preview logs.
-- Builder done; its container `raid-t013-review-fixes-test-20261024` removed 4x (`planning/task-evidence/T013-review-finding-fixes-20261024/cleanup.json`).
-
-## Fix delta (uncommitted, SELF-EVALUATED + delta-reviewed)
-
-Files: `src/skills/practice-assignment-manager-client.ts` (new `refresh()`, neutral write-403 text), `src/components/practice-assignment-manager.tsx`, `tests/practice-assignment-manager-client.test.ts`, `tests/practice-assignment-management-db.test.ts` (+2 tests), doc wording, [task record](../tasks/2026-10-24-T013-review-finding-fixes.md). RED/GREEN logs in evidence dir. Orchestrator re-ran: tsc clean, client tests 32/32. Builder: DB file 20/20 (not re-run by orchestrator/reviewer). Delta reviewer (Sonnet high, read-only, 07:26:47→07:28:00Z): **ACCEPT-WITH-NOTES**, no BLOCKER/MAJOR. Notes: (a) MINOR F5 test `finally` blocks may mask original error / orphan txns: FIXED by orchestrator 14:26Z (`release()` then `await Promise.allSettled([...])`), DB file rerun 20/20 in own container `raid-t013-cleanup-note-test-20261024` (stopped+removed; log `green-cleanup-db.log`), tsc+prettier clean; (b) mutation check removed the lock, did not reverse order (inference only); (c) neutral 403 text also covers suspended / wallet-only sessions. Playwright spec l.220 keeps old text (signed-out write = 401). Orchestrator ran management Playwright on the delta 2026-10-24: dev 10 + writeoff 2, prod build + 10 + writeoff 2, all passed (log `playwright-delta.log`; own DB container removed). NOT run: DB tests by reviewer, F1 button DOM test (no jsdom in repo).
-
-## Next
-
-1. Hosted `Checks` is workflow_dispatch only: dispatched on pushed head `e7bba07`: run 40089644046; owner decides merge after it is green.
-2. Optional: re-review of the F2 notice fix; refresh preview 56445 if the owner wants F1/F2 visible (it serves old HEAD source).
-3. Playwright on final code: dev 14+2, prod 14+2 passed (`playwright-f2-notice.log`).
+- 2026-10-26T07:01:33+00:00, Codex; owner plan: lean process first, then core Raid loop.
+- Branch `codex/lean-delivery-process`; base HEAD `89d89ad`; main verified `ab4f423` (PR231 merged). No merge authorized.
+- Process: DEC-2026-10-26-01 in blueprint §§02.18/24.8; agent instructions, map, memory, PR template, task guide/registry and ignore rule aligned.
+- Changes are process/documentation only; R01–R16 behavior/I01–I12, test-first I13, default-off gates and no-live-funds rules preserved.
+- SELF-EVALUATED; Python planning-contract tests 55/55 PASS; changed-doc formatting and local links/imports/checklist PASS.
+- Full `npm run format:check`: FAIL only on pre-existing untracked WARP.md (untouched); pre-existing preview log has whitespace warnings (untouched).
+- Hosted CI for this change not yet run; no non-code RED fabricated, no browser preview needed, no formal packet required for this process change.
+- T013 FROZEN: built slices accepted as-is for this plan; no further implementation. F2 re-review, full criteria, representative UAT and staffing/operating/release acceptance remain NOT VERIFIED follow-up.
+- Historical evidence retained: docs/tasks/2026-10-24-T013-current-review.md and planning/task-evidence/T013-current-review-20261024/; prior Checks40089644046 applies to e7bba07 only.
+- Owner authorized branches/commits/push/PRs and issue55 freeze comment on 26 October; merges remain separate. No delegation authorized; one active writer.
+- Preserved prior work: two modified preview logs, .claude/worktrees/, WARP.md. Previous uncommitted checkpoint backed up outside repo before pruning.
+- Prior preview (not this session's resource): http://127.0.0.1:56445/open, manager56431, PG raid-t013-current-review-preview-20261024, recorded PID64388. Current ownership/source/reachability NOT VERIFIED; do not stop by stale PID.
+- No task-owned test containers/servers started for this process change. Existing unrelated resources preserved.
+- Next: finish process PR/CI and issue55 freeze comment; then T016 → T020 → T021 → T023 → T024 → T022, one PR per task.
+- T016: immutable TermsVersion + listing/slot publication checks, additive migration. Reuse existing contracts and explicit host authority; no live funds.
+- T020 real-PG races AC11/12/13/17; T021 AC69; T023 AC19; T024 AC20/21/23. Required risky-boundary independent review/closure remain separate from implementation.

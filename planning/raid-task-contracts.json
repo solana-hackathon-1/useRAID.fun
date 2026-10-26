@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "blueprint_sha256": "e9b82f347d826720ebd278692ad2c2790b13e5733350596ec609e26a459a9e0c",
+  "blueprint_sha256": "cf82e40861080ac2b117a095d096eef3f7b7f5e2c04d16b95f0364301c330bdd",
   "requirements": {
     "R01": {
       "id": "R01",
@@ -905,7 +905,7 @@
     "I13": {
       "id": "I13",
       "classification": "INVARIANT",
-      "statement": "Implementation changes follow genuine failing-test-first RED, GREEN and REFACTOR evidence; tests cannot be weakened to bypass requirements. Non-code deliverables define acceptance before execution.",
+      "statement": "Implementation changes remain test-first: genuine RED, GREEN and relevant REFACTOR regression checks. Record failing test names and a 1–3-line RED/GREEN summary in the PR, without committed logs. Never weaken tests to bypass requirements; define non-code acceptance before execution.",
       "detail": "C13; owner instruction 6 October 2026"
     },
     "AC73": {
@@ -924,7 +924,7 @@
       "id": "AC75",
       "classification": "ACCEPTANCE",
       "statement": "Submit implementation completion with missing failing-test-first, passing test, regression or independent criterion evidence.",
-      "detail": "Completion validation rejects the packet; missing/unexecuted evidence is not a PASS, and self-approval cannot satisfy independent review."
+      "detail": "At risky-boundary task closure, completion validation rejects missing applicable evidence; independent review is once per task for money/escrow, identity/auth, access grants, capacity/concurrency or migrations. Other changes close on green CI plus the PR checklist. Missing/unexecuted evidence is never PASS; self-approval cannot supply required independent review (DEC-2026-10-26-01)."
     }
   },
   "packets": {
@@ -45069,5 +45069,18 @@
         "ci-gate"
       ]
     }
+  },
+  "delivery_process": {
+    "decision": "DEC-2026-10-26-01",
+    "criteria_usage": "Reference checklist; historical appendices remain snapshots, not current process authority.",
+    "formal_packet": "Only at risky-boundary task closure; not per slice or for non-risky changes.",
+    "risky_boundaries": [
+      "money/escrow",
+      "identity/auth",
+      "access grants",
+      "capacity/concurrency",
+      "migrations"
+    ],
+    "other_implementation_closure": "Green CI plus PR checklist; required UAT/business/release gaps stay NOT VERIFIED."
   }
 }

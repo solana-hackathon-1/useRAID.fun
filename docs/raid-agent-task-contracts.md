@@ -4,9 +4,11 @@
 
 These task packets turn canonical requirements into review obligations; they do not replace or amend the blueprint. Each of the 165 issues includes its own requirement statements, numbered implementation/test criteria, relevant system subsections, dependencies and evidence checklist. The JSON register records the blueprint SHA-256 so reviewers can detect outdated packets. Reconcile changed source requirements before implementation.
 
+> **Current process — DEC-2026-10-26-01:** numbered criteria below are a reference checklist. Formal packets and this validator are required only at task closure for money/escrow, identity/auth, access grants, capacity/concurrency or migration changes. Other implementation tasks close on green CI plus the short PR checklist. This note supersedes older universal packet/per-criterion recording language below and in historical issue appendices; it does not waive behavior, test-first development or feature-specific release gates. Missing UAT/business/release evidence remains NOT VERIFIED and blocks only its dependent acceptance/enablement.
+
 ## Review rules
 
-Every criterion starts **NOT VERIFIED**. The implementation owner fills the evidence matrix; the reviewer checks the result against the canonical source and actual code/migrations. A claim of completion without these records is rejected at review. A developer cannot approve their own UAT, business decision or financial authority merely by editing a field.
+Every criterion starts **NOT VERIFIED**. Use applicable criteria to check the actual code/migrations. For risky-boundary tasks, the implementation owner prepares the formal packet once at task closure and the independent reviewer verifies it; for other implementation tasks, green CI and the PR checklist are sufficient. A developer cannot approve their own UAT, business decision or financial authority merely by editing a field.
 
 Documentation and GitHub fields do not technically prevent a privileged user from closing an issue. These rules define valid completion; repository permissions, protected branches and required checks determine technical enforcement. No stronger protection is claimed by this documentation change.
 
@@ -20,7 +22,7 @@ Documentation and GitHub fields do not technically prevent a privileged user fro
 
 ## Required criterion evidence
 
-For every task-specific criterion record: criterion ID; canonical reference; current repository fact; entity/API/event touched; allowed and rejected actors; before/after state; test preconditions/action/expected result; actual observed result; evidence link; candidate SHA; environment and version; reviewer; disposition. Missing details are NOT VERIFIED. Keep private data and secrets out of reports.
+For the formal packet at risky-boundary task closure, record: criterion ID; canonical reference; current repository fact; entity/API/event touched; allowed and rejected actors; before/after state; test preconditions/action/expected result; actual observed result; evidence link; candidate SHA; environment and version; reviewer; disposition. Missing details are NOT VERIFIED. Keep private data and secrets out of reports.
 
 ## Common implementation contracts
 
@@ -98,7 +100,7 @@ Record actual files, schema/API/event changes, tests executed/results, unresolve
 
 ## State changes on the board
 
-Ready requires verified hard predecessors, bounded scope, a named implementation owner, accepted shared contracts and usable test fixtures/environment. In Progress requires the issue packet to be populated with repository facts. In Review requires a linked implementation PR, completed criterion evidence and accurate remaining gaps. Done requires reviewed applicable criteria, exact acceptance results, required UAT/sign-off, migration/recovery evidence and a handoff. An epic cannot be Done while its included children or required release evidence remain incomplete.
+Ready requires dependency-ready bounded scope and usable fixtures. In Progress identifies the actual repository facts. In Review requires one implementation PR per task or user-visible vertical slice, affected tests/CI and accurate remaining gaps. Done for a risky-boundary task requires one independent review and closure packet validation; other implementation tasks close on green CI plus the PR checklist. Required UAT/business/release evidence remains NOT VERIFIED until executed and blocks only its dependent acceptance or enablement. An epic cannot claim unimplemented children or unverified release gates as complete.
 
 A decision issue needs a section 40.4 owner decision record; a gate issue needs feature-specific operational evidence and authorized release review. A release-gate approval applies only to its actual feature, asset, network, provider/program version and environment. A passed test-network task is not a production approval.
 
@@ -106,7 +108,7 @@ Splitting scope requires recording the original criterion, moved child issue, de
 
 ## System-by-system review scope
 
-Each numbered subsection is a review unit. Open its canonical link and demonstrate every material rule, table constraint, transition, adverse case and authority boundary relevant to the task. The issue owns its assigned slice; the domain epic remains responsible for unimplemented system criteria. Requirements are not satisfied by merely reading their source.
+Each numbered subsection is a requirement reference; independent review is once per risky-boundary task, not per subsection or slice. Open its canonical link and demonstrate every material rule, table constraint, transition, adverse case and authority boundary relevant to the task. The issue owns its assigned slice; the domain epic remains responsible for unimplemented system criteria. Requirements are not satisfied by merely reading their source.
 
 ### System 00 — Agent entry point
 
@@ -533,7 +535,7 @@ Canonical contract: [section 41](../RAID_AGENT_BLUEPRINT.md#41-sources). Account
 
 ## Completion packet validator
 
-Run `python3 scripts/verify-raid-completion.py T001 path/to/report.json` using the exact issue ID. The validator fails for changed blueprint source, absent criteria, unexecuted/failed/blocked results, unknown criteria, missing evidence metadata and self-approved review/exclusion. Its exit code checks packet completeness, not the truth of reports or GitHub permissions. A reviewer must inspect actual evidence and confirm any NOT APPLICABLE rationale against the task boundary; it cannot waive a mandatory applicable invariant.
+Only at risky-boundary task closure, run `python3 scripts/verify-raid-completion.py T001 path/to/report.json` using the exact issue ID. The existing strict packet format below remains available for that closure; do not generate packets for non-risky changes or intermediate slices. The validator fails for changed blueprint source, absent criteria, unexecuted/failed/blocked results, unknown criteria, missing evidence metadata and self-approved review/exclusion. Its exit code checks packet completeness, not the truth of reports or GitHub permissions. A reviewer must inspect actual evidence and confirm any NOT APPLICABLE rationale against the task boundary; it cannot waive a mandatory applicable invariant.
 
 The JSON report requires `task_id`, `implementer`, independent `reviewer`, `handoff`, `migration_rollback`, `dependency_evidence`, `open_decisions`, `release_gate_disposition` and a `criteria` object keyed by every criterion ID from [the task registry](../planning/raid-task-contracts.json). Where a report-level subject has no effect, provide an explicit rationale rather than omitting it.
 
@@ -775,11 +777,11 @@ These are intended review boundaries, not claims that these entities or behavior
 
 ## Mandatory test-driven development
 
-Every implementation issue follows RED → GREEN → REFACTOR for each changed behavior. Define the canonical expected result and write the meaningful test before implementation. RED records the test command, exact failure, baseline SHA and why it fails for the intended reason. GREEN records the same test passing after the bounded implementation. REFACTOR records relevant regression results after cleanup. Use actual database/program boundaries for material concurrency and financial behavior; an in-memory substitute cannot prove them.
+Every implementation issue follows RED → GREEN → REFACTOR for each changed behavior. Define the canonical expected result and write the meaningful test before implementation. Record the failing test name and a genuine 1–3-line RED/GREEN summary in the PR, then relevant regression results after cleanup. Do not commit per-phase logs or evidence directories. Use actual database/program boundaries for material concurrency and financial behavior; an in-memory substitute cannot prove them.
 
-Tests are reviewed against requirements independently of the implementation. Do not weaken assertions, omit adverse cases, delete a failing test, increase time/budget limits or change the expected policy just to obtain green. Existing passing behavior needs a recorded baseline; changed or missing behavior needs its own genuine red test. Every defect fix starts with a reproducing failing regression test. Emergency live containment remains subject to authorized incident procedures; it does not excuse an untested permanent fix.
+Check tests against requirements; independent review is required once at task completion for risky boundaries under DEC-2026-10-26-01. Do not weaken assertions, omit adverse cases, delete a failing test, increase time/budget limits or change the expected policy just to obtain green. Existing passing behavior needs a recorded baseline; changed or missing behavior needs its own genuine red test. Every defect fix starts with a reproducing failing regression test. Emergency live containment remains subject to authorized incident procedures; it does not excuse an untested permanent fix.
 
-The completion report for every Task requires a `tdd` object containing `red`, `green` and `refactor` records. RED needs `command`, `sha`, `evidence_url`, `expected_failure`, `observed_failure` and `result: FAIL`. GREEN and REFACTOR need `command`, `sha`, `evidence_url`, `observed` and `result: PASS`. An implementation report missing any phase is rejected. Acceptance criteria for decision/docs/UAT-only work are defined before execution; a coding cycle is not invented for a non-code deliverable. If a Task has no implementation change, supply `tdd.non_code_rationale`, independent `tdd.reviewer` and `tdd.acceptance_defined_before_execution`; the reviewer must verify this boundary.
+Only the formal risky-boundary task-closure report requires a `tdd` object containing `red`, `green` and `refactor` records. RED needs `command`, `sha`, `evidence_url`, `expected_failure`, `observed_failure` and `result: FAIL`. GREEN and REFACTOR need `command`, `sha`, `evidence_url`, `observed` and `result: PASS`. An implementation report missing any phase is rejected. Acceptance criteria for decision/docs/UAT-only work are defined before execution; a coding cycle is not invented for a non-code deliverable. If a Task has no implementation change, supply `tdd.non_code_rationale`, independent `tdd.reviewer` and `tdd.acceptance_defined_before_execution`; the reviewer must verify this boundary.
 
 ## New owner-required system criteria
 
@@ -795,4 +797,4 @@ Every issue includes its feature test layers and named CI checks. Wire actual ne
 
 ## Review preparation record
 
-Before independent criterion review, apply [blueprint§24.8](../RAID_AGENT_BLUEPRINT.md#248-review-preparation-and-development-preview): record timed self-evaluation and exact-source findings, verify and show a task-owned development preview where applicable, and retain its source/mode/ownership evidence in the handoff. Author self-evaluation remains SELF-EVALUATED; missing independent criterion evidence stays NOT VERIFIED under AC75. Explicit owner-directed merge does not grant full issue acceptance or live-release approval. The completion validator and numbered criteria retain their existing independence requirements.
+At task completion apply [blueprint§24.8](../RAID_AGENT_BLUEPRINT.md#248-review-preparation-and-development-preview): a short SELF-EVALUATED PR checklist, CI run link, test names and 1–3-line genuine RED/GREEN summary. No timing records or per-slice reports. Provide a verified development preview only for browser-visible changes at task end; record its URL/source/mode/owned-resource stop command in the session-end checkpoint if retained. Independent review is once per risky-boundary task, maximum one review plus one fix pass. Independently verify BLOCKER/MAJOR fixes; unresolved ones block their dependent scope. MINOR/NOTE findings go to follow-up issues. Use one cleanup checkbox. Missing required independent/UAT/business/release evidence remains NOT VERIFIED; owner-directed publication does not create that approval.
