@@ -142,6 +142,15 @@ integration('T016 durable immutable terms and publication', () => {
       fundingRef: 'synthetic:' + published.slotId,
     });
   });
+  it('rejects an OPEN listing without a funded current slot at commit', async () => {
+    const one = await save(draft());
+    await expect(
+      query(
+        'UPDATE "WorkListing" SET "state"=\'OPEN\' WHERE "id"=$1::uuid RETURNING "id"',
+        one.listingId,
+      ),
+    ).rejects.toThrow();
+  });
   it('rejects stale terms and stale revisions without overwriting history', async () => {
     const one = await save(draft());
     await save({ ...draft(), listingId: one.listingId, expectedRevision: 1 });

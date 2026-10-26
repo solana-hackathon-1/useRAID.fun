@@ -34,6 +34,7 @@
     "UsdcTransfer:user User @relation(fields: [userId], references: [id])",
     "WalletIdentity:user User @relation(fields: [userId], references: [id], onDelete: Cascade)",
     "WalletLink:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"WalletLink_accountId_fkey\")",
+    "WorkListing:creator User @relation(fields: [creatorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "XAccount:user User @relation(fields: [userId], references: [id], onDelete: Cascade)"
   ],
   "userKeys": ["id String @id @default(cuid())", "xId String? @unique"],
@@ -69,5 +70,14 @@
     "src/skills/practice-trial-submission-storage.ts#submitPracticeTrial": "0808033d486a1b9f644ed7d1cafa9b459ecad3b286555849b993d33ca4027c42",
     "src/skills/taxonomy-storage.ts#publishSkillTaxonomy": "3fe845e4d7e8b3dd9c3b983b6b16b7d3ab5633ba02c2dbb840c1dc1ff477c703",
     "src/skills/practice-review-assignment-storage.ts#readPracticeAssignmentManagement": "796656176b6ef403e1ccf34aa6fc10822ea675b061876750024b44241cd21077"
+  },
+  "domainForeignKeyClassifications": {
+    "WorkListing.creatorAccountId": {
+      "writer": "src/work-loop/storage.ts#saveRaidTerms",
+      "effects": "Immutable creator attribution only; no identity ownership transfer or User/Session/Participant mutation.",
+      "authority": "Mandatory current scoped authorize callback; consuming host holds current actor/session/Guild authority to commit. Root app composition not enabled.",
+      "fold": "Restrict FK preserves history and fails closed on account deletion; no automatic rehome or fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end migration/authority review pending."
+    }
   }
 }

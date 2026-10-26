@@ -87,4 +87,22 @@ BEGIN
 END $$;
 CREATE TRIGGER "RaidSlot_guard" BEFORE UPDATE ON "RaidSlot" FOR EACH ROW EXECUTE FUNCTION raid_slot_guard();
 
+-- Deferred checks permit transactional slot creation + reservation, but reject an unfunded OPEN commit.
+CREATE FUNCTION raid_publication_guard() RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE target uuid; source "WorkListing";
+BEGIN
+ IF TG_TABLE_NAME='WorkListing' THEN target:=NEW."id"; ELSE target:=NEW."listingId"; END IF;
+ SELECT * INTO source FROM "WorkListing" WHERE "id"=target;
+ IF source."state"='OPEN' AND NOT EXISTS (SELECT 1 FROM "RaidSlot" WHERE "listingId"=target AND "termsVersionId"=source."currentTermsVersionId" AND "state" IN ('AVAILABLE','FILLED') AND "fundingRef" IS NOT NULL) THEN
+  RAISE EXCEPTION 'OPEN listing requires its current reserved slot' USING ERRCODE='23514';
+ END IF;
+ IF EXISTS (SELECT 1 FROM "RaidSlot" WHERE "listingId"=target AND "state"='FILLED' AND "fundingRef" IS NULL) THEN
+  RAISE EXCEPTION 'Assigned slot requires its bound reservation' USING ERRCODE='23514';
+ END IF;
+ RETURN NULL;
+END $$;
+CREATE CONSTRAINT TRIGGER "WorkListing_publication_guard" AFTER INSERT OR UPDATE ON "WorkListing" DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION raid_publication_guard();
+CREATE CONSTRAINT TRIGGER "RaidSlot_publication_guard" AFTER INSERT OR UPDATE ON "RaidSlot" DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION raid_publication_guard();
+CREATE TRIGGER "RaidSlot_immutable_delete" BEFORE DELETE ON "RaidSlot" FOR EACH ROW EXECUTE FUNCTION raid_terms_immutable();
+
 COMMIT;
