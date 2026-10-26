@@ -15,3 +15,5 @@ The [admission extension](../../docs/raid-work-admission.md) additionally suppli
 The [submission extension](../../docs/raid-work-submissions.md) adds a fifth exact migration. The host starts the engagement itself through the guarded transition (start belongs to another task), then submits, receives a bounded revision request from the terms reviewer, resubmits and is accepted, which releases only that engagement's participant commitment. It also denies a non-reviewer.
 
 The [closure extension](../../docs/raid-work-closure.md) adds a sixth exact migration. After acceptance the host reads its member's closure and unsettled claim, and operations closure of a still-pending engagement is refused until its accepted operational deadline.
+
+The [recommendation extension](../../docs/raid-work-recommendations.md) needs no migration. The host asks for a non-authoritative estimate from its own `UNEVALUATED_EXAMPLE` fixture rubric and compares the Founder's typed terms with it before saving, without the estimate affecting publication.
