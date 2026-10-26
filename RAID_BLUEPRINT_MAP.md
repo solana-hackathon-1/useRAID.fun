@@ -2,7 +2,7 @@
 
 Canonical source: [RAID_AGENT_BLUEPRINT.md](RAID_AGENT_BLUEPRINT.md). This index routes every blueprint domain; it is not a second specification or an implementation-status claim.
 
-Start with sections 00–04 and 13. Then read all sections affected by the task, including related invariants and acceptance scenarios. Map each task to exact requirement/invariant IDs and inspected repository files before implementation.
+Load AGENTS.md and this map; read canonical sections on demand under DEC-2026-10-26-01. Read every section affected by the task, including related money, identity, access and capacity invariants and acceptance scenarios. Map each task to exact requirement/invariant IDs and inspected repository files before implementation.
 
 | Section | Domain                           | Canonical specification                                                        |
 | ------- | -------------------------------- | ------------------------------------------------------------------------------ |

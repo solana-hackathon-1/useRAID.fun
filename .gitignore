@@ -13,3 +13,6 @@ playwright-report/
 .DS_Store
 __pycache__/
 *.py[cod]
+
+# Lean delivery: retain tracked historical evidence; do not add new evidence files.
+planning/task-evidence/**

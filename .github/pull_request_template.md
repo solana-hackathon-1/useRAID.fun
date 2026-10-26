@@ -1,19 +1,5 @@
-## Outcome
-
-Describe the problem, resulting behavior, scope and requirement IDs.
-
-## Verification
-
-- [ ] Record exact source and dependency/configuration/environment identity.
-- [ ] List meaningful affected checks and mandatory gates with actual results.
-- [ ] Identify reused evidence and why it still applies; explain skipped checks.
-- [ ] Preserve failures, retries, skips and genuine RED/GREEN/REFACTOR evidence.
-- [ ] Record independent review, UAT and release gaps accurately.
-
-## Resource cleanup
-
-- [ ] Identify task-owned test containers/servers and retain evidence before shutdown.
-- [ ] Stop owned resources after testing on success, failure or interruption.
-- [ ] Record actual cleanup results; cleanup failures remain blockers.
-- [ ] Preserve unrelated services, volumes, images and evidence.
-- [ ] State any preview retention explicitly authorized by the owner's latest direction.
+- [ ] Outcome and requirement IDs: <!-- resulting behavior and bounded scope -->
+- [ ] Tests/CI: <!-- test names, actual results, CI run link; reused/skipped checks -->
+- [ ] RED/GREEN: <!-- failing test name + 1–3-line summary; non-code: acceptance checked -->
+- [ ] Risky-boundary review: <!-- yes/no + reason; if yes: review/fix disposition, closure validator; missing UAT/release NOT VERIFIED -->
+- [ ] Cleanup: <!-- owned test resources stopped; failures or owner-retained preview/stop command -->
