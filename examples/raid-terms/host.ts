@@ -45,6 +45,11 @@ import { raidTerms } from './fixture';
 import { AssetPolicySnapshotSchema, assetKey } from './contracts/assets';
 import { recommend, reviewChoices } from './work-loop/recommendation';
 import { readCreationDrafts } from './work-loop/creation-storage';
+import {
+  dispatchWorkNotifications,
+  listOwnNotifications,
+  markNotificationRead,
+} from './notifications/storage';
 import { buildTerms, defaultWizardForm } from './work-loop/creation-form';
 import { createSimulatedReservations } from './work-loop/simulated-reservation';
 import { exampleInput, exampleRubric } from './recommendation-fixture';
@@ -116,6 +121,7 @@ try {
     'migrations/submissions.sql',
     'migrations/closure.sql',
     'migrations/simulated-reservations.sql',
+    'migrations/notifications.sql',
     'migrations/amendments.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
@@ -611,6 +617,23 @@ try {
     ),
     (e: unknown) => (e as { code: string }).code === 'DEADLINE_NOT_REACHED',
   );
+  // Safe in-app notifications: derived from outbox events, deduplicated, identifier-only and own-record only.
+  const dispatched = await transaction((tx) => dispatchWorkNotifications(tx, { limit: 100 }));
+  assert.ok(dispatched.created > 0, 'Work events become notifications.');
+  const again = await transaction((tx) => dispatchWorkNotifications(tx, { limit: 100 }));
+  assert.equal(again.created, 0, 'A repeated job creates no duplicate notification.');
+  const mine = await transaction((tx) => listOwnNotifications(tx, candidate));
+  assert.ok(mine.items.some((n) => n.kind === 'ENGAGEMENT_ACCEPTED'));
+  assert.ok(
+    mine.items.every((n) => /^\/(raider|creator)\/work$/.test(n.link) && n.message.length < 120),
+    'Notifications carry fixed text and an in-product path only.',
+  );
+  await transaction((tx) => markNotificationRead(tx, candidate, mine.items[0].id));
+  await assert.rejects(
+    transaction((tx) => markNotificationRead(tx, reviewer, mine.items[0].id)),
+    (e: unknown) => (e as { code: string }).code === 'NOT_FOUND',
+    'Another person cannot read or mark it.',
+  );
   // Wizard path: form -> exact typed terms -> draft saved, and a partly covered reward is never published.
   const solPolicy = AssetPolicySnapshotSchema.parse(raidTerms().rewards[0].policy);
   const catalog = [
@@ -696,7 +719,7 @@ try {
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
   console.log(
-    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/amendment/wizard-draft/submission/review/closure/replacement guard/receipt recovery/revocation; SIMULATED ONLY.',
+    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/amendment/wizard-draft/notification/submission/review/closure/replacement guard/receipt recovery/revocation; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();

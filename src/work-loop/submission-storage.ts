@@ -254,18 +254,36 @@ export async function decideReview(tx: Tx, command: WorkCommand, host: Submissio
           [e.id],
         );
       }
-      return {
-        resultRef: saved.id,
-        events: [
-          {
-            type: 'work.review_decided.v1',
-            aggregateId: value.submissionId,
-            aggregateVersion: 2,
-            guildId: e.guildId,
-            payload: { engagementId: e.id, submissionId: value.submissionId },
-          },
-        ],
-      };
+      const events: {
+        type: string;
+        aggregateId: string;
+        aggregateVersion: number;
+        guildId: string;
+        payload: Record<string, string>;
+      }[] = [
+        {
+          type: 'work.review_decided.v1',
+          aggregateId: value.submissionId,
+          aggregateVersion: 2,
+          guildId: e.guildId,
+          payload: { engagementId: e.id, submissionId: value.submissionId },
+        },
+      ];
+      if (value.decision === 'ACCEPT') {
+        // Acceptance closes the work duty in this transaction; announce it like every other closure.
+        const [closed] = await tx.query<{ revision: number }>(
+          'SELECT "revision" FROM "Engagement" WHERE "id"=$1::uuid',
+          [e.id],
+        );
+        events.push({
+          type: 'work.engagement_closed.v1',
+          aggregateId: e.id,
+          aggregateVersion: closed.revision,
+          guildId: e.guildId,
+          payload: { engagementId: e.id },
+        });
+      }
+      return { resultRef: saved.id, events };
     },
   );
   locks = await currentActor(tx, actor, locks);
