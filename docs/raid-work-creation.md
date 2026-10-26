@@ -29,3 +29,5 @@ Migration `202610260007_work_simulated_reservations` adds one immutable `WorkSim
 ## Verification
 
 `tests/work-creation-form.test.ts` (typed terms, field problems, restore, reward review, teaser privacy), `-http`, `-host`, `-ui` (first paint, client) unit tests and the real-PostgreSQL `tests/work-creation-db.test.ts` (own authorized drafts, AC28 one-of-two assets, immutable vector-bound reservation) are mutation-checked. Playwright `playwright.work-creation.config.ts` (synthetic PostgreSQL, desktop and mobile, development and production servers) covers the full flow with publish, the two-asset block, retry with the same key, reload recovery, named validation problems and private/foreign/signed-out access. Limitations: no independent review beyond the risky-boundary note in the PR, no real wallet, provider or Guild authority, no UAT; flags stay off in deployed environments.
+
+Entry point: the account menu lists **Create a Raid (guided)** only while `WORK_CREATION_READS_ENABLED` is exactly `true`.

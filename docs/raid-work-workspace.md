@@ -30,3 +30,5 @@ HTTP (`/api/v1/work/…`, all `private, no-store`, bounded JSON, `Idempotency-Ke
 ## Verification
 
 `tests/work-workspace-db.test.ts` (real PostgreSQL read models: member progress/feedback/claims, isolation, offer expiry, reviewer queue filtering, applicant authority), `-http`, `-host`, `-client`, `-page`, `-ui` (mutation-checked) and `-consumer` unit/render tests; Playwright `playwright.work-workspace.config.ts` (synthetic PostgreSQL, desktop + mobile, development and production servers) covers submit → revision → resubmit → accept with the unsettled claim, a stale-decision conflict, issue/revoke offer, withdraw, and signed-out/foreign access. Limitations: no independent review, UAT or hosted CI at the time of writing; no real wallet or provider; flags stay off in deployed environments.
+
+Entry points: the account menu lists **My Raid** and **Review and applicants** only while `WORK_WORKSPACE_READS_ENABLED` is exactly `true` (`src/lib/work-entry-links.ts`); a disabled feature advertises no link.

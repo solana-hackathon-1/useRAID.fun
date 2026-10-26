@@ -9,6 +9,8 @@ export type StudioAccount = {
   image: string | null;
   connected: boolean;
   admin: boolean;
+  /** Work entry points whose own feature flag is on. */
+  links?: { label: string; href: string }[];
 };
 export function StudioAccountMenu({ account }: { account: StudioAccount }) {
   const [open, setOpen] = useState(false),

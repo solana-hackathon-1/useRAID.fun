@@ -36,6 +36,11 @@ describe('shell account', () => {
       image: 'https://img/a.png',
       connected: true,
       admin: true,
+      links: [],
+    });
+    vi.stubEnv('NOTIFICATIONS_READS_ENABLED', 'true');
+    await expect(shellAccount()).resolves.toMatchObject({
+      links: [{ label: 'Notifications', href: '/notifications' }],
     });
     vi.unstubAllEnvs();
   });

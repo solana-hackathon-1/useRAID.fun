@@ -283,6 +283,7 @@
     "tests/notifications-db.test.ts",
     "tests/notifications-http.test.ts",
     "tests/notifications-host.test.ts",
+    "tests/work-entry-links.test.ts",
     "tests/work-workspace-consumer.test.ts"
   ],
   "epics": [
@@ -795,6 +796,7 @@
         "tests/notifications-db.test.ts",
         "tests/notifications-http.test.ts",
         "tests/notifications-host.test.ts",
+        "tests/work-entry-links.test.ts",
         "tests/work-workspace-consumer.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
