@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { assetKey } from '../contracts/assets';
 import { WorkError, type WorkActor, type WorkCommand, type WorkHost } from '../work-loop/contracts';
 import { saveRaidTerms, publishRaid } from '../work-loop/storage';
 import { readCreationDrafts } from '../work-loop/creation-storage';
@@ -35,7 +36,10 @@ export function rewardCatalog() {
       .array(RewardAssetSchema)
       .max(20)
       .safeParse(JSON.parse(process.env.WORK_REWARD_ASSETS_JSON ?? '[]'));
-    return parsed.success ? parsed.data : [];
+    if (!parsed.success) return [];
+    const keys = parsed.data.map((asset) => assetKey(asset.policy.assetId));
+    // Ambiguous duplicates fail closed: nothing can be offered or reserved from an inconsistent catalog.
+    return new Set(keys).size === keys.length ? parsed.data : [];
   } catch {
     return [];
   }

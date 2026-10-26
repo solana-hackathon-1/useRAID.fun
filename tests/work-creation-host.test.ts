@@ -79,6 +79,11 @@ it('treats a missing or malformed reward catalog as nothing to offer, never as p
     ['Synthetic token', false],
   ]);
 });
+it('fails closed on an ambiguous catalog that lists one asset twice', () => {
+  const [sol] = rewardAssets();
+  process.env.WORK_REWARD_ASSETS_JSON = JSON.stringify([sol, { ...sol, funded: false }]);
+  expect(rewardCatalog()).toEqual([]);
+});
 it('saves with the configured Guild, only for an allowlisted operator, and returns the server-derived draft', async () => {
   process.env.WORK_CREATION_READS_ENABLED = 'true';
   process.env.WORK_CREATION_SAVE_ENABLED = 'true';

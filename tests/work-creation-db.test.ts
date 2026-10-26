@@ -153,6 +153,28 @@ integration('T018 founder creation drafts and simulated reward reservation', () 
     const after = await run((tx) => readCreationDrafts(tx, f.actor, full));
     expect(after[0]).toMatchObject({ state: 'OPEN', reserved: true });
   });
+  it('refuses a reward whose policy is not the catalog’s exact policy or that repeats an asset', async () => {
+    const f = await founder();
+    const host = hostFor(f.actor.accountId, assets(true));
+    const forged = AssetPolicySnapshotSchema.parse({
+      ...sol,
+      verifiedDecimals: 0,
+      registryVersion: 'forged-registry',
+      observedAuthorities: [],
+    });
+    for (const rewards of [
+      [{ policy: forged, amount: '18446744073709551615' }],
+      [
+        { policy: sol, amount: '1' },
+        { policy: sol, amount: '2' },
+      ],
+    ]) {
+      const saved = await save(f, host, { ...raidTerms(), rewards });
+      await expect(publish(f, host, saved)).rejects.toMatchObject({ code: 'FUNDING_REQUIRED' });
+    }
+    expect(await row('SELECT 1 FROM "RaidSlot"')).toEqual([]);
+    expect(await row('SELECT 1 FROM "WorkSimulatedReservation"')).toEqual([]);
+  });
   it('records one immutable reservation per slot bound to the exact reward vector', async () => {
     const f = await founder();
     const host = hostFor(f.actor.accountId, assets(true));
@@ -172,7 +194,7 @@ integration('T018 founder creation drafts and simulated reward reservation', () 
         published.slotId,
       ),
     ).rejects.toThrow();
-    // Direct SQL cannot give an OPEN slot a reservation reference for a different vector.
+    // The table is an immutable audit record of the host's decision; the database does not re-derive coverage.
     expect(
       (await row<{ n: number }>('SELECT count(*)::int AS n FROM "WorkSimulatedReservation"'))[0].n,
     ).toBe(1);

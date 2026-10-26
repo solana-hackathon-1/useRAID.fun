@@ -141,6 +141,31 @@ describe('T018 wizard form, reward review and public teaser', () => {
     expect(none.coverage).toBe('NONE');
     expect(none.legs[0]).toMatchObject({ label: 'Unrecognised asset', funded: false });
   });
+  it('counts a leg as covered only for the catalog’s exact policy and one leg per asset', () => {
+    const forged = AssetPolicySnapshotSchema.parse({
+      ...solPolicy,
+      verifiedDecimals: 0,
+      registryVersion: 'forged-registry',
+    });
+    const forgedReview = rewardReview(
+      RaidTermsSchema.parse({ ...raidTerms(), rewards: [{ policy: forged, amount: '1' }] }),
+      catalog,
+    );
+    expect(forgedReview.legs[0].funded).toBe(false);
+    expect(forgedReview.coverage).toBe('NONE');
+    const twice = rewardReview(
+      RaidTermsSchema.parse({
+        ...raidTerms(),
+        rewards: [
+          { policy: solPolicy, amount: '1' },
+          { policy: solPolicy, amount: '2' },
+        ],
+      }),
+      catalog,
+    );
+    expect(twice.legs.map((l) => l.funded)).toEqual([false, false]);
+    expect(twice.coverage).toBe('NONE');
+  });
   it('exposes only an approved teaser: no private scope, reviewer, policies or funding source', () => {
     const terms = RaidTermsSchema.parse({
       ...raidTerms(),

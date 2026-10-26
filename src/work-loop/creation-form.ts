@@ -240,6 +240,21 @@ export function formFromTerms(terms: RaidTerms, now: Date): WizardForm {
     fundingSourceRef: terms.fundingSourceRef,
   };
 }
+const stable = (value: unknown): string =>
+  Array.isArray(value)
+    ? '[' + value.map(stable).join(',') + ']'
+    : value && typeof value === 'object'
+      ? '{' +
+        Object.keys(value)
+          .sort()
+          .map((k) => JSON.stringify(k) + ':' + stable((value as Record<string, unknown>)[k]))
+          .join(',') +
+        '}'
+      : JSON.stringify(value);
+/** Exact policy snapshot equality (decimals, registry version, authorities, observation), not just asset identity. */
+export function samePolicy(a: AssetPolicySnapshot, b: AssetPolicySnapshot) {
+  return stable(a) === stable(b);
+}
 export interface RewardReview {
   fundingMode: 'SIMULATED';
   legs: {
@@ -257,17 +272,20 @@ export interface RewardReview {
 }
 /** Every reward leg, who pays fees and rent, and what the host's simulated reserve actually covers. */
 export function rewardReview(terms: RaidTerms, catalog: readonly RewardAsset[]): RewardReview {
-  const legs = terms.rewards.map((leg) => {
-    const asset = catalog.find(
-      (entry) => assetKey(entry.policy.assetId) === assetKey(leg.policy.assetId),
-    );
+  const keys = terms.rewards.map((leg) => assetKey(leg.policy.assetId));
+  const legs = terms.rewards.map((leg, i) => {
+    const asset = catalog.find((entry) => assetKey(entry.policy.assetId) === keys[i]);
     return {
       label: asset?.label ?? 'Unrecognised asset',
       policy: leg.policy,
       amount: leg.amount,
       decimals: leg.policy.verifiedDecimals,
       display: formatDisplayAmount(leg.amount, leg.policy.verifiedDecimals),
-      funded: asset?.funded === true,
+      // Covered only for the catalog's exact policy and a single leg per asset; the reservation applies the same rule.
+      funded:
+        asset?.funded === true &&
+        samePolicy(asset.policy, leg.policy) &&
+        keys.filter((key) => key === keys[i]).length === 1,
     };
   });
   const funded = legs.filter((leg) => leg.funded).length;
