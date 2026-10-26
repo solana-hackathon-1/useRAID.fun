@@ -1,0 +1,1 @@
+../../../src/components/work-workspace.tsx
