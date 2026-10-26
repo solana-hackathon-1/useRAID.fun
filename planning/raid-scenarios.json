@@ -1,7 +1,7 @@
 {
   "schemaVersion": "v1",
   "simulation": true,
-  "blueprintSha256": "e9b82f347d826720ebd278692ad2c2790b13e5733350596ec609e26a459a9e0c",
+  "blueprintSha256": "cf82e40861080ac2b117a095d096eef3f7b7f5e2c04d16b95f0364301c330bdd",
   "planningCountConflict": "T004-A02/backlog retain historical 72; canonical section 35 now has 75. All 75 planned; none executed by this plan.",
   "scenarios": [
     {
@@ -911,7 +911,7 @@
     {
       "id": "AC75",
       "scenario": "Submit implementation completion with missing failing-test-first, passing test, regression or independent criterion evidence.",
-      "expected": "Completion validation rejects the packet; missing/unexecuted evidence is not a PASS, and self-approval cannot satisfy independent review.",
+      "expected": "At risky-boundary task closure, completion validation rejects missing applicable evidence; independent review is once per task for money/escrow, identity/auth, access grants, capacity/concurrency or migrations. Other changes close on green CI plus the PR checklist. Missing/unexecuted evidence is never PASS; self-approval cannot supply required independent review (DEC-2026-10-26-01).",
       "owners": ["AG01", "AG08", "AG10"],
       "requiredEnvironments": ["COMPLETION_VALIDATOR"],
       "fixtures": ["providerScripts"],
