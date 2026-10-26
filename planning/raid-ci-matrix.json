@@ -49,6 +49,7 @@
     "tests/dependency-compatibility.test.ts",
     "tests/deploy.test.ts",
     "tests/discovery-rows.test.ts",
+    "tests/engagement-capacity-db.test.ts",
     "tests/docs-links.test.ts",
     "tests/domain.test.ts",
     "tests/env-example.test.ts",
@@ -747,7 +748,8 @@
       "existing_test_files": [
         "tests/command-receipts-boundary.test.ts",
         "tests/command-receipts-db.test.ts",
-        "tests/command-receipts.test.ts"
+        "tests/command-receipts.test.ts",
+        "tests/engagement-capacity-db.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [

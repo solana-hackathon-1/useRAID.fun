@@ -25,6 +25,9 @@ import {
 } from './command-receipts';
 import { saveRaidTerms, publishRaid, readRaidTerms } from './work-loop/storage';
 import type { WorkHost } from './work-loop/contracts';
+import type { LockTransaction } from './identity-locks';
+import { commitEngagement } from './work-loop/engagement-storage';
+import type { AcceptanceHost } from './work-loop/engagement-contracts';
 import { raidTerms } from './fixture';
 const url = new URL(process.env.DATABASE_URL ?? '');
 assert.equal(url.pathname, '/raid_terms_example');
@@ -38,7 +41,8 @@ async function transaction<T>(work: (tx: CommandReceiptTransaction) => Promise<T
     const client = await pool.connect();
     try {
       await client.query('BEGIN ISOLATION LEVEL READ COMMITTED');
-      const result = await work({
+      const port: CommandReceiptTransaction & LockTransaction = {
+        identityLayout: { xKeyColumn: null, children: ['Session', 'Participant'] },
         dialect: 'POSTGRESQL',
         isolation: 'READ_COMMITTED',
         async query<Row>(sql: string, bindings: readonly (string | null)[]) {
@@ -51,7 +55,8 @@ async function transaction<T>(work: (tx: CommandReceiptTransaction) => Promise<T
             );
           }
         },
-      });
+      };
+      const result = await work(port);
       await client.query('COMMIT');
       return result;
     } catch (error) {
@@ -75,7 +80,16 @@ try {
   await pool.query(
     'CREATE TABLE "User" ("id" text PRIMARY KEY, "suspended" boolean NOT NULL DEFAULT false); CREATE TABLE "HostSession" ("hash" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User", "expiresAt" timestamptz NOT NULL); CREATE TABLE "HostGuildAuthority" ("guildId" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User"); CREATE TABLE "HostReservation" ("slotId" uuid PRIMARY KEY,"termsVersionId" uuid NOT NULL,"digest" text NOT NULL)',
   );
-  for (const file of ['migrations/receipts.sql', 'migrations/terms.sql'])
+  await pool.query(`
+    CREATE TABLE "Session" ("tokenHash" text PRIMARY KEY,"userId" text NOT NULL REFERENCES "User","via" text NOT NULL,"expiresAt" timestamp(3) NOT NULL);
+    CREATE TABLE "Participant" ("id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),"accountId" text NOT NULL UNIQUE REFERENCES "User" ON DELETE RESTRICT ON UPDATE RESTRICT,"kind" text NOT NULL DEFAULT 'HUMAN' CHECK ("kind"='HUMAN'));
+    CREATE TABLE "WalletIdentity" ("address" text PRIMARY KEY,"userId" text NOT NULL REFERENCES "User");
+    CREATE TABLE "WalletLink" ("id" uuid PRIMARY KEY,"address" text NOT NULL,"accountId" text NOT NULL REFERENCES "User");
+    CREATE TABLE "HostAcceptance" ("slotId" uuid NOT NULL,"termsVersionId" uuid NOT NULL,"participantId" uuid NOT NULL REFERENCES "Participant","consentRef" text NOT NULL,"beneficiaryRef" text NOT NULL,"eligibilityPolicyVersion" text NOT NULL,PRIMARY KEY ("slotId","participantId"));
+    CREATE FUNCTION host_identity_immutable() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'Synthetic canonical identity is immutable'; END $$;
+    CREATE TRIGGER participant_immutable BEFORE UPDATE OR DELETE ON "Participant" FOR EACH ROW EXECUTE FUNCTION host_identity_immutable();
+  `);
+  for (const file of ['migrations/receipts.sql', 'migrations/terms.sql', 'migrations/capacity.sql'])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [actor.accountId]);
   await pool.query(
@@ -129,13 +143,118 @@ try {
       .termsVersionId,
     saved.termsVersionId,
   );
+  // Actual minimal canonical HUMAN identity/session and exact-source consent owned by this host.
+  const member = { accountId: 'synthetic-member', sessionHash: 'b'.repeat(64) };
+  await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [member.accountId]);
+  await pool.query(
+    "INSERT INTO \"Session\" VALUES ($1,$2,'wallet',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')",
+    [member.sessionHash, member.accountId],
+  );
+  const participant = (
+    await pool.query('INSERT INTO "Participant" ("accountId") VALUES ($1) RETURNING "id"::text', [
+      member.accountId,
+    ])
+  ).rows[0] as { id: string };
+  await pool.query('INSERT INTO "HostAcceptance" VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)', [
+    published.slotId,
+    saved.termsVersionId,
+    participant.id,
+    'synthetic-explicit-consent',
+    'synthetic-fixed-beneficiary',
+    'synthetic-eligibility-v1',
+  ]);
+  const acceptance: AcceptanceHost = {
+    allowNewWrites: true,
+    async assess(tx, c) {
+      const found = await tx.query<{
+        consentRef: string;
+        beneficiaryRef: string;
+        eligibilityPolicyVersion: string;
+      }>(
+        'SELECT "consentRef","beneficiaryRef","eligibilityPolicyVersion" FROM "HostAcceptance" WHERE "slotId"=$1::uuid AND "termsVersionId"=$2::uuid AND "participantId"=$3::uuid FOR SHARE',
+        [c.slotId, c.termsVersionId, c.participantId],
+      );
+      return found.length === 1 ? { ...found[0], operatorId: null } : null;
+    },
+    async fundingAvailable(tx, b) {
+      const found = await tx.query(
+        'SELECT "slotId" FROM "HostReservation" WHERE "slotId"=$1::uuid AND "termsVersionId"=$2::uuid AND "digest"=$3 FOR SHARE',
+        [b.slotId, b.termsVersionId, JSON.stringify(b.terms.rewards)],
+      );
+      return b.fundingRef === 'synthetic:' + b.slotId && found.length === 1;
+    },
+  };
+  const commit = {
+    actor: member,
+    input: { slotId: published.slotId, termsVersionId: saved.termsVersionId },
+    idempotencyKey: 'synthetic-commit',
+    requestId: 'synthetic-commit',
+  };
+  const engagement = await transaction((tx) => commitEngagement(tx, commit, acceptance));
+  assert.equal(engagement.engagement.state, 'ACCESS_PENDING');
+  assert.equal(engagement.engagement.acceptedTerms.roster[0].participantId, participant.id);
+  assert.equal((await pool.query('SELECT * FROM "ActiveCommitment"')).rowCount, 1);
+  assert.equal(
+    (
+      await transaction((tx) =>
+        commitEngagement(tx, commit, {
+          ...acceptance,
+          allowNewWrites: false,
+          assess: async () => null,
+          fundingAvailable: async () => false,
+        }),
+      )
+    ).status,
+    'REPLAYED',
+  );
+  const otherTerms = await transaction((tx) => saveRaidTerms(tx, command(input), host));
+  const otherSlot = await transaction((tx) =>
+    publishRaid(
+      tx,
+      command({ listingId: otherTerms.listingId, termsVersionId: otherTerms.termsVersionId }),
+      host,
+    ),
+  );
+  await pool.query('INSERT INTO "HostAcceptance" VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)', [
+    otherSlot.slotId,
+    otherTerms.termsVersionId,
+    participant.id,
+    'synthetic-second-consent',
+    'synthetic-fixed-beneficiary',
+    'synthetic-eligibility-v1',
+  ]);
+  await assert.rejects(
+    transaction((tx) =>
+      commitEngagement(
+        tx,
+        {
+          ...commit,
+          input: { slotId: otherSlot.slotId, termsVersionId: otherTerms.termsVersionId },
+          idempotencyKey: 'second-intent',
+        },
+        acceptance,
+      ),
+    ),
+    (error: unknown) => (error as { code: string }).code === 'CAPACITY_CONFLICT',
+  );
+  assert.equal((await pool.query('SELECT * FROM "Engagement"')).rowCount, 1);
+  await pool.query('DELETE FROM "Session" WHERE "tokenHash"=$1', [member.sessionHash]);
+  await assert.rejects(
+    transaction((tx) => commitEngagement(tx, commit, acceptance)),
+    (error: unknown) => (error as { code: string }).code === 'UNAUTHENTICATED',
+  );
+  assert.equal(
+    (await pool.query('SELECT * FROM "ActiveCommitment"')).rowCount,
+    1,
+    'Session loss does not close work.',
+  );
   await pool.query('DELETE FROM "HostGuildAuthority" WHERE "guildId"=$1', [guild]);
   await assert.rejects(
     transaction((tx) => readRaidTerms(tx, actor, saved.termsVersionId, host)),
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
   console.log(
-    'PASS: independent PG host save/publication/reservation/replay/alternate policy/revocation; SIMULATED ONLY.',
+    'PASS: independent PG host terms/publication/consent/capacity/receipt recovery/revocation; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();
