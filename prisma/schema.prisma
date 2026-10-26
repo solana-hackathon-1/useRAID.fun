@@ -1284,6 +1284,7 @@ model TermsVersion {
 model RaidSlot {
   applications RaidApplication[]
   engagements Engagement[]
+  simulatedReservations WorkSimulatedReservation[]
   replaced RaidReplacement? @relation("ReplacedSlot")
   replacement RaidReplacement? @relation("ReplacementSlot")
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1404,6 +1405,14 @@ model WorkReview {
   createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   submission WorkSubmission @relation(fields: [submissionId, engagementId, termsVersionId], references: [id, engagementId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkReview_submission_fkey")
   reviewer User @relation(fields: [reviewerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+model WorkSimulatedReservation {
+  slotId String @id @db.Uuid
+  termsVersionId String @db.Uuid
+  vectorDigest String
+  legs Json @db.JsonB
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkSimulatedReservation_slot_fkey")
 }
 model EngagementAmendment {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid

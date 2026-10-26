@@ -145,6 +145,8 @@ jobs:
         run: npx playwright test --config=playwright.practice-portal.config.ts
       - name: Work workspace desktop and mobile suite
         run: npx playwright test --config=playwright.work-workspace.config.ts
+      - name: Work creation wizard desktop and mobile suite
+        run: npx playwright test --config=playwright.work-creation.config.ts
       - name: Evaluator case evidence desktop and mobile suite
         run: npx playwright test --config=playwright.practice-review.config.ts
       - name: Evaluator assignment inbox desktop and mobile suite
@@ -173,6 +175,8 @@ jobs:
         run: PRACTICE_PORTAL_SERVER_MODE=production npx playwright test --config=playwright.practice-portal.config.ts
       - name: Production work workspace suite
         run: WORK_WORKSPACE_SERVER_MODE=production npx playwright test --config=playwright.work-workspace.config.ts
+      - name: Production work creation wizard suite
+        run: WORK_CREATION_SERVER_MODE=production npx playwright test --config=playwright.work-creation.config.ts
       - name: Production evaluator case evidence suite
         run: PRACTICE_REVIEW_SERVER_MODE=production npx playwright test --config=playwright.practice-review.config.ts
       - name: Production evaluator assignment inbox suite
