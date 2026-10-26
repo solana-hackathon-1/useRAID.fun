@@ -257,7 +257,9 @@
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
     "tests/x-oauth-routes.test.ts",
-    "tests/x-oauth.test.ts"
+    "tests/x-oauth.test.ts",
+    "tests/raid-terms.test.ts",
+    "tests/raid-terms-db.test.ts"
   ],
   "epics": [
     {
@@ -699,7 +701,7 @@
         "browser",
         "ci-gate"
       ],
-      "existing_test_files": [],
+      "existing_test_files": ["tests/raid-terms.test.ts", "tests/raid-terms-db.test.ts"],
       "implementation_status": "DOMAIN_TESTS_NOT_IMPLEMENTED",
       "required_test_layers": [
         "unit and boundary contract",
