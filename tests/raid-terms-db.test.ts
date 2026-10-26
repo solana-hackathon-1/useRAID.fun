@@ -1,6 +1,8 @@
+import { CommandReceiptError } from '../src/command-receipts';
 import { randomUUID } from 'node:crypto';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, type Prisma } from '@prisma/client';
+import { matchesBlockingObservation } from './helpers/lock-observation';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { saveRaidTerms, publishRaid, readRaidTerms } from '../src/work-loop/storage';
 import type { WorkHost, WorkActor } from '../src/work-loop/contracts';
@@ -38,6 +40,29 @@ const publish = (id: string, version: string, h = host, key?: string) =>
   );
 const query = async (sql: string, ...args: string[]) =>
   db.$queryRawUnsafe<Record<string, unknown>[]>(sql, ...args);
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((r) => {
+    resolve = r;
+  });
+  return { promise, resolve };
+}
+async function backend(tx: Prisma.TransactionClient) {
+  return (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid;
+}
+async function observeWait(waiter: number, blocker: number, statement: RegExp) {
+  const deadline = Date.now() + 5000;
+  while (Date.now() < deadline) {
+    const rows = await db.$queryRawUnsafe<{ query: string; blockers: number[] }[]>(
+      'SELECT query,pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid=$1',
+      waiter,
+    );
+    if (matchesBlockingObservation(rows[0], blocker, statement)) return;
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  throw new Error('Expected independent PostgreSQL lock wait was not observed.');
+}
+const txOptions = { transaction: { timeout: 15000, maxWait: 15000 } };
 integration('T016 durable immutable terms and publication', () => {
   beforeAll(() => assertTestDatabase());
   beforeEach(async () => {
@@ -205,6 +230,282 @@ integration('T016 durable immutable terms and publication', () => {
     });
     await expect(publish(one.listingId, one.termsVersionId)).rejects.toMatchObject({
       code: 'PUBLICATION_BLOCKED',
+    });
+  });
+  describe('controlled independent PostgreSQL transactions', () => {
+    it('serializes two saves and rolls back the stale loser receipt', async () => {
+      const one = await save(draft()),
+        firstReady = deferred<number>(),
+        secondReady = deferred<number>(),
+        release = deferred<void>();
+      const first = runCommandTransaction(
+        db,
+        async (port, tx) => {
+          const result = await saveRaidTerms(
+            port,
+            command({ ...draft(), listingId: one.listingId, expectedRevision: 1 }, 'save-first'),
+            host,
+          );
+          firstReady.resolve(await backend(tx));
+          await release.promise;
+          return result;
+        },
+        txOptions,
+      );
+      let second: Promise<unknown> | undefined;
+      try {
+        const blocker = await firstReady.promise;
+        second = runCommandTransaction(
+          db,
+          async (port, tx) => {
+            secondReady.resolve(await backend(tx));
+            return saveRaidTerms(
+              port,
+              command({ ...draft(), listingId: one.listingId, expectedRevision: 1 }, 'save-second'),
+              host,
+            );
+          },
+          txOptions,
+        );
+        const results = Promise.allSettled([first, second]);
+        await observeWait(await secondReady.promise, blocker, /WorkListing.*FOR UPDATE/);
+        release.resolve();
+        const settled = await results;
+        expect(settled[0].status).toBe('fulfilled');
+        expect(settled[1]).toMatchObject({
+          status: 'rejected',
+          reason: { code: 'REVISION_CONFLICT' },
+        });
+        expect(
+          await query(
+            'SELECT "revision" FROM "TermsVersion" WHERE "listingId"=$1::uuid ORDER BY "revision"',
+            one.listingId,
+          ),
+        ).toEqual([{ revision: 1 }, { revision: 2 }]);
+        expect(await db.commandReceipt.count({ where: { idempotencyKey: 'save-second' } })).toBe(0);
+      } finally {
+        release.resolve();
+        await Promise.allSettled([first, ...(second ? [second] : [])]);
+      }
+    });
+    it.each(['publish-first', 'save-first'] as const)(
+      'preserves exact publication/version ordering: %s',
+      async (order) => {
+        const one = await save(draft()),
+          ready = deferred<number>(),
+          waiter = deferred<number>(),
+          release = deferred<void>();
+        const pub = (port: Parameters<typeof publishRaid>[0]) =>
+          publishRaid(
+            port,
+            command(
+              { listingId: one.listingId, termsVersionId: one.termsVersionId },
+              'ordered-publish',
+            ),
+            host,
+          );
+        const amend = (port: Parameters<typeof saveRaidTerms>[0]) =>
+          saveRaidTerms(
+            port,
+            command({ ...draft(), listingId: one.listingId, expectedRevision: 1 }, 'ordered-save'),
+            host,
+          );
+        const first = runCommandTransaction(
+          db,
+          async (port, tx) => {
+            const result = await (order === 'publish-first' ? pub(port) : amend(port));
+            ready.resolve(await backend(tx));
+            await release.promise;
+            return result;
+          },
+          txOptions,
+        );
+        let second: Promise<unknown> | undefined;
+        try {
+          const blocker = await ready.promise;
+          second = runCommandTransaction(
+            db,
+            async (port, tx) => {
+              waiter.resolve(await backend(tx));
+              return order === 'publish-first' ? amend(port) : pub(port);
+            },
+            txOptions,
+          );
+          const results = Promise.allSettled([first, second]);
+          await observeWait(await waiter.promise, blocker, /WorkListing.*FOR UPDATE/);
+          release.resolve();
+          const settled = await results;
+          expect(settled[0].status).toBe('fulfilled');
+          if (order === 'save-first')
+            expect(settled[1]).toMatchObject({
+              status: 'rejected',
+              reason: { code: 'REVISION_CONFLICT' },
+            });
+          else expect(settled[1].status).toBe('fulfilled');
+          const [source] = await query(
+            'SELECT "revision","state" FROM "WorkListing" WHERE "id"=$1::uuid',
+            one.listingId,
+          );
+          expect(source).toEqual({ revision: 2, state: 'DRAFT' });
+          const slots = await query(
+            'SELECT "state" FROM "RaidSlot" WHERE "listingId"=$1::uuid',
+            one.listingId,
+          );
+          expect(slots).toEqual(order === 'publish-first' ? [{ state: 'CLOSED' }] : []);
+          expect(
+            await db.commandReceipt.count({ where: { idempotencyKey: 'ordered-publish' } }),
+          ).toBe(order === 'publish-first' ? 1 : 0);
+        } finally {
+          release.resolve();
+          await Promise.allSettled([first, ...(second ? [second] : [])]);
+        }
+      },
+    );
+    it('serializes distinct publish commands into one slot and one reservation', async () => {
+      const one = await save(draft()),
+        ready = deferred<number>(),
+        waiter = deferred<number>(),
+        release = deferred<void>();
+      let reservations = 0;
+      const counted = {
+        ...host,
+        reserveSimulatedFunding: async (
+          tx: Parameters<WorkHost['reserveSimulatedFunding']>[0],
+          binding: Parameters<WorkHost['reserveSimulatedFunding']>[1],
+        ) => {
+          reservations++;
+          return host.reserveSimulatedFunding(tx, binding);
+        },
+      };
+      const pub = (port: Parameters<typeof publishRaid>[0], key: string) =>
+        publishRaid(
+          port,
+          command({ listingId: one.listingId, termsVersionId: one.termsVersionId }, key),
+          counted,
+        );
+      const first = runCommandTransaction(
+        db,
+        async (port, tx) => {
+          const result = await pub(port, 'publish-first');
+          ready.resolve(await backend(tx));
+          await release.promise;
+          return result;
+        },
+        txOptions,
+      );
+      let second: Promise<unknown> | undefined;
+      try {
+        const blocker = await ready.promise;
+        second = runCommandTransaction(
+          db,
+          async (port, tx) => {
+            waiter.resolve(await backend(tx));
+            return pub(port, 'publish-second');
+          },
+          txOptions,
+        );
+        const results = Promise.allSettled([first, second]);
+        await observeWait(await waiter.promise, blocker, /WorkListing.*FOR UPDATE/);
+        release.resolve();
+        const settled = await results;
+        expect(settled.map((x) => x.status)).toEqual(['fulfilled', 'fulfilled']);
+        expect(
+          await query('SELECT "state" FROM "RaidSlot" WHERE "listingId"=$1::uuid', one.listingId),
+        ).toEqual([{ state: 'AVAILABLE' }]);
+        expect(reservations).toBe(1);
+        expect(await db.commandReceipt.count({ where: { commandKind: 'PublishRaid' } })).toBe(2);
+      } finally {
+        release.resolve();
+        await Promise.allSettled([first, ...(second ? [second] : [])]);
+      }
+    });
+    it('retries the whole publication transaction with its original command identity', async () => {
+      const one = await save(draft());
+      const c = command(
+        { listingId: one.listingId, termsVersionId: one.termsVersionId },
+        'retry-publication',
+      );
+      let attempts = 0;
+      const published = await runCommandTransaction(db, async (port) => {
+        attempts++;
+        const result = await publishRaid(port, c, host);
+        if (attempts === 1) throw new CommandReceiptError('RETRY_TRANSACTION');
+        return result;
+      });
+      expect(attempts).toBe(2);
+      expect(published.status).toBe('EXECUTED');
+      expect(
+        await query('SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid', one.listingId),
+      ).toEqual([{ id: published.slotId }]);
+      expect(
+        await db.commandReceipt.count({ where: { idempotencyKey: 'retry-publication' } }),
+      ).toBe(1);
+      expect(await db.auditEvent.count({ where: { eventType: 'work.raid_published.v1' } })).toBe(1);
+      expect(await db.outboxEvent.count()).toBe(2); // original terms + the single committed publication
+    });
+    it('rechecks revoked current authority after waiting and commits no publication receipt', async () => {
+      const one = await save(draft()),
+        ready = deferred<number>(),
+        waiter = deferred<number>(),
+        release = deferred<void>();
+      const currentHost: WorkHost = {
+        ...host,
+        authorize: async (tx, a, g) => {
+          if (!(await host.authorize(tx, a, g, 'MANAGE_LISTING'))) return false;
+          const rows = await tx.query<{ suspended: boolean }>(
+            'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
+            [a.accountId],
+          );
+          return rows.length === 1 && !rows[0].suspended;
+        },
+      };
+      const revoker = db.$transaction(
+        async (tx) => {
+          await tx.$queryRawUnsafe(
+            'SELECT "id" FROM "User" WHERE "id"=$1 FOR UPDATE',
+            owner.accountId,
+          );
+          await tx.user.update({ where: { id: owner.accountId }, data: { suspended: true } });
+          ready.resolve(await backend(tx));
+          await release.promise;
+        },
+        { timeout: 15000 },
+      );
+      let publisher: Promise<unknown> | undefined;
+      try {
+        const blocker = await ready.promise;
+        publisher = runCommandTransaction(
+          db,
+          async (port, tx) => {
+            waiter.resolve(await backend(tx));
+            return publishRaid(
+              port,
+              command(
+                { listingId: one.listingId, termsVersionId: one.termsVersionId },
+                'revoked-publish',
+              ),
+              currentHost,
+            );
+          },
+          txOptions,
+        );
+        const results = Promise.allSettled([revoker, publisher]);
+        await observeWait(await waiter.promise, blocker, /User.*FOR SHARE/);
+        release.resolve();
+        const settled = await results;
+        expect(settled[0].status).toBe('fulfilled');
+        expect(settled[1]).toMatchObject({ status: 'rejected', reason: { code: 'FORBIDDEN' } });
+        expect(await query('SELECT "id" FROM "RaidSlot"')).toHaveLength(0);
+        expect(
+          await db.commandReceipt.count({ where: { idempotencyKey: 'revoked-publish' } }),
+        ).toBe(0);
+        expect(
+          await query('SELECT "state" FROM "WorkListing" WHERE "id"=$1::uuid', one.listingId),
+        ).toEqual([{ state: 'DRAFT' }]);
+      } finally {
+        release.resolve();
+        await Promise.allSettled([revoker, ...(publisher ? [publisher] : [])]);
+      }
     });
   });
 });
