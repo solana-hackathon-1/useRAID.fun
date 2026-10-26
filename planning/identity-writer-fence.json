@@ -10,6 +10,8 @@
   ],
   "schemaRelations": [
     "BalanceEntry:user User @relation(fields: [userId], references: [id])",
+    "EngagementAmendment:decidedBy User? @relation(\"EngagementAmendmentDecider\", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "EngagementAmendment:proposedBy User @relation(\"EngagementAmendmentProposer\", fields: [proposedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "EngagementClosure:closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
     "MediaAsset:uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)",
@@ -25,6 +27,7 @@
     "Raid:creator User @relation(fields: [creatorId], references: [id])",
     "RaidEnrollment:user User @relation(fields: [userId], references: [id])",
     "RaidOffer:offeredBy User @relation(fields: [offeredByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "RaidReplacement:createdBy User @relation(fields: [createdByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "RaiderPreferenceVersion:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"RaiderPreferenceVersion_account_fkey\")",
     "RaiderPreferences:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"RaiderPreferences_account_fkey\")",
     "RewardEnrollment:user User @relation(fields: [userId], references: [id])",
@@ -101,6 +104,27 @@
       "effects": "Immutable closer attribution only; no User/Session/Participant mutation or identity transfer.",
       "authority": "Current actual Session/canonical actor: the accepted terms' independent reviewer on acceptance, or a host-authorized operations actor after the accepted operational deadline, rechecked after the engagement lock. Root not enabled.",
       "fold": "Restrict preserves closure history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
+    },
+    "EngagementAmendment.proposedByAccountId": {
+      "writer": "src/work-loop/amendment-storage.ts#proposeAmendment",
+      "effects": "Immutable proposer attribution only; no User/Session/Participant mutation or identity transfer. A proposal changes no effective term until the affected member consents.",
+      "authority": "Current actual Session/canonical actor who is the listing creator, not an engagement member, and host-authorized for this engagement's Guild, rechecked after the engagement lock. Root not enabled.",
+      "fold": "Restrict preserves amendment history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
+    },
+    "EngagementAmendment.decidedByAccountId": {
+      "writer": "src/work-loop/amendment-storage.ts#respondToAmendment",
+      "effects": "Immutable decider attribution only; acceptance versions the effective terms through the amendment row, never the Engagement, User, Session or Participant.",
+      "authority": "Current actual Session/canonical HUMAN member of the engagement (accept or decline) or the original proposer (withdraw), rechecked after the engagement lock; the database also requires membership.",
+      "fold": "Restrict preserves the decision and consent record and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
+    },
+    "RaidReplacement.createdByAccountId": {
+      "writer": "src/work-loop/replacement-storage.ts#reissueRaid",
+      "effects": "Immutable replacement attribution only; the closed engagement, closure, claim and reservation are untouched and no identity ownership moves.",
+      "authority": "Current actual Session/canonical actor who created the original listing and is host-authorized for its Guild, rechecked after the engagement lock; the database requires the same creator and Guild. Root not enabled.",
+      "fold": "Restrict preserves replacement history and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
     }
   }

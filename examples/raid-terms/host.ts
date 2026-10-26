@@ -34,6 +34,13 @@ import { submitWork, decideReview } from './work-loop/submission-storage';
 import type { SubmissionHost } from './work-loop/submission-contracts';
 import { closeOverdueEngagement, readOwnEngagementClosure } from './work-loop/closure-storage';
 import type { ClosureHost } from './work-loop/closure-contracts';
+import {
+  proposeAmendment,
+  respondToAmendment,
+  readEffectiveTerms,
+} from './work-loop/amendment-storage';
+import type { AmendmentHost } from './work-loop/amendment-contracts';
+import { reissueRaid } from './work-loop/replacement-storage';
 import { raidTerms } from './fixture';
 const url = new URL(process.env.DATABASE_URL ?? '');
 assert.equal(url.pathname, '/raid_terms_example');
@@ -84,7 +91,7 @@ const command = (input: unknown, key = randomUUID()) => ({
 try {
   // This host owns its own authority/session and reservation records. No RAID auth/Prisma/Next import.
   await pool.query(
-    'CREATE TABLE "User" ("id" text PRIMARY KEY, "suspended" boolean NOT NULL DEFAULT false); CREATE TABLE "HostSession" ("hash" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User", "expiresAt" timestamptz NOT NULL); CREATE TABLE "HostGuildAuthority" ("guildId" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User"); CREATE TABLE "HostReservation" ("slotId" uuid PRIMARY KEY,"termsVersionId" uuid NOT NULL,"digest" text NOT NULL)',
+    'CREATE TABLE "User" ("id" text PRIMARY KEY, "suspended" boolean NOT NULL DEFAULT false); CREATE TABLE "HostSession" ("hash" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User", "expiresAt" timestamptz NOT NULL); CREATE TABLE "HostGuildAuthority" ("guildId" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User"); CREATE TABLE "HostReservation" ("slotId" uuid PRIMARY KEY,"termsVersionId" uuid NOT NULL,"digest" text NOT NULL); CREATE TABLE "HostAmendmentReservation" ("amendmentId" uuid PRIMARY KEY,"digest" text NOT NULL); CREATE TABLE "HostAmendmentConsent" ("amendmentId" uuid NOT NULL,"participantId" uuid NOT NULL,"digest" text NOT NULL,PRIMARY KEY ("amendmentId","participantId"))',
   );
   await pool.query(`
     CREATE TABLE "Session" ("tokenHash" text PRIMARY KEY,"userId" text NOT NULL REFERENCES "User","via" text NOT NULL,"expiresAt" timestamp(3) NOT NULL);
@@ -102,6 +109,7 @@ try {
     'migrations/admission.sql',
     'migrations/submissions.sql',
     'migrations/closure.sql',
+    'migrations/amendments.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [actor.accountId]);
@@ -397,6 +405,101 @@ try {
     'UPDATE "Engagement" SET "state"=\'IN_PROGRESS\',"revision"="revision"+1 WHERE "id"=$1::uuid',
     [selected.engagement.id],
   );
+  // A consented amendment: the Founder's proposal changes nothing until the affected member agrees to its exact digest.
+  const amendments: AmendmentHost = {
+    allowNewWrites: true,
+    authorize: (tx, a, target) => host.authorize(tx, a, target.guildId, 'MANAGE_LISTING'),
+    async reserveAdditionalFunding(tx, b) {
+      await tx.query(
+        'INSERT INTO "HostAmendmentReservation" VALUES ($1::uuid,$2) RETURNING "amendmentId"',
+        [b.amendmentId, JSON.stringify(b.increase)],
+      );
+      return 'synthetic-increase:' + b.amendmentId;
+    },
+    async fundingAvailable(tx, b) {
+      const held = await tx.query(
+        'SELECT 1 FROM "HostAmendmentReservation" WHERE "amendmentId"=$1::uuid',
+        [b.amendmentId],
+      );
+      return held.length === 1;
+    },
+    async assessConsent(tx, c) {
+      const agreed = await tx.query(
+        'SELECT 1 FROM "HostAmendmentConsent" WHERE "amendmentId"=$1::uuid AND "participantId"=$2::uuid AND "digest"=$3',
+        [c.amendmentId, c.participantId, c.digest],
+      );
+      return agreed.length === 1
+        ? { consentRef: 'synthetic-amendment-consent:' + c.amendmentId }
+        : null;
+    },
+  };
+  const originalReward = selected.engagement.acceptedTerms.rewards[0].amount;
+  const raisedReward = String(BigInt(originalReward) + 500000000n);
+  const proposal = await transaction((tx) =>
+    proposeAmendment(
+      tx,
+      command({
+        engagementId: selected.engagement.id,
+        changes: { rewards: [{ amount: raisedReward }] },
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+      }),
+      amendments,
+    ),
+  );
+  assert.equal(proposal.amendment.state, 'PROPOSED');
+  assert.equal(proposal.amendment.requiresFunding, true);
+  const before = await transaction((tx) =>
+    readEffectiveTerms(tx, candidate, selected.engagement.id),
+  );
+  assert.equal(before.rewards[0].amount, originalReward, 'A proposal changes no effective term.');
+  await assert.rejects(
+    transaction((tx) =>
+      respondToAmendment(
+        tx,
+        candidateCommand({ amendmentId: proposal.amendment.id, decision: 'ACCEPT' }),
+        amendments,
+      ),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'CONSENT_REQUIRED',
+  );
+  await assert.rejects(
+    transaction((tx) =>
+      respondToAmendment(
+        tx,
+        { ...command({ amendmentId: proposal.amendment.id, decision: 'ACCEPT' }), actor },
+        amendments,
+      ),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
+    'The Founder has no member authority to consent.',
+  );
+  await pool.query('INSERT INTO "HostAmendmentConsent" VALUES ($1::uuid,$2::uuid,$3)', [
+    proposal.amendment.id,
+    p2.id,
+    proposal.amendment.digest,
+  ]);
+  const agreed = await transaction((tx) =>
+    respondToAmendment(
+      tx,
+      candidateCommand({ amendmentId: proposal.amendment.id, decision: 'ACCEPT' }),
+      amendments,
+    ),
+  );
+  assert.equal(agreed.amendment.state, 'ACCEPTED');
+  const after = await transaction((tx) =>
+    readEffectiveTerms(tx, candidate, selected.engagement.id),
+  );
+  assert.equal(after.rewards[0].amount, raisedReward);
+  const original = (
+    await pool.query('SELECT "acceptedTerms" FROM "Engagement" WHERE "id"=$1::uuid', [
+      selected.engagement.id,
+    ])
+  ).rows[0] as { acceptedTerms: { rewards: { amount: string }[] } };
+  assert.equal(
+    original.acceptedTerms.rewards[0].amount,
+    originalReward,
+    'Original terms are kept.',
+  );
   const submissions: SubmissionHost = { allowNewWrites: true };
   const submission = (n: number) =>
     candidateCommand({
@@ -459,6 +562,7 @@ try {
   );
   assert.equal(own.closure.reason, 'ACCEPTED');
   assert.equal(own.claims[0].status, 'UNSETTLED', 'Closing work leaves the claim unsettled.');
+  assert.equal(own.claims[0].amount, raisedReward, 'The claim follows the agreed amendment.');
   // Operations closure is deadline-gated: the first member's pending engagement is not yet overdue.
   const closures: ClosureHost = {
     allowNewWrites: true,
@@ -485,6 +589,13 @@ try {
     ),
     (e: unknown) => (e as { code: string }).code === 'DEADLINE_NOT_REACHED',
   );
+  // Only a terminated attempt can be replaced; a still-pending one is not.
+  await assert.rejects(
+    transaction((tx) =>
+      reissueRaid(tx, command({ engagementId: pendingEngagement.id, terms: raidTerms() }), host),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'ENGAGEMENT_STATE',
+  );
   assert.equal(
     (await pool.query('SELECT * FROM "ActiveCommitment"')).rowCount,
     1,
@@ -496,7 +607,7 @@ try {
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
   console.log(
-    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/submission/review/closure/receipt recovery/revocation; SIMULATED ONLY.',
+    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/amendment/submission/review/closure/replacement guard/receipt recovery/revocation; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();
