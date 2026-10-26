@@ -5,6 +5,7 @@ import {
   type CommandReceiptTransaction as Tx,
 } from '../command-receipts';
 import type { WorkCommand } from './contracts';
+import { closeEngagement } from './closure-storage';
 import {
   DecideReviewInput,
   ReviewResultSchema,
@@ -236,20 +237,14 @@ export async function decideReview(tx: Tx, command: WorkCommand, host: Submissio
         ],
       );
       if (value.decision === 'ACCEPT') {
-        // Close the work duty and release exactly this engagement's reservations, never a newer engagement's.
-        await tx.query(
-          'UPDATE "Engagement" SET "state"=\'ACCEPTED\',"revision"="revision"+1 WHERE "id"=$1::uuid RETURNING "id"',
-          [e.id],
+        // Closing ends the work duty, records the closure and releases exactly this engagement's reservations.
+        await closeEngagement(
+          tx,
+          e.id,
+          members.map((m) => m.participantId),
+          'ACCEPTED',
+          actor.accountId,
         );
-        let released = 0;
-        for (const m of members) {
-          const gone = await tx.query(
-            'DELETE FROM "ActiveCommitment" WHERE "engagementId"=$1::uuid AND "participantId"=$2::uuid RETURNING "participantId"',
-            [e.id, m.participantId],
-          );
-          released += gone.length;
-        }
-        if (released !== members.length) fail('STORAGE_CONTRACT');
       } else if (value.decision === 'REQUEST_REVISION') {
         await tx.query(
           'UPDATE "Engagement" SET "state"=\'REVISION_REQUESTED\',"revision"="revision"+1 WHERE "id"=$1::uuid RETURNING "id"',

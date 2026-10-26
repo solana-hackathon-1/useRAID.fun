@@ -262,7 +262,8 @@
     "tests/raid-terms.test.ts",
     "tests/raid-terms-db.test.ts",
     "tests/work-admission-db.test.ts",
-    "tests/work-submissions-db.test.ts"
+    "tests/work-submissions-db.test.ts",
+    "tests/work-closure-db.test.ts"
   ],
   "epics": [
     {
@@ -753,7 +754,8 @@
         "tests/command-receipts.test.ts",
         "tests/engagement-capacity-db.test.ts",
         "tests/work-admission-db.test.ts",
-        "tests/work-submissions-db.test.ts"
+        "tests/work-submissions-db.test.ts",
+        "tests/work-closure-db.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
