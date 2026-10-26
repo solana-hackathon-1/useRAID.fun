@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610260008_notifications/migration.sql

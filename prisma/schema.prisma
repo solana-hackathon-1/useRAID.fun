@@ -7,6 +7,8 @@ datasource db {
 }
 model User {
   closedEngagements EngagementClosure[]
+  notifications Notification[]
+  notificationPreference NotificationPreference?
   proposedAmendments EngagementAmendment[] @relation("EngagementAmendmentProposer")
   decidedAmendments EngagementAmendment[] @relation("EngagementAmendmentDecider")
   createdReplacements RaidReplacement[]
@@ -728,6 +730,7 @@ model OutboxEvent {
   eventId String @unique @db.Uuid
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   event AuditEvent @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  dispatch NotificationDispatch?
   @@index([createdAt])
 }
 
@@ -1413,6 +1416,29 @@ model WorkSimulatedReservation {
   legs Json @db.JsonB
   createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkSimulatedReservation_slot_fkey")
+}
+model Notification {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId String
+  kind String
+  category String
+  dedupeKey String @unique
+  payload Json @default("{}") @db.JsonB
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  readAt DateTime? @db.Timestamptz(6)
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([accountId, createdAt(sort: Desc)])
+}
+model NotificationPreference {
+  accountId String @id
+  promotional Boolean @default(false)
+  updatedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+model NotificationDispatch {
+  outboxEventId String @id @db.Uuid
+  processedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  outbox OutboxEvent @relation(fields: [outboxEventId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 }
 model EngagementAmendment {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid

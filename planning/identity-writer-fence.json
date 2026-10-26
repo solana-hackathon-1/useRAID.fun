@@ -15,6 +15,8 @@
     "EngagementClosure:closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
     "MediaAsset:uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)",
+    "Notification:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "NotificationPreference:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "Participant:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "PracticeAssessmentDecision:evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeAssessmentDecision_evaluator_fkey\")",
     "PracticeAssessmentReviewVersion:evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"PracticeAssessmentReviewVersion_evaluator_fkey\")",
@@ -126,6 +128,20 @@
       "authority": "Current actual Session/canonical actor who created the original listing and is host-authorized for its Guild, rechecked after the engagement lock; the database requires the same creator and Guild. Root not enabled.",
       "fold": "Restrict preserves replacement history and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
+    },
+    "Notification.accountId": {
+      "writer": "src/notifications/storage.ts#dispatchWorkNotifications",
+      "effects": "Append-only recipient attribution of an identifier-only in-app notification; no User/Session/Participant mutation or identity transfer. Text is generated from the kind at read time.",
+      "authority": "System job, not an actor: the recipient is derived from current engagement members, the terms' reviewer or the listing creator; reads and the first-read mark require the recipient's own current Session. Root not enabled.",
+      "fold": "Restrict preserves notification history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration review pending."
+    },
+    "NotificationPreference.accountId": {
+      "writer": "src/notifications/storage.ts#setNotificationPreferences",
+      "effects": "One opt-in promotional preference per account; no User/Session/Participant mutation or identity transfer.",
+      "authority": "Current actual Session/canonical actor for their own account only, rechecked in the transaction. Root not enabled.",
+      "fold": "Restrict preserves the preference and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration review pending."
     }
   }
 }

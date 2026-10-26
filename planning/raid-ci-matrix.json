@@ -29,6 +29,7 @@
     "tests/browser-practice-portal/practice-portal.spec.ts",
     "tests/browser-work-workspace/work-workspace.spec.ts",
     "tests/browser-work-creation/work-creation.spec.ts",
+    "tests/browser-notifications/notifications.spec.ts",
     "tests/browser-own-assessments/own-assessments.spec.ts",
     "tests/browser-project-proposals/project-proposals.spec.ts",
     "tests/browser-skill-claims/skill-claims.spec.ts",
@@ -279,6 +280,9 @@
     "tests/work-creation-http.test.ts",
     "tests/work-creation-host.test.ts",
     "tests/work-creation-ui.test.ts",
+    "tests/notifications-db.test.ts",
+    "tests/notifications-http.test.ts",
+    "tests/notifications-host.test.ts",
     "tests/work-workspace-consumer.test.ts"
   ],
   "epics": [
@@ -580,6 +584,7 @@
         "tests/browser-practice-portal/practice-portal.spec.ts",
         "tests/browser-work-workspace/work-workspace.spec.ts",
         "tests/browser-work-creation/work-creation.spec.ts",
+        "tests/browser-notifications/notifications.spec.ts",
         "tests/browser-skill-claims/skill-claims.spec.ts",
         "tests/browser-skill-editor/skill-editor.spec.ts",
         "tests/browser-skill-taxonomy/skill-taxonomy.spec.ts",
@@ -787,6 +792,9 @@
         "tests/work-creation-http.test.ts",
         "tests/work-creation-host.test.ts",
         "tests/work-creation-ui.test.ts",
+        "tests/notifications-db.test.ts",
+        "tests/notifications-http.test.ts",
+        "tests/notifications-host.test.ts",
         "tests/work-workspace-consumer.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
