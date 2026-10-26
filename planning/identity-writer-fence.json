@@ -10,6 +10,7 @@
   ],
   "schemaRelations": [
     "BalanceEntry:user User @relation(fields: [userId], references: [id])",
+    "EngagementClosure:closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
     "MediaAsset:uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)",
     "Participant:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
@@ -93,6 +94,13 @@
       "effects": "Immutable reviewer attribution only; no User/Session/Participant mutation or identity transfer.",
       "authority": "Current actual Session/canonical actor equal to the accepted terms' exact reviewer account and not an engagement member, rechecked after the engagement lock. Root not enabled.",
       "fold": "Restrict preserves review history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
+    },
+    "EngagementClosure.closedByAccountId": {
+      "writer": "src/work-loop/closure-storage.ts#closeEngagement",
+      "effects": "Immutable closer attribution only; no User/Session/Participant mutation or identity transfer.",
+      "authority": "Current actual Session/canonical actor: the accepted terms' independent reviewer on acceptance, or a host-authorized operations actor after the accepted operational deadline, rechecked after the engagement lock. Root not enabled.",
+      "fold": "Restrict preserves closure history and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
     }
   }

@@ -32,6 +32,8 @@ import { submitApplication, issueOffer } from './work-loop/admission-storage';
 import type { AdmissionHost } from './work-loop/admission-contracts';
 import { submitWork, decideReview } from './work-loop/submission-storage';
 import type { SubmissionHost } from './work-loop/submission-contracts';
+import { closeOverdueEngagement, readOwnEngagementClosure } from './work-loop/closure-storage';
+import type { ClosureHost } from './work-loop/closure-contracts';
 import { raidTerms } from './fixture';
 const url = new URL(process.env.DATABASE_URL ?? '');
 assert.equal(url.pathname, '/raid_terms_example');
@@ -99,6 +101,7 @@ try {
     'migrations/capacity.sql',
     'migrations/admission.sql',
     'migrations/submissions.sql',
+    'migrations/closure.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [actor.accountId]);
@@ -451,6 +454,37 @@ try {
     decideReview(tx, decision(second.submission.id, 'ACCEPT', 'MET', null), submissions),
   );
   assert.equal(closed.engagementState, 'ACCEPTED');
+  const own = await transaction((tx) =>
+    readOwnEngagementClosure(tx, candidate, selected.engagement.id),
+  );
+  assert.equal(own.closure.reason, 'ACCEPTED');
+  assert.equal(own.claims[0].status, 'UNSETTLED', 'Closing work leaves the claim unsettled.');
+  // Operations closure is deadline-gated: the first member's pending engagement is not yet overdue.
+  const closures: ClosureHost = {
+    allowNewWrites: true,
+    authorize: async (_tx, a) => a.accountId === reviewer.accountId,
+  };
+  const pendingEngagement = (
+    await pool.query(
+      'SELECT "id"::text,"revision" FROM "Engagement" WHERE "state"=\'ACCESS_PENDING\' ORDER BY "createdAt" LIMIT 1',
+    )
+  ).rows[0] as { id: string; revision: number };
+  await assert.rejects(
+    transaction((tx) =>
+      closeOverdueEngagement(
+        tx,
+        {
+          ...command({
+            engagementId: pendingEngagement.id,
+            expectedRevision: pendingEngagement.revision,
+          }),
+          actor: reviewer,
+        },
+        closures,
+      ),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'DEADLINE_NOT_REACHED',
+  );
   assert.equal(
     (await pool.query('SELECT * FROM "ActiveCommitment"')).rowCount,
     1,
@@ -462,7 +496,7 @@ try {
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
   console.log(
-    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/submission/review/receipt recovery/revocation; SIMULATED ONLY.',
+    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/submission/review/closure/receipt recovery/revocation; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();

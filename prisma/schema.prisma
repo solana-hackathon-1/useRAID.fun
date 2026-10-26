@@ -6,6 +6,7 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  closedEngagements EngagementClosure[]
   workReviews WorkReview[]
   issuedRaidOffers RaidOffer[]
   workListings WorkListing[]
@@ -1296,6 +1297,7 @@ model RaidSlot {
 }
 
 model Engagement {
+  closure EngagementClosure?
   acceptedOffer RaidOffer?
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   slotId String @unique @db.Uuid
@@ -1395,4 +1397,14 @@ model WorkReview {
   createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   submission WorkSubmission @relation(fields: [submissionId, engagementId, termsVersionId], references: [id, engagementId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkReview_submission_fkey")
   reviewer User @relation(fields: [reviewerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+model EngagementClosure {
+  engagementId String @id @db.Uuid
+  reason String
+  finalState String
+  closedByAccountId String
+  financialResolution String @default("OPEN")
+  closedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  engagement Engagement @relation(fields: [engagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 }

@@ -31,6 +31,7 @@ export class WorkError extends Error {
     readonly code:
       | 'INVALID_INPUT'
       | 'ENGAGEMENT_STATE'
+      | 'DEADLINE_NOT_REACHED'
       | 'REVISION_LIMIT'
       | 'REVIEW_EXISTS'
       | 'APPLICATION_LIMIT'
