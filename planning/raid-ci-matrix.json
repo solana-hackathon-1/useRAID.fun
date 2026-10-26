@@ -27,6 +27,7 @@
     "tests/browser-live/tracking.spec.ts",
     "tests/browser-onboarding/raider-onboarding.spec.ts",
     "tests/browser-practice-portal/practice-portal.spec.ts",
+    "tests/browser-work-workspace/work-workspace.spec.ts",
     "tests/browser-own-assessments/own-assessments.spec.ts",
     "tests/browser-project-proposals/project-proposals.spec.ts",
     "tests/browser-skill-claims/skill-claims.spec.ts",
@@ -263,7 +264,14 @@
     "tests/raid-terms-db.test.ts",
     "tests/work-admission-db.test.ts",
     "tests/work-submissions-db.test.ts",
-    "tests/work-closure-db.test.ts"
+    "tests/work-closure-db.test.ts",
+    "tests/work-workspace-db.test.ts",
+    "tests/work-workspace-http.test.ts",
+    "tests/work-workspace-host.test.ts",
+    "tests/work-workspace-client.test.ts",
+    "tests/work-workspace-page.test.ts",
+    "tests/work-workspace-ui.test.ts",
+    "tests/work-workspace-consumer.test.ts"
   ],
   "epics": [
     {
@@ -562,6 +570,7 @@
       "existing_test_files": [
         "tests/browser-own-assessments/own-assessments.spec.ts",
         "tests/browser-practice-portal/practice-portal.spec.ts",
+        "tests/browser-work-workspace/work-workspace.spec.ts",
         "tests/browser-skill-claims/skill-claims.spec.ts",
         "tests/browser-skill-editor/skill-editor.spec.ts",
         "tests/browser-skill-taxonomy/skill-taxonomy.spec.ts",
@@ -755,7 +764,14 @@
         "tests/engagement-capacity-db.test.ts",
         "tests/work-admission-db.test.ts",
         "tests/work-submissions-db.test.ts",
-        "tests/work-closure-db.test.ts"
+        "tests/work-closure-db.test.ts",
+        "tests/work-workspace-db.test.ts",
+        "tests/work-workspace-http.test.ts",
+        "tests/work-workspace-host.test.ts",
+        "tests/work-workspace-client.test.ts",
+        "tests/work-workspace-page.test.ts",
+        "tests/work-workspace-ui.test.ts",
+        "tests/work-workspace-consumer.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
