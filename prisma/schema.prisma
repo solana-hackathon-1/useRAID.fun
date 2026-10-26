@@ -46,6 +46,8 @@ model User {
 }
 // Immutable HUMAN foundation; checks/row guard live in the additive SQL migration.
 model Participant {
+  engagementMembers EngagementMember[]
+  activeCommitment ActiveCommitment?
   skillAssessments SkillAssessment[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   kind String @default("HUMAN")
@@ -1273,6 +1275,7 @@ model TermsVersion {
   @@unique([id, listingId, revision])
 }
 model RaidSlot {
+  engagements Engagement[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   listingId String @db.Uuid
   termsVersionId String @db.Uuid
@@ -1286,4 +1289,40 @@ model RaidSlot {
   @@unique([listingId, termsVersionId, slotNumber])
   @@unique([id, termsVersionId])
   @@index([listingId, state])
+}
+
+model Engagement {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slotId String @unique @db.Uuid
+  termsVersionId String @db.Uuid
+  guildId String
+  revision Int @default(1)
+  generation Int @default(1)
+  state String @default("ACCESS_PENDING")
+  acceptedTerms Json @db.JsonB
+  acceptedDigest String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
+  members EngagementMember[]
+  @@unique([id, termsVersionId])
+}
+model EngagementMember {
+  engagementId String @db.Uuid
+  participantId String @db.Uuid
+  termsVersionId String @db.Uuid
+  engagement Engagement @relation(fields: [engagementId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  commitments ActiveCommitment[]
+  @@id([engagementId, participantId])
+  @@unique([engagementId, participantId, termsVersionId])
+  @@index([participantId])
+}
+model ActiveCommitment {
+  participantId String @id @db.Uuid
+  engagementId String @db.Uuid
+  termsVersionId String @db.Uuid
+  acquiredAt DateTime @default(now()) @db.Timestamptz(6)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  member EngagementMember @relation(fields: [engagementId, participantId, termsVersionId], references: [engagementId, participantId, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
+  @@index([engagementId])
 }

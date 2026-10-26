@@ -2,6 +2,8 @@ import { CommandReceiptError } from '../src/command-receipts';
 import { randomUUID } from 'node:crypto';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient, type Prisma } from '@prisma/client';
+import { commitEngagement } from '../src/work-loop/engagement-storage';
+import { seedWorkHuman, syntheticAcceptanceHost } from './helpers/work-loop-db';
 import { matchesBlockingObservation } from './helpers/lock-observation';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { saveRaidTerms, publishRaid, readRaidTerms } from '../src/work-loop/storage';
@@ -199,9 +201,18 @@ integration('T016 durable immutable terms and publication', () => {
   it('freezes versions after source assignment and rejects privileged raw mutation', async () => {
     const one = await save(draft()),
       published = await publish(one.listingId, one.termsVersionId);
-    await query(
-      'UPDATE "RaidSlot" SET "state"=\'FILLED\' WHERE "id"=$1::uuid RETURNING "id"',
-      published.slotId,
+    // The capacity migration forbids phantom FILLED rows; create the real assignment fixture.
+    const human = await seedWorkHuman(db, owner.accountId);
+    await runCommandTransaction(db, (tx) =>
+      commitEngagement(
+        tx,
+        command(
+          { slotId: published.slotId, termsVersionId: one.termsVersionId },
+          undefined,
+          human.actor,
+        ),
+        syntheticAcceptanceHost,
+      ),
     );
     await expect(
       save({ ...draft(), listingId: one.listingId, expectedRevision: 1 }),

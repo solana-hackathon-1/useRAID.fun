@@ -30,6 +30,14 @@ export class WorkError extends Error {
   constructor(
     readonly code:
       | 'INVALID_INPUT'
+      | 'UNAUTHENTICATED'
+      | 'ACCOUNT_RESTRICTED'
+      | 'ELIGIBILITY_REJECTED'
+      | 'CAPACITY_CONFLICT'
+      | 'SLOT_FILLED'
+      | 'TERMS_VERSION_CHANGED'
+      | 'ADMISSION_REQUIRED'
+      | 'DEADLINE_PASSED'
       | 'FORBIDDEN'
       | 'WRITES_DISABLED'
       | 'NOT_FOUND'
@@ -38,6 +46,7 @@ export class WorkError extends Error {
       | 'PUBLICATION_BLOCKED'
       | 'FUNDING_REQUIRED'
       | 'STORAGE_CONTRACT',
+    readonly currentEngagementId?: string,
   ) {
     super(code);
     this.name = 'WorkError';
