@@ -232,3 +232,17 @@ test('private drafts are not shown to other accounts, signed-out visitors or the
   const state = await stranger.request.get('/api/v1/work/creation');
   expect((await state.json()).drafts).toEqual([]);
 });
+
+test('the account menu offers only the pages whose own feature is on', async ({ browser }) => {
+  fixture = await seedWorkCreationFixture();
+  const page = await open(browser, fixture.founder.cookie);
+  await page.goto('/creator');
+  await page.locator('.studio-account-trigger').click();
+  const menu = page.locator('#studio-account-dropdown');
+  await expect(menu.getByRole('link', { name: 'Create a Raid (guided)' })).toHaveAttribute(
+    'href',
+    '/creator/work/new',
+  );
+  for (const label of ['My Raid', 'Notifications'])
+    await expect(menu.getByRole('link', { name: label })).toHaveCount(0);
+});

@@ -102,3 +102,17 @@ test('each party sees only their own notices and others are isolated, including 
   await expect(out.getByRole('link', { name: 'Sign in' })).toBeVisible();
   expect((await out.request.get('/api/v1/notifications')).status()).toBe(401);
 });
+
+test('the account menu offers only the pages whose own feature is on', async ({ browser }) => {
+  fixture = await seedNotificationsFixture();
+  const page = await open(browser, fixture.worker.cookie);
+  await page.goto('/creator');
+  await page.locator('.studio-account-trigger').click();
+  const menu = page.locator('#studio-account-dropdown');
+  await expect(menu.getByRole('link', { name: 'Notifications' })).toHaveAttribute(
+    'href',
+    '/notifications',
+  );
+  for (const label of ['My Raid', 'Create a Raid (guided)'])
+    await expect(menu.getByRole('link', { name: label })).toHaveCount(0);
+});

@@ -20,4 +20,23 @@ describe('studio account menu', () => {
     const signOut = studioMenuItems(account).find((i) => i.label === 'Sign out');
     expect(signOut).toEqual({ label: 'Sign out', action: '/api/auth/logout' });
   });
+  it('shows work entry points between Balance and Operations, only the ones given', () => {
+    const links = [
+      { label: 'My Raid', href: '/raider/work' },
+      { label: 'Notifications', href: '/notifications' },
+    ];
+    expect(studioMenuItems({ ...account, admin: true, links }).map((i) => i.label)).toEqual([
+      'Account',
+      'Balance',
+      'My Raid',
+      'Notifications',
+      'Operations',
+      'Sign out',
+    ]);
+    expect(studioMenuItems({ ...account, links: [] }).map((i) => i.label)).toEqual([
+      'Account',
+      'Balance',
+      'Sign out',
+    ]);
+  });
 });

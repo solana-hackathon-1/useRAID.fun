@@ -1,6 +1,7 @@
 import { currentSession } from './auth';
 import { isAdmin } from './admins';
 import { db } from './db';
+import { workEntryLinks } from './work-entry-links';
 import type { StudioAccount } from '@/components/studio-account-menu';
 
 // The header must not take every page down with it when the database is unavailable.
@@ -15,6 +16,7 @@ export async function shellAccount(): Promise<StudioAccount | null> {
       image: account?.profileImage || null,
       connected: !!account,
       admin: isAdmin(user) && session?.via === 'x',
+      links: workEntryLinks(),
     };
   } catch (e) {
     console.error('shell account unavailable', e);

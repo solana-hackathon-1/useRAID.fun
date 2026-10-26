@@ -25,3 +25,5 @@ Migration `202610260008_notifications` adds `Notification` (append-only apart fr
 ## Verification
 
 `tests/notifications-db.test.ts` (real PostgreSQL: lifecycle recipients, repeated/racing/lost-marker jobs, late commit, privacy scan, deadline reminder windows, passed deadlines and amended versions, read/idempotency/isolation, preferences, append-only database guards), `-http` and `-host` unit tests (strict schemas, authority order, flags), and Playwright `playwright.notifications.config.ts` (synthetic PostgreSQL, desktop and mobile, development and production servers: safe notice, mark read across reload, preference choice, per-person isolation, signed-out and API access). All are mutation-checked; test names and genuine results belong in the PR. Limitations: no external delivery, no independent UAT, flags stay off in deployed environments.
+
+Entry point: the account menu lists **Notifications** only while `NOTIFICATIONS_READS_ENABLED` is exactly `true`.

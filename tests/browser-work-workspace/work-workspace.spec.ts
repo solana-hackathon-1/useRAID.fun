@@ -188,3 +188,19 @@ test('signed-out and foreign access never reveal work data', async ({ browser })
   expect(body).not.toContain('sessionHash');
   expect(body).not.toContain(fixture.reviewer.id);
 });
+
+test('the account menu offers My Raid and the review desk because their flag is on', async ({
+  browser,
+}) => {
+  fixture = await seedWorkWorkspaceFixture();
+  const page = await open(browser, fixture.worker.cookie);
+  await page.goto('/creator');
+  await page.locator('.studio-account-trigger').click();
+  const menu = page.locator('#studio-account-dropdown');
+  await expect(menu.getByRole('link', { name: 'My Raid' })).toHaveAttribute('href', '/raider/work');
+  await expect(menu.getByRole('link', { name: 'Review and applicants' })).toHaveAttribute(
+    'href',
+    '/creator/work',
+  );
+  await expect(menu.getByRole('link', { name: 'Notifications' })).toHaveCount(0);
+});
