@@ -6,6 +6,7 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  workReviews WorkReview[]
   issuedRaidOffers RaidOffer[]
   workListings WorkListing[]
  assessmentDecisions PracticeAssessmentDecision[]
@@ -1311,6 +1312,7 @@ model Engagement {
   @@unique([id, termsVersionId])
 }
 model EngagementMember {
+  submissions WorkSubmission[]
   engagementId String @db.Uuid
   participantId String @db.Uuid
   termsVersionId String @db.Uuid
@@ -1360,4 +1362,37 @@ model RaidOffer {
   offeredBy User @relation(fields: [offeredByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   engagement Engagement? @relation(fields: [acceptedEngagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   @@index([slotId, state])
+}
+
+model WorkSubmission {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  engagementId String @db.Uuid
+  termsVersionId String @db.Uuid
+  submissionNumber Int
+  submitterParticipantId String @db.Uuid
+  explanation String
+  artifacts Json @db.JsonB
+  dependencies Json @db.JsonB
+  aiUsage String?
+  digest String
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  submitter EngagementMember @relation(fields: [engagementId, submitterParticipantId, termsVersionId], references: [engagementId, participantId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkSubmission_submitter_fkey")
+  reviews WorkReview[]
+  @@unique([engagementId, submissionNumber])
+  @@unique([id, engagementId, termsVersionId])
+}
+model WorkReview {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  submissionId String @unique @db.Uuid
+  engagementId String @db.Uuid
+  termsVersionId String @db.Uuid
+  reviewerAccountId String
+  decision String
+  reason String
+  criteria Json @db.JsonB
+  revisionDeadline DateTime? @db.Timestamptz(6)
+  digest String
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  submission WorkSubmission @relation(fields: [submissionId, engagementId, termsVersionId], references: [id, engagementId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkReview_submission_fkey")
+  reviewer User @relation(fields: [reviewerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 }

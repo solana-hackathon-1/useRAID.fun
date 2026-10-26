@@ -36,6 +36,7 @@
     "WalletIdentity:user User @relation(fields: [userId], references: [id], onDelete: Cascade)",
     "WalletLink:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"WalletLink_accountId_fkey\")",
     "WorkListing:creator User @relation(fields: [creatorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "WorkReview:reviewer User @relation(fields: [reviewerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "XAccount:user User @relation(fields: [userId], references: [id], onDelete: Cascade)"
   ],
   "userKeys": ["id String @id @default(cuid())", "xId String? @unique"],
@@ -86,6 +87,13 @@
       "authority": "Current actual Session/canonical actor plus exact creator/Guild MANAGE_LISTING host authorization held through commit. Root not enabled.",
       "fold": "Restrict preserves offer history and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent task-end authority/migration review pending."
+    },
+    "WorkReview.reviewerAccountId": {
+      "writer": "src/work-loop/submission-storage.ts#decideReview",
+      "effects": "Immutable reviewer attribution only; no User/Session/Participant mutation or identity transfer.",
+      "authority": "Current actual Session/canonical actor equal to the accepted terms' exact reviewer account and not an engagement member, rechecked after the engagement lock. Root not enabled.",
+      "fold": "Restrict preserves review history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
     }
   }
 }

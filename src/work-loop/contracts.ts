@@ -30,6 +30,9 @@ export class WorkError extends Error {
   constructor(
     readonly code:
       | 'INVALID_INPUT'
+      | 'ENGAGEMENT_STATE'
+      | 'REVISION_LIMIT'
+      | 'REVIEW_EXISTS'
       | 'APPLICATION_LIMIT'
       | 'APPLICATION_EXISTS'
       | 'APPLICATION_CLOSED'
