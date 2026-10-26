@@ -109,7 +109,7 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
         guildId: string;
         acceptedTerms: unknown;
       }>(
-        'SELECT "state","revision","guildId","acceptedTerms" FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
+        'SELECT "state","revision","guildId",raid_effective_terms("id") AS "acceptedTerms" FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
         [value.engagementId],
       );
       if (rows.length !== 1) fail('STORAGE_CONTRACT');
@@ -173,7 +173,7 @@ export async function readOwnEngagementClosure(
   if (!/^[0-9a-f-]{36}$/.test(String(engagementId))) fail('INVALID_INPUT');
   const auth = await currentHuman(tx, actor);
   const rows = await tx.query<{ acceptedTerms: unknown }>(
-    'SELECT e."acceptedTerms" FROM "Engagement" e JOIN "EngagementMember" m ON m."engagementId"=e."id" JOIN "EngagementClosure" c ON c."engagementId"=e."id" WHERE e."id"=$1::uuid AND m."participantId"=$2::uuid',
+    'SELECT raid_effective_terms(e."id") AS "acceptedTerms" FROM "Engagement" e JOIN "EngagementMember" m ON m."engagementId"=e."id" JOIN "EngagementClosure" c ON c."engagementId"=e."id" WHERE e."id"=$1::uuid AND m."participantId"=$2::uuid',
     [engagementId, auth.participantId],
   );
   if (rows.length !== 1) fail('NOT_FOUND');

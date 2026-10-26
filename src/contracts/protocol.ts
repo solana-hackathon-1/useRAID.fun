@@ -34,6 +34,7 @@ export const EventEnvelopeSchema = z
         termsVersionId: TermsVersionId.optional(),
         raidSlotId: InternalId.optional(),
         engagementId: InternalId.optional(),
+        amendmentId: InternalId.optional(),
         submissionId: InternalId.optional(),
         operationId: InternalId.optional(),
         claimId: InternalId.optional(),
