@@ -1,6 +1,6 @@
 # Engagement acceptance and capacity
 
-T020 supplies the PostgreSQL acceptance boundary for a current canonical HUMAN accepting a published PUBLIC/SOLO/INSTANT Raid with simulated funding. Acceptance atomically creates one `ACCESS_PENDING` engagement, immutable accepted terms, participant membership, global participant capacity, a filled source slot, command receipt, audit and outbox. Work does not start here. Root routes and production enablement are absent.
+T020 supplies the PostgreSQL acceptance boundary for a current canonical HUMAN accepting a published PUBLIC/SOLO/INSTANT Raid with simulated funding. [T021 admission](raid-work-admission.md) extends the same command with exact-version offers for APPLICATION terms. Acceptance atomically creates one `ACCESS_PENDING` engagement, immutable accepted terms, participant membership, global participant capacity, a filled source slot, command receipt, audit and outbox. Work does not start here. Root routes and production enablement are absent.
 
 ## Requirements and implementation
 

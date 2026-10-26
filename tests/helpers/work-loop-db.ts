@@ -34,7 +34,11 @@ export const syntheticAcceptanceHost: AcceptanceHost = {
   }),
   fundingAvailable: async () => true,
 };
-export async function seedWorkSlot(db: PrismaClient, founderId = 'founder-' + randomUUID()) {
+export async function seedWorkSlot(
+  db: PrismaClient,
+  founderId = 'founder-' + randomUUID(),
+  override: Partial<ReturnType<typeof raidTerms>> = {},
+) {
   await db.user.upsert({
     where: { id: founderId },
     create: { id: founderId, handle: founderId },
@@ -55,7 +59,7 @@ export async function seedWorkSlot(db: PrismaClient, founderId = 'founder-' + ra
           listingId: null,
           expectedRevision: 0,
           guildId: 'synthetic-guild',
-          terms: raidTerms(),
+          terms: { ...raidTerms(), ...override },
         },
         idempotencyKey: randomUUID(),
         requestId: 'fixture-save',

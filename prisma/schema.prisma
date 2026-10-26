@@ -6,6 +6,7 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  issuedRaidOffers RaidOffer[]
   workListings WorkListing[]
  assessmentDecisions PracticeAssessmentDecision[]
   practiceAssessmentReviewVersions PracticeAssessmentReviewVersion[]
@@ -46,6 +47,7 @@ model User {
 }
 // Immutable HUMAN foundation; checks/row guard live in the additive SQL migration.
 model Participant {
+  raidApplications RaidApplication[]
   engagementMembers EngagementMember[]
   activeCommitment ActiveCommitment?
   skillAssessments SkillAssessment[]
@@ -1275,6 +1277,7 @@ model TermsVersion {
   @@unique([id, listingId, revision])
 }
 model RaidSlot {
+  applications RaidApplication[]
   engagements Engagement[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   listingId String @db.Uuid
@@ -1292,6 +1295,7 @@ model RaidSlot {
 }
 
 model Engagement {
+  acceptedOffer RaidOffer?
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   slotId String @unique @db.Uuid
   termsVersionId String @db.Uuid
@@ -1325,4 +1329,35 @@ model ActiveCommitment {
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   member EngagementMember @relation(fields: [engagementId, participantId, termsVersionId], references: [engagementId, participantId, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
   @@index([engagementId])
+}
+
+model RaidApplication {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slotId String @db.Uuid
+  termsVersionId String @db.Uuid
+  participantId String @db.Uuid
+  evidenceRefs Json @db.JsonB
+  state String @default("SUBMITTED")
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  offers RaidOffer[]
+  @@unique([id, slotId, participantId, termsVersionId])
+  @@index([participantId, state])
+}
+model RaidOffer {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  applicationId String @db.Uuid
+  slotId String @db.Uuid
+  termsVersionId String @db.Uuid
+  participantId String @db.Uuid
+  offeredByAccountId String
+  expiresAt DateTime @db.Timestamptz(6)
+  state String @default("PENDING")
+  acceptedEngagementId String? @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  application RaidApplication @relation(fields: [applicationId, slotId, participantId, termsVersionId], references: [id, slotId, participantId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "RaidOffer_application_fkey")
+  offeredBy User @relation(fields: [offeredByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  engagement Engagement? @relation(fields: [acceptedEngagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([slotId, state])
 }
