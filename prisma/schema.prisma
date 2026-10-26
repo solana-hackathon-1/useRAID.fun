@@ -7,6 +7,9 @@ datasource db {
 }
 model User {
   closedEngagements EngagementClosure[]
+  proposedAmendments EngagementAmendment[] @relation("EngagementAmendmentProposer")
+  decidedAmendments EngagementAmendment[] @relation("EngagementAmendmentDecider")
+  createdReplacements RaidReplacement[]
   workReviews WorkReview[]
   issuedRaidOffers RaidOffer[]
   workListings WorkListing[]
@@ -1281,6 +1284,8 @@ model TermsVersion {
 model RaidSlot {
   applications RaidApplication[]
   engagements Engagement[]
+  replaced RaidReplacement? @relation("ReplacedSlot")
+  replacement RaidReplacement? @relation("ReplacementSlot")
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   listingId String @db.Uuid
   termsVersionId String @db.Uuid
@@ -1311,6 +1316,8 @@ model Engagement {
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
   members EngagementMember[]
+  amendments EngagementAmendment[]
+  replacedBy RaidReplacement?
   @@unique([id, termsVersionId])
 }
 model EngagementMember {
@@ -1397,6 +1404,38 @@ model WorkReview {
   createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   submission WorkSubmission @relation(fields: [submissionId, engagementId, termsVersionId], references: [id, engagementId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkReview_submission_fkey")
   reviewer User @relation(fields: [reviewerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+model EngagementAmendment {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  engagementId String @db.Uuid
+  sequence Int
+  snapshot Json @db.JsonB
+  digest String
+  proposedByAccountId String
+  additionalFundingRef String? @unique
+  expiresAt DateTime @db.Timestamptz(6)
+  state String @default("PROPOSED")
+  decidedByAccountId String?
+  consentRef String?
+  decidedAt DateTime? @db.Timestamptz(6)
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  engagement Engagement @relation(fields: [engagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  proposedBy User @relation("EngagementAmendmentProposer", fields: [proposedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  decidedBy User? @relation("EngagementAmendmentDecider", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([engagementId, sequence])
+  @@index([proposedByAccountId])
+}
+model RaidReplacement {
+  originalEngagementId String @id @db.Uuid
+  originalSlotId String @unique @db.Uuid
+  replacementSlotId String @unique @db.Uuid
+  createdByAccountId String
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  originalEngagement Engagement @relation(fields: [originalEngagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  originalSlot RaidSlot @relation("ReplacedSlot", fields: [originalSlotId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  replacementSlot RaidSlot @relation("ReplacementSlot", fields: [replacementSlotId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  createdBy User @relation(fields: [createdByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([createdByAccountId])
 }
 model EngagementClosure {
   engagementId String @id @db.Uuid

@@ -54,6 +54,10 @@ export class WorkError extends Error {
       | 'TERMS_FROZEN'
       | 'PUBLICATION_BLOCKED'
       | 'FUNDING_REQUIRED'
+      | 'AMENDMENT_EXISTS'
+      | 'AMENDMENT_UNAVAILABLE'
+      | 'CONSENT_REQUIRED'
+      | 'REPLACEMENT_EXISTS'
       | 'STORAGE_CONTRACT',
     readonly currentEngagementId?: string,
   ) {

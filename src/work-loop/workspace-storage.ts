@@ -50,7 +50,7 @@ export async function readMyRaids(tx: Tx, actor: WorkActor): Promise<MyRaids> {
   validate(tx, actor);
   const auth = await currentHuman(tx, actor);
   const rows = await tx.query<EngagementRow>(
-    `SELECT e."id"::text AS id,e."state",e."acceptedTerms",t."snapshot"->>'title' AS title,(t."snapshot"->'review'->>'maxRevisionRounds')::int AS rounds,
+    `SELECT e."id"::text AS id,e."state",raid_effective_terms(e."id") AS "acceptedTerms",t."snapshot"->>'title' AS title,(t."snapshot"->'review'->>'maxRevisionRounds')::int AS rounds,
       EXISTS (SELECT 1 FROM "ActiveCommitment" c WHERE c."engagementId"=e."id" AND c."participantId"=m."participantId") AS held,
       (SELECT count(*)::int FROM "WorkSubmission" s WHERE s."engagementId"=e."id") AS submissions
      FROM "Engagement" e JOIN "EngagementMember" m ON m."engagementId"=e."id" JOIN "TermsVersion" t ON t."id"=e."termsVersionId"
@@ -144,7 +144,7 @@ export async function readReviewQueue(tx: Tx, actor: WorkActor) {
   const locks = await currentActor(tx, actor);
   const rows = await tx.query<Record<string, unknown>>(
     `SELECT e."id"::text AS "engagementId",s."id"::text AS "submissionId",s."submissionNumber",t."snapshot"->>'title' AS title,s."explanation",s."artifacts",s."dependencies",s."aiUsage",s."createdAt" AS "submittedAt",
-      e."acceptedTerms",(t."snapshot"->'review'->>'maxRevisionRounds')::int AS rounds
+      raid_effective_terms(e."id") AS "acceptedTerms",(t."snapshot"->'review'->>'maxRevisionRounds')::int AS rounds
      FROM "Engagement" e JOIN "TermsVersion" t ON t."id"=e."termsVersionId" JOIN "WorkSubmission" s ON s."engagementId"=e."id"
      WHERE t."snapshot"->'review'->>'reviewerAccountId'=$1 AND e."state"='SUBMITTED'
       AND s."submissionNumber"=(SELECT max("submissionNumber") FROM "WorkSubmission" WHERE "engagementId"=e."id")
