@@ -17,3 +17,5 @@ The [submission extension](../../docs/raid-work-submissions.md) adds a fifth exa
 The [closure extension](../../docs/raid-work-closure.md) adds a sixth exact migration. After acceptance the host reads its member's closure and unsettled claim, and operations closure of a still-pending engagement is refused until its accepted operational deadline.
 
 The [amendment extension](../../docs/raid-work-amendments.md) adds a seventh exact migration. The host proposes a reward increase to the in-progress member through its own `AmendmentHost` (own reservation and consent tables), shows the effective terms unchanged until the member's exact-digest consent, refuses the Founder consenting for the member, then reads the agreed amount in the effective terms and the member's claim. It also shows a still-pending attempt cannot be replaced.
+
+The [recommendation extension](../../docs/raid-work-recommendations.md) needs no migration. The host asks for a non-authoritative estimate from its own `UNEVALUATED_EXAMPLE` fixture rubric and compares the Founder's typed terms with it before saving, without the estimate affecting publication.

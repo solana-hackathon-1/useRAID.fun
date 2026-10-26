@@ -42,6 +42,8 @@ import {
 import type { AmendmentHost } from './work-loop/amendment-contracts';
 import { reissueRaid } from './work-loop/replacement-storage';
 import { raidTerms } from './fixture';
+import { recommend, reviewChoices } from './work-loop/recommendation';
+import { exampleInput, exampleRubric } from './recommendation-fixture';
 const url = new URL(process.env.DATABASE_URL ?? '');
 assert.equal(url.pathname, '/raid_terms_example');
 assert.ok(
@@ -136,6 +138,21 @@ try {
       return 'synthetic:' + b.slotId;
     },
   };
+  // Advice is optional, versioned and never authoritative: the Founder's typed terms alone decide publication.
+  const advice = recommend(exampleInput(), exampleRubric());
+  assert.equal(advice.authoritative, false);
+  assert.equal(advice.rubricEvaluation, 'UNEVALUATED_EXAMPLE');
+  const advised = reviewChoices(advice, {
+    difficulty: raidTerms().difficulty,
+    requiredSkills: raidTerms().requiredSkills.map((s) => ({
+      skillId: s.skillId,
+      minimumRank: s.minimumRank,
+    })),
+    participantKinds: ['HUMAN'],
+    rewards: raidTerms().rewards.map((r) => ({ policy: r.policy, amount: r.amount })),
+  });
+  assert.equal(advised.suggestion.policyVersion, 'example-rubric-v1');
+  assert.ok(advised.gaps.every((gap) => gap.explanation.length > 0));
   const input = { listingId: null, expectedRevision: 0, guildId: guild, terms: raidTerms() },
     c = command(input);
   const saved = await transaction((tx) => saveRaidTerms(tx, c, host));
