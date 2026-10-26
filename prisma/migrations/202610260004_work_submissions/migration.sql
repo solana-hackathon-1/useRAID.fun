@@ -139,4 +139,27 @@ BEGIN
  RETURN NULL;
 END $$;
 CREATE CONSTRAINT TRIGGER "WorkReview_state_guard" AFTER INSERT ON "WorkReview" DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION raid_review_state_guard();
+-- T020's inline CHECKs pinned new engagements to ACCESS_PENDING at revision 1; the widened CHECKs must not loosen that.
+CREATE FUNCTION raid_engagement_initial_guard() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+ IF NEW."state"<>'ACCESS_PENDING' OR NEW."revision"<>1 THEN
+  RAISE EXCEPTION 'A new engagement starts ACCESS_PENDING at revision 1' USING ERRCODE='23514';
+ END IF;
+ RETURN NEW;
+END $$;
+CREATE TRIGGER "Engagement_initial_guard" BEFORE INSERT ON "Engagement" FOR EACH ROW EXECUTE FUNCTION raid_engagement_initial_guard();
+-- Evidence also constrains the state: submission, revision request and acceptance each need their own latest record.
+CREATE FUNCTION raid_lifecycle_evidence_guard() RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE actual text; latest_id uuid; latest_decision text;
+BEGIN
+ SELECT "state" INTO STRICT actual FROM "Engagement" WHERE "id"=NEW."id";
+ SELECT s."id", r."decision" INTO latest_id, latest_decision FROM "WorkSubmission" s LEFT JOIN "WorkReview" r ON r."submissionId"=s."id" WHERE s."engagementId"=NEW."id" ORDER BY s."submissionNumber" DESC LIMIT 1;
+ IF (actual='SUBMITTED' AND (latest_id IS NULL OR latest_decision IS NOT NULL))
+  OR (actual='REVISION_REQUESTED' AND latest_decision IS DISTINCT FROM 'REQUEST_REVISION')
+  OR (actual='ACCEPTED' AND latest_decision IS DISTINCT FROM 'ACCEPT') THEN
+  RAISE EXCEPTION 'Engagement state % lacks its latest submission or review evidence', actual USING ERRCODE='23514';
+ END IF;
+ RETURN NULL;
+END $$;
+CREATE CONSTRAINT TRIGGER "Engagement_evidence_guard" AFTER UPDATE OF "state" ON "Engagement" DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION raid_lifecycle_evidence_guard();
 COMMIT;

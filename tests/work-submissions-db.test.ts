@@ -144,14 +144,11 @@ integration('T023 versioned submissions and criterion review', () => {
     await expect(
       submit(worker.actor, work(engagementId), { allowNewWrites: false }),
     ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
-    await db.$executeRawUnsafe(
-      `UPDATE "Engagement" SET "state"='SUBMITTED',"revision"="revision"+1 WHERE "id"=$1::uuid`,
-      engagementId,
-    );
-    await expect(submit(worker.actor, work(engagementId))).rejects.toMatchObject({
+    await submit(worker.actor, work(engagementId));
+    await expect(submit(worker.actor, work(engagementId, 2))).rejects.toMatchObject({
       code: 'ENGAGEMENT_STATE',
     });
-    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkSubmission"')).toEqual([]);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkSubmission"')).toHaveLength(1);
   });
   it('limits review to the exact terms reviewer and denies self-review or incomplete criteria', async () => {
     const { worker, reviewer, engagementId } = await setup();
@@ -383,6 +380,65 @@ integration('T023 versioned submissions and criterion review', () => {
     await expect(submit(worker.actor, work(engagementId))).rejects.toMatchObject({
       code: 'DEADLINE_PASSED',
     });
+  });
+  it('refuses direct engagement inserts that skip acceptance or its pending state', async () => {
+    const { worker } = await setup();
+    const other = await seedWorkSlot(db);
+    for (const [state, revision] of [
+      ['ACCEPTED', '7'],
+      ['IN_PROGRESS', '1'],
+      ['ACCESS_PENDING', '3'],
+    ])
+      await expect(
+        db.$transaction(async (tx) => {
+          const [e] = (await tx.$queryRawUnsafe(
+            `INSERT INTO "Engagement" ("slotId","termsVersionId","guildId","acceptedTerms","acceptedDigest","state","revision")
+             SELECT s."id",s."termsVersionId",l."guildId",
+              jsonb_build_object('id',s."termsVersionId",'guildId',l."guildId",'revision',t."revision",'acceptanceCriteria',t."snapshot"->'acceptanceCriteria','requiredSkills',t."snapshot"->'requiredSkills','deadlines',(t."snapshot"->'deadlines')-'commitment','roster',jsonb_build_array(jsonb_build_object('participantId',$1::text)),'rewards',(SELECT jsonb_agg(jsonb_build_object('policy',r->'policy','amount',r->>'amount','beneficiaryParticipantId',$1::text)) FROM jsonb_array_elements(t."snapshot"->'rewards') r)),
+              repeat('a',64),$2,$3::int
+             FROM "RaidSlot" s JOIN "WorkListing" l ON l."id"=s."listingId" JOIN "TermsVersion" t ON t."id"=s."termsVersionId" WHERE s."id"=$4::uuid RETURNING "id"::text`,
+            worker.participantId,
+            state,
+            revision,
+            other.slotId,
+          )) as { id: string }[];
+          await tx.$executeRawUnsafe(
+            `INSERT INTO "EngagementMember" ("engagementId","participantId","termsVersionId") VALUES ($1::uuid,$2::uuid,$3::uuid)`,
+            e.id,
+            worker.participantId,
+            other.termsVersionId,
+          );
+          await tx.$executeRawUnsafe(
+            `UPDATE "RaidSlot" SET "state"='FILLED' WHERE "id"=$1::uuid`,
+            other.slotId,
+          );
+        }),
+      ).rejects.toThrow();
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toHaveLength(1);
+  });
+  it('ties every lifecycle state change to its evidence row even for direct writers', async () => {
+    const { worker, reviewer, engagementId } = await setup();
+    const bare = (to: string, release = false) =>
+      db.$transaction(async (tx) => {
+        await tx.$executeRawUnsafe(
+          `UPDATE "Engagement" SET "state"=$2,"revision"="revision"+1 WHERE "id"=$1::uuid`,
+          engagementId,
+          to,
+        );
+        if (release) await tx.$executeRawUnsafe('DELETE FROM "ActiveCommitment"');
+      });
+    // No submission exists: SUBMITTED, REVISION_REQUESTED and ACCEPTED are all unproven.
+    await expect(bare('SUBMITTED')).rejects.toThrow();
+    const sub = await submit(worker.actor, work(engagementId));
+    // A submission without a review proves neither a revision request nor acceptance.
+    await expect(bare('REVISION_REQUESTED')).rejects.toThrow();
+    await expect(bare('ACCEPTED', true)).rejects.toThrow();
+    // A dispute is not an acceptance.
+    await decide(reviewer.actor, review(sub.submission.id, 'DISPUTE'));
+    await expect(bare('ACCEPTED', true)).rejects.toThrow();
+    await expect(bare('REVISION_REQUESTED')).rejects.toThrow();
+    expect(await state(engagementId)).toBe('SUBMITTED');
+    expect(await commitments()).toHaveLength(1);
   });
   it('enforces the lifecycle and capacity guards at the database even for direct writers', async () => {
     const { worker, reviewer, engagementId } = await setup();
