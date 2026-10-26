@@ -32,6 +32,7 @@ export const EventEnvelopeSchema = z
     payload: z
       .strictObject({
         termsVersionId: TermsVersionId.optional(),
+        raidSlotId: InternalId.optional(),
         submissionId: InternalId.optional(),
         operationId: InternalId.optional(),
         claimId: InternalId.optional(),

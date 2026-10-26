@@ -6,6 +6,7 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  workListings WorkListing[]
  assessmentDecisions PracticeAssessmentDecision[]
   practiceAssessmentReviewVersions PracticeAssessmentReviewVersion[]
   skillAssessmentVersions SkillAssessmentVersion[]
@@ -1240,4 +1241,49 @@ model PracticeAssessmentDecision {
  ownershipAccess CommandReceipt @relation("DecisionOwnershipAccess",fields:[ownershipAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_ownership_access_fkey")
  priorAccess CommandReceipt @relation("DecisionPriorAccess",fields:[priorAccessReceiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_prior_access_fkey")
  receipt CommandReceipt @relation("AssessmentDecisionReceipt",fields:[receiptId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"PracticeAssessmentDecision_receipt_fkey")
+}
+
+// M2 work lifecycle is separate from legacy social campaigns. Host supplies actual scoped Guild authority.
+model WorkListing {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String
+  creatorAccountId String
+  revision Int @default(0)
+  currentTermsVersionId String? @db.Uuid
+  state String @default("DRAFT")
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  creator User @relation(fields: [creatorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  versions TermsVersion[] @relation("WorkTermsHistory")
+  currentTerms TermsVersion? @relation("CurrentWorkTerms", fields: [currentTermsVersionId, id, revision], references: [id, listingId, revision], onDelete: Restrict, onUpdate: Restrict)
+  slots RaidSlot[]
+  @@index([creatorAccountId, createdAt])
+}
+model TermsVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  listingId String @db.Uuid
+  revision Int
+  snapshot Json @db.JsonB
+  digest String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  listing WorkListing @relation("WorkTermsHistory", fields: [listingId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  currentFor WorkListing[] @relation("CurrentWorkTerms")
+  slots RaidSlot[]
+  @@unique([listingId, revision])
+  @@unique([id, listingId])
+  @@unique([id, listingId, revision])
+}
+model RaidSlot {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  listingId String @db.Uuid
+  termsVersionId String @db.Uuid
+  slotNumber Int
+  state String @default("AVAILABLE")
+  fundingMode String @default("SIMULATED")
+  fundingRef String? @unique
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  listing WorkListing @relation(fields: [listingId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  terms TermsVersion @relation(fields: [termsVersionId, listingId], references: [id, listingId], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([listingId, termsVersionId, slotNumber])
+  @@unique([id, termsVersionId])
+  @@index([listingId, state])
 }
