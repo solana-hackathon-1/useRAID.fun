@@ -6,12 +6,7 @@ import {
   executeIdempotentCommand,
   type CommandReceiptTransaction as Tx,
 } from '../command-receipts';
-import {
-  prepareModuleIdentity,
-  requireIdentityLocks,
-  type IdentityLockCapability,
-} from '../identity-locks';
-import { WorkError, type WorkActor, type WorkCommand } from './contracts';
+import { WorkError, type WorkCommand } from './contracts';
 import { RaidTermsSchema, publicationProblems } from './terms';
 import {
   CommittedEngagementSchema,
@@ -19,101 +14,28 @@ import {
   type AcceptanceApproval,
   type CommittedEngagement,
 } from './engagement-contracts';
-const Input = z.strictObject({ slotId: z.uuid(), termsVersionId: z.uuid() });
+import { lockOffer, assertOffer } from './admission-acceptance';
+import {
+  fail,
+  validate,
+  session,
+  currentHuman,
+  source,
+  definition,
+  clock,
+  type Source,
+} from './engagement-authority';
+const Input = z.strictObject({
+  slotId: z.uuid(),
+  termsVersionId: z.uuid(),
+  offerId: z.uuid().optional(),
+});
 const Approval = z.strictObject({
   consentRef: InternalId,
   beneficiaryRef: InternalId,
   eligibilityPolicyVersion: InternalId,
   operatorId: z.null(),
 });
-function fail(code: WorkError['code']): never {
-  throw new WorkError(code);
-}
-function validate(tx: Tx, actor: WorkActor) {
-  if (
-    tx?.dialect !== 'POSTGRESQL' ||
-    tx.isolation !== 'READ_COMMITTED' ||
-    typeof tx.query !== 'function'
-  )
-    fail('STORAGE_CONTRACT');
-  if (
-    !InternalId.safeParse(actor?.accountId).success ||
-    !/^[a-f0-9]{64}$/.test(actor?.sessionHash ?? '')
-  )
-    fail('UNAUTHENTICATED');
-}
-/** Cheap preliminary check only. Final authority is rechecked after all identity lock waits. */
-async function session(tx: Tx, actor: WorkActor) {
-  const rows = await tx.query<{ suspended: boolean }>(
-    `SELECT u."suspended" FROM "User" u JOIN "Session" s ON s."userId"=u."id" WHERE u."id"=$1 AND s."tokenHash"=$2 AND s."via" IN ('wallet','x') AND s."expiresAt">(clock_timestamp() AT TIME ZONE 'UTC')`,
-    [actor.accountId, actor.sessionHash],
-  );
-  if (rows.length !== 1) fail('UNAUTHENTICATED');
-  if (rows[0].suspended) fail('ACCOUNT_RESTRICTED');
-}
-async function currentHuman(tx: Tx, actor: WorkActor, prelocked?: IdentityLockCapability) {
-  const locks = prelocked ?? (await prepareModuleIdentity(tx, actor.accountId, 'SHARE'));
-  await requireIdentityLocks(tx, locks, {
-    accounts: [{ id: actor.accountId, mode: 'SHARE' }],
-    children: ['Session', 'Participant'],
-  });
-  await session(tx, actor);
-  const rows = await tx.query<{ id: string; kind: string }>(
-    'SELECT "id"::text,"kind" FROM "Participant" WHERE "accountId"=$1',
-    [actor.accountId],
-  );
-  if (rows.length !== 1 || rows[0].kind !== 'HUMAN' || !z.uuid().safeParse(rows[0].id).success)
-    fail('FORBIDDEN');
-  return { participantId: rows[0].id, locks };
-}
-interface Source {
-  listingId: string;
-  guildId: string;
-  revision: number;
-  listingState: string;
-  currentTermsVersionId: string;
-  state: string;
-  fundingMode: string;
-  fundingRef: string | null;
-  termsVersionId: string;
-}
-async function source(tx: Tx, slotId: string) {
-  const refs = await tx.query<{ listingId: string }>(
-    'SELECT "listingId"::text FROM "RaidSlot" WHERE "id"=$1::uuid',
-    [slotId],
-  );
-  if (refs.length !== 1) fail('NOT_FOUND');
-  // Every source writer uses listing before slot; terms history is immutable.
-  await tx.query('SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR UPDATE', [
-    refs[0].listingId,
-  ]);
-  await tx.query('SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR UPDATE', [slotId]);
-  const rows = await tx.query<Source>(
-    `SELECT l."id"::text AS "listingId",l."guildId",l."revision",l."state" AS "listingState",l."currentTermsVersionId"::text,s."state",s."fundingMode",s."fundingRef",s."termsVersionId"::text FROM "RaidSlot" s JOIN "WorkListing" l ON l."id"=s."listingId" WHERE s."id"=$1::uuid`,
-    [slotId],
-  );
-  if (rows.length !== 1) fail('NOT_FOUND');
-  return rows[0];
-}
-async function definition(tx: Tx, id: string) {
-  const rows = await tx.query<{ snapshot: unknown; digest: string }>(
-    'SELECT "snapshot","digest" FROM "TermsVersion" WHERE "id"=$1::uuid',
-    [id],
-  );
-  const parsed = RaidTermsSchema.safeParse(rows[0]?.snapshot);
-  if (
-    rows.length !== 1 ||
-    !parsed.success ||
-    canonicalRequestDigest(parsed.data) !== rows[0].digest
-  )
-    fail('STORAGE_CONTRACT');
-  return parsed.data;
-}
-async function clock(tx: Tx) {
-  const [row] = await tx.query<{ now: Date }>('SELECT clock_timestamp() AS now', []);
-  if (!(row?.now instanceof Date)) fail('STORAGE_CONTRACT');
-  return row.now;
-}
 function snapshot(
   s: Source,
   terms: z.infer<typeof RaidTermsSchema>,
@@ -228,10 +150,14 @@ export async function commitEngagement(
       )
         fail('TERMS_VERSION_CHANGED');
       if (s.fundingMode !== 'SIMULATED' || !s.fundingRef) fail('FUNDING_REQUIRED');
+      const offer = input.offerId ? await lockOffer(tx, input.offerId) : undefined;
       authorization = await currentHuman(tx, actor, host.identityLocks);
       const terms = await definition(tx, input.termsVersionId);
       const definitionDigest = canonicalRequestDigest(terms);
-      if (terms.admission !== 'INSTANT') fail('ADMISSION_REQUIRED');
+      if (terms.admission === 'APPLICATION') {
+        if (!offer) fail('ADMISSION_REQUIRED');
+        assertOffer(offer, input, authorization.participantId, await clock(tx));
+      } else if (offer) fail('INVALID_INPUT');
       if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
       const assessed = Approval.safeParse(
         await host.assess(tx, {
@@ -286,10 +212,27 @@ export async function commitEngagement(
       }
       await session(tx, actor);
       if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
+      if (offer) {
+        assertOffer(offer, input, authorization.participantId, await clock(tx));
+        await tx.query(
+          'UPDATE "RaidOffer" SET "state"=\'ACCEPTED\',"acceptedEngagementId"=$2::uuid WHERE "id"=$1::uuid RETURNING "id"',
+          [offer.id, e.id],
+        );
+      }
       await tx.query(
         'UPDATE "RaidSlot" SET "state"=\'FILLED\' WHERE "id"=$1::uuid RETURNING "id"',
         [input.slotId],
       );
+      if (offer) {
+        await tx.query(
+          'UPDATE "RaidOffer" SET "state"=\'REVOKED\' WHERE "slotId"=$1::uuid AND "state"=\'PENDING\' RETURNING "id"',
+          [input.slotId],
+        );
+        await tx.query(
+          'UPDATE "RaidApplication" SET "state"=\'CLOSED\' WHERE "slotId"=$1::uuid AND "state"=\'SUBMITTED\' RETURNING "id"',
+          [input.slotId],
+        );
+      }
       return {
         resultRef: e.id,
         events: [

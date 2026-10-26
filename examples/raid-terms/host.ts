@@ -28,6 +28,8 @@ import type { WorkHost } from './work-loop/contracts';
 import type { LockTransaction } from './identity-locks';
 import { commitEngagement } from './work-loop/engagement-storage';
 import type { AcceptanceHost } from './work-loop/engagement-contracts';
+import { submitApplication, issueOffer } from './work-loop/admission-storage';
+import type { AdmissionHost } from './work-loop/admission-contracts';
 import { raidTerms } from './fixture';
 const url = new URL(process.env.DATABASE_URL ?? '');
 assert.equal(url.pathname, '/raid_terms_example');
@@ -89,7 +91,12 @@ try {
     CREATE FUNCTION host_identity_immutable() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'Synthetic canonical identity is immutable'; END $$;
     CREATE TRIGGER participant_immutable BEFORE UPDATE OR DELETE ON "Participant" FOR EACH ROW EXECUTE FUNCTION host_identity_immutable();
   `);
-  for (const file of ['migrations/receipts.sql', 'migrations/terms.sql', 'migrations/capacity.sql'])
+  for (const file of [
+    'migrations/receipts.sql',
+    'migrations/terms.sql',
+    'migrations/capacity.sql',
+    'migrations/admission.sql',
+  ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [actor.accountId]);
   await pool.query(
@@ -142,6 +149,10 @@ try {
     (await transaction((tx) => readRaidTerms(tx, actor, saved.termsVersionId, alternate)))
       .termsVersionId,
     saved.termsVersionId,
+  );
+  await pool.query(
+    "INSERT INTO \"Session\" VALUES ($1,$2,'wallet',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')",
+    [actor.sessionHash, actor.accountId],
   );
   // Actual minimal canonical HUMAN identity/session and exact-source consent owned by this host.
   const member = { accountId: 'synthetic-member', sessionHash: 'b'.repeat(64) };
@@ -238,6 +249,127 @@ try {
     (error: unknown) => (error as { code: string }).code === 'CAPACITY_CONFLICT',
   );
   assert.equal((await pool.query('SELECT * FROM "Engagement"')).rowCount, 1);
+  const admissions: AdmissionHost = {
+    allowNewWrites: true,
+    applicationLimit: 5,
+    authorize: host.authorize,
+  };
+  const appTerms = await transaction((tx) =>
+    saveRaidTerms(
+      tx,
+      command({ ...input, terms: { ...input.terms, admission: 'APPLICATION' } }),
+      host,
+    ),
+  );
+  const appSlot = await transaction((tx) =>
+    publishRaid(
+      tx,
+      command({ listingId: appTerms.listingId, termsVersionId: appTerms.termsVersionId }),
+      host,
+    ),
+  );
+  const applicantCommand = (input: unknown) => ({ ...command(input), actor: member });
+  const application = await transaction((tx) =>
+    submitApplication(
+      tx,
+      applicantCommand({
+        slotId: appSlot.slotId,
+        termsVersionId: appTerms.termsVersionId,
+        evidenceRefs: ['synthetic:portfolio'],
+      }),
+      admissions,
+    ),
+  );
+  const offer = await transaction((tx) =>
+    issueOffer(
+      tx,
+      command({
+        applicationId: application.application.id,
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+      }),
+      admissions,
+    ),
+  );
+  await pool.query('INSERT INTO "HostAcceptance" VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)', [
+    appSlot.slotId,
+    appTerms.termsVersionId,
+    participant.id,
+    'synthetic-offer-consent',
+    'synthetic-beneficiary',
+    'synthetic-eligibility-v1',
+  ]);
+  await assert.rejects(
+    transaction((tx) =>
+      commitEngagement(
+        tx,
+        applicantCommand({
+          slotId: appSlot.slotId,
+          termsVersionId: appTerms.termsVersionId,
+          offerId: offer.offer.id,
+        }),
+        acceptance,
+      ),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'CAPACITY_CONFLICT',
+  );
+  // A separate current candidate accepts the same exact slot after the first candidate is busy.
+  const candidate = { accountId: 'synthetic-candidate', sessionHash: 'c'.repeat(64) };
+  await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [candidate.accountId]);
+  await pool.query(
+    "INSERT INTO \"Session\" VALUES ($1,$2,'wallet',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')",
+    [candidate.sessionHash, candidate.accountId],
+  );
+  const p2 = (
+    await pool.query('INSERT INTO "Participant" ("accountId") VALUES ($1) RETURNING "id"::text', [
+      candidate.accountId,
+    ])
+  ).rows[0] as { id: string };
+  const candidateCommand = (input: unknown) => ({ ...command(input), actor: candidate });
+  const a2 = await transaction((tx) =>
+    submitApplication(
+      tx,
+      candidateCommand({
+        slotId: appSlot.slotId,
+        termsVersionId: appTerms.termsVersionId,
+        evidenceRefs: [],
+      }),
+      admissions,
+    ),
+  );
+  const o2 = await transaction((tx) =>
+    issueOffer(
+      tx,
+      command({
+        applicationId: a2.application.id,
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+      }),
+      admissions,
+    ),
+  );
+  await pool.query('INSERT INTO "HostAcceptance" VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)', [
+    appSlot.slotId,
+    appTerms.termsVersionId,
+    p2.id,
+    'synthetic-second-offer-consent',
+    'synthetic-beneficiary-2',
+    'synthetic-eligibility-v1',
+  ]);
+  const selected = await transaction((tx) =>
+    commitEngagement(
+      tx,
+      candidateCommand({
+        slotId: appSlot.slotId,
+        termsVersionId: appTerms.termsVersionId,
+        offerId: o2.offer.id,
+      }),
+      acceptance,
+    ),
+  );
+  assert.equal(selected.engagement.state, 'ACCESS_PENDING');
+  const previousOffer = (
+    await pool.query('SELECT "state" FROM "RaidOffer" WHERE "id"=$1::uuid', [offer.offer.id])
+  ).rows[0] as { state: string };
+  assert.equal(previousOffer.state, 'REVOKED');
   await pool.query('DELETE FROM "Session" WHERE "tokenHash"=$1', [member.sessionHash]);
   await assert.rejects(
     transaction((tx) => commitEngagement(tx, commit, acceptance)),
@@ -245,7 +377,7 @@ try {
   );
   assert.equal(
     (await pool.query('SELECT * FROM "ActiveCommitment"')).rowCount,
-    1,
+    2,
     'Session loss does not close work.',
   );
   await pool.query('DELETE FROM "HostGuildAuthority" WHERE "guildId"=$1', [guild]);
@@ -254,7 +386,7 @@ try {
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
   console.log(
-    'PASS: independent PG host terms/publication/consent/capacity/receipt recovery/revocation; SIMULATED ONLY.',
+    'PASS: independent PG host terms/publication/applications/offers/consent/capacity/receipt recovery/revocation; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();

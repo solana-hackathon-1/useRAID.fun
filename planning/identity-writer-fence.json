@@ -23,6 +23,7 @@
     "PracticeTrialVersion:publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"PracticeTrialVersion_actor_fkey\")",
     "Raid:creator User @relation(fields: [creatorId], references: [id])",
     "RaidEnrollment:user User @relation(fields: [userId], references: [id])",
+    "RaidOffer:offeredBy User @relation(fields: [offeredByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "RaiderPreferenceVersion:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"RaiderPreferenceVersion_account_fkey\")",
     "RaiderPreferences:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"RaiderPreferences_account_fkey\")",
     "RewardEnrollment:user User @relation(fields: [userId], references: [id])",
@@ -78,6 +79,13 @@
       "authority": "Mandatory current scoped authorize callback; consuming host holds current actor/session/Guild authority to commit. Root app composition not enabled.",
       "fold": "Restrict FK preserves history and fails closed on account deletion; no automatic rehome or fold enablement.",
       "review": "SELF-EVALUATED; independent task-end migration/authority review pending."
+    },
+    "RaidOffer.offeredByAccountId": {
+      "writer": "src/work-loop/admission-storage.ts#issueOffer",
+      "effects": "Immutable offer issuer attribution only; no User/Session/Participant mutation or identity transfer.",
+      "authority": "Current actual Session/canonical actor plus exact creator/Guild MANAGE_LISTING host authorization held through commit. Root not enabled.",
+      "fold": "Restrict preserves offer history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent task-end authority/migration review pending."
     }
   }
 }
