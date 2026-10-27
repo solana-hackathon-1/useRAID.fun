@@ -29,3 +29,5 @@ Reservation binding migration: `migrations/reservation-binding.sql` validates ex
 Public feed (#R08): after publication the host reads the live Raid back through `readWorkFeed` and asserts it is a safe card (simulated funding label; no reviewer, reservation, creator or deliverables). See [public Raid feed](../../docs/raid-work-feed.md).
 
 Work-loop metrics (#T043): after the loop the host reads the operator metrics and checks they stay simulated, per asset, with `paid` never inferred and no account ids. See [work-loop metrics](../../docs/raid-work-metrics.md).
+
+Application offers (#239): `migrations/offer-application-index.sql` indexes offers by application, and the host's `AcceptanceHost.authorizeOfferIssuer` answers, as an account (no session), whether the offer's issuing Founder still holds current Guild authority and is not suspended. Acceptance with an offer fails closed without it.
