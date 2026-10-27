@@ -25,6 +25,7 @@ export async function loadMyRaids() {
       view: await readMyRaidsFromHost(who),
       submissionsAvailable: config.submissionsAvailable,
       applicationsAvailable: config.applicationsAvailable,
+      startAvailable: config.startsAvailable,
     };
   } catch {
     return { status: 'UNAVAILABLE' as const };

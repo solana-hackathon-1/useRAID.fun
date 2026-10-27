@@ -39,3 +39,5 @@ Consented amendments (#244): `migrations/funding-reference-serialization.sql` se
 Submission JSON shape (#240): `migrations/json-shape.sql` mirrors the strict artifact, dependency and criterion schemas as database CHECK constraints; the host's submissions and reviews already satisfy them.
 
 Closure hardening (#241): `migrations/closure-hardening.sql` requires a passed operational deadline for timeout closures, stamps `closedAt` from the database clock and matches each terminal transition to the closure reason of the state it leaves. `closeOverdueEngagement` re-runs the host's `authorize` when reading back a receipt.
+
+Starting work (T032): the host's accepted candidate starts their own engagement through `startEngagement` with the portable simulated reservation host (the terms reviewer, who is not a member, is refused) instead of moving the row with SQL. The guarded database transition remains available to direct writers and is documented as such.

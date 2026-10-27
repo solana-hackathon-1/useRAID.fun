@@ -21,6 +21,8 @@ HTTP (`/api/v1/work/…`, all `private, no-store`, bounded JSON, `Idempotency-Ke
 
 HTTP (`/api/v1/work/…`, all `private, no-store`, bounded JSON, `Idempotency-Key` on writes): `GET me`, `GET reviews`, `GET applicants`; `POST submissions`, `POST consents` and `POST engagements` (record consent, then accept a Raid; `WORK_ACCEPTANCE_ENABLED`), `POST reviews` (decision), `POST offers`, `POST offers/{id}/revocation`, `POST applications/{id}/withdrawal`. Responses are re-parsed with the strict schemas and must match the request (engagement, submission, application or offer) or the call fails closed as `SERVICE_UNAVAILABLE`. Domain conflicts (state, round, deadline, duplicate review, expired offer) map to stable safe codes (`REVISION_CHANGED`, `OFFER_EXPIRED`, `CAPACITY_CONFLICT`, …) without internal detail.
 
+HTTP (`/api/v1/work/…`, all `private, no-store`, bounded JSON, `Idempotency-Key` on writes): `GET me`, `GET reviews`, `GET applicants`; `POST submissions`, `POST engagements/{id}/start` (start accepted work; `WORK_START_ENABLED`), `POST reviews` (decision), `POST offers`, `POST offers/{id}/revocation`, `POST applications/{id}/withdrawal`. Responses are re-parsed with the strict schemas and must match the request (engagement, submission, application or offer) or the call fails closed as `SERVICE_UNAVAILABLE`. Domain conflicts (state, round, deadline, duplicate review, expired offer) map to stable safe codes (`REVISION_CHANGED`, `OFFER_EXPIRED`, `CAPACITY_CONFLICT`, …) without internal detail.
+
 ## Behavior and adverse states
 
 - **Unconfirmed result:** a network or 5xx failure keeps the same request key; pressing the same button again retries it without duplicating the submission or decision.

@@ -11,6 +11,8 @@ import { readMyRaids, readReviewQueue, readApplicantQueue } from '../work-loop/w
 import { recordAcceptanceConsent } from '../work-loop/consent-storage';
 import { commitEngagement } from '../work-loop/engagement-storage';
 import { createRootAcceptanceHost } from './work-acceptance-host';
+import { startEngagement } from '../work-loop/start-storage';
+import { simulatedStartHost } from '../work-loop/start-simulated';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -22,6 +24,7 @@ export function workWorkspaceConfiguration() {
     reviewsAvailable: flag('WORK_REVIEWS_ENABLED'),
     applicationsAvailable: flag('WORK_APPLICATIONS_ENABLED'),
     acceptanceAvailable: flag('WORK_ACCEPTANCE_ENABLED') && acceptanceTaxonomy() !== '',
+    startsAvailable: flag('WORK_START_ENABLED'),
     offersAvailable: flag('WORK_ADMISSION_MANAGEMENT_ENABLED'),
   };
 }
@@ -115,4 +118,9 @@ export async function commitEngagementFromHost(command: WorkCommand) {
     isOperator: (accountId) => operators().has(accountId),
   });
   return runCommandTransaction(db, (tx) => commitEngagement(tx, command, host));
+}
+export async function startEngagementFromHost(command: WorkCommand) {
+  requireReads();
+  const host = simulatedStartHost(workWorkspaceConfiguration().startsAvailable);
+  return runCommandTransaction(db, (tx) => startEngagement(tx, command, host));
 }
