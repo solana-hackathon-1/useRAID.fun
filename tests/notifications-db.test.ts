@@ -3,7 +3,11 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { submitWork, decideReview } from '../src/work-loop/submission-storage';
-import { proposeAmendment, respondToAmendment } from '../src/work-loop/amendment-storage';
+import {
+  proposeAmendment,
+  respondToAmendment,
+  withdrawAmendment,
+} from '../src/work-loop/amendment-storage';
 import type { AmendmentHost } from '../src/work-loop/amendment-contracts';
 import {
   dispatchDeadlineReminders,
@@ -39,6 +43,8 @@ integration('T042 safe lifecycle notifications and preferences', () => {
   beforeEach(async () => {
     assertTestDatabase();
     await truncateAll(db);
+    // First enable occurs before these new business events, rather than replaying history.
+    await dispatch();
   });
   afterAll(() => db.$disconnect());
   it('notifies each authorized party of acceptance, submission, review and closure — once', async () => {
@@ -197,17 +203,97 @@ integration('T042 safe lifecycle notifications and preferences', () => {
   it('does not remind about a deadline that has already passed', async () => {
     const past = await lifecycle({
       deadlines: {
-        commitment: at(4000),
-        preparation: at(4500),
-        submission: at(5000),
-        review: at(5500),
-        operationalClosure: at(6000),
+        commitment: at(6000),
+        preparation: at(7000),
+        submission: at(8000),
+        review: at(9000),
+        operationalClosure: at(10000),
       },
     });
-    await new Promise((resolve) => setTimeout(resolve, 5300));
+    const due = past.slot.terms.deadlines.submission;
+    // Observe PostgreSQL's clock, rather than assuming a 300ms scheduler margin.
+    await db.$queryRawUnsafe(
+      'SELECT pg_sleep(GREATEST(0,extract(epoch FROM ($1::timestamptz-clock_timestamp()))))::text',
+      due,
+    );
+    const [clock] = await row<{ passed: boolean }>(
+      'SELECT clock_timestamp()>=$1::timestamptz AS passed',
+      due,
+    );
+    expect(clock.passed).toBe(true);
     await run((tx) => dispatchDeadlineReminders(tx, { withinHours: 24, limit: 100 }));
     expect(await kinds(past.worker.actor)).toEqual([]);
-  }, 20000);
+  }, 30000);
+  it('notifies the exact member and Founder for proposal, acceptance, decline and withdrawal', async () => {
+    const e = await lifecycle();
+    const host: AmendmentHost = {
+      allowNewWrites: true,
+      authorize: async () => true,
+      reserveAdditionalFunding: async () => null,
+      fundingAvailable: async () => true,
+      assessConsent: async (_tx, c) => ({ consentRef: 'consent:' + c.amendmentId }),
+    };
+    for (const decision of ['ACCEPT', 'DECLINE', 'WITHDRAW'] as const) {
+      const proposed = await run((tx) =>
+        proposeAmendment(
+          tx,
+          cmd(e.founder.actor, {
+            engagementId: e.engagementId,
+            changes: { scope: 'Changed scope ' + decision },
+            expiresAt: at(3600000),
+          }),
+          host,
+        ),
+      );
+      await dispatch();
+      if (decision === 'WITHDRAW') {
+        await run((tx) =>
+          withdrawAmendment(tx, cmd(e.founder.actor, { amendmentId: proposed.amendment.id }), host),
+        );
+      } else {
+        await run((tx) =>
+          respondToAmendment(
+            tx,
+            cmd(e.worker.actor, { amendmentId: proposed.amendment.id, decision }),
+            host,
+          ),
+        );
+      }
+      await dispatch();
+      await dispatch();
+    }
+    const amendments = async (actor: typeof e.worker.actor) =>
+      (await kinds(actor)).filter((kind) => kind.startsWith('AMENDMENT_'));
+    expect(await amendments(e.worker.actor)).toEqual([
+      'AMENDMENT_PROPOSED',
+      'AMENDMENT_PROPOSED',
+      'AMENDMENT_PROPOSED',
+      'AMENDMENT_WITHDRAWN',
+    ]);
+    expect(await amendments(e.founder.actor)).toEqual(['AMENDMENT_DECIDED', 'AMENDMENT_DECIDED']);
+    expect(await amendments(e.reviewer.actor)).toEqual([]);
+  });
+  it('deduplicates the exact reviewer-issued revision deadline reminder for the member', async () => {
+    const e = await lifecycle();
+    const sub = await e.submit();
+    const deadline = at(3600000);
+    await run((tx) =>
+      decideReview(
+        tx,
+        cmd(e.reviewer.actor, reviewInput(sub.submission.id, 'REQUEST_REVISION', deadline)),
+        { allowNewWrites: true },
+      ),
+    );
+    const remind = () => run((tx) => dispatchDeadlineReminders(tx));
+    expect((await remind()).created).toBe(1);
+    expect((await remind()).created).toBe(0);
+    expect(await kinds(e.worker.actor)).toEqual(['DEADLINE_APPROACHING']);
+    expect(await kinds(e.reviewer.actor)).toEqual([]);
+    const stored = await row<{ payload: { deadline: string } }>(
+      'SELECT "payload" FROM "Notification"',
+    );
+    expect(stored[0].payload.deadline).toBe(deadline);
+  });
   it('sends a new reminder when an agreed amendment moves the deadline', async () => {
     const near = await lifecycle({
       deadlines: {

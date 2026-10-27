@@ -35,8 +35,14 @@ export async function setPreferencesFromHost(actor: WorkActor, value: { promotio
 /** Worker entry: one bounded pass of outbox notifications and deadline reminders. Off unless explicitly enabled. */
 export async function runNotificationDispatch() {
   if (!notificationsConfiguration().dispatchAvailable) return null;
-  return runCommandTransaction(db, async (tx) => ({
-    events: await dispatchWorkNotifications(tx, { limit: 100 }),
-    reminders: await dispatchDeadlineReminders(tx, { withinHours: 24, limit: 100 }),
-  }));
+  // Each pass commits independently. Both are attempted, and any failure remains visible to the worker.
+  const [events, reminders] = await Promise.allSettled([
+    runCommandTransaction(db, (tx) => dispatchWorkNotifications(tx, { limit: 100 })),
+    runCommandTransaction(db, (tx) =>
+      dispatchDeadlineReminders(tx, { withinHours: 24, limit: 100 }),
+    ),
+  ]);
+  if (events.status === 'rejected') throw events.reason;
+  if (reminders.status === 'rejected') throw reminders.reason;
+  return { events: events.value, reminders: reminders.value };
 }

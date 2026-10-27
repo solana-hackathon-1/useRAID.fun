@@ -35,8 +35,31 @@ const RECIPIENTS: Record<Audience, string> = {
     'SELECT l."creatorAccountId" AS "accountId" FROM "Engagement" e JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "WorkListing" l ON l."id"=s."listingId" WHERE e."id"=$1::uuid',
 };
 const BATCH_MAX = 500;
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isUuid = (value: unknown): value is string => typeof value === 'string' && UUID.test(value);
 function bounded(value: number, fallback: number) {
   return Number.isInteger(value) && value >= 1 && value <= BATCH_MAX ? value : fallback;
+}
+/** First enabled pass suppresses committed history once. No timestamp watermark can lose late commits. */
+async function initializeDispatch(tx: Tx) {
+  const initialized = await tx.query(
+    'SELECT "key" FROM "NotificationDispatchInitialization" WHERE "key"=\'work.v1\'',
+    [],
+  );
+  if (initialized.length) return;
+  // The unique singleton serializes only initialization. Its row and historical markers commit together.
+  const acquired = await tx.query(
+    'INSERT INTO "NotificationDispatchInitialization" ("key") VALUES (\'work.v1\') ON CONFLICT DO NOTHING RETURNING "key"',
+    [],
+  );
+  if (!acquired.length) return;
+  await tx.query(
+    `INSERT INTO "NotificationDispatch" ("outboxEventId")
+     SELECT o."id" FROM "OutboxEvent" o JOIN "AuditEvent" a ON a."id"=o."eventId"
+     WHERE a."eventType" LIKE 'work.%'
+     ON CONFLICT DO NOTHING RETURNING "outboxEventId"`,
+    [],
+  );
 }
 /**
  * System job: turns work events from the outbox into in-app notifications. At least once and order-independent:
@@ -44,6 +67,7 @@ function bounded(value: number, fallback: number) {
  * a race or a lost marker harmless.
  */
 export async function dispatchWorkNotifications(tx: Tx, options: { limit?: number } = {}) {
+  await initializeDispatch(tx);
   const limit = bounded(options.limit ?? 100, 100);
   const events = await tx.query<{
     outboxId: string;
@@ -61,7 +85,8 @@ export async function dispatchWorkNotifications(tx: Tx, options: { limit?: numbe
   for (const event of events) {
     const engagementId = event.payload?.engagementId;
     for (const rule of RULES[event.eventType] ?? []) {
-      if (!engagementId || !/^[0-9a-f-]{36}$/.test(engagementId)) continue;
+      // Invalid payloads are still marked handled below; none can reach a PostgreSQL UUID cast.
+      if (!isUuid(engagementId)) continue;
       const people = await tx.query<{ accountId: string | null }>(RECIPIENTS[rule.to], [
         engagementId,
       ]);
@@ -181,7 +206,7 @@ export async function readOwnNotificationState(tx: Tx, actor: WorkActor) {
 /** Marks the person's own notification read. Idempotent; another person's or an absent id is one NOT_FOUND. */
 export async function markNotificationRead(tx: Tx, actor: WorkActor, id: string) {
   validate(tx, actor);
-  if (!/^[0-9a-f-]{36}$/.test(String(id))) fail('INVALID_INPUT');
+  if (!isUuid(id)) fail('INVALID_INPUT');
   await currentActor(tx, actor);
   const rows = await tx.query<{ readAt: Date | null }>(
     'SELECT "readAt" FROM "Notification" WHERE "id"=$1::uuid AND "accountId"=$2 FOR UPDATE',
