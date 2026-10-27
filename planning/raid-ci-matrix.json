@@ -207,6 +207,7 @@
     "tests/shared-contracts-review.test.ts",
     "tests/shared-contracts.test.ts",
     "tests/shell-account.test.ts",
+    "tests/shell-nav.test.ts",
     "tests/siws-nonce.test.ts",
     "tests/skill-assessment-review-boundary.test.ts",
     "tests/skill-assessment-review.test.ts",
@@ -1193,6 +1194,7 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/shell-nav.test.ts",
         "tests/work-feed-db.test.ts",
         "tests/work-feed-http.test.ts",
         "tests/work-feed-page.test.ts",
