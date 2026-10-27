@@ -43,6 +43,7 @@ export const EventEnvelopeSchema = z
         guildDraftVersionId: InternalId.optional(),
         guildProfileVersionId: InternalId.optional(),
         guildRoleGrantId: InternalId.optional(),
+        guildOwnershipTransferId: InternalId.optional(),
         projectProposalVersionId: InternalId.optional(),
         skillTaxonomyVersionId: InternalId.optional(),
         skillClaimVersionId: InternalId.optional(),

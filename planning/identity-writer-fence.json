@@ -16,6 +16,9 @@
     "Guild:activatedBy User @relation(\"GuildActivator\", fields: [activatedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_activatedBy_fkey\")",
     "Guild:founder User @relation(\"GuildFounder\", fields: [founderAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_founder_fkey\")",
     "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
+    "GuildOwnershipTransfer:decidedBy User? @relation(\"GuildTransferDecider\", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildOwnershipTransfer_decidedBy_fkey\")",
+    "GuildOwnershipTransfer:from User @relation(\"GuildTransferFrom\", fields: [fromAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildOwnershipTransfer_from_fkey\")",
+    "GuildOwnershipTransfer:to User @relation(\"GuildTransferTo\", fields: [toAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildOwnershipTransfer_to_fkey\")",
     "GuildProfileVersion:actor User @relation(fields: [actorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildProfileVersion_actor_fkey\")",
     "GuildRoleGrant:grantedBy User @relation(\"GuildGrantIssuer\", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantedBy_fkey\")",
     "GuildRoleGrant:grantee User @relation(\"GuildGrantGrantee\", fields: [granteeAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantee_fkey\")",
@@ -181,6 +184,27 @@
       "effects": "Issuer attribution of a grant; no identity mutation.",
       "authority": "Same issuing authority as grantGuildRole (Founder or live delegating profile grantee); revocation by Founder, issuer or grantee via revokeGuildRole.",
       "fold": "Restrict preserves grant history; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildOwnershipTransfer.fromAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#proposeOwnershipTransfer",
+      "effects": "Immutable proposer attribution; the Founder changes only on the recipient's accepted transfer (database guard). No User/Session/Participant mutation.",
+      "authority": "Current actual Session of the Guild's current Founder, rechecked after the Guild row lock.",
+      "fold": "Restrict preserves ownership history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildOwnershipTransfer.toAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#respondOwnershipTransfer",
+      "effects": "Immutable recipient attribution; the recipient becomes Founder only on their own accepted, host-approved transfer.",
+      "authority": "Current actual Session of the recipient, rechecked after the Guild row lock; host authorizeOwnershipTransfer must agree.",
+      "fold": "Restrict preserves ownership history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildOwnershipTransfer.decidedByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#respondOwnershipTransfer",
+      "effects": "Immutable decider attribution (recipient, withdrawing Founder, or the actor that lapsed an expired proposal).",
+      "authority": "Current actual Session of the decider; a decision is final.",
+      "fold": "Restrict preserves ownership history and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent review pending."
     }
   }
