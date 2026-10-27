@@ -10,7 +10,26 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  reuse:
+    # Read-only: finds a green manual Checks run for this exact source tree (DEC-2026-10-27-01).
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      verified: ${{ steps.reuse.outputs.verified }}
+      verified_run: ${{ steps.reuse.outputs.verified_run }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - id: reuse
+        name: Find a green Checks run for this source tree
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ci-reuse-checks.py
   publish:
+    needs: reuse
     if: github.ref == 'refs/heads/main'
     # The owner-selected staging VM is aarch64; publish a native ARM64 image.
     runs-on: ubuntu-24.04-arm
@@ -40,10 +59,12 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        if: needs.reuse.outputs.verified != 'true'
         with:
           node-version: '22'
           cache: npm
       - name: Install and check source
+        if: needs.reuse.outputs.verified != 'true'
         run: |
           npm ci
           python3 -m unittest discover -s tests -p 'test_raid_*.py'
@@ -52,29 +73,38 @@ jobs:
           npm run lint
           npm run audit:check
       - name: Verify database and application contracts
+        if: needs.reuse.outputs.verified != 'true'
         run: |
           npm run db:migrate
           npm test
       - name: Raider orientation desktop and mobile suite
+        if: needs.reuse.outputs.verified != 'true'
         run: |
           npx playwright install --with-deps chromium
           npx playwright test --config=playwright.onboarding.config.ts
       - name: Guild draft desktop and mobile suite
+        if: needs.reuse.outputs.verified != 'true'
         run: npx playwright test --config=playwright.guild-drafts.config.ts
       - name: Project proposal desktop and mobile suite
+        if: needs.reuse.outputs.verified != 'true'
         run: npx playwright test --config=playwright.project-proposals.config.ts
       - name: Private skill claims desktop and mobile suite
+        if: needs.reuse.outputs.verified != 'true'
         run: npx playwright test --config=playwright.skill-claims.config.ts
       - name: Administrative taxonomy API suite
+        if: needs.reuse.outputs.verified != 'true'
         run: npx playwright test --config=playwright.skill-taxonomy.config.ts
       - name: Administrative catalog editor and maintenance suites
+        if: needs.reuse.outputs.verified != 'true'
         run: |
           npx playwright test --config=playwright.skill-editor.config.ts
           SKILL_EDITOR_TEST_WRITES=false npx playwright test --config=playwright.skill-editor.config.ts
       - name: Build production image without deployment secrets
         env:
+          VERIFIED_RUN: ${{ needs.reuse.outputs.verified_run }}
           SOURCE_URL: ${{ github.server_url }}/${{ github.repository }}
         run: |
+          if [ -n "$VERIFIED_RUN" ]; then echo "Source verified by Checks run $VERIFIED_RUN; staging repeats only build, smoke and publish."; fi
           docker build \
             --label "org.opencontainers.image.source=$SOURCE_URL" \
             --label "org.opencontainers.image.revision=$GITHUB_SHA" \
