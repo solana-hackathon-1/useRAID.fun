@@ -55,6 +55,7 @@
     "tests/engagement-capacity-db.test.ts",
     "tests/docs-links.test.ts",
     "tests/domain.test.ts",
+    "tests/env-documentation.test.ts",
     "tests/env-example.test.ts",
     "tests/fake-solana.test.ts",
     "tests/format.test.ts",
@@ -1045,6 +1046,7 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/env-documentation.test.ts",
         "tests/braces-security.test.ts",
         "tests/browser-live/standalone.spec.ts",
         "tests/db-guard.test.ts",
