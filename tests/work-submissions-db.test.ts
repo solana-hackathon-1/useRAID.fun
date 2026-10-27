@@ -545,6 +545,15 @@ integration('T023 versioned submissions and criterion review', () => {
     expect(await insertSubmission([{ ...good, ref: '\u{1F600}'.repeat(251) }])).toBe(
       artifactsCheck,
     );
+    // A JSON null is not a string: zod's enum refuses it, so the database must too.
+    expect(await insertSubmission([{ ...good, kind: null }])).toBe(artifactsCheck);
+    // Padding is trimmed before the limit and the duplicate check, exactly as the command schema does.
+    expect(await insertSubmission([{ ...good, ref: '\u00a0' + 'x'.repeat(500) + '\t' }])).toBe(
+      'accepted',
+    );
+    expect(await insertSubmission([good, { ...good, ref: '\u3000' + good.ref + '\u00a0' }])).toBe(
+      artifactsCheck,
+    );
     expect(await insertSubmission(many(20))).toBe('accepted');
     // Counts are bounded by the older column checks, which fire first.
     expect(await insertSubmission(many(21))).toBe('WorkSubmission_artifacts_check');
@@ -598,6 +607,7 @@ integration('T023 versioned submissions and criterion review', () => {
     expect(await insertReview([{ ...at(0), evidence: '\u{1F600}'.repeat(1001) }])).toBe(
       criteriaCheck,
     );
+    expect(await insertReview([{ ...at(0), result: null }])).toBe(criteriaCheck);
     expect(await insertReview([at(0), { ...at(0), result: 'UNMET' }])).toBe(criteriaCheck);
   });
   it('ties every lifecycle state change to its evidence row even for direct writers', async () => {
