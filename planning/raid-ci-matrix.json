@@ -285,6 +285,10 @@
     "tests/notifications-http.test.ts",
     "tests/notifications-host.test.ts",
     "tests/work-entry-links.test.ts",
+    "tests/work-feed-db.test.ts",
+    "tests/work-feed-http.test.ts",
+    "tests/work-feed-page.test.ts",
+    "tests/work-feed-ui.test.ts",
     "tests/work-workspace-consumer.test.ts"
   ],
   "epics": [
@@ -1189,6 +1193,10 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/work-feed-db.test.ts",
+        "tests/work-feed-http.test.ts",
+        "tests/work-feed-page.test.ts",
+        "tests/work-feed-ui.test.ts",
         "tests/browser-live/tracking.spec.ts",
         "tests/browser/discovery.spec.ts",
         "tests/discovery-rows.test.ts",
