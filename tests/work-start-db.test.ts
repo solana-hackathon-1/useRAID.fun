@@ -4,6 +4,8 @@ import { PrismaClient } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { commitEngagement } from '../src/work-loop/engagement-storage';
 import { startEngagement } from '../src/work-loop/start-storage';
+import { submitWork } from '../src/work-loop/submission-storage';
+import { workInput } from './helpers/work-lifecycle';
 import { simulatedStartHost } from '../src/work-loop/start-simulated';
 import type { StartHost } from '../src/work-loop/start-contracts';
 import { raidTerms } from './helpers/raid-terms-fixture';
@@ -88,6 +90,18 @@ integration('T032 starting accepted work', { timeout: 60000 }, () => {
     );
     expect(replay.status).toBe('REPLAYED');
     expect((await state(engagementId)).state).toBe('IN_PROGRESS');
+  });
+  it('still replays the recorded start after the work has moved on, reporting its current state', async () => {
+    const { worker, engagementId } = await setup();
+    const key = randomUUID();
+    await start(worker.actor, engagementId, ready, key);
+    await run((tx) =>
+      submitWork(tx, cmd(worker.actor, workInput(engagementId)), { allowNewWrites: true }),
+    );
+    expect((await state(engagementId)).state).toBe('SUBMITTED');
+    const replay = await start(worker.actor, engagementId, ready, key);
+    expect(replay.status).toBe('REPLAYED');
+    expect(replay.engagement).toMatchObject({ id: engagementId, state: 'SUBMITTED' });
   });
   it('answers a stranger, a missing engagement and the Founder the same way', async () => {
     const { engagementId } = await setup();

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { CommandReceiptTransaction } from '../command-receipts';
+import { StateSchema } from '../contracts/states';
 import type { RaidTerms } from './terms';
 
 /**
@@ -27,9 +28,10 @@ export interface StartHost {
   ): Promise<boolean>;
 }
 export const StartEngagementInput = z.strictObject({ engagementId: z.uuid() });
+/** A start is recorded once; a replay reports the engagement's current state, which may have moved on since. */
 export const StartedEngagementSchema = z.strictObject({
   id: z.uuid(),
-  state: z.literal('IN_PROGRESS'),
+  state: StateSchema.engagement,
   revision: z.number().int().min(2),
 });
 export const StartResultSchema = z.strictObject({
