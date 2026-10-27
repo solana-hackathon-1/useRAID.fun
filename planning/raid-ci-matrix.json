@@ -300,6 +300,7 @@
     "tests/work-feed-page.test.ts",
     "tests/work-feed-ui.test.ts",
     "tests/work-apply-ui.test.ts",
+    "tests/work-accept-ui.test.ts",
     "tests/work-workspace-consumer.test.ts"
   ],
   "epics": [
@@ -1219,6 +1220,7 @@
         "tests/work-metrics-http.test.ts",
         "tests/work-metrics-db.test.ts",
         "tests/work-apply-ui.test.ts",
+        "tests/work-accept-ui.test.ts",
         "tests/browser-live/tracking.spec.ts",
         "tests/browser/discovery.spec.ts",
         "tests/discovery-rows.test.ts",

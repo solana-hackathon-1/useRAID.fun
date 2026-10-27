@@ -30,15 +30,15 @@ describe('accept a Raid', () => {
     expect(html).not.toContain(termsDigest);
   });
   it('records consent to the shown digest and then accepts, with one key per step', async () => {
-    const recordConsent = vi.fn(async () => consent);
-    const acceptRaid = vi.fn(async () => committed);
+    const recordConsent = vi.fn(async (_input: unknown, _key: string) => consent);
+    const acceptRaid = vi.fn(async (_input: unknown, _key: string) => committed);
     const runner = createAcceptRunner({ recordConsent, acceptRaid }, keys());
     expect(await runner.accept(input)).toEqual({ kind: 'DONE' });
     expect(recordConsent).toHaveBeenCalledWith(input, 'key-1');
     expect(acceptRaid).toHaveBeenCalledWith({ slotId, termsVersionId }, 'key-2');
   });
   it('accepts through the Founder offer when one is given', async () => {
-    const acceptRaid = vi.fn(async () => committed);
+    const acceptRaid = vi.fn(async (_input: unknown, _key: string) => committed);
     const runner = createAcceptRunner(
       { recordConsent: vi.fn(async () => consent), acceptRaid },
       keys(),
@@ -47,7 +47,7 @@ describe('accept a Raid', () => {
     expect(acceptRaid).toHaveBeenCalledWith({ slotId, termsVersionId, offerId }, 'key-2');
   });
   it('never accepts when the consent step failed', async () => {
-    const acceptRaid = vi.fn(async () => committed);
+    const acceptRaid = vi.fn(async (_input: unknown, _key: string) => committed);
     const recordConsent = vi
       .fn()
       .mockRejectedValue(new WorkClientError('TERMS_VERSION_CHANGED', 409));
@@ -56,9 +56,9 @@ describe('accept a Raid', () => {
     expect(acceptRaid).not.toHaveBeenCalled();
   });
   it('keeps both keys across an unconfirmed failure so a retry cannot duplicate either step', async () => {
-    const recordConsent = vi.fn(async () => consent);
+    const recordConsent = vi.fn(async (_input: unknown, _key: string) => consent);
     const acceptRaid = vi
-      .fn()
+      .fn<(input: unknown, key: string) => Promise<typeof committed>>()
       .mockRejectedValueOnce(new WorkClientError('SERVICE_UNAVAILABLE', 503))
       .mockResolvedValueOnce(committed);
     const runner = createAcceptRunner({ recordConsent, acceptRaid }, keys());
@@ -68,9 +68,9 @@ describe('accept a Raid', () => {
     expect(acceptRaid.mock.calls.map((c) => c[1])).toEqual(['key-2', 'key-2']);
   });
   it('drops only the failed step key after a definite answer', async () => {
-    const recordConsent = vi.fn(async () => consent);
+    const recordConsent = vi.fn(async (_input: unknown, _key: string) => consent);
     const acceptRaid = vi
-      .fn()
+      .fn<(input: unknown, key: string) => Promise<typeof committed>>()
       .mockRejectedValueOnce(new WorkClientError('CAPACITY_CONFLICT', 409))
       .mockResolvedValueOnce(committed);
     const runner = createAcceptRunner({ recordConsent, acceptRaid }, keys());
@@ -81,7 +81,7 @@ describe('accept a Raid', () => {
   it('ignores a second press while a request is in flight', async () => {
     let finish!: (value: typeof consent) => void;
     const recordConsent = vi.fn(() => new Promise<typeof consent>((resolve) => (finish = resolve)));
-    const acceptRaid = vi.fn(async () => committed);
+    const acceptRaid = vi.fn(async (_input: unknown, _key: string) => committed);
     const runner = createAcceptRunner({ recordConsent, acceptRaid }, keys());
     const first = runner.accept(input);
     expect(await runner.accept(input)).toEqual({ kind: 'BUSY' });
