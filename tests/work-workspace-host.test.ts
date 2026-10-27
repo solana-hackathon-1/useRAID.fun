@@ -10,6 +10,8 @@ const port = vi.hoisted(() => ({
   revoke: vi.fn(),
   withdraw: vi.fn(),
   apply: vi.fn(),
+  consent: vi.fn(),
+  commit: vi.fn(),
 }));
 vi.mock('../src/lib/db', () => ({ db: {} }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({
@@ -24,6 +26,8 @@ vi.mock('../src/work-loop/submission-storage', () => ({
   submitWork: port.submit,
   decideReview: port.decide,
 }));
+vi.mock('../src/work-loop/consent-storage', () => ({ recordAcceptanceConsent: port.consent }));
+vi.mock('../src/work-loop/engagement-storage', () => ({ commitEngagement: port.commit }));
 vi.mock('../src/work-loop/admission-storage', () => ({
   issueOffer: port.issue,
   revokeOffer: port.revoke,
@@ -39,6 +43,8 @@ import {
   issueOfferFromHost,
   withdrawApplicationFromHost,
   submitApplicationFromHost,
+  recordConsentFromHost,
+  commitEngagementFromHost,
 } from '../src/lib/work-workspace-host';
 const actor = { accountId: 'member', sessionHash: 'a'.repeat(64) };
 const command = { actor, input: {}, idempotencyKey: 'key-1', requestId: 'req-1' };
@@ -53,6 +59,7 @@ it('defaults every workspace flag off and requires the exact string true', () =>
       'WORK_SUBMISSIONS_ENABLED',
       'WORK_REVIEWS_ENABLED',
       'WORK_APPLICATIONS_ENABLED',
+      'WORK_ACCEPTANCE_ENABLED',
       'WORK_ADMISSION_MANAGEMENT_ENABLED',
     ])
       vi.stubEnv(name, value);
@@ -61,6 +68,7 @@ it('defaults every workspace flag off and requires the exact string true', () =>
     submissionsAvailable: false,
     reviewsAvailable: false,
     applicationsAvailable: false,
+    acceptanceAvailable: false,
     offersAvailable: false,
   });
 });
@@ -72,6 +80,8 @@ it('keeps every read and write closed until reads are enabled', async () => {
     () => issueOfferFromHost(command),
     () => withdrawApplicationFromHost(command),
     () => submitApplicationFromHost(command),
+    () => recordConsentFromHost(command),
+    () => commitEngagementFromHost(command),
   ])
     await expect(call()).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
   expect(port.my).not.toHaveBeenCalled();
@@ -137,4 +147,25 @@ it('opens new applications only with the applications flag and the explicit limi
     allowNewWrites: true,
     applicationLimit: 3,
   });
+});
+it('opens acceptance only with the flag and a configured taxonomy, and hands the commit a real Root host', async () => {
+  vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+  port.consent.mockResolvedValue('consented');
+  port.commit.mockResolvedValue('committed');
+  vi.stubEnv('WORK_ACCEPTANCE_ENABLED', 'true');
+  expect(workWorkspaceConfiguration().acceptanceAvailable).toBe(false);
+  await recordConsentFromHost(command);
+  expect(port.consent.mock.calls.at(-1)![2]).toEqual({ allowNewWrites: false });
+  vi.stubEnv('WORK_ACCEPTANCE_TAXONOMY_ID', 'catalog-1');
+  expect(workWorkspaceConfiguration().acceptanceAvailable).toBe(true);
+  await recordConsentFromHost(command);
+  expect(port.consent.mock.calls.at(-1)![2]).toEqual({ allowNewWrites: true });
+  await commitEngagementFromHost(command);
+  const host = port.commit.mock.calls.at(-1)![2];
+  expect(host.allowNewWrites).toBe(true);
+  for (const fn of ['assess', 'fundingAvailable', 'authorizeOfferIssuer'])
+    expect(typeof host[fn]).toBe('function');
+  vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'issuer-1');
+  expect(await host.authorizeOfferIssuer(port.tx, { accountId: 'issuer-1' })).toBe(true);
+  expect(await host.authorizeOfferIssuer(port.tx, { accountId: 'someone' })).toBe(false);
 });

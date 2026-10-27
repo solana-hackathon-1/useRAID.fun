@@ -8,6 +8,9 @@ import {
   submitApplication,
 } from '../work-loop/admission-storage';
 import { readMyRaids, readReviewQueue, readApplicantQueue } from '../work-loop/workspace-storage';
+import { recordAcceptanceConsent } from '../work-loop/consent-storage';
+import { commitEngagement } from '../work-loop/engagement-storage';
+import { createRootAcceptanceHost } from './work-acceptance-host';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -18,6 +21,7 @@ export function workWorkspaceConfiguration() {
     submissionsAvailable: flag('WORK_SUBMISSIONS_ENABLED'),
     reviewsAvailable: flag('WORK_REVIEWS_ENABLED'),
     applicationsAvailable: flag('WORK_APPLICATIONS_ENABLED'),
+    acceptanceAvailable: flag('WORK_ACCEPTANCE_ENABLED') && acceptanceTaxonomy() !== '',
     offersAvailable: flag('WORK_ADMISSION_MANAGEMENT_ENABLED'),
   };
 }
@@ -32,6 +36,10 @@ function operators() {
       .map((id) => id.trim())
       .filter(Boolean),
   );
+}
+/** The one published skill taxonomy Raid terms refer to; acceptance stays closed until it is configured. */
+function acceptanceTaxonomy() {
+  return (process.env.WORK_ACCEPTANCE_TAXONOMY_ID ?? '').trim();
 }
 function applicationLimit() {
   const value = Number(process.env.WORK_APPLICATION_LIMIT ?? 5);
@@ -91,4 +99,20 @@ export async function submitApplicationFromHost(command: WorkCommand) {
   requireReads();
   const host = admission(workWorkspaceConfiguration().applicationsAvailable);
   return runCommandTransaction(db, (tx) => submitApplication(tx, command, host));
+}
+export async function recordConsentFromHost(command: WorkCommand) {
+  requireReads();
+  const allowNewWrites = workWorkspaceConfiguration().acceptanceAvailable;
+  return runCommandTransaction(db, (tx) =>
+    recordAcceptanceConsent(tx, command, { allowNewWrites }),
+  );
+}
+export async function commitEngagementFromHost(command: WorkCommand) {
+  requireReads();
+  const host = createRootAcceptanceHost({
+    taxonomyId: acceptanceTaxonomy(),
+    allowNewWrites: workWorkspaceConfiguration().acceptanceAvailable,
+    isOperator: (accountId) => operators().has(accountId),
+  });
+  return runCommandTransaction(db, (tx) => commitEngagement(tx, command, host));
 }

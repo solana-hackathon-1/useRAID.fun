@@ -264,6 +264,8 @@
     "tests/work-metrics-host.test.ts",
     "tests/work-metrics-http.test.ts",
     "tests/work-feed-storage.test.ts",
+    "tests/work-acceptance-host.test.ts",
+    "tests/work-acceptance-root-db.test.ts",
     "tests/worker-db.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
@@ -787,6 +789,8 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/work-acceptance-host.test.ts",
+        "tests/work-acceptance-root-db.test.ts",
         "tests/command-receipts-boundary.test.ts",
         "tests/command-receipts-db.test.ts",
         "tests/command-receipts.test.ts",

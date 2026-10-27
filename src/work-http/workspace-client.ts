@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { ConsentResultSchema } from '../work-loop/consent-contracts';
+import { CommittedEngagementSchema } from '../work-loop/engagement-contracts';
 import { ApplicationResultSchema, OfferResultSchema } from '../work-loop/admission-contracts';
 import {
   DecideReviewInput,
@@ -103,6 +105,14 @@ export function createWorkClient(transport: WorkTransport = fetchTransport) {
       input: { slotId: string; termsVersionId: string; evidenceRefs: string[] },
       key: string,
     ) => call(ApplicationResultSchema, 'POST', '/api/v1/work/applications', write(input, key)),
+    recordConsent: (
+      input: { slotId: string; termsVersionId: string; termsDigest: string },
+      key: string,
+    ) => call(ConsentResultSchema, 'POST', '/api/v1/work/consents', write(input, key)),
+    acceptRaid: (
+      input: { slotId: string; termsVersionId: string; offerId?: string },
+      key: string,
+    ) => call(CommittedEngagementSchema, 'POST', '/api/v1/work/engagements', write(input, key)),
     withdrawApplication: (applicationId: string, key: string) =>
       call(
         ApplicationResultSchema,

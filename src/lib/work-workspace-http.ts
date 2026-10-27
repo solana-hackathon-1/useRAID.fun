@@ -13,6 +13,8 @@ import {
   revokeOfferFromHost,
   withdrawApplicationFromHost,
   submitApplicationFromHost,
+  recordConsentFromHost,
+  commitEngagementFromHost,
 } from './work-workspace-host';
 async function authority<T>(work: () => Promise<T> | T): Promise<T> {
   try {
@@ -44,4 +46,6 @@ export const workHandlers = createWorkHandlers({
   revokeOffer: revokeOfferFromHost,
   withdrawApplication: withdrawApplicationFromHost,
   submitApplication: submitApplicationFromHost,
+  recordConsent: recordConsentFromHost,
+  commitEngagement: commitEngagementFromHost,
 });

@@ -45,6 +45,12 @@ export interface AcceptanceHost {
     },
   ): Promise<boolean>;
 }
+/** Accept a slot at its exact terms version, optionally through the Founder's offer. */
+export const CommitEngagementInput = z.strictObject({
+  slotId: z.uuid(),
+  termsVersionId: z.uuid(),
+  offerId: z.uuid().optional(),
+});
 export const CommittedEngagementSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
   fundingMode: z.literal('SIMULATED'),

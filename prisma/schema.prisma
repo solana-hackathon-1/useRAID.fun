@@ -58,6 +58,7 @@ model Participant {
   engagementMembers EngagementMember[]
   activeCommitment ActiveCommitment?
   skillAssessments SkillAssessment[]
+  acceptanceConsents WorkAcceptanceConsent[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   kind String @default("HUMAN")
   accountId String @unique
@@ -1288,6 +1289,7 @@ model RaidSlot {
   applications RaidApplication[]
   engagements Engagement[]
   simulatedReservations WorkSimulatedReservation[]
+  acceptanceConsents WorkAcceptanceConsent[]
   replaced RaidReplacement? @relation("ReplacedSlot")
   replacement RaidReplacement? @relation("ReplacementSlot")
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1409,6 +1411,18 @@ model WorkReview {
   createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   submission WorkSubmission @relation(fields: [submissionId, engagementId, termsVersionId], references: [id, engagementId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkReview_submission_fkey")
   reviewer User @relation(fields: [reviewerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+model WorkAcceptanceConsent {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  participantId String @db.Uuid
+  slotId String @db.Uuid
+  termsVersionId String @db.Uuid
+  termsDigest String
+  consentedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkAcceptanceConsent_slot_fkey")
+  @@unique([participantId, slotId, termsVersionId], map: "WorkAcceptanceConsent_subject_key")
+  @@index([slotId])
 }
 model WorkSimulatedReservation {
   fundingRef String @unique
