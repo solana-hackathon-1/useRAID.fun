@@ -7,6 +7,7 @@
     "tests/admin-db.test.ts",
     "tests/admin-lists.test.ts",
     "tests/admins.test.ts",
+    "tests/api-route-guard.test.ts",
     "tests/asset-registry-amounts.test.ts",
     "tests/asset-registry-boundary.test.ts",
     "tests/asset-registry-bundle.test.ts",
@@ -55,6 +56,7 @@
     "tests/engagement-capacity-db.test.ts",
     "tests/docs-links.test.ts",
     "tests/domain.test.ts",
+    "tests/env-documentation.test.ts",
     "tests/env-example.test.ts",
     "tests/fake-solana.test.ts",
     "tests/format.test.ts",
@@ -257,6 +259,9 @@
     "tests/wallet-picker.test.ts",
     "tests/wallet-routes.test.ts",
     "tests/wallet-session-authority.test.ts",
+    "tests/work-metrics-db.test.ts",
+    "tests/work-metrics-host.test.ts",
+    "tests/work-metrics-http.test.ts",
     "tests/worker-db.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
@@ -305,6 +310,7 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/api-route-guard.test.ts",
         "tests/account-merge-canonical.test.ts",
         "tests/admin-db.test.ts",
         "tests/admin-lists.test.ts",
@@ -1049,6 +1055,7 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/env-documentation.test.ts",
         "tests/braces-security.test.ts",
         "tests/browser-live/standalone.spec.ts",
         "tests/db-guard.test.ts",
@@ -1197,6 +1204,9 @@
         "tests/work-feed-http.test.ts",
         "tests/work-feed-page.test.ts",
         "tests/work-feed-ui.test.ts",
+        "tests/work-metrics-host.test.ts",
+        "tests/work-metrics-http.test.ts",
+        "tests/work-metrics-db.test.ts",
         "tests/browser-live/tracking.spec.ts",
         "tests/browser/discovery.spec.ts",
         "tests/discovery-rows.test.ts",
