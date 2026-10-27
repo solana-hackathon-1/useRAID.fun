@@ -5,6 +5,7 @@ import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
 import { CommandReceiptError } from '../command-receipts';
 import { WorkError, type WorkCommand, type WorkActor } from '../work-loop/contracts';
 import { ApplicationResultSchema, OfferResultSchema } from '../work-loop/admission-contracts';
+import { StartEngagementInput, StartResultSchema } from '../work-loop/start-contracts';
 import {
   DecideReviewInput,
   ReviewResultSchema,
@@ -38,6 +39,7 @@ export interface WorkHttpHost {
   issueOffer(command: WorkCommand): Promise<unknown>;
   revokeOffer(command: WorkCommand): Promise<unknown>;
   withdrawApplication(command: WorkCommand): Promise<unknown>;
+  startEngagement(command: WorkCommand): Promise<unknown>;
 }
 export const workPrivateHeaders = Object.freeze({
   'Cache-Control': 'private, no-store',
@@ -76,6 +78,8 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   PUBLICATION_BLOCKED: 'REVISION_CHANGED',
   TERMS_FROZEN: 'REVISION_CHANGED',
   ADMISSION_REQUIRED: 'APPROVAL_REQUIRED',
+  // Resources become ready on their own schedule: the person can try again later.
+  RESOURCES_NOT_READY: 'SERVICE_UNAVAILABLE',
 };
 function invalid(): never {
   throw new JsonBodyFailure(422);
@@ -122,6 +126,7 @@ export function createWorkHandlers(host: WorkHttpHost) {
       'issueOffer',
       'revokeOffer',
       'withdrawApplication',
+      'startEngagement',
     ].some((k) => typeof host[k as keyof WorkHttpHost] !== 'function')
   )
     contract();
@@ -230,6 +235,16 @@ export function createWorkHandlers(host: WorkHttpHost) {
         const c = await command(request, NoBody, a, requestId, { offerId: target });
         const r = OfferResultSchema.safeParse(await host.revokeOffer(c));
         if (!r.success || r.data.offer.id !== target) contract();
+        return r.data;
+      });
+    },
+    START(request: Request, engagementId: string | Promise<string>) {
+      return run(request, true, async (a, requestId) => {
+        const target = await uuid(engagementId);
+        const c = await command(request, NoBody, a, requestId, { engagementId: target });
+        const input = StartEngagementInput.safeParse(c.input);
+        const r = StartResultSchema.safeParse(await host.startEngagement(c));
+        if (!input.success || !r.success || r.data.engagement.id !== target) contract();
         return r.data;
       });
     },

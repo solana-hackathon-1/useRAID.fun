@@ -41,6 +41,8 @@ import {
 } from './work-loop/amendment-storage';
 import type { AmendmentHost } from './work-loop/amendment-contracts';
 import { reissueRaid } from './work-loop/replacement-storage';
+import { startEngagement } from './work-loop/start-storage';
+import { simulatedStartHost } from './work-loop/start-simulated';
 import { raidTerms } from './fixture';
 import { AssetPolicySnapshotSchema, assetKey } from './contracts/assets';
 import { recommend, reviewChoices } from './work-loop/recommendation';
@@ -436,17 +438,31 @@ try {
     2,
     'Session loss does not close work.',
   );
-  // Binding/access start is another module's job; the host moves the engagement through the guarded transition.
   const reviewer = { accountId: 'reviewer', sessionHash: 'd'.repeat(64) };
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [reviewer.accountId]);
   await pool.query(
     "INSERT INTO \"Session\" VALUES ($1,$2,'wallet',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')",
     [reviewer.sessionHash, reviewer.accountId],
   );
-  await pool.query(
-    'UPDATE "Engagement" SET "state"=\'IN_PROGRESS\',"revision"="revision"+1 WHERE "id"=$1::uuid',
-    [selected.engagement.id],
+  // Only the engagement's own member starts it, after the exact simulated reservation is verified.
+  await assert.rejects(
+    transaction((tx) =>
+      startEngagement(
+        tx,
+        { ...command({ engagementId: selected.engagement.id }), actor: reviewer },
+        simulatedStartHost(true),
+      ),
+    ),
+    (e: unknown) => ['FORBIDDEN', 'NOT_FOUND'].includes((e as { code: string }).code),
   );
+  const startedWork = await transaction((tx) =>
+    startEngagement(
+      tx,
+      candidateCommand({ engagementId: selected.engagement.id }),
+      simulatedStartHost(true),
+    ),
+  );
+  assert.equal(startedWork.engagement.state, 'IN_PROGRESS');
   // A consented amendment: the Founder's proposal changes nothing until the affected member agrees to its exact digest.
   const amendments: AmendmentHost = {
     allowNewWrites: true,

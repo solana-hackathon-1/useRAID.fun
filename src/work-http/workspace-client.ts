@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { StartResultSchema } from '../work-loop/start-contracts';
 import { ApplicationResultSchema, OfferResultSchema } from '../work-loop/admission-contracts';
 import {
   DecideReviewInput,
@@ -97,6 +98,13 @@ export function createWorkClient(transport: WorkTransport = fetchTransport) {
         OfferResultSchema,
         'POST',
         `/api/v1/work/offers/${encodeURIComponent(offerId)}/revocation`,
+        write({}, key),
+      ),
+    startEngagement: (engagementId: string, key: string) =>
+      call(
+        StartResultSchema,
+        'POST',
+        `/api/v1/work/engagements/${encodeURIComponent(engagementId)}/start`,
         write({}, key),
       ),
     withdrawApplication: (applicationId: string, key: string) =>

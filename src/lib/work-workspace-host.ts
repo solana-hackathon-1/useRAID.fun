@@ -3,6 +3,8 @@ import type { AdmissionHost } from '../work-loop/admission-contracts';
 import { submitWork, decideReview } from '../work-loop/submission-storage';
 import { withdrawApplication, issueOffer, revokeOffer } from '../work-loop/admission-storage';
 import { readMyRaids, readReviewQueue, readApplicantQueue } from '../work-loop/workspace-storage';
+import { startEngagement } from '../work-loop/start-storage';
+import { simulatedStartHost } from '../work-loop/start-simulated';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -13,6 +15,7 @@ export function workWorkspaceConfiguration() {
     submissionsAvailable: flag('WORK_SUBMISSIONS_ENABLED'),
     reviewsAvailable: flag('WORK_REVIEWS_ENABLED'),
     applicationsAvailable: flag('WORK_APPLICATIONS_ENABLED'),
+    startsAvailable: flag('WORK_START_ENABLED'),
     offersAvailable: flag('WORK_ADMISSION_MANAGEMENT_ENABLED'),
   };
 }
@@ -81,4 +84,9 @@ export async function withdrawApplicationFromHost(command: WorkCommand) {
   requireReads();
   const host = admission(workWorkspaceConfiguration().applicationsAvailable);
   return runCommandTransaction(db, (tx) => withdrawApplication(tx, command, host));
+}
+export async function startEngagementFromHost(command: WorkCommand) {
+  requireReads();
+  const host = simulatedStartHost(workWorkspaceConfiguration().startsAvailable);
+  return runCommandTransaction(db, (tx) => startEngagement(tx, command, host));
 }

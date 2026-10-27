@@ -53,6 +53,9 @@ function host(overrides: Partial<WorkHttpHost> = {}): WorkHttpHost {
     withdrawApplication: async () => {
       throw new Error('unused');
     },
+    startEngagement: async () => {
+      throw new Error('unused');
+    },
     ...overrides,
   };
 }
@@ -219,5 +222,43 @@ describe('T022 work workspace HTTP boundary', () => {
     expect((await handlers.REVOKE_OFFER(post('/x', {}), offerId)).status).toBe(200);
     expect((await handlers.WITHDRAW(post('/x', {}), applicationId)).status).toBe(200);
     expect(calls).toEqual(['revoke:' + offerId, 'withdraw:' + applicationId]);
+  });
+  it('starts an engagement from its path with an empty body and a key, and the result must match', async () => {
+    const started = {
+      status: 'EXECUTED',
+      engagement: { id: engagementId, state: 'IN_PROGRESS', revision: 2 },
+    };
+    const startEngagement = vi.fn(async () => started);
+    const handlers = createWorkHandlers(host({ startEngagement }));
+    const ok = await handlers.START(post('/x', {}), engagementId);
+    expect(ok.status).toBe(200);
+    expect(await ok.json()).toEqual(started);
+    expect(startEngagement).toHaveBeenCalledWith({
+      actor,
+      input: { engagementId },
+      idempotencyKey: 'key-1',
+      requestId: 'request-1',
+    });
+    expect((await handlers.START(post('/x', { extra: 1 }), engagementId)).status).toBe(422);
+    expect((await handlers.START(post('/x', {}), 'not-a-uuid')).status).toBe(422);
+    const other = createWorkHandlers(
+      host({
+        startEngagement: async () => ({
+          ...started,
+          engagement: { ...started.engagement, id: '77777777-7777-4777-8777-777777777777' },
+        }),
+      }),
+    );
+    expect((await other.START(post('/x', {}), engagementId)).status).toBe(503);
+    const notReady = createWorkHandlers(
+      host({
+        startEngagement: async () => {
+          throw new WorkError('RESOURCES_NOT_READY');
+        },
+      }),
+    );
+    const unavailable = await notReady.START(post('/x', {}), engagementId);
+    expect(unavailable.status).toBe(503);
+    expect((await error(unavailable)).retryable).toBe(true);
   });
 });

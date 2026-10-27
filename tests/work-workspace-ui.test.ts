@@ -314,4 +314,14 @@ describe('T022 review and applicant desk markup', () => {
     const html = desk([item()], [], { reviewsAvailable: false });
     expect(html).toContain('Recording decisions is currently unavailable');
   });
+  it('offers Start work only for a pending engagement while starts are open', () => {
+    const pending = mine([card({ state: 'ACCESS_PENDING', nextStep: 'WAIT_FOR_START' })]);
+    const open = workspace(pending, { startAvailable: true });
+    expect(open).toContain('Start work');
+    expect(open).toMatch(/<button[^>]*disabled[^>]*>Start work/);
+    const closed = workspace(pending, { startAvailable: false });
+    expect(closed).not.toContain('Start work');
+    expect(closed).toContain('Setup is not finished yet');
+    expect(workspace(mine([card()]), { startAvailable: true })).not.toContain('Start work');
+  });
 });

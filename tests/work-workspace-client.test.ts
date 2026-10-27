@@ -46,12 +46,14 @@ describe('T022 work workspace browser client', () => {
     const applicationId = '77777777-7777-4777-8777-777777777777';
     await client.revokeOffer(offerId, 'k').catch(() => {});
     await client.withdrawApplication(applicationId, 'k').catch(() => {});
+    await client.startEngagement(applicationId, 'k').catch(() => {});
     await client
       .issueOffer({ applicationId, expiresAt: '2026-10-27T00:00:00.000Z' }, 'k')
       .catch(() => {});
     expect(t.request.mock.calls.map((c) => c[1])).toEqual([
       `/api/v1/work/offers/${offerId}/revocation`,
       `/api/v1/work/applications/${applicationId}/withdrawal`,
+      `/api/v1/work/engagements/${applicationId}/start`,
       '/api/v1/work/offers',
     ]);
   });

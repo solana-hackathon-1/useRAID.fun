@@ -27,6 +27,7 @@ export default async function MyRaidPage() {
           initial={page.view}
           submissionsAvailable={page.submissionsAvailable}
           applicationsAvailable={page.applicationsAvailable}
+          startAvailable={page.startAvailable}
         />
       )}
       <p>

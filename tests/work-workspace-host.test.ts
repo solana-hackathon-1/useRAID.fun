@@ -9,6 +9,7 @@ const port = vi.hoisted(() => ({
   issue: vi.fn(),
   revoke: vi.fn(),
   withdraw: vi.fn(),
+  start: vi.fn(),
 }));
 vi.mock('../src/lib/db', () => ({ db: {} }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({
@@ -23,6 +24,7 @@ vi.mock('../src/work-loop/submission-storage', () => ({
   submitWork: port.submit,
   decideReview: port.decide,
 }));
+vi.mock('../src/work-loop/start-storage', () => ({ startEngagement: port.start }));
 vi.mock('../src/work-loop/admission-storage', () => ({
   issueOffer: port.issue,
   revokeOffer: port.revoke,
@@ -36,6 +38,7 @@ import {
   decideReviewFromHost,
   issueOfferFromHost,
   withdrawApplicationFromHost,
+  startEngagementFromHost,
 } from '../src/lib/work-workspace-host';
 const actor = { accountId: 'member', sessionHash: 'a'.repeat(64) };
 const command = { actor, input: {}, idempotencyKey: 'key-1', requestId: 'req-1' };
@@ -50,6 +53,7 @@ it('defaults every workspace flag off and requires the exact string true', () =>
       'WORK_SUBMISSIONS_ENABLED',
       'WORK_REVIEWS_ENABLED',
       'WORK_APPLICATIONS_ENABLED',
+      'WORK_START_ENABLED',
       'WORK_ADMISSION_MANAGEMENT_ENABLED',
     ])
       vi.stubEnv(name, value);
@@ -58,6 +62,7 @@ it('defaults every workspace flag off and requires the exact string true', () =>
     submissionsAvailable: false,
     reviewsAvailable: false,
     applicationsAvailable: false,
+    startsAvailable: false,
     offersAvailable: false,
   });
 });
@@ -68,6 +73,7 @@ it('keeps every read and write closed until reads are enabled', async () => {
     () => decideReviewFromHost(command),
     () => issueOfferFromHost(command),
     () => withdrawApplicationFromHost(command),
+    () => startEngagementFromHost(command),
   ])
     await expect(call()).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
   expect(port.my).not.toHaveBeenCalled();
@@ -117,4 +123,16 @@ it('bounds the configured application limit and falls back to the fixture of fiv
     vi.stubEnv('WORK_APPLICATION_LIMIT', value);
     expect(await limit()).toBe(expected);
   }
+});
+it('lets only the start flag open new starts, using the simulated reservation host', async () => {
+  vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+  port.start.mockResolvedValue('started');
+  await startEngagementFromHost(command);
+  expect(port.start.mock.calls.at(-1)![2]).toMatchObject({ allowNewWrites: false });
+  vi.stubEnv('WORK_START_ENABLED', 'true');
+  await startEngagementFromHost(command);
+  const host = port.start.mock.calls.at(-1)![2];
+  expect(host).toMatchObject({ allowNewWrites: true });
+  expect(typeof host.verifyBinding).toBe('function');
+  expect(typeof host.resourcesReady).toBe('function');
 });

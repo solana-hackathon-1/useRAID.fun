@@ -257,6 +257,7 @@
     "tests/wallet-picker.test.ts",
     "tests/wallet-routes.test.ts",
     "tests/wallet-session-authority.test.ts",
+    "tests/work-start-db.test.ts",
     "tests/worker-db.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
@@ -774,6 +775,7 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/work-start-db.test.ts",
         "tests/command-receipts-boundary.test.ts",
         "tests/command-receipts-db.test.ts",
         "tests/command-receipts.test.ts",

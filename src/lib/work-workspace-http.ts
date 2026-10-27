@@ -12,6 +12,7 @@ import {
   issueOfferFromHost,
   revokeOfferFromHost,
   withdrawApplicationFromHost,
+  startEngagementFromHost,
 } from './work-workspace-host';
 async function authority<T>(work: () => Promise<T> | T): Promise<T> {
   try {
@@ -42,4 +43,5 @@ export const workHandlers = createWorkHandlers({
   issueOffer: issueOfferFromHost,
   revokeOffer: revokeOfferFromHost,
   withdrawApplication: withdrawApplicationFromHost,
+  startEngagement: startEngagementFromHost,
 });
