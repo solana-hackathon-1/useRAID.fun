@@ -157,4 +157,49 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
     ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
     expect(canonicalRequestDigest(raidTerms())).toMatch(/^[0-9a-f]{64}$/);
   });
+  it('waits on the assessment lock of each required skill, so a revocation in flight is never missed', async () => {
+    await setup();
+    const { slot, digest } = await raid('D');
+    await consent(person, slot, digest);
+    const [{ id: participantId }] = (await db.$queryRawUnsafe(
+      'SELECT "id"::text FROM "Participant" WHERE "accountId"=$1',
+      person.accountId,
+    )) as { id: string }[];
+    let release!: () => void;
+    const released = new Promise<void>((resolve) => (release = resolve));
+    let locked!: () => void;
+    const holding = new Promise<void>((resolve) => (locked = resolve));
+    // Stands in for a decision (REVOKE/REASSESS) that holds the same lock until it commits.
+    const holder = db.$transaction(
+      async (t) => {
+        await t.$queryRawUnsafe(
+          `SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text`,
+          participantId + ':frontend',
+        );
+        locked();
+        await released;
+      },
+      { timeout: 60000 },
+    );
+    try {
+      await holding;
+      let settled = false;
+      const pending = accept(person, slot).finally(() => (settled = true));
+      let waiting = false;
+      for (let i = 0; i < 100 && !waiting; i++) {
+        const rows = (await db.$queryRawUnsafe(
+          `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND wait_event='advisory' AND pid<>pg_backend_pid()`,
+        )) as unknown[];
+        waiting = rows.length > 0;
+        if (!waiting) await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+      expect(waiting).toBe(true);
+      expect(settled).toBe(false);
+      release();
+      expect((await pending).engagement.state).toBe('ACCESS_PENDING');
+    } finally {
+      release();
+      await holder;
+    }
+  });
 });
