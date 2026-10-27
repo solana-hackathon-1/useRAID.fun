@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610270006_work_acceptance_consent/migration.sql

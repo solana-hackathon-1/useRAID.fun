@@ -47,11 +47,22 @@ describe('T022 work workspace browser client', () => {
     await client.revokeOffer(offerId, 'k').catch(() => {});
     await client.withdrawApplication(applicationId, 'k').catch(() => {});
     await client
+      .recordConsent(
+        { slotId: applicationId, termsVersionId: offerId, termsDigest: 'a'.repeat(64) },
+        'k',
+      )
+      .catch(() => {});
+    await client
+      .acceptRaid({ slotId: applicationId, termsVersionId: offerId }, 'k')
+      .catch(() => {});
+    await client
       .issueOffer({ applicationId, expiresAt: '2026-10-27T00:00:00.000Z' }, 'k')
       .catch(() => {});
     expect(t.request.mock.calls.map((c) => c[1])).toEqual([
       `/api/v1/work/offers/${offerId}/revocation`,
       `/api/v1/work/applications/${applicationId}/withdrawal`,
+      '/api/v1/work/consents',
+      '/api/v1/work/engagements',
       '/api/v1/work/offers',
     ]);
   });

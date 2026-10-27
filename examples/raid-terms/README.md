@@ -27,3 +27,5 @@ The [notification extension](../../docs/raid-notifications.md) adds the ninth an
 Reservation binding migration: `migrations/reservation-binding.sql` validates existing synthetic coverage before binding references. `WorkHost.reserveSimulatedFunding` still returns its host-owned reference; canonical publication and replacement record it against the exact slot/version/reward vector. A host must not insert the canonical reservation itself. No live balance is implied.
 
 Application offers (#239): `migrations/offer-application-index.sql` indexes offers by application, and the host's `AcceptanceHost.authorizeOfferIssuer` answers, as an account (no session), whether the offer's issuing Founder still holds current Guild authority and is not suspended. Acceptance with an offer fails closed without it.
+
+Acceptance consent (T021 Root): `migrations/acceptance-consent.sql` adds the append-only `WorkAcceptanceConsent` record (participant, slot, terms version, stored digest). The host keeps its own `HostAcceptance` consent/eligibility port; the shared Root's host (consent plus verified-skill check) lives in the application, not in this portable module.

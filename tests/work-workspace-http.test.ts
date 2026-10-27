@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { WorkError } from '../src/work-loop/contracts';
+import { TermsSnapshotSchema } from '../src/contracts/entities';
+import { raidTerms } from './helpers/raid-terms-fixture';
 import {
   WorkHttpError,
   createWorkHandlers,
@@ -51,6 +53,12 @@ function host(overrides: Partial<WorkHttpHost> = {}): WorkHttpHost {
       throw new Error('unused');
     },
     withdrawApplication: async () => {
+      throw new Error('unused');
+    },
+    recordConsent: async () => {
+      throw new Error('unused');
+    },
+    commitEngagement: async () => {
       throw new Error('unused');
     },
     ...overrides,
@@ -220,5 +228,125 @@ describe('T022 work workspace HTTP boundary', () => {
     expect((await handlers.REVOKE_OFFER(post('/x', {}), offerId)).status).toBe(200);
     expect((await handlers.WITHDRAW(post('/x', {}), applicationId)).status).toBe(200);
     expect(calls).toEqual(['revoke:' + offerId, 'withdraw:' + applicationId]);
+  });
+  const slotId = '55555555-5555-4555-8555-555555555555';
+  const digest = 'd'.repeat(64);
+  it('records consent with a strict body and a key, and the result must name the same exact terms', async () => {
+    const consent = {
+      id: '66666666-6666-4666-8666-666666666666',
+      participantId,
+      slotId,
+      termsVersionId,
+      termsDigest: digest,
+      consentedAt: '2026-10-27T00:00:00.000Z',
+    };
+    const recordConsent = vi.fn(async () => ({ status: 'EXECUTED', consent }));
+    const handlers = createWorkHandlers(host({ recordConsent }));
+    const request = { slotId, termsVersionId, termsDigest: digest };
+    const ok = await handlers.CONSENT(post('/api/v1/work/consents', request));
+    expect(ok.status).toBe(200);
+    expect(recordConsent).toHaveBeenCalledWith({
+      actor,
+      input: request,
+      idempotencyKey: 'key-1',
+      requestId: 'request-1',
+    });
+    for (const bad of [
+      { ...request, extra: 1 },
+      { ...request, termsDigest: 'short' },
+      { slotId, termsVersionId },
+    ])
+      expect((await handlers.CONSENT(post('/api/v1/work/consents', bad))).status).toBe(422);
+    const drift = createWorkHandlers(
+      host({
+        recordConsent: async () => ({
+          status: 'EXECUTED',
+          consent: { ...consent, termsDigest: 'e'.repeat(64) },
+        }),
+      }),
+    );
+    expect((await drift.CONSENT(post('/api/v1/work/consents', request))).status).toBe(503);
+  });
+  const committed = () => {
+    const terms = raidTerms();
+    const snapshot = TermsSnapshotSchema.parse({
+      id: termsVersionId,
+      guildId: 'synthetic-guild',
+      revision: 1,
+      scope: '{}',
+      acceptanceCriteria: terms.acceptanceCriteria,
+      requiredSkills: terms.requiredSkills,
+      roster: [{ participantId, responsibility: 'PRIMARY_EXECUTOR', consentRef: 'consent-1' }],
+      rewards: terms.rewards.map((r) => ({
+        ...r,
+        beneficiaryParticipantId: participantId,
+        beneficiaryRef: 'simulated-beneficiary:' + participantId,
+      })),
+      deadlines: {
+        preparation: terms.deadlines.preparation,
+        submission: terms.deadlines.submission,
+        review: terms.deadlines.review,
+        operationalClosure: terms.deadlines.operationalClosure,
+      },
+      eligibilityPolicyVersion: 'root-skill-admission-v1',
+      allowedToolsPolicyVersion: 'p1',
+      revisionPolicyVersion: 'p2',
+      withdrawalPolicyVersion: 'p3',
+      terminationPolicyVersion: 'p4',
+      rubricVersion: null,
+      rightsPolicyVersion: 'p5',
+      reviewPolicyVersion: 'p6',
+      disputePolicyVersion: 'p7',
+      finalityPolicyVersion: 'p8',
+      createdAt: '2026-10-27T00:00:00.000Z',
+    });
+    return {
+      status: 'EXECUTED',
+      fundingMode: 'SIMULATED',
+      generation: 1,
+      engagement: {
+        id: engagementId,
+        guildId: 'synthetic-guild',
+        revision: 1,
+        state: 'ACCESS_PENDING',
+        source: { kind: 'RAID_SLOT', raidSlotId: slotId },
+        acceptedTerms: snapshot,
+      },
+    };
+  };
+  it('accepts a Raid with a strict body, and the committed engagement must be for the requested slot and terms', async () => {
+    const commitEngagement = vi.fn(async () => committed());
+    const handlers = createWorkHandlers(host({ commitEngagement }));
+    const request = { slotId, termsVersionId };
+    const ok = await handlers.ACCEPT(post('/api/v1/work/engagements', request));
+    expect(ok.status).toBe(200);
+    expect(commitEngagement).toHaveBeenCalledWith({
+      actor,
+      input: request,
+      idempotencyKey: 'key-1',
+      requestId: 'request-1',
+    });
+    const offerId = '77777777-7777-4777-8777-777777777777';
+    expect((await handlers.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(200);
+    for (const bad of [{ ...request, extra: 1 }, { slotId }, { ...request, offerId: 'nope' }])
+      expect((await handlers.ACCEPT(post('/x', bad))).status).toBe(422);
+    const wrongSlot = createWorkHandlers(
+      host({
+        commitEngagement: async () => {
+          const result = committed();
+          result.engagement.source = { kind: 'RAID_SLOT', raidSlotId: 'another-slot' };
+          return result;
+        },
+      }),
+    );
+    expect((await wrongSlot.ACCEPT(post('/x', request))).status).toBe(503);
+    const rejected = createWorkHandlers(
+      host({
+        commitEngagement: async () => {
+          throw new WorkError('ELIGIBILITY_REJECTED');
+        },
+      }),
+    );
+    expect((await rejected.ACCEPT(post('/x', request))).status).toBe(403);
   });
 });

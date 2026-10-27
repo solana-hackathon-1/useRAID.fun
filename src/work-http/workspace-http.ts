@@ -4,6 +4,11 @@ import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
 import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
 import { CommandReceiptError } from '../command-receipts';
 import { WorkError, type WorkCommand, type WorkActor } from '../work-loop/contracts';
+import { ConsentResultSchema, RecordConsentInput } from '../work-loop/consent-contracts';
+import {
+  CommitEngagementInput,
+  CommittedEngagementSchema,
+} from '../work-loop/engagement-contracts';
 import { ApplicationResultSchema, OfferResultSchema } from '../work-loop/admission-contracts';
 import {
   DecideReviewInput,
@@ -38,6 +43,8 @@ export interface WorkHttpHost {
   issueOffer(command: WorkCommand): Promise<unknown>;
   revokeOffer(command: WorkCommand): Promise<unknown>;
   withdrawApplication(command: WorkCommand): Promise<unknown>;
+  recordConsent(command: WorkCommand): Promise<unknown>;
+  commitEngagement(command: WorkCommand): Promise<unknown>;
 }
 export const workPrivateHeaders = Object.freeze({
   'Cache-Control': 'private, no-store',
@@ -123,6 +130,8 @@ export function createWorkHandlers(host: WorkHttpHost) {
       'issueOffer',
       'revokeOffer',
       'withdrawApplication',
+      'recordConsent',
+      'commitEngagement',
     ].some((k) => typeof host[k as keyof WorkHttpHost] !== 'function')
   )
     contract();
@@ -231,6 +240,34 @@ export function createWorkHandlers(host: WorkHttpHost) {
         const c = await command(request, NoBody, a, requestId, { offerId: target });
         const r = OfferResultSchema.safeParse(await host.revokeOffer(c));
         if (!r.success || r.data.offer.id !== target) contract();
+        return r.data;
+      });
+    },
+    CONSENT(request: Request) {
+      return run(request, true, async (a, requestId) => {
+        const c = await command(request, RecordConsentInput, a, requestId);
+        const r = ConsentResultSchema.safeParse(await host.recordConsent(c));
+        if (
+          !r.success ||
+          r.data.consent.slotId !== c.input.slotId ||
+          r.data.consent.termsVersionId !== c.input.termsVersionId ||
+          r.data.consent.termsDigest !== c.input.termsDigest
+        )
+          contract();
+        return r.data;
+      });
+    },
+    ACCEPT(request: Request) {
+      return run(request, true, async (a, requestId) => {
+        const c = await command(request, CommitEngagementInput, a, requestId);
+        const r = CommittedEngagementSchema.safeParse(await host.commitEngagement(c));
+        if (
+          !r.success ||
+          r.data.engagement.source.kind !== 'RAID_SLOT' ||
+          r.data.engagement.source.raidSlotId !== c.input.slotId ||
+          r.data.engagement.acceptedTerms.id !== c.input.termsVersionId
+        )
+          contract();
         return r.data;
       });
     },

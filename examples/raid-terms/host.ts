@@ -133,6 +133,7 @@ try {
     'migrations/notification-safety.sql',
     'migrations/reservation-binding.sql',
     'migrations/offer-application-index.sql',
+    'migrations/acceptance-consent.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   assert.equal(

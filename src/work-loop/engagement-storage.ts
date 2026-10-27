@@ -9,6 +9,7 @@ import {
 import { WorkError, type WorkCommand } from './contracts';
 import { RaidTermsSchema, publicationProblems } from './terms';
 import {
+  CommitEngagementInput,
   CommittedEngagementSchema,
   type AcceptanceHost,
   type AcceptanceApproval,
@@ -25,11 +26,7 @@ import {
   clock,
   type Source,
 } from './engagement-authority';
-const Input = z.strictObject({
-  slotId: z.uuid(),
-  termsVersionId: z.uuid(),
-  offerId: z.uuid().optional(),
-});
+const Input = CommitEngagementInput;
 const Approval = z.strictObject({
   consentRef: InternalId,
   beneficiaryRef: InternalId,
