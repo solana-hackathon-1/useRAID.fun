@@ -333,8 +333,41 @@ integration('T021 applications and offers', () => {
       code: 'PUBLICATION_BLOCKED',
     });
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
+    // The transitions are recorded as one event naming the superseded terms version, not left silent.
+    const events = (await db.$queryRawUnsafe(
+      `SELECT "aggregateId","payload" FROM "AuditEvent" WHERE "eventType"='work.offers_revoked.v1'`,
+    )) as { aggregateId: string; payload: { termsVersionId: string } }[];
+    expect(events).toHaveLength(1);
+    expect(events[0].aggregateId).toBe(slot.listingId);
+    expect(events[0].payload.termsVersionId).toBe(slot.termsVersionId);
   });
-  it('reports a revoked offer as unavailable but an elapsed one as expired', async () => {
+  it('records no revocation event when a terms edit leaves nothing outstanding', async () => {
+    const { founder, slot } = await setup();
+    const founderHost: WorkHost = {
+      allowNewWrites: true,
+      authorize: async (_tx, who, guild) =>
+        who.accountId === founder.actor.accountId && guild === 'synthetic-guild',
+      reserveSimulatedFunding: async (_tx, b) => 'synthetic:' + b.slotId,
+    };
+    await run((tx) =>
+      saveRaidTerms(
+        tx,
+        cmd(founder.actor, {
+          listingId: slot.listingId,
+          expectedRevision: 1,
+          guildId: 'synthetic-guild',
+          terms: { ...raidTerms(), admission: 'APPLICATION', title: 'Edited with no applicants' },
+        }),
+        founderHost,
+      ),
+    );
+    expect(
+      await db.$queryRawUnsafe(
+        `SELECT 1 FROM "AuditEvent" WHERE "eventType"='work.offers_revoked.v1'`,
+      ),
+    ).toEqual([]);
+  });
+  it('reports a revoked offer as unavailable (an elapsed one is covered by the expiry test)', async () => {
     const { applicant, founder, slot, apply } = await setup();
     const a = await applyTo(apply);
     const o = await offerTo(

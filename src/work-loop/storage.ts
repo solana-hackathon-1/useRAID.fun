@@ -133,6 +133,7 @@ export async function saveRaidTerms(
     async () => {
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
       let id = input.listingId;
+      let superseded: string | null = null;
       if (id === null) {
         const [row] = await tx.query<{ id: string }>(
           'INSERT INTO "WorkListing" ("guildId","creatorAccountId") VALUES ($1,$2) RETURNING "id"::text',
@@ -143,6 +144,7 @@ export async function saveRaidTerms(
         const current = await listing(tx, id, actor, host, true);
         if (current.guildId !== input.guildId) fail('FORBIDDEN');
         if (current.revision !== input.expectedRevision) fail('REVISION_CONFLICT');
+        superseded = current.currentTermsVersionId;
         const filled = await tx.query<{ id: string }>(
           'SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "state"=\'FILLED\' LIMIT 1',
           [id],
@@ -164,11 +166,11 @@ export async function saveRaidTerms(
         [id],
       );
       // Offers and applications are bound to the exact terms version; a new version leaves them unusable.
-      await tx.query(
+      const revoked = await tx.query(
         'UPDATE "RaidOffer" SET "state"=\'REVOKED\' WHERE "state"=\'PENDING\' AND "slotId" IN (SELECT "id" FROM "RaidSlot" WHERE "listingId"=$1::uuid) RETURNING "id"',
         [id],
       );
-      await tx.query(
+      const closed = await tx.query(
         'UPDATE "RaidApplication" SET "state"=\'CLOSED\' WHERE "state"=\'SUBMITTED\' AND "slotId" IN (SELECT "id" FROM "RaidSlot" WHERE "listingId"=$1::uuid) RETURNING "id"',
         [id],
       );
@@ -186,6 +188,19 @@ export async function saveRaidTerms(
             guildId: input.guildId,
             payload: { termsVersionId: v.id },
           },
+          // One bounded event (a command may carry at most twenty) records that outstanding admissions were made
+          // unusable by this edit, naming the superseded version; it is never left as silent state changes.
+          ...(superseded && (revoked.length || closed.length)
+            ? [
+                {
+                  type: 'work.offers_revoked.v1',
+                  aggregateId: id,
+                  aggregateVersion: input.expectedRevision + 1,
+                  guildId: input.guildId,
+                  payload: { termsVersionId: superseded },
+                },
+              ]
+            : []),
         ],
       };
     },
