@@ -7,10 +7,17 @@ const port = vi.hoisted(() => ({
   setPrefs: vi.fn(),
   events: vi.fn(),
   reminders: vi.fn(),
+  commits: [] as unknown[],
+  transaction: vi.fn(),
 }));
 vi.mock('../src/lib/db', () => ({ db: {} }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({
-  runCommandTransaction: async (_db: unknown, work: (tx: object) => unknown) => work(port.tx),
+  runCommandTransaction: async (_db: unknown, work: (tx: object) => unknown) => {
+    port.transaction();
+    const result = await work(port.tx);
+    port.commits.push(result);
+    return result;
+  },
 }));
 vi.mock('../src/notifications/storage', () => ({
   readOwnNotificationState: port.state,
@@ -32,6 +39,7 @@ afterEach(() => {
   delete process.env.NOTIFICATIONS_READS_ENABLED;
   delete process.env.NOTIFICATIONS_DISPATCH_ENABLED;
   vi.clearAllMocks();
+  port.commits.length = 0;
 });
 it('is off by default; only exact "true" enables reads or dispatch', async () => {
   expect(notificationsConfiguration()).toEqual({ readsAvailable: false, dispatchAvailable: false });
@@ -65,4 +73,19 @@ it('runs one bounded dispatch pass only when explicitly enabled', async () => {
   });
   expect(port.events).toHaveBeenCalledWith(port.tx, { limit: 100 });
   expect(port.reminders).toHaveBeenCalledWith(port.tx, { withinHours: 24, limit: 100 });
+  expect(port.transaction).toHaveBeenCalledTimes(2);
+});
+it('keeps committed event notifications when the reminder transaction fails', async () => {
+  process.env.NOTIFICATIONS_DISPATCH_ENABLED = 'true';
+  port.events.mockResolvedValue({ handled: 2, created: 3 });
+  port.reminders.mockRejectedValueOnce(new Error('synthetic reminder failure'));
+  await expect(runNotificationDispatch()).rejects.toThrow('synthetic reminder failure');
+  expect(port.commits).toContainEqual({ handled: 2, created: 3 });
+});
+it('still runs reminders when the event transaction fails', async () => {
+  process.env.NOTIFICATIONS_DISPATCH_ENABLED = 'true';
+  port.events.mockRejectedValueOnce(new Error('synthetic event failure'));
+  port.reminders.mockResolvedValue({ created: 1 });
+  await expect(runNotificationDispatch()).rejects.toThrow('synthetic event failure');
+  expect(port.commits).toContainEqual({ created: 1 });
 });

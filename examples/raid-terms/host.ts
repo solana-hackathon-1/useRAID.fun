@@ -123,8 +123,14 @@ try {
     'migrations/simulated-reservations.sql',
     'migrations/notifications.sql',
     'migrations/amendments.sql',
+    'migrations/notification-safety.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
+  assert.equal(
+    (await transaction((tx) => dispatchWorkNotifications(tx))).created,
+    0,
+    'Enable once before generating new business events; committed history is baselined.',
+  );
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [actor.accountId]);
   await pool.query(
     'INSERT INTO "HostSession" VALUES ($1,$2,clock_timestamp()+interval \'1 hour\')',

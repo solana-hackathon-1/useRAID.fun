@@ -1440,6 +1440,10 @@ model NotificationDispatch {
   processedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   outbox OutboxEvent @relation(fields: [outboxEventId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 }
+model NotificationDispatchInitialization {
+  key String @id
+  initializedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+}
 model EngagementAmendment {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   engagementId String @db.Uuid

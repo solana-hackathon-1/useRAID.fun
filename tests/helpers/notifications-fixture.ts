@@ -41,6 +41,7 @@ export async function seedNotificationsFixture() {
   ]);
   guard.assertTestDatabase();
   await guard.truncateAll(db);
+  await runCommandTransaction(db, (tx) => dispatchWorkNotifications(tx));
   async function human(id: string) {
     const user = await db.user.create({ data: { id, handle: id, role: 'CREATOR' } });
     const participant = await db.participant.create({
