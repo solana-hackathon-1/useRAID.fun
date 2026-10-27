@@ -513,6 +513,41 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     });
     expect(declined.amendment.state).toBe('DECLINED');
   });
+  it('needs the proposer-authority port only to accept: a host without it can still propose, decline and withdraw', async () => {
+    const { founder, worker, engagementId } = await setup();
+    await start(engagementId);
+    const { authorizeProposer: _omitted, ...legacy } = host;
+    const proposed = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Only the agreed criterion.'] }),
+      legacy as AmendmentHost,
+    );
+    await expect(
+      respond(
+        worker.actor,
+        { amendmentId: proposed.amendment.id, decision: 'ACCEPT' },
+        legacy as AmendmentHost,
+      ),
+    ).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
+    expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
+    const declined = await respond(
+      worker.actor,
+      { amendmentId: proposed.amendment.id, decision: 'DECLINE' },
+      legacy as AmendmentHost,
+    );
+    expect(declined.amendment.state).toBe('DECLINED');
+    const again = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Another agreed criterion.'] }),
+      legacy as AmendmentHost,
+    );
+    const withdrawn = await withdraw(
+      founder.actor,
+      { amendmentId: again.amendment.id },
+      legacy as AmendmentHost,
+    );
+    expect(withdrawn.amendment.state).toBe('WITHDRAWN');
+  });
   it('reports a proposal whose amended deadlines lapsed before consent as AMENDMENT_UNAVAILABLE', async () => {
     const { founder, worker, engagementId } = await setup();
     await start(engagementId);

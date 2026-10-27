@@ -37,7 +37,6 @@ function hostContract(host: AmendmentHost) {
   if (
     typeof host?.allowNewWrites !== 'boolean' ||
     typeof host.authorize !== 'function' ||
-    typeof host.authorizeProposer !== 'function' ||
     typeof host.reserveAdditionalFunding !== 'function' ||
     typeof host.fundingAvailable !== 'function' ||
     typeof host.assessConsent !== 'function'
@@ -137,6 +136,8 @@ async function founderTarget(tx: Tx, engagementId: string, actor: WorkActor, hos
 }
 /** A proposal is acceptable only while its proposer still holds the Founder authority it was made under. */
 async function proposerStillAuthorized(tx: Tx, amendment: Row, host: AmendmentHost) {
+  // Fail closed: only acceptance needs this port, so a host without it can still propose, decline and withdraw.
+  if (typeof host.authorizeProposer !== 'function') fail('STORAGE_CONTRACT');
   // The proposer has no session in the member's request: the host judges the account's current scoped authority.
   const account = amendment.proposedByAccountId;
   const guildId = await founderBinding(tx, amendment.engagementId, account);
