@@ -1,0 +1,27 @@
+# Checks and affected browser coverage
+
+Checks is dispatched manually for a candidate branch after its affected local checks and any required independent review/fix pass. Dispatch once per completed candidate; documentation edits to the PR do not require another run. Changed source, dependencies or configuration invalidate affected evidence. Match the run's source SHA before merging. Keep missing UAT, business and release evidence NOT VERIFIED.
+
+DEC-2026-10-26-02 applies I13, R15/R16 and blueprint §§24.8/32: reduce repeated browser work without removing mandatory checks or changing application permissions, money, identity or capacity. No feature or production gate is enabled by green CI.
+
+## Selection contract
+
+`scripts/ci-browser-scope.py` requires Python 3, Git and a complete candidate checkout with `origin/main`. It compares every branch commit against main, accounts for both names of renames and for deletions, and selects the union of explicitly known browser consumers. Notifications-only changes select notifications. Work domain changes select work creation, work workspace and notifications, which consume those records. A direct wizard change selects creation. Explicit browser configs/specs select their own suite. Documentation and planning-contract tests need no browser execution.
+
+Shared infrastructure, migrations, dependencies and unclassified paths select the full suite. Missing/malformed comparisons, candidates behind current main, main dispatches and empty differences also select full coverage. There is no caller-supplied selective override. New dependencies must be classified conservatively; unclassified dependencies retain full coverage.
+
+The selector writes `browser_suites` (JSON array), `browser_required` (exact `true`/`false`) and `source_sha` to the Actions output file, and records source, comparison base, selection and omission reasons in the run summary. Without Actions environment variables it prints the same selection as JSON and changes no files. Run it from the repository root:
+
+```sh
+python3 scripts/ci-browser-scope.py
+```
+
+Every run retains planning contracts, formatting, types, lint, dependency security, all unit/real-PostgreSQL tests, schema drift, Docker build and runtime smoke. Selected browser features retain their existing development/production modes, desktop/mobile projects and write-disabled cases. The existing build and isolated Studio cleanup remain in the browser job. Staging publication is unchanged.
+
+## Aggregate gate and recovery
+
+`scripts/ci-gate.py` requires the workflow's `JOB_RESULTS` JSON and `GITHUB_SHA`. Every mandatory job must succeed. Selection must be present, valid and bound to that exact SHA. Every selected browser suite runs in the required browser job; that job must succeed. The only permitted skipped job is browser when a verified selection explicitly contains no suites. Failed, cancelled, missing or inconsistent evidence fails the gate. No secrets or provider credentials are needed by either helper.
+
+If main advances before merge, incorporate it without discarding existing work and verify the resulting candidate. If classification is uncertain, retain full coverage. Do not dispatch another full run for an unchanged green source without an unresolved concern. Review the run summary and logs on failures; never change the gate to reinterpret failure as success. These scripts own verification selection only, not source mutation, publication or deployment.
+
+`tests/test_raid_ci_selection.py` is an independently runnable standard-library consumer. It builds disposable Git histories and drives the actual scripts with synthetic job results, including adverse and retry states. Run it with `python3 -m unittest discover -s tests -p 'test_raid_ci_selection.py'`; existing CI, staging and cleanup contract suites remain regression checks. Synthetic tests prove selection/gate behavior, not hosted queue latency or actual browser outcomes. No new container or listener is needed for these helper tests.

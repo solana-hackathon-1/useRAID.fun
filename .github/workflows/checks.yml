@@ -8,12 +8,21 @@ concurrency:
   cancel-in-progress: true
 jobs:
   planning-contracts:
+    outputs:
+      browser_suites: ${{ steps.browser-scope.outputs.browser_suites }}
+      browser_required: ${{ steps.browser-scope.outputs.browser_required }}
+      source_sha: ${{ steps.browser-scope.outputs.source_sha }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Select affected browser coverage
+        id: browser-scope
+        run: python3 scripts/ci-browser-scope.py
       - name: Verify requirement and completion contracts
         run: python3 -m unittest discover -s tests -p 'test_raid_*.py'
 
@@ -93,6 +102,8 @@ jobs:
           path: test-results/
           if-no-files-found: warn
   browser:
+    needs: planning-contracts
+    if: needs.planning-contracts.outputs.browser_required == 'true'
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -116,8 +127,10 @@ jobs:
       - run: npm run db:migrate
       - run: npx playwright install --with-deps chromium
       - name: Demo browser suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'demo')
         run: npm run test:browser
       - name: Studio desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'studio')
         env:
           COMPOSE_FILE: compose.yaml:compose.test.yaml
           COMPOSE_PROJECT_NAME: raid-ci-studio
@@ -126,44 +139,61 @@ jobs:
           docker compose up -d --wait db
           npm run test:browser:studio
       - name: Stop isolated Studio database
-        if: always()
+        if: always() && contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'studio')
         env:
           COMPOSE_FILE: compose.yaml:compose.test.yaml
           COMPOSE_PROJECT_NAME: raid-ci-studio
         run: docker compose down -v
       - name: Raider orientation desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'onboarding')
         run: npx playwright test --config=playwright.onboarding.config.ts
       - name: Guild draft desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'guild-drafts')
         run: npx playwright test --config=playwright.guild-drafts.config.ts
       - name: Project proposal desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'project-proposals')
         run: npx playwright test --config=playwright.project-proposals.config.ts
       - name: Private skill claims desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'skill-claims')
         run: npx playwright test --config=playwright.skill-claims.config.ts
       - name: Private current assessment desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'own-assessments')
         run: npx playwright test --config=playwright.own-assessments.config.ts
       - name: Practice trial portal desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-portal')
         run: npx playwright test --config=playwright.practice-portal.config.ts
       - name: Work workspace desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'work-workspace')
         run: npx playwright test --config=playwright.work-workspace.config.ts
       - name: Work creation wizard desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'work-creation')
         run: npx playwright test --config=playwright.work-creation.config.ts
       - name: Notifications desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'notifications')
         run: npx playwright test --config=playwright.notifications.config.ts
       - name: Evaluator case evidence desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-review')
         run: npx playwright test --config=playwright.practice-review.config.ts
       - name: Evaluator assignment inbox desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-review-inbox')
         run: npx playwright test --config=playwright.practice-review-inbox.config.ts
       - name: Administrator appointment management desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'assignment-management')
         run: npx playwright test --config=playwright.assignment-management.config.ts
       - name: Administrator appointment management writeoff suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'assignment-management')
         run: ASSIGNMENT_MANAGEMENT_TEST_WRITES=false npx playwright test --config=playwright.assignment-management.config.ts
       - name: Ownership finding desktop and mobile suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-ownership')
         run: npx playwright test --config=playwright.practice-ownership.config.ts
       - name: Assessment review and decision browser checks
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-assessment')
         run: npx playwright test --config=playwright.practice-assessment.config.ts
       - name: Administrative taxonomy API suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'skill-taxonomy')
         run: npx playwright test --config=playwright.skill-taxonomy.config.ts
       - name: Administrative catalog editor and maintenance suites
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'skill-editor')
         run: |
           npx playwright test --config=playwright.skill-editor.config.ts
           SKILL_EDITOR_TEST_WRITES=false npx playwright test --config=playwright.skill-editor.config.ts
@@ -172,32 +202,45 @@ jobs:
         env:
           DEMO_MODE: 'false'
       - name: Production private assessment cache and current-state suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'own-assessments')
         run: OWN_ASSESSMENT_SERVER_MODE=production npx playwright test --config=playwright.own-assessments.config.ts --grep 'owner sees actual current assessment'
       - name: Production practice trial portal suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-portal')
         run: PRACTICE_PORTAL_SERVER_MODE=production npx playwright test --config=playwright.practice-portal.config.ts
       - name: Production work workspace suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'work-workspace')
         run: WORK_WORKSPACE_SERVER_MODE=production npx playwright test --config=playwright.work-workspace.config.ts
       - name: Production work creation wizard suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'work-creation')
         run: WORK_CREATION_SERVER_MODE=production npx playwright test --config=playwright.work-creation.config.ts
       - name: Production notifications suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'notifications')
         run: NOTIFICATIONS_SERVER_MODE=production npx playwright test --config=playwright.notifications.config.ts
       - name: Production evaluator case evidence suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-review')
         run: PRACTICE_REVIEW_SERVER_MODE=production npx playwright test --config=playwright.practice-review.config.ts
       - name: Production evaluator assignment inbox suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-review-inbox')
         run: PRACTICE_REVIEW_INBOX_SERVER_MODE=production npx playwright test --config=playwright.practice-review-inbox.config.ts
       - name: Production administrator appointment management suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'assignment-management')
         run: ASSIGNMENT_MANAGEMENT_SERVER_MODE=production npx playwright test --config=playwright.assignment-management.config.ts
       - name: Production administrator appointment management writeoff suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'assignment-management')
         run: ASSIGNMENT_MANAGEMENT_TEST_WRITES=false ASSIGNMENT_MANAGEMENT_SERVER_MODE=production npx playwright test --config=playwright.assignment-management.config.ts
       - name: Production ownership finding suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-ownership')
         run: PRACTICE_OWNERSHIP_SERVER_MODE=production npx playwright test --config=playwright.practice-ownership.config.ts
       - name: Production assessment review and decision browser checks
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'practice-assessment')
         run: PRACTICE_ASSESSMENT_SERVER_MODE=production npx playwright test --config=playwright.practice-assessment.config.ts
       - name: Database-backed browser journey
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'live')
         run: npm run test:live
         env:
           DEMO_MODE: 'false'
       - name: Live browser suite
+        if: contains(fromJSON(needs.planning-contracts.outputs.browser_suites), 'live')
         run: npm run test:browser:live
       - uses: actions/upload-artifact@v4
         if: always()
@@ -212,16 +255,8 @@ jobs:
     needs: [planning-contracts, static, dependency-security, test, docker, browser]
     runs-on: ubuntu-latest
     steps:
-      - name: Reject failed, skipped or cancelled required checks
+      - uses: actions/checkout@v4
+      - name: Reject failed, cancelled or missing required coverage
         env:
           JOB_RESULTS: ${{ toJSON(needs) }}
-        run: |
-          python3 - <<'PYCODE'
-          import json, os, sys
-          results = json.loads(os.environ['JOB_RESULTS'])
-          failed = {name: job['result'] for name, job in results.items() if job['result'] != 'success'}
-          if failed:
-              print('Required CI jobs did not pass:', failed)
-              sys.exit(1)
-          print('Every required CI job passed for this candidate.')
-          PYCODE
+        run: python3 scripts/ci-gate.py
