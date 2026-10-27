@@ -306,6 +306,10 @@ Freeze T013's built slices as-is for this delivery plan. Final F2 re-review, rep
 
 After one week, measure PRs/task, documentation-to-source line ratio and tasks closed against S04. This is an evaluation checkpoint, not an automatic scheduled job.
 
+### 02.19 Accepted affected browser verification — 26 October 2026
+
+**DEC-2026-10-26-02 — accepted, project owner:** keep Checks manual-only and dispatch once after a candidate's local checks and required review/fix pass. Select browser suites from the complete branch difference against main, including known dependent consumers. Shared infrastructure, migrations, unknown changes or an uncertain comparison require full browser coverage. Mandatory planning/static/security, unit/real-PostgreSQL, drift, Docker build and runtime smoke gates remain unconditional. Selected suites retain existing development/production and desktop/mobile coverage. The aggregate gate rejects failed, cancelled or missing required evidence and permits a skipped browser job only for a verified empty selection bound to the candidate SHA. Record source, comparison base and selection/skips; reverify after material changes. Preserve staging publication, owned-resource cleanup, I13, R15/R16 and all product/production authority boundaries. [Checks contract and runnable consumer](docs/ci-checks.md) describe the implementation; queue-time improvement remains unverified until measured.
+
 ---
 
 ## 03. Vocabulary
