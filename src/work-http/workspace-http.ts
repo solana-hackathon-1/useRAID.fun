@@ -69,7 +69,10 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   ACCOUNT_RESTRICTED: 'ACCOUNT_RESTRICTED',
   FORBIDDEN: 'FORBIDDEN',
   NOT_FOUND: 'NOT_FOUND',
-  ELIGIBILITY_REJECTED: 'FORBIDDEN',
+  ELIGIBILITY_REJECTED: 'ELIGIBILITY_NOT_MET',
+  CONSENT_REQUIRED: 'CONSENT_REQUIRED',
+  // A closed feature is a settled answer, not an outage worth retrying.
+  WRITES_DISABLED: 'NOT_AVAILABLE',
   CAPACITY_CONFLICT: 'CAPACITY_CONFLICT',
   SLOT_FILLED: 'SLOT_FILLED',
   TERMS_VERSION_CHANGED: 'TERMS_VERSION_CHANGED',
@@ -77,22 +80,23 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   OFFER_UNAVAILABLE: 'OFFER_EXPIRED',
   OFFER_EXPIRED: 'OFFER_EXPIRED',
   IDEMPOTENCY_KEY_REUSED: 'IDEMPOTENCY_KEY_REUSED',
-  // State, round, deadline and duplicate conflicts all mean: refresh the current record.
+  // State, round and duplicate conflicts mean: refresh the current record. Closed windows and application
+  // outcomes get their own codes because refreshing cannot help.
   REVISION_CONFLICT: 'REVISION_CHANGED',
   ENGAGEMENT_STATE: 'REVISION_CHANGED',
   REVIEW_EXISTS: 'REVISION_CHANGED',
   REVISION_LIMIT: 'REVISION_CHANGED',
-  DEADLINE_PASSED: 'REVISION_CHANGED',
+  DEADLINE_PASSED: 'NO_LONGER_OPEN',
   DEADLINE_NOT_REACHED: 'REVISION_CHANGED',
-  APPLICATION_LIMIT: 'REVISION_CHANGED',
-  APPLICATION_EXISTS: 'REVISION_CHANGED',
-  APPLICATION_CLOSED: 'REVISION_CHANGED',
+  APPLICATION_LIMIT: 'APPLICATION_LIMIT_REACHED',
+  APPLICATION_EXISTS: 'APPLICATION_EXISTS',
+  APPLICATION_CLOSED: 'NO_LONGER_OPEN',
   OFFER_EXISTS: 'REVISION_CHANGED',
-  PUBLICATION_BLOCKED: 'REVISION_CHANGED',
+  PUBLICATION_BLOCKED: 'NO_LONGER_OPEN',
   TERMS_FROZEN: 'REVISION_CHANGED',
   ADMISSION_REQUIRED: 'APPROVAL_REQUIRED',
-  // Resources become ready on their own schedule: the person can try again later.
-  RESOURCES_NOT_READY: 'SERVICE_UNAVAILABLE',
+  // Setup finishes on its own schedule and nothing the person sends changes it, so clients must not auto-retry.
+  RESOURCES_NOT_READY: 'SETUP_NOT_READY',
 };
 function invalid(): never {
   throw new JsonBodyFailure(422);

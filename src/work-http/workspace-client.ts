@@ -151,6 +151,32 @@ export function describeWorkFailure(error: unknown): { kind: FailureKind; messag
           kind: 'RETRY_SAME_REQUEST',
           message: 'The request could not be completed. You can retry it safely.',
         };
+      case 'APPLICATION_LIMIT_REACHED':
+        return {
+          kind: 'NONE',
+          message: 'You have reached your application limit. Withdraw one to apply here.',
+        };
+      case 'APPLICATION_EXISTS':
+        return { kind: 'NONE', message: 'You already applied to this Raid. See it in My Raid.' };
+      case 'NO_LONGER_OPEN':
+        return { kind: 'NONE', message: 'This is no longer open.' };
+      case 'CONSENT_REQUIRED':
+        return {
+          kind: 'NONE',
+          message: 'Confirm that you have read the current terms, then try again.',
+        };
+      case 'ELIGIBILITY_NOT_MET':
+        return {
+          kind: 'NONE',
+          message: 'The requirements for this Raid are not met, so it cannot be accepted.',
+        };
+      case 'SETUP_NOT_READY':
+        return {
+          kind: 'NONE',
+          message: 'Setup is not finished yet. Nothing is due from you; try again later.',
+        };
+      case 'NOT_AVAILABLE':
+        return { kind: 'NONE', message: 'This is not open yet.' };
       case 'FORBIDDEN':
       case 'ACCOUNT_RESTRICTED':
         return { kind: 'NONE', message: 'This action is not permitted for your account.' };

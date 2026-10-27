@@ -8,6 +8,7 @@ import {
 } from '../skills/eligibility';
 import { SkillTaxonomyStorageError } from '../skills/taxonomy-storage-contracts';
 import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
+import { WorkError } from '../work-loop/contracts';
 import type { AcceptanceHost } from '../work-loop/engagement-contracts';
 
 export interface RootAcceptanceConfig {
@@ -73,7 +74,8 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
          WHERE c."participantId"=$1::uuid AND c."slotId"=$2::uuid AND c."termsVersionId"=$3::uuid AND c."termsDigest"=t."digest"`,
         [ctx.participantId, ctx.slotId, ctx.termsVersionId],
       );
-      if (consent.length !== 1) return null;
+      // Tell the person what to do next; it is about their own consent only and reveals nothing about others.
+      if (consent.length !== 1) throw new WorkError('CONSENT_REQUIRED');
       let taxonomy;
       try {
         taxonomy = await readPublishedSkillTaxonomy(tx, ctx.actor, config.taxonomyId);

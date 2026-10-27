@@ -179,7 +179,15 @@ describe('T022 work workspace HTTP boundary', () => {
     ['FORBIDDEN', 403, 'FORBIDDEN'],
     ['NOT_FOUND', 404, 'NOT_FOUND'],
     ['UNAUTHENTICATED', 401, 'AUTHENTICATION_REQUIRED'],
-    ['WRITES_DISABLED', 503, 'SERVICE_UNAVAILABLE'],
+    ['WRITES_DISABLED', 503, 'NOT_AVAILABLE'],
+    ['APPLICATION_LIMIT', 409, 'APPLICATION_LIMIT_REACHED'],
+    ['APPLICATION_EXISTS', 409, 'APPLICATION_EXISTS'],
+    ['APPLICATION_CLOSED', 409, 'NO_LONGER_OPEN'],
+    ['DEADLINE_PASSED', 409, 'NO_LONGER_OPEN'],
+    ['PUBLICATION_BLOCKED', 409, 'NO_LONGER_OPEN'],
+    ['ELIGIBILITY_REJECTED', 403, 'ELIGIBILITY_NOT_MET'],
+    ['CONSENT_REQUIRED', 409, 'CONSENT_REQUIRED'],
+    ['RESOURCES_NOT_READY', 409, 'SETUP_NOT_READY'],
     ['STORAGE_CONTRACT', 503, 'SERVICE_UNAVAILABLE'],
   ] as const)('maps domain error %s to a stable safe envelope', async (code, status, mapped) => {
     const handlers = createWorkHandlers(
@@ -446,7 +454,7 @@ describe('T022 work workspace HTTP boundary', () => {
       }),
     );
     const unavailable = await notReady.START(post('/x', {}), engagementId);
-    expect(unavailable.status).toBe(503);
-    expect((await error(unavailable)).retryable).toBe(true);
+    expect(unavailable.status).toBe(409);
+    expect(await error(unavailable)).toMatchObject({ code: 'SETUP_NOT_READY', retryable: false });
   });
 });
