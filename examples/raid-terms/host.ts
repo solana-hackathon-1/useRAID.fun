@@ -50,6 +50,13 @@ import {
   listOwnNotifications,
   markNotificationRead,
 } from './notifications/storage';
+import {
+  saveWizardIntent,
+  writeWizardRecovery,
+  readWizardRecovery,
+  clearWizardRecovery,
+} from './work-loop/creation-recovery';
+import { toDraftView } from './work-loop/creation-contracts';
 import { buildTerms, defaultWizardForm } from './work-loop/creation-form';
 import { createSimulatedReservations } from './work-loop/simulated-reservation';
 import { exampleInput, exampleRubric } from './recommendation-fixture';
@@ -93,7 +100,7 @@ async function transaction<T>(work: (tx: CommandReceiptTransaction) => Promise<T
 }
 const actor = { accountId: 'synthetic-owner', sessionHash: 'a'.repeat(64) },
   guild = 'synthetic-guild';
-const command = (input: unknown, key = randomUUID()) => ({
+const command = (input: unknown, key: string = randomUUID()) => ({
   actor,
   input,
   idempotencyKey: key,
@@ -123,6 +130,7 @@ try {
     'migrations/simulated-reservations.sql',
     'migrations/notifications.sql',
     'migrations/amendments.sql',
+    'migrations/reservation-binding.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [actor.accountId]);
@@ -679,10 +687,14 @@ try {
     ...host,
     reserveSimulatedFunding: createSimulatedReservations(catalog),
   };
+  const initialSaveKey = randomUUID();
   const draftSaved = await transaction((tx) =>
     saveRaidTerms(
       tx,
-      command({ listingId: null, expectedRevision: 0, guildId: guild, terms: built.terms }),
+      command(
+        { listingId: null, expectedRevision: 0, guildId: guild, terms: built.terms },
+        initialSaveKey,
+      ),
       wizardHost,
     ),
   );
@@ -701,6 +713,66 @@ try {
   assert.ok(
     drafts.some((d) => d.listingId === draftSaved.listingId && d.state === 'DRAFT' && !d.reserved),
   );
+  // Independent recovery consumer: an unconfirmed committed save is replayed before edited intent.
+  const storeValues = new Map<string, string>();
+  const store = {
+    get length() {
+      return storeValues.size;
+    },
+    key: (i: number) => [...storeValues.keys()][i] ?? null,
+    getItem: (key: string) => storeValues.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      storeValues.set(key, value);
+    },
+    removeItem: (key: string) => {
+      storeValues.delete(key);
+    },
+  };
+  const edited = { ...built.terms, title: 'Edited after unconfirmed first save' };
+  writeWizardRecovery(store, {
+    version: 'v1',
+    accountId: actor.accountId,
+    form: defaultWizardForm(),
+    binding: null,
+    pending: {
+      input: { listingId: null, expectedRevision: 0, terms: built.terms },
+      key: initialSaveKey,
+      fingerprint: 'original',
+    },
+  });
+  const restored = readWizardRecovery(store, actor.accountId);
+  assert.ok(restored);
+  assert.equal(readWizardRecovery(store, 'other-account'), null);
+  const observedKeys: string[] = [];
+  const recovered = await saveWizardIntent({
+    recovery: restored,
+    input: { listingId: null, expectedRevision: 0, terms: edited },
+    fingerprint: 'edited',
+    key: randomUUID(),
+    persist: (value) => writeWizardRecovery(store, value),
+    save: async (input, key) => {
+      observedKeys.push(key);
+      return transaction(async (tx) => {
+        const saved = await saveRaidTerms(
+          tx,
+          command({ ...input, guildId: guild }, key),
+          wizardHost,
+        );
+        const [exact] = await readCreationDrafts(tx, actor, wizardHost, {
+          listingId: saved.listingId,
+          termsVersionId: saved.termsVersionId,
+        });
+        return { status: saved.status, draft: toDraftView(exact, catalog) };
+      });
+    },
+  });
+  assert.equal(recovered.draft.listingId, draftSaved.listingId);
+  assert.equal(recovered.draft.revision, 2);
+  assert.equal(recovered.draft.terms.title, edited.title);
+  assert.equal(observedKeys[0], initialSaveKey);
+  assert.equal(observedKeys.length, 2);
+  clearWizardRecovery(store, actor.accountId);
+  assert.equal(readWizardRecovery(store, actor.accountId), null);
   // Only a terminated attempt can be replaced; a still-pending one is not.
   await assert.rejects(
     transaction((tx) =>

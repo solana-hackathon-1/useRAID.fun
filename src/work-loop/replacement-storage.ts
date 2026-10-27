@@ -1,3 +1,4 @@
+import { recordSimulatedReservation } from './reservation-storage';
 import {
   canonicalRequestDigest,
   executeIdempotentCommand,
@@ -91,6 +92,11 @@ export async function reissueRaid(tx: Tx, command: WorkCommand, host: WorkHost) 
         terms: value.terms,
       });
       if (!InternalId.safeParse(funding).success) fail('FUNDING_REQUIRED');
+      await recordSimulatedReservation(
+        tx,
+        { slotId: slot.id, termsVersionId: version.id, terms: value.terms },
+        funding as string,
+      );
       await tx.query('UPDATE "RaidSlot" SET "fundingRef"=$2 WHERE "id"=$1::uuid RETURNING "id"', [
         slot.id,
         funding,

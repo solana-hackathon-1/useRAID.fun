@@ -10,6 +10,7 @@ export async function readCreationDrafts(
   tx: Tx,
   actor: WorkActor,
   host: Pick<WorkHost, 'authorize'>,
+  exact?: { listingId: string; termsVersionId: string },
 ): Promise<CreationDraft[]> {
   validate(tx, actor);
   if (typeof host?.authorize !== 'function') fail('STORAGE_CONTRACT');
@@ -23,14 +24,15 @@ export async function readCreationDrafts(
     snapshot: unknown;
     digest: string;
     reserved: boolean;
+    current: boolean;
     now: Date;
   }>(
-    `SELECT l."id"::text AS "listingId",l."guildId",l."revision",l."state",t."id"::text AS "termsVersionId",t."snapshot",t."digest",
+    `SELECT l."id"::text AS "listingId",l."guildId",t."revision",l."state",t."id"::text AS "termsVersionId",t."snapshot",t."digest",
       EXISTS (SELECT 1 FROM "RaidSlot" s WHERE s."listingId"=l."id" AND s."termsVersionId"=t."id" AND s."fundingRef" IS NOT NULL) AS reserved,
-      clock_timestamp() AS now
-     FROM "WorkListing" l JOIN "TermsVersion" t ON t."id"=l."currentTermsVersionId"
-     WHERE l."creatorAccountId"=$1 ORDER BY l."createdAt" DESC LIMIT ${LIMIT}`,
-    [actor.accountId],
+      l."currentTermsVersionId"=t."id" AS current, clock_timestamp() AS now
+     FROM "WorkListing" l JOIN "TermsVersion" t ON ${exact ? 't."listingId"=l."id" AND t."id"=$3::uuid' : 't."id"=l."currentTermsVersionId"'}
+     WHERE l."creatorAccountId"=$1 ${exact ? 'AND l."id"=$2::uuid' : ''} ORDER BY l."createdAt" DESC LIMIT ${LIMIT}`,
+    exact ? [actor.accountId, exact.listingId, exact.termsVersionId] : [actor.accountId],
   );
   const drafts: CreationDraft[] = [];
   for (const row of rows) {
@@ -45,7 +47,10 @@ export async function readCreationDrafts(
         revision: row.revision,
         state: row.state,
         terms: terms.data,
-        problems: publicationProblems(terms.data, row.now),
+        problems: [
+          ...publicationProblems(terms.data, row.now),
+          ...(row.current ? [] : ['TERMS_VERSION_CHANGED']),
+        ],
         reserved: row.reserved,
       }),
     );

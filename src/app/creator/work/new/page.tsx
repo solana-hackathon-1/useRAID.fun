@@ -23,7 +23,7 @@ export default async function CreateRaidPage() {
       ) : page.status === 'UNAVAILABLE' ? (
         <p role="status">Raid creation is currently unavailable. Try again later.</p>
       ) : (
-        <WorkWizard initialState={page.state} />
+        <WorkWizard accountId={page.accountId} initialState={page.state} />
       )}
       <p>
         <Link className="inline-link" href="/creator/work">

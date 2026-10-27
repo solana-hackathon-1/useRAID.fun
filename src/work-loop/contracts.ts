@@ -20,7 +20,8 @@ export interface WorkHost {
   ): Promise<boolean>;
   /** Default off. Original receipts/current authorized reads remain available when off. */
   allowNewWrites: boolean;
-  /** Transactional host reservation. Must bind this exact slot/version/reward, distinct from any other slot. */
+  /** Transactional host coverage. Bind this exact slot/version/reward and return its distinct reference.
+   * Canonical publication/replacement records WorkSimulatedReservation; hosts must not insert that row. */
   reserveSimulatedFunding(
     tx: CommandReceiptTransaction,
     binding: { slotId: string; termsVersionId: string; terms: RaidTerms },

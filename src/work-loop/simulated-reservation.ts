@@ -1,5 +1,5 @@
 import { assetKey } from '../contracts/assets';
-import { canonicalRequestDigest, type CommandReceiptTransaction as Tx } from '../command-receipts';
+import { RewardAssetSchema } from './creation-contracts';
 import { samePolicy, type RewardAsset } from './creation-form';
 import type { WorkHost } from './contracts';
 
@@ -11,20 +11,21 @@ import type { WorkHost } from './contracts';
 export function createSimulatedReservations(
   catalog: readonly RewardAsset[],
 ): WorkHost['reserveSimulatedFunding'] {
-  return async (tx: Tx, binding) => {
+  const parsed = RewardAssetSchema.array().max(20).safeParse(catalog);
+  const valid =
+    parsed.success &&
+    new Set(parsed.data.map((asset) => assetKey(asset.policy.assetId))).size === parsed.data.length;
+  const checked = valid && parsed.success ? parsed.data : [];
+  return async (_tx, binding) => {
     const legs = binding.terms.rewards;
     const keys = legs.map((leg) => assetKey(leg.policy.assetId));
     // One leg per asset, and each leg must carry the catalog's exact policy: identity alone is not coverage.
     const covered =
       new Set(keys).size === keys.length &&
       legs.every((leg) =>
-        catalog.some((asset) => asset.funded && samePolicy(asset.policy, leg.policy)),
+        checked.some((asset) => asset.funded && samePolicy(asset.policy, leg.policy)),
       );
     if (!legs.length || !covered) return null;
-    await tx.query(
-      'INSERT INTO "WorkSimulatedReservation" ("slotId","termsVersionId","vectorDigest","legs") VALUES ($1::uuid,$2::uuid,$3,$4::jsonb) RETURNING "slotId"',
-      [binding.slotId, binding.termsVersionId, canonicalRequestDigest(legs), JSON.stringify(legs)],
-    );
     return 'sim-reservation:' + binding.slotId;
   };
 }

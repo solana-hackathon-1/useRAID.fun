@@ -153,3 +153,21 @@ it('gives advice only with its flag and a valid rubric, never a default', async 
   port.drafts.mockResolvedValue([]);
   expect((await creationStateFromHost(actor)).recommendationsAvailable).toBe(true);
 });
+
+it('reads the exact receipt version instead of searching the latest twenty drafts', async () => {
+  process.env.WORK_CREATION_READS_ENABLED = 'true';
+  const saved = {
+    status: 'REPLAYED',
+    listingId: '11111111-1111-4111-8111-111111111111',
+    termsVersionId: '33333333-3333-4333-8333-333333333333',
+  };
+  port.save.mockResolvedValue(saved);
+  port.drafts.mockResolvedValue([]);
+  await saveDraftFromHost({ actor, input: {}, idempotencyKey: 'old-key', requestId: 'r' }).catch(
+    () => undefined,
+  );
+  expect(port.drafts).toHaveBeenCalledWith(port.tx, actor, expect.anything(), {
+    listingId: saved.listingId,
+    termsVersionId: saved.termsVersionId,
+  });
+});

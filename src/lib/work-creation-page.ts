@@ -12,6 +12,7 @@ export async function loadCreation() {
   try {
     return {
       status: 'READY' as const,
+      accountId: user.id,
       state: await creationStateFromHost({ accountId: user.id, sessionHash: hash(cookie) }),
     };
   } catch {

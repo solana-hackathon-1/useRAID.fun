@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Check, ChevronDown } from 'lucide-react';
+import { clearWizardRecovery } from '../work-loop/creation-recovery';
 import { studioMenuItems } from '@/lib/studio-menu';
 export type StudioAccount = {
   handle: string;
@@ -32,6 +33,11 @@ export function StudioAccountMenu({ account }: { account: StudioAccount }) {
       });
       const body = await response.json();
       if (!response.ok) throw Error(body.error);
+      if (path === '/api/auth/logout') {
+        try {
+          clearWizardRecovery(window.sessionStorage);
+        } catch {}
+      }
       setOpen(false);
       router.push('/creator');
       router.refresh();

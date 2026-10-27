@@ -413,6 +413,14 @@ integration('T020 canonical engagement capacity', () => {
         'synthetic-party:' + slotId,
       );
       await tx.$executeRawUnsafe(
+        'INSERT INTO "WorkSimulatedReservation" ("slotId","termsVersionId","fundingRef","vectorDigest","legs") VALUES ($1::uuid,$2::uuid,$3,$4,$5::jsonb)',
+        slotId,
+        saved.termsVersionId,
+        'synthetic-party:' + slotId,
+        canonicalRequestDigest(saved.terms.rewards),
+        JSON.stringify(saved.terms.rewards),
+      );
+      await tx.$executeRawUnsafe(
         'UPDATE "WorkListing" SET "state"=\'OPEN\' WHERE "id"=$1::uuid',
         saved.listingId,
       );

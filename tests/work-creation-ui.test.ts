@@ -39,7 +39,9 @@ const state = (patch: Record<string, unknown> = {}) =>
     ...patch,
   });
 const render = (initial: ReturnType<typeof state>) =>
-  renderToStaticMarkup(createElement(WorkWizard, { initialState: initial }));
+  renderToStaticMarkup(
+    createElement(WorkWizard, { accountId: 'founder-1', initialState: initial }),
+  );
 describe('T018 founder wizard first paint', () => {
   it('renders the first step accessibly and disables controls until the page is interactive', () => {
     const html = render(state());
@@ -120,4 +122,218 @@ describe('T018 creation client', () => {
       { body: { termsVersionId: draft.termsVersionId }, idempotencyKey: 'key-3' },
     ]);
   });
+});
+
+it('keeps exact pending intent when a successful response breaks its result contract', async () => {
+  const { saveWizardIntent } = await import('../src/work-loop/creation-recovery');
+  const { defaultWizardForm } = await import('../src/work-loop/creation-form');
+  const input = { listingId: null, expectedRevision: 0, terms };
+  const pending = {
+    input,
+    key: '11111111-1111-4111-8111-111111111111',
+    fingerprint: 'original-form',
+  };
+  let persisted: unknown;
+  await expect(
+    saveWizardIntent({
+      recovery: {
+        version: 'v1',
+        accountId: 'founder-1',
+        form: defaultWizardForm(),
+        binding: null,
+        pending,
+      },
+      input,
+      fingerprint: 'edited-form',
+      key: '22222222-2222-4222-8222-222222222222',
+      persist: (value) => {
+        persisted = value;
+      },
+      save: async () => {
+        throw new WorkClientError('CONTRACT', 200);
+      },
+    }),
+  ).rejects.toMatchObject({ code: 'CONTRACT' });
+  expect(persisted).toMatchObject({ pending });
+});
+
+it('rejects malformed and cross-account stored form envelopes before rendering', async () => {
+  const { readWizardRecovery, writeWizardRecovery } =
+    await import('../src/work-loop/creation-recovery');
+  const { defaultWizardForm } = await import('../src/work-loop/creation-form');
+  const values = new Map<string, string>();
+  const store = {
+    get length() {
+      return values.size;
+    },
+    key: (index: number) => [...values.keys()][index] ?? null,
+    getItem: (key: string) => values.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      values.set(key, value);
+    },
+    removeItem: (key: string) => {
+      values.delete(key);
+    },
+  };
+  const recovery = {
+    version: 'v1' as const,
+    accountId: 'founder-1',
+    form: defaultWizardForm(),
+    binding: null,
+    pending: null,
+  };
+  writeWizardRecovery(store, recovery);
+  expect(readWizardRecovery(store, 'founder-1')).toEqual(recovery);
+  expect(readWizardRecovery(store, 'other-person')).toBeNull();
+  const key = 'raid-wizard-recovery-v1:founder-1';
+  for (const bad of [
+    { ...recovery, accountId: 'other-person' },
+    { ...recovery, form: { ...recovery.form, skills: null } },
+    { ...recovery, form: { ...recovery.form, days: null } },
+    { ...recovery, pending: { key: 'malformed', input: {}, fingerprint: '' } },
+  ]) {
+    store.setItem(key, JSON.stringify(bad));
+    expect(readWizardRecovery(store, 'founder-1')).toBeNull();
+    expect(store.getItem(key)).toBeNull();
+  }
+});
+it('never sends a new save if exact recovery cannot be persisted first', async () => {
+  const { saveWizardIntent } = await import('../src/work-loop/creation-recovery');
+  const { defaultWizardForm } = await import('../src/work-loop/creation-form');
+  let sent = 0;
+  await expect(
+    saveWizardIntent({
+      recovery: {
+        version: 'v1',
+        accountId: 'founder-1',
+        form: defaultWizardForm(),
+        binding: null,
+        pending: null,
+      },
+      input: { listingId: null, expectedRevision: 0, terms },
+      fingerprint: 'form',
+      key: '11111111-1111-4111-8111-111111111111',
+      persist: () => {
+        throw Error('Storage unavailable');
+      },
+      save: async () => {
+        sent++;
+        return { status: 'EXECUTED', draft };
+      },
+    }),
+  ).rejects.toThrow('Storage unavailable');
+  expect(sent).toBe(0);
+});
+
+it('retains an unconfirmed first save through expired session until reconciliation', async () => {
+  const { saveWizardIntent } = await import('../src/work-loop/creation-recovery');
+  const { defaultWizardForm } = await import('../src/work-loop/creation-form');
+  const pending = {
+    input: { listingId: null, expectedRevision: 0, terms },
+    key: '11111111-1111-4111-8111-111111111111',
+    fingerprint: 'original',
+  };
+  let current = {
+    version: 'v1' as const,
+    accountId: 'founder-1',
+    form: defaultWizardForm(),
+    binding: null,
+    pending,
+  };
+  await expect(
+    saveWizardIntent({
+      recovery: current,
+      input: pending.input,
+      fingerprint: 'edited',
+      key: '22222222-2222-4222-8222-222222222222',
+      persist: (value) => {
+        current = value as typeof current;
+      },
+      save: async () => {
+        throw new WorkClientError('UNAUTHENTICATED', 401);
+      },
+    }),
+  ).rejects.toMatchObject({ status: 401 });
+  expect(current.pending).toEqual(pending);
+});
+it('keeps fresh intent when a successful response breaks its result contract', async () => {
+  const { saveWizardIntent } = await import('../src/work-loop/creation-recovery');
+  const { defaultWizardForm } = await import('../src/work-loop/creation-form');
+  const input = { listingId: null, expectedRevision: 0, terms };
+  const key = '11111111-1111-4111-8111-111111111111';
+  let persisted: unknown;
+  await expect(
+    saveWizardIntent({
+      recovery: {
+        version: 'v1',
+        accountId: 'founder-1',
+        form: defaultWizardForm(),
+        binding: null,
+        pending: null,
+      },
+      input,
+      fingerprint: 'form',
+      key,
+      persist: (value) => {
+        persisted = value;
+      },
+      save: async () => {
+        throw new WorkClientError('CONTRACT', 200);
+      },
+    }),
+  ).rejects.toMatchObject({ code: 'CONTRACT' });
+  expect(persisted).toMatchObject({ pending: { input, key, fingerprint: 'form' } });
+});
+it('resolves the original request before edited intent after authorization returns', async () => {
+  const { saveWizardIntent } = await import('../src/work-loop/creation-recovery');
+  const { defaultWizardForm } = await import('../src/work-loop/creation-form');
+  const pending = {
+    input: { listingId: null, expectedRevision: 0, terms },
+    key: '11111111-1111-4111-8111-111111111111',
+    fingerprint: 'original',
+  };
+  let current: import('../src/work-loop/creation-recovery').WizardRecovery = {
+    version: 'v1',
+    accountId: 'founder-1',
+    form: defaultWizardForm(),
+    binding: null,
+    pending,
+  };
+  const base = {
+    input: { listingId: null, expectedRevision: 0, terms: { ...terms, title: 'Edited' } },
+    fingerprint: 'edited',
+    key: '22222222-2222-4222-8222-222222222222',
+    persist: (value: typeof current) => {
+      current = value;
+    },
+  };
+  await expect(
+    saveWizardIntent({
+      ...base,
+      recovery: current,
+      save: async () => {
+        throw new WorkClientError('FORBIDDEN', 403);
+      },
+    }),
+  ).rejects.toMatchObject({ status: 403 });
+  const sent: {
+    input: import('../src/work-http/creation-client').SaveDraftRequest;
+    key: string;
+  }[] = [];
+  await saveWizardIntent({
+    ...base,
+    recovery: current,
+    save: async (input, key) => {
+      sent.push({ input, key });
+      return {
+        status: sent.length === 1 ? 'REPLAYED' : 'EXECUTED',
+        draft: { ...draft, revision: sent.length, terms: RaidTermsSchema.parse(input.terms) },
+      };
+    },
+  });
+  expect(sent[0]).toEqual({ input: pending.input, key: pending.key });
+  expect(sent[1].input.listingId).toBe(draft.listingId);
+  expect(sent[1].input.expectedRevision).toBe(1);
+  expect(sent[1].key).toBe(base.key);
+  expect(current.pending).toBeNull();
 });

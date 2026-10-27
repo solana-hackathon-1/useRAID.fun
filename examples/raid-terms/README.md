@@ -23,3 +23,5 @@ The [recommendation extension](../../docs/raid-work-recommendations.md) needs no
 The [creation wizard extension](../../docs/raid-work-creation.md) adds an eighth exact migration (`simulated-reservations.sql`). The host builds typed terms from a wizard form with two reward assets, saves the draft, is refused publication because only one asset is covered by its simulated reserve (`FUNDING_REQUIRED`, no slot) and lists the unchanged draft.
 
 The [notification extension](../../docs/raid-notifications.md) adds a ninth exact migration (`notifications.sql`). After the work loop the host runs the outbox dispatcher twice (no duplicate), reads its member's own fixed-text notification and is refused when another person tries to mark it read.
+
+Reservation binding migration: `migrations/reservation-binding.sql` validates existing synthetic coverage before binding references. `WorkHost.reserveSimulatedFunding` still returns its host-owned reference; canonical publication and replacement record it against the exact slot/version/reward vector. A host must not insert the canonical reservation itself. No live balance is implied.

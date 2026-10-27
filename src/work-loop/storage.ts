@@ -1,3 +1,4 @@
+import { recordSimulatedReservation } from './reservation-storage';
 import { z } from 'zod';
 import { InternalId } from '../contracts/ids';
 import {
@@ -60,12 +61,19 @@ interface Listing {
   currentTermsVersionId: string | null;
   state: string;
 }
-async function listing(tx: Tx, id: string, actor: WorkActor, host: WorkHost, lock = false) {
+async function listing(
+  tx: Tx,
+  id: string,
+  actor: WorkActor,
+  host: WorkHost,
+  lock = false,
+  missing: 'NOT_FOUND' | 'FORBIDDEN' = 'NOT_FOUND',
+) {
   const rows = await tx.query<Listing>(
     `SELECT "id"::text,"guildId","creatorAccountId","revision","currentTermsVersionId"::text,"state" FROM "WorkListing" WHERE "id"=$1::uuid${lock ? ' FOR UPDATE' : ''}`,
     [id],
   );
-  if (rows.length !== 1) fail('NOT_FOUND');
+  if (rows.length !== 1) fail(missing);
   await authorize(tx, actor, rows[0].guildId, host);
   // This first slice owns founder-created listings only; delegated administration is a host extension.
   if (rows[0].creatorAccountId !== actor.accountId) fail('FORBIDDEN');
@@ -182,7 +190,7 @@ export async function publishRaid(tx: Tx, command: WorkCommand, host: WorkHost) 
   if (!parsed.success) fail('INVALID_INPUT');
   const input = parsed.data,
     actor = command.actor;
-  await listing(tx, input.listingId, actor, host);
+  await listing(tx, input.listingId, actor, host, false, 'FORBIDDEN');
   const result = await executeIdempotentCommand(
     tx,
     {
@@ -194,16 +202,18 @@ export async function publishRaid(tx: Tx, command: WorkCommand, host: WorkHost) 
     },
     async () => {
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
-      const source = await listing(tx, input.listingId, actor, host, true);
+      const source = await listing(tx, input.listingId, actor, host, true, 'FORBIDDEN');
       if (source.currentTermsVersionId !== input.termsVersionId) fail('REVISION_CONFLICT');
+      if (!['DRAFT', 'OPEN'].includes(source.state)) fail('PUBLICATION_BLOCKED');
       const v = await version(tx, input.termsVersionId);
       const [clock] = await tx.query<{ now: Date }>('SELECT clock_timestamp() AS now', []);
       if (!(clock?.now instanceof Date) || publicationProblems(v.terms, clock.now).length)
         fail('PUBLICATION_BLOCKED');
-      const prior = await tx.query<{ id: string }>(
-        `SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "slotNumber"=1`,
+      const prior = await tx.query<{ id: string; state: string }>(
+        `SELECT "id"::text,"state" FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "slotNumber"=1`,
         [source.id, v.id],
       );
+      if (source.state === 'OPEN' && prior[0]?.state !== 'AVAILABLE') fail('PUBLICATION_BLOCKED');
       let slotId = prior[0]?.id;
       if (!slotId) {
         const [slot] = await tx.query<{ id: string }>(
@@ -217,6 +227,11 @@ export async function publishRaid(tx: Tx, command: WorkCommand, host: WorkHost) 
           terms: v.terms,
         });
         if (!InternalId.safeParse(funding).success) fail('FUNDING_REQUIRED');
+        await recordSimulatedReservation(
+          tx,
+          { slotId, termsVersionId: v.id, terms: v.terms },
+          funding as string,
+        );
         await tx.query('UPDATE "RaidSlot" SET "fundingRef"=$2 WHERE "id"=$1::uuid RETURNING "id"', [
           slotId,
           funding,
@@ -241,7 +256,7 @@ export async function publishRaid(tx: Tx, command: WorkCommand, host: WorkHost) 
       };
     },
   );
-  const source = await listing(tx, input.listingId, actor, host);
+  const source = await listing(tx, input.listingId, actor, host, false, 'FORBIDDEN');
   const slots = await tx.query<{ id: string; termsVersionId: string }>(
     'SELECT "id"::text,"termsVersionId"::text FROM "RaidSlot" WHERE "id"=$1::uuid AND "listingId"=$2::uuid',
     [result.resultRef, source.id],
