@@ -41,7 +41,7 @@ import {
 } from './work-loop/amendment-storage';
 import type { AmendmentHost } from './work-loop/amendment-contracts';
 import { reissueRaid } from './work-loop/replacement-storage';
-import { readWorkFeed } from './work-loop/feed-storage';
+import { readWorkDetail, readWorkFeed } from './work-loop/feed-storage';
 import { raidTerms } from './fixture';
 import { AssetPolicySnapshotSchema, assetKey } from './contracts/assets';
 import { recommend, reviewChoices } from './work-loop/recommendation';
@@ -198,6 +198,9 @@ try {
     [saved.listingId],
   );
   assert.equal(live.items[0].funding.mode, 'SIMULATED');
+  const brief = await transaction((tx) => readWorkDetail(tx, saved.listingId));
+  assert.equal(brief.outcome, input.terms.outcome);
+  assert.ok(!JSON.stringify(brief).includes('reviewer'), 'The public brief hides the reviewer.');
   for (const secret of ['reviewer', 'synthetic:', 'creatorAccountId', 'deliverables'])
     assert.ok(!JSON.stringify(live).includes(secret), 'The public feed hides ' + secret);
   assert.equal((await pool.query('SELECT * FROM "HostReservation"')).rowCount, 1);

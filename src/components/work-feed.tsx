@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { formatDisplayAmount } from '../contracts/assets';
-import type { FeedCard, FeedPage, FeedQuery } from '../work-loop/feed-contracts';
+import type { Detail, FeedCard, FeedPage, FeedQuery } from '../work-loop/feed-contracts';
 
 const FEED_PATH = '/raids';
 const RANKS = ['E', 'D', 'C', 'B', 'A', 'S'] as const;
@@ -133,7 +133,9 @@ function Filter({ query, assets }: { query: Filters; assets: Map<string, string>
 function Card({ item }: { item: FeedCard }) {
   return (
     <li className="raid-feed-card">
-      <h2>{item.title}</h2>
+      <h2>
+        <Link href={`/raids/work/${item.listingId}`}>{item.title}</Link>
+      </h2>
       <p className="raid-feed-guild">Guild {item.guildId}</p>
       <p>{item.publicSummary}</p>
       <ul className="raid-feed-tags" aria-label="Details">
@@ -199,5 +201,116 @@ export function WorkFeed({ page, query }: { page: FeedPage; query: Filters }) {
         </p>
       ) : null}
     </section>
+  );
+}
+function List({ title, items }: { title: string; items: readonly string[] }) {
+  return items.length ? (
+    <section>
+      <h2>{title}</h2>
+      <ul>
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </section>
+  ) : null;
+}
+function Policy({ title, text }: { title: string; text: string }) {
+  return (
+    <div>
+      <dt>{title}</dt>
+      <dd>{text}</dd>
+    </div>
+  );
+}
+/** The full public brief of one live Raid: what a person commits to, in the accepted-terms order. */
+export function WorkDetail({ detail }: { detail: Detail }) {
+  const rounds = detail.review.maxRevisionRounds;
+  return (
+    <article className="raid-feed raid-detail" aria-labelledby="raid-detail-title">
+      <p>
+        <Link className="inline-link" href={FEED_PATH}>
+          ← All live Raids
+        </Link>
+      </p>
+      <h1 id="raid-detail-title">{detail.title}</h1>
+      <p className="raid-feed-guild">Guild {detail.guildId}</p>
+      <p>{detail.publicSummary}</p>
+      <ul className="raid-feed-tags" aria-label="Details">
+        <li>{detail.category}</li>
+        <li>Rank {detail.difficulty}</li>
+        <li>{detail.execution === 'SOLO' ? 'Solo' : 'Party'}</li>
+        <li>{detail.admission === 'APPLICATION' ? 'Application required' : 'Instant start'}</li>
+        <li>{detail.participantKinds.map((kind) => KINDS[kind] ?? kind).join(', ')}</li>
+      </ul>
+      <ul className="raid-feed-rewards" aria-label="Rewards">
+        {detail.rewards.map((reward) => (
+          <li key={reward.assetKey}>
+            {formatDisplayAmount(reward.amount, reward.decimals)} {assetLabel(reward.assetId)}
+          </li>
+        ))}
+      </ul>
+      <p className="raid-feed-funding">
+        Simulated funding: a reservation is recorded for this Raid, but no real funds are held.
+      </p>
+      <section>
+        <h2>Outcome</h2>
+        <p>{detail.outcome}</p>
+      </section>
+      <List title="Deliverables" items={detail.deliverables} />
+      <List title="Acceptance criteria" items={detail.acceptanceCriteria} />
+      <List title="Not included" items={detail.exclusions} />
+      <List title="Depends on" items={detail.dependencies} />
+      <section>
+        <h2>Skills</h2>
+        <ul>
+          {detail.requiredSkills.map((s) => (
+            <li key={s.skillId}>
+              {s.skillId}, rank {s.minimumRank} or higher
+            </li>
+          ))}
+        </ul>
+        <p>{detail.allowedToolsPolicy}</p>
+      </section>
+      <section>
+        <h2>Deadlines</h2>
+        <dl className="raid-detail-terms">
+          <Policy title="Apply by" text={when(detail.deadlines.commitment)} />
+          <Policy title="Preparation" text={when(detail.deadlines.preparation)} />
+          <Policy title="Submit by" text={when(detail.deadlines.submission)} />
+          <Policy title="Review by" text={when(detail.deadlines.review)} />
+          <Policy title="Operational closure" text={when(detail.deadlines.operationalClosure)} />
+        </dl>
+        <p>Start condition: {detail.startCondition}</p>
+      </section>
+      <section>
+        <h2>How it is reviewed</h2>
+        <p>{detail.review.evidence}</p>
+        <p>
+          Up to {rounds} revision {rounds === 1 ? 'round' : 'rounds'}.
+        </p>
+      </section>
+      <section>
+        <h2>Terms</h2>
+        <dl className="raid-detail-terms">
+          <Policy title="Rights" text={detail.rightsPolicy} />
+          <Policy title="Portfolio" text={detail.portfolioPolicy} />
+          <Policy title="Withdrawal" text={detail.withdrawalPolicy} />
+          <Policy title="Termination" text={detail.terminationPolicy} />
+          <Policy title="Disputes" text={detail.disputePolicy} />
+          <Policy title="Finality" text={detail.finalityPolicy} />
+        </dl>
+      </section>
+      <section className="raid-feed-empty" aria-label="Taking this Raid">
+        <h2>Taking this Raid</h2>
+        <p>
+          Applying and accepting are not available in the browser yet. Eligibility is checked by the
+          server when you act, never from this page.
+        </p>
+        <Link className="button secondary" href={FEED_PATH}>
+          Back to live Raids
+        </Link>
+      </section>
+    </article>
   );
 }

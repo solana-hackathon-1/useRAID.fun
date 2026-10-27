@@ -1,7 +1,8 @@
 import { InternalId } from '../contracts/ids';
 import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
 import { WorkError } from '../work-loop/contracts';
-import { FeedPageSchema, FeedQuerySchema } from '../work-loop/feed-contracts';
+import { z } from 'zod';
+import { DetailSchema, FeedPageSchema, FeedQuerySchema } from '../work-loop/feed-contracts';
 
 export class FeedHttpError extends Error {
   constructor(readonly status: 429) {
@@ -17,6 +18,7 @@ export interface FeedHttpHost {
   available(): boolean;
   rateLimit(request: Request): void | Promise<void>;
   feed(query: unknown): Promise<unknown>;
+  detail(listingId: string): Promise<unknown>;
 }
 /** Public data, but ordering and availability change by the second: never serve a stale or shared-cache copy. */
 export const feedHeaders = Object.freeze({
@@ -42,7 +44,7 @@ function readQuery(request: Request): unknown {
 export function createFeedHandlers(host: FeedHttpHost) {
   if (
     host?.version !== 'v1' ||
-    ['requestId', 'available', 'rateLimit', 'feed'].some(
+    ['requestId', 'available', 'rateLimit', 'feed', 'detail'].some(
       (name) => typeof host[name as keyof FeedHttpHost] !== 'function',
     )
   )
@@ -54,37 +56,53 @@ export function createFeedHandlers(host: FeedHttpHost) {
     } catch {}
     return crypto.randomUUID();
   }
-  return {
-    async GET(request: Request) {
-      const id = correlation();
-      try {
-        if (request.method !== 'GET') {
-          return Response.json(
-            {
-              error: {
-                code: 'METHOD_NOT_ALLOWED',
-                message: 'Method not allowed.',
-                retryable: false,
-                requestId: id,
-              },
+  /** Shared envelope: method, flag, throttle, then the work; every failure is a safe, fixed answer. */
+  async function run(request: Request, work: () => Promise<Response>) {
+    const id = correlation();
+    try {
+      if (request.method !== 'GET') {
+        return Response.json(
+          {
+            error: {
+              code: 'METHOD_NOT_ALLOWED',
+              message: 'Method not allowed.',
+              retryable: false,
+              requestId: id,
             },
-            { status: 405, headers: feedHeaders },
-          );
-        }
-        if (!host.available()) return respond('NOT_FOUND', id);
-        await host.rateLimit(request);
+          },
+          { status: 405, headers: feedHeaders },
+        );
+      }
+      if (!host.available()) return respond('NOT_FOUND', id);
+      await host.rateLimit(request);
+      return (await work()) ?? respond('SERVICE_UNAVAILABLE', id);
+    } catch (error) {
+      if (error instanceof FeedHttpError) return respond('RATE_LIMITED', id);
+      if (error instanceof WorkError && error.code === 'INVALID_INPUT')
+        return respond('INVALID_COMMAND', id);
+      if (error instanceof WorkError && error.code === 'NOT_FOUND') return respond('NOT_FOUND', id);
+      return respond('SERVICE_UNAVAILABLE', id);
+    }
+  }
+  const unavailable = () => respond('SERVICE_UNAVAILABLE', correlation());
+  return {
+    GET(request: Request) {
+      return run(request, async () => {
         const parsed = FeedQuerySchema.safeParse(readQuery(request));
-        if (!parsed.success) return respond('INVALID_COMMAND', id);
+        if (!parsed.success) return respond('INVALID_COMMAND', correlation());
         const page = FeedPageSchema.safeParse(await host.feed(parsed.data));
         // A malformed or over-shared host result is never forwarded to a visitor.
-        if (!page.success) return respond('SERVICE_UNAVAILABLE', id);
-        return Response.json(page.data, { headers: feedHeaders });
-      } catch (error) {
-        if (error instanceof FeedHttpError) return respond('RATE_LIMITED', id);
-        if (error instanceof WorkError && error.code === 'INVALID_INPUT')
-          return respond('INVALID_COMMAND', id);
-        return respond('SERVICE_UNAVAILABLE', id);
-      }
+        return page.success ? Response.json(page.data, { headers: feedHeaders }) : unavailable();
+      });
+    },
+    DETAIL(request: Request, listingId: string) {
+      return run(request, async () => {
+        const target = z.uuid().safeParse(listingId);
+        if (!target.success || new URL(request.url).searchParams.size)
+          return respond('INVALID_COMMAND', correlation());
+        const brief = DetailSchema.safeParse(await host.detail(target.data));
+        return brief.success ? Response.json(brief.data, { headers: feedHeaders }) : unavailable();
+      });
     },
   };
 }

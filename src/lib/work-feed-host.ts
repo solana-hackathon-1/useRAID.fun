@@ -1,4 +1,4 @@
-import { readWorkFeed } from '../work-loop/feed-storage';
+import { readWorkDetail, readWorkFeed } from '../work-loop/feed-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -8,4 +8,7 @@ export function workFeedAvailable() {
 }
 export async function readFeedFromHost(query: unknown) {
   return runCommandTransaction(db, (tx) => readWorkFeed(tx, query));
+}
+export async function readDetailFromHost(listingId: unknown) {
+  return runCommandTransaction(db, (tx) => readWorkDetail(tx, listingId));
 }
