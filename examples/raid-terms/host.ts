@@ -41,6 +41,7 @@ import {
 } from './work-loop/amendment-storage';
 import type { AmendmentHost } from './work-loop/amendment-contracts';
 import { reissueRaid } from './work-loop/replacement-storage';
+import { readWorkFeed } from './work-loop/feed-storage';
 import { raidTerms } from './fixture';
 import { AssetPolicySnapshotSchema, assetKey } from './contracts/assets';
 import { recommend, reviewChoices } from './work-loop/recommendation';
@@ -190,6 +191,15 @@ try {
     ),
   );
   assert.equal(published.fundingMode, 'SIMULATED');
+  // The public feed lists the live funded Raid as a safe card, with no reviewer, reservation or creator data.
+  const live = await transaction((tx) => readWorkFeed(tx, {}));
+  assert.deepEqual(
+    live.items.map((item) => item.listingId),
+    [saved.listingId],
+  );
+  assert.equal(live.items[0].funding.mode, 'SIMULATED');
+  for (const secret of ['reviewer', 'synthetic:', 'creatorAccountId', 'deliverables'])
+    assert.ok(!JSON.stringify(live).includes(secret), 'The public feed hides ' + secret);
   assert.equal((await pool.query('SELECT * FROM "HostReservation"')).rowCount, 1);
   assert.equal(
     (await transaction((tx) => saveRaidTerms(tx, c, { ...host, allowNewWrites: false }))).status,

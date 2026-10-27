@@ -2,6 +2,7 @@ import { afterEach, expect, it } from 'vitest';
 import { workEntryLinks } from '../src/lib/work-entry-links';
 
 const FLAGS = [
+  'WORK_FEED_READS_ENABLED',
   'WORK_WORKSPACE_READS_ENABLED',
   'WORK_CREATION_READS_ENABLED',
   'NOTIFICATIONS_READS_ENABLED',
@@ -30,4 +31,11 @@ it('only links to in-product paths', () => {
   process.env.WORK_CREATION_READS_ENABLED = 'true';
   process.env.NOTIFICATIONS_READS_ENABLED = 'true';
   for (const link of workEntryLinks()) expect(link.href).toMatch(/^\/[a-z/]+$/);
+});
+it('lists the public feed first, and only while its own flag is exactly "true"', () => {
+  process.env.WORK_FEED_READS_ENABLED = 'yes';
+  expect(workEntryLinks()).toEqual([]);
+  process.env.WORK_FEED_READS_ENABLED = 'true';
+  process.env.WORK_WORKSPACE_READS_ENABLED = 'true';
+  expect(workEntryLinks().map((l) => l.href)).toEqual(['/raids', '/raider/work', '/creator/work']);
 });

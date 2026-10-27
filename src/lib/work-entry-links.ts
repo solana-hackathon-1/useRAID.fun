@@ -6,6 +6,7 @@ const on = (name: string) => process.env[name] === 'true';
  */
 export function workEntryLinks(): WorkEntryLink[] {
   return [
+    ...(on('WORK_FEED_READS_ENABLED') ? [{ label: 'Live Raids', href: '/raids' }] : []),
     ...(on('WORK_WORKSPACE_READS_ENABLED')
       ? [
           { label: 'My Raid', href: '/raider/work' },

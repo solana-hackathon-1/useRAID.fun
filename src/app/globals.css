@@ -2562,3 +2562,123 @@ footer {
     width: 100%;
   }
 }
+
+/* Public Raid feed */
+.raid-feed {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.raid-feed h1 {
+  margin: 0;
+}
+.raid-feed-intro {
+  margin: 0;
+  max-width: 70ch;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.raid-feed-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.raid-feed-filters label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--muted);
+  min-width: 0;
+}
+.raid-feed-filters input,
+.raid-feed-filters select {
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 10px;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+}
+.raid-feed-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  grid-column: 1 / -1;
+}
+.raid-feed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.raid-feed-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.raid-feed-card h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.raid-feed-card p {
+  margin: 0;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.raid-feed-guild,
+.raid-feed-skills {
+  color: var(--muted);
+  font-size: 14px;
+}
+.raid-feed-tags,
+.raid-feed-rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.raid-feed-tags li {
+  padding: 3px 10px;
+  font-size: 13px;
+  color: var(--accent-text);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.raid-feed-rewards li {
+  padding: 4px 10px;
+  font-weight: 600;
+  color: var(--mint);
+  background: var(--surface-2);
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+.raid-feed-funding {
+  font-size: 13px;
+  color: var(--warning);
+}
+.raid-feed-empty {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
