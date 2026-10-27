@@ -207,6 +207,9 @@ export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail
     `SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "state"='AVAILABLE' AND "fundingMode"='SIMULATED' AND "fundingRef" IS NOT NULL ORDER BY "slotNumber" LIMIT 50`,
     [row.listingId, row.termsVersionId],
   );
+  // The count above and this read are separate statements: if the last open slot was taken in between, the Raid is
+  // no longer takeable, which is the same one answer as any other unlisted Raid.
+  if (open.length === 0) return fail('NOT_FOUND');
   return DetailSchema.parse({
     ...card.data,
     openSlotIds: open.map((slot) => slot.id),
