@@ -2,7 +2,7 @@
 
 ## Purpose and status
 
-T009 storage core under R01–R04/R10/R15/R16, I06/I07/I10/I13, AC07/AC73–75 and blueprint 06.1–06.4, 25.2, 28.1. It persists a Guild from an owner's private [draft](raid-guild-drafts.md), keeps immutable profile history, defines scoped role grants and exposes the Guild's current authority. It builds on the pure [profile policy](raid-guild-profiles.md) (`evaluateGuildProfilePermission`), which it calls with facts rebuilt inside the command transaction. It adds no HTTP route, UI, feature flag, token recognition, money, capacity or work effect. Project-control verification (T010 evidence review, O11/G10), grant/revoke commands, ownership transfer, public updates, the directory (T015) and the wiring of the work boundary's `authorize` to these records are separate slices and remain NOT VERIFIED. Independent review, UAT and business sign-off remain NOT VERIFIED.
+T009 storage core under R01–R04/R10/R15/R16, I06/I07/I10/I13, AC07/AC73–75 and blueprint 06.1–06.4, 25.2, 28.1. It persists a Guild from an owner's private [draft](raid-guild-drafts.md), keeps immutable profile history, defines scoped role grants and exposes the Guild's current authority. It builds on the pure [profile policy](raid-guild-profiles.md) (`evaluateGuildProfilePermission`), which it calls with facts rebuilt inside the command transaction. It adds no HTTP route, UI, feature flag, token recognition, money, capacity or work effect. Project-control verification (T010 evidence review, O11/G10), ownership transfer, public updates, the directory (T015) and the wiring of the work boundary's `authorize` to these records are separate slices and remain NOT VERIFIED. Independent review, UAT and business sign-off remain NOT VERIFIED.
 
 ## Authority model
 
