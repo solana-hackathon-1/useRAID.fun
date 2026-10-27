@@ -163,6 +163,15 @@ export async function saveRaidTerms(
         'UPDATE "RaidSlot" SET "state"=\'CLOSED\' WHERE "listingId"=$1::uuid AND "state"=\'AVAILABLE\' RETURNING "id"',
         [id],
       );
+      // Offers and applications are bound to the exact terms version; a new version leaves them unusable.
+      await tx.query(
+        'UPDATE "RaidOffer" SET "state"=\'REVOKED\' WHERE "state"=\'PENDING\' AND "slotId" IN (SELECT "id" FROM "RaidSlot" WHERE "listingId"=$1::uuid) RETURNING "id"',
+        [id],
+      );
+      await tx.query(
+        'UPDATE "RaidApplication" SET "state"=\'CLOSED\' WHERE "state"=\'SUBMITTED\' AND "slotId" IN (SELECT "id" FROM "RaidSlot" WHERE "listingId"=$1::uuid) RETURNING "id"',
+        [id],
+      );
       await tx.query(
         'UPDATE "WorkListing" SET "currentTermsVersionId"=$2::uuid,"revision"=$3::int,"state"=\'DRAFT\' WHERE "id"=$1::uuid RETURNING "id"',
         [id, v.id, String(input.expectedRevision + 1)],

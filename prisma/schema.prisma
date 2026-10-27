@@ -1375,6 +1375,7 @@ model RaidOffer {
   offeredBy User @relation(fields: [offeredByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   engagement Engagement? @relation(fields: [acceptedEngagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   @@index([slotId, state])
+  @@index([applicationId])
 }
 
 model WorkSubmission {

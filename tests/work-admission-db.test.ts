@@ -10,6 +10,9 @@ import {
 } from '../src/work-loop/admission-storage';
 import { commitEngagement } from '../src/work-loop/engagement-storage';
 import type { AdmissionHost } from '../src/work-loop/admission-contracts';
+import { saveRaidTerms } from '../src/work-loop/storage';
+import type { WorkHost } from '../src/work-loop/contracts';
+import { raidTerms } from './helpers/raid-terms-fixture';
 import { seedWorkHuman, seedWorkSlot, syntheticAcceptanceHost } from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
@@ -225,7 +228,7 @@ integration('T021 applications and offers', () => {
           syntheticAcceptanceHost,
         ),
       ),
-    ).rejects.toMatchObject({ code: 'OFFER_UNAVAILABLE' });
+    ).rejects.toMatchObject({ code: 'OFFER_EXPIRED' });
     const renewed = await applyTo(
       { ...apply, idempotencyKey: randomUUID() },
       { ...host, applicationLimit: 1 },
@@ -249,6 +252,155 @@ integration('T021 applications and offers', () => {
         { ...host, applicationLimit: 1 },
       ),
     ).resolves.toMatchObject({ status: 'EXECUTED' });
+  });
+  const expiry = () => new Date(Date.now() + 3600000).toISOString();
+  const accept = (
+    applicantActor: Parameters<typeof cmd>[0],
+    slot: { slotId: string; termsVersionId: string },
+    offerId: string,
+    h: Parameters<typeof commitEngagement>[2] = syntheticAcceptanceHost,
+  ) =>
+    run((tx) =>
+      commitEngagement(
+        tx,
+        cmd(applicantActor, { slotId: slot.slotId, termsVersionId: slot.termsVersionId, offerId }),
+        h,
+      ),
+    );
+  it('refuses to accept an offer whose issuing Founder lost authority, and fails closed without the host check', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const a = await applyTo(apply);
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    const issued: unknown[] = [];
+    const revoked = {
+      ...syntheticAcceptanceHost,
+      authorizeOfferIssuer: async (_tx: unknown, issuer: unknown) => (issued.push(issuer), false),
+    };
+    await expect(accept(applicant.actor, slot, o.offer.id, revoked)).rejects.toMatchObject({
+      code: 'OFFER_UNAVAILABLE',
+    });
+    expect(issued).toEqual([{ accountId: founder.actor.accountId, sessionHash: '' }]);
+    const { authorizeOfferIssuer: _omitted, ...withoutCheck } = revoked;
+    await expect(accept(applicant.actor, slot, o.offer.id, withoutCheck)).rejects.toMatchObject({
+      code: 'STORAGE_CONTRACT',
+    });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "ActiveCommitment"')).toEqual([]);
+    await expect(accept(applicant.actor, slot, o.offer.id)).resolves.toMatchObject({
+      status: 'EXECUTED',
+    });
+  });
+  it('revokes outstanding offers and closes their applications when the Founder edits the terms', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const a = await applyTo(apply);
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    const founderHost: WorkHost = {
+      allowNewWrites: true,
+      authorize: async (_tx, who, guild) =>
+        who.accountId === founder.actor.accountId && guild === 'synthetic-guild',
+      reserveSimulatedFunding: async (_tx, b) => 'synthetic:' + b.slotId,
+    };
+    await run((tx) =>
+      saveRaidTerms(
+        tx,
+        cmd(founder.actor, {
+          listingId: slot.listingId,
+          expectedRevision: 1,
+          guildId: 'synthetic-guild',
+          terms: {
+            ...raidTerms(),
+            admission: 'APPLICATION',
+            title: 'Revised synthetic documentation task',
+          },
+        }),
+        founderHost,
+      ),
+    );
+    expect(
+      await db.$queryRawUnsafe('SELECT "state" FROM "RaidOffer" WHERE "id"=$1::uuid', o.offer.id),
+    ).toEqual([{ state: 'REVOKED' }]);
+    expect(
+      await db.$queryRawUnsafe(
+        'SELECT "state" FROM "RaidApplication" WHERE "id"=$1::uuid',
+        a.application.id,
+      ),
+    ).toEqual([{ state: 'CLOSED' }]);
+    await expect(accept(applicant.actor, slot, o.offer.id)).rejects.toMatchObject({
+      code: 'PUBLICATION_BLOCKED',
+    });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
+  });
+  it('reports a revoked offer as unavailable but an elapsed one as expired', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const a = await applyTo(apply);
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    await run((tx) => revokeOffer(tx, cmd(founder.actor, { offerId: o.offer.id }), host));
+    await expect(accept(applicant.actor, slot, o.offer.id)).rejects.toMatchObject({
+      code: 'OFFER_UNAVAILABLE',
+    });
+  });
+  it('indexes offers by application for history and restrict checks', async () => {
+    const found = await db.$queryRawUnsafe(
+      `SELECT 1 FROM pg_indexes WHERE "tablename"='RaidOffer' AND "indexdef" LIKE '%("applicationId")' AND "indexdef" NOT LIKE '%UNIQUE%'`,
+    );
+    expect(found).toHaveLength(1);
+  });
+  it('refuses a guild-authorised non-creator, a foreign applicant and an over-long or missing offer path', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const other = await seedWorkHuman(db, 'founder-' + randomUUID());
+    const stranger = await seedWorkHuman(db);
+    const a = await applyTo(apply);
+    await expect(
+      offerTo(cmd(other.actor, { applicationId: a.application.id, expiresAt: expiry() })),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const [terms] = await db.$queryRawUnsafe<{ commitment: string }[]>(
+      `SELECT "snapshot"->'deadlines'->>'commitment' AS commitment FROM "TermsVersion" WHERE "id"=$1::uuid`,
+      slot.termsVersionId,
+    );
+    await expect(
+      offerTo(
+        cmd(founder.actor, {
+          applicationId: a.application.id,
+          expiresAt: new Date(Date.parse(terms.commitment) + 60000).toISOString(),
+        }),
+      ),
+    ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    await expect(
+      run((tx) => revokeOffer(tx, cmd(other.actor, { offerId: o.offer.id }), host)),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    await expect(
+      run((tx) =>
+        withdrawApplication(tx, cmd(stranger.actor, { applicationId: a.application.id }), host),
+      ),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    await expect(
+      run((tx) =>
+        commitEngagement(
+          tx,
+          cmd(applicant.actor, { slotId: slot.slotId, termsVersionId: slot.termsVersionId }),
+          syntheticAcceptanceHost,
+        ),
+      ),
+    ).rejects.toMatchObject({ code: 'ADMISSION_REQUIRED' });
+    await expect(
+      db.$executeRawUnsafe(
+        `INSERT INTO "RaidOffer" ("applicationId","slotId","termsVersionId","participantId","offeredByAccountId","expiresAt") VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5,clock_timestamp()+interval '1 hour')`,
+        a.application.id,
+        slot.slotId,
+        slot.termsVersionId,
+        applicant.participantId,
+        other.actor.accountId,
+      ),
+    ).rejects.toThrow(/Invalid exact-source Founder offer|duplicate key/);
   });
   it('serializes concurrent application-cap acquisition across different sources', async () => {
     const { applicant, founder, apply } = await setup(),

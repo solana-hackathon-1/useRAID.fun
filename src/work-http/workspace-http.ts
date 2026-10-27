@@ -61,6 +61,7 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   TERMS_VERSION_CHANGED: 'TERMS_VERSION_CHANGED',
   FUNDING_REQUIRED: 'FUNDING_NOT_VERIFIED',
   OFFER_UNAVAILABLE: 'OFFER_EXPIRED',
+  OFFER_EXPIRED: 'OFFER_EXPIRED',
   IDEMPOTENCY_KEY_REUSED: 'IDEMPOTENCY_KEY_REUSED',
   // State, round, deadline and duplicate conflicts all mean: refresh the current record.
   REVISION_CONFLICT: 'REVISION_CHANGED',

@@ -26,6 +26,14 @@ export interface AcceptanceHost {
       terms: RaidTerms;
     },
   ): Promise<AcceptanceApproval | null>;
+  /** Required whenever a terms version uses APPLICATION admission; acceptance with an offer fails closed without it.
+   * Current scoped MANAGE_LISTING authority of the offer's issuing Founder (suspension or loss makes the offer
+   * unusable). The issuer is passed with an empty `sessionHash`: judge the account, not a session. */
+  authorizeOfferIssuer?(
+    tx: CommandReceiptTransaction,
+    issuer: WorkActor,
+    target: { offerId: string; slotId: string; guildId: string },
+  ): Promise<boolean>;
   /** Recheck the exact reserved reward, not just an aggregate balance or the existence of a string. */
   fundingAvailable(
     tx: CommandReceiptTransaction,
