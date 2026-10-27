@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { CommandReceiptTransaction as Tx } from '../command-receipts';
+import { canonicalRequestDigest, type CommandReceiptTransaction as Tx } from '../command-receipts';
 import { assetKey } from '../contracts/assets';
 import { fromJsonAmount } from '../asset-registry/amounts';
 import { WorkError } from './contracts';
@@ -24,6 +24,7 @@ interface Row {
   listingId: string;
   guildId: string;
   termsVersionId: string;
+  digest: string;
   snapshot: unknown;
   createdMicros: string;
   availableSlots: number;
@@ -70,7 +71,7 @@ function follows(a: Candidate, position: { key: bigint; id: string }, sort: Feed
     : !before(a, position, sort);
 }
 /** One definition of "live": open, public, unexpired and with a funded available slot (checked by the callers). */
-const LIVE_SELECT = `SELECT l."id"::text AS "listingId",l."guildId",t."id"::text AS "termsVersionId",t."snapshot",
+const LIVE_SELECT = `SELECT l."id"::text AS "listingId",l."guildId",t."id"::text AS "termsVersionId",t."digest",t."snapshot",
       (extract(epoch FROM l."createdAt")*1000000)::bigint::text AS "createdMicros",
       (SELECT count(*)::int FROM "RaidSlot" s WHERE s."listingId"=l."id" AND s."termsVersionId"=t."id" AND s."state"='AVAILABLE' AND s."fundingMode"='SIMULATED' AND s."fundingRef" IS NOT NULL) AS "availableSlots"
      FROM "WorkListing" l JOIN "TermsVersion" t ON t."id"=l."currentTermsVersionId"
@@ -201,7 +202,8 @@ export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail
   if (!row || !terms?.success || terms.data.visibility !== 'PUBLIC' || row.availableSlots < 1)
     return fail('NOT_FOUND');
   const card = cardFrom(row, terms.data);
-  if (!card.success) return fail('NOT_FOUND');
+  // A stored digest that does not match the shown terms could never be consented to, so the brief is not shown.
+  if (!card.success || canonicalRequestDigest(terms.data) !== row.digest) return fail('NOT_FOUND');
   const t = terms.data;
   const open = await tx.query<{ id: string }>(
     `SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "state"='AVAILABLE' AND "fundingMode"='SIMULATED' AND "fundingRef" IS NOT NULL ORDER BY "slotNumber" LIMIT 50`,
@@ -213,6 +215,7 @@ export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail
   return DetailSchema.parse({
     ...card.data,
     openSlotIds: open.map((slot) => slot.id),
+    termsDigest: row.digest,
     outcome: t.outcome,
     deliverables: t.deliverables,
     acceptanceCriteria: t.acceptanceCriteria,

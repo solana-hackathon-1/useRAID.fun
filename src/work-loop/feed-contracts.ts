@@ -74,6 +74,8 @@ const text = z.string().min(1).max(8000);
 export const DetailSchema = FeedCardSchema.extend({
   /** Open slots a person may apply to or take; an opaque id, never a permission. */
   openSlotIds: z.array(z.uuid()).min(1).max(50),
+  /** The digest of the exact terms shown, which a person's consent must name; public data, never a permission. */
+  termsDigest: z.string().regex(/^[0-9a-f]{64}$/),
   outcome: text,
   deliverables: z.array(text).min(1).max(50),
   acceptanceCriteria: z.array(text).min(1).max(50),

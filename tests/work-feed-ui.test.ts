@@ -106,6 +106,7 @@ const brief = (patch: Record<string, unknown> = {}) =>
   DetailSchema.parse({
     ...card(1),
     openSlotIds: [id(7)],
+    termsDigest: 'a'.repeat(64),
     outcome: 'A guide a newcomer can follow. <i>x</i>',
     deliverables: ['setup.md at a pinned commit'],
     acceptanceCriteria: ['A clean install completes.'],
@@ -130,8 +131,11 @@ const brief = (patch: Record<string, unknown> = {}) =>
     ...patch,
   });
 describe('R08 public Raid detail markup', () => {
-  const out = (apply: 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE' = 'NOT_APPLICABLE') =>
-    renderToStaticMarkup(createElement(WorkDetail, { detail: brief(), apply }));
+  const out = (
+    apply: 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE' | 'ACCEPT' = 'NOT_APPLICABLE',
+    patch: Record<string, unknown> = {},
+    offer?: { offerId: string; slotId: string },
+  ) => renderToStaticMarkup(createElement(WorkDetail, { detail: brief(patch), apply, offer }));
   it('shows what a person commits to: outcome, criteria, every deadline, review rules and policies', () => {
     const html = out();
     for (const text of [
@@ -152,9 +156,9 @@ describe('R08 public Raid detail markup', () => {
     expect(html).toContain('&lt;i&gt;x&lt;/i&gt;');
     expect(html).not.toContain('<i>x</i>');
   });
-  it('is honest that applying and accepting are not available here yet and never claims eligibility', () => {
+  it('is honest that taking this Raid is not available here and never claims eligibility and never claims eligibility', () => {
     const html = out();
-    expect(html).toContain('not available in the browser yet');
+    expect(html).toContain('not available in the browser');
     expect(html).toContain('Eligibility is checked');
     expect(html).toContain('href="/raids"');
     expect(html).not.toContain('Eligible for me');
@@ -162,11 +166,28 @@ describe('R08 public Raid detail markup', () => {
   it('shows the matching apply state: form, sign-in, closed or not applicable', () => {
     expect(out('FORM')).toContain('Apply to this Raid');
     expect(out('FORM')).toContain('name="apply-form"');
-    expect(out('SIGN_IN')).toContain('Sign in to apply');
-    expect(out('SIGN_IN')).toContain('href="/creator/account"');
-    expect(out('CLOSED')).toContain('Applications are not open yet');
-    expect(out('NOT_APPLICABLE')).toContain('not available in the browser yet');
-    for (const mode of ['SIGN_IN', 'CLOSED', 'NOT_APPLICABLE'] as const)
+    expect(out('SIGN_IN', { admission: 'APPLICATION' })).toContain('Sign in to apply');
+    expect(out('SIGN_IN', { admission: 'APPLICATION' })).toContain('href="/creator/account"');
+    expect(out('CLOSED', { admission: 'APPLICATION' })).toContain('Applications are not open yet');
+    expect(out('NOT_APPLICABLE')).toContain('not available in the browser');
+    for (const mode of ['SIGN_IN', 'CLOSED', 'NOT_APPLICABLE', 'ACCEPT'] as const)
       expect(out(mode)).not.toContain('Apply to this Raid');
+  });
+  it('shows consent and Accept for an instant-start Raid on its first open slot, never an Apply form', () => {
+    const html = out('ACCEPT', { admission: 'INSTANT' });
+    expect(html).toContain('name="accept-form"');
+    expect(html).toContain('Accept this Raid');
+    expect(html).not.toContain('Apply to this Raid');
+    expect(html).not.toContain('Eligible for me');
+  });
+  it('shows Accept through the Founder offer for an application Raid when the viewer holds a usable offer', () => {
+    const html = out('FORM', {}, { offerId: id(8), slotId: id(9) });
+    expect(html).toContain('name="accept-form"');
+    expect(html).not.toContain('Apply to this Raid');
+  });
+  it('asks an instant-start visitor to sign in to take the Raid, not to apply', () => {
+    const html = out('SIGN_IN', { admission: 'INSTANT' });
+    expect(html).toContain('Sign in to take this Raid');
+    expect(html).not.toContain('Sign in to apply');
   });
 });
