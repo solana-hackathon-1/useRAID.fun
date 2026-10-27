@@ -85,9 +85,12 @@ export async function saveDraftFromHost(command: WorkCommand) {
       { ...command, input: { ...input, guildId: guildId() } },
       host,
     );
-    const draft = (await readCreationDrafts(tx, command.actor, host)).find(
-      (d) => d.listingId === saved.listingId,
-    );
+    const draft = (
+      await readCreationDrafts(tx, command.actor, host, {
+        listingId: saved.listingId,
+        termsVersionId: saved.termsVersionId,
+      })
+    ).find((d) => d.listingId === saved.listingId);
     if (!draft) throw new WorkError('STORAGE_CONTRACT');
     return { status: saved.status, draft: toDraftView(draft, rewardCatalog()) };
   });

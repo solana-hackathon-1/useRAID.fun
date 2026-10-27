@@ -7,6 +7,13 @@ import {
   type FieldProblem,
   type WizardForm,
 } from '../work-loop/creation-form';
+import {
+  readWizardRecovery,
+  writeWizardRecovery,
+  clearWizardRecovery,
+  saveWizardIntent,
+  type WizardRecovery,
+} from '../work-loop/creation-recovery';
 import type { Recommendation } from '../work-loop/recommendation-contracts';
 import { assetKey, formatDisplayAmount } from '../contracts/assets';
 import { createCreationClient, type CreationState } from '../work-http/creation-client';
@@ -21,7 +28,7 @@ const defaultClient = createCreationClient();
 const subscribeReady = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
-const STORAGE_KEY = 'raid-wizard-form-v1';
+
 const STEPS = [
   'Outcome',
   'Acceptance',
@@ -62,6 +69,7 @@ const PROBLEM_TEXT: Record<string, string> = {
   APPROVAL_REQUIRED: 'Higher difficulty needs application approval.',
   UNSUPPORTED_MODE: 'This format is not supported yet. Use public, solo and human participants.',
   INVALID_TERMS: 'The saved terms are not valid.',
+  TERMS_VERSION_CHANGED: 'A newer version was saved. Reload to review the current draft.',
   FUNDING_NOT_COVERED:
     'The simulated reserve does not cover every reward asset, so this reward cannot be published.',
 };
@@ -118,13 +126,12 @@ function restore(state: CreationState): { form: WizardForm; saved: boolean } {
     ? { form: formFromTerms(latest.terms, new Date()), saved: true }
     : { form: defaultWizardForm(), saved: false };
 }
-export function WorkWizard({
-  initialState,
-  client = defaultClient,
-}: {
-  initialState: CreationState;
-  client?: Client;
-}) {
+type WizardProps = { accountId: string; initialState: CreationState; client?: Client };
+/** Account changes remount all in-memory intent, notices, terms and form state. */
+export function WorkWizard(props: WizardProps) {
+  return <AccountWorkWizard key={props.accountId} {...props} />;
+}
+function AccountWorkWizard({ accountId, initialState, client = defaultClient }: WizardProps) {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   const runner = useRunner();
   const [start] = useState(() => restore(initialState));
@@ -135,14 +142,30 @@ export function WorkWizard({
   const [recommendation, setRecommendation] = useState<Recommendation | null>(null);
   const [published, setPublished] = useState<string | null>(null);
   const draft = state.drafts.find((d) => d.state === 'DRAFT') ?? null;
-  // An unsaved form survives a reload or cancelled visit; it is read after mount so server and client markup match.
+  const recovery = useRef<WizardRecovery>({
+    version: 'v1',
+    accountId,
+    form: start.form,
+    binding: draft
+      ? {
+          listingId: draft.listingId,
+          termsVersionId: draft.termsVersionId,
+          revision: draft.revision,
+        }
+      : null,
+    pending: null,
+  });
   useEffect(() => {
-    if (start.saved) return;
     try {
-      const raw = window.sessionStorage.getItem(STORAGE_KEY);
-      if (raw) setFormState({ ...defaultWizardForm(), ...JSON.parse(raw) });
+      const restored = readWizardRecovery(window.sessionStorage, accountId);
+      if (restored) {
+        recovery.current = restored;
+        setFormState(restored.form);
+        // Stored form text is never evidence that a server version was saved.
+        setSavedFingerprint(null);
+      }
     } catch {}
-  }, [start.saved]);
+  }, [accountId]);
   const [savedFingerprint, setSavedFingerprint] = useState<string | null>(
     start.saved ? JSON.stringify(start.form) : null,
   );
@@ -155,7 +178,8 @@ export function WorkWizard({
   function setForm(next: WizardForm) {
     setFormState(next);
     try {
-      window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      recovery.current = { ...recovery.current, form: next };
+      writeWizardRecovery(window.sessionStorage, recovery.current);
     } catch {}
   }
   const patch = (changes: Partial<WizardForm>) => setForm({ ...form, ...changes });
@@ -179,7 +203,18 @@ export function WorkWizard({
     void runner.run(
       'save',
       input,
-      (key) => client.saveDraft(input, key),
+      (key) =>
+        saveWizardIntent({
+          recovery: recovery.current,
+          input,
+          fingerprint,
+          key,
+          save: client.saveDraft,
+          persist: (value) => {
+            writeWizardRecovery(window.sessionStorage, value);
+            recovery.current = value;
+          },
+        }),
       (saved) => {
         setState({
           ...state,
@@ -200,6 +235,10 @@ export function WorkWizard({
       (key) => client.publishDraft(draft.listingId, draft.termsVersionId, key),
       (result) => {
         setPublished(result.slotId);
+        try {
+          clearWizardRecovery(window.sessionStorage, accountId);
+        } catch {}
+        recovery.current = { ...recovery.current, binding: null, pending: null };
         setState({
           ...state,
           drafts: state.drafts.map((d) =>

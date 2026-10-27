@@ -1410,6 +1410,7 @@ model WorkReview {
   reviewer User @relation(fields: [reviewerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 }
 model WorkSimulatedReservation {
+  fundingRef String @unique
   slotId String @id @db.Uuid
   termsVersionId String @db.Uuid
   vectorDigest String

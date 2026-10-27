@@ -93,6 +93,11 @@ test('a Founder completes the guided flow by keyboard-reachable steps, reviews t
   await review.getByRole('button', { name: 'Publish' }).click();
   await expect(page.getByText(/Published\. The reward is reserved \(simulated\)/)).toBeVisible();
   expect(await rows(page)).toBe(1);
+  expect(
+    await page.evaluate(() =>
+      Object.keys(sessionStorage).filter((key) => key.startsWith('raid-wizard-')),
+    ),
+  ).toEqual([]);
   expect(await fixture.db.workSimulatedReservation.count()).toBe(1);
   expect(await noOverflow(page)).toBe(true);
   expect(errors).toEqual([]);
@@ -245,4 +250,98 @@ test('the account menu offers only the pages whose own feature is on', async ({ 
   );
   for (const label of ['My Raid', 'Notifications'])
     await expect(menu.getByRole('link', { name: label })).toHaveCount(0);
+});
+
+for (const reload of [false, true]) {
+  test(`reconciles a committed but unconfirmed first save before edited intent${reload ? ' after reload' : ''}`, async ({
+    browser,
+  }) => {
+    fixture = await seedWorkCreationFixture();
+    const page = await open(browser, fixture.founder.cookie);
+    await ready(page);
+    await fillOutcomeAndAcceptance(page);
+    await fillFormat(page);
+    await fillRewardAndReview(page);
+    await step(page, 6, 'Review and publish').click();
+    const requests: {
+      key: string | undefined;
+      input: { listingId: string | null; terms: { title: string } };
+    }[] = [];
+    let lost = false;
+    await page.route('**/api/v1/work/drafts', async (route) => {
+      requests.push({
+        key: route.request().headers()['idempotency-key'],
+        input: route.request().postDataJSON(),
+      });
+      if (!lost) {
+        lost = true;
+        const response = await route.fetch();
+        expect(response.ok()).toBe(true);
+        await route.abort('failed');
+      } else await route.continue();
+    });
+    await page.getByRole('button', { name: 'Save draft' }).click();
+    await expect(alerts(page)).toContainText('Retry with the same request');
+    expect(await fixture.db.workListing.count()).toBe(1);
+    await step(page, 1, 'Outcome').click();
+    await page.getByLabel('Title', { exact: true }).fill('Edited after an unknown save');
+    if (reload) {
+      await page.reload();
+      await expect(page.getByLabel('Title', { exact: true })).toHaveValue(
+        'Edited after an unknown save',
+      );
+    }
+    await step(page, 6, 'Review and publish').click();
+    await page.getByRole('button', { name: /Save (draft|changes)/ }).click();
+    await expect(page.getByRole('region', { name: 'Reward review' })).toBeVisible();
+    expect(await fixture.db.workListing.count()).toBe(1);
+    expect(await fixture.db.termsVersion.count()).toBe(2);
+    expect(requests).toHaveLength(3);
+    expect(requests[1]).toEqual(requests[0]);
+    expect(requests[2].input.listingId).toBeTruthy();
+    expect(requests[2].input.terms.title).toBe('Edited after an unknown save');
+    expect(requests[2].key).not.toBe(requests[0].key);
+    expect(await noOverflow(page)).toBe(true);
+  });
+}
+test('validates account-scoped recovery and hides unsaved text after account changes', async ({
+  browser,
+}) => {
+  fixture = await seedWorkCreationFixture();
+  const page = await open(browser, fixture.founder.cookie);
+  const observed = watch(page);
+  await ready(page);
+  await page.evaluate((accountId) => {
+    const invalid = JSON.stringify({ title: 'MALFORMED', skills: null, rewards: null, days: null });
+    sessionStorage.setItem('raid-wizard-form-v1', invalid);
+    sessionStorage.setItem('raid-wizard-recovery-v1:' + encodeURIComponent(accountId), invalid);
+  }, fixture.founder.id);
+  await page.reload();
+  await expect(page.getByLabel('Title', { exact: true })).toHaveValue('');
+  expect(observed.errors).toEqual([]);
+  await page.getByLabel('Title', { exact: true }).fill('PRIVATE-UNSAVED-ACCOUNT-TEXT');
+  await page.context().clearCookies();
+  await page
+    .context()
+    .addCookies([{ name: 'raid_session', value: fixture.stranger.cookie, url: baseURL }]);
+  await ready(page);
+  await expect(page.getByLabel('Title', { exact: true })).toHaveValue('');
+  expect(await page.content()).not.toContain('PRIVATE-UNSAVED-ACCOUNT-TEXT');
+});
+
+test('clears only wizard recovery after successful sign-out', async ({ browser }) => {
+  fixture = await seedWorkCreationFixture();
+  const page = await open(browser, fixture.founder.cookie);
+  await ready(page);
+  await page.getByLabel('Title', { exact: true }).fill('PRIVATE-SIGNOUT-FORM');
+  await page.evaluate(() => sessionStorage.setItem('unrelated-setting', 'preserved'));
+  await page.getByRole('button', { name: /@founder-synthetic/ }).click();
+  await page.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await expect(page).toHaveURL(/\/creator$/);
+  expect(
+    await page.evaluate(() =>
+      Object.keys(sessionStorage).filter((key) => key.startsWith('raid-wizard-')),
+    ),
+  ).toEqual([]);
+  expect(await page.evaluate(() => sessionStorage.getItem('unrelated-setting'))).toBe('preserved');
 });

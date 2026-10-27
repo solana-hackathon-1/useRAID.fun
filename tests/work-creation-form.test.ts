@@ -205,3 +205,16 @@ describe('T018 wizard form, reward review and public teaser', () => {
     });
   });
 });
+
+it('explains collapsed stale deadlines instead of silently choosing replacement dates', () => {
+  const terms = RaidTermsSchema.parse(raidTerms());
+  const later = new Date(Date.parse(terms.deadlines.operationalClosure) + 86400000);
+  const form = formFromTerms(terms, later);
+  expect(Object.values(form.days)).toEqual([1, 1, 1, 1, 1]);
+  const result = buildTerms(form, catalog, later);
+  expect(result.ok).toBe(false);
+  if (!result.ok)
+    expect(result.problems.find((p) => p.field === 'days')?.message).toContain(
+      'saved deadlines may have passed',
+    );
+});

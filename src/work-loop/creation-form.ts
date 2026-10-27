@@ -114,7 +114,10 @@ export function buildTerms(
     order.some((day) => !Number.isInteger(day) || day < 1 || day > 3650) ||
     order.some((day, i) => i > 0 && day <= order[i - 1])
   )
-    add('days', 'Deadlines must be whole days from now and strictly increasing.');
+    add(
+      'days',
+      'Deadlines must be whole days from now and strictly increasing. The saved deadlines may have passed or rounded to the same day; choose a new schedule before saving.',
+    );
   const rewards: { policy: AssetPolicySnapshot; amount: string }[] = [];
   if (!form.rewards.length) add('rewards', 'Add at least one reward.');
   const seen = new Set<string>();
