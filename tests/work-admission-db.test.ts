@@ -9,6 +9,7 @@ import {
   revokeOffer,
 } from '../src/work-loop/admission-storage';
 import { commitEngagement } from '../src/work-loop/engagement-storage';
+import { recordAcceptanceConsent } from '../src/work-loop/consent-storage';
 import type { AdmissionHost } from '../src/work-loop/admission-contracts';
 import { saveRaidTerms } from '../src/work-loop/storage';
 import type { WorkHost } from '../src/work-loop/contracts';
@@ -291,6 +292,86 @@ integration('T021 applications and offers', () => {
     await expect(accept(applicant.actor, slot, o.offer.id)).resolves.toMatchObject({
       status: 'EXECUTED',
     });
+  });
+  const digestOf = async (termsVersionId: string) =>
+    (
+      (await db.$queryRawUnsafe(
+        'SELECT "digest" FROM "TermsVersion" WHERE "id"=$1::uuid',
+        termsVersionId,
+      )) as {
+        digest: string;
+      }[]
+    )[0].digest;
+  const consentTo = (
+    actor: Parameters<typeof cmd>[0],
+    slot: { slotId: string; termsVersionId: string },
+    termsDigest: string,
+  ) =>
+    run((tx) =>
+      recordAcceptanceConsent(
+        tx,
+        cmd(actor, { slotId: slot.slotId, termsVersionId: slot.termsVersionId, termsDigest }),
+        { allowNewWrites: true },
+      ),
+    );
+  it('records consent for an application Raid only with the person’s own pending, unexpired offer', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const digest = await digestOf(slot.termsVersionId);
+    await expect(consentTo(applicant.actor, slot, digest)).rejects.toMatchObject({
+      code: 'ADMISSION_REQUIRED',
+    });
+    const a = await applyTo(apply);
+    await expect(consentTo(applicant.actor, slot, digest)).rejects.toMatchObject({
+      code: 'ADMISSION_REQUIRED',
+    });
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    const stranger = await seedWorkHuman(db);
+    await expect(consentTo(stranger.actor, slot, digest)).rejects.toMatchObject({
+      code: 'ADMISSION_REQUIRED',
+    });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toEqual([]);
+    await expect(consentTo(applicant.actor, slot, digest)).resolves.toMatchObject({
+      status: 'EXECUTED',
+    });
+    await run((tx) => revokeOffer(tx, cmd(founder.actor, { offerId: o.offer.id }), host));
+    // A fresh command after the offer was revoked is refused; the consent already recorded stays untouched.
+    await expect(consentTo(applicant.actor, slot, digest)).rejects.toMatchObject({
+      code: 'ADMISSION_REQUIRED',
+    });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toHaveLength(1);
+  });
+  it('refuses consent once the commitment deadline has passed', async () => {
+    const human = await seedWorkHuman(db);
+    const slot = await seedWorkSlot(db);
+    const digest = await digestOf(slot.termsVersionId);
+    const [{ commitment }] = (await db.$queryRawUnsafe(
+      `SELECT "snapshot"->'deadlines'->>'commitment' AS commitment FROM "TermsVersion" WHERE "id"=$1::uuid`,
+      slot.termsVersionId,
+    )) as { commitment: string }[];
+    await expect(
+      run((tx) =>
+        recordAcceptanceConsent(
+          {
+            ...tx,
+            async query<Row>(sql: string, bindings: readonly (string | null)[]) {
+              // Deterministic clock at the port: the commitment deadline has just been reached.
+              if (sql === 'SELECT clock_timestamp() AS now')
+                return [{ now: new Date(commitment) }] as Row[];
+              return tx.query<Row>(sql, bindings);
+            },
+          } as typeof tx,
+          cmd(human.actor, {
+            slotId: slot.slotId,
+            termsVersionId: slot.termsVersionId,
+            termsDigest: digest,
+          }),
+          { allowNewWrites: true },
+        ),
+      ),
+    ).rejects.toMatchObject({ code: 'DEADLINE_PASSED' });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toEqual([]);
   });
   it('revokes outstanding offers and closes their applications when the Founder edits the terms', async () => {
     const { applicant, founder, slot, apply } = await setup();

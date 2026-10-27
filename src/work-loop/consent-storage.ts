@@ -9,7 +9,8 @@ import {
   type ConsentHost,
   type ConsentResult,
 } from './consent-contracts';
-import { fail, validate, session, currentHuman } from './engagement-authority';
+import { publicationProblems } from './terms';
+import { fail, validate, session, currentHuman, clock, definition } from './engagement-authority';
 
 const COLUMNS =
   'c."id"::text,c."participantId"::text,c."slotId"::text,c."termsVersionId"::text,c."termsDigest",c."consentedAt"';
@@ -63,6 +64,16 @@ export async function recordAcceptanceConsent(
         slot.digest !== value.termsDigest
       )
         fail('TERMS_VERSION_CHANGED');
+      // Same gates as acceptance, so consent cannot be recorded for work that can no longer be taken.
+      const terms = await definition(tx, value.termsVersionId);
+      if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
+      if (terms.admission === 'APPLICATION') {
+        const offers = await tx.query<{ id: string }>(
+          `SELECT "id"::text FROM "RaidOffer" WHERE "participantId"=$1::uuid AND "slotId"=$2::uuid AND "termsVersionId"=$3::uuid AND "state"='PENDING' AND "expiresAt">clock_timestamp()`,
+          [auth.participantId, value.slotId, value.termsVersionId],
+        );
+        if (offers.length < 1) fail('ADMISSION_REQUIRED');
+      }
       const inserted = await tx.query<{ id: string }>(
         'INSERT INTO "WorkAcceptanceConsent" ("participantId","slotId","termsVersionId","termsDigest") VALUES ($1::uuid,$2::uuid,$3::uuid,$4) ON CONFLICT ("participantId","slotId","termsVersionId") DO NOTHING RETURNING "id"::text',
         [auth.participantId, value.slotId, value.termsVersionId, value.termsDigest],
