@@ -1,7 +1,12 @@
 import { WorkError, type WorkActor, type WorkCommand } from '../work-loop/contracts';
 import type { AdmissionHost } from '../work-loop/admission-contracts';
 import { submitWork, decideReview } from '../work-loop/submission-storage';
-import { withdrawApplication, issueOffer, revokeOffer } from '../work-loop/admission-storage';
+import {
+  withdrawApplication,
+  issueOffer,
+  revokeOffer,
+  submitApplication,
+} from '../work-loop/admission-storage';
 import { readMyRaids, readReviewQueue, readApplicantQueue } from '../work-loop/workspace-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
@@ -81,4 +86,9 @@ export async function withdrawApplicationFromHost(command: WorkCommand) {
   requireReads();
   const host = admission(workWorkspaceConfiguration().applicationsAvailable);
   return runCommandTransaction(db, (tx) => withdrawApplication(tx, command, host));
+}
+export async function submitApplicationFromHost(command: WorkCommand) {
+  requireReads();
+  const host = admission(workWorkspaceConfiguration().applicationsAvailable);
+  return runCommandTransaction(db, (tx) => submitApplication(tx, command, host));
 }

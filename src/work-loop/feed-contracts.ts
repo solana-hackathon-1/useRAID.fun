@@ -72,6 +72,8 @@ export type FeedPage = z.infer<typeof FeedPageSchema>;
  */
 const text = z.string().min(1).max(8000);
 export const DetailSchema = FeedCardSchema.extend({
+  /** Open slots a person may apply to or take; an opaque id, never a permission. */
+  openSlotIds: z.array(z.uuid()).min(1).max(50),
   outcome: text,
   deliverables: z.array(text).min(1).max(50),
   acceptanceCriteria: z.array(text).min(1).max(50),

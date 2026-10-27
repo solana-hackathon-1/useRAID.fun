@@ -53,6 +53,9 @@ function host(overrides: Partial<WorkHttpHost> = {}): WorkHttpHost {
     withdrawApplication: async () => {
       throw new Error('unused');
     },
+    submitApplication: async () => {
+      throw new Error('unused');
+    },
     ...overrides,
   };
 }
@@ -219,5 +222,61 @@ describe('T022 work workspace HTTP boundary', () => {
     expect((await handlers.REVOKE_OFFER(post('/x', {}), offerId)).status).toBe(200);
     expect((await handlers.WITHDRAW(post('/x', {}), applicationId)).status).toBe(200);
     expect(calls).toEqual(['revoke:' + offerId, 'withdraw:' + applicationId]);
+  });
+  it('submits an application with a strict body and a key, and the result must match the request', async () => {
+    const slotId = '55555555-5555-4555-8555-555555555555';
+    const application = {
+      id: '66666666-6666-4666-8666-666666666666',
+      slotId,
+      termsVersionId,
+      participantId,
+      evidenceRefs: [],
+      state: 'SUBMITTED',
+    };
+    const submitApplication = vi.fn(async () => ({ status: 'EXECUTED', application }));
+    const handlers = createWorkHandlers(host({ submitApplication }));
+    const request = { slotId, termsVersionId, evidenceRefs: [] };
+    const ok = await handlers.APPLY(post('/api/v1/work/applications', request));
+    expect(ok.status).toBe(200);
+    expect(ok.headers.get('cache-control')).toBe('private, no-store');
+    expect(submitApplication).toHaveBeenCalledWith({
+      actor,
+      input: request,
+      idempotencyKey: 'key-1',
+      requestId: 'request-1',
+    });
+    for (const bad of [
+      { ...request, extra: true },
+      { ...request, slotId: 'nope' },
+      { slotId, termsVersionId },
+      { ...request, evidenceRefs: new Array(11).fill('e') },
+    ])
+      expect((await handlers.APPLY(post('/api/v1/work/applications', bad))).status).toBe(422);
+    const noKey = await handlers.APPLY(
+      new Request('http://localhost/api/v1/work/applications', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(request),
+      }),
+    );
+    expect(noKey.status).toBe(422);
+    // A host result for another slot is never forwarded.
+    const drift = createWorkHandlers(
+      host({
+        submitApplication: async () => ({
+          status: 'EXECUTED',
+          application: { ...application, slotId: '77777777-7777-4777-8777-777777777777' },
+        }),
+      }),
+    );
+    expect((await drift.APPLY(post('/api/v1/work/applications', request))).status).toBe(503);
+    const full = createWorkHandlers(
+      host({
+        submitApplication: async () => {
+          throw new WorkError('APPLICATION_LIMIT');
+        },
+      }),
+    );
+    expect((await full.APPLY(post('/api/v1/work/applications', request))).status).toBe(409);
   });
 });

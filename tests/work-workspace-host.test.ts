@@ -9,6 +9,7 @@ const port = vi.hoisted(() => ({
   issue: vi.fn(),
   revoke: vi.fn(),
   withdraw: vi.fn(),
+  apply: vi.fn(),
 }));
 vi.mock('../src/lib/db', () => ({ db: {} }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({
@@ -27,6 +28,7 @@ vi.mock('../src/work-loop/admission-storage', () => ({
   issueOffer: port.issue,
   revokeOffer: port.revoke,
   withdrawApplication: port.withdraw,
+  submitApplication: port.apply,
 }));
 import {
   workWorkspaceConfiguration,
@@ -36,6 +38,7 @@ import {
   decideReviewFromHost,
   issueOfferFromHost,
   withdrawApplicationFromHost,
+  submitApplicationFromHost,
 } from '../src/lib/work-workspace-host';
 const actor = { accountId: 'member', sessionHash: 'a'.repeat(64) };
 const command = { actor, input: {}, idempotencyKey: 'key-1', requestId: 'req-1' };
@@ -68,6 +71,7 @@ it('keeps every read and write closed until reads are enabled', async () => {
     () => decideReviewFromHost(command),
     () => issueOfferFromHost(command),
     () => withdrawApplicationFromHost(command),
+    () => submitApplicationFromHost(command),
   ])
     await expect(call()).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
   expect(port.my).not.toHaveBeenCalled();
@@ -117,4 +121,20 @@ it('bounds the configured application limit and falls back to the fixture of fiv
     vi.stubEnv('WORK_APPLICATION_LIMIT', value);
     expect(await limit()).toBe(expected);
   }
+});
+it('opens new applications only with the applications flag and the explicit limit', async () => {
+  vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+  port.apply.mockResolvedValue('applied');
+  await submitApplicationFromHost(command);
+  expect(port.apply.mock.calls.at(-1)![2]).toMatchObject({
+    allowNewWrites: false,
+    applicationLimit: 5,
+  });
+  vi.stubEnv('WORK_APPLICATIONS_ENABLED', 'true');
+  vi.stubEnv('WORK_APPLICATION_LIMIT', '3');
+  await submitApplicationFromHost(command);
+  expect(port.apply.mock.calls.at(-1)![2]).toMatchObject({
+    allowNewWrites: true,
+    applicationLimit: 3,
+  });
 });

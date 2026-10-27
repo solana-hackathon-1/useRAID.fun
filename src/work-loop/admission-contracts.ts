@@ -8,6 +8,12 @@ export interface AdmissionHost {
   /** Current scoped Founder authority held through transaction commit. */
   authorize: WorkHost['authorize'];
 }
+/** Applying is nonbinding: the evidence ids are opaque references the applicant already owns. */
+export const SubmitApplicationInput = z.strictObject({
+  slotId: z.uuid(),
+  termsVersionId: z.uuid(),
+  evidenceRefs: z.array(InternalId).max(10),
+});
 export const ApplicationSchema = z.strictObject({
   id: z.uuid(),
   slotId: z.uuid(),

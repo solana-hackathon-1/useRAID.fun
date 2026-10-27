@@ -105,6 +105,7 @@ describe('R08 public Raid feed markup', () => {
 const brief = (patch: Record<string, unknown> = {}) =>
   DetailSchema.parse({
     ...card(1),
+    openSlotIds: [id(7)],
     outcome: 'A guide a newcomer can follow. <i>x</i>',
     deliverables: ['setup.md at a pinned commit'],
     acceptanceCriteria: ['A clean install completes.'],
@@ -129,7 +130,8 @@ const brief = (patch: Record<string, unknown> = {}) =>
     ...patch,
   });
 describe('R08 public Raid detail markup', () => {
-  const out = () => renderToStaticMarkup(createElement(WorkDetail, { detail: brief() }));
+  const out = (apply: 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE' = 'NOT_APPLICABLE') =>
+    renderToStaticMarkup(createElement(WorkDetail, { detail: brief(), apply }));
   it('shows what a person commits to: outcome, criteria, every deadline, review rules and policies', () => {
     const html = out();
     for (const text of [
@@ -156,5 +158,15 @@ describe('R08 public Raid detail markup', () => {
     expect(html).toContain('Eligibility is checked');
     expect(html).toContain('href="/raids"');
     expect(html).not.toContain('Eligible for me');
+  });
+  it('shows the matching apply state: form, sign-in, closed or not applicable', () => {
+    expect(out('FORM')).toContain('Apply to this Raid');
+    expect(out('FORM')).toContain('name="apply-form"');
+    expect(out('SIGN_IN')).toContain('Sign in to apply');
+    expect(out('SIGN_IN')).toContain('href="/creator/account"');
+    expect(out('CLOSED')).toContain('Applications are not open yet');
+    expect(out('NOT_APPLICABLE')).toContain('not available in the browser yet');
+    for (const mode of ['SIGN_IN', 'CLOSED', 'NOT_APPLICABLE'] as const)
+      expect(out(mode)).not.toContain('Apply to this Raid');
   });
 });

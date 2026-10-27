@@ -203,8 +203,13 @@ export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail
   const card = cardFrom(row, terms.data);
   if (!card.success) return fail('NOT_FOUND');
   const t = terms.data;
+  const open = await tx.query<{ id: string }>(
+    `SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "state"='AVAILABLE' AND "fundingMode"='SIMULATED' AND "fundingRef" IS NOT NULL ORDER BY "slotNumber" LIMIT 50`,
+    [row.listingId, row.termsVersionId],
+  );
   return DetailSchema.parse({
     ...card.data,
+    openSlotIds: open.map((slot) => slot.id),
     outcome: t.outcome,
     deliverables: t.deliverables,
     acceptanceCriteria: t.acceptanceCriteria,

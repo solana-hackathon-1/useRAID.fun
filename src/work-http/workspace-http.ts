@@ -4,7 +4,11 @@ import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
 import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
 import { CommandReceiptError } from '../command-receipts';
 import { WorkError, type WorkCommand, type WorkActor } from '../work-loop/contracts';
-import { ApplicationResultSchema, OfferResultSchema } from '../work-loop/admission-contracts';
+import {
+  ApplicationResultSchema,
+  OfferResultSchema,
+  SubmitApplicationInput,
+} from '../work-loop/admission-contracts';
 import {
   DecideReviewInput,
   ReviewResultSchema,
@@ -38,6 +42,7 @@ export interface WorkHttpHost {
   issueOffer(command: WorkCommand): Promise<unknown>;
   revokeOffer(command: WorkCommand): Promise<unknown>;
   withdrawApplication(command: WorkCommand): Promise<unknown>;
+  submitApplication(command: WorkCommand): Promise<unknown>;
 }
 export const workPrivateHeaders = Object.freeze({
   'Cache-Control': 'private, no-store',
@@ -122,6 +127,7 @@ export function createWorkHandlers(host: WorkHttpHost) {
       'issueOffer',
       'revokeOffer',
       'withdrawApplication',
+      'submitApplication',
     ].some((k) => typeof host[k as keyof WorkHttpHost] !== 'function')
   )
     contract();
@@ -230,6 +236,19 @@ export function createWorkHandlers(host: WorkHttpHost) {
         const c = await command(request, NoBody, a, requestId, { offerId: target });
         const r = OfferResultSchema.safeParse(await host.revokeOffer(c));
         if (!r.success || r.data.offer.id !== target) contract();
+        return r.data;
+      });
+    },
+    APPLY(request: Request) {
+      return run(request, true, async (a, requestId) => {
+        const c = await command(request, SubmitApplicationInput, a, requestId);
+        const r = ApplicationResultSchema.safeParse(await host.submitApplication(c));
+        if (
+          !r.success ||
+          r.data.application.slotId !== c.input.slotId ||
+          r.data.application.termsVersionId !== c.input.termsVersionId
+        )
+          contract();
         return r.data;
       });
     },
