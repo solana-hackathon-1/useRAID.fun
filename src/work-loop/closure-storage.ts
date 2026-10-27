@@ -156,6 +156,19 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
     },
   );
   await currentActor(tx, actor, locks);
+  // An executed or replayed receipt is read back only while the closer still holds the authority it was made under.
+  const [closed] = await tx.query<{ guildId: string }>(
+    'SELECT "guildId" FROM "Engagement" WHERE "id"=$1::uuid',
+    [receipt.resultRef],
+  );
+  if (
+    !closed ||
+    (await host.authorize(tx, actor, {
+      engagementId: receipt.resultRef,
+      guildId: closed.guildId,
+    })) !== true
+  )
+    fail('FORBIDDEN');
   const result = CloseResultSchema.parse({
     status: receipt.status,
     closure: await readClosure(tx, receipt.resultRef),
