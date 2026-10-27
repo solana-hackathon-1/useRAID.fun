@@ -32,10 +32,11 @@ it('only links to in-product paths', () => {
   process.env.NOTIFICATIONS_READS_ENABLED = 'true';
   for (const link of workEntryLinks()) expect(link.href).toMatch(/^\/[a-z/]+$/);
 });
-it('lists the public feed first, and only while its own flag is exactly "true"', () => {
-  process.env.WORK_FEED_READS_ENABLED = 'yes';
-  expect(workEntryLinks()).toEqual([]);
+it('adds the public Raid feed to the main navigation only while its flag is exactly "true"', async () => {
+  const { publicNavLinks } = await import('../src/lib/work-entry-links');
+  expect(publicNavLinks()).toEqual([]);
+  process.env.WORK_FEED_READS_ENABLED = 'on';
+  expect(publicNavLinks()).toEqual([]);
   process.env.WORK_FEED_READS_ENABLED = 'true';
-  process.env.WORK_WORKSPACE_READS_ENABLED = 'true';
-  expect(workEntryLinks().map((l) => l.href)).toEqual(['/raids', '/raider/work', '/creator/work']);
+  expect(publicNavLinks()).toEqual([{ label: 'Live Raids', href: '/raids' }]);
 });

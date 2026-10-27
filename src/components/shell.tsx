@@ -6,7 +6,7 @@ import { Plus, ArrowUpRight, Shield, Menu, X } from 'lucide-react';
 import { BrandMark } from './brand';
 import { StudioAccountMenu, type StudioAccount } from './studio-account-menu';
 
-const links = [
+const navLinks = [
   { href: '/', label: 'Discover' },
   { href: '/creator', label: 'Creator studio' },
   { href: '/launch', label: 'Launchpads · Coming soon' },
@@ -19,13 +19,17 @@ export function Shell({
   demo,
   account,
   sandbox = false,
+  extraLinks = [],
 }: {
   children: React.ReactNode;
   demo: boolean;
   account?: StudioAccount | null;
   sandbox?: boolean;
+  /** Public navigation entries supplied by the host, shown after Discover. */
+  extraLinks?: { href: string; label: string }[];
 }) {
   const path = usePathname();
+  const links = [navLinks[0], ...extraLinks, ...navLinks.slice(1)];
   const [menuOpen, setMenuOpen] = useState(false);
   const [menuPath, setMenuPath] = useState(path);
   if (menuPath !== path) {

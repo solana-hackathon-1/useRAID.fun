@@ -16,6 +16,7 @@ const barlow = localFont({
 import { Shell } from '@/components/shell';
 import { config } from '@/lib/config';
 import { shellAccount } from '@/lib/shell-account';
+import { publicNavLinks } from '@/lib/work-entry-links';
 import { studioSandbox } from '@/lib/usdc';
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -28,7 +29,12 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${manrope.variable} ${barlow.variable}`}>
-        <Shell demo={config.demo} sandbox={studioSandbox()} account={account}>
+        <Shell
+          demo={config.demo}
+          sandbox={studioSandbox()}
+          account={account}
+          extraLinks={publicNavLinks()}
+        >
           {children}
         </Shell>
       </body>
