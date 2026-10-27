@@ -1,6 +1,12 @@
 import { canonicalRequestDigest } from '../command-receipts';
-import { SkillRankSchema } from '../contracts/entities';
-import { explainSkillEligibility, type SkillEligibilityInput } from '../skills/eligibility';
+import { SkillRankSchema, type SkillRank } from '../contracts/entities';
+import {
+  SkillEligibilityContractError,
+  explainSkillEligibility,
+  type SkillEligibilityInput,
+  type SkillPredicate,
+} from '../skills/eligibility';
+import { SkillTaxonomyStorageError } from '../skills/taxonomy-storage-contracts';
 import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
 import type { AcceptanceHost } from '../work-loop/engagement-contracts';
 
@@ -10,6 +16,33 @@ export interface RootAcceptanceConfig {
   allowNewWrites: boolean;
   /** Synthetic operator allowlist standing in for Guild authority, which the shared Root cannot recognize yet. */
   isOperator(accountId: string): boolean;
+}
+const GROUP_LIMIT = 16;
+const NOT_APPROVED = new Set<string>([
+  'INVALID_INPUT',
+  'FORBIDDEN',
+  'AUTHENTICATION_REQUIRED',
+  'ACCOUNT_RESTRICTED',
+]);
+/** Every required skill must be met. The eligibility schema allows 16 children per group and terms up to 50 skills. */
+export function buildSkillRequirement(
+  required: readonly { skillId: string; minimumRank: SkillRank; assessmentPolicyVersion: string }[],
+): SkillPredicate {
+  const leaves: SkillPredicate[] = required.map((s) => ({
+    kind: 'SKILL',
+    skillId: s.skillId,
+    minimumRank: s.minimumRank,
+    verificationRequired: true,
+    assessmentPolicyVersion: s.assessmentPolicyVersion,
+  }));
+  let level = leaves;
+  do {
+    const groups: SkillPredicate[] = [];
+    for (let i = 0; i < level.length; i += GROUP_LIMIT)
+      groups.push({ kind: 'AND', children: level.slice(i, i + GROUP_LIMIT) });
+    level = groups;
+  } while (level.length > 1);
+  return level[0];
 }
 export const ROOT_ELIGIBILITY_POLICY = 'root-skill-admission-v1';
 interface FactRow {
@@ -41,74 +74,73 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
         [ctx.participantId, ctx.slotId, ctx.termsVersionId],
       );
       if (consent.length !== 1) return null;
+      let taxonomy;
       try {
-        const taxonomy = await readPublishedSkillTaxonomy(tx, ctx.actor, config.taxonomyId);
-        if (!taxonomy) return null;
-        const skillIds = ctx.terms.requiredSkills.map((s) => s.skillId);
-        const facts = await tx.query<FactRow>(
-          `SELECT a."id"::text AS "assessmentId",a."revision",v."skillId",v."skillDomain",v."state",v."assessedRank",
-            v."policyVersionId"::text AS "policyVersionId",v."evaluatorAccountId",v."issuedAt",v."reassessmentAt",
-            v."definitionVersionId"::text AS "definitionVersionId"
-           FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId"
-           WHERE a."participantId"=$1::uuid AND a."taxonomyId"=$2 AND a."skillId" IN (SELECT jsonb_array_elements_text($3::jsonb))`,
-          [ctx.participantId, config.taxonomyId, JSON.stringify(skillIds)],
-        );
-        const [clock] = await tx.query<{ now: Date }>('SELECT clock_timestamp() AS now', []);
-        const now = clock.now;
-        const domains = new Map(taxonomy.skills.map((s) => [s.id, s.domain]));
-        const context = {
-          version: 'v1' as const,
-          now: now.toISOString(),
-          taxonomy,
-          participants: [
-            {
-              participant: {
-                id: ctx.participantId,
-                kind: 'HUMAN' as const,
-                accountId: ctx.actor.accountId,
-              },
-              evidence: {
-                status: 'CURRENT' as const,
-                observedAt: now.toISOString(),
-                validUntil: new Date(now.getTime() + 60000).toISOString(),
-                skills: facts
-                  // Evidence whose domain no longer matches the published taxonomy supplies nothing.
-                  .filter((f) => domains.get(f.skillId) === f.skillDomain)
-                  .map((f) => ({
-                    kind: 'ASSESSMENT' as const,
-                    skillId: f.skillId,
-                    domain: f.skillDomain,
-                    state: f.state,
-                    assessedRank: f.assessedRank,
-                    assessmentReference: { recordId: f.assessmentId, revision: f.revision },
-                    rubricReference: { recordId: f.definitionVersionId, revision: 1 },
-                    assessmentPolicyVersion: f.policyVersionId,
-                    evaluatorAccountId: f.evaluatorAccountId,
-                    issuedAt: f.issuedAt.toISOString(),
-                    reassessmentAt: f.reassessmentAt ? f.reassessmentAt.toISOString() : null,
-                  })),
-              },
+        taxonomy = await readPublishedSkillTaxonomy(tx, ctx.actor, config.taxonomyId);
+      } catch (error) {
+        // An unreadable or unpublished taxonomy means no one can be approved; an outage is not a verdict on the person.
+        if (error instanceof SkillTaxonomyStorageError && NOT_APPROVED.has(error.code)) return null;
+        throw error;
+      }
+      if (!taxonomy) return null;
+      const skillIds = ctx.terms.requiredSkills.map((s) => s.skillId);
+      const facts = await tx.query<FactRow>(
+        `SELECT a."id"::text AS "assessmentId",a."revision",v."skillId",v."skillDomain",v."state",v."assessedRank",
+          v."policyVersionId"::text AS "policyVersionId",v."evaluatorAccountId",v."issuedAt",v."reassessmentAt",
+          v."definitionVersionId"::text AS "definitionVersionId"
+         FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId"
+         WHERE a."participantId"=$1::uuid AND a."taxonomyId"=$2 AND a."skillId" IN (SELECT jsonb_array_elements_text($3::jsonb))`,
+        [ctx.participantId, config.taxonomyId, JSON.stringify(skillIds)],
+      );
+      const [clock] = await tx.query<{ now: Date }>('SELECT clock_timestamp() AS now', []);
+      const now = clock.now;
+      const domains = new Map(taxonomy.skills.map((s) => [s.id, s.domain]));
+      const context = {
+        version: 'v1' as const,
+        now: now.toISOString(),
+        taxonomy,
+        participants: [
+          {
+            participant: {
+              id: ctx.participantId,
+              kind: 'HUMAN' as const,
+              accountId: ctx.actor.accountId,
             },
-          ],
-        };
-        const input: SkillEligibilityInput = {
-          version: 'v1',
-          coverage: 'ONE_MEMBER',
-          requirement: {
-            kind: 'AND',
-            children: ctx.terms.requiredSkills.map((s) => ({
-              kind: 'SKILL' as const,
-              skillId: s.skillId,
-              minimumRank: s.minimumRank,
-              verificationRequired: true,
-              assessmentPolicyVersion: s.assessmentPolicyVersion,
-            })),
+            evidence: {
+              status: 'CURRENT' as const,
+              observedAt: now.toISOString(),
+              validUntil: new Date(now.getTime() + 60000).toISOString(),
+              skills: facts
+                // Evidence whose domain no longer matches the published taxonomy supplies nothing.
+                .filter((f) => domains.get(f.skillId) === f.skillDomain)
+                .map((f) => ({
+                  kind: 'ASSESSMENT' as const,
+                  skillId: f.skillId,
+                  domain: f.skillDomain,
+                  state: f.state,
+                  assessedRank: f.assessedRank,
+                  assessmentReference: { recordId: f.assessmentId, revision: f.revision },
+                  rubricReference: { recordId: f.definitionVersionId, revision: 1 },
+                  assessmentPolicyVersion: f.policyVersionId,
+                  evaluatorAccountId: f.evaluatorAccountId,
+                  issuedAt: f.issuedAt.toISOString(),
+                  reassessmentAt: f.reassessmentAt ? f.reassessmentAt.toISOString() : null,
+                })),
+            },
           },
-        };
+        ],
+      };
+      const input: SkillEligibilityInput = {
+        version: 'v1',
+        coverage: 'ONE_MEMBER',
+        requirement: buildSkillRequirement(ctx.terms.requiredSkills),
+      };
+      try {
         if (explainSkillEligibility(context, input).status !== 'MET') return null;
-      } catch {
-        // A contract or storage problem is never read as eligibility.
-        return null;
+      } catch (error) {
+        // Only a malformed requirement or evidence contract is a verdict; storage and database errors propagate.
+        if (error instanceof SkillEligibilityContractError) return null;
+        throw error;
       }
       return {
         consentRef: consent[0].id,
