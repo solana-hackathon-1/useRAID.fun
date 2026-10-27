@@ -18,6 +18,14 @@ export interface AmendmentHost {
     actor: WorkActor,
     target: { engagementId: string; guildId: string },
   ): Promise<boolean>;
+  /** Required to accept an amendment (consent fails closed without it); proposing, declining and withdrawing do not
+   * need it. The same Founder authority asked of the proposing account at the member's consent. The proposer has no
+   * session in the member's request: judge the account's current scoped authority (and standing), never a session. */
+  authorizeProposer?(
+    tx: CommandReceiptTransaction,
+    proposer: { accountId: string },
+    target: { engagementId: string; guildId: string },
+  ): Promise<boolean>;
   /** Transactional reservation of exactly the added obligation, distinct from every slot and amendment reservation. */
   reserveAdditionalFunding(
     tx: CommandReceiptTransaction,

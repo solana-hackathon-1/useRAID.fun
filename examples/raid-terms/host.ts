@@ -134,6 +134,7 @@ try {
     'migrations/amendments.sql',
     'migrations/notification-safety.sql',
     'migrations/reservation-binding.sql',
+    'migrations/funding-reference-serialization.sql',
     'migrations/offer-application-index.sql',
     'migrations/acceptance-consent.sql',
   ])
@@ -475,6 +476,14 @@ try {
   const amendments: AmendmentHost = {
     allowNewWrites: true,
     authorize: (tx, a, target) => host.authorize(tx, a, target.guildId, 'MANAGE_LISTING'),
+    // Account-level Founder authority of the proposer at consent: current guild authority and not suspended.
+    async authorizeProposer(tx, proposer, target) {
+      const found = await tx.query(
+        'SELECT 1 FROM "User" u JOIN "HostGuildAuthority" g ON g."accountId"=u."id" WHERE u."id"=$1 AND g."guildId"=$2 AND NOT u."suspended" FOR SHARE OF u,g',
+        [proposer.accountId, target.guildId],
+      );
+      return found.length === 1;
+    },
     async reserveAdditionalFunding(tx, b) {
       await tx.query(
         'INSERT INTO "HostAmendmentReservation" VALUES ($1::uuid,$2) RETURNING "amendmentId"',

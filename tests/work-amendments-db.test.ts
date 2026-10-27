@@ -32,10 +32,15 @@ const cmd = (actor: Actor, input: unknown, key: string = randomUUID()) => ({
 const calls = { reserve: 0, available: 0, consent: 0 };
 let funded = true;
 let consenting = true;
+const revoked = new Set<string>();
 const host: AmendmentHost = {
   allowNewWrites: true,
   authorize: async (_tx, a) =>
-    a.accountId.startsWith('founder-') || a.accountId.startsWith('admin-'),
+    !revoked.has(a.accountId) &&
+    (a.accountId.startsWith('founder-') || a.accountId.startsWith('admin-')),
+  authorizeProposer: async (_tx, a) =>
+    !revoked.has(a.accountId) &&
+    (a.accountId.startsWith('founder-') || a.accountId.startsWith('admin-')),
   reserveAdditionalFunding: async (_tx, b) => {
     calls.reserve += 1;
     return funded ? 'synthetic-increase:' + b.amendmentId : null;
@@ -116,6 +121,7 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     await truncateAll(db);
     calls.reserve = calls.available = calls.consent = 0;
     funded = consenting = true;
+    revoked.clear();
   });
   afterAll(() => db.$disconnect());
   it('keeps the accepted version effective until the affected member consents, then versions it with funding', async () => {
@@ -488,6 +494,147 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
       }
       expect(results.some((r) => r.status === 'fulfilled')).toBe(true);
     }
+  });
+  it('refuses consent to a proposal whose Founder lost authority after proposing, while declining stays possible', async () => {
+    const { founder, worker, engagementId } = await setup();
+    await start(engagementId);
+    const proposed = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Only the agreed criterion.'] }),
+    );
+    revoked.add(founder.actor.accountId);
+    await expect(
+      respond(worker.actor, { amendmentId: proposed.amendment.id, decision: 'ACCEPT' }),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
+    expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
+    const declined = await respond(worker.actor, {
+      amendmentId: proposed.amendment.id,
+      decision: 'DECLINE',
+    });
+    expect(declined.amendment.state).toBe('DECLINED');
+  });
+  it('needs the proposer-authority port only to accept: a host without it can still propose, decline and withdraw', async () => {
+    const { founder, worker, engagementId } = await setup();
+    await start(engagementId);
+    const { authorizeProposer: _omitted, ...legacy } = host;
+    const proposed = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Only the agreed criterion.'] }),
+      legacy as AmendmentHost,
+    );
+    await expect(
+      respond(
+        worker.actor,
+        { amendmentId: proposed.amendment.id, decision: 'ACCEPT' },
+        legacy as AmendmentHost,
+      ),
+    ).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
+    expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
+    const declined = await respond(
+      worker.actor,
+      { amendmentId: proposed.amendment.id, decision: 'DECLINE' },
+      legacy as AmendmentHost,
+    );
+    expect(declined.amendment.state).toBe('DECLINED');
+    const again = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Another agreed criterion.'] }),
+      legacy as AmendmentHost,
+    );
+    const withdrawn = await withdraw(
+      founder.actor,
+      { amendmentId: again.amendment.id },
+      legacy as AmendmentHost,
+    );
+    expect(withdrawn.amendment.state).toBe('WITHDRAWN');
+  });
+  it('reports a proposal whose amended deadlines lapsed before consent as AMENDMENT_UNAVAILABLE', async () => {
+    const { founder, worker, engagementId } = await setup();
+    await start(engagementId);
+    const proposed = await propose(
+      founder.actor,
+      change(engagementId, {
+        deadlines: {
+          preparation: at(800),
+          submission: at(1200),
+          review: at(1600),
+        },
+      }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await expect(
+      respond(worker.actor, { amendmentId: proposed.amendment.id, decision: 'ACCEPT' }),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
+    expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
+  });
+  it('reports a reused funding reference as FUNDING_REQUIRED, never as unavailable storage', async () => {
+    const { founder, slot, engagementId } = await setup();
+    await start(engagementId);
+    const slotRef = (
+      await row<{ ref: string }>(
+        'SELECT "fundingRef" AS ref FROM "RaidSlot" WHERE "id"=$1::uuid',
+        slot.slotId,
+      )
+    )[0].ref;
+    const reuse = (ref: string): AmendmentHost => ({
+      ...host,
+      reserveAdditionalFunding: async () => ref,
+    });
+    await expect(
+      propose(founder.actor, change(engagementId, raise), reuse(slotRef)),
+    ).rejects.toMatchObject({ code: 'FUNDING_REQUIRED' });
+    const first = await propose(
+      founder.actor,
+      change(engagementId, raise),
+      reuse('amendment-ref-1'),
+    );
+    await withdraw(founder.actor, { amendmentId: first.amendment.id });
+    await expect(
+      propose(founder.actor, change(engagementId, raise), reuse('amendment-ref-1')),
+    ).rejects.toMatchObject({ code: 'FUNDING_REQUIRED' });
+    expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'PROPOSED\'')).toEqual([]);
+  });
+  it('serializes a slot and an amendment handed the same funding reference across concurrent writers', async () => {
+    const { founder, slot, engagementId } = await setup();
+    await start(engagementId);
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let inserted!: () => void;
+    const amendmentWritten = new Promise<void>((resolve) => (inserted = resolve));
+    const amendment = db.$transaction(
+      async (tx) => {
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "EngagementAmendment" ("engagementId","sequence","snapshot","digest","proposedByAccountId","additionalFundingRef","expiresAt") SELECT "id",1,jsonb_set("acceptedTerms",'{rewards,0,amount}','"1500000000"'),'${'b'.repeat(64)}',$2,'race-ref',clock_timestamp()+interval '1 hour' FROM "Engagement" WHERE "id"=$1::uuid`,
+          engagementId,
+          founder.actor.accountId,
+        );
+        inserted();
+        await held;
+      },
+      { timeout: 20000 },
+    );
+    await amendmentWritten;
+    const raced = db.$transaction(
+      (tx) =>
+        tx.$executeRawUnsafe(
+          `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber","fundingRef") VALUES ($1::uuid,$2::uuid,99,'race-ref')`,
+          slot.listingId,
+          slot.termsVersionId,
+        ),
+      { timeout: 20000 },
+    );
+    const outcome = await Promise.race([
+      raced.then(
+        () => 'settled',
+        () => 'settled',
+      ),
+      new Promise<string>((resolve) => setTimeout(() => resolve('waiting'), 700)),
+    ]);
+    expect(outcome).toBe('waiting');
+    release();
+    await amendment;
+    await expect(raced).rejects.toThrow(/funding reference/i);
+    expect(await row('SELECT 1 FROM "RaidSlot" WHERE "fundingRef"=\'race-ref\'')).toEqual([]);
   });
   const overdue = () => ({
     commitment: at(6000),
