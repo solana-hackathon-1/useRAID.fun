@@ -1,0 +1,39 @@
+# Persisted Guilds, Founder authority and scoped grants
+
+## Purpose and status
+
+T009 storage core under R01–R04/R10/R15/R16, I06/I07/I10/I13, AC07/AC73–75 and blueprint 06.1–06.4, 25.2, 28.1. It persists a Guild from an owner's private [draft](raid-guild-drafts.md), keeps immutable profile history, defines scoped role grants and exposes the Guild's current authority. It builds on the pure [profile policy](raid-guild-profiles.md) (`evaluateGuildProfilePermission`), which it calls with facts rebuilt inside the command transaction. It adds no HTTP route, UI, feature flag, token recognition, money, capacity or work effect. Project-control verification (T010 evidence review, O11/G10), grant/revoke commands, ownership transfer, public updates, the directory (T015) and the wiring of the work boundary's `authorize` to these records are separate slices and remain NOT VERIFIED. Independent review, UAT and business sign-off remain NOT VERIFIED.
+
+## Authority model
+
+- **Founder** is the account that owned the draft at activation. It is fixed on the Guild row (a database guard rejects changes; a later ownership-transfer process owns any change) and implies **profile** and **work** management only.
+- **Activation** (`activateGuild`) is performed by an approver account the host authorizes (`GuildActivationHost.authorizeActivation`). The module stores the approver and an opaque `activationRef` naming the host's evidence record. The module does not decide project control: a draft owner cannot self-activate, and a token balance, market metadata or X/admin allowlist never creates a Guild or Founder.
+- **Grants** (`GuildRoleGrant`) have a `kind`: `PROFILE` (names the editable fields, `name` and/or `description`), `WORK`, `TREASURY` or `DISPUTE`. Only `PROFILE` grants carry fields; the others are whole-scope and cannot delegate. A grant is live only inside its `[validFrom, expiresAt)` window, evaluated on the database clock, and until revoked. Kinds never imply one another, and the Founder holds no treasury or dispute authority by role (blueprint 06.2). Grant and revoke commands are the next slice; the table and its guard (a grant can only be revoked, once; never edited or deleted) exist now.
+- **Holder eligibility** is never an input. Token holding grants no administration, treasury, dispute or code permission (AC07).
+- **Cross-Guild writes** are denied: authority is looked up per Guild id, so a Founder or grantee of one Guild has nothing in another.
+
+## Interface
+
+`src/guild-profiles/guild-storage.ts` (contracts in `guild-storage-contracts.ts`):
+
+| Function                                                                                                                  | Authority                                                     | Effect                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `activateGuild(tx, {actor, input:{guildDraftId, expectedDraftRevision, activationRef}, idempotencyKey, requestId}, host)` | approver per host policy, with a live session                 | creates the Guild at revision 1 from the draft's current profile; audit `guild.activated.v1` |
+| `editGuildProfile(tx, {actor, input:{guildId, expectedRevision, profile:{name?, description?}}, …}, host)`                | Founder, or a live `PROFILE` grant covering every named field | new immutable profile version, revision +1; audit `guild.profile_edited.v1`                  |
+| `readPublicGuild(tx, slug)`                                                                                               | none                                                          | the approved public allowlist only: `id`, `slug`, `name`, `description`, `primaryToken`      |
+| `readManagedGuild(tx, actor, guildId)`                                                                                    | any live authority in this Guild                              | the Guild plus only the kinds the caller holds                                               |
+| `hasGuildAuthority(tx, accountId, guildId, kind)`                                                                         | none (informational, recomputed every call)                   | boolean, for hosts such as the work boundary                                                 |
+
+Errors (`GuildStorageError`): `INVALID_INPUT`, `UNAUTHENTICATED`, `ACCOUNT_RESTRICTED`, `FORBIDDEN`, `NOT_FOUND`, `WRITES_DISABLED`, `REVISION_CONFLICT`, `GUILD_EXISTS`, `SLUG_UNAVAILABLE`, `STORAGE_CONTRACT`, `STORAGE_UNAVAILABLE`. Permission is judged before the caller's revision, so a stranger learns nothing about it.
+
+## Host dependencies and transaction rules
+
+Inject the existing `CommandReceiptTransaction` (PostgreSQL, READ COMMITTED) and an explicit `allowNewWrites` boolean; for activation also `authorizeActivation`. The host owns cookie authentication (the `GuildActor` is the account and the SHA-256 of the current session cookie), origin/rate/body limits for any future transport, whole-transaction retry and commit-before-response. Receipt-first ordering: the command receipt, then `User` (`FOR NO KEY UPDATE`), `Session` (`FOR SHARE`), then the Guild or draft row (`FOR UPDATE`). Authority is re-proven on the database clock after each row wait and on replay; an expired or revoked session, a suspended account or a revoked grant rolls the whole command back. Replays return the stored result only to an actor who still holds the authority.
+
+## Storage, audit and recovery
+
+Migration `202610270008_guilds` adds `Guild` (stable unique slug, fixed Founder, activation record, one Guild per source draft), `GuildProfileVersion` (immutable, each tied to its command receipt) and `GuildRoleGrant`. Guards reject a changed id, slug, Founder, activation record or source draft; a revision without its own new version; deleting a Guild, version or grant; and any grant edit except one-time revocation. Every activation and edit records a private audit event (identifier-only payload `guildProfileVersionId`, no outbox). The shared event envelope gains the additive key `guildProfileVersionId`. Backup/restore must keep Guilds, versions, grants, receipts and audit together; the migration is additive and has no destructive down step once used. Limitation: unlike the draft tables, the version table has no deferred "receipt and audit must exist" trigger, so a privileged direct writer could add a version without its audit row.
+
+## Consuming example and verification
+
+[The independent host](../examples/guild-storage/README.md) installs its own pg/zod/bs58/tsx, applies the receipt, draft and Guild migrations to its own database and exercises activation by an approver, the public allowlist, a Founder edit, a holder-only denial and separate treasury authority. Real-PostgreSQL tests (`tests/guild-storage-db.test.ts`) cover approval, replay, stale revision, one Guild per draft, the public allowlist, cross-Guild and holder denial, field-scoped/expired/future/revoked grants, a suspended account, kind separation and the direct-writer guards. Next bounded slices: grant/revoke commands, ownership transfer, public updates, HTTP/UI behind default-off flags, and connecting the work boundary's `authorize` to `hasGuildAuthority`.

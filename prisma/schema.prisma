@@ -6,6 +6,11 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  foundedGuilds Guild[] @relation("GuildFounder")
+  activatedGuilds Guild[] @relation("GuildActivator")
+  guildProfileEdits GuildProfileVersion[]
+  guildGrantsReceived GuildRoleGrant[] @relation("GuildGrantGrantee")
+  guildGrantsIssued GuildRoleGrant[] @relation("GuildGrantIssuer")
   closedEngagements EngagementClosure[]
   notifications Notification[]
   notificationPreference NotificationPreference?
@@ -660,6 +665,8 @@ model XEndpointState {
 // Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
 // additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
 model CommandReceipt {
+  guildProfileVersion GuildProfileVersion?
+  guildRoleGrant GuildRoleGrant?
  assessmentDecision PracticeAssessmentDecision? @relation("AssessmentDecisionReceipt")
  assessmentDecisionCaseAccess PracticeAssessmentDecision[] @relation("DecisionCaseAccess")
  assessmentDecisionPolicyAccess PracticeAssessmentDecision[] @relation("DecisionPolicyAccess")
@@ -772,6 +779,7 @@ model GuildDraft {
   owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_owner_fkey")
   versions GuildDraftVersion[] @relation("GuildDraftHistory")
   projectProposal GuildProjectProposal?
+  guild Guild?
   currentVersion GuildDraftVersion @relation("GuildDraftCurrent", fields: [currentVersionId, id, ownerAccountId, revision], references: [id, guildDraftId, ownerAccountId, revision], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_version_fkey")
   @@unique([id, ownerAccountId], map: "GuildDraft_owner_key")
   @@index([ownerAccountId])
@@ -1501,4 +1509,60 @@ model EngagementClosure {
   closedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   engagement Engagement @relation(fields: [engagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+
+// Persisted Guild: operator-attested activation of an owner's draft. Founder authority comes from this record only.
+model Guild {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug String @unique(map: "Guild_slug_key")
+  founderAccountId String
+  revision Int
+  currentVersionId String @db.Uuid
+  activationRef String
+  activatedByAccountId String
+  sourceDraftId String @unique(map: "Guild_sourceDraftId_key") @db.Uuid
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  founder User @relation("GuildFounder", fields: [founderAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "Guild_founder_fkey")
+  activatedBy User @relation("GuildActivator", fields: [activatedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "Guild_activatedBy_fkey")
+  sourceDraft GuildDraft @relation(fields: [sourceDraftId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "Guild_sourceDraft_fkey")
+  currentVersion GuildProfileVersion @relation("GuildProfileCurrent", fields: [currentVersionId, id, revision], references: [id, guildId, revision], onDelete: Restrict, onUpdate: Restrict, map: "Guild_version_fkey")
+  versions GuildProfileVersion[] @relation("GuildProfileHistory")
+  grants GuildRoleGrant[]
+  @@index([founderAccountId])
+}
+model GuildProfileVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  revision Int
+  name String
+  description String
+  receiptId String @unique(map: "GuildProfileVersion_receiptId_key") @db.Uuid
+  actorAccountId String
+  requestId String
+  recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  guild Guild @relation("GuildProfileHistory", fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_guild_fkey")
+  currentProjections Guild[] @relation("GuildProfileCurrent")
+  actor User @relation(fields: [actorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_actor_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_receipt_fkey")
+  @@unique([guildId, revision], map: "GuildProfileVersion_guild_revision_key")
+  @@unique([id, guildId, revision], map: "GuildProfileVersion_pointer_key")
+}
+// kind separates profile, work, treasury and dispute authority; only PROFILE grants carry fields.
+model GuildRoleGrant {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  granteeAccountId String
+  kind String
+  fields String[] @default([])
+  canDelegate Boolean @default(false)
+  validFrom DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  expiresAt DateTime? @db.Timestamptz(6)
+  revokedAt DateTime? @db.Timestamptz(6)
+  grantedByAccountId String
+  receiptId String? @unique(map: "GuildRoleGrant_receiptId_key") @db.Uuid
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_guild_fkey")
+  grantee User @relation("GuildGrantGrantee", fields: [granteeAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_grantee_fkey")
+  grantedBy User @relation("GuildGrantIssuer", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_grantedBy_fkey")
+  receipt CommandReceipt? @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_receipt_fkey")
+  @@index([guildId, granteeAccountId], map: "GuildRoleGrant_guild_grantee_idx")
 }
