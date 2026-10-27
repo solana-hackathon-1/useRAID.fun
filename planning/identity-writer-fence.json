@@ -13,7 +13,12 @@
     "EngagementAmendment:decidedBy User? @relation(\"EngagementAmendmentDecider\", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "EngagementAmendment:proposedBy User @relation(\"EngagementAmendmentProposer\", fields: [proposedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "EngagementClosure:closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "Guild:activatedBy User @relation(\"GuildActivator\", fields: [activatedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_activatedBy_fkey\")",
+    "Guild:founder User @relation(\"GuildFounder\", fields: [founderAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_founder_fkey\")",
     "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
+    "GuildProfileVersion:actor User @relation(fields: [actorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildProfileVersion_actor_fkey\")",
+    "GuildRoleGrant:grantedBy User @relation(\"GuildGrantIssuer\", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantedBy_fkey\")",
+    "GuildRoleGrant:grantee User @relation(\"GuildGrantGrantee\", fields: [granteeAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantee_fkey\")",
     "MediaAsset:uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)",
     "Notification:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "NotificationPreference:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
@@ -142,6 +147,41 @@
       "authority": "Current actual Session/canonical actor for their own account only, rechecked in the transaction. Root not enabled.",
       "fold": "Restrict preserves the preference and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent task-end authority/migration review pending."
+    },
+    "Guild.founderAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#activateGuild",
+      "effects": "Immutable Founder attribution (the draft owner at activation) only; no User/Session/Participant mutation or identity transfer. Founder authority is this record, never a token balance.",
+      "authority": "Current actual Session of the approving account whose authority the host answers (authorizeActivation), rechecked after the draft lock; the Founder account must be unrestricted. Root not enabled.",
+      "fold": "Restrict preserves Guild history and fails closed on account deletion; the Founder cannot be rewritten (database guard); no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "Guild.activatedByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#activateGuild",
+      "effects": "Immutable approver attribution only; no identity mutation.",
+      "authority": "Same approving-account authority as the activation command, held through commit.",
+      "fold": "Restrict preserves the activation record; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildProfileVersion.actorAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#editGuildProfile",
+      "effects": "Immutable editor attribution of an append-only profile version; no identity mutation.",
+      "authority": "Current actual Session of the Founder or a live field-scoped PROFILE grantee, rechecked on the database clock after the Guild row lock.",
+      "fold": "Restrict preserves profile history; versions cannot be updated or deleted (database guard); no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildRoleGrant.granteeAccountId": {
+      "writer": "fixture-only until the grant command slice; src/guild-profiles/guild-storage.ts reads grants",
+      "effects": "Grant recipient attribution; the grant row is immutable except one-time revocation; no identity mutation.",
+      "authority": "Reads only: authority is recomputed per call from live, unrevoked grants on the database clock; no grant command exists yet.",
+      "fold": "Restrict preserves grant history; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildRoleGrant.grantedByAccountId": {
+      "writer": "fixture-only until the grant command slice",
+      "effects": "Issuer attribution of a grant; no identity mutation.",
+      "authority": "Reads only; the issuing command and its authority rule are the next slice.",
+      "fold": "Restrict preserves grant history; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
     }
   }
 }
