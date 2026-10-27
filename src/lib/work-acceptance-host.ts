@@ -44,6 +44,21 @@ export function buildSkillRequirement(
   } while (level.length > 1);
   return level[0];
 }
+/**
+ * Decisions (revoke, reassess, verify) take this per-person, per-skill lock until they commit. Holding it to our commit
+ * means the evidence read cannot go stale before the engagement is inserted. Sorted and unique, so concurrent
+ * acceptances take the locks in one order.
+ */
+async function lockAssessmentEvidence(
+  tx: Parameters<AcceptanceHost['assess']>[0],
+  participantId: string,
+  skillIds: readonly string[],
+) {
+  for (const skillId of [...new Set(skillIds)].sort())
+    await tx.query('SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text', [
+      participantId + ':' + skillId,
+    ]);
+}
 export const ROOT_ELIGIBILITY_POLICY = 'root-skill-admission-v1';
 interface FactRow {
   assessmentId: string;
@@ -84,13 +99,7 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
       }
       if (!taxonomy) return null;
       const skillIds = ctx.terms.requiredSkills.map((s) => s.skillId);
-      // Decisions (revoke, reassess, verify) take this per-person, per-skill lock until they commit. Holding it to our
-      // commit means the evidence read below cannot go stale before the engagement is inserted. Sorted and unique,
-      // so concurrent acceptances take the locks in one order.
-      for (const skillId of [...new Set(skillIds)].sort())
-        await tx.query('SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text', [
-          ctx.participantId + ':' + skillId,
-        ]);
+      await lockAssessmentEvidence(tx, ctx.participantId, skillIds);
       const facts = await tx.query<FactRow>(
         `SELECT a."id"::text AS "assessmentId",a."revision",v."skillId",v."skillDomain",v."state",v."assessedRank",
           v."policyVersionId"::text AS "policyVersionId",v."evaluatorAccountId",v."issuedAt",v."reassessmentAt",
