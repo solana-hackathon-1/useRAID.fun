@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { formatDisplayAmount } from '../contracts/assets';
 import { AcceptRaid } from './work-accept';
 import { ApplyToRaid } from './work-apply';
+import type { ApplyMode } from '../lib/work-apply-mode';
 import type { Detail, FeedCard, FeedPage, FeedQuery } from '../work-loop/feed-contracts';
 
 const FEED_PATH = '/raids';
@@ -226,14 +227,20 @@ function Policy({ title, text }: { title: string; text: string }) {
   );
 }
 /** The full public brief of one live Raid: what a person commits to, in the accepted-terms order. */
-export type ApplyMode = 'FORM' | 'ACCEPT' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE';
+export type { ApplyMode };
 export function WorkDetail({
   detail,
   apply = 'NOT_APPLICABLE',
   offer,
+  applied = false,
+  applySlotId,
 }: {
   detail: Detail;
   apply?: ApplyMode;
+  /** The viewer already has a submitted application for these terms. */
+  applied?: boolean;
+  /** The open slot this viewer applies to; defaults to the first. */
+  applySlotId?: string;
   /** The viewer's own usable offer for these terms: accepting through it replaces applying. */
   offer?: { offerId: string; slotId: string } | null;
 }) {
@@ -329,7 +336,11 @@ export function WorkDetail({
             termsDigest={detail.termsDigest}
           />
         ) : apply === 'FORM' ? (
-          <ApplyToRaid slotId={detail.openSlotIds[0]} termsVersionId={detail.termsVersionId} />
+          <ApplyToRaid
+            slotId={applySlotId ?? detail.openSlotIds[0]}
+            termsVersionId={detail.termsVersionId}
+            applied={applied}
+          />
         ) : apply === 'SIGN_IN' ? (
           <>
             <p>
