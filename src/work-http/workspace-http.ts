@@ -4,7 +4,17 @@ import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
 import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
 import { CommandReceiptError } from '../command-receipts';
 import { WorkError, type WorkCommand, type WorkActor } from '../work-loop/contracts';
-import { ApplicationResultSchema, OfferResultSchema } from '../work-loop/admission-contracts';
+import {
+  ApplicationResultSchema,
+  OfferResultSchema,
+  SubmitApplicationInput,
+} from '../work-loop/admission-contracts';
+import { ConsentResultSchema, RecordConsentInput } from '../work-loop/consent-contracts';
+import {
+  CommitEngagementInput,
+  CommittedEngagementSchema,
+} from '../work-loop/engagement-contracts';
+import { StartEngagementInput, StartResultSchema } from '../work-loop/start-contracts';
 import {
   DecideReviewInput,
   ReviewResultSchema,
@@ -38,6 +48,10 @@ export interface WorkHttpHost {
   issueOffer(command: WorkCommand): Promise<unknown>;
   revokeOffer(command: WorkCommand): Promise<unknown>;
   withdrawApplication(command: WorkCommand): Promise<unknown>;
+  submitApplication(command: WorkCommand): Promise<unknown>;
+  recordConsent(command: WorkCommand): Promise<unknown>;
+  commitEngagement(command: WorkCommand): Promise<unknown>;
+  startEngagement(command: WorkCommand): Promise<unknown>;
 }
 export const workPrivateHeaders = Object.freeze({
   'Cache-Control': 'private, no-store',
@@ -61,6 +75,7 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   TERMS_VERSION_CHANGED: 'TERMS_VERSION_CHANGED',
   FUNDING_REQUIRED: 'FUNDING_NOT_VERIFIED',
   OFFER_UNAVAILABLE: 'OFFER_EXPIRED',
+  OFFER_EXPIRED: 'OFFER_EXPIRED',
   IDEMPOTENCY_KEY_REUSED: 'IDEMPOTENCY_KEY_REUSED',
   // State, round, deadline and duplicate conflicts all mean: refresh the current record.
   REVISION_CONFLICT: 'REVISION_CHANGED',
@@ -76,6 +91,8 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   PUBLICATION_BLOCKED: 'REVISION_CHANGED',
   TERMS_FROZEN: 'REVISION_CHANGED',
   ADMISSION_REQUIRED: 'APPROVAL_REQUIRED',
+  // Resources become ready on their own schedule: the person can try again later.
+  RESOURCES_NOT_READY: 'SERVICE_UNAVAILABLE',
 };
 function invalid(): never {
   throw new JsonBodyFailure(422);
@@ -122,6 +139,10 @@ export function createWorkHandlers(host: WorkHttpHost) {
       'issueOffer',
       'revokeOffer',
       'withdrawApplication',
+      'submitApplication',
+      'recordConsent',
+      'commitEngagement',
+      'startEngagement',
     ].some((k) => typeof host[k as keyof WorkHttpHost] !== 'function')
   )
     contract();
@@ -230,6 +251,57 @@ export function createWorkHandlers(host: WorkHttpHost) {
         const c = await command(request, NoBody, a, requestId, { offerId: target });
         const r = OfferResultSchema.safeParse(await host.revokeOffer(c));
         if (!r.success || r.data.offer.id !== target) contract();
+        return r.data;
+      });
+    },
+    APPLY(request: Request) {
+      return run(request, true, async (a, requestId) => {
+        const c = await command(request, SubmitApplicationInput, a, requestId);
+        const r = ApplicationResultSchema.safeParse(await host.submitApplication(c));
+        if (
+          !r.success ||
+          r.data.application.slotId !== c.input.slotId ||
+          r.data.application.termsVersionId !== c.input.termsVersionId
+        )
+          contract();
+        return r.data;
+      });
+    },
+    CONSENT(request: Request) {
+      return run(request, true, async (a, requestId) => {
+        const c = await command(request, RecordConsentInput, a, requestId);
+        const r = ConsentResultSchema.safeParse(await host.recordConsent(c));
+        if (
+          !r.success ||
+          r.data.consent.slotId !== c.input.slotId ||
+          r.data.consent.termsVersionId !== c.input.termsVersionId ||
+          r.data.consent.termsDigest !== c.input.termsDigest
+        )
+          contract();
+        return r.data;
+      });
+    },
+    ACCEPT(request: Request) {
+      return run(request, true, async (a, requestId) => {
+        const c = await command(request, CommitEngagementInput, a, requestId);
+        const r = CommittedEngagementSchema.safeParse(await host.commitEngagement(c));
+        if (
+          !r.success ||
+          r.data.engagement.source.kind !== 'RAID_SLOT' ||
+          r.data.engagement.source.raidSlotId !== c.input.slotId ||
+          r.data.engagement.acceptedTerms.id !== c.input.termsVersionId
+        )
+          contract();
+        return r.data;
+      });
+    },
+    START(request: Request, engagementId: string | Promise<string>) {
+      return run(request, true, async (a, requestId) => {
+        const target = await uuid(engagementId);
+        const c = await command(request, NoBody, a, requestId, { engagementId: target });
+        const input = StartEngagementInput.safeParse(c.input);
+        const r = StartResultSchema.safeParse(await host.startEngagement(c));
+        if (!input.success || !r.success || r.data.engagement.id !== target) contract();
         return r.data;
       });
     },

@@ -41,8 +41,10 @@ import {
 } from './work-loop/amendment-storage';
 import type { AmendmentHost } from './work-loop/amendment-contracts';
 import { reissueRaid } from './work-loop/replacement-storage';
-import { readWorkFeed } from './work-loop/feed-storage';
+import { readWorkDetail, readWorkFeed } from './work-loop/feed-storage';
 import { readWorkMetrics } from './work-loop/metrics-storage';
+import { startEngagement } from './work-loop/start-storage';
+import { simulatedStartHost } from './work-loop/start-simulated';
 import { raidTerms } from './fixture';
 import { AssetPolicySnapshotSchema, assetKey } from './contracts/assets';
 import { recommend, reviewChoices } from './work-loop/recommendation';
@@ -134,6 +136,11 @@ try {
     'migrations/amendments.sql',
     'migrations/notification-safety.sql',
     'migrations/reservation-binding.sql',
+    'migrations/funding-reference-serialization.sql',
+    'migrations/json-shape.sql',
+    'migrations/offer-application-index.sql',
+    'migrations/closure-hardening.sql',
+    'migrations/acceptance-consent.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   assert.equal(
@@ -199,6 +206,9 @@ try {
     [saved.listingId],
   );
   assert.equal(live.items[0].funding.mode, 'SIMULATED');
+  const brief = await transaction((tx) => readWorkDetail(tx, saved.listingId));
+  assert.equal(brief.outcome, input.terms.outcome);
+  assert.ok(!JSON.stringify(brief).includes('reviewer'), 'The public brief hides the reviewer.');
   for (const secret of ['reviewer', 'synthetic:', 'creatorAccountId', 'deliverables'])
     assert.ok(!JSON.stringify(live).includes(secret), 'The public feed hides ' + secret);
   assert.equal((await pool.query('SELECT * FROM "HostReservation"')).rowCount, 1);
@@ -243,6 +253,14 @@ try {
   ]);
   const acceptance: AcceptanceHost = {
     allowNewWrites: true,
+    // Account-level Founder authority of the offer's issuer: current guild authority and not suspended, no session.
+    async authorizeOfferIssuer(tx, issuer, target) {
+      const found = await tx.query(
+        'SELECT 1 FROM "User" u JOIN "HostGuildAuthority" g ON g."accountId"=u."id" WHERE u."id"=$1 AND g."guildId"=$2 AND NOT u."suspended" FOR SHARE OF u,g',
+        [issuer.accountId, target.guildId],
+      );
+      return found.length === 1;
+    },
     async assess(tx, c) {
       const found = await tx.query<{
         consentRef: string;
@@ -447,21 +465,43 @@ try {
     2,
     'Session loss does not close work.',
   );
-  // Binding/access start is another module's job; the host moves the engagement through the guarded transition.
   const reviewer = { accountId: 'reviewer', sessionHash: 'd'.repeat(64) };
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [reviewer.accountId]);
   await pool.query(
     "INSERT INTO \"Session\" VALUES ($1,$2,'wallet',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')",
     [reviewer.sessionHash, reviewer.accountId],
   );
-  await pool.query(
-    'UPDATE "Engagement" SET "state"=\'IN_PROGRESS\',"revision"="revision"+1 WHERE "id"=$1::uuid',
-    [selected.engagement.id],
+  // Only the engagement's own member starts it, after the exact simulated reservation is verified.
+  await assert.rejects(
+    transaction((tx) =>
+      startEngagement(
+        tx,
+        { ...command({ engagementId: selected.engagement.id }), actor: reviewer },
+        simulatedStartHost(true),
+      ),
+    ),
+    (e: unknown) => ['FORBIDDEN', 'NOT_FOUND'].includes((e as { code: string }).code),
   );
+  const startedWork = await transaction((tx) =>
+    startEngagement(
+      tx,
+      candidateCommand({ engagementId: selected.engagement.id }),
+      simulatedStartHost(true),
+    ),
+  );
+  assert.equal(startedWork.engagement.state, 'IN_PROGRESS');
   // A consented amendment: the Founder's proposal changes nothing until the affected member agrees to its exact digest.
   const amendments: AmendmentHost = {
     allowNewWrites: true,
     authorize: (tx, a, target) => host.authorize(tx, a, target.guildId, 'MANAGE_LISTING'),
+    // Account-level Founder authority of the proposer at consent: current guild authority and not suspended.
+    async authorizeProposer(tx, proposer, target) {
+      const found = await tx.query(
+        'SELECT 1 FROM "User" u JOIN "HostGuildAuthority" g ON g."accountId"=u."id" WHERE u."id"=$1 AND g."guildId"=$2 AND NOT u."suspended" FOR SHARE OF u,g',
+        [proposer.accountId, target.guildId],
+      );
+      return found.length === 1;
+    },
     async reserveAdditionalFunding(tx, b) {
       await tx.query(
         'INSERT INTO "HostAmendmentReservation" VALUES ($1::uuid,$2) RETURNING "amendmentId"',

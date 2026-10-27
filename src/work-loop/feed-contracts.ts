@@ -66,3 +66,37 @@ export const FeedPageSchema = z.strictObject({
   rewardComparable: z.boolean(),
 });
 export type FeedPage = z.infer<typeof FeedPageSchema>;
+/**
+ * The full public brief of one live, public Raid (blueprint §10.1 PUBLIC, §23.2 Raid detail). It adds the commercial
+ * and process terms a person needs to decide, and still omits the reviewer's identity, funding references and creator.
+ */
+const text = z.string().min(1).max(8000);
+export const DetailSchema = FeedCardSchema.extend({
+  /** Open slots a person may apply to or take; an opaque id, never a permission. */
+  openSlotIds: z.array(z.uuid()).min(1).max(50),
+  outcome: text,
+  deliverables: z.array(text).min(1).max(50),
+  acceptanceCriteria: z.array(text).min(1).max(50),
+  exclusions: z.array(text).max(50),
+  dependencies: z.array(text).max(50),
+  allowedToolsPolicy: text,
+  startCondition: text,
+  deadlines: z.strictObject({
+    commitment: UtcTimestamp,
+    preparation: UtcTimestamp,
+    submission: UtcTimestamp,
+    review: UtcTimestamp,
+    operationalClosure: UtcTimestamp,
+  }),
+  review: z.strictObject({
+    evidence: text,
+    maxRevisionRounds: z.number().int().min(0).max(10),
+  }),
+  rightsPolicy: text,
+  portfolioPolicy: text,
+  withdrawalPolicy: text,
+  terminationPolicy: text,
+  disputePolicy: text,
+  finalityPolicy: text,
+});
+export type Detail = z.infer<typeof DetailSchema>;

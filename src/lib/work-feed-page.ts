@@ -1,5 +1,14 @@
-import { FeedQuerySchema, type FeedPage, type FeedQuery } from '../work-loop/feed-contracts';
-import { readFeedFromHost, workFeedAvailable } from './work-feed-host';
+import { z } from 'zod';
+import { WorkError } from '../work-loop/contracts';
+import {
+  FeedQuerySchema,
+  type Detail,
+  type FeedPage,
+  type FeedQuery,
+} from '../work-loop/feed-contracts';
+import { currentUser } from './auth';
+import { workWorkspaceConfiguration } from './work-workspace-host';
+import { readDetailFromHost, readFeedFromHost, workFeedAvailable } from './work-feed-host';
 
 type Params = Record<string, string | string[] | undefined>;
 export type LoadedFeed =
@@ -28,4 +37,35 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
   } catch {
     return { status: 'UNAVAILABLE' };
   }
+}
+export type LoadedDetail =
+  { status: 'UNAVAILABLE' } | { status: 'NOT_FOUND' } | { status: 'READY'; detail: Detail };
+/** Server-side first paint of one public brief. A malformed or unlisted id is one answer. */
+export async function loadDetail(listingId: string): Promise<LoadedDetail> {
+  if (!workFeedAvailable()) return { status: 'UNAVAILABLE' };
+  if (!z.uuid().safeParse(listingId).success) return { status: 'NOT_FOUND' };
+  try {
+    return { status: 'READY', detail: await readDetailFromHost(listingId) };
+  } catch (error) {
+    return error instanceof WorkError && error.code === 'NOT_FOUND'
+      ? { status: 'NOT_FOUND' }
+      : { status: 'UNAVAILABLE' };
+  }
+}
+export type ApplyState = 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE';
+/**
+ * What the brief offers this viewer. Informational only: the command itself rechecks the session, flags, quota and
+ * source at the moment of the action. Instant-start Raids need acceptance, which this host cannot offer yet.
+ */
+export async function applyMode(detail: Pick<Detail, 'admission'>): Promise<ApplyState> {
+  if (detail.admission !== 'APPLICATION') return 'NOT_APPLICABLE';
+  let signedIn = false;
+  try {
+    signedIn = (await currentUser()) !== null;
+  } catch {
+    signedIn = false;
+  }
+  if (!signedIn) return 'SIGN_IN';
+  const config = workWorkspaceConfiguration();
+  return config.readsAvailable && config.applicationsAvailable ? 'FORM' : 'CLOSED';
 }

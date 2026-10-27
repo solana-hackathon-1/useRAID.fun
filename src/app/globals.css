@@ -2682,3 +2682,39 @@ footer {
   border: 1px dashed var(--border);
   border-radius: 14px;
 }
+.raid-detail h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.raid-detail section {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.raid-detail ul {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.6;
+}
+.raid-detail .raid-feed-tags,
+.raid-detail .raid-feed-rewards {
+  padding-left: 0;
+}
+.raid-detail p {
+  margin: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.raid-detail-terms {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+.raid-detail-terms dt {
+  color: var(--muted);
+  font-size: 14px;
+}
+.raid-detail-terms dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}

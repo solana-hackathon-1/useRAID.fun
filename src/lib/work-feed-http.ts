@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { publicRateLimit, HttpError } from './auth';
 import { createFeedHandlers, FeedHttpError } from '../work-http/feed-http';
-import { readFeedFromHost, workFeedAvailable } from './work-feed-host';
+import { readDetailFromHost, readFeedFromHost, workFeedAvailable } from './work-feed-host';
 
 export const feedHandlers = createFeedHandlers({
   version: 'v1',
@@ -16,4 +16,5 @@ export const feedHandlers = createFeedHandlers({
     }
   },
   feed: readFeedFromHost,
+  detail: readDetailFromHost,
 });

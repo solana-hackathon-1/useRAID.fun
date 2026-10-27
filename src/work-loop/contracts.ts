@@ -39,6 +39,8 @@ export class WorkError extends Error {
       | 'APPLICATION_EXISTS'
       | 'APPLICATION_CLOSED'
       | 'OFFER_UNAVAILABLE'
+      | 'OFFER_EXPIRED'
+      | 'RESOURCES_NOT_READY'
       | 'OFFER_EXISTS'
       | 'UNAUTHENTICATED'
       | 'ACCOUNT_RESTRICTED'

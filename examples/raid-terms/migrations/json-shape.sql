@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610270003_work_json_shape/migration.sql

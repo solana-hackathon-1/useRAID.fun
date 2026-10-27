@@ -29,3 +29,15 @@ Reservation binding migration: `migrations/reservation-binding.sql` validates ex
 Public feed (#R08): after publication the host reads the live Raid back through `readWorkFeed` and asserts it is a safe card (simulated funding label; no reviewer, reservation, creator or deliverables). See [public Raid feed](../../docs/raid-work-feed.md).
 
 Work-loop metrics (#T043): after the loop the host reads the operator metrics and checks they stay simulated, per asset, with `paid` never inferred and no account ids. See [work-loop metrics](../../docs/raid-work-metrics.md).
+
+Application offers (#239): `migrations/offer-application-index.sql` indexes offers by application, and the host's `AcceptanceHost.authorizeOfferIssuer` answers, as an account (no session), whether the offer's issuing Founder still holds current Guild authority and is not suspended. Acceptance with an offer fails closed without it.
+
+Acceptance consent (T021 Root): `migrations/acceptance-consent.sql` adds the append-only `WorkAcceptanceConsent` record (participant, slot, terms version, stored digest). The host keeps its own `HostAcceptance` consent/eligibility port; the shared Root's host (consent plus verified-skill check) lives in the application, not in this portable module.
+
+Consented amendments (#244): `migrations/funding-reference-serialization.sql` serializes slot-versus-amendment reuse of one funding reference, and the host's `AmendmentHost.authorizeProposer` answers, as an account (no session), whether the proposing Founder still holds current Guild authority and is not suspended at the member's consent. The method is optional in the type but required to accept: a host without it can propose, decline and withdraw, and every acceptance fails closed with `STORAGE_CONTRACT`.
+
+Submission JSON shape (#240): `migrations/json-shape.sql` mirrors the strict artifact, dependency and criterion schemas as database CHECK constraints; the host's submissions and reviews already satisfy them.
+
+Closure hardening (#241): `migrations/closure-hardening.sql` requires a passed operational deadline for timeout closures, stamps `closedAt` from the database clock and matches each terminal transition to the closure reason of the state it leaves. `closeOverdueEngagement` re-runs the host's `authorize` when reading back a receipt.
+
+Starting work (T032): the host's accepted candidate starts their own engagement through `startEngagement` with the portable simulated reservation host (the terms reviewer, who is not a member, is refused) instead of moving the row with SQL. The guarded database transition remains available to direct writers and is documented as such.

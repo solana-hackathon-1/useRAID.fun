@@ -1,10 +1,13 @@
+import { z } from 'zod';
 import type { CommandReceiptTransaction as Tx } from '../command-receipts';
 import { assetKey } from '../contracts/assets';
 import { fromJsonAmount } from '../asset-registry/amounts';
 import { WorkError } from './contracts';
 import { RaidTermsSchema, type RaidTerms } from './terms';
 import {
+  DetailSchema,
   FeedCardSchema,
+  type Detail,
   FeedPageSchema,
   FeedQuerySchema,
   type FeedCard,
@@ -66,6 +69,51 @@ function follows(a: Candidate, position: { key: bigint; id: string }, sort: Feed
     ? false
     : !before(a, position, sort);
 }
+/** One definition of "live": open, public, unexpired and with a funded available slot (checked by the callers). */
+const LIVE_SELECT = `SELECT l."id"::text AS "listingId",l."guildId",t."id"::text AS "termsVersionId",t."snapshot",
+      (extract(epoch FROM l."createdAt")*1000000)::bigint::text AS "createdMicros",
+      (SELECT count(*)::int FROM "RaidSlot" s WHERE s."listingId"=l."id" AND s."termsVersionId"=t."id" AND s."state"='AVAILABLE' AND s."fundingMode"='SIMULATED' AND s."fundingRef" IS NOT NULL) AS "availableSlots"
+     FROM "WorkListing" l JOIN "TermsVersion" t ON t."id"=l."currentTermsVersionId"
+     WHERE l."state"='OPEN' AND t."snapshot"->>'visibility'='PUBLIC'
+      AND (t."snapshot"->'deadlines'->>'commitment')::timestamptz>clock_timestamp()`;
+function port(tx: Tx) {
+  if (
+    tx?.dialect !== 'POSTGRESQL' ||
+    tx?.isolation !== 'READ_COMMITTED' ||
+    typeof tx.query !== 'function'
+  )
+    fail('STORAGE_CONTRACT');
+}
+function cardFrom(row: Row, terms: RaidTerms) {
+  const rewards = terms.rewards.map((leg) => ({
+    assetKey: assetKey(leg.policy.assetId),
+    assetId: leg.policy.assetId,
+    decimals: leg.policy.verifiedDecimals,
+    amount: leg.amount,
+  }));
+  return FeedCardSchema.safeParse({
+    listingId: row.listingId,
+    termsVersionId: row.termsVersionId,
+    guildId: row.guildId,
+    title: terms.title,
+    publicSummary: terms.publicSummary,
+    category: terms.category,
+    difficulty: terms.difficulty,
+    requiredSkills: terms.requiredSkills.map((s) => ({
+      skillId: s.skillId,
+      minimumRank: s.minimumRank,
+    })),
+    participantKinds: terms.participantKinds,
+    execution: terms.execution,
+    admission: terms.admission,
+    rewards,
+    commitmentDeadline: terms.deadlines.commitment,
+    submissionDeadline: terms.deadlines.submission,
+    availableSlots: row.availableSlots,
+    funding: { mode: 'SIMULATED' },
+    confidentiality: 'PUBLIC',
+  });
+}
 function candidate(row: Row, query: FeedQuery): Candidate | null {
   const parsed = RaidTermsSchema.safeParse(row.snapshot);
   // A corrupt stored version is never exposed and never takes the public feed down.
@@ -89,28 +137,7 @@ function candidate(row: Row, query: FeedQuery): Candidate | null {
     Date.parse(terms.deadlines.commitment) >= Date.parse(query.closesBefore)
   )
     return null;
-  const card = FeedCardSchema.safeParse({
-    listingId: row.listingId,
-    termsVersionId: row.termsVersionId,
-    guildId: row.guildId,
-    title: terms.title,
-    publicSummary: terms.publicSummary,
-    category: terms.category,
-    difficulty: terms.difficulty,
-    requiredSkills: terms.requiredSkills.map((s) => ({
-      skillId: s.skillId,
-      minimumRank: s.minimumRank,
-    })),
-    participantKinds: terms.participantKinds,
-    execution: terms.execution,
-    admission: terms.admission,
-    rewards,
-    commitmentDeadline: terms.deadlines.commitment,
-    submissionDeadline: terms.deadlines.submission,
-    availableSlots: row.availableSlots,
-    funding: { mode: 'SIMULATED' },
-    confidentiality: 'PUBLIC',
-  });
+  const card = cardFrom(row, terms);
   if (!card.success) return null;
   const key =
     query.sort === 'newest'
@@ -128,24 +155,13 @@ function candidate(row: Row, query: FeedQuery): Candidate | null {
  * decides nothing about the viewer's eligibility: that is rechecked by the server at the action.
  */
 export async function readWorkFeed(tx: Tx, input: unknown): Promise<FeedPage> {
-  if (
-    tx?.dialect !== 'POSTGRESQL' ||
-    tx?.isolation !== 'READ_COMMITTED' ||
-    typeof tx.query !== 'function'
-  )
-    fail('STORAGE_CONTRACT');
+  port(tx);
   const parsed = FeedQuerySchema.safeParse(input ?? {});
   if (!parsed.success) return fail('INVALID_INPUT');
   const query = parsed.data;
   const cursor = query.cursor ? decode(query.cursor, query) : null;
   const rows = await tx.query<Row>(
-    `SELECT l."id"::text AS "listingId",l."guildId",t."id"::text AS "termsVersionId",t."snapshot",
-      (extract(epoch FROM l."createdAt")*1000000)::bigint::text AS "createdMicros",
-      (SELECT count(*)::int FROM "RaidSlot" s WHERE s."listingId"=l."id" AND s."termsVersionId"=t."id" AND s."state"='AVAILABLE' AND s."fundingMode"='SIMULATED' AND s."fundingRef" IS NOT NULL) AS "availableSlots"
-     FROM "WorkListing" l JOIN "TermsVersion" t ON t."id"=l."currentTermsVersionId"
-     WHERE l."state"='OPEN' AND t."snapshot"->>'visibility'='PUBLIC'
-      AND (t."snapshot"->'deadlines'->>'commitment')::timestamptz>clock_timestamp()
-     ORDER BY l."createdAt" DESC,l."id" DESC LIMIT ${WINDOW}`,
+    `${LIVE_SELECT} ORDER BY l."createdAt" DESC,l."id" DESC LIMIT ${WINDOW}`,
     [],
   );
   const live = rows
@@ -172,5 +188,45 @@ export async function readWorkFeed(tx: Tx, input: unknown): Promise<FeedPage> {
         : null,
     sort: query.sort,
     rewardComparable: query.assetKey !== undefined,
+  });
+}
+/** The full public brief of one live Raid. Missing, unlisted, filled, expired and non-public listings are one `NOT_FOUND`. */
+export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail> {
+  port(tx);
+  const id = z.uuid().safeParse(listingId);
+  if (!id.success) return fail('INVALID_INPUT');
+  const rows = await tx.query<Row>(`${LIVE_SELECT} AND l."id"=$1::uuid`, [id.data]);
+  const row = rows[0];
+  const terms = row ? RaidTermsSchema.safeParse(row.snapshot) : null;
+  if (!row || !terms?.success || terms.data.visibility !== 'PUBLIC' || row.availableSlots < 1)
+    return fail('NOT_FOUND');
+  const card = cardFrom(row, terms.data);
+  if (!card.success) return fail('NOT_FOUND');
+  const t = terms.data;
+  const open = await tx.query<{ id: string }>(
+    `SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "state"='AVAILABLE' AND "fundingMode"='SIMULATED' AND "fundingRef" IS NOT NULL ORDER BY "slotNumber" LIMIT 50`,
+    [row.listingId, row.termsVersionId],
+  );
+  // The count above and this read are separate statements: if the last open slot was taken in between, the Raid is
+  // no longer takeable, which is the same one answer as any other unlisted Raid.
+  if (open.length === 0) return fail('NOT_FOUND');
+  return DetailSchema.parse({
+    ...card.data,
+    openSlotIds: open.map((slot) => slot.id),
+    outcome: t.outcome,
+    deliverables: t.deliverables,
+    acceptanceCriteria: t.acceptanceCriteria,
+    exclusions: t.exclusions,
+    dependencies: t.dependencies,
+    allowedToolsPolicy: t.allowedToolsPolicy,
+    startCondition: t.startCondition,
+    deadlines: t.deadlines,
+    review: { evidence: t.review.evidence, maxRevisionRounds: t.review.maxRevisionRounds },
+    rightsPolicy: t.rightsPolicy,
+    portfolioPolicy: t.portfolioPolicy,
+    withdrawalPolicy: t.withdrawalPolicy,
+    terminationPolicy: t.terminationPolicy,
+    disputePolicy: t.disputePolicy,
+    finalityPolicy: t.finalityPolicy,
   });
 }

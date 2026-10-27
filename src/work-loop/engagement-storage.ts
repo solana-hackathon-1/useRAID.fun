@@ -9,12 +9,13 @@ import {
 import { WorkError, type WorkCommand } from './contracts';
 import { RaidTermsSchema, publicationProblems } from './terms';
 import {
+  CommitEngagementInput,
   CommittedEngagementSchema,
   type AcceptanceHost,
   type AcceptanceApproval,
   type CommittedEngagement,
 } from './engagement-contracts';
-import { lockOffer, assertOffer } from './admission-acceptance';
+import { lockOffer, assertOffer, assertOfferIssuerAuthorized } from './admission-acceptance';
 import {
   fail,
   validate,
@@ -25,11 +26,7 @@ import {
   clock,
   type Source,
 } from './engagement-authority';
-const Input = z.strictObject({
-  slotId: z.uuid(),
-  termsVersionId: z.uuid(),
-  offerId: z.uuid().optional(),
-});
+const Input = CommitEngagementInput;
 const Approval = z.strictObject({
   consentRef: InternalId,
   beneficiaryRef: InternalId,
@@ -183,6 +180,13 @@ export async function commitEngagement(
       await session(tx, actor);
       const now = await clock(tx);
       if (publicationProblems(terms, now).length) fail('DEADLINE_PASSED');
+      if (offer)
+        await assertOfferIssuerAuthorized(
+          tx,
+          offer.id,
+          { slotId: input.slotId, guildId: s.guildId },
+          host,
+        );
       const accepted = snapshot(s, terms, authorization.participantId, assessed.data, now);
       const [e] = await tx.query<{ id: string }>(
         'INSERT INTO "Engagement" ("slotId","termsVersionId","guildId","acceptedTerms","acceptedDigest") VALUES ($1::uuid,$2::uuid,$3,$4::jsonb,$5) RETURNING "id"::text',

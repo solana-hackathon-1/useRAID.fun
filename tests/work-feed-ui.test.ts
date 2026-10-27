@@ -1,8 +1,8 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { WorkFeed, feedHref } from '../src/components/work-feed';
-import { FeedPageSchema } from '../src/work-loop/feed-contracts';
+import { WorkDetail, WorkFeed, feedHref } from '../src/components/work-feed';
+import { DetailSchema, FeedPageSchema } from '../src/work-loop/feed-contracts';
 
 const id = (n: number) =>
   `${String(n).repeat(8)}-${String(n).repeat(4)}-4${String(n).repeat(3)}-8${String(n).repeat(3)}-${String(n).repeat(12)}`;
@@ -96,5 +96,77 @@ describe('R08 public Raid feed markup', () => {
     expect(empty).toContain('No live Raids match');
     expect(empty).toContain('href="/raids"');
     expect(feedHref({ category: 'a b', sort: 'newest', limit: 20 })).toBe('/raids?category=a+b');
+  });
+  it('links each card to its own brief', () => {
+    expect(html()).toContain(`href="/raids/work/${id(1)}"`);
+    expect(feedHref({ category: 'a' })).toBe('/raids?category=a');
+  });
+});
+const brief = (patch: Record<string, unknown> = {}) =>
+  DetailSchema.parse({
+    ...card(1),
+    openSlotIds: [id(7)],
+    outcome: 'A guide a newcomer can follow. <i>x</i>',
+    deliverables: ['setup.md at a pinned commit'],
+    acceptanceCriteria: ['A clean install completes.'],
+    exclusions: ['No production changes'],
+    dependencies: [],
+    allowedToolsPolicy: 'Public tools allowed; disclose AI assistance.',
+    startCondition: 'Verified binding and required resources ready.',
+    deadlines: {
+      commitment: '2026-11-04T09:30:00.000Z',
+      preparation: '2026-11-05T09:30:00.000Z',
+      submission: '2026-11-08T00:00:00.000Z',
+      review: '2026-11-09T00:00:00.000Z',
+      operationalClosure: '2026-11-10T00:00:00.000Z',
+    },
+    review: { evidence: 'Pinned commit plus install output.', maxRevisionRounds: 1 },
+    rightsPolicy: 'Contributor keeps prior IP.',
+    portfolioPolicy: 'May be shown.',
+    withdrawalPolicy: 'May withdraw.',
+    terminationPolicy: 'Finite closure.',
+    disputePolicy: 'Manual review.',
+    finalityPolicy: 'Simulated only.',
+    ...patch,
+  });
+describe('R08 public Raid detail markup', () => {
+  const out = (apply: 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE' = 'NOT_APPLICABLE') =>
+    renderToStaticMarkup(createElement(WorkDetail, { detail: brief(), apply }));
+  it('shows what a person commits to: outcome, criteria, every deadline, review rules and policies', () => {
+    const html = out();
+    for (const text of [
+      'Synthetic task 1',
+      'Outcome',
+      'setup.md at a pinned commit',
+      'A clean install completes.',
+      'No production changes',
+      'Pinned commit plus install output.',
+      '1 revision round',
+      'Contributor keeps prior IP.',
+      'Operational closure',
+      '10 Nov 2026',
+      '1.5 SOL',
+      'Simulated funding',
+    ])
+      expect(html, text).toContain(text);
+    expect(html).toContain('&lt;i&gt;x&lt;/i&gt;');
+    expect(html).not.toContain('<i>x</i>');
+  });
+  it('is honest that applying and accepting are not available here yet and never claims eligibility', () => {
+    const html = out();
+    expect(html).toContain('not available in the browser yet');
+    expect(html).toContain('Eligibility is checked');
+    expect(html).toContain('href="/raids"');
+    expect(html).not.toContain('Eligible for me');
+  });
+  it('shows the matching apply state: form, sign-in, closed or not applicable', () => {
+    expect(out('FORM')).toContain('Apply to this Raid');
+    expect(out('FORM')).toContain('name="apply-form"');
+    expect(out('SIGN_IN')).toContain('Sign in to apply');
+    expect(out('SIGN_IN')).toContain('href="/creator/account"');
+    expect(out('CLOSED')).toContain('Applications are not open yet');
+    expect(out('NOT_APPLICABLE')).toContain('not available in the browser yet');
+    for (const mode of ['SIGN_IN', 'CLOSED', 'NOT_APPLICABLE'] as const)
+      expect(out(mode)).not.toContain('Apply to this Raid');
   });
 });

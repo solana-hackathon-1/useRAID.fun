@@ -6,7 +6,6 @@ const on = (name: string) => process.env[name] === 'true';
  */
 export function workEntryLinks(): WorkEntryLink[] {
   return [
-    ...(on('WORK_FEED_READS_ENABLED') ? [{ label: 'Live Raids', href: '/raids' }] : []),
     ...(on('WORK_WORKSPACE_READS_ENABLED')
       ? [
           { label: 'My Raid', href: '/raider/work' },
@@ -20,4 +19,8 @@ export function workEntryLinks(): WorkEntryLink[] {
       ? [{ label: 'Notifications', href: '/notifications' }]
       : []),
   ];
+}
+/** Public main-navigation entries: visible to every visitor, but only while the feature's own flag is on. */
+export function publicNavLinks(): WorkEntryLink[] {
+  return on('WORK_FEED_READS_ENABLED') ? [{ label: 'Live Raids', href: '/raids' }] : [];
 }

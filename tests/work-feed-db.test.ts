@@ -3,8 +3,8 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { commitEngagement } from '../src/work-loop/engagement-storage';
-import { readWorkFeed } from '../src/work-loop/feed-storage';
-import { FeedPageSchema, FeedQuerySchema } from '../src/work-loop/feed-contracts';
+import { readWorkDetail, readWorkFeed } from '../src/work-loop/feed-storage';
+import { DetailSchema, FeedPageSchema, FeedQuerySchema } from '../src/work-loop/feed-contracts';
 import { assetKey } from '../src/contracts/assets';
 import { raidTerms } from './helpers/raid-terms-fixture';
 import { seedWorkHuman, seedWorkSlot, syntheticAcceptanceHost } from './helpers/work-loop-db';
@@ -183,5 +183,62 @@ integration('R08 public Raid feed', { timeout: 60000 }, () => {
     await expect(feed({ cursor: 'not-a-cursor' })).rejects.toMatchObject({ code: 'INVALID_INPUT' });
     await expect(feed({ limit: 500 })).rejects.toMatchObject({ code: 'INVALID_INPUT' });
     await expect(feed({ unknown: 'x' })).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+  });
+});
+integration('R08 public Raid detail', { timeout: 60000 }, () => {
+  beforeEach(async () => {
+    assertTestDatabase();
+    await truncateAll(db);
+  });
+  afterAll(() => db.$disconnect());
+  const detail = (listingId: unknown) => run((tx) => readWorkDetail(tx, listingId));
+  it('shows the full public brief of one live Raid without internal references', async () => {
+    const slot = await seedWorkSlot(db, undefined, { title: 'Docs guide' });
+    const brief = DetailSchema.parse(await detail(slot.listingId));
+    expect(brief.title).toBe('Docs guide');
+    expect(brief.listingId).toBe(slot.listingId);
+    expect(brief.openSlotIds).toEqual([slot.slotId]);
+    expect(brief.outcome).toBe(raidTerms().outcome);
+    expect(brief.deliverables).toEqual(raidTerms().deliverables);
+    expect(brief.acceptanceCriteria).toEqual(raidTerms().acceptanceCriteria);
+    expect(brief.deadlines.operationalClosure).toBe(raidTerms().deadlines.operationalClosure);
+    expect(brief.review).toEqual({
+      evidence: raidTerms().review.evidence,
+      maxRevisionRounds: raidTerms().review.maxRevisionRounds,
+    });
+    expect(brief.rewards[0].amount).toBe(raidTerms().rewards[0].amount);
+    const text = JSON.stringify(brief);
+    for (const secret of [
+      'reviewerAccountId',
+      'fundingSourceRef',
+      'fundingRef',
+      'synthetic:',
+      'creatorAccountId',
+    ])
+      expect(text, secret).not.toContain(secret);
+    expect(text).not.toContain(raidTerms().review.reviewerAccountId);
+    expect(text).not.toContain(raidTerms().fundingSourceRef);
+  });
+  it('answers missing, unlisted, filled and malformed ids the same way', async () => {
+    const open = await seedWorkSlot(db);
+    const taken = await seedWorkSlot(db);
+    const worker = await seedWorkHuman(db);
+    await run((tx) =>
+      commitEngagement(
+        tx,
+        {
+          actor: worker.actor,
+          input: { slotId: taken.slotId, termsVersionId: taken.termsVersionId },
+          idempotencyKey: randomUUID(),
+          requestId: 'take',
+        },
+        syntheticAcceptanceHost,
+      ),
+    );
+    await expect(detail(taken.listingId)).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    await expect(detail(randomUUID())).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    await expect(detail('not-a-uuid')).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    await expect(detail(undefined)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    await expect(detail(open.listingId)).resolves.toMatchObject({ listingId: open.listingId });
   });
 });

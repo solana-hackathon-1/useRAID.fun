@@ -413,8 +413,91 @@ integration('T023 versioned submissions and criterion review', () => {
             other.slotId,
           );
         }),
-      ).rejects.toThrow();
+      ).rejects.toThrow(/starts ACCESS_PENDING at revision 1/);
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toHaveLength(1);
+  });
+  it('rejects malformed artifact, dependency and criterion JSON from direct writers', async () => {
+    const { worker, reviewer, slot, engagementId } = await setup();
+    const rolledBack = Error('rolled back after the statement was accepted');
+    const attempt = async (sql: string, ...args: string[]) => {
+      try {
+        await db.$transaction(async (tx) => {
+          await tx.$executeRawUnsafe(sql, ...args);
+          throw rolledBack;
+        });
+      } catch (error) {
+        return error === rolledBack ? 'accepted' : 'rejected';
+      }
+      return 'accepted';
+    };
+    const insertSubmission = (artifacts: unknown, dependencies: unknown = []) =>
+      attempt(
+        `INSERT INTO "WorkSubmission" ("engagementId","termsVersionId","submissionNumber","submitterParticipantId","explanation","artifacts","dependencies","digest") VALUES ($1::uuid,$2::uuid,1,$3::uuid,'Guide written.',$4::jsonb,$5::jsonb,repeat('a',64))`,
+        engagementId,
+        slot.termsVersionId,
+        worker.participantId,
+        JSON.stringify(artifacts),
+        JSON.stringify(dependencies),
+      );
+    const good = {
+      kind: 'COMMIT',
+      ref: 'synthetic://repo/setup.md',
+      immutableVersion: 'a'.repeat(40),
+    };
+    expect(await insertSubmission([good])).toBe('accepted');
+    for (const artifacts of [
+      [{ kind: 'COMMIT' }],
+      [{ ...good, extra: true }],
+      [{ ...good, kind: 'FTP' }],
+      [{ ...good, ref: '' }],
+      [{ ...good, ref: 'x'.repeat(501) }],
+      [{ ...good, immutableVersion: 7 }],
+      [{ ...good, immutableVersion: 'v'.repeat(201) }],
+      ['not an object'],
+      [good, good],
+    ])
+      expect(await insertSubmission(artifacts), JSON.stringify(artifacts)).toBe('rejected');
+    for (const dependencies of [[1], [''], [{ name: 'x' }], ['x'.repeat(8001)]])
+      expect(await insertSubmission([good], dependencies), JSON.stringify(dependencies)).toBe(
+        'rejected',
+      );
+    await submit(worker.actor, {
+      engagementId,
+      expectedSubmissionNumber: 1,
+      explanation: 'Guide written.',
+      artifacts: [good],
+      dependencies: [],
+      aiUsage: null,
+    });
+    const submissionId = (
+      (await db.$queryRawUnsafe('SELECT "id"::text FROM "WorkSubmission"')) as { id: string }[]
+    )[0].id;
+    const insertReview = (criteria: unknown) =>
+      attempt(
+        `INSERT INTO "WorkReview" ("submissionId","engagementId","termsVersionId","reviewerAccountId","decision","reason","criteria","digest") VALUES ($1::uuid,$2::uuid,$3::uuid,$4,'DISPUTE','Not what was agreed.',$5::jsonb,repeat('a',64))`,
+        submissionId,
+        engagementId,
+        slot.termsVersionId,
+        reviewer.actor.accountId,
+        JSON.stringify(criteria),
+      );
+    const met = { index: 0, result: 'MET', evidence: 'Verified.' };
+    expect(await insertReview([met])).toBe('accepted');
+    for (const criteria of [
+      [{ index: 0, result: 'MET' }],
+      [{ ...met, extra: true }],
+      [{ ...met, index: 50 }],
+      [{ ...met, index: 1.5 }],
+      [{ ...met, index: -1 }],
+      [{ ...met, index: '0' }],
+      [{ ...met, result: 'MAYBE' }],
+      [{ ...met, evidence: '' }],
+      [{ ...met, evidence: 'e'.repeat(2001) }],
+      [{ ...met, evidence: 3 }],
+      [met, { ...met, result: 'UNMET' }],
+      ['not an object'],
+    ])
+      expect(await insertReview(criteria), JSON.stringify(criteria)).toBe('rejected');
   });
   it('ties every lifecycle state change to its evidence row even for direct writers', async () => {
     const { worker, reviewer, engagementId } = await setup();

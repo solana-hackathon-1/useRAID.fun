@@ -103,25 +103,60 @@ async function effective(tx: Tx, engagementId: string) {
     fail('STORAGE_CONTRACT');
   return parsed.data;
 }
-/** Only the listing's Founder with current host authority; never an affected member. Missing and denied are one answer. */
-async function founderTarget(tx: Tx, engagementId: string, actor: WorkActor, host: AmendmentHost) {
+/** Only the listing's Founder with current host authority; never an affected member. Null covers missing and denied. */
+async function founderBinding(tx: Tx, engagementId: string, accountId: string) {
   const rows = await tx.query<{ guildId: string; creatorAccountId: string }>(
     'SELECT e."guildId",l."creatorAccountId" FROM "Engagement" e JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "WorkListing" l ON l."id"=s."listingId" WHERE e."id"=$1::uuid',
     [engagementId],
   );
   const member = await tx.query(
     'SELECT 1 FROM "EngagementMember" m JOIN "Participant" p ON p."id"=m."participantId" WHERE m."engagementId"=$1::uuid AND p."accountId"=$2',
-    [engagementId, actor.accountId],
+    [engagementId, accountId],
   );
-  if (
-    rows.length !== 1 ||
-    member.length ||
-    rows[0].creatorAccountId !== actor.accountId ||
-    (await host.authorize(tx, actor, { engagementId, guildId: rows[0].guildId })) !== true
-  )
-    fail('FORBIDDEN');
-  return rows[0].guildId;
+  return rows.length === 1 && !member.length && rows[0].creatorAccountId === accountId
+    ? rows[0].guildId
+    : null;
 }
+async function founderAuthority(
+  tx: Tx,
+  engagementId: string,
+  actor: WorkActor,
+  host: AmendmentHost,
+) {
+  const guildId = await founderBinding(tx, engagementId, actor.accountId);
+  return guildId !== null && (await host.authorize(tx, actor, { engagementId, guildId })) === true
+    ? guildId
+    : null;
+}
+/** Missing and denied are one answer. */
+async function founderTarget(tx: Tx, engagementId: string, actor: WorkActor, host: AmendmentHost) {
+  const guildId = await founderAuthority(tx, engagementId, actor, host);
+  if (guildId === null) fail('FORBIDDEN');
+  return guildId;
+}
+/** A proposal is acceptable only while its proposer still holds the Founder authority it was made under. */
+async function proposerStillAuthorized(tx: Tx, amendment: Row, host: AmendmentHost) {
+  // Fail closed: only acceptance needs this port, so a host without it can still propose, decline and withdraw.
+  if (typeof host.authorizeProposer !== 'function') fail('STORAGE_CONTRACT');
+  // The proposer has no session in the member's request: the host judges the account's current scoped authority.
+  const account = amendment.proposedByAccountId;
+  const guildId = await founderBinding(tx, amendment.engagementId, account);
+  if (
+    guildId === null ||
+    (await host.authorizeProposer(
+      tx,
+      { accountId: account },
+      {
+        engagementId: amendment.engagementId,
+        guildId,
+      },
+    )) !== true
+  )
+    fail('AMENDMENT_UNAVAILABLE');
+}
+const lapsed = (terms: TermsSnapshot, at: Date) =>
+  Date.parse(terms.deadlines.submission) <= at.getTime() ||
+  Date.parse(terms.deadlines.operationalClosure) <= at.getTime();
 async function lockEngagement(tx: Tx, engagementId: string) {
   const rows = await tx.query<{ state: string; guildId: string }>(
     'SELECT "state","guildId" FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
@@ -194,6 +229,12 @@ export async function proposeAmendment(tx: Tx, command: WorkCommand, host: Amend
           terms: next,
         });
         if (!InternalId.safeParse(reserved).success) fail('FUNDING_REQUIRED');
+        // One reservation backs one obligation: a slot's or an earlier amendment's reference is not new funding.
+        const reused = await tx.query(
+          'SELECT 1 FROM "RaidSlot" WHERE "fundingRef"=$1 UNION ALL SELECT 1 FROM "EngagementAmendment" WHERE "additionalFundingRef"=$1',
+          [reserved],
+        );
+        if (reused.length) fail('FUNDING_REQUIRED');
         fundingRef = reserved;
       }
       await tx.query(
@@ -275,8 +316,11 @@ export async function respondToAmendment(tx: Tx, command: WorkCommand, host: Ame
       if (!AMENDABLE.has(engagement.state)) fail('ENGAGEMENT_STATE');
       let state = 'DECLINED';
       let consentRef: string | null = null;
+      let agreed: TermsSnapshot | null = null;
       if (value.decision === 'ACCEPT') {
         const proposed = view(amendment);
+        if (lapsed(proposed.terms, now)) fail('AMENDMENT_UNAVAILABLE');
+        agreed = proposed.terms;
         const before = await effective(tx, amendment.engagementId);
         const consent = await host.assessConsent(tx, {
           actor,
@@ -303,10 +347,14 @@ export async function respondToAmendment(tx: Tx, command: WorkCommand, host: Ame
         state = 'ACCEPTED';
         consentRef = consent.consentRef;
       }
-      // Host callbacks and lock waits cannot carry an expired session or proposal across the boundary.
+      // Host callbacks and lock waits cannot carry an expired session, proposal or proposer authority across the boundary.
       await currentHuman(tx, actor, auth.locks);
-      if (amendment.expiresAt.getTime() <= (await clock(tx)).getTime())
-        fail('AMENDMENT_UNAVAILABLE');
+      const decidedAt = await clock(tx);
+      if (amendment.expiresAt.getTime() <= decidedAt.getTime()) fail('AMENDMENT_UNAVAILABLE');
+      if (agreed) {
+        if (lapsed(agreed, decidedAt)) fail('AMENDMENT_UNAVAILABLE');
+        await proposerStillAuthorized(tx, amendment, host);
+      }
       await tx.query(
         'UPDATE "EngagementAmendment" SET "state"=$2,"decidedByAccountId"=$3,"consentRef"=$4,"decidedAt"=clock_timestamp() WHERE "id"=$1::uuid RETURNING "id"',
         [amendment.id, state, actor.accountId, consentRef],

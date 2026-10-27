@@ -32,6 +32,7 @@ export const syntheticAcceptanceHost: AcceptanceHost = {
     eligibilityPolicyVersion: 'synthetic-starter-v1',
     operatorId: null,
   }),
+  authorizeOfferIssuer: async (_tx, issuer) => issuer.accountId.startsWith('founder-'),
   fundingAvailable: async () => true,
 };
 export async function seedWorkSlot(

@@ -209,6 +209,7 @@
     "tests/shared-contracts-review.test.ts",
     "tests/shared-contracts.test.ts",
     "tests/shell-account.test.ts",
+    "tests/shell-nav.test.ts",
     "tests/siws-nonce.test.ts",
     "tests/skill-assessment-review-boundary.test.ts",
     "tests/skill-assessment-review.test.ts",
@@ -262,6 +263,10 @@
     "tests/work-metrics-db.test.ts",
     "tests/work-metrics-host.test.ts",
     "tests/work-metrics-http.test.ts",
+    "tests/work-feed-storage.test.ts",
+    "tests/work-acceptance-host.test.ts",
+    "tests/work-acceptance-root-db.test.ts",
+    "tests/work-start-db.test.ts",
     "tests/worker-db.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
@@ -294,6 +299,7 @@
     "tests/work-feed-http.test.ts",
     "tests/work-feed-page.test.ts",
     "tests/work-feed-ui.test.ts",
+    "tests/work-apply-ui.test.ts",
     "tests/work-workspace-consumer.test.ts"
   ],
   "epics": [
@@ -784,6 +790,9 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/work-acceptance-host.test.ts",
+        "tests/work-acceptance-root-db.test.ts",
+        "tests/work-start-db.test.ts",
         "tests/command-receipts-boundary.test.ts",
         "tests/command-receipts-db.test.ts",
         "tests/command-receipts.test.ts",
@@ -1200,6 +1209,8 @@
         "ci-gate"
       ],
       "existing_test_files": [
+        "tests/work-feed-storage.test.ts",
+        "tests/shell-nav.test.ts",
         "tests/work-feed-db.test.ts",
         "tests/work-feed-http.test.ts",
         "tests/work-feed-page.test.ts",
@@ -1207,6 +1218,7 @@
         "tests/work-metrics-host.test.ts",
         "tests/work-metrics-http.test.ts",
         "tests/work-metrics-db.test.ts",
+        "tests/work-apply-ui.test.ts",
         "tests/browser-live/tracking.spec.ts",
         "tests/browser/discovery.spec.ts",
         "tests/discovery-rows.test.ts",

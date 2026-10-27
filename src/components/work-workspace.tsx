@@ -322,6 +322,7 @@ function SubmitForm({
 function EngagementCard({
   card,
   submissionsAvailable,
+  startAvailable,
   ready,
   runner,
   api,
@@ -329,12 +330,15 @@ function EngagementCard({
 }: {
   card: MyRaidsView['engagements'][number];
   submissionsAvailable: boolean;
+  startAvailable: boolean;
   ready: boolean;
   runner: ReturnType<typeof useRunner>;
   api: Client;
   reload: () => void;
 }) {
   const canSubmit = card.nextStep === 'SUBMIT_WORK' || card.nextStep === 'REVISE_AND_RESUBMIT';
+  const canStart = card.nextStep === 'WAIT_FOR_START' && startAvailable;
+  const startIntent = 'start:' + card.engagementId;
   return (
     <section className="orientation-card" aria-label={card.title}>
       <h3>{card.title}</h3>
@@ -407,6 +411,30 @@ function EngagementCard({
           ))}
         </div>
       )}
+      {canStart && (
+        <>
+          <Feedback runner={runner} intent={startIntent} reload={reload} />
+          <button
+            type="button"
+            className="button"
+            disabled={!ready || runner.busy !== null}
+            onClick={() =>
+              void runner.run(
+                startIntent,
+                card.engagementId,
+                (key) => api.startEngagement(card.engagementId, key),
+                startIntent + '|Work started.',
+              )
+            }
+          >
+            Start work
+          </button>
+          <p className="orientation-hint">
+            Starting checks that your reward reservation is still held and that no setup is
+            outstanding. It keeps your one active Raid slot.
+          </p>
+        </>
+      )}
       {canSubmit && (
         <SubmitForm
           card={card}
@@ -425,11 +453,13 @@ export function MyRaidsWorkspace({
   initial,
   submissionsAvailable,
   applicationsAvailable,
+  startAvailable = false,
   api = defaultClient,
 }: {
   initial: MyRaidsView;
   submissionsAvailable: boolean;
   applicationsAvailable: boolean;
+  startAvailable?: boolean;
   api?: Client;
 }) {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
@@ -457,6 +487,7 @@ export function MyRaidsWorkspace({
             key={card.engagementId}
             card={card}
             submissionsAvailable={submissionsAvailable}
+            startAvailable={startAvailable}
             ready={ready}
             runner={runner}
             api={api}

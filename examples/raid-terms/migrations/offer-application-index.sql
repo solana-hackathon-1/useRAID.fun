@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610270004_offer_application_index/migration.sql

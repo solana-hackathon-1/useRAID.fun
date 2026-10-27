@@ -1,8 +1,58 @@
 import { describe, expect, it } from 'vitest';
 import { createFeedHandlers, FeedHttpError, type FeedHttpHost } from '../src/work-http/feed-http';
 import { WorkError } from '../src/work-loop/contracts';
+import { DetailSchema } from '../src/work-loop/feed-contracts';
 
 const page = { items: [], nextCursor: null, sort: 'newest', rewardComparable: false };
+const listingId = '11111111-1111-4111-8111-111111111111';
+const brief = DetailSchema.parse({
+  listingId,
+  termsVersionId: '22222222-2222-4222-8222-222222222222',
+  guildId: 'synthetic-guild',
+  title: 'Synthetic task',
+  publicSummary: 'Summary.',
+  category: 'documentation',
+  difficulty: 'E',
+  requiredSkills: [{ skillId: 'writing', minimumRank: 'E' }],
+  participantKinds: ['HUMAN'],
+  execution: 'SOLO',
+  admission: 'INSTANT',
+  rewards: [
+    {
+      assetKey: '["SOLANA","synthetic-work","NATIVE_SOL"]',
+      assetId: { chain: 'SOLANA', networkIdentity: 'synthetic-work', kind: 'NATIVE_SOL' },
+      decimals: 9,
+      amount: '1',
+    },
+  ],
+  commitmentDeadline: '2026-11-04T09:30:00.000Z',
+  submissionDeadline: '2026-11-08T00:00:00.000Z',
+  availableSlots: 1,
+  funding: { mode: 'SIMULATED' },
+  confidentiality: 'PUBLIC',
+  openSlotIds: ['33333333-3333-4333-8333-333333333333'],
+  outcome: 'Outcome.',
+  deliverables: ['A'],
+  acceptanceCriteria: ['B'],
+  exclusions: [],
+  dependencies: [],
+  allowedToolsPolicy: 'Any.',
+  startCondition: 'Ready.',
+  deadlines: {
+    commitment: '2026-11-04T09:30:00.000Z',
+    preparation: '2026-11-05T09:30:00.000Z',
+    submission: '2026-11-08T00:00:00.000Z',
+    review: '2026-11-09T00:00:00.000Z',
+    operationalClosure: '2026-11-10T00:00:00.000Z',
+  },
+  review: { evidence: 'Pinned commit.', maxRevisionRounds: 1 },
+  rightsPolicy: 'R.',
+  portfolioPolicy: 'P.',
+  withdrawalPolicy: 'W.',
+  terminationPolicy: 'T.',
+  disputePolicy: 'D.',
+  finalityPolicy: 'F.',
+});
 function host(overrides: Partial<FeedHttpHost> = {}) {
   const seen: unknown[] = [];
   const value: FeedHttpHost = {
@@ -11,6 +61,7 @@ function host(overrides: Partial<FeedHttpHost> = {}) {
     available: () => true,
     rateLimit: () => undefined,
     feed: async (query) => (seen.push(query), page),
+    detail: async (id) => (seen.push(id), brief),
     ...overrides,
   };
   return { value, seen };
@@ -91,5 +142,37 @@ describe('public Raid feed HTTP boundary', () => {
   });
   it('refuses a host that omits a required port', () => {
     expect(() => createFeedHandlers({ version: 'v1' } as unknown as FeedHttpHost)).toThrow();
+  });
+  it('serves one public brief by listing id with the same safety, and answers a missing one as not found', async () => {
+    const { value, seen } = host();
+    const handlers = createFeedHandlers(value);
+    const ok = await handlers.DETAIL(get(), listingId);
+    expect(ok.status).toBe(200);
+    expect(ok.headers.get('cache-control')).toBe('no-store');
+    expect((await body(ok)).title).toBe('Synthetic task');
+    expect(seen).toEqual([listingId]);
+    for (const bad of ['not-a-uuid', '../x', listingId + 'x']) {
+      expect((await handlers.DETAIL(get(), bad)).status, bad).toBe(422);
+    }
+    expect((await handlers.DETAIL(get('?x=1'), listingId)).status).toBe(422);
+    const missing = createFeedHandlers(
+      host({
+        detail: async () => {
+          throw new WorkError('NOT_FOUND');
+        },
+      }).value,
+    );
+    const gone = await missing.DETAIL(get(), listingId);
+    expect(gone.status).toBe(404);
+    expect((await body(gone)).error.code).toBe('NOT_FOUND');
+    const off = createFeedHandlers(host({ available: () => false }).value);
+    expect((await off.DETAIL(get(), listingId)).status).toBe(404);
+    const drift = createFeedHandlers(
+      host({ detail: async () => ({ ...brief, reviewerAccountId: 'reviewer' }) }).value,
+    );
+    const broken = await drift.DETAIL(get(), listingId);
+    expect(broken.status).toBe(503);
+    expect(JSON.stringify(await body(broken))).not.toContain('reviewer');
+    expect((await handlers.DETAIL(get('', 'POST'), listingId)).status).toBe(405);
   });
 });
