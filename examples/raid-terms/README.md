@@ -37,3 +37,5 @@ Acceptance consent (T021 Root): `migrations/acceptance-consent.sql` adds the app
 Consented amendments (#244): `migrations/funding-reference-serialization.sql` serializes slot-versus-amendment reuse of one funding reference, and the host's `AmendmentHost.authorizeProposer` answers, as an account (no session), whether the proposing Founder still holds current Guild authority and is not suspended at the member's consent. The method is optional in the type but required to accept: a host without it can propose, decline and withdraw, and every acceptance fails closed with `STORAGE_CONTRACT`.
 
 Submission JSON shape (#240): `migrations/json-shape.sql` mirrors the strict artifact, dependency and criterion schemas as database CHECK constraints; the host's submissions and reviews already satisfy them.
+
+Closure hardening (#241): `migrations/closure-hardening.sql` requires a passed operational deadline for timeout closures, stamps `closedAt` from the database clock and matches each terminal transition to the closure reason of the state it leaves. `closeOverdueEngagement` re-runs the host's `authorize` when reading back a receipt.

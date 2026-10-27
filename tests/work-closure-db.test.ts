@@ -289,11 +289,83 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
         'DELETE FROM "ActiveCommitment" WHERE "participantId"=$1::uuid',
         worker.participantId,
       ),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/capacity must commit atomically/);
     expect(await commitments()).toEqual([
       { participantId: worker.participantId, engagementId: newer.engagement.id },
     ]);
   });
+  it('hardens direct closure writers against missing deadlines, supplied timestamps and mismatched transition chains, and re-authorizes replay', async () => {
+    const deadlines = {
+      commitment: at(3000),
+      preparation: at(3500),
+      submission: at(4000),
+      review: at(4500),
+      operationalClosure: at(5000),
+    };
+    const first = await setup({ deadlines });
+    const second = await setup({ deadlines });
+    await start(first.engagementId);
+    await start(second.engagementId);
+    const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
+    await new Promise((resolve) => setTimeout(resolve, 5300));
+    const rolledBack = Error('rolled back after the statements were accepted');
+    const closureSql = `INSERT INTO "EngagementClosure" ("engagementId","reason","finalState","closedByAccountId") VALUES ($1::uuid,'SUBMISSION_TIMEOUT','TERMINATED',$2)`;
+    // A crafted accepted-terms record without an operational deadline cannot satisfy "the deadline has passed".
+    await expect(
+      db.$transaction(async (tx) => {
+        await tx.$executeRawUnsafe(
+          'ALTER TABLE "Engagement" DISABLE TRIGGER "Engagement_lifecycle_guard"',
+        );
+        await tx.$executeRawUnsafe(
+          `UPDATE "Engagement" SET "acceptedTerms"="acceptedTerms" #- '{deadlines,operationalClosure}' WHERE "id"=$1::uuid`,
+          first.engagementId,
+        );
+        await tx.$executeRawUnsafe(closureSql, first.engagementId, ops.actor.accountId);
+        throw rolledBack;
+      }),
+    ).rejects.toThrow(/operational deadline/);
+    // The closure time is the database clock's, never a writer-supplied value.
+    const stamped = await db
+      .$transaction(async (tx) => {
+        const [r] = await tx.$queryRawUnsafe<{ ageSeconds: number }[]>(
+          `INSERT INTO "EngagementClosure" ("engagementId","reason","finalState","closedByAccountId","closedAt") VALUES ($1::uuid,'SUBMISSION_TIMEOUT','TERMINATED',$2,'2000-01-01T00:00:00Z') RETURNING extract(epoch FROM clock_timestamp()-"closedAt")::float AS "ageSeconds"`,
+          first.engagementId,
+          ops.actor.accountId,
+        );
+        throw Object.assign(rolledBack, { ageSeconds: r.ageSeconds });
+      })
+      .catch((error) => error as Error & { ageSeconds: number });
+    expect(stamped.ageSeconds).toBeLessThan(60);
+    // Replay of a recorded closure is re-authorized: a revoked closer cannot read it back.
+    const input = {
+      engagementId: second.engagementId,
+      expectedRevision: (await engagement(second.engagementId)).revision,
+    };
+    const key = randomUUID();
+    await close(ops.actor, input, host, key);
+    await expect(
+      close(ops.actor, input, { ...host, authorize: async () => false }, key),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // Closure reason must match the state the engagement actually left, even inside one transaction.
+    await expect(
+      db.$transaction(async (tx) => {
+        await tx.$executeRawUnsafe(closureSql, first.engagementId, ops.actor.accountId);
+        await tx.$executeRawUnsafe(
+          `UPDATE "Engagement" SET "state"='SUBMITTED',"revision"="revision"+1 WHERE "id"=$1::uuid`,
+          first.engagementId,
+        );
+        await tx.$executeRawUnsafe(
+          `UPDATE "Engagement" SET "state"='TERMINATED',"revision"="revision"+1 WHERE "id"=$1::uuid`,
+          first.engagementId,
+        );
+        await tx.$executeRawUnsafe(
+          'DELETE FROM "ActiveCommitment" WHERE "engagementId"=$1::uuid',
+          first.engagementId,
+        );
+      }),
+    ).rejects.toThrow(/does not match/);
+    expect(await engagement(first.engagementId)).toMatchObject({ state: 'IN_PROGRESS' });
+  }, 30000);
   it('enforces closure at the database for direct writers and never reactivates closed work', async () => {
     const deadlines = {
       commitment: at(3000),
@@ -311,13 +383,13 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
         engagementId,
         ops.actor.accountId,
       ),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/not due before the accepted operational deadline/);
     await expect(
       db.$executeRawUnsafe(
         `UPDATE "Engagement" SET "state"='TERMINATED',"revision"="revision"+1 WHERE "id"=$1::uuid`,
         engagementId,
       ),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/Closure record does not match the state/);
     expect(await engagement(engagementId)).toMatchObject({ state: 'IN_PROGRESS' });
     const sub = await submit(worker.actor, work(engagementId));
     // A mismatched reason is refused even once the deadline has passed.
@@ -328,7 +400,7 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
         engagementId,
         ops.actor.accountId,
       ),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/does not match engagement state/);
     const closed = await close(ops.actor, {
       engagementId,
       expectedRevision: (await engagement(engagementId)).revision,
@@ -339,13 +411,15 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     );
     await expect(
       db.$executeRawUnsafe(`UPDATE "EngagementClosure" SET "reason"='ACCEPTED'`),
-    ).rejects.toThrow();
-    await expect(db.$executeRawUnsafe('DELETE FROM "EngagementClosure"')).rejects.toThrow();
+    ).rejects.toThrow(/history is immutable/);
+    await expect(db.$executeRawUnsafe('DELETE FROM "EngagementClosure"')).rejects.toThrow(
+      /history is immutable/,
+    );
     await expect(
       db.$executeRawUnsafe(
         `UPDATE "Engagement" SET "state"='IN_PROGRESS',"revision"="revision"+1 WHERE "id"=$1::uuid`,
         engagementId,
       ),
-    ).rejects.toThrow();
+    ).rejects.toThrow(/is not permitted/);
   }, 20000);
 });

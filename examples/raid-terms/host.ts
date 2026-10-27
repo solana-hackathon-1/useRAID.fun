@@ -137,6 +137,7 @@ try {
     'migrations/funding-reference-serialization.sql',
     'migrations/json-shape.sql',
     'migrations/offer-application-index.sql',
+    'migrations/closure-hardening.sql',
     'migrations/acceptance-consent.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
