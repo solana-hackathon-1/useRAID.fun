@@ -1,3 +1,4 @@
+import { WIZARD_RECOVERY_PREFIX, clearAllWizardRecovery } from './creation-session-storage';
 import { z } from 'zod';
 import { InternalId } from '../contracts/ids';
 import { SkillRankSchema } from '../contracts/entities';
@@ -65,7 +66,7 @@ const Recovery = z.strictObject({
 });
 export type WizardRecovery = z.infer<typeof Recovery>;
 type Store = Pick<Storage, 'getItem' | 'setItem' | 'removeItem' | 'key' | 'length'>;
-const PREFIX = 'raid-wizard-recovery-v1:';
+const PREFIX = WIZARD_RECOVERY_PREFIX;
 const keyFor = (accountId: string) => PREFIX + encodeURIComponent(InternalId.parse(accountId));
 export function readWizardRecovery(store: Store, accountId: string): WizardRecovery | null {
   // Never import an earlier account's unscoped private text.
@@ -91,11 +92,7 @@ export function clearWizardRecovery(store: Store, accountId?: string) {
     store.removeItem(keyFor(accountId));
     return;
   }
-  // Successful sign-out clears this feature's private recovery only.
-  for (let i = store.length - 1; i >= 0; i--) {
-    const key = store.key(i);
-    if (key?.startsWith(PREFIX)) store.removeItem(key);
-  }
+  clearAllWizardRecovery(store);
 }
 /** Persist exact intent before transport. Resolve a pending first save before addressing edited intent. */
 export async function saveWizardIntent(options: {
