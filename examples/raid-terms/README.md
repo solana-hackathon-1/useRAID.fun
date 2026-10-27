@@ -35,3 +35,5 @@ Application offers (#239): `migrations/offer-application-index.sql` indexes offe
 Acceptance consent (T021 Root): `migrations/acceptance-consent.sql` adds the append-only `WorkAcceptanceConsent` record (participant, slot, terms version, stored digest). The host keeps its own `HostAcceptance` consent/eligibility port; the shared Root's host (consent plus verified-skill check) lives in the application, not in this portable module.
 
 Consented amendments (#244): `migrations/funding-reference-serialization.sql` serializes slot-versus-amendment reuse of one funding reference, and the host's `AmendmentHost.authorizeProposer` answers, as an account (no session), whether the proposing Founder still holds current Guild authority and is not suspended at the member's consent. The method is optional in the type but required to accept: a host without it can propose, decline and withdraw, and every acceptance fails closed with `STORAGE_CONTRACT`.
+
+Submission JSON shape (#240): `migrations/json-shape.sql` mirrors the strict artifact, dependency and criterion schemas as database CHECK constraints; the host's submissions and reviews already satisfy them.

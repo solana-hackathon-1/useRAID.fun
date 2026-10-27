@@ -135,6 +135,7 @@ try {
     'migrations/notification-safety.sql',
     'migrations/reservation-binding.sql',
     'migrations/funding-reference-serialization.sql',
+    'migrations/json-shape.sql',
     'migrations/offer-application-index.sql',
     'migrations/acceptance-consent.sql',
   ])
