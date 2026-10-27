@@ -10,6 +10,7 @@ import {
   ApplicationSchema,
   ApplicationResultSchema,
   OfferResultSchema,
+  SubmitApplicationInput,
   type AdmissionHost,
 } from './admission-contracts';
 import { lockOffer } from './admission-acceptance';
@@ -25,11 +26,7 @@ import {
   type Source,
 } from './engagement-authority';
 import { publicationProblems } from './terms';
-const Submit = z.strictObject({
-  slotId: z.uuid(),
-  termsVersionId: z.uuid(),
-  evidenceRefs: z.array(InternalId).max(10),
-});
+const Submit = SubmitApplicationInput;
 const Withdraw = z.strictObject({ applicationId: z.uuid() });
 const Issue = z.strictObject({ applicationId: z.uuid(), expiresAt: UtcTimestamp });
 const Revoke = z.strictObject({ offerId: z.uuid() });

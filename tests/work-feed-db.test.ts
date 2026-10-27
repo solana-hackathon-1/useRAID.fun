@@ -197,6 +197,7 @@ integration('R08 public Raid detail', { timeout: 60000 }, () => {
     const brief = DetailSchema.parse(await detail(slot.listingId));
     expect(brief.title).toBe('Docs guide');
     expect(brief.listingId).toBe(slot.listingId);
+    expect(brief.openSlotIds).toEqual([slot.slotId]);
     expect(brief.outcome).toBe(raidTerms().outcome);
     expect(brief.deliverables).toEqual(raidTerms().deliverables);
     expect(brief.acceptanceCriteria).toEqual(raidTerms().acceptanceCriteria);

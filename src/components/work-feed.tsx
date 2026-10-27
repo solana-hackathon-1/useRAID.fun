@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { formatDisplayAmount } from '../contracts/assets';
+import { ApplyToRaid } from './work-apply';
 import type { Detail, FeedCard, FeedPage, FeedQuery } from '../work-loop/feed-contracts';
 
 const FEED_PATH = '/raids';
@@ -224,7 +225,14 @@ function Policy({ title, text }: { title: string; text: string }) {
   );
 }
 /** The full public brief of one live Raid: what a person commits to, in the accepted-terms order. */
-export function WorkDetail({ detail }: { detail: Detail }) {
+export type ApplyMode = 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE';
+export function WorkDetail({
+  detail,
+  apply = 'NOT_APPLICABLE',
+}: {
+  detail: Detail;
+  apply?: ApplyMode;
+}) {
   const rounds = detail.review.maxRevisionRounds;
   return (
     <article className="raid-feed raid-detail" aria-labelledby="raid-detail-title">
@@ -303,10 +311,23 @@ export function WorkDetail({ detail }: { detail: Detail }) {
       </section>
       <section className="raid-feed-empty" aria-label="Taking this Raid">
         <h2>Taking this Raid</h2>
-        <p>
-          Applying and accepting are not available in the browser yet. Eligibility is checked by the
-          server when you act, never from this page.
-        </p>
+        {apply === 'FORM' ? (
+          <ApplyToRaid slotId={detail.openSlotIds[0]} termsVersionId={detail.termsVersionId} />
+        ) : apply === 'SIGN_IN' ? (
+          <>
+            <p>Sign in to apply. Eligibility is checked by the server when you act.</p>
+            <Link className="button" href="/creator/account">
+              Sign in to apply
+            </Link>
+          </>
+        ) : apply === 'CLOSED' ? (
+          <p>Applications are not open yet. Eligibility is checked by the server when you act.</p>
+        ) : (
+          <p>
+            Applying and accepting are not available in the browser yet. Eligibility is checked by
+            the server when you act, never from this page.
+          </p>
+        )}
         <Link className="button secondary" href={FEED_PATH}>
           Back to live Raids
         </Link>

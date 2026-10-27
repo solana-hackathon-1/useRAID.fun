@@ -6,6 +6,8 @@ import {
   type FeedPage,
   type FeedQuery,
 } from '../work-loop/feed-contracts';
+import { currentUser } from './auth';
+import { workWorkspaceConfiguration } from './work-workspace-host';
 import { readDetailFromHost, readFeedFromHost, workFeedAvailable } from './work-feed-host';
 
 type Params = Record<string, string | string[] | undefined>;
@@ -49,4 +51,21 @@ export async function loadDetail(listingId: string): Promise<LoadedDetail> {
       ? { status: 'NOT_FOUND' }
       : { status: 'UNAVAILABLE' };
   }
+}
+export type ApplyState = 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE';
+/**
+ * What the brief offers this viewer. Informational only: the command itself rechecks the session, flags, quota and
+ * source at the moment of the action. Instant-start Raids need acceptance, which this host cannot offer yet.
+ */
+export async function applyMode(detail: Pick<Detail, 'admission'>): Promise<ApplyState> {
+  if (detail.admission !== 'APPLICATION') return 'NOT_APPLICABLE';
+  let signedIn = false;
+  try {
+    signedIn = (await currentUser()) !== null;
+  } catch {
+    signedIn = false;
+  }
+  if (!signedIn) return 'SIGN_IN';
+  const config = workWorkspaceConfiguration();
+  return config.readsAvailable && config.applicationsAvailable ? 'FORM' : 'CLOSED';
 }

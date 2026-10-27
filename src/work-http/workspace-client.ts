@@ -99,6 +99,10 @@ export function createWorkClient(transport: WorkTransport = fetchTransport) {
         `/api/v1/work/offers/${encodeURIComponent(offerId)}/revocation`,
         write({}, key),
       ),
+    submitApplication: (
+      input: { slotId: string; termsVersionId: string; evidenceRefs: string[] },
+      key: string,
+    ) => call(ApplicationResultSchema, 'POST', '/api/v1/work/applications', write(input, key)),
     withdrawApplication: (applicationId: string, key: string) =>
       call(
         ApplicationResultSchema,

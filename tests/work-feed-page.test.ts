@@ -1,11 +1,24 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-const mocks = vi.hoisted(() => ({ available: vi.fn(), feed: vi.fn(), detail: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  available: vi.fn(),
+  feed: vi.fn(),
+  detail: vi.fn(),
+  user: vi.fn(),
+  config: vi.fn(),
+}));
 vi.mock('../src/lib/work-feed-host', () => ({
   workFeedAvailable: mocks.available,
   readFeedFromHost: mocks.feed,
   readDetailFromHost: mocks.detail,
 }));
-import { loadDetail, loadFeed } from '../src/lib/work-feed-page';
+vi.mock('../src/lib/auth', async (original) => ({
+  ...(await original<typeof import('../src/lib/auth')>()),
+  currentUser: mocks.user,
+}));
+vi.mock('../src/lib/work-workspace-host', () => ({
+  workWorkspaceConfiguration: mocks.config,
+}));
+import { applyMode, loadDetail, loadFeed } from '../src/lib/work-feed-page';
 import { WorkError } from '../src/work-loop/contracts';
 
 const page = { items: [], nextCursor: null, sort: 'newest', rewardComparable: false };
@@ -61,5 +74,26 @@ describe('loadDetail', () => {
     expect(await loadDetail(id)).toEqual({ status: 'READY', detail: { listingId: id } });
     mocks.detail.mockRejectedValue(new Error('postgres://secret'));
     expect(await loadDetail(id)).toEqual({ status: 'UNAVAILABLE' });
+  });
+});
+describe('applyMode', () => {
+  const brief = (admission: string) => ({ admission }) as never;
+  it('offers the form only for application Raids to a signed-in person while applications are open', async () => {
+    mocks.user.mockResolvedValue({ id: 'someone' });
+    mocks.config.mockReturnValue({ readsAvailable: true, applicationsAvailable: true });
+    expect(await applyMode(brief('APPLICATION'))).toBe('FORM');
+    expect(await applyMode(brief('INSTANT'))).toBe('NOT_APPLICABLE');
+    mocks.config.mockReturnValue({ readsAvailable: true, applicationsAvailable: false });
+    expect(await applyMode(brief('APPLICATION'))).toBe('CLOSED');
+    mocks.config.mockReturnValue({ readsAvailable: false, applicationsAvailable: true });
+    expect(await applyMode(brief('APPLICATION'))).toBe('CLOSED');
+    mocks.user.mockResolvedValue(null);
+    mocks.config.mockReturnValue({ readsAvailable: true, applicationsAvailable: true });
+    expect(await applyMode(brief('APPLICATION'))).toBe('SIGN_IN');
+  });
+  it('treats a failing session lookup as signed out, never as an error page', async () => {
+    mocks.user.mockRejectedValue(new Error('db'));
+    mocks.config.mockReturnValue({ readsAvailable: true, applicationsAvailable: true });
+    expect(await applyMode(brief('APPLICATION'))).toBe('SIGN_IN');
   });
 });
