@@ -41,6 +41,7 @@ import {
 } from './work-loop/amendment-storage';
 import type { AmendmentHost } from './work-loop/amendment-contracts';
 import { reissueRaid } from './work-loop/replacement-storage';
+import { readWorkMetrics } from './work-loop/metrics-storage';
 import { raidTerms } from './fixture';
 import { AssetPolicySnapshotSchema, assetKey } from './contracts/assets';
 import { recommend, reviewChoices } from './work-loop/recommendation';
@@ -796,6 +797,12 @@ try {
     transaction((tx) => readRaidTerms(tx, actor, saved.termsVersionId, host)),
     (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
   );
+  // Operator metrics report the loop honestly: simulated, per asset, nothing inferred as paid.
+  const loop = await transaction((tx) => readWorkMetrics(tx));
+  assert.equal(loop.fundingMode, 'SIMULATED');
+  assert.ok((loop.engagements.ACCEPTED ?? 0) >= 1, 'The accepted work is counted.');
+  assert.ok(loop.volumes.length >= 1 && loop.volumes.every((v) => v.paid === null));
+  assert.ok(!JSON.stringify(loop).includes('synthetic-member'), 'Metrics hold no account ids.');
   console.log(
     'PASS: independent PG host terms/publication/applications/offers/consent/capacity/amendment/wizard-draft/notification/submission/review/closure/replacement guard/receipt recovery/revocation; SIMULATED ONLY.',
   );
