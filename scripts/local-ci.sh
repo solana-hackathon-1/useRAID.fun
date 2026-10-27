@@ -106,6 +106,14 @@ if step browser-install npx playwright install chromium; then browsers=1; else b
 if [ "$browsers" = 1 ]; then
   browser_step demo npm run test:browser || true
   browser_step studio env DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_studio_test npm run test:browser:studio || true
+  # Affected feature suites chosen by scripts/verify.sh (development mode); hosted Checks adds production mode.
+  for suite in ${RAID_CI_FEATURE_SUITES:-}; do
+    if [[ "$suite" =~ ^[a-z]+(-[a-z]+)*$ ]] && [ -f "playwright.$suite.config.ts" ]; then
+      browser_step "feature-$suite" npx playwright test --config="playwright.$suite.config.ts" || true
+    else
+      skip "feature-$suite" "unknown suite name"
+    fi
+  done
 else
   skip demo "locked Chromium unavailable"
   skip studio "locked Chromium unavailable"

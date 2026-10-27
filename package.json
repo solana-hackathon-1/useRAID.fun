@@ -28,7 +28,10 @@
     "studio:preview": "tsx scripts/studio-preview.ts",
     "lint": "eslint . && tsx scripts/check-identity-locks.ts",
     "identity:check": "tsx scripts/check-identity-locks.ts",
-    "audit:check": "tsx scripts/audit-check.ts"
+    "audit:check": "tsx scripts/audit-check.ts",
+    "verify": "bash scripts/verify.sh fast",
+    "verify:full": "bash scripts/verify.sh full",
+    "verify:install": "bash scripts/verify.sh install"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
