@@ -171,6 +171,8 @@ The [assigned ownership form](raid-practice-ownership-ui.md) adds server-only co
 
 [The public Raid feed](raid-work-feed.md) adds a read-only read model, a public rate-limited HTTP boundary and a server-rendered page for live, funded, public work, behind a default-off flag. It takes no actor, hides every private field, never ranks different assets against each other and claims no eligibility; the independent [raid-terms host](../examples/raid-terms/README.md) reads a published Raid back through it.
 
+[Work-loop metrics](raid-work-metrics.md) add an operator-only, read-only measurement of the simulated loop: counts by state, closure reasons, matching and review timings and reward volume per asset at open, committed and work-accepted stages, with payment never inferred. The independent [raid-terms host](../examples/raid-terms/README.md) reads them after the full loop.
+
 [Consented amendments and replacement](raid-work-amendments.md) version accepted work only with the affected member's exact-digest consent and exact added funding, keep the original accepted terms and claim, and replace a terminated worker with a new slot, terms and reservation linked to the earlier attempt. The independently installed work-loop host proposes, refuses and then records a consented amendment through an explicit `AmendmentHost`.
 
 [Bounded recommendations](raid-work-recommendations.md) turn bounded Founder signals and a host-supplied versioned rubric into an explainable, non-authoritative difficulty, skill, routing, reward-range and duration estimate, keep the Founder's accepted or edited choices beside the original suggestion and reject model output that tries to set prices, assets or terms. The independently installed work-loop host runs it against its own fixture.
