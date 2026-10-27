@@ -90,6 +90,28 @@ async function loadGuild(tx: CommandReceiptTransaction, id: string): Promise<Man
   if (!parsed.success) fail('STORAGE_CONTRACT');
   return parsed.data;
 }
+/** The Guild as one stored profile version recorded it, so a replay never exposes later revisions. */
+async function loadVersion(
+  tx: CommandReceiptTransaction,
+  guildId: string,
+  versionId: string,
+): Promise<ManagedGuild> {
+  const rows = await query<Record<string, unknown>>(
+    tx,
+    `SELECT g."id"::text,g."slug",v."name",v."description",g."founderAccountId",v."revision"
+     FROM "GuildProfileVersion" v JOIN "Guild" g ON g."id"=v."guildId" WHERE v."id"=$1::uuid AND v."guildId"=$2::uuid`,
+    [versionId, guildId],
+  );
+  if (rows.length !== 1) fail('STORAGE_CONTRACT');
+  const parsed = ManagedGuildSchema.safeParse({
+    version: 'v1',
+    ...rows[0],
+    state: 'ACTIVE',
+    primaryToken: null,
+  });
+  if (!parsed.success) fail('STORAGE_CONTRACT');
+  return parsed.data;
+}
 /** Founder implies profile and work management only; treasury and dispute need their own explicit grant. */
 async function authorityKinds(
   tx: CommandReceiptTransaction,
@@ -164,6 +186,22 @@ export async function activateGuild(
     async ({ receiptId }) => {
       await approved();
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // The draft writer locks the owner's User row and then the draft; take them in that order here too.
+      // The owner is immutable, so it can be read before any lock and confirmed after.
+      const found = await query<{ ownerAccountId: string }>(
+        tx,
+        'SELECT "ownerAccountId" FROM "GuildDraft" WHERE "id"=$1::uuid',
+        [input.guildDraftId],
+      );
+      if (found.length !== 1) fail('NOT_FOUND');
+      // Founder control is approved by someone other than the Founder, whatever the host policy says.
+      if (found[0].ownerAccountId === actor.accountId) fail('FORBIDDEN');
+      const owners = await query<{ suspended: boolean }>(
+        tx,
+        'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
+        [found[0].ownerAccountId],
+      );
+      if (owners.length !== 1 || owners[0].suspended) fail('ACCOUNT_RESTRICTED');
       const drafts = await query<{
         ownerAccountId: string;
         revision: number;
@@ -174,17 +212,12 @@ export async function activateGuild(
         `SELECT d."ownerAccountId",d."revision",d."slug",v."profile" FROM "GuildDraft" d JOIN "GuildDraftVersion" v ON v."id"=d."currentVersionId" WHERE d."id"=$1::uuid FOR UPDATE OF d`,
         [input.guildDraftId],
       );
-      if (drafts.length !== 1) fail('NOT_FOUND');
+      if (drafts.length !== 1 || drafts[0].ownerAccountId !== found[0].ownerAccountId)
+        fail('STORAGE_CONTRACT');
       // Row acquisition can wait; the approver must still hold authority afterwards.
       await approved();
       const draft = drafts[0];
       if (draft.revision !== input.expectedDraftRevision) fail('REVISION_CONFLICT');
-      const owners = await query<{ suspended: boolean }>(
-        tx,
-        'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
-        [draft.ownerAccountId],
-      );
-      if (owners.length !== 1 || owners[0].suspended) fail('ACCOUNT_RESTRICTED');
       const existing = await query(tx, 'SELECT 1 FROM "Guild" WHERE "sourceDraftId"=$1::uuid', [
         input.guildDraftId,
       ]);
@@ -259,8 +292,13 @@ export async function editGuildProfile(
   const fields = Object.keys(input.profile).filter(
     (k) => input.profile[k as 'name' | 'description'] !== undefined,
   );
-  /** Rebuilds the trusted facts for the pure policy under the current database clock. */
-  async function allowed(): Promise<{ revision: number; name: string; description: string }> {
+  /**
+   * Rebuilds the trusted facts for the pure policy under the current database clock and requires the actor to be
+   * allowed to change exactly the requested fields. Locks the Guild row when it will write.
+   */
+  async function permitted(
+    lock: boolean,
+  ): Promise<{ revision: number; name: string; description: string }> {
     const rows = await query<{
       id: string;
       founderAccountId: string;
@@ -271,7 +309,7 @@ export async function editGuildProfile(
     }>(
       tx,
       `SELECT g."id"::text,g."founderAccountId",g."revision",v."name",v."description",date_trunc('milliseconds',clock_timestamp()) AS now
-       FROM "Guild" g JOIN "GuildProfileVersion" v ON v."id"=g."currentVersionId" WHERE g."id"=$1::uuid FOR UPDATE OF g`,
+       FROM "Guild" g JOIN "GuildProfileVersion" v ON v."id"=g."currentVersionId" WHERE g."id"=$1::uuid${lock ? ' FOR UPDATE OF g' : ''}`,
       [input.guildId],
     );
     if (rows.length !== 1) fail('NOT_FOUND');
@@ -321,9 +359,7 @@ export async function editGuildProfile(
       },
       { guildId: guild.id, expectedRevision: guild.revision, action: 'EDIT_PROFILE', fields },
     );
-    // Permission is judged before the caller's revision so a stranger learns nothing about it.
     if (!decision.allowed) fail('FORBIDDEN');
-    if (guild.revision !== input.expectedRevision) fail('REVISION_CONFLICT');
     return guild;
   }
   const result = await executeIdempotentCommand(
@@ -338,7 +374,9 @@ export async function editGuildProfile(
     async ({ receiptId }) => {
       await authorize(tx, actor);
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
-      const guild = await allowed();
+      const guild = await permitted(true);
+      // Permission is judged before the caller's revision so a stranger learns nothing about it.
+      if (guild.revision !== input.expectedRevision) fail('REVISION_CONFLICT');
       const next = guild.revision + 1;
       const versions = await query<{ id: string }>(
         tx,
@@ -376,11 +414,10 @@ export async function editGuildProfile(
       };
     },
   );
-  // A replay returns the stored result only to an actor who still holds profile authority.
+  // A replay returns the stored result only to an actor whose current authority still covers the same fields.
   await authorize(tx, actor);
-  if (!(await authorityKinds(tx, actor.accountId, input.guildId)).kinds.includes('PROFILE'))
-    fail('FORBIDDEN');
-  return { status: result.status, guild: await loadGuild(tx, input.guildId) };
+  await permitted(false);
+  return { status: result.status, guild: await loadVersion(tx, input.guildId, result.resultRef) };
 }
 /** The approved public projection of an active Guild by stable slug. No private record is read. */
 export async function readPublicGuild(tx: CommandReceiptTransaction, slug: string) {

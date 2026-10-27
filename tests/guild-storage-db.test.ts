@@ -1,4 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { saveGuildDraft } from '../src/guild-profiles/draft-storage';
@@ -376,5 +377,109 @@ integration('T009 persisted Guild storage', () => {
     expect(await attempt(`DELETE FROM "GuildProfileVersion" WHERE "guildId"='${g.id}'`)).toBe(
       'guarded',
     );
+  });
+
+  it('refuses activation by the draft owner even when the host would approve the owner', async () => {
+    const founder = await person();
+    const draft = await draftFor(founder, 'self-approved');
+    operators.add(founder.accountId);
+    await expect(
+      run((tx) =>
+        activateGuild(
+          tx,
+          cmd(founder, {
+            guildDraftId: draft.id,
+            expectedDraftRevision: draft.revision,
+            activationRef: 'self',
+          }),
+          host(),
+        ),
+      ),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Guild"')).toEqual([]);
+  });
+
+  it('takes the draft owner row before the draft row, as the draft writer does, so the two cannot deadlock', async () => {
+    const founder = await person();
+    const operator = await person();
+    operators.add(operator.accountId);
+    const draft = await draftFor(founder, 'lock-order');
+    const locker = new PrismaClient({ transactionOptions: { timeout: 30000 } });
+    const observer = new PrismaClient();
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    let locked!: () => void;
+    const holding = new Promise<void>((resolve) => (locked = resolve));
+    // Stands in for the draft writer, which holds the owner's User row while it waits for the draft row.
+    const holder = locker.$transaction(async (tx) => {
+      await tx.$queryRawUnsafe(
+        'SELECT "id" FROM "User" WHERE "id"=$1 FOR NO KEY UPDATE',
+        founder.accountId,
+      );
+      locked();
+      await gate;
+    });
+    try {
+      await holding;
+      const activation = run((tx) =>
+        activateGuild(
+          tx,
+          cmd(operator, {
+            guildDraftId: draft.id,
+            expectedDraftRevision: draft.revision,
+            activationRef: 'order',
+          }),
+          host(),
+        ),
+      );
+      let waiting = false;
+      for (let i = 0; i < 100 && !waiting; i++) {
+        const rows = (await observer.$queryRawUnsafe(
+          `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND query LIKE '%FROM "User"%' AND pid<>pg_backend_pid()`,
+        )) as unknown[];
+        waiting = rows.length > 0;
+        if (!waiting) await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+      expect(waiting).toBe(true);
+      // The activation waits on the owner row and must not already hold the draft row.
+      await expect(
+        observer.$transaction((tx) =>
+          tx.$queryRawUnsafe(
+            'SELECT "id" FROM "GuildDraft" WHERE "id"=$1::uuid FOR UPDATE NOWAIT',
+            draft.id,
+          ),
+        ),
+      ).resolves.toHaveLength(1);
+      release();
+      expect((await activation).status).toBe('EXECUTED');
+    } finally {
+      release();
+      await holder;
+      await Promise.all([locker.$disconnect(), observer.$disconnect()]);
+    }
+  });
+
+  it('replays an edit only to an actor whose current grant still covers its fields, and returns the stored result', async () => {
+    const { founder, guild: g } = await guild();
+    const delegate = await person();
+    await grant(g.id, delegate, { fields: ['name', 'description'] });
+    const first = await edit(delegate, g.id, 1, { description: 'Delegate wording' }, 'replay-1');
+    expect(first.guild).toMatchObject({ revision: 2, description: 'Delegate wording' });
+    await edit(founder, g.id, 2, { name: 'Founder rename' }, 'founder-1');
+    // Later revisions are not part of the stored result.
+    const again = await edit(delegate, g.id, 1, { description: 'Delegate wording' }, 'replay-1');
+    expect(again).toMatchObject({
+      status: 'REPLAYED',
+      guild: { revision: 2, name: g.name, description: 'Delegate wording' },
+    });
+    // Narrow the grant to name only: the same key no longer reaches the description edit.
+    await db.$executeRawUnsafe(
+      `UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "granteeAccountId"=$1`,
+      delegate.accountId,
+    );
+    await grant(g.id, delegate, { fields: ['name'] });
+    await expect(
+      edit(delegate, g.id, 1, { description: 'Delegate wording' }, 'replay-1'),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
   });
 });
