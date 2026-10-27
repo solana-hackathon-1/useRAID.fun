@@ -41,7 +41,7 @@ step() {
 }
 format_changed() {
   local files=() file
-  while IFS= read -r file; do [ -f "$file" ] && files+=("$file"); done < <(git diff --name-only --diff-filter=d "$base" HEAD)
+  while IFS= read -r file; do [ -f "$file" ] && [ ! -L "$file" ] && files+=("$file"); done < <(git diff --name-only --diff-filter=d "$base" HEAD)
   if [ "${#files[@]}" -eq 0 ]; then echo "no changed files to format-check"; return 0; fi
   npx prettier --check --ignore-unknown "${files[@]}"
 }

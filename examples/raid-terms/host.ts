@@ -132,6 +132,7 @@ try {
     'migrations/amendments.sql',
     'migrations/notification-safety.sql',
     'migrations/reservation-binding.sql',
+    'migrations/json-shape.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   assert.equal(
