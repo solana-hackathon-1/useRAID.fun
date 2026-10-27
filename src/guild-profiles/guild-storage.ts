@@ -701,13 +701,24 @@ export async function revokeGuildRole(
       );
       const passedOn: string[] = [];
       if (grant.kind === 'PROFILE' && grant.canDelegate) {
+        // Only grants that are still live and no longer backed are revoked; each of their fields needs a remaining live
+        // delegating grant of the grantee that covers the field and lasts at least as long. Expired rows grant nothing,
+        // are not counted by any cap and stay as history, so they cannot inflate the audit events of this command.
         const cascaded = await query<{ id: string }>(
           tx,
-          `UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp()
-           WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND "revokedAt" IS NULL AND "kind"='PROFILE'
-             AND NOT EXISTS (SELECT 1 FROM "GuildRoleGrant" k WHERE k."guildId"=$1::uuid AND k."granteeAccountId"=$2 AND k."kind"='PROFILE' AND k."canDelegate" AND k."revokedAt" IS NULL AND k."id"<>$3::uuid AND (k."expiresAt" IS NULL OR k."expiresAt">clock_timestamp()))
-           RETURNING "id"::text`,
-          [input.guildId, grant.grantee, input.grantId],
+          `UPDATE "GuildRoleGrant" s SET "revokedAt"=clock_timestamp()
+           WHERE s."guildId"=$1::uuid AND s."grantedByAccountId"=$2 AND s."kind"='PROFILE' AND s."revokedAt" IS NULL
+             AND (s."expiresAt" IS NULL OR s."expiresAt">clock_timestamp())
+             AND EXISTS (
+               SELECT 1 FROM unnest(s."fields") f WHERE NOT EXISTS (
+                 SELECT 1 FROM "GuildRoleGrant" d
+                 WHERE d."guildId"=$1::uuid AND d."granteeAccountId"=$2 AND d."kind"='PROFILE' AND d."canDelegate"
+                   AND d."revokedAt" IS NULL AND d."validFrom"<=clock_timestamp()
+                   AND (d."expiresAt" IS NULL OR d."expiresAt">clock_timestamp())
+                   AND f=ANY(d."fields")
+                   AND (d."expiresAt" IS NULL OR (s."expiresAt" IS NOT NULL AND s."expiresAt"<=d."expiresAt"))))
+           RETURNING s."id"::text`,
+          [input.guildId, grant.grantee],
         );
         passedOn.push(...cascaded.map((row) => row.id));
       }

@@ -448,4 +448,123 @@ integration('T009 Guild role grants and revocation', () => {
       await Promise.all([locker.$disconnect(), observer.$disconnect()]);
     }
   });
+
+  it('still revokes a delegating grant when the grantee left many expired sub-grants behind', async () => {
+    const { founder, guild: g } = await guild();
+    const lead = await person();
+    const leadGrant = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: lead.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        canDelegate: true,
+      })
+    ).grant.id;
+    const live = (
+      await giveRole(lead, g.id, {
+        granteeAccountId: (await person()).accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        expiresAt: future(3600000),
+      })
+    ).grant.id;
+    const other = await person();
+    // Expired rows are not counted by any cap, so they can pile up without bound.
+    await db.$executeRawUnsafe(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","validFrom","expiresAt","grantedByAccountId") SELECT $1::uuid,$2,'PROFILE',ARRAY['name'],clock_timestamp()-interval '2 hours',clock_timestamp()-interval '1 hour',$3 FROM generate_series(1,25)`,
+      g.id,
+      other.accountId,
+      lead.accountId,
+    );
+    expect((await takeRole(founder, g.id, leadGrant)).status).toBe('EXECUTED');
+    const rows = await db.$queryRawUnsafe<{ id: string; revoked: boolean }[]>(
+      `SELECT "id"::text,"revokedAt" IS NOT NULL AS revoked FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2`,
+      g.id,
+      lead.accountId,
+    );
+    expect(rows.find((r) => r.id === live)?.revoked).toBe(true);
+    // Expired rows grant nothing and are left as history.
+    expect(rows.filter((r) => !r.revoked)).toHaveLength(25);
+    expect(await can(lead, g.id, 'PROFILE')).toBe(false);
+  });
+
+  it('keeps passed-on grants only while the grantee still holds delegating cover for each field and for as long', async () => {
+    const { founder, guild: g } = await guild();
+    const lead = await person();
+    const nameGrant = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: lead.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        canDelegate: true,
+      })
+    ).grant.id;
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['description'],
+      canDelegate: true,
+    });
+    const x = await person();
+    const y = await person();
+    const xName = (
+      await giveRole(lead, g.id, {
+        granteeAccountId: x.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant.id;
+    const yDescription = (
+      await giveRole(lead, g.id, {
+        granteeAccountId: y.accountId,
+        kind: 'PROFILE',
+        fields: ['description'],
+      })
+    ).grant.id;
+    // Another delegating grant exists, but it does not cover `name`: X loses theirs, Y keeps theirs.
+    await takeRole(founder, g.id, nameGrant);
+    const revoked = async (id: string) =>
+      (
+        (await db.$queryRawUnsafe(
+          `SELECT "revokedAt" IS NOT NULL AS r FROM "GuildRoleGrant" WHERE "id"=$1::uuid`,
+          id,
+        )) as { r: boolean }[]
+      )[0].r;
+    expect(await revoked(xName)).toBe(true);
+    expect(await revoked(yDescription)).toBe(false);
+  });
+
+  it('revokes a passed-on grant that would outlive the remaining delegating cover', async () => {
+    const { founder, guild: g } = await guild();
+    const lead = await person();
+    const unbounded = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: lead.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        canDelegate: true,
+      })
+    ).grant.id;
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      canDelegate: true,
+      expiresAt: future(3600000),
+    });
+    const x = await person();
+    const forever = (
+      await giveRole(lead, g.id, {
+        granteeAccountId: x.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant.id;
+    await takeRole(founder, g.id, unbounded);
+    const [{ r }] = (await db.$queryRawUnsafe(
+      `SELECT "revokedAt" IS NOT NULL AS r FROM "GuildRoleGrant" WHERE "id"=$1::uuid`,
+      forever,
+    )) as { r: boolean }[];
+    expect(r).toBe(true);
+  });
 });
