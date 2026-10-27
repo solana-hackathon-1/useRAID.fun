@@ -613,28 +613,40 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
       },
       { timeout: 20000 },
     );
-    await amendmentWritten;
-    const raced = db.$transaction(
-      (tx) =>
-        tx.$executeRawUnsafe(
-          `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber","fundingRef") VALUES ($1::uuid,$2::uuid,99,'race-ref')`,
-          slot.listingId,
-          slot.termsVersionId,
-        ),
-      { timeout: 20000 },
-    );
-    const outcome = await Promise.race([
-      raced.then(
+    try {
+      await amendmentWritten;
+      const raced = db.$transaction(
+        (tx) =>
+          tx.$executeRawUnsafe(
+            `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber","fundingRef") VALUES ($1::uuid,$2::uuid,99,'race-ref')`,
+            slot.listingId,
+            slot.termsVersionId,
+          ),
+        { timeout: 20000 },
+      );
+      const settled = raced.then(
         () => 'settled',
         () => 'settled',
-      ),
-      new Promise<string>((resolve) => setTimeout(() => resolve('waiting'), 700)),
-    ]);
-    expect(outcome).toBe('waiting');
-    release();
-    await amendment;
-    await expect(raced).rejects.toThrow(/funding reference/i);
-    expect(await row('SELECT 1 FROM "RaidSlot" WHERE "fundingRef"=\'race-ref\'')).toEqual([]);
+      );
+      // Observe the blocked backend instead of sleeping: the slot insert waits on the funding-reference advisory lock.
+      let waiting = false;
+      for (let i = 0; i < 100 && !waiting; i++) {
+        const rows = (await db.$queryRawUnsafe(
+          `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND wait_event='advisory' AND query LIKE '%"RaidSlot"%' AND pid<>pg_backend_pid()`,
+        )) as unknown[];
+        waiting = rows.length > 0;
+        if (!waiting) await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+      expect(waiting).toBe(true);
+      expect(await Promise.race([settled, Promise.resolve('waiting')])).toBe('waiting');
+      release();
+      await amendment;
+      await expect(raced).rejects.toThrow(/funding reference/i);
+      expect(await row('SELECT 1 FROM "RaidSlot" WHERE "fundingRef"=\'race-ref\'')).toEqual([]);
+    } finally {
+      release();
+      await amendment.catch(() => undefined);
+    }
   });
   const overdue = () => ({
     commitment: at(6000),
