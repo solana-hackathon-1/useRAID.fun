@@ -38,6 +38,9 @@ const host: AmendmentHost = {
   authorize: async (_tx, a) =>
     !revoked.has(a.accountId) &&
     (a.accountId.startsWith('founder-') || a.accountId.startsWith('admin-')),
+  authorizeProposer: async (_tx, a) =>
+    !revoked.has(a.accountId) &&
+    (a.accountId.startsWith('founder-') || a.accountId.startsWith('admin-')),
   reserveAdditionalFunding: async (_tx, b) => {
     calls.reserve += 1;
     return funded ? 'synthetic-increase:' + b.amendmentId : null;

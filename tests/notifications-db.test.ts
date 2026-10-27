@@ -229,6 +229,7 @@ integration('T042 safe lifecycle notifications and preferences', () => {
     const host: AmendmentHost = {
       allowNewWrites: true,
       authorize: async () => true,
+      authorizeProposer: async () => true,
       reserveAdditionalFunding: async () => null,
       fundingAvailable: async () => true,
       assessConsent: async (_tx, c) => ({ consentRef: 'consent:' + c.amendmentId }),
@@ -310,6 +311,7 @@ integration('T042 safe lifecycle notifications and preferences', () => {
     const host: AmendmentHost = {
       allowNewWrites: true,
       authorize: async () => true,
+      authorizeProposer: async () => true,
       reserveAdditionalFunding: async () => null,
       fundingAvailable: async () => true,
       assessConsent: async (_tx, c) => ({ consentRef: 'consent:' + c.amendmentId }),

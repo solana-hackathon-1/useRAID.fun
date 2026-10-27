@@ -37,6 +37,7 @@ function hostContract(host: AmendmentHost) {
   if (
     typeof host?.allowNewWrites !== 'boolean' ||
     typeof host.authorize !== 'function' ||
+    typeof host.authorizeProposer !== 'function' ||
     typeof host.reserveAdditionalFunding !== 'function' ||
     typeof host.fundingAvailable !== 'function' ||
     typeof host.assessConsent !== 'function'
@@ -104,28 +105,29 @@ async function effective(tx: Tx, engagementId: string) {
   return parsed.data;
 }
 /** Only the listing's Founder with current host authority; never an affected member. Null covers missing and denied. */
-async function founderAuthority(
-  tx: Tx,
-  engagementId: string,
-  actor: WorkActor,
-  host: AmendmentHost,
-) {
+async function founderBinding(tx: Tx, engagementId: string, accountId: string) {
   const rows = await tx.query<{ guildId: string; creatorAccountId: string }>(
     'SELECT e."guildId",l."creatorAccountId" FROM "Engagement" e JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "WorkListing" l ON l."id"=s."listingId" WHERE e."id"=$1::uuid',
     [engagementId],
   );
   const member = await tx.query(
     'SELECT 1 FROM "EngagementMember" m JOIN "Participant" p ON p."id"=m."participantId" WHERE m."engagementId"=$1::uuid AND p."accountId"=$2',
-    [engagementId, actor.accountId],
+    [engagementId, accountId],
   );
-  if (
-    rows.length !== 1 ||
-    member.length ||
-    rows[0].creatorAccountId !== actor.accountId ||
-    (await host.authorize(tx, actor, { engagementId, guildId: rows[0].guildId })) !== true
-  )
-    return null;
-  return rows[0].guildId;
+  return rows.length === 1 && !member.length && rows[0].creatorAccountId === accountId
+    ? rows[0].guildId
+    : null;
+}
+async function founderAuthority(
+  tx: Tx,
+  engagementId: string,
+  actor: WorkActor,
+  host: AmendmentHost,
+) {
+  const guildId = await founderBinding(tx, engagementId, actor.accountId);
+  return guildId !== null && (await host.authorize(tx, actor, { engagementId, guildId })) === true
+    ? guildId
+    : null;
 }
 /** Missing and denied are one answer. */
 async function founderTarget(tx: Tx, engagementId: string, actor: WorkActor, host: AmendmentHost) {
@@ -136,8 +138,19 @@ async function founderTarget(tx: Tx, engagementId: string, actor: WorkActor, hos
 /** A proposal is acceptable only while its proposer still holds the Founder authority it was made under. */
 async function proposerStillAuthorized(tx: Tx, amendment: Row, host: AmendmentHost) {
   // The proposer has no session in the member's request: the host judges the account's current scoped authority.
-  const proposer = { accountId: amendment.proposedByAccountId, sessionHash: '' };
-  if ((await founderAuthority(tx, amendment.engagementId, proposer, host)) === null)
+  const account = amendment.proposedByAccountId;
+  const guildId = await founderBinding(tx, amendment.engagementId, account);
+  if (
+    guildId === null ||
+    (await host.authorizeProposer(
+      tx,
+      { accountId: account },
+      {
+        engagementId: amendment.engagementId,
+        guildId,
+      },
+    )) !== true
+  )
     fail('AMENDMENT_UNAVAILABLE');
 }
 const lapsed = (terms: TermsSnapshot, at: Date) =>

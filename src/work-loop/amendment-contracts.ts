@@ -12,12 +12,17 @@ export interface RewardIncrease {
 }
 export interface AmendmentHost {
   allowNewWrites: boolean;
-  /** Current scoped Founder authority over this engagement's source, rechecked by the host in this transaction.
-   * At the member's consent the proposer is asked again with an empty `sessionHash`: judge the account's current
-   * scoped authority, not a session the member's request cannot supply. */
+  /** Current scoped Founder authority over this engagement's source, rechecked by the host in this transaction. */
   authorize(
     tx: CommandReceiptTransaction,
     actor: WorkActor,
+    target: { engagementId: string; guildId: string },
+  ): Promise<boolean>;
+  /** The same Founder authority asked of the proposing account at the member's consent. The proposer has no session
+   * in the member's request: judge the account's current scoped authority (and standing), never a session. */
+  authorizeProposer(
+    tx: CommandReceiptTransaction,
+    proposer: { accountId: string },
     target: { engagementId: string; guildId: string },
   ): Promise<boolean>;
   /** Transactional reservation of exactly the added obligation, distinct from every slot and amendment reservation. */
