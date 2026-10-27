@@ -281,7 +281,7 @@ integration('T021 applications and offers', () => {
     await expect(accept(applicant.actor, slot, o.offer.id, revoked)).rejects.toMatchObject({
       code: 'OFFER_UNAVAILABLE',
     });
-    expect(issued).toEqual([{ accountId: founder.actor.accountId, sessionHash: '' }]);
+    expect(issued).toEqual([{ accountId: founder.actor.accountId }]);
     const { authorizeOfferIssuer: _omitted, ...withoutCheck } = revoked;
     await expect(accept(applicant.actor, slot, o.offer.id, withoutCheck)).rejects.toMatchObject({
       code: 'STORAGE_CONTRACT',

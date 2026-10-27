@@ -42,7 +42,9 @@ export async function assertOfferIssuerAuthorized(
   );
   if (!row) fail('NOT_FOUND');
   // The issuer has no session in the applicant's request: the host judges the account's current scoped authority.
-  const issuer = { accountId: row.issuer, sessionHash: '' };
-  if ((await host.authorizeOfferIssuer(tx, issuer, { offerId, ...target })) !== true)
+  if (
+    (await host.authorizeOfferIssuer(tx, { accountId: row.issuer }, { offerId, ...target })) !==
+    true
+  )
     fail('OFFER_UNAVAILABLE');
 }

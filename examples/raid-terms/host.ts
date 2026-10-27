@@ -132,6 +132,7 @@ try {
     'migrations/amendments.sql',
     'migrations/notification-safety.sql',
     'migrations/reservation-binding.sql',
+    'migrations/offer-application-index.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   assert.equal(
@@ -232,6 +233,14 @@ try {
   ]);
   const acceptance: AcceptanceHost = {
     allowNewWrites: true,
+    // Account-level Founder authority of the offer's issuer: current guild authority and not suspended, no session.
+    async authorizeOfferIssuer(tx, issuer, target) {
+      const found = await tx.query(
+        'SELECT 1 FROM "User" u JOIN "HostGuildAuthority" g ON g."accountId"=u."id" WHERE u."id"=$1 AND g."guildId"=$2 AND NOT u."suspended" FOR SHARE OF u,g',
+        [issuer.accountId, target.guildId],
+      );
+      return found.length === 1;
+    },
     async assess(tx, c) {
       const found = await tx.query<{
         consentRef: string;
