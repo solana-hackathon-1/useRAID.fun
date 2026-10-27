@@ -12,7 +12,9 @@ export interface RewardIncrease {
 }
 export interface AmendmentHost {
   allowNewWrites: boolean;
-  /** Current scoped Founder authority over this engagement's source, rechecked by the host in this transaction. */
+  /** Current scoped Founder authority over this engagement's source, rechecked by the host in this transaction.
+   * At the member's consent the proposer is asked again with an empty `sessionHash`: judge the account's current
+   * scoped authority, not a session the member's request cannot supply. */
   authorize(
     tx: CommandReceiptTransaction,
     actor: WorkActor,
