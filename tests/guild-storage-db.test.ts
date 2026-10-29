@@ -13,6 +13,7 @@ import {
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import type { SqlBinding } from '../src/command-receipts';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 let counter = 0;
 async function person(): Promise<GuildActor> {
@@ -481,5 +482,115 @@ integration('T009 persisted Guild storage', () => {
     await expect(
       edit(delegate, g.id, 1, { description: 'Delegate wording' }, 'replay-1'),
     ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  });
+
+  it('#290-1: shows the Founder id only to the Founder or a profile manager; treasury/dispute holders see it redacted', async () => {
+    const { founder, guild: g } = await guild('redacted');
+    const treasurer = await person();
+    const judge = await person();
+    const editor = await person();
+    await grant(g.id, treasurer, { kind: 'TREASURY', fields: [] });
+    await grant(g.id, judge, { kind: 'DISPUTE', fields: [] });
+    await grant(g.id, editor, { fields: ['description'] });
+    for (const who of [treasurer, judge]) {
+      const view = await run((tx) => readManagedGuild(tx, who, g.id));
+      expect(view.guild.founderAccountId).toBeNull();
+      expect(JSON.stringify(view)).not.toContain(founder.accountId);
+      expect(view.guild).toMatchObject({ id: g.id, slug: 'redacted', revision: 1 });
+    }
+    expect((await run((tx) => readManagedGuild(tx, editor, g.id))).guild.founderAccountId).toBe(
+      founder.accountId,
+    );
+    expect((await run((tx) => readManagedGuild(tx, founder, g.id))).guild.founderAccountId).toBe(
+      founder.accountId,
+    );
+  });
+
+  it('#290-2: judges live grants at the same instant the profile policy uses', async () => {
+    const { guild: g } = await guild('one-clock');
+    const editor = await person();
+    await grant(g.id, editor, { fields: ['name'] });
+    const seen: { sql: string; bindings: readonly unknown[]; rows: unknown[] }[] = [];
+    const done = await run((tx) =>
+      editGuildProfile(
+        {
+          dialect: tx.dialect,
+          isolation: tx.isolation,
+          async query<Row>(sql: string, bindings: readonly SqlBinding[]) {
+            const rows = await tx.query<Row>(sql, bindings);
+            seen.push({ sql, bindings, rows });
+            return rows;
+          },
+        },
+        cmd(editor, { guildId: g.id, expectedRevision: 1, profile: { name: 'One clock' } }),
+        host(),
+      ),
+    );
+    expect(done.guild.revision).toBe(2);
+    const reads = seen.filter((q) => /AS now/.test(q.sql) && /FROM "Guild" g/.test(q.sql));
+    const grantReads = seen.filter(
+      (q) => /FROM "GuildRoleGrant" WHERE/.test(q.sql) && /'PROFILE'/.test(q.sql),
+    );
+    expect(reads.length).toBeGreaterThan(0);
+    expect(grantReads.length).toBe(reads.length);
+    reads.forEach((read, i) => {
+      const now = (read.rows[0] as { now: Date }).now;
+      expect(grantReads[i].sql).not.toContain('clock_timestamp()');
+      expect(grantReads[i].bindings.map(String)).toContain(String(now.toISOString()));
+    });
+  });
+
+  it('#310: refuses an account with no edit authority before any lock, the same for a missing and an existing Guild', async () => {
+    const { founder, guild: g } = await guild('edit-lock');
+    const stranger = await person();
+    const worker = await person();
+    await grant(g.id, worker, { kind: 'WORK', fields: [] });
+    let release!: () => void, locked!: () => void;
+    const held = new Promise<void>((r) => (release = r));
+    const ready = new Promise<void>((r) => (locked = r));
+    const holder = db.$transaction(
+      async (t) => {
+        await t.$queryRawUnsafe('SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE', g.id);
+        locked();
+        await held;
+      },
+      { timeout: 30000 },
+    );
+    await ready;
+    const outcome = (work: Promise<unknown>) =>
+      Promise.race([
+        work.then(
+          () => 'EXECUTED',
+          (e: { code?: string }) => e.code ?? 'ERROR',
+        ),
+        new Promise<string>((r) => setTimeout(() => r('BLOCKED'), 4000)),
+      ]);
+    try {
+      for (const who of [stranger, worker]) {
+        expect(await outcome(edit(who, g.id, 1, { name: 'Taken' }))).toBe('FORBIDDEN');
+        expect(await outcome(edit(who, crypto.randomUUID(), 1, { name: 'Taken' }))).toBe(
+          'FORBIDDEN',
+        );
+      }
+    } finally {
+      release();
+      await holder;
+    }
+    expect((await edit(founder, g.id, 1, { name: 'Still mine' })).guild.revision).toBe(2);
+  });
+
+  it('#290-3: indexes the account foreign keys of Guild, profile versions and grants', async () => {
+    const rows = await db.$queryRawUnsafe<{ tbl: string; col: string }[]>(
+      `SELECT t.relname AS tbl,a.attname AS col FROM pg_index i
+       JOIN pg_class t ON t.oid=i.indrelid JOIN pg_attribute a ON a.attrelid=t.oid AND a.attnum=i.indkey[0]
+       WHERE t.relname IN ('Guild','GuildProfileVersion','GuildRoleGrant')`,
+    );
+    const leading = rows.map((r) => r.tbl + '.' + r.col);
+    for (const fk of [
+      'Guild.activatedByAccountId',
+      'GuildProfileVersion.actorAccountId',
+      'GuildRoleGrant.grantedByAccountId',
+    ])
+      expect(leading, fk).toContain(fk);
   });
 });

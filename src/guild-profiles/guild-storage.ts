@@ -302,6 +302,7 @@ export async function activateGuild(
 /**
  * Asks the pure policy whether the actor may take a profile action over these fields, from facts rebuilt here under the
  * database clock. Window bounds are rounded conservatively to the policy's millisecond precision (start up, expiry down).
+ * The grant query and the policy share the caller's single clock reading `guild.now`.
  */
 async function profileDecision(
   tx: CommandReceiptTransaction,
@@ -322,8 +323,9 @@ async function profileDecision(
        date_trunc('milliseconds',"validFrom")+CASE WHEN "validFrom">date_trunc('milliseconds',"validFrom") THEN interval '1 millisecond' ELSE interval '0' END AS "validFrom",
        date_trunc('milliseconds',"expiresAt") AS "expiresAt"
      FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND "revokedAt" IS NULL
-      AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`,
-    [guild.id, actor.accountId],
+      AND "validFrom"<=$3::timestamptz AND ("expiresAt" IS NULL OR "expiresAt">$3::timestamptz)`,
+    // One clock reading: the grants are selected at the same instant the policy is asked about.
+    [guild.id, actor.accountId, guild.now.toISOString()],
   );
   return evaluateGuildProfilePermission(
     {
@@ -377,6 +379,10 @@ export async function editGuildProfile(
   async function permitted(
     lock: boolean,
   ): Promise<{ revision: number; name: string; description: string }> {
+    // Judge standing before taking any lock: an account with no profile authority here cannot queue behind the
+    // Guild row, and a missing Guild answers the same FORBIDDEN as an existing one. Field scope is judged below.
+    const standing = await authorityKinds(tx, actor.accountId, input.guildId);
+    if (!standing.kinds.includes('PROFILE')) fail('FORBIDDEN');
     const rows = await query<{
       id: string;
       founderAccountId: string;
@@ -472,7 +478,11 @@ export async function readPublicGuild(tx: CommandReceiptTransaction, slug: strin
     publicProfileApproved: true,
   });
 }
-/** The private management view: the Guild plus only the authority the caller actually holds. */
+/**
+ * The private management view: the Guild plus only the authority the caller actually holds. The Founder's account id
+ * is shown only to the Founder and to profile managers; a caller whose authority is only work, treasury or dispute
+ * sees `founderAccountId: null`.
+ */
 export async function readManagedGuild(
   tx: CommandReceiptTransaction,
   actor: GuildActor,
@@ -483,7 +493,10 @@ export async function readManagedGuild(
   await authorize(tx, actor);
   const authority = await authorityKinds(tx, actor.accountId, guildId);
   if (!authority.kinds.length) fail('FORBIDDEN');
-  const guild = await loadGuild(tx, guildId);
+  const loaded = await loadGuild(tx, guildId);
+  const guild = authority.kinds.includes('PROFILE')
+    ? loaded
+    : { ...loaded, founderAccountId: null };
   await authorize(tx, actor);
   return { guild, authority };
 }
