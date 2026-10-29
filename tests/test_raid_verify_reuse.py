@@ -166,6 +166,29 @@ class LocalVerifyGate(unittest.TestCase):
             self.assertEqual(receipt['result'], 'pass')
             self.assertEqual(receipt['head'], git('rev-parse', 'HEAD'))
 
+    def test_format_check_follows_changed_symlinks_to_in_repo_targets_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repo, env, log, git = self.setup_repo(directory)
+            (repo / 'docs').mkdir()
+            (repo / 'docs/target.md').write_text('# target\n')
+            git('add', '.')
+            git('commit', '-q', '-m', 'target')
+            git('branch', '-f', 'main', 'HEAD')  # the target is unchanged; only the links are new
+            (repo / 'docs/link.md').symlink_to('target.md')
+            outside = Path(directory) / 'outside.md'
+            outside.write_text('# outside\n')
+            (repo / 'escape.md').symlink_to(outside)
+            git('add', '.')
+            git('commit', '-q', '-m', 'links')
+            result = self.verify(repo, env)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            prettier = [line for line in log.read_text().splitlines() if 'prettier' in line][0]
+            # Prettier refuses symbolic links: the in-repo target is checked instead, never the link or an outside file.
+            self.assertIn('docs/target.md', prettier.split())
+            self.assertNotIn('docs/link.md', prettier.split())
+            self.assertNotIn('escape.md', prettier)
+            self.assertNotIn('outside.md', prettier)
+
     def test_failing_layer_fails_the_gate_and_records_no_passing_receipt(self):
         for failing in ['typecheck', 'lint', 'vitest']:
             with self.subTest(layer=failing), tempfile.TemporaryDirectory() as directory:
