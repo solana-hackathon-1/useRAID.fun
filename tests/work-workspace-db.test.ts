@@ -8,6 +8,7 @@ import {
   readMyRaids,
   readReviewQueue,
   readApplicantQueue,
+  readActiveRaid,
 } from '../src/work-loop/workspace-storage';
 import { seedWorkHuman, seedWorkSlot } from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -74,6 +75,23 @@ integration('T022 My Raid, review and applicant read models', () => {
         status: 'UNSETTLED',
       }),
     ]);
+  });
+  it('names the one Raid holding the member capacity, only for that member and only while held', async () => {
+    const e = await seedEngagement(db);
+    expect(await run((tx) => readActiveRaid(tx, e.worker.actor))).toEqual({
+      version: 'v1',
+      engagementId: e.engagementId,
+      title: e.slot.terms.title,
+    });
+    const stranger = await seedWorkHuman(db);
+    for (const actor of [stranger.actor, e.reviewer.actor])
+      expect(await run((tx) => readActiveRaid(tx, actor))).toBeNull();
+    await expect(
+      run((tx) => readActiveRaid(tx, { ...e.worker.actor, sessionHash: 'e'.repeat(64) })),
+    ).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+    const first = await e.submit();
+    await e.decide(first.submission.id, 'ACCEPT');
+    expect(await run((tx) => readActiveRaid(tx, e.worker.actor))).toBeNull();
   });
   it('never shows an engagement to anyone but its members', async () => {
     const e = await seedEngagement(db);

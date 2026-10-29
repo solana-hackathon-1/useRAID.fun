@@ -17,6 +17,7 @@ import { Shell } from '@/components/shell';
 import { config } from '@/lib/config';
 import { shellAccount } from '@/lib/shell-account';
 import { publicNavLinks } from '@/lib/work-entry-links';
+import { loadActiveRaid } from '@/lib/work-workspace-page';
 import { studioSandbox } from '@/lib/usdc';
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
@@ -25,7 +26,8 @@ export const metadata: Metadata = {
     'Discover Solana campaigns through measured community attention. Follow the conversation, understand the momentum.',
 };
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const account = await shellAccount();
+  // Per-request and session-bound (force-dynamic → private, no-store): never part of a cached public page.
+  const [account, activeRaid] = await Promise.all([shellAccount(), loadActiveRaid()]);
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${manrope.variable} ${barlow.variable}`}>
@@ -34,6 +36,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           sandbox={studioSandbox()}
           account={account}
           extraLinks={publicNavLinks()}
+          activeRaid={account ? activeRaid : null}
         >
           {children}
         </Shell>
