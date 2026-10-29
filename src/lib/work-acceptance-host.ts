@@ -8,6 +8,8 @@ import {
 } from '../skills/eligibility';
 import { SkillTaxonomyStorageError } from '../skills/taxonomy-storage-contracts';
 import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
+import { ASSESSMENT_LOCK_SQL, assessmentLockKey } from '../skills/assessment-lock';
+import { buildSkillRequirement } from '../skills/eligibility-requirement';
 import { WorkError } from '../work-loop/contracts';
 import type { AcceptanceHost } from '../work-loop/engagement-contracts';
 
@@ -18,33 +20,12 @@ export interface RootAcceptanceConfig {
   /** Synthetic operator allowlist standing in for Guild authority, which the shared Root cannot recognize yet. */
   isOperator(accountId: string): boolean;
 }
-const GROUP_LIMIT = 16;
 const NOT_APPROVED = new Set<string>([
   'INVALID_INPUT',
   'FORBIDDEN',
   'AUTHENTICATION_REQUIRED',
   'ACCOUNT_RESTRICTED',
 ]);
-/** Every required skill must be met. The eligibility schema allows 16 children per group and terms up to 50 skills. */
-export function buildSkillRequirement(
-  required: readonly { skillId: string; minimumRank: SkillRank; assessmentPolicyVersion: string }[],
-): SkillPredicate {
-  const leaves: SkillPredicate[] = required.map((s) => ({
-    kind: 'SKILL',
-    skillId: s.skillId,
-    minimumRank: s.minimumRank,
-    verificationRequired: true,
-    assessmentPolicyVersion: s.assessmentPolicyVersion,
-  }));
-  let level = leaves;
-  do {
-    const groups: SkillPredicate[] = [];
-    for (let i = 0; i < level.length; i += GROUP_LIMIT)
-      groups.push({ kind: 'AND', children: level.slice(i, i + GROUP_LIMIT) });
-    level = groups;
-  } while (level.length > 1);
-  return level[0];
-}
 /**
  * Decisions (revoke, reassess, verify) take this per-person, per-skill lock until they commit. Holding it to our commit
  * means the evidence read cannot go stale before the engagement is inserted. Sorted and unique, so concurrent
@@ -56,10 +37,9 @@ async function lockAssessmentEvidence(
   skillIds: readonly string[],
 ) {
   for (const skillId of [...new Set(skillIds)].sort())
-    await tx.query('SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text', [
-      participantId + ':' + skillId,
-    ]);
+    await tx.query(ASSESSMENT_LOCK_SQL, [assessmentLockKey(participantId, skillId)]);
 }
+export { buildSkillRequirement };
 export const ROOT_ELIGIBILITY_POLICY = 'root-skill-admission-v1';
 interface FactRow {
   assessmentId: string;
