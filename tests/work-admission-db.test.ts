@@ -13,7 +13,7 @@ import { commitEngagement } from '../src/work-loop/engagement-storage';
 import { recordAcceptanceConsent } from '../src/work-loop/consent-storage';
 import type { AdmissionHost } from '../src/work-loop/admission-contracts';
 import { saveRaidTerms } from '../src/work-loop/storage';
-import type { WorkHost } from '../src/work-loop/contracts';
+import { WorkError, type WorkHost } from '../src/work-loop/contracts';
 import { raidTerms } from './helpers/raid-terms-fixture';
 import { seedWorkHuman, seedWorkSlot, syntheticAcceptanceHost } from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -301,6 +301,7 @@ integration('T021 applications and offers', () => {
       cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
     );
     const calls: string[] = [];
+    const receipts = await db.commandReceipt.count();
     const { authorizeOfferIssuer: _omitted, ...withoutCheck } = syntheticAcceptanceHost;
     const spying = {
       ...withoutCheck,
@@ -316,6 +317,26 @@ integration('T021 applications and offers', () => {
       code: 'STORAGE_CONTRACT',
     });
     expect(calls).toEqual([]);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "ActiveCommitment"')).toEqual([]);
+    expect(await db.raidOffer.findUniqueOrThrow({ where: { id: o.offer.id } })).toMatchObject({
+      state: 'PENDING',
+      acceptedEngagementId: null,
+    });
+    expect(await db.commandReceipt.count()).toBe(receipts);
+  });
+  it('rejects a host without the issuer check with a work error before using its identity locks', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const a = await applyTo(apply);
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    const { authorizeOfferIssuer: _omitted, ...withoutCheck } = syntheticAcceptanceHost;
+    // An unsealed capability fails inside the identity-lock module, so reaching it surfaces that module's error.
+    const locking = { ...withoutCheck, identityLocks: Object.freeze({ version: 1 }) } as never;
+    await expect(accept(applicant.actor, slot, o.offer.id, locking)).rejects.toBeInstanceOf(
+      WorkError,
+    );
   });
   const digestOf = async (termsVersionId: string) =>
     (

@@ -128,6 +128,8 @@ export async function commitEngagement(
     typeof host.fundingAvailable !== 'function'
   )
     fail('STORAGE_CONTRACT');
+  // An offer is judged against its issuer's current authority: a host that cannot answer fails before any lock or read.
+  if (parsed.data.offerId) requireOfferIssuerCheck(host);
   const input = parsed.data,
     actor = command.actor;
   await session(tx, actor);
@@ -159,7 +161,6 @@ export async function commitEngagement(
       const definitionDigest = canonicalRequestDigest(terms);
       if (terms.admission === 'APPLICATION') {
         if (!offer) fail('ADMISSION_REQUIRED');
-        requireOfferIssuerCheck(host);
         assertOffer(offer, input, authorization.participantId, await clock(tx));
       } else if (offer) fail('INVALID_INPUT');
       assertOpenForTaking(terms, await clock(tx));
