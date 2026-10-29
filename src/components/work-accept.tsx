@@ -77,12 +77,15 @@ export function AcceptRaid({
   termsVersionId,
   termsDigest,
   offerId,
+  signInHref = '/creator/account',
   client,
 }: {
   slotId: string;
   termsVersionId: string;
   termsDigest: string;
   offerId?: string;
+  /** Where the sign-in link goes, carrying this page as the return path. */
+  signInHref?: string;
   client?: Client;
 }) {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
@@ -123,7 +126,7 @@ export function AcceptRaid({
               {outcome.kind === 'SIGN_IN' && (
                 <>
                   {' '}
-                  <a href="/creator/account">Sign in</a>
+                  <a href={signInHref}>Sign in</a>
                 </>
               )}
               {outcome.kind === 'RETRY_SAME_REQUEST' && ' Press the same button again to retry.'}

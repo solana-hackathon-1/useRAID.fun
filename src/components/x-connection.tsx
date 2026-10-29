@@ -11,7 +11,8 @@ export function XConnection({
 }: {
   account?: { username: string; displayName: string; profileImage: string | null } | null;
   status?: string;
-  returnTo?: 'account';
+  /** An X sign-in return token from the server-side allowlist, such as `account`. */
+  returnTo?: string;
   demo?: boolean;
 }) {
   const router = useRouter();
@@ -70,7 +71,10 @@ export function XConnection({
           Connect X
         </button>
       ) : (
-        <a className="button" href={returnTo ? `/api/auth/x?return=${returnTo}` : '/api/auth/x'}>
+        <a
+          className="button"
+          href={returnTo ? `/api/auth/x?return=${encodeURIComponent(returnTo)}` : '/api/auth/x'}
+        >
           Connect X
         </a>
       )}
