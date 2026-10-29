@@ -7,7 +7,9 @@
     "tests/admin-db.test.ts",
     "tests/admin-lists.test.ts",
     "tests/admins.test.ts",
+    "tests/advisory-wait-db.test.ts",
     "tests/api-route-guard.test.ts",
+    "tests/assessment-lock.test.ts",
     "tests/asset-registry-amounts.test.ts",
     "tests/asset-registry-boundary.test.ts",
     "tests/asset-registry-bundle.test.ts",
@@ -800,6 +802,8 @@
       "existing_test_files": [
         "tests/work-acceptance-host.test.ts",
         "tests/work-acceptance-root-db.test.ts",
+        "tests/assessment-lock.test.ts",
+        "tests/advisory-wait-db.test.ts",
         "tests/work-start-db.test.ts",
         "tests/command-receipts-boundary.test.ts",
         "tests/command-receipts-db.test.ts",
