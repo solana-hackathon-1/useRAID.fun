@@ -23,7 +23,8 @@ export interface GuildUpdatesHttpHost {
   requestId(): string;
   actor(): Promise<GuildActor>;
   checkOrigin(request: Request): Promise<void> | void;
-  rateLimit(actor: GuildActor): Promise<void>;
+  /** Reads and commands are throttled separately, so polling can never block a publication or takedown. */
+  rateLimit(actor: GuildActor, scope: 'READ' | 'WRITE'): Promise<void>;
   list(actor: GuildActor, guildId: string): Promise<unknown>;
   draft(command: GuildCommand): Promise<unknown>;
   publish(command: GuildCommand): Promise<unknown>;
@@ -88,6 +89,16 @@ function failure(error: unknown, requestId: string) {
     headers: guildUpdatesHeaders,
   });
 }
+/** A fresh step must land exactly; a replay may find the update already moved on, never backwards. */
+function stateAllowed(
+  status: 'EXECUTED' | 'REPLAYED',
+  action: 'PUBLISH' | 'WITHDRAW',
+  state: 'DRAFT' | 'PUBLISHED' | 'WITHDRAWN',
+) {
+  const exact = action === 'PUBLISH' ? 'PUBLISHED' : 'WITHDRAWN';
+  if (state === exact) return true;
+  return status === 'REPLAYED' && action === 'PUBLISH' && state === 'WITHDRAWN';
+}
 const contract = () => new GuildStorageError('STORAGE_CONTRACT');
 export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
   if (
@@ -115,7 +126,7 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
       const id = correlation();
       try {
         const actor = await host.actor();
-        await host.rateLimit(actor);
+        await host.rateLimit(actor, 'READ');
         const params = new URL(request.url).searchParams;
         const guildId = z.uuid().safeParse(params.get('guildId'));
         if (!guildId.success || params.size !== 1 || params.getAll('guildId').length !== 1)
@@ -136,7 +147,7 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
       try {
         await host.checkOrigin(request);
         const actor = await host.actor();
-        await host.rateLimit(actor);
+        await host.rateLimit(actor, 'WRITE');
         const { key, json } = await readCommand(request);
         const input = DraftGuildUpdateInputSchema.safeParse(json);
         if (!input.success) throw new JsonBodyFailure(422);
@@ -147,7 +158,8 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
         if (
           !value.success ||
           update === null ||
-          update.state !== 'DRAFT' ||
+          // A replay returns the update as it is now; only a fresh draft must still be a draft.
+          (value.data.status === 'EXECUTED' && update.state !== 'DRAFT') ||
           update.guildId.toLowerCase() !== input.data.guildId ||
           update.title !== input.data.title ||
           update.body !== input.data.body
@@ -163,7 +175,7 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
       try {
         await host.checkOrigin(request);
         const actor = await host.actor();
-        await host.rateLimit(actor);
+        await host.rateLimit(actor, 'WRITE');
         const target = z.uuid().safeParse(await updateId);
         if (!target.success) throw new JsonBodyFailure(422);
         const { key, json } = await readCommand(request);
@@ -184,7 +196,7 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
           update === null ||
           update.id.toLowerCase() !== target.data.toLowerCase() ||
           update.guildId.toLowerCase() !== input.data.guildId.toLowerCase() ||
-          update.state !== (input.data.action === 'PUBLISH' ? 'PUBLISHED' : 'WITHDRAWN')
+          !stateAllowed(value.data.status, input.data.action, update.state)
         )
           throw contract();
         return Response.json(value.data, { headers: guildUpdatesHeaders });

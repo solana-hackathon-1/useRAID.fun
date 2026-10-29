@@ -36,7 +36,8 @@ function host(overrides: Partial<GuildUpdatesHttpHost> = {}) {
     requestId: () => 'request-1',
     actor: async () => (calls.push('actor'), actor),
     checkOrigin: () => void calls.push('origin'),
-    rateLimit: async () => void calls.push('rateLimit'),
+    rateLimit: async (_who, scope) =>
+      void calls.push(scope === 'READ' ? 'rateLimit:read' : 'rateLimit'),
     list: async (who, id) => (calls.push(['list', who, id]), state()),
     draft: async (command) => (
       calls.push(['draft', command]),
@@ -189,7 +190,7 @@ describe('Guild updates management HTTP boundary', () => {
     );
     expect(response.status).toBe(200);
     expect(await body(response)).toEqual(state());
-    expect(calls).toEqual(['actor', 'rateLimit', ['list', actor, guildId]]);
+    expect(calls).toEqual(['actor', 'rateLimit:read', ['list', actor, guildId]]);
     for (const query of [
       '',
       '?guildId=nope',
@@ -206,6 +207,78 @@ describe('Guild updates management HTTP boundary', () => {
       new Request(`https://example.test/api/v1/guild-updates?guildId=${guildId}`),
     );
     expect(leaked.status).toBe(503);
+  });
+
+  it('review fix: an idempotent replay succeeds after the update has moved on, but a fresh result must match exactly', async () => {
+    const published = { state: 'PUBLISHED', publishedAt: '2026-10-29T07:00:00.000Z' };
+    const replayedDraft = host({
+      draft: async () => ({ status: 'REPLAYED', update: managed(published) }),
+    });
+    const handlers = createGuildUpdatesHandlers(replayedDraft.value);
+    expect((await handlers.DRAFT(draftRequest())).status).toBe(200);
+    const freshWrong = host({
+      draft: async () => ({ status: 'EXECUTED', update: managed(published) }),
+    });
+    expect((await createGuildUpdatesHandlers(freshWrong.value).DRAFT(draftRequest())).status).toBe(
+      503,
+    );
+    // Content is immutable, so even a replay must still be the text that was asked for.
+    const replayedOther = host({
+      draft: async () => ({
+        status: 'REPLAYED',
+        update: managed({ ...published, title: 'Other' }),
+      }),
+    });
+    expect(
+      (await createGuildUpdatesHandlers(replayedOther.value).DRAFT(draftRequest())).status,
+    ).toBe(503);
+    const cases: [string, 'publish' | 'withdraw', string, number][] = [
+      ['PUBLISH', 'publish', 'WITHDRAWN', 200],
+      ['PUBLISH', 'publish', 'PUBLISHED', 200],
+      ['PUBLISH', 'publish', 'DRAFT', 503],
+      ['WITHDRAW', 'withdraw', 'WITHDRAWN', 200],
+      ['WITHDRAW', 'withdraw', 'PUBLISHED', 503],
+      ['WITHDRAW', 'withdraw', 'DRAFT', 503],
+    ];
+    for (const [action, step, resulting, status] of cases) {
+      const replay = host({
+        [step]: async () => ({
+          status: 'REPLAYED',
+          update: managed({
+            state: resulting,
+            publishedAt: resulting === 'DRAFT' ? null : published.publishedAt,
+          }),
+        }),
+      } as Partial<GuildUpdatesHttpHost>);
+      const response = await createGuildUpdatesHandlers(replay.value).STEP(
+        stepRequest(action),
+        updateId,
+      );
+      expect(response.status, `${action} replay as ${resulting}`).toBe(status);
+    }
+    const fresh = host({
+      publish: async () => ({
+        status: 'EXECUTED',
+        update: managed({ state: 'WITHDRAWN', publishedAt: published.publishedAt }),
+      }),
+    });
+    expect(
+      (await createGuildUpdatesHandlers(fresh.value).STEP(stepRequest('PUBLISH'), updateId)).status,
+    ).toBe(503);
+  });
+
+  it('review fix: reads and commands use separate throttle scopes so polling cannot block a takedown', async () => {
+    const scopes: string[] = [];
+    const { value } = host({
+      rateLimit: async (_who, scope) => void scopes.push(scope),
+    });
+    const handlers = createGuildUpdatesHandlers(value);
+    await handlers.LIST(
+      new Request(`https://example.test/api/v1/guild-updates?guildId=${guildId}`),
+    );
+    await handlers.DRAFT(draftRequest());
+    await handlers.STEP(stepRequest('WITHDRAW'), updateId);
+    expect(scopes).toEqual(['READ', 'WRITE', 'WRITE']);
   });
 
   it('answers authentication, origin and throttle denials before any storage call', async () => {

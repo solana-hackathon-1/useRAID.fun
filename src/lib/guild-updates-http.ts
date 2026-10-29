@@ -27,7 +27,12 @@ export const guildUpdatesHandlers = createGuildUpdatesHandlers({
       return { accountId: user.id, sessionHash: hash(cookie) };
     }),
   checkOrigin: (request) => authority(() => checkOrigin(request)),
-  rateLimit: (actor) => authority(() => rateLimit(`guild-updates:${actor.accountId}`, 30, 60)),
+  rateLimit: (actor, scope) =>
+    authority(() =>
+      scope === 'READ'
+        ? rateLimit(`guild-updates-read:${actor.accountId}`, 120, 60)
+        : rateLimit(`guild-updates:${actor.accountId}`, 30, 60),
+    ),
   list: listUpdatesState,
   draft: draftUpdate,
   publish: publishUpdate,

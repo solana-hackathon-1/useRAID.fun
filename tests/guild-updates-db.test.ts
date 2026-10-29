@@ -402,6 +402,15 @@ integration('T009 Guild public updates', () => {
     expect((await step('PUBLISH', 'h-4')).status).toBe(409);
     expect((await step('WITHDRAW', 'h-5')).status).toBe(200);
     expect((await run((tx) => listPublicGuildUpdates(tx, 'news-mgmt', {}))).updates).toEqual([]);
+    // Retries after the update has moved on still succeed as replays.
+    const lateDraft = await handlers.DRAFT(
+      send('/api/v1/guild-updates', { guildId: g.id, title: 'Hello', body: 'World' }, 'h-1'),
+    );
+    expect(lateDraft.status).toBe(200);
+    expect(((await lateDraft.json()) as { status: string }).status).toBe('REPLAYED');
+    const latePublish = await step('PUBLISH', 'h-3');
+    expect(latePublish.status).toBe(200);
+    expect(((await latePublish.json()) as { status: string }).status).toBe('REPLAYED');
     const managed = (await (
       await handlers.LIST(new Request('https://example.test/api/v1/guild-updates?guildId=' + g.id))
     ).json()) as { updates: unknown[] };
