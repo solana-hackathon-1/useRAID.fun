@@ -41,15 +41,24 @@ step() {
   return 0
 }
 format_changed() {
-  local files=() file
-  # Prettier refuses symbolic links. Example hosts link canonical migrations (checked at their source); only those links
-  # are skipped, so any other changed link reaches Prettier and fails loudly instead of being skipped silently.
+  local files=() file link target root
+  root=$(pwd -P)
+  # Prettier refuses symbolic links. Example hosts link canonical migrations (checked at their source: skipped) and
+  # canonical source files (the in-repo target is checked once, in place of each link). A link that leaves the repository
+  # reaches Prettier unchanged, so it fails loudly instead of being skipped silently.
   while IFS= read -r file; do
     [ -f "$file" ] || continue
-    if [ -L "$file" ]; then case "$(readlink "$file")" in *prisma/migrations/*) continue ;; esac; fi
+    if [ -L "$file" ]; then
+      case "$(readlink "$file")" in *prisma/migrations/*) continue ;; esac
+      link=$(readlink "$file")
+      target=$(cd "$(dirname "$file")" && cd "$(dirname "$link")" 2> /dev/null && printf '%s/%s' "$(pwd -P)" "$(basename "$link")")
+      case "$target" in "$root"/*) if [ -f "$target" ] && [ ! -L "$target" ]; then file=${target#"$root"/}; fi ;; esac
+    fi
     files+=("$file")
   done < <(git diff --name-only --diff-filter=d "$base" HEAD)
   if [ "${#files[@]}" -eq 0 ]; then echo "no changed files to format-check"; return 0; fi
+  # shellcheck disable=SC2207
+  files=($(printf '%s\n' "${files[@]}" | sort -u))
   npx prettier --check --ignore-unknown "${files[@]}"
 }
 
