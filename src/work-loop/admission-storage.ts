@@ -23,9 +23,9 @@ import {
   source,
   definition,
   clock,
+  assertOpenForTaking,
   type Source,
 } from './engagement-authority';
-import { publicationProblems } from './terms';
 const Submit = SubmitApplicationInput;
 const Withdraw = z.strictObject({ applicationId: z.uuid() });
 const Issue = z.strictObject({ applicationId: z.uuid(), expiresAt: UtcTimestamp });
@@ -68,9 +68,7 @@ async function available(tx: Tx, s: Source, termsVersionId: string) {
   const terms = await definition(tx, termsVersionId),
     now = await clock(tx);
   if (terms.admission !== 'APPLICATION') fail('INVALID_INPUT');
-  const problems = publicationProblems(terms, now);
-  if (problems.length)
-    fail(problems.includes('DEADLINE_PASSED') ? 'DEADLINE_PASSED' : 'PUBLICATION_BLOCKED');
+  assertOpenForTaking(terms, now);
   return terms;
 }
 async function founder(

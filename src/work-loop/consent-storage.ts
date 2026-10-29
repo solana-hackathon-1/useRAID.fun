@@ -9,8 +9,16 @@ import {
   type ConsentHost,
   type ConsentResult,
 } from './consent-contracts';
-import { publicationProblems } from './terms';
-import { fail, validate, session, currentHuman, clock, definition } from './engagement-authority';
+import { assertOffer, findParticipantOffer } from './admission-acceptance';
+import {
+  fail,
+  validate,
+  session,
+  currentHuman,
+  clock,
+  definition,
+  assertOpenForTaking,
+} from './engagement-authority';
 
 const COLUMNS =
   'c."id"::text,c."participantId"::text,c."slotId"::text,c."termsVersionId"::text,c."termsDigest",c."consentedAt"';
@@ -64,15 +72,23 @@ export async function recordAcceptanceConsent(
         slot.digest !== value.termsDigest
       )
         fail('TERMS_VERSION_CHANGED');
-      // Same gates as acceptance, so consent cannot be recorded for work that can no longer be taken.
+      // Pre-screen with acceptance's own checks and codes. These reads take no lock: a concurrent accept, revoke or
+      // terms edit can still land before the insert, and acceptance rechecks everything under locks.
       const terms = await definition(tx, value.termsVersionId);
-      if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
+      const now = await clock(tx);
+      assertOpenForTaking(terms, now);
       if (terms.admission === 'APPLICATION') {
-        const offers = await tx.query<{ id: string }>(
-          `SELECT "id"::text FROM "RaidOffer" WHERE "participantId"=$1::uuid AND "slotId"=$2::uuid AND "termsVersionId"=$3::uuid AND "state"='PENDING' AND "expiresAt">clock_timestamp()`,
-          [auth.participantId, value.slotId, value.termsVersionId],
+        const offer = await findParticipantOffer(
+          tx,
+          {
+            participantId: auth.participantId,
+            slotId: value.slotId,
+            termsVersionId: value.termsVersionId,
+          },
+          now,
         );
-        if (offers.length < 1) fail('ADMISSION_REQUIRED');
+        if (!offer) fail('ADMISSION_REQUIRED');
+        assertOffer(offer, value, auth.participantId, now);
       }
       const inserted = await tx.query<{ id: string }>(
         'INSERT INTO "WorkAcceptanceConsent" ("participantId","slotId","termsVersionId","termsDigest") VALUES ($1::uuid,$2::uuid,$3::uuid,$4) ON CONFLICT ("participantId","slotId","termsVersionId") DO NOTHING RETURNING "id"::text',
