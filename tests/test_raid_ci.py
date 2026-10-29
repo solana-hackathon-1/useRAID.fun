@@ -72,6 +72,15 @@ class LocalCIEnvironmentConfig(unittest.TestCase):
         self.assertIn('${RAID_CI_DB_PORT:-55432}:5432', override)
 
 
+class VerifyTreeCheck(unittest.TestCase):
+    def test_generated_test_outputs_do_not_invalidate_the_tree_check(self):
+        script = (ROOT / 'scripts/verify.sh').read_text()
+        clean = script.split('clean() {', 1)[1].split('}', 1)[0]
+        for path in ['docs/ai-handoff/CURRENT.md', 'artifacts/raid-live-fixture.png',
+                     'planning/task-evidence/*/browser-development']:
+            self.assertIn(f"':!{path}'", clean)
+
+
 class RequiredCheckRuleset(unittest.TestCase):
     ruleset = ROOT / '.github/rulesets/main-ci-gate.json'
 
@@ -145,7 +154,11 @@ exit 0
                 path = root / 'bin' / command
                 path.write_text(stub)
                 path.chmod(0o755)
-            env = dict(os.environ, PATH=str(root / 'bin') + ':' + os.environ['PATH'],
+            # A caller (verify.sh, a second checkout) may export these; the stubbed run must not inherit them.
+            inherited = {k: v for k, v in os.environ.items()
+                         if k not in {'RAID_CI_FEATURE_SUITES', 'RAID_CI_DB_PORT', 'RAID_CI_DB_NAME',
+                                      'RAID_CI_PROJECT', 'RAID_CI_COMPOSE_FILE'}}
+            env = dict(inherited, PATH=str(root / 'bin') + ':' + os.environ['PATH'],
                        COMMAND_LOG=str(root / 'commands'), FAIL_AT=failure,
                        RAID_CI_LOG_DIR=str(root / 'evidence'))
             result = subprocess.run(['bash', str(root / 'scripts/local-ci.sh')],

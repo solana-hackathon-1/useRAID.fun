@@ -17,7 +17,8 @@ case "$tier" in fast | full) ;; *) echo "usage: verify.sh fast|full|install" >&2
 
 # A receipt describes a committed tree; refuse to certify uncommitted tracked changes.
 # The session checkpoint is rewritten at session end and never affects behaviour, so it is excluded.
-clean() { git diff --quiet HEAD -- . ':!docs/ai-handoff/CURRENT.md'; }
+# Browser suites rewrite two tracked screenshots as a side effect; neither affects behaviour.
+clean() { git diff --quiet HEAD -- . ':!docs/ai-handoff/CURRENT.md' ':!artifacts/raid-live-fixture.png' ':!planning/task-evidence/*/browser-development'; }
 if ! clean; then
   echo "Tracked changes are uncommitted; commit them first so the receipt matches the tree you push." >&2
   exit 2
