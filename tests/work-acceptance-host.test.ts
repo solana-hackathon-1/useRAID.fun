@@ -54,14 +54,16 @@ describe('Root acceptance host failures', () => {
       code: 'STORAGE_UNAVAILABLE',
     });
   });
-  it('treats a person without consent as not approved without reading anything else', async () => {
+  it('asks a person without consent to record it first, without reading anything else', async () => {
     const seen: string[] = [];
     const tx = {
       dialect: 'POSTGRESQL',
       isolation: 'READ_COMMITTED',
       query: async (sql: string) => (seen.push(sql), []),
     };
-    expect(await host.assess(tx as never, context as never)).toBeNull();
+    await expect(host.assess(tx as never, context as never)).rejects.toMatchObject({
+      code: 'CONSENT_REQUIRED',
+    });
     expect(seen).toHaveLength(1);
   });
 });

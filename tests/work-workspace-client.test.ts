@@ -81,6 +81,13 @@ describe('T022 work workspace browser client', () => {
     [429, 'RATE_LIMITED', 'RETRY_SAME_REQUEST'],
     [503, 'SERVICE_UNAVAILABLE', 'RETRY_SAME_REQUEST'],
     [409, 'IDEMPOTENCY_KEY_REUSED', 'NONE'],
+    [409, 'APPLICATION_LIMIT_REACHED', 'NONE'],
+    [409, 'APPLICATION_EXISTS', 'NONE'],
+    [409, 'NO_LONGER_OPEN', 'NONE'],
+    [409, 'CONSENT_REQUIRED', 'NONE'],
+    [403, 'ELIGIBILITY_NOT_MET', 'NONE'],
+    [409, 'SETUP_NOT_READY', 'NONE'],
+    [503, 'NOT_AVAILABLE', 'NONE'],
   ] as const)('guides %s %s to %s without exposing internals', async (status, code, kind) => {
     const client = createWorkClient(
       transport(status, {
@@ -104,5 +111,25 @@ describe('T022 work workspace browser client', () => {
       .catch((e: unknown) => e);
     expect(describeWorkFailure(failure).kind).toBe('RETRY_SAME_REQUEST');
     expect(describeWorkFailure(new Error('boom')).kind).toBe('RETRY_SAME_REQUEST');
+  });
+  it('gives each actionable refusal its own message and never tells the person to refresh when refreshing cannot help', () => {
+    const codes = [
+      'APPLICATION_LIMIT_REACHED',
+      'APPLICATION_EXISTS',
+      'NO_LONGER_OPEN',
+      'CONSENT_REQUIRED',
+      'ELIGIBILITY_NOT_MET',
+      'SETUP_NOT_READY',
+      'NOT_AVAILABLE',
+      'FORBIDDEN',
+    ];
+    const messages = codes.map(
+      (code) => describeWorkFailure(new WorkClientError(code, 409, null)).message,
+    );
+    expect(new Set(messages).size).toBe(codes.length);
+    for (const message of messages) expect(message.toLowerCase()).not.toContain('refresh');
+    expect(messages[0]).toContain('limit');
+    expect(messages[1]).toContain('already applied');
+    expect(messages[4]).toContain('requirements');
   });
 });

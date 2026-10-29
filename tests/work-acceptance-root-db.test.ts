@@ -79,7 +79,7 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
   it('accepts only with the person’s consent to the exact terms and a verified skill that meets the requirement', async () => {
     await setup();
     const { slot, digest } = await raid('D');
-    await expect(accept(person, slot)).rejects.toMatchObject({ code: 'ELIGIBILITY_REJECTED' });
+    await expect(accept(person, slot)).rejects.toMatchObject({ code: 'CONSENT_REQUIRED' });
     const saved = await consent(person, slot, digest);
     expect(saved.consent.termsDigest).toBe(digest);
     const accepted = await accept(person, slot);
@@ -120,7 +120,7 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
     });
     await consent(person, slot, digest);
     const other = await seedWorkHuman(db as never);
-    await expect(accept(other.actor, slot)).rejects.toMatchObject({ code: 'ELIGIBILITY_REJECTED' });
+    await expect(accept(other.actor, slot)).rejects.toMatchObject({ code: 'CONSENT_REQUIRED' });
     await expect(
       db.$executeRawUnsafe(
         `INSERT INTO "WorkAcceptanceConsent" ("participantId","slotId","termsVersionId","termsDigest") SELECT "id",$1::uuid,$2::uuid,$3 FROM "Participant" WHERE "accountId"=$4`,

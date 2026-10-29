@@ -348,7 +348,11 @@ function EngagementCard({
           ? 'This Raid currently holds your one active Raid slot.'
           : 'This Raid no longer holds your active Raid slot.'}
       </p>
-      <p>{NEXT_TEXT[card.nextStep]}</p>
+      <p>
+        {canStart
+          ? 'Setup may be finished. Start work when you are ready; the server checks your reservation and setup.'
+          : NEXT_TEXT[card.nextStep]}
+      </p>
       <ul>
         <li>
           Submission due{' '}

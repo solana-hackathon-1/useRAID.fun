@@ -318,6 +318,7 @@ describe('T022 review and applicant desk markup', () => {
     const pending = mine([card({ state: 'ACCESS_PENDING', nextStep: 'WAIT_FOR_START' })]);
     const open = workspace(pending, { startAvailable: true });
     expect(open).toContain('Start work');
+    expect(open).not.toContain('Nothing is due from you');
     expect(open).toMatch(/<button[^>]*disabled[^>]*>Start work/);
     const closed = workspace(pending, { startAvailable: false });
     expect(closed).not.toContain('Start work');
