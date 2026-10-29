@@ -63,6 +63,7 @@
     "src/lib/studio-finance.ts#allocateUsdcRaid": "426c3eaafe60b504269c9a2cf582a50d0932dcd9ff4cdef0650cdd93fd9fa506"
   },
   "trustedAdvisoryFunctions": {
+    "src/lib/work-acceptance-host.ts#lockAssessmentEvidence": "2a7ff9524f93efe6a75367f06e8ced1853055d58f056b5ad6d4d533a69dfe431",
     "src/skills/own-assessment-storage.ts#readOwnSkillAssessment": "dace059185a96d87de29a33bf2ee581e721916ac0d0cb7dbce2137b87f0d4fed",
     "src/skills/practice-portal-storage.ts#listOwnPracticeTrials": "f094001697cc17ea36ecab73ccf681d79a7de48d9e054e561630576b88ce94d7",
     "src/skills/practice-portal-storage.ts#readOwnPracticeTrialProgress": "b82ec9899ca8cdcd724385804ed96ad61518e194e64d64a15cb8de9474c6a373",
