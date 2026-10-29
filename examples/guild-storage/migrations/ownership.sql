@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610270009_guild_ownership_transfer/migration.sql

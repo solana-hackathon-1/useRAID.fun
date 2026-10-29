@@ -198,6 +198,11 @@ integration('R08 public Raid detail', { timeout: 60000 }, () => {
     expect(brief.title).toBe('Docs guide');
     expect(brief.listingId).toBe(slot.listingId);
     expect(brief.openSlotIds).toEqual([slot.slotId]);
+    const stored = await db.$queryRawUnsafe<{ digest: string }[]>(
+      'SELECT "digest" FROM "TermsVersion" WHERE "id"=$1::uuid',
+      brief.termsVersionId,
+    );
+    expect(brief.termsDigest).toBe(stored[0].digest);
     expect(brief.outcome).toBe(raidTerms().outcome);
     expect(brief.deliverables).toEqual(raidTerms().deliverables);
     expect(brief.acceptanceCriteria).toEqual(raidTerms().acceptanceCriteria);

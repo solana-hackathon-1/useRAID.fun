@@ -26,9 +26,19 @@ export interface AcceptanceHost {
       terms: RaidTerms;
     },
   ): Promise<AcceptanceApproval | null>;
+  /**
+   * Lock order: `assess` is given the assessment advisory lock (class 12022) before it runs and acceptance keeps it to
+   * commit, while `authorizeOfferIssuer` and `fundingAvailable` run with it held. Those callbacks must therefore be
+   * read-only checks that take no identity or `User` row locks: a decision path locks the evaluator's `User` row and
+   * then 12022, so a host callback locking a `User` row here could deadlock with a revoke. They also bound how long a
+   * slow decision can hold up acceptances of the same slot and listing; no `lock_timeout` is applied.
+   */
   /** Required whenever a terms version uses APPLICATION admission; acceptance with an offer fails closed without it.
    * Current scoped MANAGE_LISTING authority of the offer's issuing Founder (suspension or loss makes the offer
-   * unusable). The issuer has no session in the applicant's request: judge the account, never a session. */
+   * unusable). The issuer has no session in the applicant's request: judge the account, never a session.
+   * Asked once, last before the engagement insert and never re-asked: the answer must hold until commit, so read
+   * the authority inside `tx` with a lock a revocation must wait for (e.g. `FOR SHARE`), or from state that cannot
+   * change mid-transaction. */
   authorizeOfferIssuer?(
     tx: CommandReceiptTransaction,
     issuer: { accountId: string },
@@ -55,6 +65,8 @@ export const CommittedEngagementSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
   fundingMode: z.literal('SIMULATED'),
   generation: z.number().int().min(1),
+  /** The Founder's offer this engagement was accepted through, or null for a direct acceptance. */
+  offerId: z.uuid().nullable(),
   engagement: EngagementSchema,
 });
 export type CommittedEngagement = z.infer<typeof CommittedEngagementSchema>;

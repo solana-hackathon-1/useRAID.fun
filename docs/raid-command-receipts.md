@@ -73,7 +73,7 @@ The module authorizes nothing. The host decides who may call a command and which
 
 No secret is read by the module. The reference host and tests use:
 
-- `DATABASE_URL` — PostgreSQL URL for the host's own test database. The example host accepts only a localhost URL for `useraid_command_host_test` or `useraid_test` and refuses `NODE_ENV=production`.
+- `DATABASE_URL` — PostgreSQL URL for the host's own test database. The example host accepts only a localhost URL for `useraid_command_host_test`, `useraid_test` or `useraid_test_<suffix>` and refuses `NODE_ENV=production`.
 - `NODE_ENV` — must not be `production` for the example.
 - Repository tests additionally use `RUN_DB_TESTS=true` and `DEMO_MODE=false`.
 

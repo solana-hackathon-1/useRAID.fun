@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { formatDisplayAmount } from '../contracts/assets';
+import { AcceptRaid } from './work-accept';
 import { ApplyToRaid } from './work-apply';
+import type { ApplyMode } from '../lib/work-apply-mode';
+import { signInHref } from '../lib/return-to';
 import type { Detail, FeedCard, FeedPage, FeedQuery } from '../work-loop/feed-contracts';
 
 const FEED_PATH = '/raids';
@@ -225,15 +228,25 @@ function Policy({ title, text }: { title: string; text: string }) {
   );
 }
 /** The full public brief of one live Raid: what a person commits to, in the accepted-terms order. */
-export type ApplyMode = 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE';
 export function WorkDetail({
   detail,
   apply = 'NOT_APPLICABLE',
+  offer,
+  applied = false,
+  applySlotId,
 }: {
   detail: Detail;
   apply?: ApplyMode;
+  /** The viewer already has a submitted application for these terms. */
+  applied?: boolean;
+  /** The open slot this viewer applies to; defaults to the first. */
+  applySlotId?: string;
+  /** The viewer's own usable offer for these terms: accepting through it replaces applying. */
+  offer?: { offerId: string; slotId: string } | null;
 }) {
   const rounds = detail.review.maxRevisionRounds;
+  // Signing in from this brief comes back to it.
+  const signIn = signInHref(`/raids/work/${detail.listingId}`);
   return (
     <article className="raid-feed raid-detail" aria-labelledby="raid-detail-title">
       <p>
@@ -311,21 +324,51 @@ export function WorkDetail({
       </section>
       <section className="raid-feed-empty" aria-label="Taking this Raid">
         <h2>Taking this Raid</h2>
-        {apply === 'FORM' ? (
-          <ApplyToRaid slotId={detail.openSlotIds[0]} termsVersionId={detail.termsVersionId} />
+        {offer ? (
+          <AcceptRaid
+            slotId={offer.slotId}
+            termsVersionId={detail.termsVersionId}
+            termsDigest={detail.termsDigest}
+            offerId={offer.offerId}
+            signInHref={signIn}
+          />
+        ) : apply === 'ACCEPT' ? (
+          <AcceptRaid
+            slotId={detail.openSlotIds[0]}
+            termsVersionId={detail.termsVersionId}
+            termsDigest={detail.termsDigest}
+            signInHref={signIn}
+          />
+        ) : apply === 'FORM' ? (
+          <ApplyToRaid
+            slotId={applySlotId ?? detail.openSlotIds[0]}
+            termsVersionId={detail.termsVersionId}
+            applied={applied}
+            signInHref={signIn}
+          />
         ) : apply === 'SIGN_IN' ? (
           <>
-            <p>Sign in to apply. Eligibility is checked by the server when you act.</p>
-            <Link className="button" href="/creator/account">
-              Sign in to apply
+            <p>
+              Sign in to {detail.admission === 'APPLICATION' ? 'apply' : 'take this Raid'}.
+              Eligibility is checked by the server when you act.
+            </p>
+            <Link className="button" href={signIn}>
+              {detail.admission === 'APPLICATION'
+                ? 'Sign in to apply'
+                : 'Sign in to take this Raid'}
             </Link>
           </>
         ) : apply === 'CLOSED' ? (
-          <p>Applications are not open yet. Eligibility is checked by the server when you act.</p>
+          <p>
+            {detail.admission === 'APPLICATION'
+              ? 'Applications are not open yet.'
+              : 'Accepting is not open yet.'}{' '}
+            Eligibility is checked by the server when you act.
+          </p>
         ) : (
           <p>
-            Applying and accepting are not available in the browser yet. Eligibility is checked by
-            the server when you act, never from this page.
+            Applying and accepting are not available in the browser for this Raid. Eligibility is
+            checked by the server when you act, never from this page.
           </p>
         )}
         <Link className="button secondary" href={FEED_PATH}>

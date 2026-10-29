@@ -148,6 +148,36 @@ integration('T032 starting accepted work', { timeout: 60000 }, () => {
       code: 'UNAUTHENTICATED',
     });
   });
+  it('cannot reach a pending engagement whose member lost the active commitment, so start need not re-prove it', async () => {
+    const { worker, engagementId } = await setup();
+    await expect(
+      db.$executeRawUnsafe(
+        'DELETE FROM "ActiveCommitment" WHERE "engagementId"=$1::uuid',
+        engagementId,
+      ),
+    ).rejects.toThrow(/must commit atomically/);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "ActiveCommitment"')).toHaveLength(1);
+    await expect(start(worker.actor, engagementId)).resolves.toMatchObject({ status: 'EXECUTED' });
+  });
+  it('gives each host the terms version the reservation was made against', async () => {
+    const { worker, engagementId } = await setup();
+    const seen: { rewards?: unknown; visibility?: string }[] = [];
+    const spy: StartHost = {
+      ...ready,
+      verifyBinding: async (_tx, b) => (seen.push(b.terms), true),
+      resourcesReady: async (_tx, c) => (seen.push(c.terms), true),
+    };
+    await start(worker.actor, engagementId, spy);
+    const [definition] = (await db.$queryRawUnsafe(
+      'SELECT t."snapshot" AS terms FROM "Engagement" e JOIN "TermsVersion" t ON t."id"=e."termsVersionId" WHERE e."id"=$1::uuid',
+      engagementId,
+    )) as { terms: { rewards: unknown; visibility: string } }[];
+    expect(seen).toHaveLength(2);
+    for (const terms of seen) {
+      expect(terms.rewards).toEqual(definition.terms.rewards);
+      expect(terms.visibility).toBe(definition.terms.visibility);
+    }
+  });
   it('refuses to start once there is no time left to submit', async () => {
     const { worker, engagementId } = await setup({
       deadlines: {

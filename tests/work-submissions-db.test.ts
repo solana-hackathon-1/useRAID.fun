@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
@@ -114,6 +115,55 @@ integration('T023 versioned submissions and criterion review', () => {
     await truncateAll(db);
   });
   afterAll(() => db.$disconnect());
+  it('refuses text jsonb cannot store as invalid input, not as a raw database error', async () => {
+    const { worker, engagementId } = await setup();
+    for (const bad of ['a\u0000b', 'a\ud800b'])
+      await expect(
+        submit(worker.actor, { ...work(engagementId), explanation: bad }),
+      ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    expect(await state(engagementId)).toBe('IN_PROGRESS');
+  });
+  it('audits stored rows against the shape rules, naming only ids', async () => {
+    const { worker, reviewer, engagementId } = await setup();
+    const sub = await submit(worker.actor, work(engagementId));
+    await decide(reviewer.actor, review(sub.submission.id, 'ACCEPT'));
+    const audit = readFileSync('scripts/audit-work-json-shape.sql', 'utf8');
+    expect(await db.$queryRawUnsafe(audit)).toEqual([]);
+    const sentinel = new Error('rollback');
+    // A row written before the stricter rules existed: constraints and the immutability trigger are bypassed
+    // inside this transaction only, then rolled back.
+    const found = await db
+      .$transaction(
+        async (tx) => {
+          await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+          for (const c of [
+            ['WorkSubmission', 'WorkSubmission_artifacts_shape_check'],
+            ['WorkSubmission', 'WorkSubmission_dependencies_shape_check'],
+            ['WorkReview', 'WorkReview_criteria_shape_check'],
+          ])
+            await tx.$executeRawUnsafe(`ALTER TABLE "${c[0]}" DROP CONSTRAINT "${c[1]}"`);
+          await tx.$executeRawUnsafe(
+            `UPDATE "WorkSubmission" SET "artifacts"='[{"kind":"COMMIT","ref":"\\t","immutableVersion":"v"}]'::jsonb,"dependencies"='["\\t"]'::jsonb`,
+          );
+          await tx.$executeRawUnsafe(
+            `UPDATE "WorkReview" SET "criteria"='[{"index":0,"result":"MET","evidence":"\\t"}]'::jsonb`,
+          );
+          const rows = await tx.$queryRawUnsafe(audit);
+          throw Object.assign(sentinel, { rows });
+        },
+        { timeout: 15000, maxWait: 15000 },
+      )
+      .catch((e) => {
+        if (e !== sentinel) throw e;
+        return (e as unknown as { rows: Record<string, string>[] }).rows;
+      });
+    expect(found.map((r) => [r.table, r.column])).toEqual([
+      ['WorkReview', 'criteria'],
+      ['WorkSubmission', 'artifacts'],
+      ['WorkSubmission', 'dependencies'],
+    ]);
+    expect(await db.$queryRawUnsafe(audit)).toEqual([]);
+  });
   it('records an immutable submission, holds capacity, and replays the original receipt', async () => {
     const { worker, engagementId } = await setup();
     const key = randomUUID();
@@ -498,6 +548,117 @@ integration('T023 versioned submissions and criterion review', () => {
       ['not an object'],
     ])
       expect(await insertReview(criteria), JSON.stringify(criteria)).toBe('rejected');
+  });
+  it('mirrors the command schema trim and UTF-16 length rules in the JSON shape checks', async () => {
+    const { worker, reviewer, slot, engagementId } = await setup();
+    const rolledBack = Error('rolled back after the statement was accepted');
+    // Reports which constraint refused a statement, so another guard cannot mask a missing CHECK.
+    const attempt = async (sql: string, ...args: string[]) => {
+      try {
+        await db.$transaction(async (tx) => {
+          await tx.$executeRawUnsafe(sql, ...args);
+          throw rolledBack;
+        });
+      } catch (error) {
+        if (error === rolledBack) return 'accepted';
+        return /check constraint "([^"]+)"/.exec(String((error as Error).message))?.[1] ?? 'other';
+      }
+      return 'accepted';
+    };
+    const artifactsCheck = 'WorkSubmission_artifacts_shape_check';
+    const insertSubmission = (artifacts: unknown, dependencies: unknown = []) =>
+      attempt(
+        `INSERT INTO "WorkSubmission" ("engagementId","termsVersionId","submissionNumber","submitterParticipantId","explanation","artifacts","dependencies","digest") VALUES ($1::uuid,$2::uuid,1,$3::uuid,'Guide written.',$4::jsonb,$5::jsonb,repeat('a',64))`,
+        engagementId,
+        slot.termsVersionId,
+        worker.participantId,
+        JSON.stringify(artifacts),
+        JSON.stringify(dependencies),
+      );
+    const good = {
+      kind: 'COMMIT',
+      ref: 'synthetic://repo/setup.md',
+      immutableVersion: 'a'.repeat(40),
+    };
+    const many = (count: number) =>
+      Array.from({ length: count }, (_, i) => ({ ...good, ref: good.ref + '#' + i }));
+    // Whitespace that JavaScript trim() removes but ASCII btrim() keeps.
+    for (const blank of ['\t', ' ', ' ', '　', '﻿', ' \n  '])
+      expect(await insertSubmission([{ ...good, ref: blank }]), JSON.stringify(blank)).toBe(
+        artifactsCheck,
+      );
+    expect(await insertSubmission([{ ...good, immutableVersion: ' ' }])).toBe(artifactsCheck);
+    expect(await insertSubmission([{ ...good, ref: 'x'.repeat(500) }])).toBe('accepted');
+    expect(await insertSubmission([{ ...good, ref: 'x'.repeat(501) }])).toBe(artifactsCheck);
+    // zod counts UTF-16 units: 250 emoji are 500 units, 251 are 502 although only 251 code points.
+    expect(await insertSubmission([{ ...good, ref: '\u{1F600}'.repeat(250) }])).toBe('accepted');
+    expect(await insertSubmission([{ ...good, ref: '\u{1F600}'.repeat(251) }])).toBe(
+      artifactsCheck,
+    );
+    // A JSON null is not a string: zod's enum refuses it, so the database must too.
+    expect(await insertSubmission([{ ...good, kind: null }])).toBe(artifactsCheck);
+    // Padding is trimmed before the limit and the duplicate check, exactly as the command schema does.
+    expect(await insertSubmission([{ ...good, ref: '\u00a0' + 'x'.repeat(500) + '\t' }])).toBe(
+      'accepted',
+    );
+    expect(await insertSubmission([good, { ...good, ref: '\u3000' + good.ref + '\u00a0' }])).toBe(
+      artifactsCheck,
+    );
+    expect(await insertSubmission(many(20))).toBe('accepted');
+    // Counts are bounded by the older column checks, which fire first.
+    expect(await insertSubmission(many(21))).toBe('WorkSubmission_artifacts_check');
+    expect(await insertSubmission([])).toBe('WorkSubmission_artifacts_check');
+    const dependenciesCheck = 'WorkSubmission_dependencies_shape_check';
+    expect(await insertSubmission([good], ['npm:left-pad@1.0.0'])).toBe('accepted');
+    expect(await insertSubmission([good], ['\t'])).toBe(dependenciesCheck);
+    expect(
+      await insertSubmission(
+        [good],
+        Array.from({ length: 50 }, (_, i) => 'd' + i),
+      ),
+    ).toBe('accepted');
+    expect(
+      await insertSubmission(
+        [good],
+        Array.from({ length: 51 }, (_, i) => 'd' + i),
+      ),
+    ).toBe('WorkSubmission_dependencies_check');
+    expect(await insertSubmission([good], ['\u{1F600}'.repeat(4000)])).toBe('accepted');
+    expect(await insertSubmission([good], ['\u{1F600}'.repeat(4001)])).toBe(dependenciesCheck);
+    await submit(worker.actor, {
+      engagementId,
+      expectedSubmissionNumber: 1,
+      explanation: 'Guide written.',
+      artifacts: [good],
+      dependencies: [],
+      aiUsage: null,
+    });
+    const submissionId = (
+      (await db.$queryRawUnsafe('SELECT "id"::text FROM "WorkSubmission"')) as { id: string }[]
+    )[0].id;
+    const insertReview = (criteria: unknown) =>
+      attempt(
+        `INSERT INTO "WorkReview" ("submissionId","engagementId","termsVersionId","reviewerAccountId","decision","reason","criteria","digest") VALUES ($1::uuid,$2::uuid,$3::uuid,$4,'DISPUTE','Not what was agreed.',$5::jsonb,repeat('a',64))`,
+        submissionId,
+        engagementId,
+        slot.termsVersionId,
+        reviewer.actor.accountId,
+        JSON.stringify(criteria),
+      );
+    const criteriaCheck = 'WorkReview_criteria_shape_check';
+    const at = (index: number) => ({ index, result: 'MET', evidence: null });
+    const criteria = (count: number) => Array.from({ length: count }, (_, i) => at(i));
+    expect(await insertReview([at(49)])).toBe('accepted');
+    expect(await insertReview(criteria(50))).toBe('accepted');
+    expect(await insertReview(criteria(51))).toBe('WorkReview_criteria_check');
+    expect(await insertReview([])).toBe('WorkReview_criteria_check');
+    expect(await insertReview([{ ...at(0), evidence: ' \t' }])).toBe(criteriaCheck);
+    expect(await insertReview([{ ...at(0), evidence: '\u{1F600}'.repeat(1000) }])).toBe('accepted');
+    expect(await insertReview([{ ...at(0), evidence: '\u{1F600}'.repeat(1001) }])).toBe(
+      criteriaCheck,
+    );
+    expect(await insertReview([{ ...at(0), result: null }])).toBe(criteriaCheck);
+    expect(await insertReview([at(0), { ...at(0), result: 'UNMET' }])).toBe(criteriaCheck);
   });
   it('ties every lifecycle state change to its evidence row even for direct writers', async () => {
     const { worker, reviewer, engagementId } = await setup();

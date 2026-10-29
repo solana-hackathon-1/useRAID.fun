@@ -13,7 +13,18 @@
     "EngagementAmendment:decidedBy User? @relation(\"EngagementAmendmentDecider\", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "EngagementAmendment:proposedBy User @relation(\"EngagementAmendmentProposer\", fields: [proposedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "EngagementClosure:closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "Guild:activatedBy User @relation(\"GuildActivator\", fields: [activatedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_activatedBy_fkey\")",
+    "Guild:founder User @relation(\"GuildFounder\", fields: [founderAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_founder_fkey\")",
     "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
+    "GuildOwnershipTransfer:decidedBy User? @relation(\"GuildTransferDecider\", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildOwnershipTransfer_decidedBy_fkey\")",
+    "GuildOwnershipTransfer:from User @relation(\"GuildTransferFrom\", fields: [fromAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildOwnershipTransfer_from_fkey\")",
+    "GuildOwnershipTransfer:to User @relation(\"GuildTransferTo\", fields: [toAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildOwnershipTransfer_to_fkey\")",
+    "GuildProfileVersion:actor User @relation(fields: [actorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildProfileVersion_actor_fkey\")",
+    "GuildRoleGrant:grantedBy User @relation(\"GuildGrantIssuer\", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantedBy_fkey\")",
+    "GuildRoleGrant:grantee User @relation(\"GuildGrantGrantee\", fields: [granteeAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantee_fkey\")",
+    "GuildUpdate:author User @relation(\"GuildUpdateAuthor\", fields: [authorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildUpdate_author_fkey\")",
+    "GuildUpdate:publisher User? @relation(\"GuildUpdatePublisher\", fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildUpdate_publisher_fkey\")",
+    "GuildUpdate:withdrawer User? @relation(\"GuildUpdateWithdrawer\", fields: [withdrawnByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildUpdate_withdrawer_fkey\")",
     "MediaAsset:uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)",
     "Notification:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "NotificationPreference:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
@@ -63,6 +74,7 @@
     "src/lib/studio-finance.ts#allocateUsdcRaid": "426c3eaafe60b504269c9a2cf582a50d0932dcd9ff4cdef0650cdd93fd9fa506"
   },
   "trustedAdvisoryFunctions": {
+    "src/lib/work-acceptance-host.ts#lockAssessmentEvidence": "2a7ff9524f93efe6a75367f06e8ced1853055d58f056b5ad6d4d533a69dfe431",
     "src/skills/own-assessment-storage.ts#readOwnSkillAssessment": "dace059185a96d87de29a33bf2ee581e721916ac0d0cb7dbce2137b87f0d4fed",
     "src/skills/practice-portal-storage.ts#listOwnPracticeTrials": "f094001697cc17ea36ecab73ccf681d79a7de48d9e054e561630576b88ce94d7",
     "src/skills/practice-portal-storage.ts#readOwnPracticeTrialProgress": "b82ec9899ca8cdcd724385804ed96ad61518e194e64d64a15cb8de9474c6a373",
@@ -77,7 +89,8 @@
     "src/skills/practice-trial-storage.ts#publishPracticeTrialDefinition": "3e2b014ab3dec14c007425db479a41a5ea6e624000e68a9a157efed1e648052f",
     "src/skills/practice-trial-submission-storage.ts#submitPracticeTrial": "0808033d486a1b9f644ed7d1cafa9b459ecad3b286555849b993d33ca4027c42",
     "src/skills/taxonomy-storage.ts#publishSkillTaxonomy": "3fe845e4d7e8b3dd9c3b983b6b16b7d3ab5633ba02c2dbb840c1dc1ff477c703",
-    "src/skills/practice-review-assignment-storage.ts#readPracticeAssignmentManagement": "796656176b6ef403e1ccf34aa6fc10822ea675b061876750024b44241cd21077"
+    "src/skills/practice-review-assignment-storage.ts#readPracticeAssignmentManagement": "796656176b6ef403e1ccf34aa6fc10822ea675b061876750024b44241cd21077",
+    "src/work-loop/amendment-storage.ts#lockFundingReference": "0ee06e3c69dba0e3d63e98c0942b375347378ec06a6e620833617fe8cdbf128c"
   },
   "domainForeignKeyClassifications": {
     "WorkListing.creatorAccountId": {
@@ -142,6 +155,83 @@
       "authority": "Current actual Session/canonical actor for their own account only, rechecked in the transaction. Root not enabled.",
       "fold": "Restrict preserves the preference and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent task-end authority/migration review pending."
+    },
+    "Guild.founderAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#activateGuild",
+      "effects": "Immutable Founder attribution (the draft owner at activation) only; no User/Session/Participant mutation or identity transfer. Founder authority is this record, never a token balance.",
+      "authority": "Current actual Session of the approving account whose authority the host answers (authorizeActivation), rechecked after the draft lock; the Founder account must be unrestricted. Root not enabled.",
+      "fold": "Restrict preserves Guild history and fails closed on account deletion; the Founder cannot be rewritten (database guard); no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "Guild.activatedByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#activateGuild",
+      "effects": "Immutable approver attribution only; no identity mutation.",
+      "authority": "Same approving-account authority as the activation command, held through commit.",
+      "fold": "Restrict preserves the activation record; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildProfileVersion.actorAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#editGuildProfile",
+      "effects": "Immutable editor attribution of an append-only profile version; no identity mutation.",
+      "authority": "Current actual Session of the Founder or a live field-scoped PROFILE grantee, rechecked on the database clock after the Guild row lock.",
+      "fold": "Restrict preserves profile history; versions cannot be updated or deleted (database guard); no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildRoleGrant.granteeAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#grantGuildRole",
+      "effects": "Grant recipient attribution; the grant row is immutable except one-time revocation; no identity mutation.",
+      "authority": "Current actual Session of the Founder, or of a grantee holding a live delegating profile grant for the same fields, rechecked after the Guild row lock; the grantee row is read unlocked and the foreign key proves existence.",
+      "fold": "Restrict preserves grant history; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildRoleGrant.grantedByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#grantGuildRole",
+      "effects": "Issuer attribution of a grant; no identity mutation.",
+      "authority": "Same issuing authority as grantGuildRole (Founder or live delegating profile grantee); revocation by Founder, issuer or grantee via revokeGuildRole.",
+      "fold": "Restrict preserves grant history; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildOwnershipTransfer.fromAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#proposeOwnershipTransfer",
+      "effects": "Immutable proposer attribution; the Founder changes only on the recipient's accepted transfer (database guard). No User/Session/Participant mutation.",
+      "authority": "Current actual Session of the Guild's current Founder, rechecked after the Guild row lock.",
+      "fold": "Restrict preserves ownership history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildOwnershipTransfer.toAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#respondOwnershipTransfer",
+      "effects": "Immutable recipient attribution; the recipient becomes Founder only on their own accepted, host-approved transfer.",
+      "authority": "Current actual Session of the recipient, rechecked after the Guild row lock; host authorizeOwnershipTransfer must agree.",
+      "fold": "Restrict preserves ownership history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildOwnershipTransfer.decidedByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#respondOwnershipTransfer",
+      "effects": "Immutable decider attribution (recipient, withdrawing Founder, or the actor that lapsed an expired proposal).",
+      "authority": "Current actual Session of the decider; a decision is final.",
+      "fold": "Restrict preserves ownership history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildUpdate.authorAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#draftGuildUpdate",
+      "effects": "Immutable author attribution of public update text; no User/Session/Participant mutation.",
+      "authority": "Current actual Session of the Founder or a live PROFILE grantee, rechecked after the Guild row lock.",
+      "fold": "Restrict preserves update history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildUpdate.publishedByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#publishGuildUpdate",
+      "effects": "Immutable publisher attribution; a publication is made only by the Guild's current Founder (database guard).",
+      "authority": "Current actual Session of the current Founder, rechecked after the Guild row lock.",
+      "fold": "Restrict preserves update history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildUpdate.withdrawnByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#withdrawGuildUpdate",
+      "effects": "Immutable withdrawer attribution; withdrawal removes the update from the public view only.",
+      "authority": "Current actual Session of the current Founder, or of an author withdrawing their own unpublished draft.",
+      "fold": "Restrict preserves update history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
     }
   }
 }

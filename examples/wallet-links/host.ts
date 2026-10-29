@@ -28,7 +28,10 @@ function hostPort(tx: Prisma.TransactionClient): IdentityTransaction {
 // This host has its own dependencies, schema, clock, policy and caller authority. Never load RAID config/db.
 const url = new URL(process.env.DATABASE_URL ?? 'http://missing');
 assert(['localhost', '127.0.0.1', '[::1]'].includes(url.hostname));
-assert(['/useraid_wallet_links_host_test', '/useraid_test'].includes(url.pathname));
+assert(
+  url.pathname === '/useraid_wallet_links_host_test' ||
+    /^\/useraid_test(_[a-z0-9]+)*$/.test(url.pathname),
+);
 assert(process.env.NODE_ENV !== 'production');
 const db = new PrismaClient({ datasources: { db: { url: url.toString() } }, log: [] });
 const options = { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted };

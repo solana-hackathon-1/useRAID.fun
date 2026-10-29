@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
-import { Plus, ArrowUpRight, Shield, Menu, X } from 'lucide-react';
+import { Plus, ArrowUpRight, Shield, Menu, X, Swords } from 'lucide-react';
 import { BrandMark } from './brand';
 import { StudioAccountMenu, type StudioAccount } from './studio-account-menu';
 
@@ -20,6 +20,7 @@ export function Shell({
   account,
   sandbox = false,
   extraLinks = [],
+  activeRaid = null,
 }: {
   children: React.ReactNode;
   demo: boolean;
@@ -27,6 +28,8 @@ export function Shell({
   sandbox?: boolean;
   /** Public navigation entries supplied by the host, shown after Discover. */
   extraLinks?: { href: string; label: string }[];
+  /** The Raid holding the signed-in account's capacity, read server-side per request; shown only with an account. */
+  activeRaid?: { engagementId: string; title: string } | null;
 }) {
   const path = usePathname();
   const links = [navLinks[0], ...extraLinks, ...navLinks.slice(1)];
@@ -96,6 +99,21 @@ export function Shell({
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
+        {account && activeRaid && (
+          <div className="active-raid-bar">
+            <Link
+              className="active-raid"
+              href="/raider/work"
+              aria-label={`My Raid: ${activeRaid.title}`}
+              aria-current={isCurrent(path, '/raider/work') ? 'page' : undefined}
+            >
+              <Swords size={14} aria-hidden="true" />
+              <span className="active-raid-label">My Raid</span>
+              <span className="active-raid-title">{activeRaid.title}</span>
+              <ArrowUpRight size={14} aria-hidden="true" />
+            </Link>
+          </div>
+        )}
         <nav
           id="mobile-navigation"
           className="mobile-nav"

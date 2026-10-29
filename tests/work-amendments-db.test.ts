@@ -115,6 +115,31 @@ const change = (engagementId: string, changes: unknown, expiresAt = at(3600000))
   expiresAt,
 });
 const raise = { rewards: [{ amount: '1500000000' }] };
+type Tx = Parameters<typeof respondToAmendment>[0];
+/** The command's own clock read moved forward, so expiry and deadline lapse need no real waiting. */
+const later = (tx: Tx, ms: number): Tx => ({
+  dialect: tx.dialect,
+  isolation: tx.isolation,
+  async query<Row>(sql: string, bindings: Parameters<Tx['query']>[1]) {
+    const rows = await tx.query<Row>(sql, bindings);
+    return sql === 'SELECT clock_timestamp() AS now'
+      ? ([{ now: new Date((rows[0] as { now: Date }).now.getTime() + ms) }] as Row[])
+      : rows;
+  },
+});
+const respondLater = (ms: number, actor: Actor, input: unknown) =>
+  run((tx) => respondToAmendment(later(tx, ms), cmd(actor, input), host));
+/** Waits until another backend is blocked on an advisory (funding-reference) lock. */
+async function advisoryWaiter() {
+  for (let i = 0; i < 100; i++) {
+    const rows = await row(
+      `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND wait_event='advisory' AND pid<>pg_backend_pid()`,
+    );
+    if (rows.length) return true;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  return false;
+}
 integration('T025 consented amendments and replacement contracts', { timeout: 60000 }, () => {
   beforeEach(async () => {
     assertTestDatabase();
@@ -331,11 +356,10 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
     const brief = await propose(
       founder.actor,
-      change(engagementId, { scope: 'Brief scope.' }, at(1200)),
+      change(engagementId, { scope: 'Brief scope.' }, at(60000)),
     );
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     await expect(
-      respond(worker.actor, { amendmentId: brief.amendment.id, decision: 'ACCEPT' }),
+      respondLater(120000, worker.actor, { amendmentId: brief.amendment.id, decision: 'ACCEPT' }),
     ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
     const effective = await run((tx) => readEffectiveTerms(tx, worker.actor, engagementId));
     expect(effective.scope).toBe(
@@ -506,6 +530,8 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     await expect(
       respond(worker.actor, { amendmentId: proposed.amendment.id, decision: 'ACCEPT' }),
     ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
+    // #269: the proposer is judged before any consent or funding callback runs.
+    expect([calls.consent, calls.available]).toEqual([0, 0]);
     expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
     const declined = await respond(worker.actor, {
       amendmentId: proposed.amendment.id,
@@ -520,32 +546,34 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     const proposed = await propose(
       founder.actor,
       change(engagementId, { acceptanceCriteria: ['Only the agreed criterion.'] }),
-      legacy as AmendmentHost,
+      legacy,
     );
     await expect(
-      respond(
-        worker.actor,
-        { amendmentId: proposed.amendment.id, decision: 'ACCEPT' },
-        legacy as AmendmentHost,
-      ),
+      respond(worker.actor, { amendmentId: proposed.amendment.id, decision: 'ACCEPT' }, legacy),
     ).rejects.toMatchObject({ code: 'STORAGE_CONTRACT' });
-    expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
+    // #269: a misconfigured host is refused before any host callback, and nothing of the attempt remains.
+    expect([calls.consent, calls.available]).toEqual([0, 0]);
+    expect(
+      await row<{ state: string }>(
+        'SELECT "state" FROM "EngagementAmendment" WHERE "id"=$1::uuid',
+        proposed.amendment.id,
+      ),
+    ).toEqual([{ state: 'PROPOSED' }]);
+    expect(
+      await row('SELECT 1 FROM "CommandReceipt" WHERE "commandKind"=\'RespondToAmendment\''),
+    ).toEqual([]);
     const declined = await respond(
       worker.actor,
       { amendmentId: proposed.amendment.id, decision: 'DECLINE' },
-      legacy as AmendmentHost,
+      legacy,
     );
     expect(declined.amendment.state).toBe('DECLINED');
     const again = await propose(
       founder.actor,
       change(engagementId, { acceptanceCriteria: ['Another agreed criterion.'] }),
-      legacy as AmendmentHost,
+      legacy,
     );
-    const withdrawn = await withdraw(
-      founder.actor,
-      { amendmentId: again.amendment.id },
-      legacy as AmendmentHost,
-    );
+    const withdrawn = await withdraw(founder.actor, { amendmentId: again.amendment.id }, legacy);
     expect(withdrawn.amendment.state).toBe('WITHDRAWN');
   });
   it('reports a proposal whose amended deadlines lapsed before consent as AMENDMENT_UNAVAILABLE', async () => {
@@ -555,15 +583,18 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
       founder.actor,
       change(engagementId, {
         deadlines: {
-          preparation: at(800),
-          submission: at(1200),
-          review: at(1600),
+          preparation: at(60000),
+          submission: at(90000),
+          review: at(120000),
         },
       }),
     );
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // The proposal itself is still open (it expires in an hour); only its amended submission deadline has passed.
     await expect(
-      respond(worker.actor, { amendmentId: proposed.amendment.id, decision: 'ACCEPT' }),
+      respondLater(100000, worker.actor, {
+        amendmentId: proposed.amendment.id,
+        decision: 'ACCEPT',
+      }),
     ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
     expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
   });
@@ -594,6 +625,51 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     ).rejects.toMatchObject({ code: 'FUNDING_REQUIRED' });
     expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'PROPOSED\'')).toEqual([]);
   });
+  it('#269-2: answers FUNDING_REQUIRED when a concurrent slot wins the same funding reference', async () => {
+    const { founder, slot, engagementId } = await setup();
+    await start(engagementId);
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let inserted!: () => void;
+    const slotWritten = new Promise<void>((resolve) => (inserted = resolve));
+    const slotWriter = db.$transaction(
+      async (tx) => {
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber","fundingRef") VALUES ($1::uuid,$2::uuid,98,'slot-race-ref')`,
+          slot.listingId,
+          slot.termsVersionId,
+        );
+        // A complete, validly bound slot reservation, so the slot writer commits and wins the reference.
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "WorkSimulatedReservation" ("slotId","termsVersionId","vectorDigest","legs","fundingRef")
+           SELECT s."id",s."termsVersionId",raid_work_reward_digest(t."snapshot"->'rewards'),t."snapshot"->'rewards',s."fundingRef"
+           FROM "RaidSlot" s JOIN "TermsVersion" t ON t."id"=s."termsVersionId" WHERE s."fundingRef"='slot-race-ref'`,
+        );
+        inserted();
+        await held;
+      },
+      { timeout: 20000 },
+    );
+    try {
+      await slotWritten;
+      const outcome = propose(founder.actor, change(engagementId, raise), {
+        ...host,
+        reserveAdditionalFunding: async () => 'slot-race-ref',
+      }).then(
+        () => 'EXECUTED',
+        (e: { code?: string }) => e.code ?? 'ERROR',
+      );
+      // The proposal must wait for the uncommitted slot's reference, then see it committed.
+      expect(await advisoryWaiter()).toBe(true);
+      release();
+      await slotWriter;
+      expect(await outcome).toBe('FUNDING_REQUIRED');
+      expect(await row('SELECT 1 FROM "EngagementAmendment"')).toEqual([]);
+    } finally {
+      release();
+      await slotWriter.catch(() => undefined);
+    }
+  });
   it('serializes a slot and an amendment handed the same funding reference across concurrent writers', async () => {
     const { founder, slot, engagementId } = await setup();
     await start(engagementId);
@@ -613,28 +689,40 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
       },
       { timeout: 20000 },
     );
-    await amendmentWritten;
-    const raced = db.$transaction(
-      (tx) =>
-        tx.$executeRawUnsafe(
-          `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber","fundingRef") VALUES ($1::uuid,$2::uuid,99,'race-ref')`,
-          slot.listingId,
-          slot.termsVersionId,
-        ),
-      { timeout: 20000 },
-    );
-    const outcome = await Promise.race([
-      raced.then(
+    try {
+      await amendmentWritten;
+      const raced = db.$transaction(
+        (tx) =>
+          tx.$executeRawUnsafe(
+            `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber","fundingRef") VALUES ($1::uuid,$2::uuid,99,'race-ref')`,
+            slot.listingId,
+            slot.termsVersionId,
+          ),
+        { timeout: 20000 },
+      );
+      const settled = raced.then(
         () => 'settled',
         () => 'settled',
-      ),
-      new Promise<string>((resolve) => setTimeout(() => resolve('waiting'), 700)),
-    ]);
-    expect(outcome).toBe('waiting');
-    release();
-    await amendment;
-    await expect(raced).rejects.toThrow(/funding reference/i);
-    expect(await row('SELECT 1 FROM "RaidSlot" WHERE "fundingRef"=\'race-ref\'')).toEqual([]);
+      );
+      // Observe the blocked backend instead of sleeping: the slot insert waits on the funding-reference advisory lock.
+      let waiting = false;
+      for (let i = 0; i < 100 && !waiting; i++) {
+        const rows = (await db.$queryRawUnsafe(
+          `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND wait_event='advisory' AND query LIKE '%"RaidSlot"%' AND pid<>pg_backend_pid()`,
+        )) as unknown[];
+        waiting = rows.length > 0;
+        if (!waiting) await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+      expect(waiting).toBe(true);
+      expect(await Promise.race([settled, Promise.resolve('waiting')])).toBe('waiting');
+      release();
+      await amendment;
+      await expect(raced).rejects.toThrow(/funding reference/i);
+      expect(await row('SELECT 1 FROM "RaidSlot" WHERE "fundingRef"=\'race-ref\'')).toEqual([]);
+    } finally {
+      release();
+      await amendment.catch(() => undefined);
+    }
   });
   const overdue = () => ({
     commitment: at(6000),

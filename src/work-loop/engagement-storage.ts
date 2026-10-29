@@ -7,7 +7,7 @@ import {
   type CommandReceiptTransaction as Tx,
 } from '../command-receipts';
 import { WorkError, type WorkCommand } from './contracts';
-import { RaidTermsSchema, publicationProblems } from './terms';
+import { RaidTermsSchema } from './terms';
 import {
   CommitEngagementInput,
   CommittedEngagementSchema,
@@ -15,7 +15,12 @@ import {
   type AcceptanceApproval,
   type CommittedEngagement,
 } from './engagement-contracts';
-import { lockOffer, assertOffer, assertOfferIssuerAuthorized } from './admission-acceptance';
+import {
+  lockOfferForAcceptance,
+  assertOffer,
+  assertOfferIssuerAuthorized,
+  requireOfferIssuerCheck,
+} from './admission-acceptance';
 import {
   fail,
   validate,
@@ -24,9 +29,9 @@ import {
   source,
   definition,
   clock,
+  assertOpenForTaking,
   type Source,
 } from './engagement-authority';
-const Input = CommitEngagementInput;
 const Approval = z.strictObject({
   consentRef: InternalId,
   beneficiaryRef: InternalId,
@@ -115,7 +120,7 @@ export async function commitEngagement(
   host: AcceptanceHost,
 ): Promise<CommittedEngagement> {
   validate(tx, command?.actor);
-  const parsed = Input.safeParse(command.input);
+  const parsed = CommitEngagementInput.safeParse(command.input);
   if (!parsed.success) fail('INVALID_INPUT');
   if (
     typeof host?.allowNewWrites !== 'boolean' ||
@@ -123,6 +128,8 @@ export async function commitEngagement(
     typeof host.fundingAvailable !== 'function'
   )
     fail('STORAGE_CONTRACT');
+  // An offer is judged against its issuer's current authority: a host that cannot answer fails before any lock or read.
+  if (parsed.data.offerId) requireOfferIssuerCheck(host);
   const input = parsed.data,
     actor = command.actor;
   await session(tx, actor);
@@ -147,7 +154,8 @@ export async function commitEngagement(
       )
         fail('TERMS_VERSION_CHANGED');
       if (s.fundingMode !== 'SIMULATED' || !s.fundingRef) fail('FUNDING_REQUIRED');
-      const offer = input.offerId ? await lockOffer(tx, input.offerId) : undefined;
+      const locked = input.offerId ? await lockOfferForAcceptance(tx, input.offerId) : undefined;
+      const offer = locked?.offer;
       authorization = await currentHuman(tx, actor, host.identityLocks);
       const terms = await definition(tx, input.termsVersionId);
       const definitionDigest = canonicalRequestDigest(terms);
@@ -155,7 +163,7 @@ export async function commitEngagement(
         if (!offer) fail('ADMISSION_REQUIRED');
         assertOffer(offer, input, authorization.participantId, await clock(tx));
       } else if (offer) fail('INVALID_INPUT');
-      if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
+      assertOpenForTaking(terms, await clock(tx));
       const assessed = Approval.safeParse(
         await host.assess(tx, {
           actor,
@@ -179,11 +187,11 @@ export async function commitEngagement(
       // Host callbacks and lock waits cannot carry an expired session/window across the command boundary.
       await session(tx, actor);
       const now = await clock(tx);
-      if (publicationProblems(terms, now).length) fail('DEADLINE_PASSED');
-      if (offer)
+      assertOpenForTaking(terms, now);
+      if (locked)
         await assertOfferIssuerAuthorized(
           tx,
-          offer.id,
+          { id: locked.offer.id, issuer: locked.issuer },
           { slotId: input.slotId, guildId: s.guildId },
           host,
         );
@@ -215,7 +223,7 @@ export async function commitEngagement(
         throw new WorkError('CAPACITY_CONFLICT', existing[0].engagementId);
       }
       await session(tx, actor);
-      if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
+      assertOpenForTaking(terms, await clock(tx));
       if (offer) {
         assertOffer(offer, input, authorization.participantId, await clock(tx));
         await tx.query(
@@ -267,11 +275,21 @@ export async function commitEngagement(
     engagement.acceptedTerms.id !== input.termsVersionId
   )
     fail('STORAGE_CONTRACT');
+  // Read back the offer bound to this engagement, so a replay reports it as well and it must be the requested one.
+  const accepted = await tx.query<{ id: string }>(
+    'SELECT "id"::text FROM "RaidOffer" WHERE "acceptedEngagementId"=$1::uuid',
+    [engagement.id],
+  );
+  const offerId = accepted.length === 1 ? accepted[0].id : null;
+  if (accepted.length > 1) fail('STORAGE_CONTRACT');
+  // The slot is taken by an engagement that was not made through the requested offer.
+  if (offerId !== (input.offerId ?? null)) fail('SLOT_FILLED');
   await session(tx, actor);
   return CommittedEngagementSchema.parse({
     status: result.status,
     fundingMode: 'SIMULATED',
     generation,
+    offerId,
     engagement,
   });
 }

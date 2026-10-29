@@ -6,6 +6,17 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  guildUpdatesAuthored GuildUpdate[] @relation("GuildUpdateAuthor")
+  guildUpdatesPublished GuildUpdate[] @relation("GuildUpdatePublisher")
+  guildUpdatesWithdrawn GuildUpdate[] @relation("GuildUpdateWithdrawer")
+  guildTransfersProposed GuildOwnershipTransfer[] @relation("GuildTransferFrom")
+  guildTransfersReceived GuildOwnershipTransfer[] @relation("GuildTransferTo")
+  guildTransfersDecided GuildOwnershipTransfer[] @relation("GuildTransferDecider")
+  foundedGuilds Guild[] @relation("GuildFounder")
+  activatedGuilds Guild[] @relation("GuildActivator")
+  guildProfileEdits GuildProfileVersion[]
+  guildGrantsReceived GuildRoleGrant[] @relation("GuildGrantGrantee")
+  guildGrantsIssued GuildRoleGrant[] @relation("GuildGrantIssuer")
   closedEngagements EngagementClosure[]
   notifications Notification[]
   notificationPreference NotificationPreference?
@@ -59,6 +70,8 @@ model Participant {
   activeCommitment ActiveCommitment?
   skillAssessments SkillAssessment[]
   acceptanceConsents WorkAcceptanceConsent[]
+  ledParties Party[]
+  partyProposalMembers PartyProposalMember[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   kind String @default("HUMAN")
   accountId String @unique
@@ -660,6 +673,16 @@ model XEndpointState {
 // Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
 // additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
 model CommandReceipt {
+  party Party?
+  partyProposal PartyProposal?
+  partyMemberConsent PartyMemberConsent?
+  guildUpdateDraft GuildUpdate? @relation("GuildUpdateDraftReceipt")
+  guildUpdatePublication GuildUpdate? @relation("GuildUpdatePublishReceipt")
+  guildUpdateWithdrawal GuildUpdate? @relation("GuildUpdateWithdrawReceipt")
+  guildTransferProposal GuildOwnershipTransfer? @relation("GuildTransferProposeReceipt")
+  guildTransferDecision GuildOwnershipTransfer? @relation("GuildTransferDecideReceipt")
+  guildProfileVersion GuildProfileVersion?
+  guildRoleGrant GuildRoleGrant?
  assessmentDecision PracticeAssessmentDecision? @relation("AssessmentDecisionReceipt")
  assessmentDecisionCaseAccess PracticeAssessmentDecision[] @relation("DecisionCaseAccess")
  assessmentDecisionPolicyAccess PracticeAssessmentDecision[] @relation("DecisionPolicyAccess")
@@ -772,6 +795,7 @@ model GuildDraft {
   owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_owner_fkey")
   versions GuildDraftVersion[] @relation("GuildDraftHistory")
   projectProposal GuildProjectProposal?
+  guild Guild?
   currentVersion GuildDraftVersion @relation("GuildDraftCurrent", fields: [currentVersionId, id, ownerAccountId, revision], references: [id, guildDraftId, ownerAccountId, revision], onDelete: Restrict, onUpdate: Restrict, map: "GuildDraft_version_fkey")
   @@unique([id, ownerAccountId], map: "GuildDraft_owner_key")
   @@index([ownerAccountId])
@@ -1290,6 +1314,7 @@ model RaidSlot {
   engagements Engagement[]
   simulatedReservations WorkSimulatedReservation[]
   acceptanceConsents WorkAcceptanceConsent[]
+  partyProposals PartyProposal[]
   replaced RaidReplacement? @relation("ReplacedSlot")
   replacement RaidReplacement? @relation("ReplacementSlot")
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1424,6 +1449,61 @@ model WorkAcceptanceConsent {
   @@unique([participantId, slotId, termsVersionId], map: "WorkAcceptanceConsent_subject_key")
   @@index([slotId])
 }
+model Party {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String
+  leaderParticipantId String @db.Uuid
+  receiptId String @unique @db.Uuid
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  leader Participant @relation(fields: [leaderParticipantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  proposals PartyProposal[]
+  @@unique([id, leaderParticipantId], map: "Party_leader_key")
+  @@index([leaderParticipantId])
+}
+model PartyProposal {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partyId String @db.Uuid
+  leaderParticipantId String @db.Uuid
+  slotId String @db.Uuid
+  termsVersionId String @db.Uuid
+  termsDigest String
+  snapshot Json @db.JsonB
+  snapshotDigest String
+  receiptId String @unique @db.Uuid
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  party Party @relation(fields: [partyId, leaderParticipantId], references: [id, leaderParticipantId], onDelete: Restrict, onUpdate: Restrict, map: "PartyProposal_party_fkey")
+  slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "PartyProposal_slot_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  members PartyProposalMember[]
+  consents PartyMemberConsent[]
+  @@unique([id, snapshotDigest], map: "PartyProposal_digest_key")
+  @@index([partyId])
+  @@index([slotId])
+}
+model PartyProposalMember {
+  proposalId String @db.Uuid
+  participantId String @db.Uuid
+  role String
+  allocations Json @db.JsonB
+  proposal PartyProposal @relation(fields: [proposalId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  consents PartyMemberConsent[]
+  @@id([proposalId, participantId])
+  @@index([participantId])
+}
+model PartyMemberConsent {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  proposalId String @db.Uuid
+  participantId String @db.Uuid
+  snapshotDigest String
+  receiptId String @unique @db.Uuid
+  consentedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  member PartyProposalMember @relation(fields: [proposalId, participantId], references: [proposalId, participantId], onDelete: Restrict, onUpdate: Restrict, map: "PartyMemberConsent_member_fkey")
+  proposal PartyProposal @relation(fields: [proposalId, snapshotDigest], references: [id, snapshotDigest], onDelete: Restrict, onUpdate: Restrict, map: "PartyMemberConsent_proposal_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([proposalId, participantId], map: "PartyMemberConsent_subject_key")
+}
 model WorkSimulatedReservation {
   fundingRef String @unique
   slotId String @id @db.Uuid
@@ -1501,4 +1581,116 @@ model EngagementClosure {
   closedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   engagement Engagement @relation(fields: [engagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+
+// Persisted Guild: operator-attested activation of an owner's draft. Founder authority comes from this record only.
+model Guild {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug String @unique(map: "Guild_slug_key")
+  founderAccountId String
+  revision Int
+  currentVersionId String @db.Uuid
+  activationRef String
+  activatedByAccountId String
+  sourceDraftId String @unique(map: "Guild_sourceDraftId_key") @db.Uuid
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  founder User @relation("GuildFounder", fields: [founderAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "Guild_founder_fkey")
+  activatedBy User @relation("GuildActivator", fields: [activatedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "Guild_activatedBy_fkey")
+  sourceDraft GuildDraft @relation(fields: [sourceDraftId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "Guild_sourceDraft_fkey")
+  currentVersion GuildProfileVersion @relation("GuildProfileCurrent", fields: [currentVersionId, id, revision], references: [id, guildId, revision], onDelete: Restrict, onUpdate: Restrict, map: "Guild_version_fkey")
+  versions GuildProfileVersion[] @relation("GuildProfileHistory")
+  grants GuildRoleGrant[]
+  transfers GuildOwnershipTransfer[]
+  updates GuildUpdate[]
+  @@index([founderAccountId])
+  @@index([activatedByAccountId], map: "Guild_activatedBy_idx")
+}
+model GuildProfileVersion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  revision Int
+  name String
+  description String
+  receiptId String @unique(map: "GuildProfileVersion_receiptId_key") @db.Uuid
+  actorAccountId String
+  requestId String
+  recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  guild Guild @relation("GuildProfileHistory", fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_guild_fkey")
+  currentProjections Guild[] @relation("GuildProfileCurrent")
+  actor User @relation(fields: [actorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_actor_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_receipt_fkey")
+  @@unique([guildId, revision], map: "GuildProfileVersion_guild_revision_key")
+  @@unique([id, guildId, revision], map: "GuildProfileVersion_pointer_key")
+  @@index([actorAccountId], map: "GuildProfileVersion_actor_idx")
+}
+// kind separates profile, work, treasury and dispute authority; only PROFILE grants carry fields.
+model GuildRoleGrant {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  granteeAccountId String
+  kind String
+  fields String[] @default([])
+  canDelegate Boolean @default(false)
+  validFrom DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  expiresAt DateTime? @db.Timestamptz(6)
+  revokedAt DateTime? @db.Timestamptz(6)
+  grantedByAccountId String
+  receiptId String? @unique(map: "GuildRoleGrant_receiptId_key") @db.Uuid
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_guild_fkey")
+  grantee User @relation("GuildGrantGrantee", fields: [granteeAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_grantee_fkey")
+  grantedBy User @relation("GuildGrantIssuer", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_grantedBy_fkey")
+  receipt CommandReceipt? @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_receipt_fkey")
+  @@index([guildId, granteeAccountId], map: "GuildRoleGrant_guild_grantee_idx")
+  @@index([grantedByAccountId], map: "GuildRoleGrant_grantedBy_idx")
+}
+// The Founder changes only through a consented transfer recorded here; see the guards in migration 202610270009.
+model GuildOwnershipTransfer {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  fromAccountId String
+  toAccountId String
+  state String @default("PROPOSED")
+  proposedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  expiresAt DateTime @db.Timestamptz(6)
+  decidedAt DateTime? @db.Timestamptz(6)
+  decidedByAccountId String?
+  appliedAt DateTime? @db.Timestamptz(6)
+  proposeReceiptId String @unique(map: "GuildOwnershipTransfer_proposeReceiptId_key") @db.Uuid
+  decideReceiptId String? @unique(map: "GuildOwnershipTransfer_decideReceiptId_key") @db.Uuid
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_guild_fkey")
+  from User @relation("GuildTransferFrom", fields: [fromAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_from_fkey")
+  to User @relation("GuildTransferTo", fields: [toAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_to_fkey")
+  decidedBy User? @relation("GuildTransferDecider", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_decidedBy_fkey")
+  proposeReceipt CommandReceipt @relation("GuildTransferProposeReceipt", fields: [proposeReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_proposeReceipt_fkey")
+  decideReceipt CommandReceipt? @relation("GuildTransferDecideReceipt", fields: [decideReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_decideReceipt_fkey")
+  @@index([guildId], map: "GuildOwnershipTransfer_guild_idx")
+  @@index([fromAccountId], map: "GuildOwnershipTransfer_from_idx")
+  @@index([toAccountId], map: "GuildOwnershipTransfer_to_idx")
+}
+// Public project/progress updates; the public projection is title, body and publication time only.
+model GuildUpdate {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  authorAccountId String
+  title String
+  body String
+  state String @default("DRAFT")
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  publishedAt DateTime? @db.Timestamptz(6)
+  publishedByAccountId String?
+  withdrawnAt DateTime? @db.Timestamptz(6)
+  withdrawnByAccountId String?
+  draftReceiptId String @unique(map: "GuildUpdate_draftReceiptId_key") @db.Uuid
+  publishReceiptId String? @unique(map: "GuildUpdate_publishReceiptId_key") @db.Uuid
+  withdrawReceiptId String? @unique(map: "GuildUpdate_withdrawReceiptId_key") @db.Uuid
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_guild_fkey")
+  author User @relation("GuildUpdateAuthor", fields: [authorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_author_fkey")
+  publisher User? @relation("GuildUpdatePublisher", fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_publisher_fkey")
+  withdrawer User? @relation("GuildUpdateWithdrawer", fields: [withdrawnByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_withdrawer_fkey")
+  draftReceipt CommandReceipt @relation("GuildUpdateDraftReceipt", fields: [draftReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_draftReceipt_fkey")
+  publishReceipt CommandReceipt? @relation("GuildUpdatePublishReceipt", fields: [publishReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_publishReceipt_fkey")
+  withdrawReceipt CommandReceipt? @relation("GuildUpdateWithdrawReceipt", fields: [withdrawReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_withdrawReceipt_fkey")
+  @@index([authorAccountId], map: "GuildUpdate_author_idx")
+  @@index([publishedByAccountId], map: "GuildUpdate_publisher_idx")
+  @@index([withdrawnByAccountId], map: "GuildUpdate_withdrawer_idx")
 }

@@ -1,7 +1,12 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { ApplyToRaid, createApplyRunner } from '../src/components/work-apply';
+import {
+  ApplyToRaid,
+  ApplyView,
+  createApplyRunner,
+  submitApply,
+} from '../src/components/work-apply';
 import { WorkClientError } from '../src/work-http/workspace-client';
 
 const slotId = '11111111-1111-4111-8111-111111111111';
@@ -69,5 +74,77 @@ describe('apply to a Raid', () => {
     finish(application);
     expect(await first).toEqual({ kind: 'DONE' });
     expect(submitApplication).toHaveBeenCalledTimes(1);
+  });
+  it('uses a fresh key when the input changed, so a changed slot cannot reuse the old key', async () => {
+    const keys = ['key-1', 'key-2'];
+    const submitApplication = vi
+      .fn()
+      .mockRejectedValueOnce(new WorkClientError('SERVICE_UNAVAILABLE', 503, null))
+      .mockResolvedValueOnce(application);
+    const runner = createApplyRunner({ submitApplication }, () => keys.shift()!);
+    await runner.apply(input);
+    await runner.apply({ ...input, slotId: '99999999-9999-4999-8999-999999999999' });
+    expect(submitApplication.mock.calls.map((call) => call[1])).toEqual(['key-1', 'key-2']);
+  });
+  it('leaves the button busy when a second press is ignored, and frees it only after the real result', async () => {
+    const busy: boolean[] = [];
+    const outcomes: unknown[] = [];
+    const ui = {
+      setBusy: (v: boolean) => busy.push(v),
+      setOutcome: (o: unknown) => outcomes.push(o),
+    };
+    await submitApply({ apply: async () => ({ kind: 'BUSY' as const }) }, input, ui);
+    expect(busy).toEqual([true]);
+    expect(outcomes).toEqual([]);
+    await submitApply({ apply: async () => ({ kind: 'DONE' as const }) }, input, ui);
+    expect(busy).toEqual([true, true, false]);
+    expect(outcomes).toEqual([{ kind: 'DONE' }]);
+  });
+  it('answers that the Raid is no longer available when it was taken or closed, not a generic failure', async () => {
+    for (const code of ['NOT_FOUND', 'NO_LONGER_OPEN']) {
+      const submitApplication = vi.fn().mockRejectedValue(new WorkClientError(code, 409, null));
+      const runner = createApplyRunner({ submitApplication }, () => 'key-1');
+      expect(await runner.apply(input), code).toEqual({
+        kind: 'GONE',
+        message: 'This Raid is no longer available.',
+      });
+    }
+  });
+  it('replaces the stale form with "no longer available" and no Apply button after that answer', () => {
+    const html = renderToStaticMarkup(
+      createElement(ApplyView, {
+        outcome: { kind: 'GONE', message: 'This Raid is no longer available.' },
+        busy: false,
+        ready: true,
+        signInHref: '/creator/account',
+        onSubmit: () => {},
+      }),
+    );
+    expect(html).toContain('This Raid is no longer available.');
+    expect(html).toContain('href="/raids"');
+    expect(html).not.toContain('Apply to this Raid');
+    expect(html).not.toContain('<button');
+  });
+  it('links a signed-out failure to sign in and come back to this brief', () => {
+    const back = '/creator/account?returnTo=%2Fraids%2Fwork%2Fx';
+    const html = renderToStaticMarkup(
+      createElement(ApplyView, {
+        outcome: { kind: 'SIGN_IN', message: 'Sign in again to continue.' },
+        busy: false,
+        ready: true,
+        signInHref: back,
+        onSubmit: () => {},
+      }),
+    );
+    expect(html).toContain(`href="${back}"`);
+    expect(html).toContain('Apply to this Raid');
+  });
+  it('says so, instead of offering the form again, when the person already applied', () => {
+    const html = renderToStaticMarkup(
+      createElement(ApplyToRaid, { slotId, termsVersionId, applied: true }),
+    );
+    expect(html).toContain('You already applied');
+    expect(html).toContain('href="/raider/work"');
+    expect(html).not.toContain('Apply to this Raid');
   });
 });

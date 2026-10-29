@@ -24,6 +24,15 @@ export async function seedWorkHuman(db: PrismaClient, id = 'human-' + randomUUID
   });
   return { actor, participantId: participant.id };
 }
+/** Synthetic issuer authority seeded by `seedWorkSlot` (account → Guild ids); never inferred from an id's shape. */
+const issuerAuthority = new Map<string, Set<string>>();
+export function grantSyntheticIssuerAuthority(accountId: string, guildId: string) {
+  issuerAuthority.set(accountId, (issuerAuthority.get(accountId) ?? new Set()).add(guildId));
+}
+/** Models a Founder losing scoped Guild authority after issuing an offer. */
+export function revokeSyntheticIssuerAuthority(accountId: string, guildId: string) {
+  issuerAuthority.get(accountId)?.delete(guildId);
+}
 export const syntheticAcceptanceHost: AcceptanceHost = {
   allowNewWrites: true,
   assess: async (_tx, c) => ({
@@ -32,7 +41,8 @@ export const syntheticAcceptanceHost: AcceptanceHost = {
     eligibilityPolicyVersion: 'synthetic-starter-v1',
     operatorId: null,
   }),
-  authorizeOfferIssuer: async (_tx, issuer) => issuer.accountId.startsWith('founder-'),
+  authorizeOfferIssuer: async (_tx, issuer, target) =>
+    issuerAuthority.get(issuer.accountId)?.has(target.guildId) === true,
   fundingAvailable: async () => true,
 };
 export async function seedWorkSlot(
@@ -45,6 +55,7 @@ export async function seedWorkSlot(
     create: { id: founderId, handle: founderId },
     update: {},
   });
+  grantSyntheticIssuerAuthority(founderId, 'synthetic-guild');
   const actor = { accountId: founderId, sessionHash: 'f'.repeat(64) };
   const host: WorkHost = {
     allowNewWrites: true,

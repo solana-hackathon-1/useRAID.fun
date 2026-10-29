@@ -9,7 +9,16 @@ import {
   type ConsentHost,
   type ConsentResult,
 } from './consent-contracts';
-import { fail, validate, session, currentHuman } from './engagement-authority';
+import { assertOffer, findParticipantOffer } from './admission-acceptance';
+import {
+  fail,
+  validate,
+  session,
+  currentHuman,
+  clock,
+  definition,
+  assertOpenForTaking,
+} from './engagement-authority';
 
 const COLUMNS =
   'c."id"::text,c."participantId"::text,c."slotId"::text,c."termsVersionId"::text,c."termsDigest",c."consentedAt"';
@@ -63,6 +72,24 @@ export async function recordAcceptanceConsent(
         slot.digest !== value.termsDigest
       )
         fail('TERMS_VERSION_CHANGED');
+      // Pre-screen with acceptance's own checks and codes. These reads take no lock: a concurrent accept, revoke or
+      // terms edit can still land before the insert, and acceptance rechecks everything under locks.
+      const terms = await definition(tx, value.termsVersionId);
+      const now = await clock(tx);
+      assertOpenForTaking(terms, now);
+      if (terms.admission === 'APPLICATION') {
+        const offer = await findParticipantOffer(
+          tx,
+          {
+            participantId: auth.participantId,
+            slotId: value.slotId,
+            termsVersionId: value.termsVersionId,
+          },
+          now,
+        );
+        if (!offer) fail('ADMISSION_REQUIRED');
+        assertOffer(offer, value, auth.participantId, now);
+      }
       const inserted = await tx.query<{ id: string }>(
         'INSERT INTO "WorkAcceptanceConsent" ("participantId","slotId","termsVersionId","termsDigest") VALUES ($1::uuid,$2::uuid,$3::uuid,$4) ON CONFLICT ("participantId","slotId","termsVersionId") DO NOTHING RETURNING "id"::text',
         [auth.participantId, value.slotId, value.termsVersionId, value.termsDigest],

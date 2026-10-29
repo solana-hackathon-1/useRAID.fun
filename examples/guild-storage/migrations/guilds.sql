@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610270008_guilds/migration.sql

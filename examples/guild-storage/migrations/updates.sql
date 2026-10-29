@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610270010_guild_updates/migration.sql

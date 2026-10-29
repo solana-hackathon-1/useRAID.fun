@@ -173,6 +173,18 @@ async function readOne(tx: Tx, id: string) {
   if (rows.length !== 1) fail('STORAGE_CONTRACT');
   return rows[0];
 }
+/**
+ * Takes the same per-reference lock the database's funding-serialization triggers take (migration 202610270002), so a
+ * concurrent slot or amendment writer handed this reference has committed (or rolled back) before the reuse check reads,
+ * and the loser of that race is answered FUNDING_REQUIRED here rather than by the trigger's raw constraint error. The key
+ * must stay byte-identical to the trigger's; it is a reviewed non-identity domain lock (planning/identity-writer-fence.json).
+ */
+async function lockFundingReference(tx: Tx, reference: string) {
+  await tx.query(
+    "SELECT pg_advisory_xact_lock(hashtextextended('raid:funding-reference:'||$1,0))::text AS locked",
+    [reference],
+  );
+}
 /** Founder proposes a change. Nothing becomes effective until the affected member consents. */
 export async function proposeAmendment(tx: Tx, command: WorkCommand, host: AmendmentHost) {
   validate(tx, command?.actor);
@@ -228,7 +240,9 @@ export async function proposeAmendment(tx: Tx, command: WorkCommand, host: Amend
           increase: added,
           terms: next,
         });
-        if (!InternalId.safeParse(reserved).success) fail('FUNDING_REQUIRED');
+        if (typeof reserved !== 'string' || !InternalId.safeParse(reserved).success)
+          fail('FUNDING_REQUIRED');
+        await lockFundingReference(tx, reserved);
         // One reservation backs one obligation: a slot's or an earlier amendment's reference is not new funding.
         const reused = await tx.query(
           'SELECT 1 FROM "RaidSlot" WHERE "fundingRef"=$1 UNION ALL SELECT 1 FROM "EngagementAmendment" WHERE "additionalFundingRef"=$1',
@@ -320,6 +334,9 @@ export async function respondToAmendment(tx: Tx, command: WorkCommand, host: Ame
       if (value.decision === 'ACCEPT') {
         const proposed = view(amendment);
         if (lapsed(proposed.terms, now)) fail('AMENDMENT_UNAVAILABLE');
+        // The proposer is judged (and a host without the port refused) before any consent or funding callback runs;
+        // it is judged again after them below.
+        await proposerStillAuthorized(tx, amendment, host);
         agreed = proposed.terms;
         const before = await effective(tx, amendment.engagementId);
         const consent = await host.assessConsent(tx, {

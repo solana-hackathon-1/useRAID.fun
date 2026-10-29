@@ -119,7 +119,7 @@ npx playwright install chromium
 npm run test:browser               # demo suite; starts a demo server if none is running
 ```
 
-Database tests need a **dedicated database named `useraid_test`** (the suite rejects any other name and any non-local host unless `ALLOW_REMOTE_TEST_DB=true`) and truncate its application tables. The repository ships a disposable one:
+Database tests need a **dedicated database named `useraid_test`, or `useraid_test_<suffix>` for a second checkout** (the suite rejects any other name and any non-local host unless `ALLOW_REMOTE_TEST_DB=true`) and truncate its application tables. The repository ships a disposable one:
 
 ```sh
 docker compose -p useraid-test -f compose.yaml -f compose.test.yaml up -d --wait db   # port 55432
@@ -127,6 +127,8 @@ export DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_test
 npm run db:migrate
 RUN_DB_TESTS=true DEMO_MODE=false npm test
 ```
+
+`bash scripts/local-ci.sh` (and `npm run verify:full`) accept `RAID_CI_DB_PORT` (default 55432), `RAID_CI_DB_NAME` (default `useraid_test`) and `RAID_CI_PROJECT` (Compose project, default `raid-local-ci`) so they can run while another container holds 55432 or beside another checkout.
 
 After a production build, run the database-backed journeys against the same database:
 

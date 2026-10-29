@@ -933,6 +933,39 @@ aside,
   background: var(--surface-2);
   color: var(--text);
 }
+.active-raid-bar {
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+}
+.active-raid {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  max-width: 100%;
+  font-size: 13px;
+  color: var(--text);
+}
+.active-raid-label {
+  font-weight: 700;
+  color: var(--accent-text);
+  flex-shrink: 0;
+}
+.active-raid-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.active-raid svg {
+  flex-shrink: 0;
+}
+.active-raid:hover .active-raid-title,
+.active-raid[aria-current] .active-raid-title {
+  text-decoration: underline;
+}
 .demo-banner {
   display: flex;
   justify-content: center;
@@ -1584,6 +1617,18 @@ footer {
   overflow-wrap: anywhere;
   max-width: 65ch;
   margin: 16px 0 24px;
+}
+.guild-updates {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+}
+.guild-updates > li + li {
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.guild-updates .campaign-copy {
+  margin: 8px 0 20px;
 }
 .campaign-heading {
   font-size: 28px;

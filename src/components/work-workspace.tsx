@@ -348,7 +348,11 @@ function EngagementCard({
           ? 'This Raid currently holds your one active Raid slot.'
           : 'This Raid no longer holds your active Raid slot.'}
       </p>
-      <p>{NEXT_TEXT[card.nextStep]}</p>
+      <p>
+        {canStart
+          ? 'Setup may be finished. Start work when you are ready; the server checks your reservation and setup.'
+          : NEXT_TEXT[card.nextStep]}
+      </p>
       <ul>
         <li>
           Submission due{' '}
@@ -364,6 +368,26 @@ function EngagementCard({
           </time>{' '}
           if nothing is resolved
         </li>
+      </ul>
+      <p>
+        {card.setup.status === 'PENDING'
+          ? 'Setup is not finished. Preparation is due '
+          : card.setup.status === 'READY'
+            ? 'Setup finished. Preparation was due '
+            : 'Setup no longer applies. Preparation was due '}
+        <time dateTime={card.setup.preparationDeadline}>
+          {when(card.setup.preparationDeadline)}
+        </time>
+        .
+      </p>
+      <h4>Accepted terms</h4>
+      <p style={wrap}>{card.acceptedTerms.scope}</p>
+      <ul>
+        {card.acceptedTerms.roster.map((m) => (
+          <li key={m.participantId} style={wrap}>
+            {m.responsibility}
+          </li>
+        ))}
       </ul>
       <h4>Acceptance criteria</h4>
       <ol>
@@ -479,6 +503,10 @@ export function MyRaidsWorkspace({
       {runner.done && <p role="status">{runner.done}</p>}
       <section aria-labelledby="my-raids-heading">
         <h2 id="my-raids-heading">My Raid</h2>
+        <p>
+          Active Raid capacity: {view.capacity.held ? 1 : 0} of {view.capacity.limit} in use
+          {view.capacity.title ? ' (' + view.capacity.title + ')' : ''}.
+        </p>
         {view.engagements.length === 0 && (
           <p>You have no accepted Raids yet. Accepted work will appear here.</p>
         )}

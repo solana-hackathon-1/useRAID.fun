@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ASSESSMENT_LOCK_SQL, assessmentLockKey } from './assessment-lock';
 import { SkillTaxonomyActorSchema, type SkillTaxonomyActor } from './taxonomy-storage-contracts';
 import { lockSkillStorageActor, readPublishedSkillTaxonomy } from './taxonomy-storage';
 import { lockPracticeTrialParticipant } from './practice-trial-attempt-storage';
@@ -99,9 +100,7 @@ export async function readOwnSkillAssessment(
   if (!taxonomy) fail('RESOURCE_UNAVAILABLE');
   const skill = taxonomy.skills.find((s) => s.id === input.skillId);
   if (!skill) fail('RESOURCE_UNAVAILABLE');
-  await query(tx, 'SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text', [
-    participant.id + ':' + input.skillId,
-  ]);
+  await query(tx, ASSESSMENT_LOCK_SQL, [assessmentLockKey(participant.id, input.skillId)]);
   await authority(tx, actor);
   if (!allowed(canRead, scope)) fail('RESOURCE_UNAVAILABLE');
   const meta = await query<{
