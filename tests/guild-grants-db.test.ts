@@ -728,4 +728,66 @@ integration('T009 Guild role grants and revocation', () => {
       code: 'NOT_FOUND',
     });
   });
+
+  it('redacts the Founder id from grant views returned to a grantee without profile authority (#318)', async () => {
+    const { founder, guild: g } = await guild('redact-a');
+    const treasurer = await person();
+    const editor = await person();
+    const treasury = (
+      await giveRole(founder, g.id, { granteeAccountId: treasurer.accountId, kind: 'TREASURY' })
+    ).grant;
+    expect(treasury.grantedByAccountId).toBe(founder.accountId);
+    const surrendered = await takeRole(treasurer, g.id, treasury.id, 'surrender-1');
+    expect(surrendered.grant.grantedByAccountId).toBeNull();
+    const replay = await takeRole(treasurer, g.id, treasury.id, 'surrender-1');
+    expect(replay.status).toBe('REPLAYED');
+    expect(replay.grant.grantedByAccountId).toBeNull();
+    // A profile manager and the Founder still see who issued the grant.
+    const work = (
+      await giveRole(founder, g.id, { granteeAccountId: editor.accountId, kind: 'WORK' })
+    ).grant;
+    expect((await takeRole(founder, g.id, work.id)).grant.grantedByAccountId).toBe(
+      founder.accountId,
+    );
+  });
+
+  it('answers GRANT_REVOKED to an involved caller without taking the Guild row lock (#321)', async () => {
+    const { founder, guild: g } = await guild('prelock-a');
+    const holder = await person();
+    const grant = (
+      await giveRole(founder, g.id, { granteeAccountId: holder.accountId, kind: 'WORK' })
+    ).grant;
+    await takeRole(founder, g.id, grant.id, 'first');
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let locked!: () => void;
+    const lockTaken = new Promise<void>((resolve) => (locked = resolve));
+    const blocker = db.$transaction(
+      async (tx) => {
+        await tx.$queryRawUnsafe('SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE', g.id);
+        locked();
+        await held;
+      },
+      { timeout: 30000 },
+    );
+    await lockTaken;
+    try {
+      const outcomes = await Promise.race([
+        takeRole(holder, g.id, grant.id, 'again').then(
+          () => 'resolved',
+          (error: { code?: string }) => error.code,
+        ),
+        new Promise((resolve) => setTimeout(() => resolve('blocked'), 1500)),
+      ]);
+      expect(outcomes).toBe('GRANT_REVOKED');
+      // A stranger still learns nothing.
+      const stranger = await person();
+      await expect(takeRole(stranger, g.id, grant.id, 'nosy')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    } finally {
+      release();
+      await blocker;
+    }
+  });
 });

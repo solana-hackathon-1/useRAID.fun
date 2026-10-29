@@ -93,7 +93,8 @@ export const GuildRoleGrantViewSchema = z.strictObject({
   validFrom: z.iso.datetime(),
   expiresAt: z.iso.datetime().nullable(),
   revokedAt: z.iso.datetime().nullable(),
-  grantedByAccountId: z.string().min(1).max(200),
+  /** Null only in a revocation result for a caller without profile authority (redacted, never unknown). */
+  grantedByAccountId: z.string().min(1).max(200).nullable(),
 });
 export type GuildRoleGrantView = z.infer<typeof GuildRoleGrantViewSchema>;
 export const OWNERSHIP_TRANSFER_MAX_DAYS = 30;
