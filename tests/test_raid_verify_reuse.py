@@ -193,9 +193,10 @@ class LocalVerifyGate(unittest.TestCase):
             (repo / 'docs/ai-handoff/CURRENT.md').write_text('two\n')
             self.assertEqual(self.verify(repo, env).returncode, 0)
 
-    def test_format_check_skips_only_symlinks_into_prisma_migrations(self):
-        # #272/#271: Prettier refuses links, and example hosts link migrations; any other changed link is checked
-        # (and fails loudly) instead of being skipped silently.
+    def test_format_check_follows_changed_symlinks_to_in_repo_targets_only(self):
+        # #272/#271: Prettier refuses links. Example hosts link canonical migrations (checked at their source, skipped)
+        # and canonical source files (the in-repo target is checked once, in place of the link). A link that leaves the
+        # repository is passed through unchanged so Prettier fails loudly instead of the link being skipped silently.
         with tempfile.TemporaryDirectory() as directory:
             repo, env, log, git = self.setup_repo(directory)
             (repo / 'prisma/migrations/0001_x').mkdir(parents=True)
@@ -205,15 +206,29 @@ class LocalVerifyGate(unittest.TestCase):
             (repo / 'examples/host/migrations').mkdir(parents=True)
             os.symlink('../../../prisma/migrations/0001_x/migration.sql', repo / 'examples/host/migrations/x.sql')
             os.symlink('../../src/a.ts', repo / 'examples/host/a.ts')
+            os.symlink('../../src/a.ts', repo / 'examples/host/b.ts')
             git('add', '.')
             git('commit', '-q', '-m', 'links')
             result = self.verify(repo, env)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             prettier = [line for line in log.read_text().splitlines() if 'prettier' in line]
             self.assertEqual(len(prettier), 1)
-            self.assertIn('examples/host/a.ts', prettier[0])
-            self.assertIn('src/a.ts', prettier[0])
+            self.assertEqual(prettier[0].split().count('src/a.ts'), 1, prettier[0])
+            self.assertNotIn('examples/host/a.ts', prettier[0])
+            self.assertNotIn('examples/host/b.ts', prettier[0])
             self.assertNotIn('examples/host/migrations/x.sql', prettier[0])
+
+    def test_format_check_passes_a_symlink_that_leaves_the_repository_through_unchanged(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repo, env, log, git = self.setup_repo(directory)
+            (repo / 'examples/host').mkdir(parents=True)
+            os.symlink('/etc/hosts', repo / 'examples/host/out.ts')
+            git('add', '.')
+            git('commit', '-q', '-m', 'outside link')
+            self.verify(repo, env)
+            prettier = [line for line in log.read_text().splitlines() if 'prettier' in line]
+            self.assertEqual(len(prettier), 1)
+            self.assertIn('examples/host/out.ts', prettier[0])
 
     def test_full_tier_delegates_to_the_existing_local_ci_runner_and_selected_feature_suites(self):
         source = (ROOT / 'scripts/verify.sh').read_text()
