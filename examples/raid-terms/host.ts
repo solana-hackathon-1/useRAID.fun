@@ -141,6 +141,7 @@ try {
     'migrations/offer-application-index.sql',
     'migrations/closure-hardening.sql',
     'migrations/acceptance-consent.sql',
+    'migrations/json-shape-js-rules.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   assert.equal(
