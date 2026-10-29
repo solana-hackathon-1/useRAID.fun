@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PrismaClient } from '@prisma/client';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { assertTestDatabase } from './helpers/db-guard';
+import { assertTestDatabase, testDatabaseName } from './helpers/db-guard';
 
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 integration('legacy auth hosts own required READ COMMITTED instead of database defaults', () => {
@@ -26,7 +26,7 @@ integration('legacy auth hosts own required READ COMMITTED instead of database d
       expect(['read committed', 'repeatable read', 'serializable']).toContain(previous);
       try {
         await db.$executeRawUnsafe(
-          `ALTER DATABASE useraid_test SET default_transaction_isolation TO '${isolation}'`,
+          `ALTER DATABASE "${testDatabaseName()}" SET default_transaction_isolation TO '${isolation}'`,
         );
         await db.$disconnect();
         expect(
@@ -59,7 +59,7 @@ integration('legacy auth hosts own required READ COMMITTED instead of database d
         expect(xml).not.toContain('<error');
       } finally {
         await db.$executeRawUnsafe(
-          `ALTER DATABASE useraid_test SET default_transaction_isolation TO '${previous}'`,
+          `ALTER DATABASE "${testDatabaseName()}" SET default_transaction_isolation TO '${previous}'`,
         );
         await db.$disconnect();
         await rm(directory, { recursive: true, force: true });

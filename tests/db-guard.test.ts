@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { assertTestDatabase, testDatabaseName, truncateAll } from './helpers/db-guard';
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -24,6 +24,30 @@ describe('assertTestDatabase', () => {
   it('refuses everything in production', () => {
     vi.stubEnv('NODE_ENV', 'production');
     expect(() => assertTestDatabase('useraid_test', url('localhost'))).toThrow(/production/);
+  });
+});
+
+describe('assertTestDatabase without an explicit name', () => {
+  const url = (name: string) => `postgresql://u:p@127.0.0.1:5432/${name}`;
+  it('accepts useraid_test and suffixed disposable names such as useraid_test_rev', () => {
+    expect(() => assertTestDatabase(undefined, url('useraid_test'))).not.toThrow();
+    expect(() => assertTestDatabase(undefined, url('useraid_test_rev'))).not.toThrow();
+    expect(() => assertTestDatabase(undefined, url('useraid_test_b2_2'))).not.toThrow();
+  });
+  it('still rejects application, lookalike and unsafe names', () => {
+    for (const name of [
+      'useraid',
+      'useraid_testing',
+      'useraid_test_',
+      'useraid_test_Rev',
+      'useraid_test_a-b',
+      'prod_useraid_test',
+    ])
+      expect(() => assertTestDatabase(undefined, url(name))).toThrow(/dedicated/);
+  });
+  it('returns the validated name so fixtures can address their own database', () => {
+    expect(testDatabaseName(url('useraid_test_rev'))).toBe('useraid_test_rev');
+    expect(() => testDatabaseName(url('useraid'))).toThrow(/dedicated/);
   });
 });
 

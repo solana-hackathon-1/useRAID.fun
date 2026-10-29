@@ -1669,5 +1669,6 @@
     "browser",
     "ci-gate"
   ],
+  "required_status_check_ruleset": ".github/rulesets/main-ci-gate.json",
   "live_release_evidence_is_separate": true
 }
