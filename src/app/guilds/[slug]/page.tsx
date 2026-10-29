@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { formatUtcDateTime } from '@/lib/format';
-import { loadGuildPublicPage, loadGuildPublicProfile } from '@/lib/guild-public-page';
+import {
+  GuildPublicPageThrottled,
+  loadGuildPublicPage,
+  loadGuildPublicProfile,
+} from '@/lib/guild-public-page';
 
 // Read per request, never from a shared cache: a withdrawn update must disappear at once.
 export const dynamic = 'force-dynamic';
@@ -13,7 +17,13 @@ type Props = {
 // Pre-launch and without unlisting (OPEN), Guild pages ask search engines not to index them.
 const robots = { index: false, follow: false };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const guild = await loadGuildPublicProfile((await params).slug);
+  let guild;
+  try {
+    guild = await loadGuildPublicProfile((await params).slug);
+  } catch (error) {
+    if (error instanceof GuildPublicPageThrottled) return { title: 'Too many requests', robots };
+    throw error;
+  }
   if (!guild) return { title: 'Guild not found', robots };
   return {
     title: guild.name,
@@ -23,7 +33,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function GuildPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const view = await loadGuildPublicPage(slug, (await searchParams).before);
+  let view;
+  try {
+    view = await loadGuildPublicPage(slug, (await searchParams).before);
+  } catch (error) {
+    if (error instanceof GuildPublicPageThrottled)
+      return (
+        <div className="empty">
+          <h1>Too many requests</h1>
+          <p>This page is being requested too often from your connection. Try again shortly.</p>
+        </div>
+      );
+    throw error;
+  }
   if (!view) notFound();
   const { guild, updates, nextCursor, before } = view;
   const home = `/guilds/${guild.slug}`;

@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { cache } from 'react';
 import { z } from 'zod';
 import { PublicGuildSchema } from '../contracts/entities';
@@ -6,6 +7,7 @@ import {
   PublicGuildUpdatesPageSchema,
   type PublicGuildUpdate,
 } from '../guild-profiles/guild-storage-contracts';
+import { HttpError, publicRateLimit } from './auth';
 import {
   guildPublicAvailable,
   readGuildFromHost,
@@ -39,6 +41,26 @@ async function orNull<T>(read: () => Promise<T>): Promise<T | null> {
     throw error;
   }
 }
+/** Thrown instead of reading storage when the client is over the page's request budget. */
+export class GuildPublicPageThrottled extends Error {
+  constructor() {
+    super('GUILD_PUBLIC_PAGE_THROTTLED');
+  }
+}
+/**
+ * Same budget and client key as `GET /api/v1/guilds/{slug}` (120 per 60 s per client). Spent once
+ * per request: metadata and the page share this result.
+ */
+const spendPageBudget = cache(async (): Promise<boolean> => {
+  const request = new Request('http://guild-page.invalid/', { headers: await headers() });
+  try {
+    await publicRateLimit(request, 'guild-public', 120, 60, 600);
+    return false;
+  } catch (error) {
+    if (error instanceof HttpError && error.status === 429) return true;
+    throw error;
+  }
+});
 /**
  * Same flag, storage reads and strict re-parse as `GET /api/v1/guilds/{slug}`. Deduplicated per
  * request so metadata and the page share one read; never cached across requests.
@@ -46,6 +68,7 @@ async function orNull<T>(read: () => Promise<T>): Promise<T | null> {
 export const loadGuildPublicProfile = cache(
   async (slug: string): Promise<GuildPublicPageProfile | null> => {
     if (!guildPublicAvailable() || !slugSchema.safeParse(slug).success) return null;
+    if (await spendPageBudget()) throw new GuildPublicPageThrottled();
     const raw = await orNull(() => readGuildFromHost(slug));
     if (raw === null) return null;
     const profile = PublicGuildSchema.safeParse(raw);
