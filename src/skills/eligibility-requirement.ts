@@ -1,9 +1,7 @@
 import type { SkillRank } from '../contracts/entities';
-import {
-  SKILL_PREDICATE_LIMITS,
-  SkillEligibilityContractError,
-  type SkillPredicate,
-} from './eligibility-contracts';
+import { SkillEligibilityContractError, type SkillPredicate } from './eligibility-contracts';
+
+const GROUP_LIMIT = 16;
 
 /**
  * Every required skill must be met. Groups respect the eligibility parser's per-group child limit; terms allow up to
@@ -23,8 +21,8 @@ export function buildSkillRequirement(
   let level = leaves;
   do {
     const groups: SkillPredicate[] = [];
-    for (let i = 0; i < level.length; i += SKILL_PREDICATE_LIMITS.children)
-      groups.push({ kind: 'AND', children: level.slice(i, i + SKILL_PREDICATE_LIMITS.children) });
+    for (let i = 0; i < level.length; i += GROUP_LIMIT)
+      groups.push({ kind: 'AND', children: level.slice(i, i + GROUP_LIMIT) });
     level = groups;
   } while (level.length > 1);
   return level[0];
