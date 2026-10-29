@@ -3,6 +3,7 @@ import { formatDisplayAmount } from '../contracts/assets';
 import { AcceptRaid } from './work-accept';
 import { ApplyToRaid } from './work-apply';
 import type { ApplyMode } from '../lib/work-apply-mode';
+import { signInHref } from '../lib/return-to';
 import type { Detail, FeedCard, FeedPage, FeedQuery } from '../work-loop/feed-contracts';
 
 const FEED_PATH = '/raids';
@@ -227,7 +228,6 @@ function Policy({ title, text }: { title: string; text: string }) {
   );
 }
 /** The full public brief of one live Raid: what a person commits to, in the accepted-terms order. */
-export type { ApplyMode };
 export function WorkDetail({
   detail,
   apply = 'NOT_APPLICABLE',
@@ -245,6 +245,8 @@ export function WorkDetail({
   offer?: { offerId: string; slotId: string } | null;
 }) {
   const rounds = detail.review.maxRevisionRounds;
+  // Signing in from this brief comes back to it.
+  const signIn = signInHref(`/raids/work/${detail.listingId}`);
   return (
     <article className="raid-feed raid-detail" aria-labelledby="raid-detail-title">
       <p>
@@ -328,18 +330,21 @@ export function WorkDetail({
             termsVersionId={detail.termsVersionId}
             termsDigest={detail.termsDigest}
             offerId={offer.offerId}
+            signInHref={signIn}
           />
         ) : apply === 'ACCEPT' ? (
           <AcceptRaid
             slotId={detail.openSlotIds[0]}
             termsVersionId={detail.termsVersionId}
             termsDigest={detail.termsDigest}
+            signInHref={signIn}
           />
         ) : apply === 'FORM' ? (
           <ApplyToRaid
             slotId={applySlotId ?? detail.openSlotIds[0]}
             termsVersionId={detail.termsVersionId}
             applied={applied}
+            signInHref={signIn}
           />
         ) : apply === 'SIGN_IN' ? (
           <>
@@ -347,7 +352,7 @@ export function WorkDetail({
               Sign in to {detail.admission === 'APPLICATION' ? 'apply' : 'take this Raid'}.
               Eligibility is checked by the server when you act.
             </p>
-            <Link className="button" href="/creator/account">
+            <Link className="button" href={signIn}>
               {detail.admission === 'APPLICATION'
                 ? 'Sign in to apply'
                 : 'Sign in to take this Raid'}

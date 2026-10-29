@@ -168,7 +168,10 @@ describe('R08 public Raid detail markup', () => {
     expect(out('FORM')).toContain('Apply to this Raid');
     expect(out('FORM')).toContain('name="apply-form"');
     expect(out('SIGN_IN', { admission: 'APPLICATION' })).toContain('Sign in to apply');
-    expect(out('SIGN_IN', { admission: 'APPLICATION' })).toContain('href="/creator/account"');
+    // Signing in from the brief comes back to this brief.
+    const back = `/creator/account?returnTo=${encodeURIComponent(`/raids/work/${id(1)}`)}`;
+    expect(out('SIGN_IN', { admission: 'APPLICATION' })).toContain(`href="${back}"`);
+    expect(out('SIGN_IN', { admission: 'INSTANT' })).toContain(`href="${back}"`);
     expect(out('CLOSED', { admission: 'APPLICATION' })).toContain('Applications are not open yet');
     expect(out('NOT_APPLICABLE')).toContain('not available in the browser');
     for (const mode of ['SIGN_IN', 'CLOSED', 'NOT_APPLICABLE', 'ACCEPT'] as const)

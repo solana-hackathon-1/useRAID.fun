@@ -3,9 +3,11 @@ import { TermsSnapshotSchema } from '../contracts/entities';
 import type { WorkActor } from './contracts';
 import type { AdmissionHost } from './admission-contracts';
 import {
+  ActiveRaidSchema,
   ApplicantQueueSchema,
   MyRaidsSchema,
   ReviewQueueSchema,
+  type ActiveRaid,
   type MyRaids,
 } from './workspace-contracts';
 import { fail, validate, currentActor, currentHuman } from './engagement-authority';
@@ -45,6 +47,22 @@ function offerView(row: {
 }
 const OFFER_COLUMNS = `o."id"::text AS offer_id,o."state" AS offer_state,o."expiresAt" AS offer_expires,(o."expiresAt"<=clock_timestamp()) AS offer_expired`;
 const LATEST_OFFER = `LEFT JOIN LATERAL (SELECT * FROM "RaidOffer" x WHERE x."applicationId"=a."id" ORDER BY x."createdAt" DESC LIMIT 1) o ON true`;
+/**
+ * The Raid that currently holds the actor's own capacity reservation, read from `ActiveCommitment` (the R13 slot),
+ * so it disappears as soon as closure releases capacity. Another account always gets null.
+ */
+export async function readActiveRaid(tx: Tx, actor: WorkActor): Promise<ActiveRaid> {
+  validate(tx, actor);
+  const auth = await currentHuman(tx, actor);
+  const [row] = await tx.query<{ engagementId: string; title: string }>(
+    `SELECT c."engagementId"::text AS "engagementId",t."snapshot"->>'title' AS title
+     FROM "ActiveCommitment" c JOIN "TermsVersion" t ON t."id"=c."termsVersionId" WHERE c."participantId"=$1::uuid`,
+    [auth.participantId],
+  );
+  const result = ActiveRaidSchema.parse(row ? { version: 'v1', ...row } : null);
+  await currentHuman(tx, actor, auth.locks);
+  return result;
+}
 /** The member's own engagements (progress, feedback, closure, preserved claims) and applications/offers. */
 export async function readMyRaids(tx: Tx, actor: WorkActor): Promise<MyRaids> {
   validate(tx, actor);

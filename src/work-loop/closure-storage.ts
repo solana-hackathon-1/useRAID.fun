@@ -77,6 +77,9 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
   const value = parsed.data,
     actor = command.actor;
   await session(tx, actor);
+  /** Current operations authority over this engagement, asked of the host in this transaction. */
+  const authorized = async (guildId: string, engagementId: string = value.engagementId) =>
+    (await host.authorize(tx, actor, { engagementId, guildId })) === true;
   let locks: Awaited<ReturnType<typeof currentActor>> | undefined;
   const receipt = await executeIdempotentCommand(
     tx,
@@ -95,14 +98,7 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
         'SELECT "guildId" FROM "Engagement" WHERE "id"=$1::uuid',
         [value.engagementId],
       );
-      if (
-        ref.length !== 1 ||
-        (await host.authorize(tx, actor, {
-          engagementId: value.engagementId,
-          guildId: ref[0].guildId,
-        })) !== true
-      )
-        fail('FORBIDDEN');
+      if (ref.length !== 1 || !(await authorized(ref[0].guildId))) fail('FORBIDDEN');
       const rows = await tx.query<{
         state: string;
         revision: number;
@@ -127,13 +123,7 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
       );
       // Authority is proven again after the engagement lock wait.
       await currentActor(tx, actor, locks);
-      if (
-        (await host.authorize(tx, actor, {
-          engagementId: value.engagementId,
-          guildId: e.guildId,
-        })) !== true
-      )
-        fail('FORBIDDEN');
+      if (!(await authorized(e.guildId))) fail('FORBIDDEN');
       await closeEngagement(
         tx,
         value.engagementId,
@@ -156,19 +146,15 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
     },
   );
   await currentActor(tx, actor, locks);
-  // An executed or replayed receipt is read back only while the closer still holds the authority it was made under.
-  const [closed] = await tx.query<{ guildId: string }>(
-    'SELECT "guildId" FROM "Engagement" WHERE "id"=$1::uuid',
-    [receipt.resultRef],
-  );
-  if (
-    !closed ||
-    (await host.authorize(tx, actor, {
-      engagementId: receipt.resultRef,
-      guildId: closed.guildId,
-    })) !== true
-  )
-    fail('FORBIDDEN');
+  // A fresh closure already proved authority after the engagement lock, in this transaction. A replayed receipt ran no
+  // command body, so it is read back only while the closer still holds the authority it was made under.
+  if (receipt.status === 'REPLAYED') {
+    const [closed] = await tx.query<{ guildId: string }>(
+      'SELECT "guildId" FROM "Engagement" WHERE "id"=$1::uuid',
+      [receipt.resultRef],
+    );
+    if (!closed || !(await authorized(closed.guildId, receipt.resultRef))) fail('FORBIDDEN');
+  }
   const result = CloseResultSchema.parse({
     status: receipt.status,
     closure: await readClosure(tx, receipt.resultRef),

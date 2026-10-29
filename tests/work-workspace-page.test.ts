@@ -6,6 +6,7 @@ const mocks = vi.hoisted(() => ({
   my: vi.fn(),
   reviews: vi.fn(),
   applicants: vi.fn(),
+  active: vi.fn(),
 }));
 vi.mock('next/headers', () => ({ cookies: async () => ({ get: mocks.cookie }) }));
 vi.mock('../src/lib/auth', async (original) => ({
@@ -17,8 +18,9 @@ vi.mock('../src/lib/work-workspace-host', () => ({
   readMyRaidsFromHost: mocks.my,
   readReviewQueueFromHost: mocks.reviews,
   readApplicantQueueFromHost: mocks.applicants,
+  readActiveRaidFromHost: mocks.active,
 }));
-import { loadMyRaids, loadWorkDesk } from '../src/lib/work-workspace-page';
+import { loadActiveRaid, loadMyRaids, loadWorkDesk } from '../src/lib/work-workspace-page';
 import { hash } from '../src/lib/auth-primitives';
 const flags = {
   readsAvailable: true,
@@ -91,5 +93,30 @@ describe('loadWorkDesk', () => {
   it('degrades without detail when either queue fails', async () => {
     mocks.applicants.mockRejectedValue(new Error('SQL secret detail'));
     expect(await loadWorkDesk()).toEqual({ status: 'UNAVAILABLE' });
+  });
+});
+describe('loadActiveRaid (site-wide My Raid indicator)', () => {
+  const held = { version: 'v1', engagementId: '00000000-0000-4000-8000-000000000001', title: 'T' };
+  it('returns the held Raid for the current session only', async () => {
+    mocks.active.mockResolvedValue(held);
+    expect(await loadActiveRaid()).toEqual({ engagementId: held.engagementId, title: 'T' });
+    expect(mocks.active).toHaveBeenCalledWith({
+      accountId: 'synthetic-self',
+      sessionHash: hash('synthetic-cookie'),
+    });
+  });
+  it('renders nothing when signed out, flag off, nothing held, or the read fails', async () => {
+    mocks.active.mockResolvedValue(held);
+    mocks.user.mockResolvedValue(null);
+    expect(await loadActiveRaid()).toBeNull();
+    mocks.user.mockResolvedValue({ id: 'u' });
+    mocks.config.mockReturnValue({ ...flags, readsAvailable: false });
+    expect(await loadActiveRaid()).toBeNull();
+    expect(mocks.active).not.toHaveBeenCalled();
+    mocks.config.mockReturnValue(flags);
+    mocks.active.mockResolvedValue(null);
+    expect(await loadActiveRaid()).toBeNull();
+    mocks.active.mockRejectedValue(new Error('SQL secret detail'));
+    expect(await loadActiveRaid()).toBeNull();
   });
 });
