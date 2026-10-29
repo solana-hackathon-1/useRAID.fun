@@ -7,6 +7,7 @@ import {
   type CommandReceiptTransaction,
 } from './command-receipts';
 import { saveGuildDraft } from './guild-profiles/draft-storage';
+import { createGuildPublicHandlers } from './guild-profiles/guild-public-http';
 import {
   activateGuild,
   draftGuildUpdate,
@@ -216,6 +217,39 @@ try {
   );
   const feed = await transaction((tx) => listPublicGuildUpdates(tx, slug, {}));
   assert.deepEqual(Object.keys(feed.updates[0]).sort(), ['body', 'id', 'publishedAt', 'title']);
+  // The same public reads over HTTP with the host's own flag, throttle and transaction; no session is involved.
+  let open = true;
+  const publicHttp = createGuildPublicHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    available: () => open,
+    rateLimit: () => undefined,
+    guild: (name) => transaction((tx) => readPublicGuild(tx, name)),
+    updates: (name, query) => transaction((tx) => listPublicGuildUpdates(tx, name, query)),
+  });
+  const visit = (path: string) => new Request(`https://host.example/api/v1/guilds/${path}`);
+  const overHttp = await publicHttp.GUILD(visit(slug), slug);
+  assert.equal(overHttp.status, 200);
+  assert.equal(overHttp.headers.get('Cache-Control'), 'no-store');
+  assert.deepEqual(Object.keys(await overHttp.json()).sort(), [
+    'description',
+    'id',
+    'name',
+    'primaryToken',
+    'slug',
+  ]);
+  const updatesOverHttp = (await (
+    await publicHttp.UPDATES(visit(`${slug}/updates`), slug)
+  ).json()) as { updates: Record<string, unknown>[] };
+  assert.deepEqual(Object.keys(updatesOverHttp.updates[0]).sort(), [
+    'body',
+    'id',
+    'publishedAt',
+    'title',
+  ]);
+  assert.equal((await publicHttp.GUILD(visit('no-such-guild'), 'no-such-guild')).status, 404);
+  open = false;
+  assert.equal((await publicHttp.GUILD(visit(slug), slug)).status, 404);
   // Ownership moves only when the Founder proposes, the recipient accepts and the host approves.
   const successor = await account('successor');
   const proposal = await transaction((tx) =>
@@ -261,7 +295,7 @@ try {
   assert.equal(moved.transfer.applied, true);
   assert.deepEqual([await can(founder, 'PROFILE'), await can(successor, 'PROFILE')], [false, true]);
   console.log(
-    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates; SIMULATED ONLY.',
+    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates, public HTTP reads; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();

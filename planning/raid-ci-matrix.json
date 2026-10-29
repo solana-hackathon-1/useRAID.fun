@@ -306,6 +306,7 @@
     "tests/guild-ownership-db.test.ts",
     "tests/guild-updates-db.test.ts",
     "tests/guild-storage-boundary.test.ts",
+    "tests/guild-public-http.test.ts",
     "tests/work-workspace-consumer.test.ts"
   ],
   "epics": [
@@ -1231,6 +1232,7 @@
         "tests/guild-ownership-db.test.ts",
         "tests/guild-updates-db.test.ts",
         "tests/guild-storage-boundary.test.ts",
+        "tests/guild-public-http.test.ts",
         "tests/browser-live/tracking.spec.ts",
         "tests/browser/discovery.spec.ts",
         "tests/discovery-rows.test.ts",

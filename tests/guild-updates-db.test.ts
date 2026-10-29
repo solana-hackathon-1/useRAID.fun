@@ -1,4 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { createGuildPublicHandlers } from '../src/guild-profiles/guild-public-http';
 import { PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
@@ -8,6 +9,7 @@ import {
   draftGuildUpdate,
   editGuildProfile,
   listManagedGuildUpdates,
+  readPublicGuild,
   listPublicGuildUpdates,
   publishGuildUpdate,
   withdrawGuildUpdate,
@@ -300,6 +302,46 @@ integration('T009 Guild public updates', () => {
       (await run((tx) => listManagedGuildUpdates(tx, founder, g.id))).updates.map((u) => u.title),
     ).toEqual(['Live']);
   }, 120_000);
+
+  it('serves only the public projection over HTTP and drops a withdrawn update at once', async () => {
+    const { founder, guild: g } = await guild('news-http');
+    const first = (await draft(founder, g.id, 'First', 'Body one')).update.id;
+    await publish(founder, g.id, first);
+    const second = (await draft(founder, g.id, 'Second', 'Body two')).update.id;
+    await publish(founder, g.id, second);
+    await draft(founder, g.id, 'Unpublished', 'Not public');
+    const handlers = createGuildPublicHandlers({
+      version: 'v1',
+      requestId: () => 'request-1',
+      available: () => true,
+      rateLimit: () => undefined,
+      guild: (slug) => run((tx) => readPublicGuild(tx, slug)),
+      updates: (slug, query) => run((tx) => listPublicGuildUpdates(tx, slug, query)),
+    });
+    const url = (path: string) => new Request('https://example.test/api/v1/guilds/' + path);
+    const profile = await handlers.GUILD(url('news-http'), 'news-http');
+    expect(profile.status).toBe(200);
+    expect(Object.keys(await profile.json()).sort()).toEqual([
+      'description',
+      'id',
+      'name',
+      'primaryToken',
+      'slug',
+    ]);
+    const listed = await handlers.UPDATES(url('news-http/updates'), 'news-http');
+    const page = (await listed.json()) as { updates: Record<string, unknown>[] };
+    expect(page.updates.map((u) => u.title)).toEqual(['Second', 'First']);
+    for (const update of page.updates)
+      expect(Object.keys(update).sort()).toEqual(['body', 'id', 'publishedAt', 'title']);
+    await withdraw(founder, g.id, second);
+    const after = (await (
+      await handlers.UPDATES(url('news-http/updates'), 'news-http')
+    ).json()) as {
+      updates: { title: string }[];
+    };
+    expect(after.updates.map((u) => u.title)).toEqual(['First']);
+    expect((await handlers.GUILD(url('nobody'), 'nobody')).status).toBe(404);
+  });
 
   it('pages the public list newest first and shows managers only their own view', async () => {
     const { founder, guild: g } = await guild('news-p');

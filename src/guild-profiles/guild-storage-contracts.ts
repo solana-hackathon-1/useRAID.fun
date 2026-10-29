@@ -148,6 +148,10 @@ export const PublicGuildUpdateSchema = z.strictObject({
   publishedAt: z.iso.datetime(),
 });
 export type PublicGuildUpdate = z.infer<typeof PublicGuildUpdateSchema>;
+export const PublicGuildUpdatesPageSchema = z.strictObject({
+  updates: z.array(PublicGuildUpdateSchema).max(GUILD_UPDATE_PAGE_MAX),
+  nextCursor: z.uuid().nullable(),
+});
 export const ActivateGuildInputSchema = z.strictObject({
   guildDraftId: z.uuid(),
   expectedDraftRevision: z.number().int().min(1).max(2147483646),
