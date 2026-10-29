@@ -51,10 +51,69 @@ class LocalCIMode(unittest.TestCase):
 
     def test_runner_fails_fast_when_required_host_ports_are_occupied(self):
         runner = (ROOT / 'scripts/local-ci.sh').read_text()
-        for port in ['3000', '3001', '3006', '3007', '3008', '55432']:
+        for port in ['3000', '3001', '3006', '3007', '3008', '"$db_port"']:
             self.assertIn(port, runner.split('ports()', 1)[1].split('\n}\n', 1)[0])
         self.assertLess(runner.index('step ports '), runner.index('step install '))
 
+
+
+class LocalCIEnvironmentConfig(unittest.TestCase):
+    def test_database_port_name_and_project_are_overridable_with_unchanged_defaults(self):
+        runner = (ROOT / 'scripts/local-ci.sh').read_text()
+        self.assertIn('db_port=${RAID_CI_DB_PORT:-55432}', runner)
+        self.assertIn('db_name=${RAID_CI_DB_NAME:-useraid_test}', runner)
+        self.assertIn('COMPOSE_PROJECT_NAME=${RAID_CI_PROJECT:-raid-local-ci}', runner)
+        code = [line for line in runner.splitlines() if not line.lstrip().startswith('#')]
+        self.assertEqual(sum('55432' in line for line in code), 1)  # only the default
+        self.assertFalse([line for line in code if re.search(r'/useraid_test\b(?!_)', line)])
+
+    def test_test_compose_override_port_follows_the_same_variable(self):
+        override = (ROOT / 'compose.test.yaml').read_text()
+        self.assertIn('${RAID_CI_DB_PORT:-55432}:5432', override)
+
+
+class VerifyTreeCheck(unittest.TestCase):
+    def test_generated_test_outputs_do_not_invalidate_the_tree_check(self):
+        script = (ROOT / 'scripts/verify.sh').read_text()
+        clean = script.split('clean() {', 1)[1].split('}', 1)[0]
+        for path in ['docs/ai-handoff/CURRENT.md', 'artifacts/raid-live-fixture.png',
+                     'planning/task-evidence/*/browser-development/*']:
+            self.assertIn(f"':!{path}'", clean)
+
+
+class RequiredCheckRuleset(unittest.TestCase):
+    ruleset = ROOT / '.github/rulesets/main-ci-gate.json'
+
+    def test_ruleset_requires_only_the_ci_gate_context_on_the_default_branch_without_bypass(self):
+        import json
+        ruleset = json.loads(self.ruleset.read_text())
+        self.assertEqual(ruleset['target'], 'branch')
+        self.assertEqual(ruleset['conditions']['ref_name']['include'], ['~DEFAULT_BRANCH'])
+        self.assertEqual(ruleset['bypass_actors'], [])
+        rules = {rule['type']: rule.get('parameters') for rule in ruleset['rules']}
+        self.assertIn('pull_request', rules)
+        self.assertIn('non_fast_forward', rules)
+        checks = rules['required_status_checks']
+        self.assertEqual(checks['required_status_checks'], [{'context': 'ci-gate'}])
+        self.assertTrue(checks['strict_required_status_checks_policy'])
+
+    def test_ci_gate_job_waits_for_every_other_required_check_and_always_reports(self):
+        import json
+        matrix = json.loads((ROOT / 'planning/raid-ci-matrix.json').read_text())
+        required = matrix['all_required_checks']
+        self.assertEqual(matrix['required_status_check_ruleset'], '.github/rulesets/main-ci-gate.json')
+        workflow = (ROOT / '.github/workflows/checks.yml').read_text()
+        gate = workflow.split('\n  ci-gate:\n', 1)[1]
+        self.assertIn('if: always()', gate)
+        needs = re.search(r'needs: \[(.*?)\]', gate).group(1).replace(' ', '').split(',')
+        self.assertEqual(sorted(needs), sorted(c for c in required if c != 'ci-gate'))
+        for job in needs:
+            self.assertRegex(workflow, rf'\n  {job}:\n')
+
+    def test_ruleset_is_documented_as_owner_applied_not_self_applied(self):
+        docs = (ROOT / 'docs/ci-checks.md').read_text()
+        self.assertIn('.github/rulesets/main-ci-gate.json', docs)
+        self.assertIn('gh api', docs)
 
 
 class LocalCICleanupOwnership(unittest.TestCase):
@@ -95,7 +154,11 @@ exit 0
                 path = root / 'bin' / command
                 path.write_text(stub)
                 path.chmod(0o755)
-            env = dict(os.environ, PATH=str(root / 'bin') + ':' + os.environ['PATH'],
+            # A caller (verify.sh, a second checkout) may export these; the stubbed run must not inherit them.
+            inherited = {k: v for k, v in os.environ.items()
+                         if k not in {'RAID_CI_FEATURE_SUITES', 'RAID_CI_DB_PORT', 'RAID_CI_DB_NAME',
+                                      'RAID_CI_PROJECT', 'RAID_CI_COMPOSE_FILE'}}
+            env = dict(inherited, PATH=str(root / 'bin') + ':' + os.environ['PATH'],
                        COMMAND_LOG=str(root / 'commands'), FAIL_AT=failure,
                        RAID_CI_LOG_DIR=str(root / 'evidence'))
             result = subprocess.run(['bash', str(root / 'scripts/local-ci.sh')],

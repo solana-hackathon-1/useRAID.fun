@@ -106,7 +106,7 @@ Linking authorizes nothing but the credential relationship. The host decides who
 
 ## Configuration names
 
-No secret is read by the module. The example host and tests use: `DATABASE_URL` (explicit local synthetic URL; the example accepts only localhost databases `useraid_wallet_links_host_test` or `useraid_test` and refuses `NODE_ENV=production`), `NODE_ENV` (must not be `production` for the example), and for repository tests `RUN_DB_TESTS=true` and `DEMO_MODE=false`. The server switch is `WALLET_LINKS_ENABLED` (default off; see B2a). `NODE_ENV`, `DATABASE_URL` and `RUN_DB_TESTS` apply to the tests above.
+No secret is read by the module. The example host and tests use: `DATABASE_URL` (explicit local synthetic URL; the example accepts only localhost databases `useraid_wallet_links_host_test`, `useraid_test` or `useraid_test_<suffix>` and refuses `NODE_ENV=production`), `NODE_ENV` (must not be `production` for the example), and for repository tests `RUN_DB_TESTS=true` and `DEMO_MODE=false`. The server switch is `WALLET_LINKS_ENABLED` (default off; see B2a). `NODE_ENV`, `DATABASE_URL` and `RUN_DB_TESTS` apply to the tests above.
 
 ## Transaction, retry and sanitized errors
 
