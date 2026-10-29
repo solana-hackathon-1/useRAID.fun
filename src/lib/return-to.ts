@@ -12,8 +12,8 @@ export function signInHref(returnTo: string) {
   return `/creator/account?returnTo=${encodeURIComponent(returnTo)}`;
 }
 /** A recognised return path, or null. A Raid brief is matched by its exact id only. */
-export function accountReturn(value: string | undefined): AccountReturn | null {
-  if (!value) return null;
+export function accountReturn(value: string | string[] | undefined): AccountReturn | null {
+  if (typeof value !== 'string' || !value) return null;
   const brief = BRIEF.exec(value);
   if (brief) return { href: value, label: 'Return to Raid', oauth: `work:${brief[1]}` };
   if (value.startsWith('/creator/') && !value.includes('//') && !value.includes('\\'))
