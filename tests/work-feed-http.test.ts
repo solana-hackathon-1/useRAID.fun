@@ -31,6 +31,7 @@ const brief = DetailSchema.parse({
   funding: { mode: 'SIMULATED' },
   confidentiality: 'PUBLIC',
   openSlotIds: ['33333333-3333-4333-8333-333333333333'],
+  termsDigest: 'a'.repeat(64),
   outcome: 'Outcome.',
   deliverables: ['A'],
   acceptanceCriteria: ['B'],
