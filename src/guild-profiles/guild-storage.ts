@@ -1145,6 +1145,11 @@ async function moveUpdate(
       await authorize(tx, actor);
       // Taking content down stays possible while new writes are disabled.
       if (step === 'PUBLISH' && !host.allowNewWrites) fail('WRITES_DISABLED');
+      // Judge standing before taking any lock: an account with no authority here cannot queue behind the Guild
+      // row, and learns nothing about which Guilds or updates exist (a missing Guild answers the same way).
+      const standing = await authorityKinds(tx, actor.accountId, input.guildId);
+      if (step === 'PUBLISH' ? !standing.founder : !standing.kinds.includes('PROFILE'))
+        fail('FORBIDDEN');
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
         'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
