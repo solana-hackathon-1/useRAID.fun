@@ -122,3 +122,8 @@ export const ApplicantQueueSchema = z.strictObject({
 export type MyRaids = z.infer<typeof MyRaidsSchema>;
 export type ReviewQueue = z.infer<typeof ReviewQueueSchema>;
 export type ApplicantQueue = z.infer<typeof ApplicantQueueSchema>;
+/** The one Raid currently holding the member's participant capacity (R13), or null; drives the site-wide indicator. */
+export const ActiveRaidSchema = z
+  .strictObject({ version: z.literal('v1'), engagementId: z.uuid(), title })
+  .nullable();
+export type ActiveRaid = z.infer<typeof ActiveRaidSchema>;
