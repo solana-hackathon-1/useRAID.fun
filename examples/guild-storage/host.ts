@@ -12,6 +12,8 @@ import {
   editGuildProfile,
   grantGuildRole,
   hasGuildAuthority,
+  proposeOwnershipTransfer,
+  respondOwnershipTransfer,
   readManagedGuild,
   readPublicGuild,
   GuildStorageError,
@@ -189,8 +191,52 @@ try {
   );
   const managed = await transaction((tx) => readManagedGuild(tx, delegate, active.guild.id));
   assert.deepEqual(managed.authority, { founder: false, kinds: ['TREASURY'] });
+  // Ownership moves only when the Founder proposes, the recipient accepts and the host approves.
+  const successor = await account('successor');
+  const proposal = await transaction((tx) =>
+    proposeOwnershipTransfer(
+      tx,
+      cmd(
+        founder,
+        {
+          guildId: active.guild.id,
+          toAccountId: successor.accountId,
+          expiresAt: new Date(Date.now() + 86400000).toISOString(),
+        },
+        't-1',
+      ),
+      host,
+    ),
+  );
+  await assert.rejects(
+    transaction((tx) =>
+      respondOwnershipTransfer(
+        tx,
+        cmd(
+          founder,
+          { guildId: active.guild.id, transferId: proposal.transfer.id, decision: 'ACCEPT' },
+          't-2',
+        ),
+        { ...host, authorizeOwnershipTransfer: async () => true },
+      ),
+    ),
+    (e) => e instanceof GuildStorageError && e.code === 'FORBIDDEN',
+  );
+  const moved = await transaction((tx) =>
+    respondOwnershipTransfer(
+      tx,
+      cmd(
+        successor,
+        { guildId: active.guild.id, transferId: proposal.transfer.id, decision: 'ACCEPT' },
+        't-3',
+      ),
+      { ...host, authorizeOwnershipTransfer: async () => true },
+    ),
+  );
+  assert.equal(moved.transfer.applied, true);
+  assert.deepEqual([await can(founder, 'PROFILE'), await can(successor, 'PROFILE')], [false, true]);
   console.log(
-    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate; SIMULATED ONLY.',
+    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();

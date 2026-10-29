@@ -29,6 +29,13 @@ export interface GuildActivationHost extends GuildHost {
     actor: { accountId: string },
   ): Promise<boolean>;
 }
+/** The host's say over the ownership change itself (for example a recorded re-verification of project control). */
+export interface GuildOwnershipHost extends GuildHost {
+  authorizeOwnershipTransfer(
+    tx: CommandReceiptTransaction,
+    change: { guildId: string; fromAccountId: string; toAccountId: string },
+  ): Promise<boolean>;
+}
 export type GuildAuthorityKind = 'PROFILE' | 'WORK' | 'TREASURY' | 'DISPUTE';
 export const GUILD_AUTHORITY_KINDS: readonly GuildAuthorityKind[] = [
   'PROFILE',
@@ -84,6 +91,27 @@ export const GuildRoleGrantViewSchema = z.strictObject({
   grantedByAccountId: z.string().min(1).max(200),
 });
 export type GuildRoleGrantView = z.infer<typeof GuildRoleGrantViewSchema>;
+export const OWNERSHIP_TRANSFER_MAX_DAYS = 30;
+export const ProposeOwnershipTransferInputSchema = z
+  .strictObject({ guildId: z.uuid(), toAccountId: InternalId, expiresAt: z.iso.datetime() })
+  .transform((value) => ({ ...value, expiresAt: new Date(value.expiresAt).toISOString() }));
+export const RespondOwnershipTransferInputSchema = z.strictObject({
+  guildId: z.uuid(),
+  transferId: z.uuid(),
+  decision: z.enum(['ACCEPT', 'DECLINE', 'WITHDRAW']),
+});
+export const OwnershipTransferViewSchema = z.strictObject({
+  version: z.literal('v1'),
+  id: z.uuid(),
+  guildId: z.uuid(),
+  fromAccountId: z.string().min(1).max(200),
+  toAccountId: z.string().min(1).max(200),
+  state: z.enum(['PROPOSED', 'ACCEPTED', 'DECLINED', 'WITHDRAWN', 'EXPIRED']),
+  expiresAt: z.iso.datetime(),
+  decidedAt: z.iso.datetime().nullable(),
+  applied: z.boolean(),
+});
+export type OwnershipTransferView = z.infer<typeof OwnershipTransferViewSchema>;
 export const ActivateGuildInputSchema = z.strictObject({
   guildDraftId: z.uuid(),
   expectedDraftRevision: z.number().int().min(1).max(2147483646),
@@ -125,6 +153,7 @@ export class GuildStorageError extends Error {
       | 'GUILD_EXISTS'
       | 'SLUG_UNAVAILABLE'
       | 'GRANT_LIMIT'
+      | 'TRANSFER_PENDING'
       | 'STORAGE_CONTRACT'
       | 'STORAGE_UNAVAILABLE',
   ) {

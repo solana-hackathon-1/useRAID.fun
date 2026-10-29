@@ -6,6 +6,9 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  guildTransfersProposed GuildOwnershipTransfer[] @relation("GuildTransferFrom")
+  guildTransfersReceived GuildOwnershipTransfer[] @relation("GuildTransferTo")
+  guildTransfersDecided GuildOwnershipTransfer[] @relation("GuildTransferDecider")
   foundedGuilds Guild[] @relation("GuildFounder")
   activatedGuilds Guild[] @relation("GuildActivator")
   guildProfileEdits GuildProfileVersion[]
@@ -665,6 +668,8 @@ model XEndpointState {
 // Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
 // additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
 model CommandReceipt {
+  guildTransferProposal GuildOwnershipTransfer? @relation("GuildTransferProposeReceipt")
+  guildTransferDecision GuildOwnershipTransfer? @relation("GuildTransferDecideReceipt")
   guildProfileVersion GuildProfileVersion?
   guildRoleGrant GuildRoleGrant?
  assessmentDecision PracticeAssessmentDecision? @relation("AssessmentDecisionReceipt")
@@ -1528,6 +1533,7 @@ model Guild {
   currentVersion GuildProfileVersion @relation("GuildProfileCurrent", fields: [currentVersionId, id, revision], references: [id, guildId, revision], onDelete: Restrict, onUpdate: Restrict, map: "Guild_version_fkey")
   versions GuildProfileVersion[] @relation("GuildProfileHistory")
   grants GuildRoleGrant[]
+  transfers GuildOwnershipTransfer[]
   @@index([founderAccountId])
 }
 model GuildProfileVersion {
@@ -1565,4 +1571,28 @@ model GuildRoleGrant {
   grantedBy User @relation("GuildGrantIssuer", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_grantedBy_fkey")
   receipt CommandReceipt? @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_receipt_fkey")
   @@index([guildId, granteeAccountId], map: "GuildRoleGrant_guild_grantee_idx")
+}
+// The Founder changes only through a consented transfer recorded here; see the guards in migration 202610270009.
+model GuildOwnershipTransfer {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  fromAccountId String
+  toAccountId String
+  state String @default("PROPOSED")
+  proposedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  expiresAt DateTime @db.Timestamptz(6)
+  decidedAt DateTime? @db.Timestamptz(6)
+  decidedByAccountId String?
+  appliedAt DateTime? @db.Timestamptz(6)
+  proposeReceiptId String @unique(map: "GuildOwnershipTransfer_proposeReceiptId_key") @db.Uuid
+  decideReceiptId String? @unique(map: "GuildOwnershipTransfer_decideReceiptId_key") @db.Uuid
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_guild_fkey")
+  from User @relation("GuildTransferFrom", fields: [fromAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_from_fkey")
+  to User @relation("GuildTransferTo", fields: [toAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_to_fkey")
+  decidedBy User? @relation("GuildTransferDecider", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_decidedBy_fkey")
+  proposeReceipt CommandReceipt @relation("GuildTransferProposeReceipt", fields: [proposeReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_proposeReceipt_fkey")
+  decideReceipt CommandReceipt? @relation("GuildTransferDecideReceipt", fields: [decideReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_decideReceipt_fkey")
+  @@index([guildId], map: "GuildOwnershipTransfer_guild_idx")
+  @@index([fromAccountId], map: "GuildOwnershipTransfer_from_idx")
+  @@index([toAccountId], map: "GuildOwnershipTransfer_to_idx")
 }

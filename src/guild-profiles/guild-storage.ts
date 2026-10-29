@@ -16,8 +16,14 @@ import {
   GUILD_GRANT_LIMIT,
   GrantGuildRoleInputSchema,
   GuildRoleGrantViewSchema,
+  OWNERSHIP_TRANSFER_MAX_DAYS,
+  OwnershipTransferViewSchema,
+  ProposeOwnershipTransferInputSchema,
+  RespondOwnershipTransferInputSchema,
   RevokeGuildRoleInputSchema,
+  type GuildOwnershipHost,
   type GuildRoleGrantView,
+  type OwnershipTransferView,
   GuildStorageError,
   ManagedGuildSchema,
   type GuildActivationHost,
@@ -746,4 +752,236 @@ export async function revokeGuildRole(
   );
   if (again.length !== 1 || !involved(again[0])) fail('FORBIDDEN');
   return { status: result.status, grant: await loadGrant(tx, input.guildId, result.resultRef) };
+}
+async function loadTransfer(
+  tx: CommandReceiptTransaction,
+  guildId: string,
+  id: string,
+): Promise<OwnershipTransferView> {
+  const rows = await query<Record<string, unknown>>(
+    tx,
+    `SELECT "id"::text,"guildId"::text,"fromAccountId","toAccountId","state","expiresAt","decidedAt","appliedAt" IS NOT NULL AS applied
+     FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
+    [id, guildId],
+  );
+  if (rows.length !== 1) fail('STORAGE_CONTRACT');
+  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
+  const parsed = OwnershipTransferViewSchema.safeParse({
+    version: 'v1',
+    ...rows[0],
+    expiresAt: iso(rows[0].expiresAt),
+    decidedAt: iso(rows[0].decidedAt),
+  });
+  if (!parsed.success) fail('STORAGE_CONTRACT');
+  return parsed.data;
+}
+/** The current Founder offers the Founder role to another account; nothing changes until that account accepts. */
+export async function proposeOwnershipTransfer(
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildHost,
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; transfer: OwnershipTransferView }> {
+  validateActor(command?.actor);
+  if (typeof host?.allowNewWrites !== 'boolean') fail('STORAGE_CONTRACT');
+  const parsed = ProposeOwnershipTransferInputSchema.safeParse(command.input);
+  if (!parsed.success) fail('INVALID_INPUT');
+  const input = parsed.data,
+    actor = command.actor;
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'ProposeOwnershipTransfer',
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+      request: input,
+    },
+    async ({ receiptId }) => {
+      await authorize(tx, actor);
+      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      const guilds = await query<{ founderAccountId: string; revision: number }>(
+        tx,
+        'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
+        [input.guildId],
+      );
+      if (guilds.length !== 1) fail('NOT_FOUND');
+      await authorize(tx, actor);
+      if (guilds[0].founderAccountId !== actor.accountId) fail('FORBIDDEN');
+      if (input.toAccountId === actor.accountId) fail('INVALID_INPUT');
+      const window = await query<{ ok: boolean }>(
+        tx,
+        `SELECT $1::timestamptz>clock_timestamp() AND $1::timestamptz<=clock_timestamp()+($2||' days')::interval AS ok`,
+        [input.expiresAt, String(OWNERSHIP_TRANSFER_MAX_DAYS)],
+      );
+      if (window[0]?.ok !== true) fail('INVALID_INPUT');
+      // Read without a lock: the foreign key proves existence and acceptance re-checks the recipient's own session.
+      const recipients = await query<{ suspended: boolean }>(
+        tx,
+        'SELECT "suspended" FROM "User" WHERE "id"=$1',
+        [input.toAccountId],
+      );
+      if (recipients.length !== 1) fail('NOT_FOUND');
+      if (recipients[0].suspended) fail('ACCOUNT_RESTRICTED');
+      const lapsed = await query<{ id: string }>(
+        tx,
+        `UPDATE "GuildOwnershipTransfer" SET "state"='EXPIRED',"decidedAt"=clock_timestamp(),"decidedByAccountId"=$2,"decideReceiptId"=$3::uuid
+         WHERE "guildId"=$1::uuid AND "state"='PROPOSED' AND "expiresAt"<=clock_timestamp() RETURNING "id"::text`,
+        [input.guildId, actor.accountId, receiptId],
+      );
+      const open = await query(
+        tx,
+        `SELECT 1 FROM "GuildOwnershipTransfer" WHERE "guildId"=$1::uuid AND "state"='PROPOSED'`,
+        [input.guildId],
+      );
+      if (open.length) fail('TRANSFER_PENDING');
+      const rows = await query<{ id: string }>(
+        tx,
+        `INSERT INTO "GuildOwnershipTransfer" ("guildId","fromAccountId","toAccountId","expiresAt","proposeReceiptId") VALUES ($1::uuid,$2,$3,$4::timestamptz,$5::uuid) RETURNING "id"::text`,
+        [input.guildId, actor.accountId, input.toAccountId, input.expiresAt, receiptId],
+      );
+      if (rows.length !== 1) fail('STORAGE_CONTRACT');
+      await authorize(tx, actor);
+      const event = (type: string, id: string) => ({
+        type,
+        aggregateId: input.guildId,
+        aggregateVersion: guilds[0].revision,
+        guildId: input.guildId,
+        payload: { guildOwnershipTransferId: id },
+        publish: false,
+      });
+      return {
+        resultRef: rows[0].id,
+        events: [
+          ...lapsed.map((row) => event('guild.ownership_expired.v1', row.id)),
+          event('guild.ownership_proposed.v1', rows[0].id),
+        ],
+      };
+    },
+  );
+  // A replay is for the proposing Founder, judged by identity.
+  await authorize(tx, actor);
+  const transfer = await loadTransfer(tx, input.guildId, result.resultRef);
+  if (transfer.fromAccountId !== actor.accountId) fail('FORBIDDEN');
+  return { status: result.status, transfer };
+}
+/**
+ * The recipient accepts or declines; the proposing Founder withdraws. Accepting changes the Guild's Founder in the same
+ * transaction, after the host approves the change. Responding to a lapsed proposal records it as expired.
+ */
+export async function respondOwnershipTransfer(
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildOwnershipHost,
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; transfer: OwnershipTransferView }> {
+  validateActor(command?.actor);
+  if (
+    typeof host?.allowNewWrites !== 'boolean' ||
+    typeof host.authorizeOwnershipTransfer !== 'function'
+  )
+    fail('STORAGE_CONTRACT');
+  const parsed = RespondOwnershipTransferInputSchema.safeParse(command.input);
+  if (!parsed.success) fail('INVALID_INPUT');
+  const input = parsed.data,
+    actor = command.actor;
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'RespondOwnershipTransfer',
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+      request: input,
+    },
+    async ({ receiptId }) => {
+      await authorize(tx, actor);
+      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      const guilds = await query<{ founderAccountId: string; revision: number }>(
+        tx,
+        'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
+        [input.guildId],
+      );
+      if (guilds.length !== 1) fail('NOT_FOUND');
+      await authorize(tx, actor);
+      const transfers = await query<{
+        fromAccountId: string;
+        toAccountId: string;
+        state: string;
+        lapsed: boolean;
+      }>(
+        tx,
+        `SELECT "fromAccountId","toAccountId","state","expiresAt"<=clock_timestamp() AS lapsed
+         FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid AND "guildId"=$2::uuid FOR UPDATE`,
+        [input.transferId, input.guildId],
+      );
+      if (transfers.length !== 1) fail('NOT_FOUND');
+      const transfer = transfers[0];
+      const mine =
+        input.decision === 'WITHDRAW'
+          ? transfer.fromAccountId === actor.accountId &&
+            guilds[0].founderAccountId === actor.accountId
+          : transfer.toAccountId === actor.accountId;
+      if (!mine) fail('FORBIDDEN');
+      if (transfer.state !== 'PROPOSED') fail('REVISION_CONFLICT');
+      const decide = (state: string) =>
+        query(
+          tx,
+          `UPDATE "GuildOwnershipTransfer" SET "state"=$2,"decidedAt"=clock_timestamp(),"decidedByAccountId"=$3,"decideReceiptId"=$4::uuid WHERE "id"=$1::uuid AND "state"='PROPOSED' RETURNING "id"`,
+          [input.transferId, state, actor.accountId, receiptId],
+        );
+      let type: string;
+      if (transfer.lapsed) {
+        await decide('EXPIRED');
+        type = 'guild.ownership_expired.v1';
+      } else if (input.decision === 'ACCEPT') {
+        if (
+          (await host.authorizeOwnershipTransfer(tx, {
+            guildId: input.guildId,
+            fromAccountId: transfer.fromAccountId,
+            toAccountId: transfer.toAccountId,
+          })) !== true
+        )
+          fail('FORBIDDEN');
+        await authorize(tx, actor);
+        await decide('ACCEPTED');
+        const moved = await query(
+          tx,
+          `UPDATE "Guild" SET "founderAccountId"=$2 WHERE "id"=$1::uuid AND "founderAccountId"=$3 RETURNING "id"`,
+          [input.guildId, transfer.toAccountId, transfer.fromAccountId],
+        );
+        if (moved.length !== 1) fail('STORAGE_CONTRACT');
+        await query(
+          tx,
+          `UPDATE "GuildOwnershipTransfer" SET "appliedAt"=clock_timestamp() WHERE "id"=$1::uuid AND "state"='ACCEPTED' AND "appliedAt" IS NULL RETURNING "id"`,
+          [input.transferId],
+        );
+        type = 'guild.ownership_transferred.v1';
+      } else if (input.decision === 'DECLINE') {
+        await decide('DECLINED');
+        type = 'guild.ownership_declined.v1';
+      } else {
+        await decide('WITHDRAWN');
+        type = 'guild.ownership_withdrawn.v1';
+      }
+      await authorize(tx, actor);
+      return {
+        resultRef: input.transferId,
+        events: [
+          {
+            type,
+            aggregateId: input.guildId,
+            aggregateVersion: guilds[0].revision,
+            guildId: input.guildId,
+            payload: { guildOwnershipTransferId: input.transferId },
+            publish: false,
+          },
+        ],
+      };
+    },
+  );
+  // A replay is for the two parties of the transfer, judged by identity.
+  await authorize(tx, actor);
+  const transfer = await loadTransfer(tx, input.guildId, result.resultRef);
+  if (transfer.fromAccountId !== actor.accountId && transfer.toAccountId !== actor.accountId)
+    fail('FORBIDDEN');
+  return { status: result.status, transfer };
 }
