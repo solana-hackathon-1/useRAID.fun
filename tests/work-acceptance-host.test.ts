@@ -154,6 +154,19 @@ describe('Root acceptance host error boundaries', () => {
       await expect(failed).rejects.toMatchObject({ code: 'STORAGE_UNAVAILABLE', retryable: true });
     },
   );
+  it('maps the production port storage outage to the typed retryable error, not a raw receipt error', async () => {
+    vi.mocked(readPublishedSkillTaxonomy).mockResolvedValueOnce(taxonomy);
+    const outage = host.assess(
+      tx((sql) =>
+        sql.includes('SkillAssessment')
+          ? new CommandReceiptError('STORAGE_UNAVAILABLE')
+          : undefined,
+      ) as never,
+      context as never,
+    );
+    await expect(outage).rejects.toBeInstanceOf(RootAcceptanceUnavailableError);
+    await expect(outage).rejects.toMatchObject({ code: 'STORAGE_UNAVAILABLE', retryable: true });
+  });
   it('keeps a deadlock retry signal intact so the whole transaction is retried', async () => {
     vi.mocked(readPublishedSkillTaxonomy).mockResolvedValueOnce(taxonomy);
     const retry = new CommandReceiptError('RETRY_TRANSACTION');

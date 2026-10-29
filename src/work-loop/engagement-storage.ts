@@ -281,7 +281,9 @@ export async function commitEngagement(
     [engagement.id],
   );
   const offerId = accepted.length === 1 ? accepted[0].id : null;
-  if (accepted.length > 1 || offerId !== (input.offerId ?? null)) fail('STORAGE_CONTRACT');
+  if (accepted.length > 1) fail('STORAGE_CONTRACT');
+  // The slot is taken by an engagement that was not made through the requested offer.
+  if (offerId !== (input.offerId ?? null)) fail('SLOT_FILLED');
   await session(tx, actor);
   return CommittedEngagementSchema.parse({
     status: result.status,

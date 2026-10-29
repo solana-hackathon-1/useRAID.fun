@@ -173,6 +173,66 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
       { state: 'ACCEPTED' },
     ]);
   });
+  it('refuses with SLOT_FILLED, checked before the offer, when the slot is taken or the engagement is not bound to the requested offer', async () => {
+    await setup();
+    const founder = await seedWorkHuman(db as never, 'founder-' + randomUUID());
+    const { slot, digest } = await raid(
+      'D',
+      undefined,
+      { admission: 'APPLICATION' },
+      founder.actor.accountId,
+    );
+    const admission = {
+      allowNewWrites: true,
+      applicationLimit: 5,
+      authorize: async (_tx: unknown, a: Actor) => a.accountId === founder.actor.accountId,
+    };
+    const application = await run((tx) =>
+      submitApplication(
+        tx,
+        cmd(person, {
+          slotId: slot.slotId,
+          termsVersionId: slot.termsVersionId,
+          evidenceRefs: ['synthetic:portfolio'],
+        }),
+        admission,
+      ),
+    );
+    const offer = await run((tx) =>
+      issueOffer(
+        tx,
+        cmd(founder.actor, {
+          applicationId: application.application.id,
+          expiresAt: new Date(Date.now() + 3600000).toISOString(),
+        }),
+        admission,
+      ),
+    );
+    await consent(person, slot, digest);
+    const operator = host({ isOperator: (id: string) => id === founder.actor.accountId });
+    const key = randomUUID();
+    const request = {
+      slotId: slot.slotId,
+      termsVersionId: slot.termsVersionId,
+      offerId: offer.offer.id,
+    };
+    await run((tx) => commitEngagement(tx, cmd(person, request, key), operator));
+    // A new request for the filled slot is refused on the slot state, before any offer check.
+    await expect(
+      run((tx) => commitEngagement(tx, cmd(person, request), operator)),
+    ).rejects.toMatchObject({ code: 'SLOT_FILLED' });
+    // A replay whose engagement is no longer bound to the requested offer is a domain refusal, not a generic outage.
+    await db.$transaction(async (t) => {
+      await t.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+      await t.$executeRawUnsafe(
+        `UPDATE "RaidOffer" SET "state"='REVOKED',"acceptedEngagementId"=NULL WHERE "id"=$1::uuid`,
+        offer.offer.id,
+      );
+    });
+    await expect(
+      run((tx) => commitEngagement(tx, cmd(person, request, key), operator)),
+    ).rejects.toMatchObject({ code: 'SLOT_FILLED' });
+  });
   it('requires every one of several required skills against the real verified evidence', async () => {
     await setup();
     // A second current taxonomy skill the person has no assessment for.
