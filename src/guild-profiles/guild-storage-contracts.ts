@@ -193,6 +193,7 @@ export class GuildStorageError extends Error {
       | 'NOT_FOUND'
       | 'WRITES_DISABLED'
       | 'REVISION_CONFLICT'
+      | 'GRANT_REVOKED'
       | 'GUILD_EXISTS'
       | 'SLUG_UNAVAILABLE'
       | 'GRANT_LIMIT'
