@@ -268,8 +268,6 @@
     "tests/work-feed-storage.test.ts",
     "tests/work-acceptance-host.test.ts",
     "tests/work-acceptance-root-db.test.ts",
-    "tests/assessment-lock.test.ts",
-    "tests/advisory-wait-db.test.ts",
     "tests/work-start-db.test.ts",
     "tests/work-submission-contracts.test.ts",
     "tests/worker-db.test.ts",

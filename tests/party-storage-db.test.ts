@@ -2,6 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
+import { saveRaidTerms, publishRaid } from '../src/work-loop/storage';
+import type { WorkHost } from '../src/work-loop/contracts';
 import { canonicalRequestDigest } from '../src/command-receipts';
 import {
   createParty,
@@ -29,24 +31,34 @@ const on: PartyHost = { allowNewWrites: true };
 const off: PartyHost = { allowNewWrites: false };
 const POOL = 1000000000n;
 
-async function setup(execution: 'PARTY' | 'SOLO' = 'PARTY') {
+type Tx = Parameters<Parameters<typeof db.$transaction>[0]>[0];
+// The replication role skips only triggers (immutability, slot/listing state machines) for this transaction.
+const replica = <T>(work: (tx: Tx) => Promise<T>) =>
+  db.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+    return work(tx);
+  });
+// Publication still refuses PARTY terms (UNSUPPORTED_MODE) until Party acceptance exists, so fixtures re-label the
+// stored terms of a published SOLO slot.
+const rewriteTerms = (termsVersionId: string, terms: unknown) =>
+  replica((tx) =>
+    tx.$executeRawUnsafe(
+      `UPDATE "TermsVersion" SET "snapshot"=$1::jsonb,"digest"=$2 WHERE "id"=$3::uuid`,
+      JSON.stringify(terms),
+      canonicalRequestDigest(terms),
+      termsVersionId,
+    ),
+  );
+
+async function setup(execution: 'PARTY' | 'SOLO' = 'PARTY', patch: Record<string, unknown> = {}) {
   const leader = await seedWorkHuman(db),
     ana = await seedWorkHuman(db),
     ben = await seedWorkHuman(db),
     outsider = await seedWorkHuman(db);
-  const slot = await seedWorkSlot(db);
-  const terms = { ...raidTerms(), execution };
-  // Publication still refuses PARTY terms (UNSUPPORTED_MODE) until Party acceptance exists, so this fixture re-labels the
-  // stored terms of a published SOLO slot. Replication role bypasses only the immutability trigger, in this transaction.
-  await db.$transaction(async (tx) => {
-    await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
-    await tx.$executeRawUnsafe(
-      `UPDATE "TermsVersion" SET "snapshot"=$1::jsonb,"digest"=$2 WHERE "id"=$3::uuid`,
-      JSON.stringify(terms),
-      canonicalRequestDigest(terms),
-      slot.termsVersionId,
-    );
-  });
+  const founderId = 'founder-' + randomUUID();
+  const slot = await seedWorkSlot(db, founderId);
+  const terms = { ...raidTerms(), execution, ...patch };
+  await rewriteTerms(slot.termsVersionId, terms);
   const { party } = await run((tx) =>
     createParty(tx, cmd(leader.actor, { name: 'Synthetic Party' }), on),
   );
@@ -76,6 +88,7 @@ async function setup(execution: 'PARTY' | 'SOLO' = 'PARTY') {
     ben,
     outsider,
     slot,
+    founderId,
     party,
     split,
     proposal,
@@ -312,5 +325,511 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     );
     await rejects(t.read(t.outsider.actor, proposal.id), 'NOT_FOUND');
     await rejects(t.read(t.ana.actor, randomUUID()), 'NOT_FOUND');
+  });
+
+  // --- Direct-SQL guard coverage: each case satisfies every foreign key and violates exactly one guard branch. ---
+  class Rollback extends Error {}
+  /** Runs the inserts, then always rolls back: only immediate (BEFORE) guards are exercised, nothing is committed. */
+  const dry = async (work: (tx: Tx) => Promise<unknown>) => {
+    try {
+      await db.$transaction(async (tx) => {
+        await work(tx);
+        throw new Rollback();
+      });
+    } catch (error) {
+      if (!(error instanceof Rollback)) throw error;
+    }
+  };
+  /** The Postgres guard itself must refuse: its check_violation code and its message, not just any rejection. */
+  const guardRejects = async (promise: Promise<unknown>, message: RegExp) => {
+    const error = (await promise.then(
+      () => undefined,
+      (e: unknown) => e,
+    )) as { message?: string; meta?: { code?: string } } | undefined;
+    expect(error, 'expected the database guard to reject').toBeDefined();
+    expect(error?.meta?.code).toBe('23514');
+    expect(error?.message).toMatch(message);
+  };
+  const receiptFor = async (tx: Tx, accountId: string, commandKind: string) =>
+    (
+      (await tx.$queryRawUnsafe(
+        `INSERT INTO "CommandReceipt" ("actorId","commandKind","idempotencyKey","requestDigest","requestId","resultRef") VALUES ($1,$2,$3,$4,$3,$3) RETURNING "id"::text`,
+        accountId,
+        commandKind,
+        randomUUID(),
+        'd'.repeat(64),
+      )) as { id: string }[]
+    )[0].id;
+  type Fixture = Awaited<ReturnType<typeof setup>>;
+  const insertParty = (tx: Tx, receiptId: string, leaderParticipantId: string) =>
+    tx.$executeRawUnsafe(
+      `INSERT INTO "Party" ("name","leaderParticipantId","receiptId") VALUES ('Forged',$1::uuid,$2::uuid)`,
+      leaderParticipantId,
+      receiptId,
+    );
+  const insertProposal = (
+    tx: Tx,
+    t: Fixture,
+    receiptId: string,
+    over: { termsDigest?: string; members?: unknown[] } = {},
+  ) =>
+    tx.$queryRawUnsafe(
+      `INSERT INTO "PartyProposal" ("partyId","leaderParticipantId","slotId","termsVersionId","termsDigest","snapshot","snapshotDigest","receiptId") VALUES ($1::uuid,$2::uuid,$3::uuid,$4::uuid,$5,$6::jsonb,$7,$8::uuid) RETURNING "id"::text`,
+      t.party.id,
+      t.leader.participantId,
+      t.slot.slotId,
+      t.slot.termsVersionId,
+      over.termsDigest ?? t.termsDigest,
+      JSON.stringify({ members: over.members ?? [] }),
+      randomUUID().replaceAll('-', '') + randomUUID().replaceAll('-', ''),
+      receiptId,
+    ) as Promise<{ id: string }[]>;
+  const insertMember = (
+    tx: Tx,
+    proposalId: string,
+    participantId: string,
+    role: string,
+    allocations: unknown,
+  ) =>
+    tx.$executeRawUnsafe(
+      `INSERT INTO "PartyProposalMember" ("proposalId","participantId","role","allocations") VALUES ($1::uuid,$2::uuid,$3,$4::jsonb)`,
+      proposalId,
+      participantId,
+      role,
+      JSON.stringify(allocations),
+    );
+  const insertConsent = (
+    tx: Tx,
+    t: Fixture,
+    proposal: { id: string; snapshotDigest: string },
+    receiptId: string,
+    participantId: string,
+  ) =>
+    tx.$executeRawUnsafe(
+      `INSERT INTO "PartyMemberConsent" ("proposalId","participantId","snapshotDigest","receiptId") VALUES ($1::uuid,$2::uuid,$3,$4::uuid)`,
+      proposal.id,
+      participantId,
+      proposal.snapshotDigest,
+      receiptId,
+    );
+  const workHost = (founderId: string): WorkHost => ({
+    allowNewWrites: true,
+    authorize: async (_tx, a, g) => a.accountId === founderId && g === 'synthetic-guild',
+    reserveSimulatedFunding: async (_tx, b) => 'synthetic:' + b.slotId,
+  });
+  const founderCmd = (t: Fixture, input: unknown) =>
+    cmd({ accountId: t.founderId, sessionHash: 'f'.repeat(64) }, input);
+  /** A real terms republish through the work commands: closes the old slot and moves the listing's current terms. */
+  async function republish(t: Fixture, publish: boolean) {
+    const saved = await run((tx) =>
+      saveRaidTerms(
+        tx,
+        founderCmd(t, {
+          listingId: t.slot.listingId,
+          expectedRevision: 1,
+          guildId: 'synthetic-guild',
+          terms: t.slot.terms,
+        }),
+        workHost(t.founderId),
+      ),
+    );
+    if (publish)
+      await run((tx) =>
+        publishRaid(
+          tx,
+          founderCmd(t, { listingId: t.slot.listingId, termsVersionId: saved.termsVersionId }),
+          workHost(t.founderId),
+        ),
+      );
+    return saved;
+  }
+  /** Only the listing's current terms move: the old slot and listing stay AVAILABLE/OPEN, isolating that one guard branch. */
+  async function moveCurrentTermsOnly(t: Fixture) {
+    await republish(t, false);
+    await replica(async (tx) => {
+      await tx.$executeRawUnsafe(
+        `UPDATE "RaidSlot" SET "state"='AVAILABLE' WHERE "id"=$1::uuid`,
+        t.slot.slotId,
+      );
+      await tx.$executeRawUnsafe(
+        `UPDATE "WorkListing" SET "state"='OPEN' WHERE "id"=$1::uuid`,
+        t.slot.listingId,
+      );
+    });
+  }
+  const setSlotState = (t: Fixture, state: string) =>
+    replica((tx) =>
+      tx.$executeRawUnsafe(
+        `UPDATE "RaidSlot" SET "state"=$2 WHERE "id"=$1::uuid`,
+        t.slot.slotId,
+        state,
+      ),
+    );
+  const setListingState = (t: Fixture, state: string) =>
+    replica((tx) =>
+      tx.$executeRawUnsafe(
+        `UPDATE "WorkListing" SET "state"=$2 WHERE "id"=$1::uuid`,
+        t.slot.listingId,
+        state,
+      ),
+    );
+  const stale: Record<string, (t: Fixture) => Promise<unknown>> = {
+    'the slot is closed': (t) => setSlotState(t, 'CLOSED'),
+    'the slot is filled': (t) => setSlotState(t, 'FILLED'),
+    'the listing is not open': (t) => setListingState(t, 'DRAFT'),
+    'the listing moved to other current terms': moveCurrentTermsOnly,
+  };
+
+  it('Party guard: the leader must be the commanding account’s own participant, via a CreateParty receipt', async () => {
+    const t = await setup();
+    // Control: the matching account, kind and participant passes the guard.
+    await dry(async (tx) =>
+      insertParty(
+        tx,
+        await receiptFor(tx, t.ana.actor.accountId, 'CreateParty'),
+        t.ana.participantId,
+      ),
+    );
+    await guardRejects(
+      dry(async (tx) =>
+        insertParty(
+          tx,
+          await receiptFor(tx, t.leader.actor.accountId, 'CreateParty'),
+          t.ana.participantId,
+        ),
+      ),
+      /commanding human participant/,
+    );
+    await guardRejects(
+      dry(async (tx) =>
+        insertParty(
+          tx,
+          await receiptFor(tx, t.ana.actor.accountId, 'ProposePartyRoster'),
+          t.ana.participantId,
+        ),
+      ),
+      /commanding human participant/,
+    );
+  });
+
+  it('PartyProposal guard: the receipt must be the leader’s own ProposePartyRoster command', async () => {
+    const t = await setup();
+    await guardRejects(
+      dry(async (tx) =>
+        insertProposal(tx, t, await receiptFor(tx, t.ana.actor.accountId, 'ProposePartyRoster')),
+      ),
+      /Only the Party leader proposes/,
+    );
+    await guardRejects(
+      dry(async (tx) =>
+        insertProposal(tx, t, await receiptFor(tx, t.leader.actor.accountId, 'CreateParty')),
+      ),
+      /Only the Party leader proposes/,
+    );
+  });
+
+  it.each(Object.keys(stale))(
+    'PartyProposal guard: refuses a roster when %s',
+    async (condition) => {
+      const t = await setup();
+      await dry(async (tx) =>
+        insertProposal(tx, t, await receiptFor(tx, t.leader.actor.accountId, 'ProposePartyRoster')),
+      );
+      await stale[condition](t);
+      await guardRejects(
+        dry(async (tx) =>
+          insertProposal(
+            tx,
+            t,
+            await receiptFor(tx, t.leader.actor.accountId, 'ProposePartyRoster'),
+          ),
+        ),
+        /available slot on the current terms/,
+      );
+    },
+  );
+
+  it('PartyProposal guard: only PARTY terms, and only the exact stored terms digest', async () => {
+    const solo = await setup('SOLO');
+    await guardRejects(
+      dry(async (tx) =>
+        insertProposal(
+          tx,
+          solo,
+          await receiptFor(tx, solo.leader.actor.accountId, 'ProposePartyRoster'),
+        ),
+      ),
+      /Only PARTY terms take a roster/,
+    );
+    const t = await setup();
+    await guardRejects(
+      dry(async (tx) =>
+        insertProposal(
+          tx,
+          t,
+          await receiptFor(tx, t.leader.actor.accountId, 'ProposePartyRoster'),
+          {
+            termsDigest: 'b'.repeat(64),
+          },
+        ),
+      ),
+      /exact stored terms digest/,
+    );
+  });
+
+  describe('consent after the slot or terms moved on', () => {
+    async function proposed() {
+      const t = await setup();
+      const { proposal } = await t.propose(
+        t.leader.actor,
+        t.proposal(t.split(500000000n, 300000000n, 200000000n)),
+      );
+      return {
+        t,
+        proposal,
+        input: { proposalId: proposal.id, snapshotDigest: proposal.snapshotDigest },
+      };
+    }
+    const noConsent = async () =>
+      expect(await db.$queryRawUnsafe('SELECT 1 FROM "PartyMemberConsent"')).toHaveLength(0);
+
+    it('consent guard: the receipt must be the member’s own RecordPartyMemberConsent command', async () => {
+      const { t, proposal } = await proposed();
+      // Control: Ben's own consent receipt passes the guard.
+      await dry(async (tx) =>
+        insertConsent(
+          tx,
+          t,
+          proposal,
+          await receiptFor(tx, t.ben.actor.accountId, 'RecordPartyMemberConsent'),
+          t.ben.participantId,
+        ),
+      );
+      await guardRejects(
+        dry(async (tx) =>
+          insertConsent(
+            tx,
+            t,
+            proposal,
+            await receiptFor(tx, t.ben.actor.accountId, 'CreateParty'),
+            t.ben.participantId,
+          ),
+        ),
+        /recorded only by the consenting member/,
+      );
+    });
+
+    it.each(Object.keys(stale))(
+      'consent guard: refuses a consent row when %s',
+      async (condition) => {
+        const { t, proposal } = await proposed();
+        await dry(async (tx) =>
+          insertConsent(
+            tx,
+            t,
+            proposal,
+            await receiptFor(tx, t.ben.actor.accountId, 'RecordPartyMemberConsent'),
+            t.ben.participantId,
+          ),
+        );
+        await stale[condition](t);
+        await guardRejects(
+          dry(async (tx) =>
+            insertConsent(
+              tx,
+              t,
+              proposal,
+              await receiptFor(tx, t.ben.actor.accountId, 'RecordPartyMemberConsent'),
+              t.ben.participantId,
+            ),
+          ),
+          /available slot on the proposal terms/,
+        );
+      },
+    );
+
+    it('commands: SLOT_FILLED once the slot is filled, for consent and for a new roster', async () => {
+      const { t, input } = await proposed();
+      await setSlotState(t, 'FILLED');
+      await rejects(t.consent(t.ana.actor, input), 'SLOT_FILLED');
+      await rejects(
+        t.propose(t.leader.actor, t.proposal(t.split(500000000n, 300000000n, 200000000n))),
+        'SLOT_FILLED',
+      );
+      await noConsent();
+    });
+
+    it('commands: a real terms republish closes the slot, so consent and a new roster are refused', async () => {
+      const { t, input } = await proposed();
+      await republish(t, true);
+      await rejects(t.consent(t.ana.actor, input), 'PUBLICATION_BLOCKED');
+      await rejects(
+        t.propose(t.leader.actor, t.proposal(t.split(500000000n, 300000000n, 200000000n))),
+        'PUBLICATION_BLOCKED',
+      );
+      await noConsent();
+    });
+
+    it('commands: TERMS_VERSION_CHANGED when only the listing’s current terms moved', async () => {
+      const { t, input } = await proposed();
+      await moveCurrentTermsOnly(t);
+      await rejects(t.consent(t.ana.actor, input), 'TERMS_VERSION_CHANGED');
+      await rejects(
+        t.propose(t.leader.actor, t.proposal(t.split(500000000n, 300000000n, 200000000n))),
+        'TERMS_VERSION_CHANGED',
+      );
+      await noConsent();
+    });
+
+    it('commands: DEADLINE_PASSED once the commitment deadline passes', async () => {
+      const { t, input } = await proposed();
+      const past = {
+        ...raidTerms(),
+        execution: 'PARTY' as const,
+        deadlines: {
+          ...raidTerms().deadlines,
+          commitment: new Date(Date.now() - 60000).toISOString(),
+        },
+      };
+      await rewriteTerms(t.slot.termsVersionId, past);
+      await rejects(t.consent(t.ana.actor, input), 'DEADLINE_PASSED');
+      await rejects(
+        t.propose(
+          t.leader.actor,
+          t.proposal(t.split(500000000n, 300000000n, 200000000n), {
+            termsDigest: canonicalRequestDigest(past),
+          }),
+        ),
+        'DEADLINE_PASSED',
+      );
+      await noConsent();
+    });
+  });
+
+  describe('PartyProposalMember guard', () => {
+    const alloc = [{ amount: String(POOL) }];
+    /** Forges a proposal whose snapshot already holds the member, so only the member guard can refuse the mirror row. */
+    const forged = async (
+      tx: Tx,
+      t: Fixture,
+      member: { participantId: string; role: string; allocations: unknown },
+    ) => {
+      const [row] = await insertProposal(
+        tx,
+        t,
+        await receiptFor(tx, t.leader.actor.accountId, 'ProposePartyRoster'),
+        { members: [member] },
+      );
+      return row.id;
+    };
+    it('accepts the exact snapshot member (control)', async () => {
+      const t = await setup();
+      const member = { participantId: t.ana.participantId, role: 'Frontend', allocations: alloc };
+      await dry(async (tx) =>
+        insertMember(tx, await forged(tx, t, member), member.participantId, member.role, alloc),
+      );
+    });
+    it.each([
+      ['a different role', { role: 'Backend' }],
+      ['different allocations', { allocations: [{ amount: '1' }] }],
+    ])('refuses a row with %s than the snapshot', async (_name, differs) => {
+      const t = await setup();
+      const member = { participantId: t.ana.participantId, role: 'Frontend', allocations: alloc };
+      await guardRejects(
+        dry(async (tx) => {
+          const id = await forged(tx, t, member);
+          await insertMember(
+            tx,
+            id,
+            member.participantId,
+            (differs as { role?: string }).role ?? member.role,
+            (differs as { allocations?: unknown }).allocations ?? alloc,
+          );
+        }),
+        /match the immutable snapshot/,
+      );
+    });
+    it('refuses a non-human participant, even one named in the snapshot', async () => {
+      const t = await setup();
+      const member = { participantId: t.ana.participantId, role: 'Frontend', allocations: alloc };
+      await guardRejects(
+        dry(async (tx) => {
+          const id = await forged(tx, t, member);
+          // Participant.kind is checked to HUMAN today; lift that in this rolled-back transaction to prove the guard stands alone.
+          await tx.$executeRawUnsafe(
+            `ALTER TABLE "Participant" DROP CONSTRAINT "Participant_kind_check"`,
+          );
+          await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+          await tx.$executeRawUnsafe(
+            `UPDATE "Participant" SET "kind"='AI_AGENT' WHERE "id"=$1::uuid`,
+            t.ana.participantId,
+          );
+          await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = origin`);
+          await insertMember(tx, id, member.participantId, member.role, alloc);
+        }),
+        /Only human members consent/,
+      );
+    });
+    it.each([
+      [
+        'the wrong number of legs',
+        [{ amount: '1' }, { amount: '0' }],
+        /one allocation per reward leg/,
+      ],
+      ['an extra key', [{ amount: '1', extra: 'x' }], /exact integer amount/],
+      ['a numeric amount', [{ amount: 1 }], /exact integer amount/],
+      ['a leading zero', [{ amount: '01' }], /exact integer amount/],
+      ['a negative amount', [{ amount: '-1' }], /exact integer amount/],
+      ['a fractional amount', [{ amount: '1.5' }], /exact integer amount/],
+      ['an amount over 78 digits', [{ amount: '1' + '0'.repeat(78) }], /exact integer amount/],
+      ['a leg that is not an object', ['1'], /exact integer amount/],
+    ])('refuses an allocation with %s', async (_name, allocations, message) => {
+      const t = await setup();
+      const member = { participantId: t.ana.participantId, role: 'Frontend', allocations };
+      await guardRejects(
+        dry(async (tx) =>
+          insertMember(
+            tx,
+            await forged(tx, t, member),
+            member.participantId,
+            member.role,
+            allocations,
+          ),
+        ),
+        message,
+      );
+    });
+  });
+
+  it('refuses a suspended or non-human member through the command', async () => {
+    const t = await setup();
+    const members = t.split(500000000n, 300000000n, 200000000n);
+    await db.user.update({ where: { id: t.ben.actor.accountId }, data: { suspended: true } });
+    await rejects(t.propose(t.leader.actor, t.proposal(members)), 'INVALID_INPUT');
+    await db.user.update({ where: { id: t.ben.actor.accountId }, data: { suspended: false } });
+    await db.$executeRawUnsafe(
+      `ALTER TABLE "Participant" DROP CONSTRAINT "Participant_kind_check"`,
+    );
+    try {
+      await replica((tx) =>
+        tx.$executeRawUnsafe(
+          `UPDATE "Participant" SET "kind"='AI_AGENT' WHERE "id"=$1::uuid`,
+          t.ben.participantId,
+        ),
+      );
+      await rejects(t.propose(t.leader.actor, t.proposal(members)), 'INVALID_INPUT');
+    } finally {
+      await replica((tx) =>
+        tx.$executeRawUnsafe(
+          `UPDATE "Participant" SET "kind"='HUMAN' WHERE "id"=$1::uuid`,
+          t.ben.participantId,
+        ),
+      );
+      await db.$executeRawUnsafe(
+        `ALTER TABLE "Participant" ADD CONSTRAINT "Participant_kind_check" CHECK ("kind" = 'HUMAN')`,
+      );
+    }
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "PartyProposal"')).toHaveLength(0);
+    expect((await t.propose(t.leader.actor, t.proposal(members))).status).toBe('EXECUTED');
   });
 });

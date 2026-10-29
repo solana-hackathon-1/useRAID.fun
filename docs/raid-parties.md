@@ -1,6 +1,6 @@
 # Party rosters, exact splits and member consent (T056)
 
-Module: `src/parties` (`createParty`, `proposePartyRoster`, `recordPartyMemberConsent`, `readPartyProposal`, `evaluatePartyCoverage`). Migration `202610270011_parties`. Consuming example: [`examples/parties`](../examples/parties/README.md) (pure contracts and coverage; the storage needs a host with the RAID work tables and is covered by the real-database tests only). Blueprint §§14.2–14.4, 13, 16; invariants P02, I01–I05, I08. Simulated funds only; no flag is added because no route or UI calls these commands yet. Writes take `PartyHost.allowNewWrites` (default off in any host that does not set it); replays and reads work while it is off.
+Module: `src/parties` (`createParty`, `proposePartyRoster`, `recordPartyMemberConsent`, `readPartyProposal`, `evaluatePartyCoverage`). Migration `202610290002_parties`. Consuming example: [`examples/parties`](../examples/parties/README.md) (pure contracts and coverage; the storage needs a host with the RAID work tables and is covered by the real-database tests only). Blueprint §§14.2–14.4, 13, 16; invariants P02, I01–I05, I08. Simulated funds only; no flag is added because no route or UI calls these commands yet. Writes take `PartyHost.allowNewWrites` (default off in any host that does not set it); replays and reads work while it is off.
 
 ## What it does
 
