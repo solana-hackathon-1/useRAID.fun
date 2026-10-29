@@ -76,6 +76,36 @@ integration('T022 My Raid, review and applicant read models', () => {
       }),
     ]);
   });
+  it('shows the accepted terms, setup readiness and capacity summary only to the participant', async () => {
+    const e = await seedEngagement(db);
+    const mine = await run((tx) => readMyRaids(tx, e.worker.actor));
+    const card = mine.engagements[0];
+    expect(card.acceptedTerms).toMatchObject({
+      termsVersionId: expect.any(String),
+      scope: expect.any(String),
+      rewards: [expect.objectContaining({ amount: e.slot.terms.rewards[0].amount })],
+      roster: expect.arrayContaining([
+        expect.objectContaining({ participantId: e.worker.participantId }),
+      ]),
+      deadlines: expect.objectContaining({ preparation: expect.any(String) }),
+    });
+    expect(card.setup.status).toBe('READY');
+    expect(mine.capacity).toEqual({
+      limit: 1,
+      held: true,
+      engagementId: e.engagementId,
+      title: e.slot.terms.title,
+    });
+    const first = await e.submit();
+    await e.decide(first.submission.id, 'ACCEPT');
+    const done = await run((tx) => readMyRaids(tx, e.worker.actor));
+    expect(done.capacity).toEqual({ limit: 1, held: false, engagementId: null, title: null });
+    const stranger = await seedWorkHuman(db);
+    const none = await run((tx) => readMyRaids(tx, stranger.actor));
+    expect(none.engagements).toEqual([]);
+    expect(none.capacity.held).toBe(false);
+    expect(JSON.stringify(none)).not.toContain(e.engagementId);
+  });
   it('names the one Raid holding the member capacity, only for that member and only while held', async () => {
     const e = await seedEngagement(db);
     expect(await run((tx) => readActiveRaid(tx, e.worker.actor))).toEqual({

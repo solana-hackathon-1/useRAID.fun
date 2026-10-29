@@ -20,6 +20,16 @@ const card = (patch: Record<string, unknown> = {}) => ({
   title: 'Synthetic documentation task',
   state: 'IN_PROGRESS',
   capacityHeld: true,
+  acceptedTerms: {
+    termsVersionId: id(2),
+    revision: 1,
+    scope: 'Write the installation guide.',
+    requiredSkills: [],
+    roster: [{ participantId: id(3), responsibility: 'Author' }],
+    rewards: [],
+    deadlines: { preparation: '2026-11-03T00:00:00.000Z', ...deadlines },
+  },
+  setup: { status: 'READY', preparationDeadline: '2026-11-03T00:00:00.000Z' },
   nextStep: 'SUBMIT_WORK',
   deadlines,
   submissionCount: 0,
@@ -31,7 +41,12 @@ const card = (patch: Record<string, unknown> = {}) => ({
   ...patch,
 });
 const mine = (engagements: unknown[] = [], applications: unknown[] = []) =>
-  MyRaidsSchema.parse({ version: 'v1', engagements, applications });
+  MyRaidsSchema.parse({
+    version: 'v1',
+    capacity: { limit: 1, held: false, engagementId: null, title: null },
+    engagements,
+    applications,
+  });
 const render = (el: ReturnType<typeof createElement>) => renderToStaticMarkup(el);
 const workspace = (initial: ReturnType<typeof mine>, flags = {}) =>
   render(
@@ -56,6 +71,31 @@ describe('T022 My Raid workspace markup', () => {
     expect(html).toContain('Submission 1 of at most 2');
     expect(html).toMatch(/<fieldset[^>]*disabled/);
     expect(html).toContain('Loading controls');
+  });
+  it('shows the accepted terms, setup readiness and capacity summary', () => {
+    const html = workspace(
+      mine([
+        card({
+          state: 'ACCESS_PENDING',
+          nextStep: 'WAIT_FOR_START',
+          setup: { status: 'PENDING', preparationDeadline: '2026-11-03T00:00:00.000Z' },
+        }),
+      ]),
+    );
+    expect(html).toContain('Accepted terms');
+    expect(html).toContain('Write the installation guide.');
+    expect(html).toContain('Author');
+    expect(html).toContain('Setup is not finished');
+    const held = MyRaidsSchema.parse({
+      ...mine([card()]),
+      capacity: {
+        limit: 1,
+        held: true,
+        engagementId: id(1),
+        title: 'Synthetic documentation task',
+      },
+    });
+    expect(workspace(held)).toContain('Active Raid capacity: 1 of 1 in use');
   });
   it('shows a plain unavailable notice instead of an enabled form when writes are off', () => {
     const html = workspace(mine([card()]), { submissionsAvailable: false });

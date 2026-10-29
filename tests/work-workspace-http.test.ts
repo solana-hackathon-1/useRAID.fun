@@ -39,7 +39,12 @@ function host(overrides: Partial<WorkHttpHost> = {}): WorkHttpHost {
     actor: async () => actor,
     checkOrigin: () => {},
     rateLimit: () => {},
-    me: async () => ({ version: 'v1', engagements: [], applications: [] }),
+    me: async () => ({
+      version: 'v1',
+      capacity: { limit: 1, held: false, engagementId: null, title: null },
+      engagements: [],
+      applications: [],
+    }),
     reviews: async () => ({ version: 'v1', items: [] }),
     applicants: async () => ({ version: 'v1', listings: [] }),
     submitWork: async () => ({ status: 'EXECUTED', engagementState: 'SUBMITTED', submission }),
@@ -83,7 +88,12 @@ describe('T022 work workspace HTTP boundary', () => {
     const response = await handlers.ME(new Request('http://localhost/api/v1/work/me'));
     expect(response.status).toBe(200);
     expect(response.headers.get('cache-control')).toBe('private, no-store');
-    expect(await response.json()).toEqual({ version: 'v1', engagements: [], applications: [] });
+    expect(await response.json()).toEqual({
+      version: 'v1',
+      capacity: { limit: 1, held: false, engagementId: null, title: null },
+      engagements: [],
+      applications: [],
+    });
   });
   it('fails closed when the host breaks its own response contract', async () => {
     const handlers = createWorkHandlers(
@@ -94,7 +104,12 @@ describe('T022 work workspace HTTP boundary', () => {
     expect((await error(response)).code).toBe('SERVICE_UNAVAILABLE');
   });
   it('rejects query strings and foreign methods before reading', async () => {
-    const me = vi.fn(async () => ({ version: 'v1', engagements: [], applications: [] }));
+    const me = vi.fn(async () => ({
+      version: 'v1',
+      capacity: { limit: 1, held: false, engagementId: null, title: null },
+      engagements: [],
+      applications: [],
+    }));
     const handlers = createWorkHandlers(host({ me }));
     expect((await handlers.ME(new Request('http://localhost/api/v1/work/me?x=1'))).status).toBe(
       422,

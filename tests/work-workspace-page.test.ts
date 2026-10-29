@@ -29,7 +29,12 @@ const flags = {
   applicationsAvailable: true,
   offersAvailable: false,
 };
-const mine = { version: 'v1', engagements: [], applications: [] };
+const mine = {
+  version: 'v1',
+  capacity: { limit: 1, held: false, engagementId: null, title: null },
+  engagements: [],
+  applications: [],
+};
 const queue = { version: 'v1', items: [] };
 const applicants = { version: 'v1', listings: [] };
 beforeEach(() => {

@@ -19,12 +19,30 @@ import {
 const engagementId = '11111111-1111-4111-8111-111111111111';
 const view = MyRaidsSchema.parse({
   version: 'v1',
+  capacity: { limit: 1, held: true, engagementId, title: 'Synthetic task' },
   engagements: [
     {
       engagementId,
       title: 'Synthetic task',
       state: 'IN_PROGRESS',
       capacityHeld: true,
+      acceptedTerms: {
+        termsVersionId: '22222222-2222-4222-8222-222222222222',
+        revision: 1,
+        scope: 'Synthetic scope.',
+        requiredSkills: [],
+        roster: [
+          { participantId: '33333333-3333-4333-8333-333333333333', responsibility: 'Author' },
+        ],
+        rewards: [],
+        deadlines: {
+          preparation: '2026-11-03T00:00:00.000Z',
+          submission: '2026-11-04T00:00:00.000Z',
+          review: '2026-11-05T00:00:00.000Z',
+          operationalClosure: '2026-11-06T00:00:00.000Z',
+        },
+      },
+      setup: { status: 'READY', preparationDeadline: '2026-11-03T00:00:00.000Z' },
       nextStep: 'SUBMIT_WORK',
       deadlines: {
         submission: '2026-11-04T00:00:00.000Z',
@@ -102,7 +120,12 @@ const unreachable = await api.me().catch((e: unknown) => e);
 console.log(
   JSON.stringify({
     synthetic: true,
-    workspaceRenders: mine.includes('Synthetic task') && mine.includes('Submit work'),
+    workspaceRenders:
+      mine.includes('Synthetic task') &&
+      mine.includes('Submit work') &&
+      mine.includes('Synthetic scope.') &&
+      mine.includes('Setup finished.') &&
+      mine.includes('Active Raid capacity: 1 of 1 in use'),
     unavailableHonest: off.includes('Submitting is currently unavailable'),
     deskRenders: desk.includes('No submissions are waiting for you'),
     noDispatchDuringSsr: ssrDispatches === 0,

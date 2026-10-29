@@ -8,4 +8,7 @@ renders with an injected transport. No RAID app, database, environment, session 
 npm ci && npm run typecheck && npm start
 ```
 
+The synthetic `MyRaidsSchema` view supplies the required capacity summary, and per engagement the accepted terms and
+setup readiness; the host renders them from injected data only.
+
 Expected JSON: every flag `true`. See [work workspace](../../docs/raid-work-workspace.md).
