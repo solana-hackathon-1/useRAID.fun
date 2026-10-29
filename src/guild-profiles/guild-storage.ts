@@ -302,6 +302,7 @@ export async function activateGuild(
 /**
  * Asks the pure policy whether the actor may take a profile action over these fields, from facts rebuilt here under the
  * database clock. Window bounds are rounded conservatively to the policy's millisecond precision (start up, expiry down).
+ * The grant query and the policy share the caller's single clock reading `guild.now`.
  */
 async function profileDecision(
   tx: CommandReceiptTransaction,
@@ -322,8 +323,9 @@ async function profileDecision(
        date_trunc('milliseconds',"validFrom")+CASE WHEN "validFrom">date_trunc('milliseconds',"validFrom") THEN interval '1 millisecond' ELSE interval '0' END AS "validFrom",
        date_trunc('milliseconds',"expiresAt") AS "expiresAt"
      FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND "revokedAt" IS NULL
-      AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`,
-    [guild.id, actor.accountId],
+      AND "validFrom"<=$3::timestamptz AND ("expiresAt" IS NULL OR "expiresAt">$3::timestamptz)`,
+    // One clock reading: the grants are selected at the same instant the policy is asked about.
+    [guild.id, actor.accountId, guild.now.toISOString()],
   );
   return evaluateGuildProfilePermission(
     {
@@ -377,6 +379,10 @@ export async function editGuildProfile(
   async function permitted(
     lock: boolean,
   ): Promise<{ revision: number; name: string; description: string }> {
+    // Judge standing before taking any lock: an account with no profile authority here cannot queue behind the
+    // Guild row, and a missing Guild answers the same FORBIDDEN as an existing one. Field scope is judged below.
+    const standing = await authorityKinds(tx, actor.accountId, input.guildId);
+    if (!standing.kinds.includes('PROFILE')) fail('FORBIDDEN');
     const rows = await query<{
       id: string;
       founderAccountId: string;
@@ -472,7 +478,11 @@ export async function readPublicGuild(tx: CommandReceiptTransaction, slug: strin
     publicProfileApproved: true,
   });
 }
-/** The private management view: the Guild plus only the authority the caller actually holds. */
+/**
+ * The private management view: the Guild plus only the authority the caller actually holds. The Founder's account id
+ * is shown only to the Founder and to profile managers; a caller whose authority is only work, treasury or dispute
+ * sees `founderAccountId: null`.
+ */
 export async function readManagedGuild(
   tx: CommandReceiptTransaction,
   actor: GuildActor,
@@ -483,12 +493,17 @@ export async function readManagedGuild(
   await authorize(tx, actor);
   const authority = await authorityKinds(tx, actor.accountId, guildId);
   if (!authority.kinds.length) fail('FORBIDDEN');
-  const guild = await loadGuild(tx, guildId);
+  const loaded = await loadGuild(tx, guildId);
+  const guild = authority.kinds.includes('PROFILE')
+    ? loaded
+    : { ...loaded, founderAccountId: null };
   await authorize(tx, actor);
   return { guild, authority };
 }
-const LIVE_R = `r."revokedAt" IS NULL AND r."validFrom"<=clock_timestamp() AND (r."expiresAt" IS NULL OR r."expiresAt">clock_timestamp())`;
 const LIVE = `"revokedAt" IS NULL AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`;
+/** Live at a bound instant (placeholder `$n`), so several reads in one command judge grants at the same moment. */
+const liveAt = (n: number, alias = '') =>
+  `${alias}"revokedAt" IS NULL AND ${alias}"validFrom"<=$${n}::timestamptz AND (${alias}"expiresAt" IS NULL OR ${alias}"expiresAt">$${n}::timestamptz)`;
 async function loadGrant(
   tx: CommandReceiptTransaction,
   guildId: string,
@@ -551,6 +566,9 @@ export async function grantGuildRole(
     async ({ receiptId }) => {
       await authorize(tx, actor);
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Standing is judged before the Guild row is locked, so an account that may not issue roles here cannot stall
+      // the Guild and learns nothing about which Guilds exist; it is judged again under the lock below.
+      if (!(await mayDelegate())) fail('FORBIDDEN');
       const guilds = await query<{
         id: string;
         founderAccountId: string;
@@ -588,10 +606,14 @@ export async function grantGuildRole(
           tx,
           `SELECT f AS field,max("expiresAt") AS bound,bool_or("expiresAt" IS NULL) AS unbounded
            FROM "GuildRoleGrant" r CROSS JOIN LATERAL unnest(r."fields") f
-           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${LIVE_R} AND f=ANY($3::text[])
+           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${liveAt(4, 'r.')} AND f=ANY($3::text[])
            GROUP BY f`,
-          [input.guildId, actor.accountId, `{${input.fields.join(',')}}`],
+          // The same instant the policy judged: cover cannot lapse between the two reads.
+          [input.guildId, actor.accountId, `{${input.fields.join(',')}}`, guild.now.toISOString()],
         );
+        // Fail closed: every requested field must still show delegating cover here.
+        const covered = new Set(bounds.map((b) => b.field));
+        if (input.fields.some((f) => !covered.has(f))) fail('FORBIDDEN');
         // The latest expiry among the covering grants, per field; the earliest of those bounds the new grant.
         const finite = bounds.filter((b) => !b.unbounded && b.bound);
         if (finite.length) {
@@ -600,15 +622,15 @@ export async function grantGuildRole(
         }
         const passed = await query<{ n: number }>(
           tx,
-          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${LIVE}`,
-          [input.guildId, actor.accountId],
+          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${liveAt(3)}`,
+          [input.guildId, actor.accountId, guild.now.toISOString()],
         );
         if ((passed[0]?.n ?? 0) >= DELEGATED_GRANT_LIMIT) fail('GRANT_LIMIT');
       }
       const live = await query<{ n: number }>(
         tx,
-        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${LIVE}`,
-        [input.guildId],
+        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${liveAt(2)}`,
+        [input.guildId, guild.now.toISOString()],
       );
       if ((live[0]?.n ?? 0) >= GUILD_GRANT_LIMIT) fail('GRANT_LIMIT');
       // Read without a lock: locking the grantee here would invert the grantee-then-Guild order other commands use.
@@ -658,7 +680,9 @@ export async function grantGuildRole(
 }
 /**
  * Revokes a grant: by the Founder, the account that issued it, or its grantee (surrender). Revoking a delegating profile
- * grant also revokes what that grantee passed on (unless another delegating grant of theirs is still live).
+ * grant also revokes what that grantee passed on, except grants whose every field is still covered by another live
+ * delegating grant of the grantee that lasts at least as long. Never blocked by the new-writes switch: taking authority
+ * away must stay possible in an incident. A repeat revocation fails with `GRANT_REVOKED`, which callers treat as done.
  */
 export async function revokeGuildRole(
   tx: CommandReceiptTransaction,
@@ -684,7 +708,31 @@ export async function revokeGuildRole(
     },
     async () => {
       await authorize(tx, actor);
-      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Standing first, without a lock: only the Founder or someone involved in the grant may take it further, so a
+      // stranger cannot stall the Guild or learn whether a Guild or grant id exists (all answer FORBIDDEN).
+      const standing = await query<{
+        founder: boolean;
+        grantedBy: string | null;
+        grantee: string | null;
+        revoked: boolean | null;
+      }>(
+        tx,
+        `SELECT g."founderAccountId"=$3 AS founder,r."grantedByAccountId" AS "grantedBy",r."granteeAccountId" AS grantee,
+           r."revokedAt" IS NOT NULL AS revoked
+         FROM "Guild" g LEFT JOIN "GuildRoleGrant" r ON r."id"=$2::uuid AND r."guildId"=g."id" WHERE g."id"=$1::uuid`,
+        [input.guildId, input.grantId, actor.accountId],
+      );
+      if (
+        standing.length !== 1 ||
+        !(
+          standing[0].founder ||
+          standing[0].grantedBy === actor.accountId ||
+          standing[0].grantee === actor.accountId
+        )
+      )
+        fail('FORBIDDEN');
+      // The caller is involved, so naming the revoked state leaks nothing and needs no Guild lock.
+      if (standing[0].revoked) fail('GRANT_REVOKED');
       // The Guild row serializes revocation with profile edits, grants and other revocations.
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
@@ -709,7 +757,7 @@ export async function revokeGuildRole(
       const grant = grants[0];
       if (!involved({ founder: guilds[0].founderAccountId === actor.accountId, ...grant }))
         fail('FORBIDDEN');
-      if (grant.revoked) fail('REVISION_CONFLICT');
+      if (grant.revoked) fail('GRANT_REVOKED');
       await query(
         tx,
         'UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "id"=$1::uuid AND "revokedAt" IS NULL RETURNING "id"',
@@ -761,7 +809,13 @@ export async function revokeGuildRole(
     [input.grantId, input.guildId, actor.accountId],
   );
   if (again.length !== 1 || !involved(again[0])) fail('FORBIDDEN');
-  return { status: result.status, grant: await loadGrant(tx, input.guildId, result.resultRef) };
+  const grant = await loadGrant(tx, input.guildId, result.resultRef);
+  // Only the Founder and profile managers may learn who issued the grant (the Founder id for non-profile kinds).
+  const { kinds } = await authorityKinds(tx, actor.accountId, input.guildId);
+  return {
+    status: result.status,
+    grant: kinds.includes('PROFILE') ? grant : { ...grant, grantedByAccountId: null },
+  };
 }
 async function loadTransfer(
   tx: CommandReceiptTransaction,
@@ -785,7 +839,29 @@ async function loadTransfer(
   if (!parsed.success) fail('STORAGE_CONTRACT');
   return parsed.data;
 }
-/** The current Founder offers the Founder role to another account; nothing changes until that account accepts. */
+/**
+ * Blueprint 06.2 keeps treasury and dispute authority apart from the Founder role, and `grantGuildRole` never issues
+ * one to a Founder; so no account becomes Founder while it holds an unrevoked, unexpired TREASURY or DISPUTE grant in
+ * that Guild (a not-yet-started grant counts, since it would become live under the new Founder).
+ */
+async function holdsSeparateAuthority(
+  tx: CommandReceiptTransaction,
+  guildId: string,
+  accountId: string,
+): Promise<boolean> {
+  const rows = await query(
+    tx,
+    `SELECT 1 FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind" IN ('TREASURY','DISPUTE')
+       AND "revokedAt" IS NULL AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp()) LIMIT 1`,
+    [guildId, accountId],
+  );
+  return rows.length > 0;
+}
+/**
+ * The current Founder offers the Founder role to another account; nothing changes until that account accepts. The
+ * window ends at `expiresAt`, any future instant up to 30 days ahead. A recipient holding live treasury or dispute
+ * authority in the Guild is refused (`FORBIDDEN`), as `grantGuildRole` refuses a Founder grantee.
+ */
 export async function proposeOwnershipTransfer(
   tx: CommandReceiptTransaction,
   command: GuildCommand,
@@ -832,6 +908,7 @@ export async function proposeOwnershipTransfer(
       );
       if (recipients.length !== 1) fail('NOT_FOUND');
       if (recipients[0].suspended) fail('ACCOUNT_RESTRICTED');
+      if (await holdsSeparateAuthority(tx, input.guildId, input.toAccountId)) fail('FORBIDDEN');
       const lapsed = await query<{ id: string }>(
         tx,
         `UPDATE "GuildOwnershipTransfer" SET "state"='EXPIRED',"decidedAt"=clock_timestamp(),"decidedByAccountId"=$2,"decideReceiptId"=$3::uuid
@@ -876,7 +953,15 @@ export async function proposeOwnershipTransfer(
 }
 /**
  * The recipient accepts or declines; the proposing Founder withdraws. Accepting changes the Guild's Founder in the same
- * transaction, after the host approves the change. Responding to a lapsed proposal records it as expired.
+ * transaction, after the host approves the change and only if the recipient holds no live treasury or dispute grant in
+ * the Guild (`FORBIDDEN`; they may surrender it and accept again).
+ *
+ * `authorizeOwnershipTransfer` runs while the Guild and transfer rows are locked: it must be fast and use only the
+ * given transaction (no network calls), or it blocks every write to the Guild and holds a connection.
+ *
+ * Responding to a lapsed proposal (including an acceptance whose host hook ran past `expiresAt`) records the lapse:
+ * it returns `status: 'EXECUTED'` with `transfer.state: 'EXPIRED'` and `applied: false` for ACCEPT, DECLINE and
+ * WITHDRAW alike, and nothing moves. Clients must check `transfer.state` (or `applied`), never only `status`.
  */
 export async function respondOwnershipTransfer(
   tx: CommandReceiptTransaction,
@@ -932,27 +1017,22 @@ export async function respondOwnershipTransfer(
           : transfer.toAccountId === actor.accountId;
       if (!mine) fail('FORBIDDEN');
       if (transfer.state !== 'PROPOSED') fail('REVISION_CONFLICT');
-      const decide = (state: string) =>
-        query(
+      // One decision instant: the state is the requested one inside the window and EXPIRED at or after its end, so a
+      // decision that crosses `expiresAt` (for example during a slow host hook) records the lapse instead of failing
+      // the timing CHECK.
+      const decide = async (state: string) => {
+        const rows = await query<{ state: string }>(
           tx,
-          `UPDATE "GuildOwnershipTransfer" SET "state"=$2,"decidedAt"=clock_timestamp(),"decidedByAccountId"=$3,"decideReceiptId"=$4::uuid WHERE "id"=$1::uuid AND "state"='PROPOSED' RETURNING "id"`,
+          `WITH d AS (SELECT clock_timestamp() AS t)
+           UPDATE "GuildOwnershipTransfer" SET "state"=CASE WHEN "expiresAt"<=d.t THEN 'EXPIRED' ELSE $2 END,
+             "decidedAt"=d.t,"decidedByAccountId"=$3,"decideReceiptId"=$4::uuid
+           FROM d WHERE "id"=$1::uuid AND "state"='PROPOSED' RETURNING "state"`,
           [input.transferId, state, actor.accountId, receiptId],
         );
-      let type: string;
-      if (transfer.lapsed) {
-        await decide('EXPIRED');
-        type = 'guild.ownership_expired.v1';
-      } else if (input.decision === 'ACCEPT') {
-        if (
-          (await host.authorizeOwnershipTransfer(tx, {
-            guildId: input.guildId,
-            fromAccountId: transfer.fromAccountId,
-            toAccountId: transfer.toAccountId,
-          })) !== true
-        )
-          fail('FORBIDDEN');
-        await authorize(tx, actor);
-        await decide('ACCEPTED');
+        if (rows.length !== 1) fail('STORAGE_CONTRACT');
+        return rows[0].state;
+      };
+      const apply = async () => {
         const moved = await query(
           tx,
           `UPDATE "Guild" SET "founderAccountId"=$2 WHERE "id"=$1::uuid AND "founderAccountId"=$3 RETURNING "id"`,
@@ -964,13 +1044,31 @@ export async function respondOwnershipTransfer(
           `UPDATE "GuildOwnershipTransfer" SET "appliedAt"=clock_timestamp() WHERE "id"=$1::uuid AND "state"='ACCEPTED' AND "appliedAt" IS NULL RETURNING "id"`,
           [input.transferId],
         );
-        type = 'guild.ownership_transferred.v1';
+        return 'guild.ownership_transferred.v1';
+      };
+      const expired = 'guild.ownership_expired.v1';
+      let type: string;
+      if (transfer.lapsed) {
+        await decide('EXPIRED');
+        type = expired;
+      } else if (input.decision === 'ACCEPT') {
+        if (await holdsSeparateAuthority(tx, input.guildId, transfer.toAccountId))
+          fail('FORBIDDEN');
+        if (
+          (await host.authorizeOwnershipTransfer(tx, {
+            guildId: input.guildId,
+            fromAccountId: transfer.fromAccountId,
+            toAccountId: transfer.toAccountId,
+          })) !== true
+        )
+          fail('FORBIDDEN');
+        await authorize(tx, actor);
+        if ((await decide('ACCEPTED')) === 'EXPIRED') type = expired;
+        else type = await apply();
       } else if (input.decision === 'DECLINE') {
-        await decide('DECLINED');
-        type = 'guild.ownership_declined.v1';
+        type = (await decide('DECLINED')) === 'EXPIRED' ? expired : 'guild.ownership_declined.v1';
       } else {
-        await decide('WITHDRAWN');
-        type = 'guild.ownership_withdrawn.v1';
+        type = (await decide('WITHDRAWN')) === 'EXPIRED' ? expired : 'guild.ownership_withdrawn.v1';
       }
       await authorize(tx, actor);
       return {
@@ -995,6 +1093,19 @@ export async function respondOwnershipTransfer(
     fail('FORBIDDEN');
   return { status: result.status, transfer };
 }
+const UPDATE_COLUMNS =
+  '"id"::text,"guildId"::text,"title","body","state","authorAccountId","createdAt","publishedAt"';
+function parseUpdate(row: Record<string, unknown>): ManagedGuildUpdate {
+  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
+  const parsed = ManagedGuildUpdateSchema.safeParse({
+    version: 'v1',
+    ...row,
+    createdAt: iso(row.createdAt),
+    publishedAt: iso(row.publishedAt),
+  });
+  if (!parsed.success) fail('STORAGE_CONTRACT');
+  return parsed.data;
+}
 async function loadUpdate(
   tx: CommandReceiptTransaction,
   guildId: string,
@@ -1002,20 +1113,11 @@ async function loadUpdate(
 ): Promise<ManagedGuildUpdate> {
   const rows = await query<Record<string, unknown>>(
     tx,
-    `SELECT "id"::text,"guildId"::text,"title","body","state","authorAccountId","createdAt","publishedAt"
-     FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
+    `SELECT ${UPDATE_COLUMNS} FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
     [id, guildId],
   );
   if (rows.length !== 1) fail('STORAGE_CONTRACT');
-  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
-  const parsed = ManagedGuildUpdateSchema.safeParse({
-    version: 'v1',
-    ...rows[0],
-    createdAt: iso(rows[0].createdAt),
-    publishedAt: iso(rows[0].publishedAt),
-  });
-  if (!parsed.success) fail('STORAGE_CONTRACT');
-  return parsed.data;
+  return parseUpdate(rows[0]);
 }
 const updateEvent = (type: string, guildId: string, revision: number, id: string) => ({
   type,
@@ -1120,6 +1222,11 @@ async function moveUpdate(
       await authorize(tx, actor);
       // Taking content down stays possible while new writes are disabled.
       if (step === 'PUBLISH' && !host.allowNewWrites) fail('WRITES_DISABLED');
+      // Judge standing before taking any lock: an account with no authority here cannot queue behind the Guild
+      // row, and learns nothing about which Guilds or updates exist (a missing Guild answers the same way).
+      const standing = await authorityKinds(tx, actor.accountId, input.guildId);
+      if (step === 'PUBLISH' ? !standing.founder : !standing.kinds.includes('PROFILE'))
+        fail('FORBIDDEN');
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
         'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
@@ -1214,6 +1321,19 @@ export async function listPublicGuildUpdates(
     slug,
   ]);
   if (guilds.length !== 1) fail('NOT_FOUND');
+  // A cursor must name an update of this Guild that was published (it may have been withdrawn since the page was
+  // served); anything else is a stale or tampered cursor, which must not look like the end of the feed.
+  if (
+    parsed.data.before &&
+    (
+      await query(
+        tx,
+        'SELECT 1 FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid AND "publishedAt" IS NOT NULL',
+        [parsed.data.before, guilds[0].id],
+      )
+    ).length !== 1
+  )
+    fail('INVALID_INPUT');
   const rows = await query<Record<string, unknown>>(
     tx,
     `SELECT u."id"::text,u."title",u."body",u."publishedAt" FROM "GuildUpdate" u
@@ -1246,14 +1366,13 @@ export async function listManagedGuildUpdates(
   await authorize(tx, actor);
   const authority = await authorityKinds(tx, actor.accountId, guildId);
   if (!authority.kinds.includes('PROFILE')) fail('FORBIDDEN');
-  const rows = await query<{ id: string }>(
+  const rows = await query<Record<string, unknown>>(
     tx,
-    `SELECT "id"::text FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
+    `SELECT ${UPDATE_COLUMNS} FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
      ORDER BY "createdAt" DESC,"id" DESC LIMIT 100`,
     [guildId, actor.accountId, String(authority.founder)],
   );
-  const updates: ManagedGuildUpdate[] = [];
-  for (const row of rows) updates.push(await loadUpdate(tx, guildId, row.id));
+  const updates = rows.map(parseUpdate);
   await authorize(tx, actor);
   return { updates };
 }

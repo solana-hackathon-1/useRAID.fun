@@ -70,6 +70,8 @@ model Participant {
   activeCommitment ActiveCommitment?
   skillAssessments SkillAssessment[]
   acceptanceConsents WorkAcceptanceConsent[]
+  ledParties Party[]
+  partyProposalMembers PartyProposalMember[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   kind String @default("HUMAN")
   accountId String @unique
@@ -671,6 +673,9 @@ model XEndpointState {
 // Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
 // additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
 model CommandReceipt {
+  party Party?
+  partyProposal PartyProposal?
+  partyMemberConsent PartyMemberConsent?
   guildUpdateDraft GuildUpdate? @relation("GuildUpdateDraftReceipt")
   guildUpdatePublication GuildUpdate? @relation("GuildUpdatePublishReceipt")
   guildUpdateWithdrawal GuildUpdate? @relation("GuildUpdateWithdrawReceipt")
@@ -1309,6 +1314,7 @@ model RaidSlot {
   engagements Engagement[]
   simulatedReservations WorkSimulatedReservation[]
   acceptanceConsents WorkAcceptanceConsent[]
+  partyProposals PartyProposal[]
   replaced RaidReplacement? @relation("ReplacedSlot")
   replacement RaidReplacement? @relation("ReplacementSlot")
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1443,6 +1449,61 @@ model WorkAcceptanceConsent {
   @@unique([participantId, slotId, termsVersionId], map: "WorkAcceptanceConsent_subject_key")
   @@index([slotId])
 }
+model Party {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String
+  leaderParticipantId String @db.Uuid
+  receiptId String @unique @db.Uuid
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  leader Participant @relation(fields: [leaderParticipantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  proposals PartyProposal[]
+  @@unique([id, leaderParticipantId], map: "Party_leader_key")
+  @@index([leaderParticipantId])
+}
+model PartyProposal {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partyId String @db.Uuid
+  leaderParticipantId String @db.Uuid
+  slotId String @db.Uuid
+  termsVersionId String @db.Uuid
+  termsDigest String
+  snapshot Json @db.JsonB
+  snapshotDigest String
+  receiptId String @unique @db.Uuid
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  party Party @relation(fields: [partyId, leaderParticipantId], references: [id, leaderParticipantId], onDelete: Restrict, onUpdate: Restrict, map: "PartyProposal_party_fkey")
+  slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "PartyProposal_slot_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  members PartyProposalMember[]
+  consents PartyMemberConsent[]
+  @@unique([id, snapshotDigest], map: "PartyProposal_digest_key")
+  @@index([partyId])
+  @@index([slotId])
+}
+model PartyProposalMember {
+  proposalId String @db.Uuid
+  participantId String @db.Uuid
+  role String
+  allocations Json @db.JsonB
+  proposal PartyProposal @relation(fields: [proposalId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  consents PartyMemberConsent[]
+  @@id([proposalId, participantId])
+  @@index([participantId])
+}
+model PartyMemberConsent {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  proposalId String @db.Uuid
+  participantId String @db.Uuid
+  snapshotDigest String
+  receiptId String @unique @db.Uuid
+  consentedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  member PartyProposalMember @relation(fields: [proposalId, participantId], references: [proposalId, participantId], onDelete: Restrict, onUpdate: Restrict, map: "PartyMemberConsent_member_fkey")
+  proposal PartyProposal @relation(fields: [proposalId, snapshotDigest], references: [id, snapshotDigest], onDelete: Restrict, onUpdate: Restrict, map: "PartyMemberConsent_proposal_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([proposalId, participantId], map: "PartyMemberConsent_subject_key")
+}
 model WorkSimulatedReservation {
   fundingRef String @unique
   slotId String @id @db.Uuid
@@ -1542,6 +1603,7 @@ model Guild {
   transfers GuildOwnershipTransfer[]
   updates GuildUpdate[]
   @@index([founderAccountId])
+  @@index([activatedByAccountId], map: "Guild_activatedBy_idx")
 }
 model GuildProfileVersion {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1559,6 +1621,7 @@ model GuildProfileVersion {
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_receipt_fkey")
   @@unique([guildId, revision], map: "GuildProfileVersion_guild_revision_key")
   @@unique([id, guildId, revision], map: "GuildProfileVersion_pointer_key")
+  @@index([actorAccountId], map: "GuildProfileVersion_actor_idx")
 }
 // kind separates profile, work, treasury and dispute authority; only PROFILE grants carry fields.
 model GuildRoleGrant {
@@ -1578,6 +1641,7 @@ model GuildRoleGrant {
   grantedBy User @relation("GuildGrantIssuer", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_grantedBy_fkey")
   receipt CommandReceipt? @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_receipt_fkey")
   @@index([guildId, granteeAccountId], map: "GuildRoleGrant_guild_grantee_idx")
+  @@index([grantedByAccountId], map: "GuildRoleGrant_grantedBy_idx")
 }
 // The Founder changes only through a consented transfer recorded here; see the guards in migration 202610270009.
 model GuildOwnershipTransfer {

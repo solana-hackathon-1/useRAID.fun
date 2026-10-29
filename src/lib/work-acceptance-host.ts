@@ -4,17 +4,17 @@ import {
   type CommandReceiptTransaction,
   type SqlBinding,
 } from '../command-receipts';
-import { SkillRankSchema, type SkillRank } from '../contracts/entities';
+import { SkillRankSchema } from '../contracts/entities';
 import {
-  SKILL_PREDICATE_LIMITS,
   SkillEligibilityContractError,
   explainSkillEligibility,
   type SkillEligibilityContext,
   type SkillEligibilityInput,
-  type SkillPredicate,
 } from '../skills/eligibility';
 import { SkillTaxonomyStorageError } from '../skills/taxonomy-storage-contracts';
 import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
+import { ASSESSMENT_LOCK_SQL, assessmentLockKey } from '../skills/assessment-lock';
+import { buildSkillRequirement } from '../skills/eligibility-requirement';
 import { WorkError } from '../work-loop/contracts';
 import type { AcceptanceHost } from '../work-loop/engagement-contracts';
 
@@ -59,30 +59,6 @@ async function available<T>(work: () => Promise<T>): Promise<T> {
 const read = <Row>(tx: Tx, sql: string, bindings: readonly SqlBinding[]) =>
   available(() => (tx as CommandReceiptTransaction).query<Row>(sql, bindings));
 /**
- * Every required skill must be met. Groups respect the eligibility parser's per-group child limit; terms allow up
- * to 50 skills, which fits two levels well inside its depth and node bounds. No skills is not a requirement.
- */
-export function buildSkillRequirement(
-  required: readonly { skillId: string; minimumRank: SkillRank; assessmentPolicyVersion: string }[],
-): SkillPredicate {
-  if (required.length === 0) throw new SkillEligibilityContractError('INVALID_INPUT');
-  const leaves: SkillPredicate[] = required.map((s) => ({
-    kind: 'SKILL',
-    skillId: s.skillId,
-    minimumRank: s.minimumRank,
-    verificationRequired: true,
-    assessmentPolicyVersion: s.assessmentPolicyVersion,
-  }));
-  let level = leaves;
-  do {
-    const groups: SkillPredicate[] = [];
-    for (let i = 0; i < level.length; i += SKILL_PREDICATE_LIMITS.children)
-      groups.push({ kind: 'AND', children: level.slice(i, i + SKILL_PREDICATE_LIMITS.children) });
-    level = groups;
-  } while (level.length > 1);
-  return level[0];
-}
-/**
  * Decisions (revoke, reassess, verify) take this per-person, per-skill lock until they commit. Holding it to our commit
  * means the evidence read cannot go stale before the engagement is inserted. Sorted and unique, so concurrent
  * acceptances take the locks in one order.
@@ -93,10 +69,9 @@ async function lockAssessmentEvidence(
   skillIds: readonly string[],
 ) {
   for (const skillId of [...new Set(skillIds)].sort())
-    await tx.query('SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text', [
-      participantId + ':' + skillId,
-    ]);
+    await tx.query(ASSESSMENT_LOCK_SQL, [assessmentLockKey(participantId, skillId)]);
 }
+export { buildSkillRequirement };
 export const ROOT_ELIGIBILITY_POLICY = 'root-skill-admission-v1';
 export interface FactRow {
   assessmentId: string;

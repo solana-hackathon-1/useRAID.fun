@@ -36,6 +36,7 @@ import {
   type PracticeReviewPolicyView,
 } from './practice-review-policy-storage';
 import { readPracticeTrialOwnership } from './practice-trial-ownership-storage';
+import { ASSESSMENT_LOCK_SQL, assessmentLockKey } from './assessment-lock';
 import {
   executeIdempotentCommand,
   canonicalRequestDigest,
@@ -198,9 +199,7 @@ async function lockCase(tx: CommandReceiptTransaction, id: string) {
   await query(tx, 'SELECT pg_advisory_xact_lock(hashtextextended($1,12020))::text', [id]);
 }
 async function lockSkill(tx: CommandReceiptTransaction, participantId: string, skillId: string) {
-  await query(tx, 'SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text', [
-    participantId + ':' + skillId,
-  ]);
+  await query(tx, ASSESSMENT_LOCK_SQL, [assessmentLockKey(participantId, skillId)]);
 }
 interface Family {
   id: string;

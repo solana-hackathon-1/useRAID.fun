@@ -49,9 +49,14 @@ const profileDescription = z.string().trim().pipe(PublicGuildSchema.shape.descri
 export const GUILD_GRANT_LIMIT = 200;
 export const DELEGATED_GRANT_LIMIT = 10;
 const profileFields = z.enum(['name', 'description']);
+/**
+ * Id inputs are canonicalized to lowercase: they are stored verbatim in receipts (`resultRef`, request digest) and
+ * compared with the database's `id::text`, so a non-canonical spelling must not fail at commit or change the digest.
+ */
+const uuid = z.uuid().transform((value) => value.toLowerCase());
 export const GrantGuildRoleInputSchema = z
   .strictObject({
-    guildId: z.uuid(),
+    guildId: uuid,
     granteeAccountId: InternalId,
     kind: z.enum(['PROFILE', 'WORK', 'TREASURY', 'DISPUTE']),
     fields: z.array(profileFields).min(1).max(2).optional(),
@@ -76,7 +81,7 @@ export const GrantGuildRoleInputSchema = z
     canDelegate: value.canDelegate === true,
     expiresAt: value.expiresAt ? new Date(value.expiresAt).toISOString() : null,
   }));
-export const RevokeGuildRoleInputSchema = z.strictObject({ guildId: z.uuid(), grantId: z.uuid() });
+export const RevokeGuildRoleInputSchema = z.strictObject({ guildId: uuid, grantId: uuid });
 export const GuildRoleGrantViewSchema = z.strictObject({
   version: z.literal('v1'),
   id: z.uuid(),
@@ -88,16 +93,17 @@ export const GuildRoleGrantViewSchema = z.strictObject({
   validFrom: z.iso.datetime(),
   expiresAt: z.iso.datetime().nullable(),
   revokedAt: z.iso.datetime().nullable(),
-  grantedByAccountId: z.string().min(1).max(200),
+  /** Null only in a revocation result for a caller without profile authority (redacted, never unknown). */
+  grantedByAccountId: z.string().min(1).max(200).nullable(),
 });
 export type GuildRoleGrantView = z.infer<typeof GuildRoleGrantViewSchema>;
 export const OWNERSHIP_TRANSFER_MAX_DAYS = 30;
 export const ProposeOwnershipTransferInputSchema = z
-  .strictObject({ guildId: z.uuid(), toAccountId: InternalId, expiresAt: z.iso.datetime() })
+  .strictObject({ guildId: uuid, toAccountId: InternalId, expiresAt: z.iso.datetime() })
   .transform((value) => ({ ...value, expiresAt: new Date(value.expiresAt).toISOString() }));
 export const RespondOwnershipTransferInputSchema = z.strictObject({
-  guildId: z.uuid(),
-  transferId: z.uuid(),
+  guildId: uuid,
+  transferId: uuid,
   decision: z.enum(['ACCEPT', 'DECLINE', 'WITHDRAW']),
 });
 export const OwnershipTransferViewSchema = z.strictObject({
@@ -116,8 +122,6 @@ export const GUILD_DRAFT_UPDATE_LIMIT = 50;
 /** Per author and Guild: open drafts plus drafts withdrawn before ever being published (rows are never deleted). */
 export const GUILD_UNPUBLISHED_UPDATE_LIMIT = 100;
 export const GUILD_UPDATE_PAGE_MAX = 20;
-/** UUIDs are canonicalized to lowercase so they match the stored text form used in receipts. */
-const uuid = z.uuid().transform((value) => value.toLowerCase());
 export const DraftGuildUpdateInputSchema = z.strictObject({
   guildId: uuid,
   title: z.string().trim().min(1).max(200),
@@ -148,8 +152,12 @@ export const PublicGuildUpdateSchema = z.strictObject({
   publishedAt: z.iso.datetime(),
 });
 export type PublicGuildUpdate = z.infer<typeof PublicGuildUpdateSchema>;
+export const PublicGuildUpdatesPageSchema = z.strictObject({
+  updates: z.array(PublicGuildUpdateSchema).max(GUILD_UPDATE_PAGE_MAX),
+  nextCursor: z.uuid().nullable(),
+});
 export const ActivateGuildInputSchema = z.strictObject({
-  guildDraftId: z.uuid(),
+  guildDraftId: uuid,
   expectedDraftRevision: z.number().int().min(1).max(2147483646),
   activationRef: z
     .string()
@@ -158,7 +166,7 @@ export const ActivateGuildInputSchema = z.strictObject({
     .regex(/^[A-Za-z0-9][A-Za-z0-9._:/-]*$/),
 });
 export const EditGuildProfileInputSchema = z.strictObject({
-  guildId: z.uuid(),
+  guildId: uuid,
   expectedRevision: z.number().int().min(1).max(2147483646),
   profile: z
     .strictObject({ name: profileName.optional(), description: profileDescription.optional() })
@@ -170,7 +178,8 @@ export const ManagedGuildSchema = z.strictObject({
   slug: PublicGuildSchema.shape.slug,
   name: PublicGuildSchema.shape.name,
   description: PublicGuildSchema.shape.description,
-  founderAccountId: z.string().min(1).max(200),
+  /** Null only in `readManagedGuild` for a caller without profile authority (redacted, never unknown). */
+  founderAccountId: z.string().min(1).max(200).nullable(),
   revision: z.number().int().min(1),
   state: z.literal('ACTIVE'),
   primaryToken: z.null(),
@@ -186,6 +195,7 @@ export class GuildStorageError extends Error {
       | 'NOT_FOUND'
       | 'WRITES_DISABLED'
       | 'REVISION_CONFLICT'
+      | 'GRANT_REVOKED'
       | 'GUILD_EXISTS'
       | 'SLUG_UNAVAILABLE'
       | 'GRANT_LIMIT'

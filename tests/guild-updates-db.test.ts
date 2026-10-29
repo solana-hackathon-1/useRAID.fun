@@ -1,4 +1,6 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { createGuildUpdatesHandlers } from '../src/guild-profiles/guild-updates-http';
+import { createGuildPublicHandlers } from '../src/guild-profiles/guild-public-http';
 import { PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
@@ -8,6 +10,7 @@ import {
   draftGuildUpdate,
   editGuildProfile,
   listManagedGuildUpdates,
+  readPublicGuild,
   listPublicGuildUpdates,
   publishGuildUpdate,
   withdrawGuildUpdate,
@@ -234,6 +237,50 @@ integration('T009 Guild public updates', () => {
     });
   });
 
+  it('review follow-up: a non-manager is refused before any lock and cannot tell a missing update from an existing one', async () => {
+    const a = await guild('lock-a');
+    const mine = await draft(a.founder, a.guild.id);
+    const stranger = await person();
+    const worker = await person();
+    const grantee = await person();
+    await grantRow(a.guild.id, worker, 'WORK');
+    await grantRow(a.guild.id, grantee, 'PROFILE');
+    // Hold the Guild row as a competing writer would; a refused account must not queue behind it.
+    let release!: () => void, locked!: () => void;
+    const held = new Promise<void>((r) => (release = r));
+    const ready = new Promise<void>((r) => (locked = r));
+    const holder = db.$transaction(async (t) => {
+      await t.$queryRawUnsafe('SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE', a.guild.id);
+      locked();
+      await held;
+    });
+    await ready;
+    const outcome = (work: Promise<unknown>) =>
+      Promise.race([
+        work.then(
+          () => 'EXECUTED',
+          (e: { code?: string }) => e.code ?? 'ERROR',
+        ),
+        new Promise<string>((r) => setTimeout(() => r('BLOCKED'), 4000)),
+      ]);
+    try {
+      const unknownUpdate = crypto.randomUUID();
+      const unknownGuild = crypto.randomUUID();
+      for (const who of [stranger, worker])
+        for (const id of [mine.update.id, unknownUpdate]) {
+          expect(await outcome(publish(who, a.guild.id, id)), 'publish').toBe('FORBIDDEN');
+          expect(await outcome(withdraw(who, a.guild.id, id)), 'withdraw').toBe('FORBIDDEN');
+        }
+      expect(await outcome(withdraw(stranger, unknownGuild, unknownUpdate))).toBe('FORBIDDEN');
+      // Only the Founder publishes, so a delegate is turned away without waiting either.
+      expect(await outcome(publish(grantee, a.guild.id, mine.update.id))).toBe('FORBIDDEN');
+    } finally {
+      release();
+      await holder;
+    }
+    expect((await publish(a.founder, a.guild.id, mine.update.id)).update.state).toBe('PUBLISHED');
+  });
+
   it('withdraws: the Founder any update, an author only their own draft; a withdrawn update leaves the public view', async () => {
     const { founder, guild: g } = await guild('news-w');
     const author = await person();
@@ -301,6 +348,119 @@ integration('T009 Guild public updates', () => {
     ).toEqual(['Live']);
   }, 120_000);
 
+  it('serves only the public projection over HTTP and drops a withdrawn update at once', async () => {
+    const { founder, guild: g } = await guild('news-http');
+    const first = (await draft(founder, g.id, 'First', 'Body one')).update.id;
+    await publish(founder, g.id, first);
+    const second = (await draft(founder, g.id, 'Second', 'Body two')).update.id;
+    await publish(founder, g.id, second);
+    await draft(founder, g.id, 'Unpublished', 'Not public');
+    const handlers = createGuildPublicHandlers({
+      version: 'v1',
+      requestId: () => 'request-1',
+      available: () => true,
+      rateLimit: () => undefined,
+      guild: (slug) => run((tx) => readPublicGuild(tx, slug)),
+      updates: (slug, query) => run((tx) => listPublicGuildUpdates(tx, slug, query)),
+    });
+    const url = (path: string) => new Request('https://example.test/api/v1/guilds/' + path);
+    const profile = await handlers.GUILD(url('news-http'), 'news-http');
+    expect(profile.status).toBe(200);
+    expect(Object.keys(await profile.json()).sort()).toEqual([
+      'description',
+      'id',
+      'name',
+      'primaryToken',
+      'slug',
+    ]);
+    const listed = await handlers.UPDATES(url('news-http/updates'), 'news-http');
+    const page = (await listed.json()) as { updates: Record<string, unknown>[] };
+    expect(page.updates.map((u) => u.title)).toEqual(['Second', 'First']);
+    for (const update of page.updates)
+      expect(Object.keys(update).sort()).toEqual(['body', 'id', 'publishedAt', 'title']);
+    await withdraw(founder, g.id, second);
+    const after = (await (
+      await handlers.UPDATES(url('news-http/updates'), 'news-http')
+    ).json()) as {
+      updates: { title: string }[];
+    };
+    expect(after.updates.map((u) => u.title)).toEqual(['First']);
+    expect((await handlers.GUILD(url('nobody'), 'nobody')).status).toBe(404);
+  });
+
+  it('manages updates over HTTP with the session actor: draft, replay, publish, outsider denied, withdraw', async () => {
+    const { founder, guild: g } = await guild('news-mgmt');
+    const outsider = await person();
+    let current: GuildActor = founder;
+    const handlers = createGuildUpdatesHandlers({
+      version: 'v1',
+      requestId: () => 'request-1',
+      actor: async () => current,
+      checkOrigin: () => undefined,
+      rateLimit: async () => undefined,
+      list: async (actor, guildId) => ({
+        version: 'v1',
+        updates: (await run((tx) => listManagedGuildUpdates(tx, actor, guildId))).updates,
+        writesAvailable: true,
+        unavailableReason: null,
+      }),
+      draft: (command) => run((tx) => draftGuildUpdate(tx, command, host())),
+      publish: (command) => run((tx) => publishGuildUpdate(tx, command, host())),
+      withdraw: (command) => run((tx) => withdrawGuildUpdate(tx, command, host())),
+    });
+    const send = (path: string, payload: unknown, key: string) =>
+      new Request('https://example.test' + path, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'idempotency-key': key },
+        body: JSON.stringify(payload),
+      });
+    const drafted = await handlers.DRAFT(
+      send('/api/v1/guild-updates', { guildId: g.id, title: 'Hello', body: 'World' }, 'h-1'),
+    );
+    expect(drafted.status).toBe(200);
+    const created = (await drafted.json()) as { status: string; update: { id: string } };
+    expect(created.status).toBe('EXECUTED');
+    const replay = await handlers.DRAFT(
+      send('/api/v1/guild-updates', { guildId: g.id, title: 'Hello', body: 'World' }, 'h-1'),
+    );
+    expect(((await replay.json()) as { status: string }).status).toBe('REPLAYED');
+    const step = (action: string, key: string) =>
+      handlers.STEP(
+        send('/api/v1/guild-updates/' + created.update.id, { guildId: g.id, action }, key),
+        created.update.id,
+      );
+    current = outsider;
+    expect((await step('PUBLISH', 'h-2')).status).toBe(403);
+    expect(
+      (
+        await handlers.LIST(
+          new Request('https://example.test/api/v1/guild-updates?guildId=' + g.id),
+        )
+      ).status,
+    ).toBe(403);
+    current = founder;
+    expect((await step('PUBLISH', 'h-3')).status).toBe(200);
+    expect((await run((tx) => listPublicGuildUpdates(tx, 'news-mgmt', {}))).updates).toHaveLength(
+      1,
+    );
+    expect((await step('PUBLISH', 'h-4')).status).toBe(409);
+    expect((await step('WITHDRAW', 'h-5')).status).toBe(200);
+    expect((await run((tx) => listPublicGuildUpdates(tx, 'news-mgmt', {}))).updates).toEqual([]);
+    // Retries after the update has moved on still succeed as replays.
+    const lateDraft = await handlers.DRAFT(
+      send('/api/v1/guild-updates', { guildId: g.id, title: 'Hello', body: 'World' }, 'h-1'),
+    );
+    expect(lateDraft.status).toBe(200);
+    expect(((await lateDraft.json()) as { status: string }).status).toBe('REPLAYED');
+    const latePublish = await step('PUBLISH', 'h-3');
+    expect(latePublish.status).toBe(200);
+    expect(((await latePublish.json()) as { status: string }).status).toBe('REPLAYED');
+    const managed = (await (
+      await handlers.LIST(new Request('https://example.test/api/v1/guild-updates?guildId=' + g.id))
+    ).json()) as { updates: unknown[] };
+    expect(managed.updates).toEqual([]);
+  });
+
   it('pages the public list newest first and shows managers only their own view', async () => {
     const { founder, guild: g } = await guild('news-p');
     const author = await person();
@@ -336,6 +496,57 @@ integration('T009 Guild public updates', () => {
     await expect(run((tx) => listManagedGuildUpdates(tx, outsider, g.id))).rejects.toMatchObject({
       code: 'FORBIDDEN',
     });
+  });
+
+  it('review follow-up: a cursor that names no published update of this Guild is INVALID_INPUT, not the end of the feed', async () => {
+    const { founder, guild: g } = await guild('news-c');
+    const { founder: other, guild: h } = await guild('news-c-other');
+    const ids: string[] = [];
+    for (let i = 1; i <= 2; i++) {
+      const id = (await draft(founder, g.id, `Update ${i}`, 'Body', `c-d-${i}`)).update.id;
+      await publish(founder, g.id, id, `c-p-${i}`);
+      ids.push(id);
+    }
+    const unpublished = (await draft(founder, g.id, 'Still a draft', 'Body')).update.id;
+    const foreign = (await draft(other, h.id, 'Elsewhere', 'Body')).update.id;
+    await publish(other, h.id, foreign);
+    for (const before of [crypto.randomUUID(), unpublished, foreign])
+      await expect(
+        run((tx) => listPublicGuildUpdates(tx, 'news-c', { before })),
+      ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    // A page cursor stays usable if that update is taken down after the page was served.
+    await withdraw(founder, g.id, ids[1]);
+    expect(
+      (await run((tx) => listPublicGuildUpdates(tx, 'news-c', { before: ids[1] }))).updates.map(
+        (u) => u.title,
+      ),
+    ).toEqual(['Update 1']);
+  });
+
+  it('review follow-up: the managed list reads its rows in a fixed number of queries', async () => {
+    const { founder, guild: g } = await guild('news-q');
+    for (let i = 1; i <= 5; i++) await draft(founder, g.id, `Draft ${i}`, 'Body', `q-${i}`);
+    const counted = async (rows: number) => {
+      let queries = 0;
+      const result = await run((tx) =>
+        listManagedGuildUpdates(
+          {
+            ...tx,
+            query: ((...args: Parameters<typeof tx.query>) => {
+              queries++;
+              return tx.query(...args);
+            }) as typeof tx.query,
+          },
+          founder,
+          g.id,
+        ),
+      );
+      expect(result.updates).toHaveLength(rows);
+      return queries;
+    };
+    const five = await counted(5);
+    await draft(founder, g.id, 'Draft 6', 'Body', 'q-6');
+    expect(await counted(6)).toBe(five);
   });
 
   it('caps open drafts per Guild and replays only to someone who still may act', async () => {
