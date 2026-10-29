@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { WorkError } from '../src/work-loop/contracts';
+import { CommandReceiptError } from '../src/command-receipts';
+import { RootAcceptanceUnavailableError } from '../src/lib/work-acceptance-host';
 import { TermsSnapshotSchema } from '../src/contracts/entities';
 import { raidTerms } from './helpers/raid-terms-fixture';
 import {
@@ -39,7 +41,12 @@ function host(overrides: Partial<WorkHttpHost> = {}): WorkHttpHost {
     actor: async () => actor,
     checkOrigin: () => {},
     rateLimit: () => {},
-    me: async () => ({ version: 'v1', engagements: [], applications: [] }),
+    me: async () => ({
+      version: 'v1',
+      capacity: { limit: 1, held: false, engagementId: null, title: null },
+      engagements: [],
+      applications: [],
+    }),
     reviews: async () => ({ version: 'v1', items: [] }),
     applicants: async () => ({ version: 'v1', listings: [] }),
     submitWork: async () => ({ status: 'EXECUTED', engagementState: 'SUBMITTED', submission }),
@@ -83,7 +90,12 @@ describe('T022 work workspace HTTP boundary', () => {
     const response = await handlers.ME(new Request('http://localhost/api/v1/work/me'));
     expect(response.status).toBe(200);
     expect(response.headers.get('cache-control')).toBe('private, no-store');
-    expect(await response.json()).toEqual({ version: 'v1', engagements: [], applications: [] });
+    expect(await response.json()).toEqual({
+      version: 'v1',
+      capacity: { limit: 1, held: false, engagementId: null, title: null },
+      engagements: [],
+      applications: [],
+    });
   });
   it('fails closed when the host breaks its own response contract', async () => {
     const handlers = createWorkHandlers(
@@ -93,8 +105,28 @@ describe('T022 work workspace HTTP boundary', () => {
     expect(response.status).toBe(503);
     expect((await error(response)).code).toBe('SERVICE_UNAVAILABLE');
   });
+  it.each([
+    ['typed root outage', () => new RootAcceptanceUnavailableError()],
+    ['receipt storage outage', () => new CommandReceiptError('STORAGE_UNAVAILABLE')],
+  ])('reports a %s as a retryable SERVICE_UNAVAILABLE', async (_name, make) => {
+    const handlers = createWorkHandlers(
+      host({
+        commitEngagement: async () => {
+          throw make();
+        },
+      }),
+    );
+    const response = await handlers.ACCEPT(post('/x', { slotId, termsVersionId }));
+    expect(response.status).toBe(503);
+    expect(await error(response)).toMatchObject({ code: 'SERVICE_UNAVAILABLE', retryable: true });
+  });
   it('rejects query strings and foreign methods before reading', async () => {
-    const me = vi.fn(async () => ({ version: 'v1', engagements: [], applications: [] }));
+    const me = vi.fn(async () => ({
+      version: 'v1',
+      capacity: { limit: 1, held: false, engagementId: null, title: null },
+      engagements: [],
+      applications: [],
+    }));
     const handlers = createWorkHandlers(host({ me }));
     expect((await handlers.ME(new Request('http://localhost/api/v1/work/me?x=1'))).status).toBe(
       422,
@@ -207,10 +239,11 @@ describe('T022 work workspace HTTP boundary', () => {
     const calls: string[] = [];
     const offerId = '66666666-6666-4666-8666-666666666666';
     const applicationId = '77777777-7777-4777-8777-777777777777';
+    const slotId = '55555555-5555-4555-8555-555555555555';
     const offer = {
       id: offerId,
       applicationId,
-      slotId: engagementId,
+      slotId,
       termsVersionId,
       participantId,
       expiresAt: '2026-10-27T00:00:00.000Z',
@@ -219,7 +252,7 @@ describe('T022 work workspace HTTP boundary', () => {
     };
     const application = {
       id: applicationId,
-      slotId: engagementId,
+      slotId,
       termsVersionId,
       participantId,
       evidenceRefs: [],
@@ -318,6 +351,7 @@ describe('T022 work workspace HTTP boundary', () => {
       status: 'EXECUTED',
       fundingMode: 'SIMULATED',
       generation: 1,
+      offerId: null as string | null,
       engagement: {
         id: engagementId,
         guildId: 'synthetic-guild',
@@ -341,7 +375,22 @@ describe('T022 work workspace HTTP boundary', () => {
       requestId: 'request-1',
     });
     const offerId = '77777777-7777-4777-8777-777777777777';
-    expect((await handlers.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(200);
+    // The result must name the offer that was accepted: none for a direct acceptance, the requested one otherwise.
+    expect((await handlers.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(503);
+    const throughOffer = createWorkHandlers(
+      host({ commitEngagement: async () => ({ ...committed(), offerId }) }),
+    );
+    expect((await throughOffer.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(200);
+    expect((await throughOffer.ACCEPT(post('/x', request))).status).toBe(503);
+    const otherOffer = createWorkHandlers(
+      host({
+        commitEngagement: async () => ({
+          ...committed(),
+          offerId: '88888888-8888-4888-8888-888888888888',
+        }),
+      }),
+    );
+    expect((await otherOffer.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(503);
     for (const bad of [{ ...request, extra: 1 }, { slotId }, { ...request, offerId: 'nope' }])
       expect((await handlers.ACCEPT(post('/x', bad))).status).toBe(422);
     const wrongSlot = createWorkHandlers(
@@ -410,6 +459,32 @@ describe('T022 work workspace HTTP boundary', () => {
       }),
     );
     expect((await drift.APPLY(post('/api/v1/work/applications', request))).status).toBe(503);
+    // A host result for other terms is never forwarded either.
+    const otherTerms = createWorkHandlers(
+      host({
+        submitApplication: async () => ({
+          status: 'EXECUTED',
+          application: { ...application, termsVersionId: '88888888-8888-4888-8888-888888888888' },
+        }),
+      }),
+    );
+    expect((await otherTerms.APPLY(post('/api/v1/work/applications', request))).status).toBe(503);
+    // A slot that does not carry the requested terms is refused by the command and answered as changed terms.
+    const mismatched = createWorkHandlers(
+      host({
+        submitApplication: async () => {
+          throw new WorkError('TERMS_VERSION_CHANGED');
+        },
+      }),
+    );
+    const pair = await mismatched.APPLY(
+      post('/api/v1/work/applications', {
+        ...request,
+        termsVersionId: '88888888-8888-4888-8888-888888888888',
+      }),
+    );
+    expect(pair.status).toBe(409);
+    expect(await error(pair)).toMatchObject({ code: 'TERMS_VERSION_CHANGED' });
     const full = createWorkHandlers(
       host({
         submitApplication: async () => {

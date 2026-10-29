@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 # Run in a dedicated candidate checkout. Requires Node 22, Python 3.12, Docker,
-# browser system dependencies and available ports 3000/3001/3006/3007/3008/55432.
+# browser system dependencies and available ports 3000/3001/3006/3007/3008 plus the database port
+# (default 55432). Override RAID_CI_DB_PORT, RAID_CI_DB_NAME and RAID_CI_PROJECT to run beside another
+# checkout or an unrelated container; the defaults are unchanged.
 set -uo pipefail
 cd "$(dirname "$0")/.."
 export CI=1 NEXT_TELEMETRY_DISABLED=1 PLAYWRIGHT_HTML_OPEN=never
 export COMPOSE_FILE=${RAID_CI_COMPOSE_FILE:-compose.yaml:compose.test.yaml}
-export COMPOSE_PROJECT_NAME=raid-local-ci
-export DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_test
+db_port=${RAID_CI_DB_PORT:-55432}
+db_name=${RAID_CI_DB_NAME:-useraid_test}
+export RAID_CI_DB_PORT=$db_port
+export COMPOSE_PROJECT_NAME=${RAID_CI_PROJECT:-raid-local-ci}
+export DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:$db_port/$db_name
 export DEMO_MODE=false
 LOG_DIR=${RAID_CI_LOG_DIR:-/tmp/raid-local-ci-$(date +%Y%m%d-%H%M%S)}
 mkdir -p "$LOG_DIR"
@@ -45,7 +50,7 @@ skip() {
 }
 ports() {
   local busy=0 port host
-  for port in 3000 3001 3006 3007 3008 55432; do
+  for port in 3000 3001 3006 3007 3008 "$db_port"; do
     for host in 127.0.0.1 ::1; do
       if (exec 3<>"/dev/tcp/$host/$port") 2> /dev/null; then
         echo "port $port is already in use on $host"
@@ -89,12 +94,12 @@ step security npm run audit:check || true
 # A failed start may leave a container running; clean up only after our attempt.
 database_attempted=1
 step database docker compose up -d --wait db || exit 1
-for name in useraid_test useraid_shadow; do
+for name in "$db_name" useraid_shadow; do
   exists=$(docker compose exec -T db psql -U useraid -d postgres -Atc "SELECT 1 FROM pg_database WHERE datname='$name'") || exit 1
   if [ "$exists" != 1 ]; then docker compose exec -T db createdb -U useraid "$name" || exit 1; fi
 done
 step migrations npm run db:migrate || exit 1
-step drift npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --shadow-database-url postgresql://useraid:useraid@127.0.0.1:55432/useraid_shadow --exit-code || true
+step drift npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --shadow-database-url postgresql://useraid:useraid@127.0.0.1:$db_port/useraid_shadow --exit-code || true
 step tests env RUN_DB_TESTS=true npm test -- --reporter=default --reporter=junit --outputFile="$LOG_DIR/vitest.xml" || true
 if step docker docker build -t useraid:local-ci .; then
 step runtime docker run --rm useraid:local-ci node -e "require.resolve('prisma/package.json'); require.resolve('tsx/package.json'); require.resolve('@prisma/client/package.json')" || true
@@ -105,7 +110,7 @@ fi
 if step browser-install npx playwright install chromium; then browsers=1; else browsers=0; fi
 if [ "$browsers" = 1 ]; then
   browser_step demo npm run test:browser || true
-  browser_step studio env DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:55432/useraid_studio_test npm run test:browser:studio || true
+  browser_step studio env DATABASE_URL=postgresql://useraid:useraid@127.0.0.1:$db_port/useraid_studio_test npm run test:browser:studio || true
   # Affected feature suites chosen by scripts/verify.sh (development mode); hosted Checks adds production mode.
   for suite in ${RAID_CI_FEATURE_SUITES:-}; do
     if [[ "$suite" =~ ^[a-z]+(-[a-z]+)*$ ]] && [ -f "playwright.$suite.config.ts" ]; then

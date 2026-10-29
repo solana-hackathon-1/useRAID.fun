@@ -193,6 +193,28 @@ class LocalVerifyGate(unittest.TestCase):
             (repo / 'docs/ai-handoff/CURRENT.md').write_text('two\n')
             self.assertEqual(self.verify(repo, env).returncode, 0)
 
+    def test_format_check_skips_only_symlinks_into_prisma_migrations(self):
+        # #272/#271: Prettier refuses links, and example hosts link migrations; any other changed link is checked
+        # (and fails loudly) instead of being skipped silently.
+        with tempfile.TemporaryDirectory() as directory:
+            repo, env, log, git = self.setup_repo(directory)
+            (repo / 'prisma/migrations/0001_x').mkdir(parents=True)
+            (repo / 'prisma/migrations/0001_x/migration.sql').write_text('SELECT 1;\n')
+            (repo / 'src').mkdir()
+            (repo / 'src/a.ts').write_text('export const a = 1;\n')
+            (repo / 'examples/host/migrations').mkdir(parents=True)
+            os.symlink('../../../prisma/migrations/0001_x/migration.sql', repo / 'examples/host/migrations/x.sql')
+            os.symlink('../../src/a.ts', repo / 'examples/host/a.ts')
+            git('add', '.')
+            git('commit', '-q', '-m', 'links')
+            result = self.verify(repo, env)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            prettier = [line for line in log.read_text().splitlines() if 'prettier' in line]
+            self.assertEqual(len(prettier), 1)
+            self.assertIn('examples/host/a.ts', prettier[0])
+            self.assertIn('src/a.ts', prettier[0])
+            self.assertNotIn('examples/host/migrations/x.sql', prettier[0])
+
     def test_full_tier_delegates_to_the_existing_local_ci_runner_and_selected_feature_suites(self):
         source = (ROOT / 'scripts/verify.sh').read_text()
         self.assertIn('scripts/local-ci.sh', source)

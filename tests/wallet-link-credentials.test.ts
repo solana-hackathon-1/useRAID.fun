@@ -12,7 +12,7 @@ import {
   type IdentityTransaction,
 } from '../src/identity-link';
 import { createPrismaIdentityTransaction } from '../src/lib/identity-storage-adapter';
-import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { assertTestDatabase, testDatabaseName, truncateAll } from './helpers/db-guard';
 import { matchesBlockingObservation } from './helpers/lock-observation';
 import {
   fixtureAddress,
@@ -505,7 +505,7 @@ integration('B1 credentials on real PostgreSQL', () => {
       expect(['read committed', 'repeatable read', 'serializable']).toContain(previous);
       try {
         await db.$executeRawUnsafe(
-          `ALTER DATABASE useraid_test SET default_transaction_isolation TO '${isolation}'`,
+          `ALTER DATABASE "${testDatabaseName()}" SET default_transaction_isolation TO '${isolation}'`,
         );
         await authDb.$disconnect();
         held = db.$transaction(async (tx) => {
@@ -561,7 +561,7 @@ integration('B1 credentials on real PostgreSQL', () => {
         await held?.catch(() => undefined);
         await outcome;
         await db.$executeRawUnsafe(
-          `ALTER DATABASE useraid_test SET default_transaction_isolation TO '${previous}'`,
+          `ALTER DATABASE "${testDatabaseName()}" SET default_transaction_isolation TO '${previous}'`,
         );
         await authDb.$disconnect();
       }

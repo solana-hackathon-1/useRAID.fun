@@ -386,4 +386,4 @@ export async function seedOwnAssessmentFixture(createVerified = true) {
     },
   };
 }
-export { db };
+export { db, publishCatalog as publishSyntheticCatalog };

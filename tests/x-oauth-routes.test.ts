@@ -186,6 +186,25 @@ it('returns to an allowlisted destination only', async () => {
   expect((await callbackX(callback())).headers.get('location')).toBe(
     `/raids/${cuid}?auth=connected`,
   );
+  // A public Raid brief is a destination only by its exact uuid, so a sign-in from the brief comes back to it.
+  const listing = '11111111-1111-4111-8111-111111111111';
+  const fromBrief = await startX(
+    new Request(`http://localhost:3000/api/auth/x?return=${encodeURIComponent(`work:${listing}`)}`),
+  );
+  expect(fromBrief.cookies.get('raid_oauth_return')).toMatchObject({ value: `work:${listing}` });
+  mocks.cookies.set('raid_oauth_return', `work:${listing}`);
+  expect((await callbackX(callback())).headers.get('location')).toBe(
+    `/raids/work/${listing}?auth=connected`,
+  );
+  for (const bad of [
+    `work:${listing}/x`,
+    'work:../x',
+    'work:AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA',
+    'work:',
+  ]) {
+    mocks.cookies.set('raid_oauth_return', bad);
+    expect((await callbackX(callback())).headers.get('location')).toBe('/creator?auth=connected');
+  }
   mocks.cookies.set('raid_oauth_return', 'admin');
   mocks.claim.mockRejectedValueOnce(new OAuthError('state'));
   expect((await callbackX(callback())).headers.get('location')).toBe('/admin?auth=state');

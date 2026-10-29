@@ -3,9 +3,11 @@ import { TermsSnapshotSchema } from '../contracts/entities';
 import type { WorkActor } from './contracts';
 import type { AdmissionHost } from './admission-contracts';
 import {
+  ActiveRaidSchema,
   ApplicantQueueSchema,
   MyRaidsSchema,
   ReviewQueueSchema,
+  type ActiveRaid,
   type MyRaids,
 } from './workspace-contracts';
 import { fail, validate, currentActor, currentHuman } from './engagement-authority';
@@ -18,6 +20,12 @@ const NEXT_STEP: Readonly<Record<string, string>> = {
   REVISION_REQUESTED: 'REVISE_AND_RESUBMIT',
   ACCEPTED: 'CLOSED',
   TERMINATED: 'CLOSED',
+};
+const SETUP: Readonly<Record<string, 'PENDING' | 'NOT_APPLICABLE'>> = {
+  ACCESS_PENDING: 'PENDING',
+  WITHDRAWN: 'NOT_APPLICABLE',
+  CANCELLED: 'NOT_APPLICABLE',
+  TERMINATED: 'NOT_APPLICABLE',
 };
 interface EngagementRow {
   id: string;
@@ -45,6 +53,22 @@ function offerView(row: {
 }
 const OFFER_COLUMNS = `o."id"::text AS offer_id,o."state" AS offer_state,o."expiresAt" AS offer_expires,(o."expiresAt"<=clock_timestamp()) AS offer_expired`;
 const LATEST_OFFER = `LEFT JOIN LATERAL (SELECT * FROM "RaidOffer" x WHERE x."applicationId"=a."id" ORDER BY x."createdAt" DESC LIMIT 1) o ON true`;
+/**
+ * The Raid that currently holds the actor's own capacity reservation, read from `ActiveCommitment` (the R13 slot),
+ * so it disappears as soon as closure releases capacity. Another account always gets null.
+ */
+export async function readActiveRaid(tx: Tx, actor: WorkActor): Promise<ActiveRaid> {
+  validate(tx, actor);
+  const auth = await currentHuman(tx, actor);
+  const [row] = await tx.query<{ engagementId: string; title: string }>(
+    `SELECT c."engagementId"::text AS "engagementId",t."snapshot"->>'title' AS title
+     FROM "ActiveCommitment" c JOIN "TermsVersion" t ON t."id"=c."termsVersionId" WHERE c."participantId"=$1::uuid`,
+    [auth.participantId],
+  );
+  const result = ActiveRaidSchema.parse(row ? { version: 'v1', ...row } : null);
+  await currentHuman(tx, actor, auth.locks);
+  return result;
+}
 /** The member's own engagements (progress, feedback, closure, preserved claims) and applications/offers. */
 export async function readMyRaids(tx: Tx, actor: WorkActor): Promise<MyRaids> {
   validate(tx, actor);
@@ -80,6 +104,29 @@ export async function readMyRaids(tx: Tx, actor: WorkActor): Promise<MyRaids> {
       title: row.title,
       state: row.state,
       capacityHeld: row.held,
+      acceptedTerms: {
+        termsVersionId: terms.data.id,
+        revision: terms.data.revision,
+        scope: terms.data.scope,
+        requiredSkills: terms.data.requiredSkills.map((k) => ({
+          skillId: k.skillId,
+          minimumRank: k.minimumRank,
+        })),
+        roster: terms.data.roster.map((m) => ({
+          participantId: m.participantId,
+          responsibility: m.responsibility,
+        })),
+        rewards: terms.data.rewards.map((r) => ({
+          policy: r.policy,
+          amount: r.amount,
+          beneficiaryParticipantId: r.beneficiaryParticipantId,
+        })),
+        deadlines: terms.data.deadlines,
+      },
+      setup: {
+        status: SETUP[row.state] ?? 'READY',
+        preparationDeadline: terms.data.deadlines.preparation,
+      },
       nextStep:
         row.state === 'SUBMITTED'
           ? latest?.decision === 'DISPUTE'
@@ -123,8 +170,19 @@ export async function readMyRaids(tx: Tx, actor: WorkActor): Promise<MyRaids> {
      WHERE a."participantId"=$1::uuid ORDER BY a."createdAt" DESC LIMIT ${LIMIT}`,
     [auth.participantId],
   );
+  const [held] = await tx.query<{ engagementId: string; title: string }>(
+    `SELECT c."engagementId"::text AS "engagementId",t."snapshot"->>'title' AS title
+     FROM "ActiveCommitment" c JOIN "TermsVersion" t ON t."id"=c."termsVersionId" WHERE c."participantId"=$1::uuid`,
+    [auth.participantId],
+  );
   const result = MyRaidsSchema.parse({
     version: 'v1',
+    capacity: {
+      limit: 1,
+      held: !!held,
+      engagementId: held?.engagementId ?? null,
+      title: held?.title ?? null,
+    },
     engagements,
     applications: applications.map((a) => ({
       applicationId: a.applicationId,

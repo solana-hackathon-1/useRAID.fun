@@ -13,7 +13,10 @@ import { runCommandTransaction } from './lib/command-receipts-adapter';
 // This host has its own dependencies, schema and caller authority. Never load RAID config/db.
 const url = new URL(process.env.DATABASE_URL ?? 'http://missing');
 assert(['localhost', '127.0.0.1', '[::1]'].includes(url.hostname));
-assert(['/useraid_command_host_test', '/useraid_test'].includes(url.pathname));
+assert(
+  url.pathname === '/useraid_command_host_test' ||
+    /^\/useraid_test(_[a-z0-9]+)*$/.test(url.pathname),
+);
 assert(process.env.NODE_ENV !== 'production');
 const db = new PrismaClient({ datasources: { db: { url: url.toString() } }, log: [] });
 const run = randomUUID();

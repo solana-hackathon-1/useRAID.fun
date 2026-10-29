@@ -17,7 +17,8 @@ case "$tier" in fast | full) ;; *) echo "usage: verify.sh fast|full|install" >&2
 
 # A receipt describes a committed tree; refuse to certify uncommitted tracked changes.
 # The session checkpoint is rewritten at session end and never affects behaviour, so it is excluded.
-clean() { git diff --quiet HEAD -- . ':!docs/ai-handoff/CURRENT.md'; }
+# Browser suites rewrite two tracked screenshots as a side effect; neither affects behaviour.
+clean() { git diff --quiet HEAD -- . ':!docs/ai-handoff/CURRENT.md' ':!artifacts/raid-live-fixture.png' ':!planning/task-evidence/*/browser-development/*'; }
 if ! clean; then
   echo "Tracked changes are uncommitted; commit them first so the receipt matches the tree you push." >&2
   exit 2
@@ -41,7 +42,13 @@ step() {
 }
 format_changed() {
   local files=() file
-  while IFS= read -r file; do [ -f "$file" ] && [ ! -L "$file" ] && files+=("$file"); done < <(git diff --name-only --diff-filter=d "$base" HEAD)
+  # Prettier refuses symbolic links. Example hosts link canonical migrations (checked at their source); only those links
+  # are skipped, so any other changed link reaches Prettier and fails loudly instead of being skipped silently.
+  while IFS= read -r file; do
+    [ -f "$file" ] || continue
+    if [ -L "$file" ]; then case "$(readlink "$file")" in *prisma/migrations/*) continue ;; esac; fi
+    files+=("$file")
+  done < <(git diff --name-only --diff-filter=d "$base" HEAD)
   if [ "${#files[@]}" -eq 0 ]; then echo "no changed files to format-check"; return 0; fi
   npx prettier --check --ignore-unknown "${files[@]}"
 }
