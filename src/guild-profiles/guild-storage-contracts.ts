@@ -112,6 +112,40 @@ export const OwnershipTransferViewSchema = z.strictObject({
   applied: z.boolean(),
 });
 export type OwnershipTransferView = z.infer<typeof OwnershipTransferViewSchema>;
+export const GUILD_DRAFT_UPDATE_LIMIT = 50;
+export const GUILD_UPDATE_PAGE_MAX = 20;
+/** UUIDs are canonicalized to lowercase so they match the stored text form used in receipts. */
+const uuid = z.uuid().transform((value) => value.toLowerCase());
+export const DraftGuildUpdateInputSchema = z.strictObject({
+  guildId: uuid,
+  title: z.string().trim().min(1).max(200),
+  body: z.string().trim().min(1).max(4000),
+});
+export const GuildUpdateRefInputSchema = z.strictObject({ guildId: uuid, updateId: uuid });
+export const ListPublicGuildUpdatesInputSchema = z.strictObject({
+  limit: z.number().int().min(1).max(GUILD_UPDATE_PAGE_MAX).optional(),
+  before: uuid.optional(),
+});
+export const ManagedGuildUpdateSchema = z.strictObject({
+  version: z.literal('v1'),
+  id: z.uuid(),
+  guildId: z.uuid(),
+  title: z.string().min(1).max(200),
+  body: z.string().min(1).max(4000),
+  state: z.enum(['DRAFT', 'PUBLISHED', 'WITHDRAWN']),
+  authorAccountId: z.string().min(1).max(200),
+  createdAt: z.iso.datetime(),
+  publishedAt: z.iso.datetime().nullable(),
+});
+export type ManagedGuildUpdate = z.infer<typeof ManagedGuildUpdateSchema>;
+/** The whole public projection of an update: text and time, no author, Guild or state. */
+export const PublicGuildUpdateSchema = z.strictObject({
+  id: z.uuid(),
+  title: z.string().min(1).max(200),
+  body: z.string().min(1).max(4000),
+  publishedAt: z.iso.datetime(),
+});
+export type PublicGuildUpdate = z.infer<typeof PublicGuildUpdateSchema>;
 export const ActivateGuildInputSchema = z.strictObject({
   guildDraftId: z.uuid(),
   expectedDraftRevision: z.number().int().min(1).max(2147483646),
@@ -154,6 +188,7 @@ export class GuildStorageError extends Error {
       | 'SLUG_UNAVAILABLE'
       | 'GRANT_LIMIT'
       | 'TRANSFER_PENDING'
+      | 'UPDATE_LIMIT'
       | 'STORAGE_CONTRACT'
       | 'STORAGE_UNAVAILABLE',
   ) {

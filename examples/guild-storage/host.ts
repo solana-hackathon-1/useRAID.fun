@@ -9,8 +9,11 @@ import {
 import { saveGuildDraft } from './guild-profiles/draft-storage';
 import {
   activateGuild,
+  draftGuildUpdate,
   editGuildProfile,
   grantGuildRole,
+  listPublicGuildUpdates,
+  publishGuildUpdate,
   hasGuildAuthority,
   proposeOwnershipTransfer,
   respondOwnershipTransfer,
@@ -191,6 +194,28 @@ try {
   );
   const managed = await transaction((tx) => readManagedGuild(tx, delegate, active.guild.id));
   assert.deepEqual(managed.authority, { founder: false, kinds: ['TREASURY'] });
+  // A public update is drafted, then published only by the Founder; the public list shows text and time alone.
+  const news = await transaction((tx) =>
+    draftGuildUpdate(
+      tx,
+      cmd(
+        founder,
+        { guildId: active.guild.id, title: 'Hello', body: 'First release shipped.' },
+        'u-1',
+      ),
+      host,
+    ),
+  );
+  assert.equal((await transaction((tx) => listPublicGuildUpdates(tx, slug, {}))).updates.length, 0);
+  await transaction((tx) =>
+    publishGuildUpdate(
+      tx,
+      cmd(founder, { guildId: active.guild.id, updateId: news.update.id }, 'u-2'),
+      host,
+    ),
+  );
+  const feed = await transaction((tx) => listPublicGuildUpdates(tx, slug, {}));
+  assert.deepEqual(Object.keys(feed.updates[0]).sort(), ['body', 'id', 'publishedAt', 'title']);
   // Ownership moves only when the Founder proposes, the recipient accepts and the host approves.
   const successor = await account('successor');
   const proposal = await transaction((tx) =>
@@ -236,7 +261,7 @@ try {
   assert.equal(moved.transfer.applied, true);
   assert.deepEqual([await can(founder, 'PROFILE'), await can(successor, 'PROFILE')], [false, true]);
   console.log(
-    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer; SIMULATED ONLY.',
+    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();
