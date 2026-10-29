@@ -70,10 +70,15 @@ function follows(a: Candidate, position: { key: bigint; id: string }, sort: Feed
     ? false
     : !before(a, position, sort);
 }
+/**
+ * One definition of an open slot (alias `s`): available and simulated-funded. The live count and the brief's slot ids
+ * both use it, so they cannot drift apart and make every brief answer NOT_FOUND.
+ */
+export const OPEN_SLOT = `s."state"='AVAILABLE' AND s."fundingMode"='SIMULATED' AND s."fundingRef" IS NOT NULL`;
 /** One definition of "live": open, public, unexpired and with a funded available slot (checked by the callers). */
 const LIVE_SELECT = `SELECT l."id"::text AS "listingId",l."guildId",t."id"::text AS "termsVersionId",t."digest",t."snapshot",
       (extract(epoch FROM l."createdAt")*1000000)::bigint::text AS "createdMicros",
-      (SELECT count(*)::int FROM "RaidSlot" s WHERE s."listingId"=l."id" AND s."termsVersionId"=t."id" AND s."state"='AVAILABLE' AND s."fundingMode"='SIMULATED' AND s."fundingRef" IS NOT NULL) AS "availableSlots"
+      (SELECT count(*)::int FROM "RaidSlot" s WHERE s."listingId"=l."id" AND s."termsVersionId"=t."id" AND ${OPEN_SLOT}) AS "availableSlots"
      FROM "WorkListing" l JOIN "TermsVersion" t ON t."id"=l."currentTermsVersionId"
      WHERE l."state"='OPEN' AND t."snapshot"->>'visibility'='PUBLIC'
       AND (t."snapshot"->'deadlines'->>'commitment')::timestamptz>clock_timestamp()`;
@@ -206,7 +211,7 @@ export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail
   if (!card.success || canonicalRequestDigest(terms.data) !== row.digest) return fail('NOT_FOUND');
   const t = terms.data;
   const open = await tx.query<{ id: string }>(
-    `SELECT "id"::text FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "state"='AVAILABLE' AND "fundingMode"='SIMULATED' AND "fundingRef" IS NOT NULL ORDER BY "slotNumber" LIMIT 50`,
+    `SELECT s."id"::text FROM "RaidSlot" s WHERE s."listingId"=$1::uuid AND s."termsVersionId"=$2::uuid AND ${OPEN_SLOT} ORDER BY s."slotNumber" LIMIT 50`,
     [row.listingId, row.termsVersionId],
   );
   // The count above and this read are separate statements: if the last open slot was taken in between, the Raid is

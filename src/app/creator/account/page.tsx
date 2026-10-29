@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { StudioAccess } from '@/components/studio-access';
 import { XConnection } from '@/components/x-connection';
 import { WalletLogin } from '@/components/wallet-login';
+import { accountReturn } from '@/lib/return-to';
 export const dynamic = 'force-dynamic';
 export default async function AccountPage({
   searchParams,
@@ -11,12 +12,13 @@ export default async function AccountPage({
   searchParams: Promise<{ returnTo?: string; auth?: string }>;
 }) {
   const user = await currentUser();
-  if (!user) return <StudioAccess />;
+  const { returnTo, auth } = await searchParams;
+  const back = accountReturn(returnTo);
+  if (!user) return <StudioAccess returnTo={back?.oauth} />;
   const [account, wallet] = await Promise.all([
     db.xAccount.findUnique({ where: { userId: user.id } }),
     db.walletIdentity.findUnique({ where: { userId: user.id } }),
   ]);
-  const { returnTo, auth } = await searchParams;
   return (
     <div className="studio">
       <Link className="studio-back" href="/creator">
@@ -27,9 +29,9 @@ export default async function AccountPage({
           <h1>Account</h1>
           <p>Identity for campaigns and rewards.</p>
         </div>
-        {returnTo?.startsWith('/creator/') && (
-          <Link className="button secondary" href={returnTo}>
-            Return to draft
+        {back && (
+          <Link className="button secondary" href={back.href}>
+            {back.label}
           </Link>
         )}
       </header>
