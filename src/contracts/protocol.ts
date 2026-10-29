@@ -41,6 +41,7 @@ export const EventEnvelopeSchema = z
         identityLinkId: InternalId.optional(),
         orientationVersionId: InternalId.optional(),
         guildDraftVersionId: InternalId.optional(),
+        guildProfileVersionId: InternalId.optional(),
         projectProposalVersionId: InternalId.optional(),
         skillTaxonomyVersionId: InternalId.optional(),
         skillClaimVersionId: InternalId.optional(),
