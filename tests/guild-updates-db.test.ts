@@ -1,4 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { createGuildUpdatesHandlers } from '../src/guild-profiles/guild-updates-http';
 import { createGuildPublicHandlers } from '../src/guild-profiles/guild-public-http';
 import { PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
@@ -341,6 +342,70 @@ integration('T009 Guild public updates', () => {
     };
     expect(after.updates.map((u) => u.title)).toEqual(['First']);
     expect((await handlers.GUILD(url('nobody'), 'nobody')).status).toBe(404);
+  });
+
+  it('manages updates over HTTP with the session actor: draft, replay, publish, outsider denied, withdraw', async () => {
+    const { founder, guild: g } = await guild('news-mgmt');
+    const outsider = await person();
+    let current: GuildActor = founder;
+    const handlers = createGuildUpdatesHandlers({
+      version: 'v1',
+      requestId: () => 'request-1',
+      actor: async () => current,
+      checkOrigin: () => undefined,
+      rateLimit: async () => undefined,
+      list: async (actor, guildId) => ({
+        version: 'v1',
+        updates: (await run((tx) => listManagedGuildUpdates(tx, actor, guildId))).updates,
+        writesAvailable: true,
+        unavailableReason: null,
+      }),
+      draft: (command) => run((tx) => draftGuildUpdate(tx, command, host())),
+      publish: (command) => run((tx) => publishGuildUpdate(tx, command, host())),
+      withdraw: (command) => run((tx) => withdrawGuildUpdate(tx, command, host())),
+    });
+    const send = (path: string, payload: unknown, key: string) =>
+      new Request('https://example.test' + path, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'idempotency-key': key },
+        body: JSON.stringify(payload),
+      });
+    const drafted = await handlers.DRAFT(
+      send('/api/v1/guild-updates', { guildId: g.id, title: 'Hello', body: 'World' }, 'h-1'),
+    );
+    expect(drafted.status).toBe(200);
+    const created = (await drafted.json()) as { status: string; update: { id: string } };
+    expect(created.status).toBe('EXECUTED');
+    const replay = await handlers.DRAFT(
+      send('/api/v1/guild-updates', { guildId: g.id, title: 'Hello', body: 'World' }, 'h-1'),
+    );
+    expect(((await replay.json()) as { status: string }).status).toBe('REPLAYED');
+    const step = (action: string, key: string) =>
+      handlers.STEP(
+        send('/api/v1/guild-updates/' + created.update.id, { guildId: g.id, action }, key),
+        created.update.id,
+      );
+    current = outsider;
+    expect((await step('PUBLISH', 'h-2')).status).toBe(403);
+    expect(
+      (
+        await handlers.LIST(
+          new Request('https://example.test/api/v1/guild-updates?guildId=' + g.id),
+        )
+      ).status,
+    ).toBe(403);
+    current = founder;
+    expect((await step('PUBLISH', 'h-3')).status).toBe(200);
+    expect((await run((tx) => listPublicGuildUpdates(tx, 'news-mgmt', {}))).updates).toHaveLength(
+      1,
+    );
+    expect((await step('PUBLISH', 'h-4')).status).toBe(409);
+    expect((await step('WITHDRAW', 'h-5')).status).toBe(200);
+    expect((await run((tx) => listPublicGuildUpdates(tx, 'news-mgmt', {}))).updates).toEqual([]);
+    const managed = (await (
+      await handlers.LIST(new Request('https://example.test/api/v1/guild-updates?guildId=' + g.id))
+    ).json()) as { updates: unknown[] };
+    expect(managed.updates).toEqual([]);
   });
 
   it('pages the public list newest first and shows managers only their own view', async () => {

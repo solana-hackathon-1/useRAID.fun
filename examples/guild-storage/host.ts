@@ -8,13 +8,16 @@ import {
 } from './command-receipts';
 import { saveGuildDraft } from './guild-profiles/draft-storage';
 import { createGuildPublicHandlers } from './guild-profiles/guild-public-http';
+import { createGuildUpdatesHandlers } from './guild-profiles/guild-updates-http';
 import {
   activateGuild,
   draftGuildUpdate,
   editGuildProfile,
   grantGuildRole,
+  listManagedGuildUpdates,
   listPublicGuildUpdates,
   publishGuildUpdate,
+  withdrawGuildUpdate,
   hasGuildAuthority,
   proposeOwnershipTransfer,
   respondOwnershipTransfer,
@@ -250,6 +253,53 @@ try {
   assert.equal((await publicHttp.GUILD(visit('no-such-guild'), 'no-such-guild')).status, 404);
   open = false;
   assert.equal((await publicHttp.GUILD(visit(slug), slug)).status, 404);
+  // Management over HTTP: the host's own session names the actor; the body never can.
+  let signedIn: GuildActor = founder;
+  const updatesHttp = createGuildUpdatesHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => signedIn,
+    checkOrigin: () => undefined,
+    rateLimit: async () => undefined,
+    list: async (who, guildId) => ({
+      version: 'v1',
+      updates: (await transaction((tx) => listManagedGuildUpdates(tx, who, guildId))).updates,
+      writesAvailable: true,
+      unavailableReason: null,
+    }),
+    draft: (command) => transaction((tx) => draftGuildUpdate(tx, command, host)),
+    publish: (command) => transaction((tx) => publishGuildUpdate(tx, command, host)),
+    withdraw: (command) => transaction((tx) => withdrawGuildUpdate(tx, command, host)),
+  });
+  const send = (path: string, payload: unknown, key: string) =>
+    new Request(`https://host.example${path}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'idempotency-key': key },
+      body: JSON.stringify(payload),
+    });
+  const madeByHttp = await updatesHttp.DRAFT(
+    send(
+      '/api/v1/guild-updates',
+      { guildId: active.guild.id, title: 'Over HTTP', body: 'Text' },
+      'm-1',
+    ),
+  );
+  assert.equal(madeByHttp.status, 200);
+  const madeId = ((await madeByHttp.json()) as { update: { id: string } }).update.id;
+  const stepOverHttp = (action: string, key: string) =>
+    updatesHttp.STEP(
+      send(`/api/v1/guild-updates/${madeId}`, { guildId: active.guild.id, action }, key),
+      madeId,
+    );
+  signedIn = await account('stranger');
+  assert.equal((await stepOverHttp('PUBLISH', 'm-2')).status, 403);
+  signedIn = founder;
+  assert.equal((await stepOverHttp('PUBLISH', 'm-3')).status, 200);
+  assert.equal((await stepOverHttp('WITHDRAW', 'm-4')).status, 200);
+  const mine = await updatesHttp.LIST(
+    new Request(`https://host.example/api/v1/guild-updates?guildId=${active.guild.id}`),
+  );
+  assert.equal(mine.status, 200);
   // Ownership moves only when the Founder proposes, the recipient accepts and the host approves.
   const successor = await account('successor');
   const proposal = await transaction((tx) =>
@@ -295,7 +345,7 @@ try {
   assert.equal(moved.transfer.applied, true);
   assert.deepEqual([await can(founder, 'PROFILE'), await can(successor, 'PROFILE')], [false, true]);
   console.log(
-    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates, public HTTP reads; SIMULATED ONLY.',
+    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates, public HTTP reads, management HTTP; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();

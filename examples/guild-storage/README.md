@@ -1,6 +1,6 @@
 # Independent Guild storage host
 
-Consumes `activateGuild`, `editGuildProfile`, `readPublicGuild`, `readManagedGuild`, `grantGuildRole`, `revokeGuildRole`, `proposeOwnershipTransfer`, `respondOwnershipTransfer`, `draftGuildUpdate`, `publishGuildUpdate`, `listPublicGuildUpdates`, `createGuildPublicHandlers` and `hasGuildAuthority` from `guild-profiles/guild-storage` against its own synthetic accounts, sessions and activation policy. See [the module documentation](../../docs/raid-guild-storage.md).
+Consumes `activateGuild`, `editGuildProfile`, `readPublicGuild`, `readManagedGuild`, `grantGuildRole`, `revokeGuildRole`, `proposeOwnershipTransfer`, `respondOwnershipTransfer`, `draftGuildUpdate`, `publishGuildUpdate`, `listPublicGuildUpdates`, `createGuildPublicHandlers`, `createGuildUpdatesHandlers` and `hasGuildAuthority` from `guild-profiles/guild-storage` against its own synthetic accounts, sessions and activation policy. See [the module documentation](../../docs/raid-guild-storage.md).
 
 Requires Node ≥22.12 and a new empty loopback PostgreSQL 16 database named `useraid_guild_storage_host_test`. Copy this directory **dereferencing symlinks** and install its exact dependencies:
 

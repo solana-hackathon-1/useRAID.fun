@@ -126,6 +126,7 @@ export const ERROR_CONTRACT = {
     'Use a reasoned reassessment for the current higher rank.',
     false,
   ],
+  GUILD_UPDATE_LIMIT_REACHED: [409, 'The limit for saved updates has been reached.', false],
   RATE_LIMITED: [429, 'Too many requests. Try again later.', true],
   SERVICE_UNAVAILABLE: [503, 'Service unavailable. Please try again.', true],
 } as const;
