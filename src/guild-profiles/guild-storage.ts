@@ -17,6 +17,7 @@ import {
   GrantGuildRoleInputSchema,
   DraftGuildUpdateInputSchema,
   GUILD_DRAFT_UPDATE_LIMIT,
+  GUILD_UNPUBLISHED_UPDATE_LIMIT,
   GUILD_UPDATE_PAGE_MAX,
   GuildRoleGrantViewSchema,
   GuildUpdateRefInputSchema,
@@ -1063,6 +1064,14 @@ export async function draftGuildUpdate(
         [input.guildId],
       );
       if ((open[0]?.n ?? 0) >= GUILD_DRAFT_UPDATE_LIMIT) fail('UPDATE_LIMIT');
+      // Withdrawn drafts are never deleted, so they keep counting against their author.
+      const unpublished = await query<{ n: number }>(
+        tx,
+        `SELECT count(*)::int AS n FROM "GuildUpdate"
+         WHERE "guildId"=$1::uuid AND "authorAccountId"=$2 AND ("state"='DRAFT' OR ("state"='WITHDRAWN' AND "publishedAt" IS NULL))`,
+        [input.guildId, actor.accountId],
+      );
+      if ((unpublished[0]?.n ?? 0) >= GUILD_UNPUBLISHED_UPDATE_LIMIT) fail('UPDATE_LIMIT');
       const rows = await query<{ id: string }>(
         tx,
         `INSERT INTO "GuildUpdate" ("guildId","authorAccountId","title","body","draftReceiptId") VALUES ($1::uuid,$2,$3,$4,$5::uuid) RETURNING "id"::text`,
@@ -1109,7 +1118,8 @@ async function moveUpdate(
     },
     async ({ receiptId }) => {
       await authorize(tx, actor);
-      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Taking content down stays possible while new writes are disabled.
+      if (step === 'PUBLISH' && !host.allowNewWrites) fail('WRITES_DISABLED');
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
         'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
@@ -1135,7 +1145,15 @@ async function moveUpdate(
         );
       } else {
         // The Founder withdraws anything; an author only takes back their own unpublished draft.
-        if (!founder && !(current.author === actor.accountId && current.state === 'DRAFT'))
+        // An author must still hold live profile authority, as drafting requires.
+        if (
+          !founder &&
+          !(
+            current.author === actor.accountId &&
+            current.state === 'DRAFT' &&
+            (await authorityKinds(tx, actor.accountId, input.guildId)).kinds.includes('PROFILE')
+          )
+        )
           fail('FORBIDDEN');
         if (current.state === 'WITHDRAWN') fail('REVISION_CONFLICT');
         await query(
@@ -1230,7 +1248,7 @@ export async function listManagedGuildUpdates(
   if (!authority.kinds.includes('PROFILE')) fail('FORBIDDEN');
   const rows = await query<{ id: string }>(
     tx,
-    `SELECT "id"::text FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND ($3::boolean OR "authorAccountId"=$2)
+    `SELECT "id"::text FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
      ORDER BY "createdAt" DESC,"id" DESC LIMIT 100`,
     [guildId, actor.accountId, String(authority.founder)],
   );

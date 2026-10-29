@@ -113,6 +113,8 @@ export const OwnershipTransferViewSchema = z.strictObject({
 });
 export type OwnershipTransferView = z.infer<typeof OwnershipTransferViewSchema>;
 export const GUILD_DRAFT_UPDATE_LIMIT = 50;
+/** Per author and Guild: open drafts plus drafts withdrawn before ever being published (rows are never deleted). */
+export const GUILD_UNPUBLISHED_UPDATE_LIMIT = 100;
 export const GUILD_UPDATE_PAGE_MAX = 20;
 /** UUIDs are canonicalized to lowercase so they match the stored text form used in receipts. */
 const uuid = z.uuid().transform((value) => value.toLowerCase());

@@ -12,6 +12,7 @@ import {
   publishGuildUpdate,
   withdrawGuildUpdate,
   GUILD_DRAFT_UPDATE_LIMIT,
+  GUILD_UNPUBLISHED_UPDATE_LIMIT,
   type GuildActor,
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
@@ -253,6 +254,52 @@ integration('T009 Guild public updates', () => {
       code: 'REVISION_CONFLICT',
     });
   });
+
+  it('review fix: an author whose profile authority ended cannot withdraw, even their own draft', async () => {
+    const { guild: g } = await guild('news-wr');
+    const author = await person();
+    await grantRow(g.id, author);
+    const mine = (await draft(author, g.id, 'Mine', 'Body')).update.id;
+    await db.$executeRawUnsafe(
+      `UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "granteeAccountId"=$1`,
+      author.accountId,
+    );
+    await expect(withdraw(author, g.id, mine)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  });
+
+  it('review fix: a Founder can take a public update down while new writes are disabled', async () => {
+    const { founder, guild: g } = await guild('news-kill');
+    const id = (await draft(founder, g.id, 'Harmful', 'Body')).update.id;
+    await publish(founder, g.id, id);
+    await expect(draft(founder, g.id, 'x', 'y', 'k-d', false)).rejects.toMatchObject({
+      code: 'WRITES_DISABLED',
+    });
+    const other = (await draft(founder, g.id, 'Later', 'Body')).update.id;
+    await expect(publish(founder, g.id, other, 'k-p2', false)).rejects.toMatchObject({
+      code: 'WRITES_DISABLED',
+    });
+    expect((await withdraw(founder, g.id, id, 'k-w', false)).update.state).toBe('WITHDRAWN');
+    expect((await run((tx) => listPublicGuildUpdates(tx, 'news-kill', {}))).updates).toEqual([]);
+  });
+
+  it('review fix: drafting and withdrawing cannot churn without bound; withdrawn rows leave the managed view', async () => {
+    const { founder, guild: g } = await guild('news-churn');
+    const author = await person();
+    await grantRow(g.id, author);
+    for (let i = 0; i < GUILD_UNPUBLISHED_UPDATE_LIMIT; i++) {
+      const id = (await draft(author, g.id, `Churn ${i}`, 'Body', `c-${i}`)).update.id;
+      await withdraw(author, g.id, id, `w-${i}`);
+    }
+    await expect(draft(author, g.id, 'One more', 'Body', 'c-over')).rejects.toMatchObject({
+      code: 'UPDATE_LIMIT',
+    });
+    // The cap is per author: the Founder is unaffected, and published updates never count.
+    const live = (await draft(founder, g.id, 'Live', 'Body', 'f-1')).update.id;
+    await publish(founder, g.id, live, 'f-p');
+    expect(
+      (await run((tx) => listManagedGuildUpdates(tx, founder, g.id))).updates.map((u) => u.title),
+    ).toEqual(['Live']);
+  }, 120_000);
 
   it('pages the public list newest first and shows managers only their own view', async () => {
     const { founder, guild: g } = await guild('news-p');
