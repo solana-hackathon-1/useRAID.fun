@@ -77,7 +77,7 @@ class VerifyTreeCheck(unittest.TestCase):
         script = (ROOT / 'scripts/verify.sh').read_text()
         clean = script.split('clean() {', 1)[1].split('}', 1)[0]
         for path in ['docs/ai-handoff/CURRENT.md', 'artifacts/raid-live-fixture.png',
-                     'planning/task-evidence/*/browser-development']:
+                     'planning/task-evidence/*/browser-development/*']:
             self.assertIn(f"':!{path}'", clean)
 
 
