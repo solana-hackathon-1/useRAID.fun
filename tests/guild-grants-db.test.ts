@@ -14,6 +14,7 @@ import {
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import type { SqlBinding } from '../src/command-receipts';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 let counter = 0;
 async function person(): Promise<GuildActor> {
@@ -566,5 +567,65 @@ integration('T009 Guild role grants and revocation', () => {
       forever,
     )) as { r: boolean }[];
     expect(r).toBe(true);
+  });
+
+  it('#314-1: judges redelegation bounds at the locked instant and refuses when cover lapses between reads', async () => {
+    const { founder, guild: g } = await guild();
+    const lead = await person();
+    const helper = await person();
+    // Grants are immutable except for revocation, so the lapse is real: cover that expires two seconds from now.
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      canDelegate: true,
+      expiresAt: future(2000),
+    });
+    // Unrelated live delegating cover (another field) keeps the lead a delegator after the lapse.
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['description'],
+      canDelegate: true,
+    });
+    const seen: { sql: string; bindings: readonly unknown[]; rows: unknown[] }[] = [];
+    const attempt = run((tx) =>
+      grantGuildRole(
+        {
+          dialect: tx.dialect,
+          isolation: tx.isolation,
+          async query<Row>(sql: string, bindings: readonly SqlBinding[]) {
+            // The lead's only delegating cover for 'name' lapses after the policy read and before the bounds read.
+            if (/CROSS JOIN LATERAL unnest/.test(sql))
+              await tx.query(
+                `SELECT pg_sleep(GREATEST(0,EXTRACT(EPOCH FROM max("expiresAt")-clock_timestamp()))+0.05)::text AS slept
+                 FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2`,
+                [g.id, lead.accountId],
+              );
+            const rows = await tx.query<Row>(sql, bindings);
+            seen.push({ sql, bindings, rows });
+            return rows;
+          },
+        },
+        cmd(lead, {
+          guildId: g.id,
+          granteeAccountId: helper.accountId,
+          kind: 'PROFILE',
+          fields: ['name'],
+          expiresAt: null,
+        }),
+        host(),
+      ),
+    );
+    await expect(attempt).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const [{ n }] = (await db.$queryRawUnsafe(
+      `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "granteeAccountId"=$1`,
+      helper.accountId,
+    )) as { n: number }[];
+    expect(n).toBe(0);
+    const now = (seen.find((q) => /AS now FROM "Guild"/.test(q.sql))!.rows[0] as { now: Date }).now;
+    const bounds = seen.find((q) => /CROSS JOIN LATERAL unnest/.test(q.sql))!;
+    expect(bounds.sql).not.toContain('clock_timestamp()');
+    expect(bounds.bindings.map(String)).toContain(now.toISOString());
   });
 });

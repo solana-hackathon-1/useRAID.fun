@@ -500,8 +500,10 @@ export async function readManagedGuild(
   await authorize(tx, actor);
   return { guild, authority };
 }
-const LIVE_R = `r."revokedAt" IS NULL AND r."validFrom"<=clock_timestamp() AND (r."expiresAt" IS NULL OR r."expiresAt">clock_timestamp())`;
 const LIVE = `"revokedAt" IS NULL AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`;
+/** Live at a bound instant (placeholder `$n`), so several reads in one command judge grants at the same moment. */
+const liveAt = (n: number, alias = '') =>
+  `${alias}"revokedAt" IS NULL AND ${alias}"validFrom"<=$${n}::timestamptz AND (${alias}"expiresAt" IS NULL OR ${alias}"expiresAt">$${n}::timestamptz)`;
 async function loadGrant(
   tx: CommandReceiptTransaction,
   guildId: string,
@@ -601,10 +603,14 @@ export async function grantGuildRole(
           tx,
           `SELECT f AS field,max("expiresAt") AS bound,bool_or("expiresAt" IS NULL) AS unbounded
            FROM "GuildRoleGrant" r CROSS JOIN LATERAL unnest(r."fields") f
-           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${LIVE_R} AND f=ANY($3::text[])
+           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${liveAt(4, 'r.')} AND f=ANY($3::text[])
            GROUP BY f`,
-          [input.guildId, actor.accountId, `{${input.fields.join(',')}}`],
+          // The same instant the policy judged: cover cannot lapse between the two reads.
+          [input.guildId, actor.accountId, `{${input.fields.join(',')}}`, guild.now.toISOString()],
         );
+        // Fail closed: every requested field must still show delegating cover here.
+        const covered = new Set(bounds.map((b) => b.field));
+        if (input.fields.some((f) => !covered.has(f))) fail('FORBIDDEN');
         // The latest expiry among the covering grants, per field; the earliest of those bounds the new grant.
         const finite = bounds.filter((b) => !b.unbounded && b.bound);
         if (finite.length) {
@@ -613,15 +619,15 @@ export async function grantGuildRole(
         }
         const passed = await query<{ n: number }>(
           tx,
-          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${LIVE}`,
-          [input.guildId, actor.accountId],
+          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${liveAt(3)}`,
+          [input.guildId, actor.accountId, guild.now.toISOString()],
         );
         if ((passed[0]?.n ?? 0) >= DELEGATED_GRANT_LIMIT) fail('GRANT_LIMIT');
       }
       const live = await query<{ n: number }>(
         tx,
-        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${LIVE}`,
-        [input.guildId],
+        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${liveAt(2)}`,
+        [input.guildId, guild.now.toISOString()],
       );
       if ((live[0]?.n ?? 0) >= GUILD_GRANT_LIMIT) fail('GRANT_LIMIT');
       // Read without a lock: locking the grantee here would invert the grantee-then-Guild order other commands use.
